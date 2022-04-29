@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCAConsole", "GCAConsole\GCAConsole.csproj", "{22D50CCF-F2CB-472F-A9A1-5EE84D7D6E71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCAAnalyser", "GCAAnalyser\GCAAnalyser.csproj", "{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCATests", "GCATests\GCATests.csproj", "{1BFC1490-0D84-4B81-9C51-BFFA5B946646}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22D50CCF-F2CB-472F-A9A1-5EE84D7D6E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D50CCF-F2CB-472F-A9A1-5EE84D7D6E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D50CCF-F2CB-472F-A9A1-5EE84D7D6E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D50CCF-F2CB-472F-A9A1-5EE84D7D6E71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BFC1490-0D84-4B81-9C51-BFFA5B946646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BFC1490-0D84-4B81-9C51-BFFA5B946646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BFC1490-0D84-4B81-9C51-BFFA5B946646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BFC1490-0D84-4B81-9C51-BFFA5B946646}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF7ACEE2-C0A2-44E4-B75B-12FB4206BBB2}
+	EndGlobalSection
+EndGlobal
