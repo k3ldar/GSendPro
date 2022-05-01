@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 using GCAAnalyser.Abstractions;
 
-using static GCAAnalyser.Consts;
+using static GCAAnalyser.Internal.Consts;
 
 namespace GCAAnalyser.Internal
 {
-    internal class GCodeParser : IGCodeParser
+    public class GCodeParser : IGCodeParser
     {
         #region Private Members
 
         private const int InitialDictionarySize = 26;
 
-        private readonly List<GCodeCommand> _commands = new List<GCodeCommand>();
+        private int _index;
 
         #endregion Private Members
 
@@ -26,32 +22,28 @@ namespace GCAAnalyser.Internal
 
         #region Public Methods
 
-        public void Parse(string gCodeCommands)
+        public IGCodeAnalyses Parse(string gCodeCommands)
         {
             if (String.IsNullOrEmpty(gCodeCommands))
                 throw new ArgumentNullException(nameof(gCodeCommands));
 
-            _commands.Clear();
-            InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands));
+            return InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands));
         }
 
         #endregion Public Methods
 
-        #region Public Properties
-
-        public IReadOnlyList<GCodeCommand> Commands => _commands.AsReadOnly();
-
-        #endregion Public Properties
-
         #region Private Methods
 
-        private void InternalParseGCode(byte[] gCodeCommands)
+        private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands)
         {
+            GCodeAnalyses Result = new GCodeAnalyses();
+
             Span<char> line = new Span<char>(new char[MaxLineSize]);
             int position = 0;
             ClearLineData(line);
             GCodeCommand lastCommand = null;
             StringBuilder currentValues = new StringBuilder(MaxLineSize);
+            _index = 0;
 
             for (int i = 0; i < gCodeCommands.Length; i++)
             {
@@ -62,22 +54,24 @@ namespace GCAAnalyser.Internal
                     case CharG:
                         if (line[0] != CharNull)
                         {
-                            lastCommand = InternalParseLine(line, lastCommand, currentValues);
+                            lastCommand = InternalParseLine(Result, line, lastCommand, currentValues);
                             ClearLineData(line);
                         }
+
                         position = 0;
                         line[position++] = c;
 
                         continue;
 
                     case CharLineFeed:
-                        lastCommand = InternalParseLine(line, lastCommand, currentValues);
+                        lastCommand = InternalParseLine(Result, line, lastCommand, currentValues);
                         ClearLineData(line);
                         position = 0;
 
                         continue;
 
                     case CharCarriageReturn:
+                        Result.ContainsCarriageReturn = true;
 
                         continue;
 
@@ -90,8 +84,10 @@ namespace GCAAnalyser.Internal
 
             if (line[0] != CharNull)
             {
-                InternalParseLine(line, lastCommand, currentValues);
+                InternalParseLine(Result, line, lastCommand, currentValues);
             }
+
+            return Result;
         }
 
         private void ClearLineData(in Span<char> line)
@@ -140,7 +136,7 @@ namespace GCAAnalyser.Internal
             };
         }
 
-        private GCodeCommand InternalParseLine(in Span<char> line, GCodeCommand lastCommand, StringBuilder currentValues)
+        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder currentValues)
         {
             GCodeCommand result = null;
 
@@ -191,14 +187,14 @@ namespace GCAAnalyser.Internal
                         if (values[CharG - AsciiAPosition] == Decimal.MinValue)
                             values[CharG - AsciiAPosition] = lastCommand.Code;
 
-                        result = new GCodeCommand(values, comment);
+                        result = new GCodeCommand(_index++, values, comment);
 
                         if (lastCommand != null)
                             lastCommand.NextCommand = result;
 
                         result.PreviousCommand = lastCommand;
 
-                        _commands.Add(result);
+                        analysis.Add(result);
 
                         return result;
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GCAAnalyser.Internal
+﻿namespace GCAAnalyser.Internal
 {
     internal class Consts
     {
@@ -46,6 +40,5 @@ namespace GCAAnalyser.Internal
         public const char CharX = 'X';
         public const char CharY = 'Y';
         public const char CharZ = 'Z';
-
     }
 }
