@@ -27,7 +27,7 @@ namespace GCAAnalyser.Internal
             if (String.IsNullOrEmpty(gCodeCommands))
                 throw new ArgumentNullException(nameof(gCodeCommands));
 
-            return InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands));
+            return InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands.Trim()));
         }
 
         #endregion Public Methods
@@ -36,13 +36,14 @@ namespace GCAAnalyser.Internal
 
         private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands)
         {
-            GCodeAnalyses Result = new GCodeAnalyses();
+            GCodeAnalyses Result = new();
 
-            Span<char> line = new Span<char>(new char[MaxLineSize]);
+            Span<char> line = new(new char[MaxLineSize]);
             int position = 0;
             ClearLineData(line);
             GCodeCommand lastCommand = null;
-            StringBuilder currentValues = new StringBuilder(MaxLineSize);
+            StringBuilder lineValues = new(MaxLineSize);
+            CurrentCommandValues currentValues = new();
             _index = 0;
 
             for (int i = 0; i < gCodeCommands.Length; i++)
@@ -51,10 +52,11 @@ namespace GCAAnalyser.Internal
 
                 switch (c)
                 {
+
                     case CharG:
                         if (line[0] != CharNull)
                         {
-                            lastCommand = InternalParseLine(Result, line, lastCommand, currentValues);
+                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
                             ClearLineData(line);
                         }
 
@@ -64,7 +66,7 @@ namespace GCAAnalyser.Internal
                         continue;
 
                     case CharLineFeed:
-                        lastCommand = InternalParseLine(Result, line, lastCommand, currentValues);
+                        lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
                         ClearLineData(line);
                         position = 0;
 
@@ -84,13 +86,13 @@ namespace GCAAnalyser.Internal
 
             if (line[0] != CharNull)
             {
-                InternalParseLine(Result, line, lastCommand, currentValues);
+                InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
             }
 
             return Result;
         }
 
-        private void ClearLineData(in Span<char> line)
+        private static void ClearLineData(in Span<char> line)
         {
             for (int i = 0; i < line.Length; i++)
             {
@@ -101,72 +103,88 @@ namespace GCAAnalyser.Internal
             }
         }
 
-        private Dictionary<byte, decimal> CreateCommandDictionary()
-        {
-            byte currValue = 0;
-
-            return new Dictionary<byte, decimal>(InitialDictionarySize)
-            {
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0}, // never used but introduced for perf
-                { currValue++, 0},
-                { currValue++, Decimal.MinValue},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0}, // never used but introduced for perf
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0},
-                { currValue++, 0}
-            };
-        }
-
-        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder currentValues)
+        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues)
         {
             GCodeCommand result = null;
 
             if (line[0] == CharNull)
                 return result;
 
-            currentValues.Clear();
-
-            Dictionary<byte, decimal> values = CreateCommandDictionary();
+            lineValues.Clear();
 
 
             char currentCommand = CharNull;
             bool isComment = false;
             string comment = String.Empty;
 
-            void UpdateGCodeValue()
+            GCodeCommand UpdateGCodeValue()
             {
-                if (currentCommand != CharNull && currentValues.Length > 0)
+                if (currentCommand != CharNull && lineValues.Length > 0)
                 {
                     if (isComment)
                     {
-                        comment = currentValues.ToString();
-                    }
-                    else if (Decimal.TryParse(currentValues.ToString(), out decimal value))
-                    {
-                        values[(byte)(currentCommand - AsciiAPosition)] = value;
+                        comment = lineValues.ToString();
                     }
                 }
 
-                currentValues.Clear();
+                bool commandValueConvert = Decimal.TryParse(lineValues.ToString(), out decimal commandValue);
+                Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
+                decimal mantissa = Math.Round(100 * (commandValue - commandCode));
+
+                switch (currentCommand)
+                {
+                    case CharF:
+                        if (commandValueConvert)
+                            currentValues.FeedRate = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.FeedRateError;
+
+                        break;
+
+                    case CharS:
+                        if (commandValueConvert)
+                            currentValues.SpindleSpeed = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.SpindleSpeedError;
+
+                        break;
+
+                    case CharZ:
+                        if (commandValueConvert)
+                            currentValues.Z = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.MovementError;
+
+                        break;
+
+                    case CharX:
+                        if (commandValueConvert)
+                            currentValues.X = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.MovementError;
+
+                        break;
+
+                    case CharY:
+                        if (commandValueConvert)
+                            currentValues.Y = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.MovementError;
+
+                        break;
+                }
+
+                CurrentCommandValues newValues = currentValues.Clone();
+                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment, newValues);
+
+                if (lastCommand != null)
+                    lastCommand.NextCommand = result;
+
+                result.PreviousCommand = lastCommand;
+
+                analysis.Add(result);
+                lineValues.Clear();
+                return result;
             };
 
             for (int i = 0; i < line.Length; i++)
@@ -175,45 +193,18 @@ namespace GCAAnalyser.Internal
 
                 if (isComment && c != CharNull && c != CharClosingBracket)
                 {
-                    currentValues.Append(c);
+                    lineValues.Append(c);
                     continue;
                 }
 
                 switch (c)
                 {
-                    case CharNull:
-                        UpdateGCodeValue();
-
-                        if (values[CharG - AsciiAPosition] == Decimal.MinValue)
-                            values[CharG - AsciiAPosition] = lastCommand.Code;
-
-                        result = new GCodeCommand(_index++, values, comment);
-
-                        if (lastCommand != null)
-                            lastCommand.NextCommand = result;
-
-                        result.PreviousCommand = lastCommand;
-
-                        analysis.Add(result);
-
-                        return result;
-
-                    case CharLineFeed:
-                        if (currentCommand != CharNull)
-                            UpdateGCodeValue();
-
-                        continue;
-
-                    case CharG:
-                        currentCommand = c;
-
-                        continue;
-
                     case CharA:
                     case CharB:
                     case CharC:
                     case CharD:
                     case CharF:
+                    case CharG:
                     case CharH:
                     case CharI:
                     case CharJ:
@@ -234,9 +225,26 @@ namespace GCAAnalyser.Internal
                     case CharZ:
                         // new command
                         if (currentCommand != CharNull)
-                            UpdateGCodeValue();
+                            lastCommand = UpdateGCodeValue();
 
                         currentCommand = c;
+
+                        continue;
+
+                    case CharE:
+                    case CharO:
+                        // not currently supported
+                        break;
+
+                    case CharNull:
+                        lastCommand = UpdateGCodeValue();
+
+
+                        return result;
+
+                    case CharLineFeed:
+                        if (currentCommand != CharNull)
+                            lastCommand = UpdateGCodeValue();
 
                         continue;
 
@@ -245,11 +253,11 @@ namespace GCAAnalyser.Internal
                         // comment start
                         if (isComment)
                         {
-                            currentValues.Append(c);
+                            lineValues.Append(c);
                         }
                         else
                         {
-                            UpdateGCodeValue();
+                            lastCommand = UpdateGCodeValue();
                             comment = String.Empty;
                             isComment = true;
                         }
@@ -258,7 +266,7 @@ namespace GCAAnalyser.Internal
 
                     case CharClosingBracket:
                         //comment end
-                        UpdateGCodeValue();
+                        lastCommand = UpdateGCodeValue();
                         isComment = false;
 
                         continue;
@@ -267,20 +275,18 @@ namespace GCAAnalyser.Internal
                     case CharSpace:
                         if (isComment)
                         {
-                            currentValues.Append(c);
+                            lineValues.Append(c);
                         }
 
                         continue;
 
                     default:
-                        currentValues.Append(c);
+                        lineValues.Append(c);
                         continue;
                 }
             }
 
-            UpdateGCodeValue();
-
-            return result;
+            return UpdateGCodeValue();
         }
 
         #endregion Private Methods

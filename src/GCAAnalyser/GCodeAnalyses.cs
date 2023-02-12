@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GCAAnalyser.Abstractions;
+﻿using GCAAnalyser.Abstractions;
 using GCAAnalyser.Internal;
 
 namespace GCAAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {
-        private readonly List<GCodeCommand> _commands = new List<GCodeCommand>();
+        private readonly List<GCodeCommand> _commands = new();
 
         internal void Add(GCodeCommand command)
         {
@@ -37,7 +31,15 @@ namespace GCAAnalyser
 
         public bool ContainsCarriageReturn { get; internal set; }
 
+        public decimal HomeZ { get; set; }
+
         public decimal SafeZ { get; set; }
+
+        public UnitOfMeasurement UnitOfMeasurement { get; set; }
+
+        public decimal TotalDistance { get; set; }
+
+        public TimeSpan TotalTime { get; set; }
 
         public bool ContainsDuplicates { get; set; }
     }

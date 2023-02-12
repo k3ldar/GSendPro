@@ -20,6 +20,7 @@
         public const char CharB = 'B';
         public const char CharC = 'C';
         public const char CharD = 'D';
+        public const char CharE = 'E';
         public const char CharF = 'F';
         public const char CharG = 'G';
         public const char CharH = 'H';
@@ -29,6 +30,7 @@
         public const char CharL = 'L';
         public const char CharM = 'M';
         public const char CharN = 'N';
+        public const char CharO = 'O';
         public const char CharP = 'P';
         public const char CharQ = 'Q';
         public const char CharR = 'R';

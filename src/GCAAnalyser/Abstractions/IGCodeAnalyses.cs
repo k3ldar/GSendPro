@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GCAAnalyser.Abstractions
+﻿namespace GCAAnalyser.Abstractions
 {
     public interface IGCodeAnalyses
     {
@@ -13,6 +7,14 @@ namespace GCAAnalyser.Abstractions
         bool ContainsCarriageReturn { get; }
 
         decimal SafeZ { get; set; }
+
+        decimal HomeZ { get; set; }
+
+        decimal TotalDistance { get; set; }
+
+        TimeSpan TotalTime { get; set; }
+
+        UnitOfMeasurement UnitOfMeasurement { get; set; }
 
         bool ContainsDuplicates { get; set; }
 

@@ -1,86 +1,124 @@
-﻿
+﻿using System.Diagnostics;
+
+using GCAAnalyser.Internal;
+
 using static GCAAnalyser.Internal.Consts;
 
 namespace GCAAnalyser
 {
+    [DebuggerDisplay("{Command}{CommandValue}; X:{X}; Y:{Y}; Z:{Z}; Spindle:{SpindleOn}; Index: {Index}")]
     public class GCodeCommand
     {
         #region Private Members
 
+        private const int DefaultAccelorationXY = 300;
+        private const int DefaultAccelerationZ = 30;
+        private const int DefaultRapidsXY = 2000;
+        private const int DefaultRapidsZ = 1000;
+        private const int SecondsPerMinute = 60;
         private GCodeCommand _previousCommand;
+        private readonly CurrentCommandValues _currentCodeValues;
 
         #endregion Private Members
 
         #region Constructors
 
-        private GCodeCommand()
+        internal GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues)
         {
-            Code = Int32.MinValue;
-        }
-
-        internal GCodeCommand(int index, Dictionary<byte, decimal> commands, string comment)
-        {
-            if (commands['G' - AsciiAPosition] == Decimal.MinValue)
-                throw new ArgumentOutOfRangeException($"Invalid GCode value: G{commands[CharG - AsciiAPosition]}");
+            if (currentCommand < 'A' || currentCommand > 'Z')
+                throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;
-            Code = Convert.ToInt32(commands[CharG - AsciiAPosition]);
-
-            M = commands[CharM - AsciiAPosition];
-            X = commands[CharX - AsciiAPosition];
-            Y = commands[CharY - AsciiAPosition];
-            Z = commands[CharZ - AsciiAPosition];
-            Speed = commands[CharS - AsciiAPosition];
-            FeedRate = commands[CharF - AsciiAPosition];
+            Command = currentCommand;
+            CommandValue = commandValue;
+            CommandValueString = commandValueString;
             Comment = comment ?? String.Empty;
-
-            if (Speed > 0)
-                Attributes |= CommandAttributes.SpindleSpeed;
+            _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public int Code { get; private set; }
+        public char Command { get; }
 
-        public decimal M { get; private set; }
+        public string CommandValueString { get; }
 
-        public decimal X { get; private set; }
+        public decimal CommandValue { get; }
 
-        public decimal Y { get; private set; }
+        public string Comment { get; }
 
-        public decimal Z { get; private set; }
+        public int Index { get; }
 
-        public decimal Speed { get; private set; }
+        public decimal X => _currentCodeValues.X;
 
-        public decimal FeedRate { get; private set; }
+        public decimal Y => _currentCodeValues.Y;
 
-        public string Comment { get; private set; }
+        public decimal Z => _currentCodeValues.Z;
 
-        public int Index { get; private set; }
+        public decimal FeedRate => _currentCodeValues.FeedRate;
+
+        public decimal Distance { get; private set; }
+
+        public TimeSpan Time { get; private set; }
+
+        public decimal SpindleSpeed => _currentCodeValues.SpindleSpeed;
+
+        public bool SpindleOn => _currentCodeValues.SpindleSpeed != 0;
+
+        public bool CoolandEnabled => _currentCodeValues.Coolant;
 
         public CommandAttributes Attributes { get; internal set; }
 
-        public GCodeCommand PreviousCommand 
-        { 
-            get => PreviousCommand;
+        public GCodeCommand PreviousCommand
+        {
+            get => _previousCommand;
 
             internal set
             {
-                if (value != null)
+                _previousCommand = value;
+
+                if (_previousCommand != null)
                 {
-                    if (value.Equals(this))
+                    if (_previousCommand.Equals(this))
+                    {
                         Attributes |= CommandAttributes.Duplicate;
+                    }
 
-                    if (Code == value.Code && FeedRate == 0)
-                        FeedRate = value.FeedRate;
+                    switch (Command)
+                    {
+                        case CharZ:
+                            if (Z < _previousCommand.Z)
+                                Attributes |= CommandAttributes.MovementZDown;
+                            else if (Z > _previousCommand.Z)
+                                Attributes |= CommandAttributes.MovementZUp;
 
-                    if (Code == value.Code && M > 0 && M == value.M && Speed == 0)
-                        Speed = value.Speed;
+                            Distance = Math.Abs(Z - _previousCommand.Z);
+
+                            break;
+
+                        case CharX:
+                            if (X < _previousCommand.X)
+                                Attributes |= CommandAttributes.MovementXMinus;
+                            else if (X > _previousCommand.X)
+                                Attributes |= CommandAttributes.MovementXPlus;
+
+                            Distance = Math.Abs(X - _previousCommand.X);
+
+                            break;
+
+                        case CharY:
+                            if (Y < _previousCommand.Y)
+                                Attributes |= CommandAttributes.MovementYMinus;
+                            else if (Y > _previousCommand.Y)
+                                Attributes |= CommandAttributes.MovementYPlus;
+
+                            Distance = Math.Abs(Y - _previousCommand.Y);
+
+                            break;
+                    }
                 }
 
-                _previousCommand = value;
             }
         }
 
@@ -92,18 +130,11 @@ namespace GCAAnalyser
 
         public override bool Equals(object obj)
         {
-            GCodeCommand command = obj as GCodeCommand;
-
-            if (command == null)
+            if (obj is not GCodeCommand command)
                 return false;
 
-            return Code.Equals(command.Code) &&
-                X.Equals(command.X) && 
-                Y.Equals(command.Y) && 
-                Z.Equals(command.Z) && 
-                M.Equals(command.M) &&
-                FeedRate.Equals(command.FeedRate) &&
-                Speed.Equals(command.Speed);
+            return Command.Equals(command.Command) &&
+                CommandValueString.Equals(command.CommandValueString);
         }
 
         public override int GetHashCode()
@@ -113,7 +144,23 @@ namespace GCAAnalyser
 
         public override string ToString()
         {
-            return $"G{Code}; X:{X}; Y:{Y}; Z:{Z}; F:{FeedRate}; Index: {Index}";
+            return $"{Command}{CommandValueString}";
+        }
+        public void CalculateTime(bool isMillimeter)
+        {
+            //mm/min based
+            if (FeedRate < 1 || Distance <= 0)
+                return;
+
+            decimal velocity = 0.5m / (Command.Equals(CharZ) ? DefaultAccelerationZ : DefaultAccelorationXY);
+            int rapids = Command.Equals(CharZ) ? DefaultRapidsZ : DefaultRapidsXY;
+
+            int distPerSecond = rapids / SecondsPerMinute;
+
+            if (Distance > distPerSecond)
+                Time = TimeSpan.FromSeconds((double)((Distance / (FeedRate / SecondsPerMinute)) + (velocity * 2)));
+            else
+                Time = TimeSpan.FromSeconds((double)(Distance / (FeedRate / SecondsPerMinute)));
         }
 
         #endregion Public Methods

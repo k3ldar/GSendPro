@@ -12,9 +12,7 @@ namespace GCAAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.ContainsDuplicates = gCodeAnalyses
-                .Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.Duplicate))
-                .Any();
+            gCodeAnalyses.ContainsDuplicates = gCodeAnalyses.Commands.Any(c => c.Attributes.HasFlag(CommandAttributes.Duplicate));
         }
     }
 }

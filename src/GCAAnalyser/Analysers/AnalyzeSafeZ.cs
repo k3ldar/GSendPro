@@ -3,7 +3,7 @@ using GCAAnalyser.Abstractions;
 
 namespace GCAAnalyser.Analysers
 {
-    internal class AnaylzeSafeZ : IGCodeAnalyzer
+    internal class AnalyzeSafeZ : IGCodeAnalyzer
     {
         public int Order => int.MinValue;
 
@@ -12,12 +12,17 @@ namespace GCAAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.SafeZ = gCodeAnalyses.Commands.Max(c => c.Z);
+            decimal homeZ = gCodeAnalyses.Commands.Max(c => c.Z);
+
+            gCodeAnalyses.SafeZ = gCodeAnalyses.Commands.Where(c => c.Z < homeZ).Max(c => c.Z);
 
             Parallel.ForEach(gCodeAnalyses.Commands, c =>
             {
-                if (c.Z == gCodeAnalyses.SafeZ)
+                if (c.Z == gCodeAnalyses.SafeZ &&
+                    (c.Attributes.HasFlag(CommandAttributes.MovementZDown) || c.Attributes.HasFlag(CommandAttributes.MovementZUp)))
+                {
                     c.Attributes |= CommandAttributes.SafeZ;
+                }
             });
         }
     }

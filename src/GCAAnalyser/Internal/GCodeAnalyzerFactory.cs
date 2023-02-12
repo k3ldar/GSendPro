@@ -10,8 +10,13 @@ namespace GCAAnalyser.Internal
         {
             List<IGCodeAnalyzer> result = new List<IGCodeAnalyzer>()
             {
-                new AnaylzeSafeZ(),
+                new AnalyzeHomeZ(),
+                new AnalyzeSafeZ(),
                 new AnalyzeDuplicates(),
+                new AnalyzeDistance(),
+                new AnalyzeUnitOfMeasure(),
+                new AnalyzeTime(),
+
             }
             .OrderBy(o => o.Order)
             .ToList();
