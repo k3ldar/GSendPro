@@ -1,4 +1,20 @@
-namespace GCSDesktop
+using System;
+using System.Windows.Forms;
+
+using PluginManager;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using Shared.Classes;
+using GSendApi;
+using GSendDesktop.Abstractions;
+using GSendDesktop.Internal;
+using GSendShared.Interfaces;
+using GSendShared.Providers;
+using GSendDesktop.Forms;
+
+namespace GSendDesktop
 {
     internal static class Program
     {
@@ -8,10 +24,31 @@ namespace GCSDesktop
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            IServiceCollection serviceCollection = new ServiceCollection();
+            RegisterServices(serviceCollection);
+            Services = serviceCollection.BuildServiceProvider();
+            try
+            {
+                ApplicationConfiguration.Initialize();
+                Application.Run(Services.GetRequiredService<FormMain>());
+            }
+            finally
+            {
+                Services.Dispose();
+            }
+        }
+
+        internal static ServiceProvider Services { get; private set; }
+
+        private static void RegisterServices(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton(new ApiSettings(new Uri("https://localhost:7154/")));
+            serviceCollection.AddSingleton<MachineApiWrapper>();
+            serviceCollection.AddTransient<IMessageNotifier, MessageNotifier>();
+            serviceCollection.AddTransient<IComPortProvider, ComPortProvider>();
+            serviceCollection.AddTransient<ICommandProcessor, CommandProcessor>();
+            serviceCollection.AddTransient<FormMain>();
+            serviceCollection.AddTransient<FrmAddMachine>();
         }
     }
 }

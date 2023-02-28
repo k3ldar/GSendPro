@@ -1,6 +1,6 @@
-﻿using GCAAnalyser.Abstractions;
+﻿using GSendAnalyser.Abstractions;
 
-namespace GCAAnalyser.Analysers
+namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeTime : IGCodeAnalyzer
     {
@@ -11,11 +11,9 @@ namespace GCAAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            int mmCount = gCodeAnalyses.Commands.Count(c => c.Command.Equals('G') && c.CommandValue.Equals(21));
-
             Parallel.ForEach(gCodeAnalyses.Commands, c =>
             {
-                c.CalculateTime(mmCount > 0);
+                c.CalculateTime();
             });
 
             gCodeAnalyses.TotalTime = TimeSpan.FromSeconds(gCodeAnalyses.Commands.Sum(c => c.Time.TotalSeconds));

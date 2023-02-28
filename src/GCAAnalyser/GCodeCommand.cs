@@ -1,13 +1,15 @@
 ﻿using System.Diagnostics;
 
-using GCAAnalyser.Internal;
+using GSendAnalyser.Internal;
 
-using static GCAAnalyser.Internal.Consts;
+using GSendShared;
 
-namespace GCAAnalyser
+using static GSendAnalyser.Internal.Consts;
+
+namespace GSendAnalyser
 {
     [DebuggerDisplay("{Command}{CommandValue}; X:{X}; Y:{Y}; Z:{Z}; Spindle:{SpindleOn}; Index: {Index}")]
-    public class GCodeCommand
+    public class GCodeCommand : IGCodeCommand
     {
         #region Private Members
 
@@ -16,14 +18,14 @@ namespace GCAAnalyser
         private const int DefaultRapidsXY = 2000;
         private const int DefaultRapidsZ = 1000;
         private const int SecondsPerMinute = 60;
-        private GCodeCommand _previousCommand;
+        private IGCodeCommand _previousCommand;
         private readonly CurrentCommandValues _currentCodeValues;
 
         #endregion Private Members
 
         #region Constructors
 
-        internal GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues)
+        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues)
         {
             if (currentCommand < 'A' || currentCommand > 'Z')
                 throw new ArgumentOutOfRangeException(nameof(currentCommand));
@@ -66,11 +68,11 @@ namespace GCAAnalyser
 
         public bool SpindleOn => _currentCodeValues.SpindleSpeed != 0;
 
-        public bool CoolandEnabled => _currentCodeValues.Coolant;
+        public bool CoolantEnabled => _currentCodeValues.Coolant;
 
         public CommandAttributes Attributes { get; internal set; }
 
-        public GCodeCommand PreviousCommand
+        public IGCodeCommand PreviousCommand
         {
             get => _previousCommand;
 
@@ -122,7 +124,7 @@ namespace GCAAnalyser
             }
         }
 
-        public GCodeCommand NextCommand { get; set; }
+        public IGCodeCommand NextCommand { get; internal set; }
 
         #endregion Properties
 
@@ -146,7 +148,7 @@ namespace GCAAnalyser
         {
             return $"{Command}{CommandValueString}";
         }
-        public void CalculateTime(bool isMillimeter)
+        public void CalculateTime()
         {
             //mm/min based
             if (FeedRate < 1 || Distance <= 0)

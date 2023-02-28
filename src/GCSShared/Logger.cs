@@ -3,7 +3,7 @@
 using PluginManager;
 using PluginManager.Abstractions;
 
-namespace GCSShared
+namespace GSendShared
 {
     public class Logger : ILogger
     {

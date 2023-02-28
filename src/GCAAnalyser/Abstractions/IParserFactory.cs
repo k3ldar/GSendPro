@@ -1,4 +1,4 @@
-﻿namespace GCAAnalyser.Abstractions
+﻿namespace GSendAnalyser.Abstractions
 {
     public interface IParserFactory
     {

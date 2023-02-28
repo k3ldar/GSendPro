@@ -1,11 +1,6 @@
 ﻿using AspNetCore.PluginManager;
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace GCSService
+namespace GSendService
 {
     public class Startup
     {
@@ -13,8 +8,8 @@ namespace GCSService
         {
             PluginManagerService.ConfigureServices(services);
 
-            services.AddControllersWithViews()
-                .AddRazorRuntimeCompilation();
+            //services.AddControllersWithViews()
+            //    .AddRazorRuntimeCompilation();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -30,6 +25,7 @@ namespace GCSService
                 });
 
             services.AddSession();
+            services.AddDistributedMemoryCache();
 
             services.AddMvc(
                     option => option.EnableEndpointRouting = false

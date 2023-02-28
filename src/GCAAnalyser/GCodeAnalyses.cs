@@ -1,7 +1,9 @@
-﻿using GCAAnalyser.Abstractions;
-using GCAAnalyser.Internal;
+﻿using GSendAnalyser.Abstractions;
+using GSendAnalyser.Internal;
 
-namespace GCAAnalyser
+using GSendShared;
+
+namespace GSendAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {

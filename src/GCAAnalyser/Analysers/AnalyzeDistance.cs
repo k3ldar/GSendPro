@@ -1,6 +1,6 @@
-﻿using GCAAnalyser.Abstractions;
+﻿using GSendAnalyser.Abstractions;
 
-namespace GCAAnalyser.Analysers
+namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeDistance : IGCodeAnalyzer
     {

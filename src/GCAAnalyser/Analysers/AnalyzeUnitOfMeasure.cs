@@ -1,6 +1,8 @@
-﻿using GCAAnalyser.Abstractions;
+﻿using GSendAnalyser.Abstractions;
 
-namespace GCAAnalyser.Analysers
+using GSendShared;
+
+namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeUnitOfMeasure : IGCodeAnalyzer
     {

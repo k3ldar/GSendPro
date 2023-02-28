@@ -1,4 +1,4 @@
-﻿namespace GCAAnalyser.Internal
+﻿namespace GSendAnalyser.Internal
 {
     internal class Consts
     {

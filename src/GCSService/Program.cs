@@ -11,18 +11,20 @@ using PluginManager;
 
 using Shared.Classes;
 
-using GCSShared;
+using GSendService.Internal;
+
+using GSendShared;
 using LogLevel = PluginManager.LogLevel;
 
-namespace GCSService
+namespace GSendService
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            ThreadManager.Initialise();
+            ThreadManager.Initialise(new SharedLib.Win.WindowsCpuUsage());
             ThreadManager.AllowThreadPool = true;
-            ThreadManager.MaximumPoolSize = 20000;
+            ThreadManager.MaximumPoolSize = 5000;
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
@@ -50,7 +52,8 @@ namespace GCSService
                 }
             };
 
-            PluginManagerService.UsePlugin(typeof(PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(PluginManager.DAL.TextFiles.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(GSendDB.PluginInitialization));
             PluginManagerService.UsePlugin(typeof(ErrorManager.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(RestrictIp.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(UserSessionMiddleware.Plugin.PluginInitialisation));
@@ -69,6 +72,8 @@ namespace GCSService
             PluginManagerService.UsePlugin(typeof(UserAccount.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(LoginPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(SystemAdmin.Plugin.PluginInitialisation));
+
+            PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
 
             try
             {

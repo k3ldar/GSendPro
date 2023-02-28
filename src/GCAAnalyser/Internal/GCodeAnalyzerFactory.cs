@@ -1,8 +1,8 @@
 ﻿
-using GCAAnalyser.Abstractions;
-using GCAAnalyser.Analysers;
+using GSendAnalyser.Abstractions;
+using GSendAnalyser.Analysers;
 
-namespace GCAAnalyser.Internal
+namespace GSendAnalyser.Internal
 {
     internal class GCodeAnalyzerFactory : IGCodeAnalyzerFactory
     {

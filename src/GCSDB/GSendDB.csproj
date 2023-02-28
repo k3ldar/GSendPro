@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ApplicationSettings" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.PluginManager" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Middleware" Version="5.1.0" />
+    <PackageReference Include="PluginManager" Version="5.1.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="3.8.0" />
+    <PackageReference Include="SharedPluginFeatures" Version="5.1.0" />
+    <PackageReference Include="SimpleDB" Version="5.1.0" />
+    <PackageReference Include="PluginManager.DAL.TextFiles" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Internal\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
+  </ItemGroup>
+
+</Project>

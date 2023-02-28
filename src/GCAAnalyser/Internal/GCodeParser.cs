@@ -1,10 +1,12 @@
 ﻿using System.Text;
 
-using GCAAnalyser.Abstractions;
+using GSendAnalyser.Abstractions;
 
-using static GCAAnalyser.Internal.Consts;
+using GSendShared;
 
-namespace GCAAnalyser.Internal
+using static GSendAnalyser.Internal.Consts;
+
+namespace GSendAnalyser.Internal
 {
     public class GCodeParser : IGCodeParser
     {

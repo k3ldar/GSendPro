@@ -1,6 +1,8 @@
-﻿namespace GCAAnalyser.Internal
+﻿using GSendShared;
+
+namespace GSendAnalyser.Internal
 {
-    internal sealed class CurrentCommandValues
+    public sealed class CurrentCommandValues
     {
         public char Command { get; set; }
 

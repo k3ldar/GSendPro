@@ -1,0 +1,53 @@
+﻿@model GSendService.Models.IndexModel
+@{
+    ViewData["Title"] = Model.SeoTitle;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Welcome to GSend, a GCode sender for 3 Axis CNC Routers and 3D Printers.</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>GSend has been designed to run multiple machines simultaneously.</p>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Com Port</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+    </thead>
+@{
+    foreach (GSendShared.IMachine machine in Model.Machines)
+    {
+        <tr>
+            <td scope="row">
+                @switch (machine.MachineType)
+                {
+                    case GSendShared.MachineType.CNC:
+                        <img src="/images/CNC32x32.png" alt="CNC Router" />
+                        break;
+
+                    case GSendShared.MachineType.Printer:
+                        <img src="/images/3DPrinter32x32.png" alt="CNC Router" />
+                        break;
+                    }
+            </td>
+                <td>@machine.Name</td>
+
+                <td>@machine.MachineType</td>
+                <td>@machine.ComPort</td>
+                <td>Idle</td>
+                <td><a class="btn btn-primary" href="/Index/ViewMachine" role="button">View</a></td>
+            </tr>
+            
+    }
+}
+</table>
+
