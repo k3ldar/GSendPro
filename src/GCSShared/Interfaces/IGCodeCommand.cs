@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GSendShared
+﻿namespace GSendShared
 {
     public interface IGCodeCommand
     {
-        public char Command { get; }
+        char Command { get; }
 
-        public string CommandValueString { get; }
+        string CommandValueString { get; }
 
-        public decimal CommandValue { get; }
+        decimal CommandValue { get; }
 
-        public string Comment { get; }
+        string Comment { get; }
 
-        public int Index { get; }
+        int Index { get; }
 
-        public decimal X { get; }
+        decimal CurrentX { get; }
 
-        public decimal Y { get; }
+        decimal CurrentY { get; }
 
-        public decimal Z { get; }
+        decimal CurrentZ { get; }
 
-        public decimal FeedRate { get; }
+        decimal CurrentFeedRate { get; }
 
-        public decimal Distance { get; }
+        decimal FeedRate { get; }
 
-        public TimeSpan Time { get; }
+        decimal Distance { get; }
 
-        public decimal SpindleSpeed { get; }
+        TimeSpan Time { get; }
 
-        public bool SpindleOn { get; }
+        decimal SpindleSpeed { get; }
 
-        public bool CoolantEnabled { get; }
+        bool SpindleOn { get; }
 
-        public CommandAttributes Attributes { get; }
+        bool CoolantEnabled { get; }
+
+        CommandAttributes Attributes { get; }
+
+        CommandStatus Status { get; set; }
+
+        string GetCommand();
     }
 }

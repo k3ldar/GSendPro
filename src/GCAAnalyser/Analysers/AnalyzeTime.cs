@@ -13,7 +13,8 @@ namespace GSendAnalyser.Analysers
 
             Parallel.ForEach(gCodeAnalyses.Commands, c =>
             {
-                c.CalculateTime();
+                GCodeCommand gCodeCommand = c as GCodeCommand;
+                gCodeCommand.CalculateTime();
             });
 
             gCodeAnalyses.TotalTime = TimeSpan.FromSeconds(gCodeAnalyses.Commands.Sum(c => c.Time.TotalSeconds));

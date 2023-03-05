@@ -23,6 +23,6 @@ namespace GSendShared
 
         event SerialPinChangedEventHandler PinChanged;
 
-        event SerialDataReceivedEventHandler DataReceived;
+        event EventHandler DataReceived;
     }
 }

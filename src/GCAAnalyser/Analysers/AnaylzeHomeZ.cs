@@ -14,17 +14,18 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.HomeZ = gCodeAnalyses.Commands.Max(c => c.Z);
+            gCodeAnalyses.HomeZ = gCodeAnalyses.Commands.Max(c => c.CurrentZ);
 
             Parallel.ForEach(gCodeAnalyses.Commands, c =>
             {
-                if (c.Z == gCodeAnalyses.HomeZ &&
+                if (c.CurrentZ == gCodeAnalyses.HomeZ &&
                     (
                         c.Attributes.HasFlag(CommandAttributes.MovementZDown) ||
                         c.Attributes.HasFlag(CommandAttributes.MovementZUp)
                     ))
                 {
-                    c.Attributes |= CommandAttributes.HomeZ;
+                    GCodeCommand gCodeCommand = c as GCodeCommand;
+                    gCodeCommand.Attributes |= CommandAttributes.HomeZ;
                 }
             });
         }

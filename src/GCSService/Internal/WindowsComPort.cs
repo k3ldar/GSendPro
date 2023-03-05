@@ -74,7 +74,7 @@ namespace GSendService.Internal
 
         public event SerialPinChangedEventHandler PinChanged;
 
-        public event SerialDataReceivedEventHandler DataReceived;
+        public event EventHandler DataReceived;
 
         private void SerialPort_PinChanged(object sender, SerialPinChangedEventArgs e) => PinChanged?.Invoke(sender, e);
 

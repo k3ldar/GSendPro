@@ -12,8 +12,6 @@ namespace GSendAnalyser.Internal
     {
         #region Private Members
 
-        private const int InitialDictionarySize = 26;
-
         private int _index;
 
         #endregion Private Members
@@ -135,6 +133,14 @@ namespace GSendAnalyser.Internal
 
                 switch (currentCommand)
                 {
+                    case CharG:
+                        if (commandValueConvert && commandCode == 1)
+                            currentValues.Attributes |= CommandAttributes.SpeedOverride;
+                        else
+                            currentValues.Attributes &= ~CommandAttributes.SpeedOverride;
+
+                        break;
+
                     case CharF:
                         if (commandValueConvert)
                             currentValues.FeedRate = commandValue;

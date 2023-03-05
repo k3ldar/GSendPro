@@ -24,13 +24,14 @@ namespace GSendAnalyser.Internal
         {
             return new CurrentCommandValues
             {
-                Command = Command,
-                FeedRate = FeedRate,
-                SpindleSpeed = SpindleSpeed,
-                Coolant = Coolant,
-                X = X,
-                Y = Y,
-                Z = Z
+                Attributes = this.Attributes,
+                Command = this.Command,
+                FeedRate = this.FeedRate,
+                SpindleSpeed = this.SpindleSpeed,
+                Coolant = this.Coolant,
+                X = this.X,
+                Y = this.Y,
+                Z = this.Z
             };
         }
     }

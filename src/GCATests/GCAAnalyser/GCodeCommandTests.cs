@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using GSendAnalyser;
 using GSendAnalyser.Internal;
 
+using GSendShared;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GSendTests.GSendAnalyser
@@ -38,9 +40,9 @@ namespace GSendTests.GSendAnalyser
 
             Assert.IsNotNull(sut);
             Assert.AreEqual("G0", sut.ToString());
-            Assert.AreEqual(1.1m, sut.X);
-            Assert.AreEqual(2.2m, sut.Y);
-            Assert.AreEqual(3.3m, sut.Z);
+            Assert.AreEqual(1.1m, sut.CurrentX);
+            Assert.AreEqual(2.2m, sut.CurrentY);
+            Assert.AreEqual(3.3m, sut.CurrentZ);
         }
 
         [TestMethod]
@@ -48,12 +50,11 @@ namespace GSendTests.GSendAnalyser
         public void Construct_ValidInstance_MCode_Success()
         {
             GCodeCommand sut = new GCodeCommand(1, 'M', 3, "3", string.Empty, new CurrentCommandValues());
-
             Assert.IsNotNull(sut);
             Assert.AreEqual("M3", sut.ToString());
-            Assert.AreEqual(0m, sut.X);
-            Assert.AreEqual(0m, sut.Y);
-            Assert.AreEqual(0m, sut.Z);
+            Assert.AreEqual(0m, sut.CurrentX);
+            Assert.AreEqual(0m, sut.CurrentY);
+            Assert.AreEqual(0m, sut.CurrentZ);
         }
     }
 }

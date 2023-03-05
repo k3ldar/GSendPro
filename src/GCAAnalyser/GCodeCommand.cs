@@ -8,7 +8,7 @@ using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser
 {
-    [DebuggerDisplay("{Command}{CommandValue}; X:{X}; Y:{Y}; Z:{Z}; Spindle:{SpindleOn}; Index: {Index}")]
+    [DebuggerDisplay("{Command}{CommandValue}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}; Status: {Status}")]
     public class GCodeCommand : IGCodeCommand
     {
         #region Private Members
@@ -19,6 +19,7 @@ namespace GSendAnalyser
         private const int DefaultRapidsZ = 1000;
         private const int SecondsPerMinute = 60;
         private IGCodeCommand _previousCommand;
+        private IGCodeCommand _nextCommand;
         private readonly CurrentCommandValues _currentCodeValues;
 
         #endregion Private Members
@@ -36,6 +37,7 @@ namespace GSendAnalyser
             CommandValueString = commandValueString;
             Comment = comment ?? String.Empty;
             _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
+            Attributes = currentValues.Attributes;
         }
 
         #endregion Constructors
@@ -52,13 +54,15 @@ namespace GSendAnalyser
 
         public int Index { get; }
 
-        public decimal X => _currentCodeValues.X;
+        public decimal CurrentX => _currentCodeValues.X;
 
-        public decimal Y => _currentCodeValues.Y;
+        public decimal CurrentY => _currentCodeValues.Y;
 
-        public decimal Z => _currentCodeValues.Z;
+        public decimal CurrentZ => _currentCodeValues.Z;
 
-        public decimal FeedRate => _currentCodeValues.FeedRate;
+        public decimal CurrentFeedRate => _currentCodeValues.FeedRate;
+
+        public decimal FeedRate { get; internal set; }
 
         public decimal Distance { get; private set; }
 
@@ -90,32 +94,40 @@ namespace GSendAnalyser
                     switch (Command)
                     {
                         case CharZ:
-                            if (Z < _previousCommand.Z)
+                            if (CurrentZ < _previousCommand.CurrentZ)
                                 Attributes |= CommandAttributes.MovementZDown;
-                            else if (Z > _previousCommand.Z)
+                            else if (CurrentZ > _previousCommand.CurrentZ)
                                 Attributes |= CommandAttributes.MovementZUp;
 
-                            Distance = Math.Abs(Z - _previousCommand.Z);
+                            Distance = Math.Abs(CurrentZ - _previousCommand.CurrentZ);
 
                             break;
 
                         case CharX:
-                            if (X < _previousCommand.X)
+                            if (CurrentX < _previousCommand.CurrentX)
                                 Attributes |= CommandAttributes.MovementXMinus;
-                            else if (X > _previousCommand.X)
+                            else if (CurrentX > _previousCommand.CurrentX)
                                 Attributes |= CommandAttributes.MovementXPlus;
 
-                            Distance = Math.Abs(X - _previousCommand.X);
+                            Distance = Math.Abs(CurrentX - _previousCommand.CurrentX);
 
                             break;
 
                         case CharY:
-                            if (Y < _previousCommand.Y)
+                            if (CurrentY < _previousCommand.CurrentY)
                                 Attributes |= CommandAttributes.MovementYMinus;
-                            else if (Y > _previousCommand.Y)
+                            else if (CurrentY > _previousCommand.CurrentY)
                                 Attributes |= CommandAttributes.MovementYPlus;
 
-                            Distance = Math.Abs(Y - _previousCommand.Y);
+                            Distance = Math.Abs(CurrentY - _previousCommand.CurrentY);
+
+                            break;
+
+                        case CharF:
+                            if (_previousCommand is GCodeCommand prevCommand)
+                            {
+                                prevCommand.FeedRate = CommandValue;
+                            }
 
                             break;
                     }
@@ -124,11 +136,56 @@ namespace GSendAnalyser
             }
         }
 
-        public IGCodeCommand NextCommand { get; internal set; }
+        public IGCodeCommand NextCommand
+        { 
+            get => _nextCommand; 
+            
+            internal set
+            {
+                _nextCommand = value;
+
+                group g1 x, y z commands together
+                if (Command == 'G' && CommandValue == 1 && _nextCommand != null && _nextCommand is GCodeCommand nextCommand)
+                {
+                    nextCommand.SendG1 = true;
+                    Attributes |= CommandAttributes.DoNotProcess;
+                }
+            }
+        }
+
+        private CommandStatus _status;
+
+        public CommandStatus Status
+        { 
+            get => _status; 
+            
+            set
+            {
+                _status = value;
+                Trace.WriteLine($"Command: {Command}{CommandValue} : Status: {value}");
+            }
+        }
+
+        public bool SendG1 { get; set; } = false;
 
         #endregion Properties
 
         #region Public Methods
+
+        public string GetCommand()
+        {
+            string Result = "";
+
+            if (SendG1)
+                Result += "G1";
+
+            Result += $"{Command}{CommandValueString}";
+
+            if (FeedRate > 0)
+                Result += $"F{CurrentFeedRate}";
+
+            return Result;
+        }
 
         public override bool Equals(object obj)
         {
@@ -151,7 +208,7 @@ namespace GSendAnalyser
         public void CalculateTime()
         {
             //mm/min based
-            if (FeedRate < 1 || Distance <= 0)
+            if (CurrentFeedRate < 1 || Distance <= 0)
                 return;
 
             decimal velocity = 0.5m / (Command.Equals(CharZ) ? DefaultAccelerationZ : DefaultAccelorationXY);
@@ -160,9 +217,9 @@ namespace GSendAnalyser
             int distPerSecond = rapids / SecondsPerMinute;
 
             if (Distance > distPerSecond)
-                Time = TimeSpan.FromSeconds((double)((Distance / (FeedRate / SecondsPerMinute)) + (velocity * 2)));
+                Time = TimeSpan.FromSeconds((double)((Distance / (CurrentFeedRate / SecondsPerMinute)) + (velocity * 2)));
             else
-                Time = TimeSpan.FromSeconds((double)(Distance / (FeedRate / SecondsPerMinute)));
+                Time = TimeSpan.FromSeconds((double)(Distance / (CurrentFeedRate / SecondsPerMinute)));
         }
 
         #endregion Public Methods

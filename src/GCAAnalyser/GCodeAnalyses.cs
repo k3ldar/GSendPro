@@ -7,7 +7,7 @@ namespace GSendAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {
-        private readonly List<GCodeCommand> _commands = new();
+        private readonly List<IGCodeCommand> _commands = new();
 
         internal void Add(GCodeCommand command)
         {
@@ -29,7 +29,7 @@ namespace GSendAnalyser
             });
         }
 
-        public IReadOnlyList<GCodeCommand> Commands => _commands.AsReadOnly();
+        public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
 
         public bool ContainsCarriageReturn { get; internal set; }
 

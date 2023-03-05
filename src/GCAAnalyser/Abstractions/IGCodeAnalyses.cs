@@ -4,7 +4,7 @@ namespace GSendAnalyser.Abstractions
 {
     public interface IGCodeAnalyses
     {
-        IReadOnlyList<GCodeCommand> Commands { get; }
+        IReadOnlyList<IGCodeCommand> Commands { get; }
 
         bool ContainsCarriageReturn { get; }
 

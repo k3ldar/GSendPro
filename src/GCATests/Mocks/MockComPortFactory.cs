@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using GSendShared;
 
@@ -12,9 +7,21 @@ namespace GSendTests.Mocks
     [ExcludeFromCodeCoverage]
     internal sealed class MockComPortFactory : IComPortFactory
     {
+        public MockComPortFactory()
+        { 
+        }
+
+        public MockComPortFactory(MockComPort mockComPort)
+        {
+            MockComPort = mockComPort;
+        }
+
+        public MockComPort MockComPort { get; private set; }
+
         public IComPort CreateComPort(IMachine machine)
         {
-            return new MockComPort(machine);
+            MockComPort = MockComPort ?? new MockComPort(machine);
+            return MockComPort;
         }
     }
 }
