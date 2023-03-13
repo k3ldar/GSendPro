@@ -2,7 +2,7 @@
 
 using PluginManager.Abstractions;
 
-namespace GSendService.Internal
+namespace GSendCommon
 {
     public sealed class ComPortFactory : IComPortFactory
     {

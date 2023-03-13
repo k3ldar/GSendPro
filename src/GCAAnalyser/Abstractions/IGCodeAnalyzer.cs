@@ -1,4 +1,6 @@
-﻿namespace GSendAnalyser.Abstractions
+﻿using GSendShared;
+
+namespace GSendAnalyser.Abstractions
 {
     public interface IGCodeAnalyzer
     {

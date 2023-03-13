@@ -1,9 +1,21 @@
 ﻿
+using GSendShared.Models;
+
 namespace GSendShared
 {
-    public delegate void CommandSentHandler(object sender, CommandSent e);
+    public delegate void CommandSentHandler(IGCodeProcessor sender, CommandSent e);
 
-    public delegate void GrblErrorHandler(object sender, GrblError errorCode);
+    public delegate void GrblErrorHandler(IGCodeProcessor sender, GrblError errorCode);
 
-    public delegate void BufferSizeHandler(object sender, int size);
+    public delegate void GrblAlarmHandler(IGCodeProcessor sender, GrblAlarm alarm);
+
+    public delegate void BufferSizeHandler(IGCodeProcessor sender, int size);
+
+    public delegate void MachineStateHandler(IGCodeProcessor sender, MachineStateModel machineState);
+
+    public delegate void MessageHandler(IGCodeProcessor sender, string message);
+
+    public delegate void ResponseReceivedHandler(IGCodeProcessor sender, string response);
+
+    public delegate void GSendEventHandler(IGCodeProcessor sender, EventArgs e);
 }

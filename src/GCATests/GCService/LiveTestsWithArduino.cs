@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
-using GSendService.Internal;
-using GSendShared.Models;
-using GSendTests.Mocks;
-
-using GSendShared;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GSendAnalyser;
 using GSendAnalyser.Internal;
-using GSendAnalyser.Abstractions;
+
+using GSendCommon;
+
+using GSendService.Internal;
+
+using GSendShared;
+using GSendShared.Models;
+
+using GSendTests.Mocks;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Shared.Classes;
-using System.Threading;
 
 namespace GSendTests.GCService
 {
@@ -24,6 +24,7 @@ namespace GSendTests.GCService
     [ExcludeFromCodeCoverage]
     public class LiveTestsWithArduino
     {
+        [Ignore]
         [TestMethod]
         public void ConnectToGrblAfterReset()
         {
@@ -43,6 +44,65 @@ namespace GSendTests.GCService
             Assert.IsFalse(sut.IsConnected);
         }
 
+        [Ignore]
+        [TestMethod]
+        public void HomeAndPause()
+        {
+            ThreadManager.Initialise();
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM4"
+            };
+
+            ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
+
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+
+            sut.TimeOut = TimeSpan.FromSeconds(1000);
+
+            ThreadManager.ThreadStart(sut, "COM4", System.Threading.ThreadPriority.Normal);
+            sut.OnGrblError += (sender, e) =>
+            {
+                if (e.Equals(GrblError.Locked))
+                    sut.Unlock();
+            };
+
+            bool unlocked = false;
+            sut.OnCommandSent += (sender, e) =>
+            {
+                switch (e)
+                {
+                    case CommandSent.Unlock:
+                        unlocked = true;
+                        break;
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            };
+
+            sut.Connect();
+            Assert.IsTrue(sut.IsConnected);
+
+            sut.WriteLine("$H");
+            Thread.Sleep(500);
+            sut.WriteLine("~");
+
+            if (unlocked)
+            {
+
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(1000);
+            }
+            sut.Disconnect();
+            Assert.IsFalse(sut.IsConnected);
+        }
+
+        [Ignore]
         [TestMethod]
         public void ConnectToGrbl_InvalidPort_AfterReset()
         {
@@ -63,13 +123,31 @@ namespace GSendTests.GCService
             Assert.IsTrue(eventFired);
         }
 
+        [Ignore]
         [TestMethod]
         public void ConnectToGrblSendTwoCommands()
         {
             ThreadManager.Initialise();
-            const string ZProbeCommand = "G17G21G0Z40.000 G0X0.000Y0.000S8000M3\tG1 Z40.000 F10.0 X139.948 F20.0 Y37.136";
+            const string gCode = "G17G21\nG0Z20.000\nG0X0.000Y0.000S8000M3\nG1 Z40.000 F500.0\nX139.948 F500.0\nY37.136\nG0X0Y0Z0\nM30";
             GCodeParser parser = new();
-            IGCodeAnalyses analyses = parser.Parse(ZProbeCommand);
+            IGCodeAnalyses analyses = parser.Parse(gCode);
+
+            Assert.AreEqual(1, analyses.Commands[0].LineNumber);
+            Assert.AreEqual(1, analyses.Commands[1].LineNumber);
+            Assert.AreEqual(2, analyses.Commands[2].LineNumber);
+            Assert.AreEqual(2, analyses.Commands[3].LineNumber);
+            Assert.AreEqual(3, analyses.Commands[4].LineNumber);
+            Assert.AreEqual(3, analyses.Commands[5].LineNumber);
+            Assert.AreEqual(3, analyses.Commands[6].LineNumber);
+            Assert.AreEqual(3, analyses.Commands[7].LineNumber);
+            Assert.AreEqual(3, analyses.Commands[8].LineNumber);
+            Assert.AreEqual(4, analyses.Commands[9].LineNumber);
+            Assert.AreEqual(4, analyses.Commands[10].LineNumber);
+            Assert.AreEqual(4, analyses.Commands[11].LineNumber);
+            Assert.AreEqual(5, analyses.Commands[12].LineNumber);
+            Assert.AreEqual(5, analyses.Commands[13].LineNumber);
+            Assert.AreEqual(6, analyses.Commands[14].LineNumber);
+
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM4"
@@ -82,7 +160,7 @@ namespace GSendTests.GCService
             sut.TimeOut = TimeSpan.FromSeconds(1000);
 
             ThreadManager.ThreadStart(sut, "COM4", System.Threading.ThreadPriority.Normal);
-            sut.OnGrblError += (sender, e) => 
+            sut.OnGrblError += (sender, e) =>
             {
                 if (e.Equals(GrblError.Locked))
                     sut.Unlock();
@@ -94,7 +172,7 @@ namespace GSendTests.GCService
                 switch (e)
                 {
                     case CommandSent.Unlock:
-                        unlocked = true; 
+                        unlocked = true;
                         break;
 
                     default:
@@ -103,18 +181,36 @@ namespace GSendTests.GCService
             };
 
             sut.Connect();
+            sut.WriteLine("?");
+            sut.Unlock();
             Assert.IsTrue(sut.IsConnected);
             Assert.IsTrue(unlocked);
 
-            sut.LoadGCode(analyses.Commands);
+            sut.LoadGCode(analyses);
 
             sut.Start();
 
+            Thread.Sleep(500);
+            sut.WriteLine("!");
+            Thread.Sleep(2500);
+            sut.WriteLine("~");
+
+            int runcount = 0;
             while (sut.IsRunning)
             {
-                Thread.Sleep(0);
+                Thread.Sleep(10);
+                runcount++;
+
+                if (runcount == 20)
+                    sut.Stop();
             }
 
+            for (int i = 0; i < 10; i++)
+            {
+                sut.WriteLine("?");
+
+                Thread.Sleep(1000);
+            }
             Assert.IsFalse(sut.IsRunning);
 
             sut.Disconnect();

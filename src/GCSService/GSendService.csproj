@@ -68,6 +68,7 @@
     <ProjectReference Include="..\GCAAnalyser\GSendAnalyser.csproj" />
     <ProjectReference Include="..\GCSDB\GSendDB.csproj" />
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
+    <ProjectReference Include="..\GSendCommon\GSendCommon.csproj" />
   </ItemGroup>
 
   <ItemGroup>

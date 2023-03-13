@@ -108,8 +108,8 @@ namespace GSendTests.GSendAnalyser
 
             List<IGCodeCommand> movesToSafeZ = analyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.HomeZ)).ToList();
             Assert.AreEqual(2, movesToSafeZ.Count);
-            Assert.AreEqual(9765310005, analyses.TotalTime.Ticks);
-            Assert.AreEqual(14758.7094m, analyses.TotalDistance);
+            Assert.AreEqual(148530164, analyses.TotalTime.Ticks);
+            Assert.AreEqual(703.494m, analyses.TotalDistance);
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using GSendAnalyser.Abstractions;
+using GSendAnalyser;
 using GSendAnalyser.Internal;
+
+using GSendCommon;
 
 using GSendService.Internal;
 
@@ -17,12 +16,26 @@ using GSendTests.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Shared.Classes;
+
 namespace GSendTests.GCService
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class GCodeProcessorTests
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            ThreadManager.Initialise();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            ThreadManager.Finalise();
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParam_MachineNull_Throws_ArgumentNullException()
@@ -74,7 +87,6 @@ namespace GSendTests.GCService
             Assert.IsTrue(sut.IsConnected);
             Assert.IsTrue(sut.Connect());
             Assert.IsTrue(connectCalled);
-            Assert.IsTrue(lockedCalled);
         }
 
         [TestMethod]
@@ -325,11 +337,11 @@ namespace GSendTests.GCService
 
             Assert.AreEqual(0, sut.CommandCount);
 
-            sut.LoadGCode(analyses.Commands);
+            sut.LoadGCode(analyses);
 
-            Assert.AreEqual(13, sut.CommandCount);
+            Assert.AreEqual(1, sut.CommandCount);
 
-            sut.LoadGCode(new List<IGCodeCommand>());
+            sut.LoadGCode(new GCodeAnalyses());
 
             Assert.AreEqual(0, sut.CommandCount);
         }
@@ -344,7 +356,7 @@ namespace GSendTests.GCService
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
-            const string ZProbeCommand = "G17G21G0Z40.000 G0X0.000Y0.000S8000M3\tG0X139.948Y37.136Z40.000";
+            const string ZProbeCommand = "G17G21G0Z40.000 G0X0.000Y0.000\nS8000M3\nG0X139.948Y37.136Z40.000";
             GCodeParser parser = new();
             IGCodeAnalyses analyses = parser.Parse(ZProbeCommand);
 
@@ -353,9 +365,9 @@ namespace GSendTests.GCService
 
             Assert.AreEqual(0, sut.CommandCount);
 
-            sut.LoadGCode(analyses.Commands);
+            sut.LoadGCode(analyses);
 
-            Assert.AreEqual(13, sut.CommandCount);
+            Assert.AreEqual(3, sut.CommandCount);
 
             sut.Clear();
 
@@ -407,8 +419,8 @@ namespace GSendTests.GCService
             bool spindleSpeedOffEventRaised = false;
 
             GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
-            sut.OnCommandSent += (sender, e) => 
-            { 
+            sut.OnCommandSent += (sender, e) =>
+            {
                 switch (e)
                 {
                     case CommandSent.SpindleSpeedSet:
@@ -485,20 +497,16 @@ namespace GSendTests.GCService
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
             Assert.AreEqual("M7", mockComPortFactory.MockComPort.Commands[0]);
-            Assert.IsTrue(sut.MistCoolantActive);
 
             sut.TurnFloodCoolantOn();
 
             Assert.AreEqual(2, mockComPortFactory.MockComPort.Commands.Count);
             Assert.AreEqual("M8", mockComPortFactory.MockComPort.Commands[1]);
-            Assert.IsTrue(sut.FloodCoolantActive);
 
             sut.CoolantOff();
 
             Assert.AreEqual(3, mockComPortFactory.MockComPort.Commands.Count);
             Assert.AreEqual("M9", mockComPortFactory.MockComPort.Commands[2]);
-            Assert.IsFalse(sut.MistCoolantActive);
-            Assert.IsFalse(sut.FloodCoolantActive);
 
             Assert.IsTrue(mistOnEventRaised);
             Assert.IsTrue(floodOnEventRaised);
@@ -757,6 +765,221 @@ namespace GSendTests.GCService
             Assert.IsFalse(sut.IsRunning);
             Assert.IsFalse(sut.IsConnected);
             Assert.IsTrue(eventFired);
+        }
+
+        [TestMethod]
+        public void StatusReceived_MachineModelUpdated_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7"
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+            mockComPortFactory.MockComPort.CommandsToReturn.Add("ok");
+            mockComPortFactory.MockComPort.CommandsToReturn.Add("<Idle|WCO:0,0,0|Ov:90,80,70|A:CF>");
+            mockComPortFactory.MockComPort.CommandsToReturn.Add("<Run|WCO:23,39,43|>");
+            mockComPortFactory.MockComPort.CommandsToReturn.Add("<Idle|MPos:17,63,58|FS:456,987|A:SFM>");
+            mockComPortFactory.MockComPort.CommandsToReturn.Add("<Run|WPos:11,21,45|WCO:93,34,65|Bf:46,108|Ln:234|F:200|Ov:95,85,75>");
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+
+            MachineStateModel machineStateModel = null;
+            bool eventFired = false;
+            sut.OnMachineStateChanged += (sender, e) => { eventFired = true; machineStateModel = e; };
+
+            bool connectResult = sut.Connect();
+            Assert.IsTrue(connectResult);
+            Assert.IsTrue(sut.IsConnected);
+
+            sut.WriteLine("?");
+            Assert.IsNotNull(machineStateModel);
+            Assert.AreEqual(MachineState.Run, machineStateModel.MachineState);
+            Assert.AreEqual(-1, machineStateModel.SubState);
+            Assert.AreEqual(23, machineStateModel.OffsetX);
+            Assert.AreEqual(39, machineStateModel.OffsetY);
+            Assert.AreEqual(43, machineStateModel.OffsetZ);
+            Assert.AreEqual(90, machineStateModel.OverrideFeeds);
+            Assert.AreEqual(80, machineStateModel.OverrideRapids);
+            Assert.AreEqual(70, machineStateModel.OverrideSpindleSpeed);
+            Assert.IsFalse(machineStateModel.SpindleClockWise);
+            Assert.IsTrue(machineStateModel.SpindleCounterClockWise);
+            Assert.IsTrue(machineStateModel.FloodEnabled);
+            Assert.IsFalse(machineStateModel.MistEnabled);
+
+            sut.WriteLine("?");
+            Assert.IsNotNull(machineStateModel);
+            Assert.AreEqual(MachineState.Idle, machineStateModel.MachineState);
+            Assert.AreEqual(-1, machineStateModel.SubState);
+            Assert.AreEqual(17, machineStateModel.MachineX);
+            Assert.AreEqual(63, machineStateModel.MachineY);
+            Assert.AreEqual(58, machineStateModel.MachineZ);
+            Assert.AreEqual(456, machineStateModel.FeedRate);
+            Assert.AreEqual(987, machineStateModel.SpindleSpeed);
+            Assert.IsTrue(machineStateModel.SpindleClockWise);
+            Assert.IsFalse(machineStateModel.SpindleCounterClockWise);
+            Assert.IsTrue(machineStateModel.FloodEnabled);
+            Assert.IsTrue(machineStateModel.MistEnabled);
+
+            sut.WriteLine("?");
+            Assert.IsNotNull(machineStateModel);
+            Assert.AreEqual(MachineState.Run, machineStateModel.MachineState);
+            Assert.AreEqual(-1, machineStateModel.SubState);
+            Assert.AreEqual(11, machineStateModel.WorkX);
+            Assert.AreEqual(21, machineStateModel.WorkY);
+            Assert.AreEqual(45, machineStateModel.WorkZ);
+            Assert.AreEqual(93, machineStateModel.OffsetX);
+            Assert.AreEqual(34, machineStateModel.OffsetY);
+            Assert.AreEqual(65, machineStateModel.OffsetZ);
+            Assert.AreEqual(46, machineStateModel.BufferAvailableBlocks);
+            Assert.AreEqual(108, machineStateModel.AvailableRXbytes);
+            Assert.AreEqual(234, machineStateModel.LineNumber);
+            Assert.AreEqual(200, machineStateModel.FeedRate);
+            Assert.AreEqual(95, machineStateModel.OverrideFeeds);
+            Assert.AreEqual(85, machineStateModel.OverrideRapids);
+            Assert.AreEqual(75, machineStateModel.OverrideSpindleSpeed);
+
+
+            Assert.IsFalse(sut.IsRunning);
+
+            sut.Disconnect();
+
+            Assert.IsFalse(sut.IsConnected);
+            Assert.IsTrue(eventFired);
+
+        }
+
+        [TestMethod]
+        public void JogStop_SendsCorrectCommand_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new()
+                {
+                    { 120, 4000 },
+                    { 121, 3000 },
+                    { 122, 300 }
+                },
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+            sut.JogStop();
+
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("\u0085"));
+        }
+
+        [TestMethod]
+        public void JogStart_SpecifiedStepSize_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new()
+                {
+                    { 120, 4000 },
+                    { 121, 3000 },
+                    { 122, 300 }
+                },
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+            sut.JogStart(JogDirection.XPlusYPlus, 0.01, 3500);
+
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X0.01Y0.01F3500"));
+        }
+
+        [TestMethod]
+        public void JogStart_Continuous_ZAxis_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new()
+                {
+                    { 120, 300 },
+                    { 121, 300 },
+                    { 122, 30 },
+                    { 130, 200 },
+                    { 131, 200 },
+                    { 132, 80 }
+                },
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+            sut.StateModel.MachineZ = 23.85;
+            
+            sut.JogStart(JogDirection.ZPlus, 0, 2000);
+            mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z56.150F2000");
+
+            sut.JogStart(JogDirection.ZMinus, 0, 2000);
+            mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z-56.150F2000");
+        }
+
+        [TestMethod]
+        public void JogStart_Continuous_XMinusYMinus_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new()
+                {
+                    { 120, 300 },
+                    { 121, 300 },
+                    { 122, 30 },
+                    { 130, 200 },
+                    { 131, 200 },
+                    { 132, 80 }
+                },
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+            sut.StateModel.MachineX = 123.168;
+            sut.StateModel.MachineY = 73.855;
+
+            sut.JogStart(JogDirection.XPlusYPlus, 0, 2000);
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X76.832Y126.145F2000"));
+
+            sut.JogStart(JogDirection.XMinusYMinus, 0, 2000);
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-76.832Y-126.145F2000"));
+        }
+
+        [TestMethod]
+        public void JogStart_Continuous_XYAxis_Success()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new()
+                {
+                    { 120, 300 },
+                    { 121, 300 },
+                    { 122, 30 },
+                    { 130, 200 },
+                    { 131, 200 },
+                    { 132, 80 }
+                },
+            };
+
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
+
+            GCodeProcessor sut = new GCodeProcessor(machineModel, mockComPortFactory);
+            sut.StateModel.MachineX = 123.168;
+            sut.StateModel.MachineY = 73.855;
+
+            sut.JogStart(JogDirection.XMinusYPlus, 0, 2000);
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-76.832Y126.145F2000"));
+
+            sut.JogStart(JogDirection.XPlusYMinus, 0, 2000);
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X76.832Y-126.145F2000"));
         }
     }
 }

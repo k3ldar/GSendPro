@@ -4,9 +4,9 @@ using SharedPluginFeatures;
 
 namespace GSendService.Models
 {
-    public class IndexModel : BaseModel
+    public class IndexViewModel : BaseModel
     {
-        public IndexModel(BaseModelData modelData, IReadOnlyList<IMachine> machines)
+        public IndexViewModel(BaseModelData modelData, IReadOnlyList<IMachine> machines)
             : base(modelData)
         {
             Machines = machines ?? throw new ArgumentNullException(nameof(machines));

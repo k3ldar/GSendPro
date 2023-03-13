@@ -84,6 +84,8 @@
         SpeedOverride = 16384,
 
         DoNotProcess = 32768,
+
+        EndProgram = 65536,
     }
 
     public enum UnitOfMeasurement
@@ -218,12 +220,140 @@
         UndefinedFeedRate = 22,
 
         /// <summary>
-        /// Error codes 23-38 all give different reasons for a file failing. To look up further, google "GRBL Error Code [Insert Number] for more information.
+        /// G-code command in block requires an integer value.
         /// </summary>
-        InvalidGCode = 23,
+        IntegerRequired = 23,
+
+        /// <summary>
+        /// More than one g-code command that requires axis words found in block.
+        /// </summary>
+        MoreThanOneCommandForAxis = 24,
+
+        /// <summary>
+        /// Repeated g-code word found in block.
+        /// </summary>
+        RepeatedWord = 25,
+
+        /// <summary>
+        /// No axis words found in block for g-code command or current modal state which requires them.
+        /// </summary>
+        NoAxisWords = 26,
+
+        /// <summary>
+        /// Line number value is invalid.
+        /// </summary>
+        LineNumber = 27,
+
+        /// <summary>
+        /// G-code command is missing a required value word.
+        /// </summary>
+        CommandMissingValue = 28,
+
+        /// <summary>
+        /// G59.x work coordinate systems are not supported.
+        /// </summary>
+        G59xNotSupported = 29,
+
+        /// <summary>
+        /// G53 only allowed with G0 and G1 motion modes.
+        /// </summary>
+        G53OnlyAllowedWithG0AndG1 = 30,
+
+        /// <summary>
+        /// Axis words found in block when no command or current modal state uses them.
+        /// </summary>
+        AxisWordFoundWithNoCommand = 31,
+
+        /// <summary>
+        /// G2 and G3 arcs require at least one in-plane axis word.
+        /// </summary>
+        ArcsRequireAtLeastOnAxis = 32,
+
+        /// <summary>
+        /// Motion command target is invalid.
+        /// </summary>
+        MotionCommandTargetInvalid = 33,
+
+        /// <summary>
+        /// Arc radius value is invalid.
+        /// </summary>
+        ArcRadiusValueIsInvalid = 34,
+
+        /// <summary>
+        /// G2 and G3 arcs require at least one in-plane offset word.
+        /// </summary>
+        ArcsRequireAtLeastOneInPlaneAxisWord = 35,
+
+        /// <summary>
+        /// Unused value words found in block.
+        /// </summary>
+        UnusedValueWordsInBlock = 36,
+
+        /// <summary>
+        /// G43.1 dynamic tool length offset is not assigned to configured tool length axis.
+        /// </summary>
+        DynamicToolOffsetNotAssigned = 37,
+
+        /// <summary>
+        /// Tool number greater than max supported value.
+        /// </summary>
+        ToolNumberGreaterThanMaxSupportedValue = 38,
     }
 
-    public enum CommandStatus
+    public enum GrblAlarm
+    {
+        /// <summary>
+        /// Undefined exception
+        /// </summary>
+        Undefined = 0,
+
+        /// <summary>
+        /// Hard limit triggered. Machine position is likely lost due to sudden and immediate halt. Re-homing is highly recommended.
+        /// </summary>
+        HardLimitTriggered = 1,
+
+        /// <summary>
+        /// G-code motion target exceeds machine travel. Machine position safely retained. Alarm may be unlocked.
+        /// </summary>
+        MotionExceedsMachineTravel = 2,
+
+        /// <summary>
+        /// Reset while in motion. Grbl cannot guarantee position. Lost steps are likely. Re-homing is highly recommended.
+        /// </summary>
+        ResetWhileInMotion = 3,
+
+        /// <summary>
+        /// Probe fail. The probe is not in the expected initial state before starting probe cycle, where G38.2 and G38.3 is not triggered and G38.4 and G38.5 is triggered.
+        /// </summary>
+        ProbeFail = 4,
+
+        /// <summary>
+        /// Probe fail. Probe did not contact the workpiece within the programmed travel for G38.2 and G38.4.
+        /// </summary>
+        ProbeFailWithinLimit = 5,
+
+        /// <summary>
+        /// Homing fail. Reset during active homing cycle.
+        /// </summary>
+        HomingFailResetDuringHoming = 6,
+
+        /// <summary>
+        /// Homing fail. Safety door was opened during active homing cycle.
+        /// </summary>
+        HomingFailSafetyDoorOpen = 7,
+
+        /// <summary>
+        /// Homing fail. Cycle failed to clear limit switch when pulling off. Try increasing pull-off setting or check wiring.
+        /// </summary>
+        HomingFailCycleFailed = 8,
+
+        /// <summary>
+        /// Homing fail. Could not find limit switch within search distance. Defined as 1.5 * max_travel on search and 5 * pulloff on locate phases.
+        /// </summary>
+        HomingFailLimitSwitches = 9,
+    }
+
+    public enum LineStatus
     {
         Undefined = 0,
 
@@ -232,5 +362,51 @@
         Failed = 2,
 
         Processed = 3,
+    }
+
+    public enum MachineState
+    {
+        Undefined = 0,
+
+        Idle = 1,
+
+        Run = 2,
+
+        Hold = 3,
+
+        Jog = 4,
+
+        Alarm = 5,
+
+        Door = 6,
+
+        Check = 7,
+
+        Home = 8,
+
+        Sleep = 9,
+    }
+
+    public enum JogDirection
+    {
+        XPlus = 1,
+
+        XMinus = 2,
+
+        YPlus = 3,
+
+        YMinus = 4,
+
+        ZPlus = 5,
+
+        ZMinus = 6,
+
+        XMinusYPlus = 7,
+
+        XPlusYPlus = 8,
+
+        XPlusYMinus = 9,
+
+        XMinusYMinus = 10,
     }
 }

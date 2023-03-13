@@ -40,6 +40,7 @@ namespace GSendAnalyser.Internal
 
             Span<char> line = new(new char[MaxLineSize]);
             int position = 0;
+            int currentLine = 1;
             ClearLineData(line);
             GCodeCommand lastCommand = null;
             StringBuilder lineValues = new(MaxLineSize);
@@ -56,7 +57,7 @@ namespace GSendAnalyser.Internal
                     case CharG:
                         if (line[0] != CharNull)
                         {
-                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
+                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
                             ClearLineData(line);
                         }
 
@@ -66,8 +67,9 @@ namespace GSendAnalyser.Internal
                         continue;
 
                     case CharLineFeed:
-                        lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
+                        lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
                         ClearLineData(line);
+                        currentLine++;
                         position = 0;
 
                         continue;
@@ -86,7 +88,7 @@ namespace GSendAnalyser.Internal
 
             if (line[0] != CharNull)
             {
-                InternalParseLine(Result, line, lastCommand, lineValues, currentValues);
+                InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
             }
 
             return Result;
@@ -103,7 +105,7 @@ namespace GSendAnalyser.Internal
             }
         }
 
-        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues)
+        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber)
         {
             GCodeCommand result = null;
 
@@ -180,10 +182,16 @@ namespace GSendAnalyser.Internal
                             currentValues.Attributes |= CommandAttributes.MovementError;
 
                         break;
+
+                    case CharM:
+                        if (commandValueConvert && (commandValue == 2 || commandValue == 30))
+                            currentValues.Attributes |= CommandAttributes.EndProgram;
+
+                        break;
                 }
 
                 CurrentCommandValues newValues = currentValues.Clone();
-                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment, newValues);
+                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment, newValues, lineNumber);
 
                 if (lastCommand != null)
                     lastCommand.NextCommand = result;

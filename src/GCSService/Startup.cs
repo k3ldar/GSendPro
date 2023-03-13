@@ -39,12 +39,16 @@ namespace GSendService
         {
             PluginManagerService.Configure(app);
 
+            app.UseWebSockets(new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromMinutes(2),
+            });
+
             app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

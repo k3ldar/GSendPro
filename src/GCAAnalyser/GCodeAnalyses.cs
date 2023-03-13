@@ -44,5 +44,9 @@ namespace GSendAnalyser
         public TimeSpan TotalTime { get; set; }
 
         public bool ContainsDuplicates { get; set; }
+
+        public bool HasEndProgram { get; set; }
+
+        public bool HasCommandsAfterEndProgram { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GSendShared.Models;
+
+using Shared.Communication;
 
 namespace GSendShared
 {
@@ -20,19 +18,23 @@ namespace GSendShared
 
         bool Stop();
 
-        void LoadGCode(IReadOnlyList<IGCodeCommand> commands);
+        void LoadGCode(IGCodeAnalyses gCodeAnalyses);
 
         void ZeroAxis(Axis axis);
 
         void Clear();
-
-        TimeSpan TimeOut { get; set; }
 
         void Home();
 
         string Help();
 
         void Unlock();
+
+        void JogStart(JogDirection jogDirection, double stepSize, double feedRate);
+
+        void JogStop();
+
+        void WriteLine(string gCode);
 
         Dictionary<int, decimal> Settings();
 
@@ -46,6 +48,10 @@ namespace GSendShared
 
         long Id { get; }
 
+        TimeSpan TimeOut { get; set; }
+
+        string Cpu { get; }
+
         bool IsRunning { get; }
 
         bool IsPaused { get; }
@@ -56,11 +62,11 @@ namespace GSendShared
 
         int CommandCount { get; }
 
+        int LineCount { get; }
+
         int NextCommand { get; }
 
         int BufferSize { get; }
-
-        IGCodeCommand ActiveCommand { get; }
 
         bool SpindleActive { get; }
 
@@ -70,28 +76,38 @@ namespace GSendShared
 
         bool FloodCoolantActive { get; }
 
-        event EventHandler OnConnect;
+        MachineStateModel StateModel { get; }
 
-        event EventHandler OnDisconnect;
+        event GSendEventHandler OnConnect;
 
-        event EventHandler OnStart;
+        event GSendEventHandler OnDisconnect;
 
-        event EventHandler OnStop;
+        event GSendEventHandler OnStart;
 
-        event EventHandler OnPause;
+        event GSendEventHandler OnStop;
 
-        event EventHandler OnResume;
+        event GSendEventHandler OnPause;
+
+        event GSendEventHandler OnResume;
 
         event CommandSentHandler OnCommandSent;
 
         event BufferSizeHandler OnBufferSizeChanged;
 
-        event EventHandler OnSerialError;
+        event GSendEventHandler OnSerialError;
 
-        event EventHandler OnSerialPinChanged;
+        event GSendEventHandler OnSerialPinChanged;
 
         event GrblErrorHandler OnGrblError;
 
-        event EventHandler OnInvalidComPort;
+        event GrblAlarmHandler OnGrblAlarm;
+
+        event GSendEventHandler OnInvalidComPort;
+
+        event MachineStateHandler OnMachineStateChanged;
+
+        event MessageHandler OnMessageReceived;
+
+        event ResponseReceivedHandler OnResponseReceived;
     }
 }

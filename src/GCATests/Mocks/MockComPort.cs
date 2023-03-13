@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Ports;
+using System.Text;
 using System.Threading.Tasks;
 
 using GSendShared;
@@ -24,6 +25,8 @@ namespace GSendTests.Mocks
         }
 
         public IMachine Machine { get; private set; }
+
+        public List<string> CommandsToReturn { get; set; } = new();
 
 
         public event SerialErrorReceivedEventHandler ErrorReceived;
@@ -136,6 +139,14 @@ namespace GSendTests.Mocks
                         return $"${132}=200.000";
                 }
             }
+            else if (CommandsToReturn.Count > 0 && _lastCommandId < CommandsToReturn.Count)
+            {
+                _lastCommandId++;
+
+                return CommandsToReturn[_lastCommandId];
+
+            }
+
 
             _lastCommandId = -1;
             return "ok";
@@ -174,6 +185,11 @@ namespace GSendTests.Mocks
         public void RaiseSerialError()
         {
             ErrorReceived?.Invoke(this, null);
+        }
+
+        public void Write(byte[] buffer, int offset, int count)
+        {
+            _commands.Add(Encoding.Latin1.GetString(buffer));
         }
     }
 }

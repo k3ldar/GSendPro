@@ -1,4 +1,6 @@
-﻿using GSendService.Internal;
+﻿using GSendCommon;
+
+using GSendService.Internal;
 
 using GSendShared;
 using GSendShared.Interfaces;
@@ -39,6 +41,7 @@ namespace GSendService
             services.AddSingleton<IErrorManager, ErrorManagerProvider>();
             services.AddSingleton<IComPortProvider, ComPortProvider>();
             services.AddSingleton<IComPortFactory, ComPortFactory>();
+            services.AddSingleton<IProcessorMediator, ProcessorMediator>();
         }
 
         public void Configure(in IApplicationBuilder app)

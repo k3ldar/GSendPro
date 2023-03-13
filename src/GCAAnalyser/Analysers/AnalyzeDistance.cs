@@ -1,5 +1,7 @@
 ﻿using GSendAnalyser.Abstractions;
 
+using GSendShared;
+
 namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeDistance : IGCodeAnalyzer

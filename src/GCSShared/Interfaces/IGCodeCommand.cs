@@ -2,6 +2,8 @@
 {
     public interface IGCodeCommand
     {
+        int LineNumber { get; }
+
         char Command { get; }
 
         string CommandValueString { get; }
@@ -33,8 +35,6 @@
         bool CoolantEnabled { get; }
 
         CommandAttributes Attributes { get; }
-
-        CommandStatus Status { get; set; }
 
         string GetCommand();
     }

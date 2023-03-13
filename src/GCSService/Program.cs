@@ -54,7 +54,11 @@ namespace GSendService
 
             PluginManagerService.UsePlugin(typeof(PluginManager.DAL.TextFiles.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(GSendDB.PluginInitialization));
+
+#if !DEBUG
             PluginManagerService.UsePlugin(typeof(ErrorManager.Plugin.PluginInitialisation));
+#endif
+
             PluginManagerService.UsePlugin(typeof(RestrictIp.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(UserSessionMiddleware.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(CacheControl.Plugin.PluginInitialisation));

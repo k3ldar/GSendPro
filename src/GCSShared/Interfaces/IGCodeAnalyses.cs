@@ -1,6 +1,4 @@
-﻿using GSendShared;
-
-namespace GSendAnalyser.Abstractions
+﻿namespace GSendShared
 {
     public interface IGCodeAnalyses
     {
@@ -19,6 +17,10 @@ namespace GSendAnalyser.Abstractions
         UnitOfMeasurement UnitOfMeasurement { get; set; }
 
         bool ContainsDuplicates { get; set; }
+
+        bool HasEndProgram { get; set; }
+
+        bool HasCommandsAfterEndProgram { get; set; }
 
         void Analyse();
     }

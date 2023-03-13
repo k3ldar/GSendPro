@@ -2,7 +2,7 @@
 
 using GSendShared;
 
-namespace GSendService.Internal
+namespace GSendCommon
 {
     public sealed class WindowsComPort : IComPort
     {
@@ -67,6 +67,14 @@ namespace GSendService.Internal
             if (IsOpen() && !String.IsNullOrEmpty(line))
             {
                 _serialPort.WriteLine(line);
+            }
+        }
+
+        public void Write(byte[] buffer, int offset, int count)
+        {
+            if (IsOpen() && buffer.Length > 0)
+            {
+                _serialPort.Write(buffer, offset, count);
             }
         }
 

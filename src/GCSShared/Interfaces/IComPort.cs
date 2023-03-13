@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO.Ports;
 
 namespace GSendShared
 {
@@ -16,6 +11,8 @@ namespace GSendShared
         string ReadLine();
 
         void WriteLine(string line);
+
+        void Write(byte[] buffer, int offset, int count);
 
         bool IsOpen();
 

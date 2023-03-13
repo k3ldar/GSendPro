@@ -12,6 +12,7 @@ using MachineModel = GSendShared.Models.MachineModel;
 using static SharedPluginFeatures.Constants;
 using System.Reflection;
 using PluginManager.Abstractions;
+using GSendCommon;
 
 namespace GSendService.Api
 {

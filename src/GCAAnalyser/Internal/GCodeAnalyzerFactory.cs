@@ -1,5 +1,4 @@
-﻿
-using GSendAnalyser.Abstractions;
+﻿using GSendAnalyser.Abstractions;
 using GSendAnalyser.Analysers;
 
 namespace GSendAnalyser.Internal
@@ -16,6 +15,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeDistance(),
                 new AnalyzeUnitOfMeasure(),
                 new AnalyzeTime(),
+                new AnalyzeEndProgram(),
 
             }
             .OrderBy(o => o.Order)

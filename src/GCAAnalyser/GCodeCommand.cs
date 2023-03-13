@@ -26,7 +26,7 @@ namespace GSendAnalyser
 
         #region Constructors
 
-        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues)
+        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues, int lineNumber)
         {
             if (currentCommand < 'A' || currentCommand > 'Z')
                 throw new ArgumentOutOfRangeException(nameof(currentCommand));
@@ -38,11 +38,14 @@ namespace GSendAnalyser
             Comment = comment ?? String.Empty;
             _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
             Attributes = currentValues.Attributes;
+            LineNumber = lineNumber;
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public int LineNumber { get; }
 
         public char Command { get; }
 
@@ -144,25 +147,11 @@ namespace GSendAnalyser
             {
                 _nextCommand = value;
 
-                group g1 x, y z commands together
                 if (Command == 'G' && CommandValue == 1 && _nextCommand != null && _nextCommand is GCodeCommand nextCommand)
                 {
                     nextCommand.SendG1 = true;
                     Attributes |= CommandAttributes.DoNotProcess;
                 }
-            }
-        }
-
-        private CommandStatus _status;
-
-        public CommandStatus Status
-        { 
-            get => _status; 
-            
-            set
-            {
-                _status = value;
-                Trace.WriteLine($"Command: {Command}{CommandValue} : Status: {value}");
             }
         }
 

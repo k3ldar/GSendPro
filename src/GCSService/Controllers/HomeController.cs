@@ -17,15 +17,35 @@ namespace GSendService.Controllers
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            BaseModelData model = GetModelData();
             return View(CreateIndexModel());
         }
 
-        private IndexModel CreateIndexModel()
+        [HttpGet]
+        [Route("/ViewMachine/{machineId}/")]
+        public IActionResult ViewMachine(long machineId)
         {
-            return new IndexModel(GetModelData(), _machineProvider.MachinesGet());
+            IMachine machine = _machineProvider.MachineGet(machineId);
+
+            if (machine == null)
+                RedirectToAction(nameof(Index));
+
+            return View(CreateMachineModel(machine));
+        }
+
+        private IndexViewModel CreateIndexModel()
+        {
+            return new IndexViewModel(GetModelData(), _machineProvider.MachinesGet());
+        }
+
+        private MachineViewModel CreateMachineModel(IMachine machine)
+        {
+            return new MachineViewModel(GetModelData(), machine.Name)
+            {
+
+            };
         }
     }
 }
