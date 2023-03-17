@@ -125,47 +125,47 @@
             // 
             // button9
             // 
+            this.button9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button9.BackgroundImage")));
             this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button9.Location = new System.Drawing.Point(196, 95);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(50, 50);
             this.button9.TabIndex = 8;
-            this.button9.Text = "Z-";
             this.button9.UseVisualStyleBackColor = true;
             // 
             // button10
             // 
+            this.button10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button10.BackgroundImage")));
             this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button10.Location = new System.Drawing.Point(196, 39);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(50, 50);
             this.button10.TabIndex = 9;
-            this.button10.Text = "Z+";
             this.button10.UseVisualStyleBackColor = true;
             // 
             // selectionSteps
             // 
             this.selectionSteps.GroupName = "Step";
-            this.selectionSteps.LabelFormat = null;
+            this.selectionSteps.LabelFormat = "{0}";
             this.selectionSteps.LabelValue = null;
-            this.selectionSteps.Location = new System.Drawing.Point(263, 13);
+            this.selectionSteps.Location = new System.Drawing.Point(252, 13);
             this.selectionSteps.Maximum = 10;
             this.selectionSteps.Name = "selectionSteps";
             this.selectionSteps.Size = new System.Drawing.Size(82, 162);
-            this.selectionSteps.TabIndex = 11;
+            this.selectionSteps.TabIndex = 10;
             this.selectionSteps.TickFrequency = 1;
             this.selectionSteps.Value = 0;
             // 
             // selectionFeed
             // 
             this.selectionFeed.GroupName = "Feed";
-            this.selectionFeed.LabelFormat = null;
+            this.selectionFeed.LabelFormat = "{0}";
             this.selectionFeed.LabelValue = null;
-            this.selectionFeed.Location = new System.Drawing.Point(351, 13);
+            this.selectionFeed.Location = new System.Drawing.Point(340, 13);
             this.selectionFeed.Maximum = 10;
             this.selectionFeed.Name = "selectionFeed";
             this.selectionFeed.Size = new System.Drawing.Size(82, 162);
-            this.selectionFeed.TabIndex = 12;
+            this.selectionFeed.TabIndex = 11;
             this.selectionFeed.TickFrequency = 1;
             this.selectionFeed.Value = 0;
             // 
