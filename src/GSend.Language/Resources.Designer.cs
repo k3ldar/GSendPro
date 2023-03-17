@@ -142,6 +142,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GSend - {0} - {1}.
+        /// </summary>
+        public static string MachineTitle {
+            get {
+                return ResourceManager.GetString("MachineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

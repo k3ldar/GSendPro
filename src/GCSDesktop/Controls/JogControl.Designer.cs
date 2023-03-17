@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JogControl));
             this.btnXMinusYPos = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -44,78 +45,87 @@
             // 
             // btnXMinusYPos
             // 
+            this.btnXMinusYPos.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXMinusYPos.BackgroundImage")));
+            this.btnXMinusYPos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnXMinusYPos.Location = new System.Drawing.Point(14, 13);
             this.btnXMinusYPos.Name = "btnXMinusYPos";
             this.btnXMinusYPos.Size = new System.Drawing.Size(50, 50);
             this.btnXMinusYPos.TabIndex = 0;
-            this.btnXMinusYPos.Text = "X-Y+";
             this.btnXMinusYPos.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button2.Location = new System.Drawing.Point(70, 13);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(50, 50);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Y+";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button3.Location = new System.Drawing.Point(126, 13);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(50, 50);
             this.button3.TabIndex = 2;
-            this.button3.Text = "X+Y+";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
+            this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button4.Location = new System.Drawing.Point(14, 69);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(50, 50);
             this.button4.TabIndex = 3;
-            this.button4.Text = "X-";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
+            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
+            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button5.Location = new System.Drawing.Point(14, 125);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(50, 50);
             this.button5.TabIndex = 4;
-            this.button5.Text = "X-Y-";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // button6
             // 
+            this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
+            this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button6.Location = new System.Drawing.Point(126, 69);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(50, 50);
             this.button6.TabIndex = 5;
-            this.button6.Text = "X+";
             this.button6.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
+            this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
+            this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button7.Location = new System.Drawing.Point(126, 125);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(50, 50);
             this.button7.TabIndex = 6;
-            this.button7.Text = "X+Y-";
             this.button7.UseVisualStyleBackColor = true;
             // 
             // button8
             // 
+            this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
+            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button8.Location = new System.Drawing.Point(70, 125);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(50, 50);
             this.button8.TabIndex = 7;
-            this.button8.Text = "Y-";
             this.button8.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
+            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button9.Location = new System.Drawing.Point(196, 95);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(50, 50);
@@ -125,6 +135,7 @@
             // 
             // button10
             // 
+            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button10.Location = new System.Drawing.Point(196, 39);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(50, 50);

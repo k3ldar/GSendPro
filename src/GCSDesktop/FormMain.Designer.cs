@@ -59,6 +59,7 @@ namespace GSendDesktop
             this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonHome = new System.Windows.Forms.ToolStripButton();
             this.timerUpdateStatus = new System.Windows.Forms.Timer(this.components);
+            this.toolStripButtonRemoeMachine = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
@@ -88,6 +89,7 @@ namespace GSendDesktop
             this.listViewMachines.UseCompatibleStateImageBehavior = false;
             this.listViewMachines.View = System.Windows.Forms.View.Details;
             this.listViewMachines.SelectedIndexChanged += new System.EventHandler(this.listViewMachines_SelectedIndexChanged);
+            this.listViewMachines.DoubleClick += new System.EventHandler(this.listViewMachines_DoubleClick);
             // 
             // columnHeaderName
             // 
@@ -179,6 +181,7 @@ namespace GSendDesktop
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonGetMachines,
             this.toolStripButtonAddMachine,
+            this.toolStripButtonRemoeMachine,
             this.toolStripSeparator1,
             this.toolStripButtonPauseAll,
             this.toolStripButtonResumeAll,
@@ -297,6 +300,15 @@ namespace GSendDesktop
             // 
             this.timerUpdateStatus.Tick += new System.EventHandler(this.timerUpdateStatus_Tick);
             // 
+            // toolStripButtonRemoeMachine
+            // 
+            this.toolStripButtonRemoeMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRemoeMachine.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRemoeMachine.Image")));
+            this.toolStripButtonRemoeMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRemoeMachine.Name = "toolStripButtonRemoeMachine";
+            this.toolStripButtonRemoeMachine.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonRemoeMachine.Text = "toolStripButtonRemoeMachine";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -349,5 +361,6 @@ namespace GSendDesktop
         private ToolStripButton toolStripButtonClearAlarm;
         private ToolStripButton toolStripButtonResume;
         private ToolStripButton toolStripButtonHome;
+        private ToolStripButton toolStripButtonRemoeMachine;
     }
 }

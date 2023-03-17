@@ -259,7 +259,7 @@ namespace GSendDesktop
 
         private void toolStripButtonAddMachine_Click(object sender, EventArgs e)
         {
-            using FrmAddMachine frmAddMachine = Program.Services.GetService<FrmAddMachine>();
+            using FrmAddMachine frmAddMachine = _context.ServiceProvider.GetService<FrmAddMachine>();
 
             if (frmAddMachine.ShowDialog(this) == DialogResult.OK)
             {
@@ -431,8 +431,8 @@ namespace GSendDesktop
                 return;
             }
 
-            ListViewItem selectedItem = listViewMachines.SelectedItems.Count == 0 ? null : listViewMachines.SelectedItems[0];
-            bool machineSelected = listViewMachines.SelectedItems.Count > 0;
+            ListViewItem selectedItem = GetSelectedMachine();
+            bool machineSelected = selectedItem != null;
 
             bool isConnected = selectedItem?.SubItems[3].Text.Equals(GSend.Language.Resources.Yes) ?? false;
             bool clearAlarm = selectedItem?.SubItems[4].BackColor == Color.Red;
@@ -447,6 +447,11 @@ namespace GSendDesktop
             toolStripButtonClearAlarm.Enabled = machineSelected && isConnected && clearAlarm;
             toolStripButtonResume.Enabled = machineSelected && isConnected && !clearAlarm;
             toolStripButtonHome.Enabled = machineSelected && isConnected && !clearAlarm && isIdle;
+        }
+
+        private ListViewItem GetSelectedMachine()
+        {
+            return listViewMachines.SelectedItems.Count == 0 ? null : listViewMachines.SelectedItems[0];
         }
 
         protected override void OnLoad(EventArgs e)
@@ -488,6 +493,21 @@ namespace GSendDesktop
 
             
             toolStripStatusCpu.Text = GSend.Language.Resources.ServerCpuStateDisconnected;
+        }
+
+        private void listViewMachines_DoubleClick(object sender, EventArgs e)
+        {
+            ListViewItem machineListItem = GetSelectedMachine();
+
+            if (machineListItem == null)
+                return;
+
+            IMachine machine = machineListItem.Tag as IMachine;
+
+            if (machine == null)
+                return;
+
+            _context.ShowMachine(machine);
         }
 
         #endregion Form Methods

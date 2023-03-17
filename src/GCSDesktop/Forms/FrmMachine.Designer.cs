@@ -37,12 +37,6 @@
             this.selection1 = new GSendDesktop.Controls.Selection();
             this.jogControl1 = new GSendDesktop.Controls.JogControl();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonGetMachines = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonAddMachine = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonPauseAll = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonResumeAll = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDisconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonClearAlarm = new System.Windows.Forms.ToolStripButton();
@@ -53,6 +47,16 @@
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
             this.tabPageJog = new System.Windows.Forms.TabPage();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.toolStripMain.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageOverrides.SuspendLayout();
@@ -61,6 +65,7 @@
             // 
             // groupBoxCoordinates
             // 
+            this.groupBoxCoordinates.BackColor = System.Drawing.Color.Transparent;
             this.groupBoxCoordinates.Location = new System.Drawing.Point(25, 100);
             this.groupBoxCoordinates.Name = "groupBoxCoordinates";
             this.groupBoxCoordinates.Size = new System.Drawing.Size(318, 215);
@@ -145,67 +150,21 @@
             // 
             this.toolStripMain.ImageScalingSize = new System.Drawing.Size(50, 50);
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonGetMachines,
-            this.toolStripButtonAddMachine,
-            this.toolStripSeparator1,
-            this.toolStripButtonPauseAll,
-            this.toolStripButtonResumeAll,
-            this.toolStripSeparator2,
             this.toolStripButtonConnect,
             this.toolStripButtonDisconnect,
+            this.toolStripSeparator1,
             this.toolStripButtonClearAlarm,
-            this.toolStripButtonResume,
-            this.toolStripButtonHome});
+            this.toolStripSeparator2,
+            this.toolStripButtonHome,
+            this.toolStripButton2,
+            this.toolStripSeparator3,
+            this.toolStripButton1,
+            this.toolStripButtonResume});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(804, 57);
             this.toolStripMain.TabIndex = 6;
             this.toolStripMain.Text = "toolStrip1";
-            // 
-            // toolStripButtonGetMachines
-            // 
-            this.toolStripButtonGetMachines.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonGetMachines.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonGetMachines.Image")));
-            this.toolStripButtonGetMachines.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonGetMachines.Name = "toolStripButtonGetMachines";
-            this.toolStripButtonGetMachines.Size = new System.Drawing.Size(54, 54);
-            // 
-            // toolStripButtonAddMachine
-            // 
-            this.toolStripButtonAddMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonAddMachine.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonAddMachine.Image")));
-            this.toolStripButtonAddMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonAddMachine.Name = "toolStripButtonAddMachine";
-            this.toolStripButtonAddMachine.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonAddMachine.Text = "Add";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 57);
-            // 
-            // toolStripButtonPauseAll
-            // 
-            this.toolStripButtonPauseAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonPauseAll.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPauseAll.Image")));
-            this.toolStripButtonPauseAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonPauseAll.Name = "toolStripButtonPauseAll";
-            this.toolStripButtonPauseAll.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonPauseAll.Text = "toolStripButton1";
-            // 
-            // toolStripButtonResumeAll
-            // 
-            this.toolStripButtonResumeAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonResumeAll.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonResumeAll.Image")));
-            this.toolStripButtonResumeAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonResumeAll.Name = "toolStripButtonResumeAll";
-            this.toolStripButtonResumeAll.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonResumeAll.Text = "toolStripButton1";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 57);
             // 
             // toolStripButtonConnect
             // 
@@ -265,6 +224,11 @@
             this.tabControlMain.Controls.Add(this.tabPageMain);
             this.tabControlMain.Controls.Add(this.tabPageOverrides);
             this.tabControlMain.Controls.Add(this.tabPageJog);
+            this.tabControlMain.Controls.Add(this.tabPage1);
+            this.tabControlMain.Controls.Add(this.tabPage2);
+            this.tabControlMain.Controls.Add(this.tabPage3);
+            this.tabControlMain.Controls.Add(this.tabPage4);
+            this.tabControlMain.Controls.Add(this.tabPage5);
             this.tabControlMain.Location = new System.Drawing.Point(12, 60);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -307,6 +271,89 @@
             this.tabPageJog.Text = "Jog";
             this.tabPageJog.UseVisualStyleBackColor = true;
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 57);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 57);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 57);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(772, 242);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "Settings";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(772, 242);
+            this.tabPage2.TabIndex = 4;
+            this.tabPage2.Text = "Spindle";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(772, 242);
+            this.tabPage3.TabIndex = 5;
+            this.tabPage3.Text = "3D Visualizer";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(772, 242);
+            this.tabPage4.TabIndex = 6;
+            this.tabPage4.Text = "Service Scgedule";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(772, 242);
+            this.tabPage5.TabIndex = 7;
+            this.tabPage5.Text = "Useage";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -316,8 +363,10 @@
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStripMain);
+            this.DoubleBuffered = true;
             this.Name = "FrmMachine";
             this.Text = "FrmMachine";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMachine_FormClosing);
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
@@ -331,12 +380,6 @@
         #endregion
         private System.Windows.Forms.GroupBox groupBoxCoordinates;
         private System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.ToolStripButton toolStripButtonGetMachines;
-        private System.Windows.Forms.ToolStripButton toolStripButtonAddMachine;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonPauseAll;
-        private System.Windows.Forms.ToolStripButton toolStripButtonResumeAll;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton toolStripButtonConnect;
         private System.Windows.Forms.ToolStripButton toolStripButtonDisconnect;
         private System.Windows.Forms.ToolStripButton toolStripButtonClearAlarm;
@@ -353,5 +396,15 @@
         private System.Windows.Forms.TabPage tabPageMain;
         private System.Windows.Forms.TabPage tabPageOverrides;
         private System.Windows.Forms.TabPage tabPageJog;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage5;
     }
 }
