@@ -20,6 +20,8 @@ namespace GSendDesktop.Forms
         public FrmMachine()
         {
             InitializeComponent();
+
+            LoadResources();
         }
 
         public FrmMachine(IGSendContext gSendContext, IMachine machine)
@@ -32,12 +34,48 @@ namespace GSendDesktop.Forms
 
             if (machine.MachineType == MachineType.Printer)
                 tabControlMain.TabPages.Remove(tabPageOverrides);
+
+            ConfigureMachine();
         }
 
         private void FrmMachine_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !_gSendContext.IsClosing;
             Hide();
+        }
+
+        private void ConfigureMachine()
+        {
+
+        }
+
+        private void LoadResources()
+        {
+            //toolbar
+            toolStripButtonConnect.Text = GSend.Language.Resources.Connect;
+            toolStripButtonConnect.ToolTipText = GSend.Language.Resources.Connect;
+            toolStripButtonDisconnect.Text = GSend.Language.Resources.Disconnect;
+            toolStripButtonDisconnect.ToolTipText = GSend.Language.Resources.Disconnect;
+            toolStripButtonClearAlarm.Text = GSend.Language.Resources.ClearAlarm;
+            toolStripButtonClearAlarm.ToolTipText = GSend.Language.Resources.ClearAlarm;
+            toolStripButtonHome.Text = GSend.Language.Resources.Home;
+            toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
+            toolStripButtonProbe.Text = GSend.Language.Resources.Probe;
+            toolStripButtonProbe.ToolTipText = GSend.Language.Resources.Probe;
+            toolStripButtonResume.Text = GSend.Language.Resources.Resume;
+            toolStripButtonResume.ToolTipText = GSend.Language.Resources.Resume;
+            toolStripButtonPause.Text = GSend.Language.Resources.Pause;
+            toolStripButtonPause.ToolTipText = GSend.Language.Resources.Pause;
+            toolStripButtonStop.Text = GSend.Language.Resources.Stop;
+            toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
+
+            //tab pages
+            tabPageMain.Text = GSend.Language.Resources.General;
+            tabPageOverrides.Text = GSend.Language.Resources.Overrides;
+            tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
+            tabPageSettings.Text = GSend.Language.Resources.Settings;
+            tabPageSpindle.Text = GSend.Language.Resources.Spindle;
+            tabPageUsage.Text = GSend.Language.Resources.Usage;
         }
     }
 }

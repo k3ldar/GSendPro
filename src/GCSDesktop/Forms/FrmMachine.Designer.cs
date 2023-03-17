@@ -39,25 +39,24 @@
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDisconnect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonClearAlarm = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonHome = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonProbe = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonPause = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
             this.tabPageJog = new System.Windows.Forms.TabPage();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonPause = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonProbe = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.tabPageSpindle = new System.Windows.Forms.TabPage();
+            this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
+            this.tabPageUsage = new System.Windows.Forms.TabPage();
+            this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.toolStripMain.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageOverrides.SuspendLayout();
@@ -186,6 +185,11 @@
             this.toolStripButtonDisconnect.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonDisconnect.Text = "toolStripButton1";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 57);
+            // 
             // toolStripButtonClearAlarm
             // 
             this.toolStripButtonClearAlarm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -195,14 +199,10 @@
             this.toolStripButtonClearAlarm.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonClearAlarm.Text = "toolStripButton1";
             // 
-            // toolStripButtonResume
+            // toolStripSeparator2
             // 
-            this.toolStripButtonResume.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonResume.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonResume.Image")));
-            this.toolStripButtonResume.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonResume.Name = "toolStripButtonResume";
-            this.toolStripButtonResume.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonResume.Text = "toolStripButton1";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 57);
             // 
             // toolStripButtonHome
             // 
@@ -213,9 +213,50 @@
             this.toolStripButtonHome.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonHome.Text = "toolStripButton1";
             // 
+            // toolStripButtonProbe
+            // 
+            this.toolStripButtonProbe.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonProbe.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonProbe.Image")));
+            this.toolStripButtonProbe.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonProbe.Name = "toolStripButtonProbe";
+            this.toolStripButtonProbe.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonProbe.Text = "toolStripButton2";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 57);
+            // 
+            // toolStripButtonResume
+            // 
+            this.toolStripButtonResume.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonResume.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonResume.Image")));
+            this.toolStripButtonResume.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonResume.Name = "toolStripButtonResume";
+            this.toolStripButtonResume.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonResume.Text = "toolStripButton1";
+            // 
+            // toolStripButtonPause
+            // 
+            this.toolStripButtonPause.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonPause.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPause.Image")));
+            this.toolStripButtonPause.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonPause.Name = "toolStripButtonPause";
+            this.toolStripButtonPause.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonPause.Text = "toolStripButton1";
+            // 
+            // toolStripButtonStop
+            // 
+            this.toolStripButtonStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonStop.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonStop.Image")));
+            this.toolStripButtonStop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonStop.Name = "toolStripButtonStop";
+            this.toolStripButtonStop.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonStop.Text = "toolStripButton2";
+            // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 342);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 394);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(804, 22);
             this.statusStrip1.TabIndex = 7;
@@ -226,11 +267,11 @@
             this.tabControlMain.Controls.Add(this.tabPageMain);
             this.tabControlMain.Controls.Add(this.tabPageOverrides);
             this.tabControlMain.Controls.Add(this.tabPageJog);
-            this.tabControlMain.Controls.Add(this.tabPage1);
-            this.tabControlMain.Controls.Add(this.tabPage2);
-            this.tabControlMain.Controls.Add(this.tabPage3);
-            this.tabControlMain.Controls.Add(this.tabPage4);
-            this.tabControlMain.Controls.Add(this.tabPage5);
+            this.tabControlMain.Controls.Add(this.tabPageSpindle);
+            this.tabControlMain.Controls.Add(this.tabPageServiceSchedule);
+            this.tabControlMain.Controls.Add(this.tabPageUsage);
+            this.tabControlMain.Controls.Add(this.tabPageSettings);
+            this.tabControlMain.HotTrack = true;
             this.tabControlMain.Location = new System.Drawing.Point(12, 60);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -273,103 +314,51 @@
             this.tabPageJog.Text = "Jog";
             this.tabPageJog.UseVisualStyleBackColor = true;
             // 
-            // toolStripSeparator1
+            // tabPageSpindle
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 57);
+            this.tabPageSpindle.Location = new System.Drawing.Point(4, 24);
+            this.tabPageSpindle.Name = "tabPageSpindle";
+            this.tabPageSpindle.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSpindle.Size = new System.Drawing.Size(772, 242);
+            this.tabPageSpindle.TabIndex = 4;
+            this.tabPageSpindle.Text = "Spindle";
+            this.tabPageSpindle.UseVisualStyleBackColor = true;
             // 
-            // toolStripButtonPause
+            // tabPageServiceSchedule
             // 
-            this.toolStripButtonPause.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonPause.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPause.Image")));
-            this.toolStripButtonPause.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonPause.Name = "toolStripButtonPause";
-            this.toolStripButtonPause.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonPause.Text = "toolStripButton1";
+            this.tabPageServiceSchedule.Location = new System.Drawing.Point(4, 24);
+            this.tabPageServiceSchedule.Name = "tabPageServiceSchedule";
+            this.tabPageServiceSchedule.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageServiceSchedule.Size = new System.Drawing.Size(772, 242);
+            this.tabPageServiceSchedule.TabIndex = 6;
+            this.tabPageServiceSchedule.Text = "Service Scgedule";
+            this.tabPageServiceSchedule.UseVisualStyleBackColor = true;
             // 
-            // toolStripSeparator2
+            // tabPageUsage
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 57);
+            this.tabPageUsage.Location = new System.Drawing.Point(4, 24);
+            this.tabPageUsage.Name = "tabPageUsage";
+            this.tabPageUsage.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageUsage.Size = new System.Drawing.Size(772, 242);
+            this.tabPageUsage.TabIndex = 7;
+            this.tabPageUsage.Text = "Useage";
+            this.tabPageUsage.UseVisualStyleBackColor = true;
             // 
-            // toolStripButtonProbe
+            // tabPageSettings
             // 
-            this.toolStripButtonProbe.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonProbe.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonProbe.Image")));
-            this.toolStripButtonProbe.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonProbe.Name = "toolStripButtonProbe";
-            this.toolStripButtonProbe.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonProbe.Text = "toolStripButton2";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 57);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(772, 242);
-            this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "Settings";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(772, 242);
-            this.tabPage2.TabIndex = 4;
-            this.tabPage2.Text = "Spindle";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(772, 242);
-            this.tabPage3.TabIndex = 5;
-            this.tabPage3.Text = "3D Visualizer";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(772, 242);
-            this.tabPage4.TabIndex = 6;
-            this.tabPage4.Text = "Service Scgedule";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 24);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(772, 242);
-            this.tabPage5.TabIndex = 7;
-            this.tabPage5.Text = "Useage";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // toolStripButtonStop
-            // 
-            this.toolStripButtonStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonStop.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonStop.Image")));
-            this.toolStripButtonStop.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonStop.Name = "toolStripButtonStop";
-            this.toolStripButtonStop.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonStop.Text = "toolStripButton2";
+            this.tabPageSettings.Location = new System.Drawing.Point(4, 24);
+            this.tabPageSettings.Name = "tabPageSettings";
+            this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSettings.Size = new System.Drawing.Size(772, 242);
+            this.tabPageSettings.TabIndex = 3;
+            this.tabPageSettings.Text = "Settings";
+            this.tabPageSettings.UseVisualStyleBackColor = true;
             // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 364);
+            this.ClientSize = new System.Drawing.Size(804, 416);
             this.Controls.Add(this.groupBoxCoordinates);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.statusStrip1);
@@ -412,11 +401,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonProbe;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonPause;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPageSettings;
+        private System.Windows.Forms.TabPage tabPageSpindle;
+        private System.Windows.Forms.TabPage tabPageServiceSchedule;
+        private System.Windows.Forms.TabPage tabPageUsage;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
     }
 }
