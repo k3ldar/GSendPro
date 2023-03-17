@@ -43,5 +43,33 @@ namespace GSendService.Controllers
                 HttpContext.Response.StatusCode = SharedPluginFeatures.Constants.HtmlResponseBadRequest;
             }
         }
+
+        [Route("/client2")]
+        public async Task ClientConnection2()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                try
+                {
+                    using WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                    await _processorMediator.ProcessClientCommunications(webSocket);
+                }
+                catch (WebSocketException)
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "hello")
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = SharedPluginFeatures.Constants.HtmlResponseBadRequest;
+            }
+        }
     }
 }

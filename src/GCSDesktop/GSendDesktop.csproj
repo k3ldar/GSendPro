@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
+    <ProjectReference Include="..\GSend.Language\GSend.Language.csproj" />
     <ProjectReference Include="..\GSendApi\GSendApi.csproj" />
+    <ProjectReference Include="..\GSendCommon\GSendCommon.csproj" />
   </ItemGroup>
 
 </Project>

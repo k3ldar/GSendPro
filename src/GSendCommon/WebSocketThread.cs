@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +11,10 @@ namespace GSendCommon
 {
     public sealed class WebSocketThread : ThreadManager
     {
-        public WebSocketThread(object parameters, TimeSpan runInterval, ThreadManager parent = null, 
-            int delayStart = 0, int sleepInterval = 200, bool runAtStart = true, bool monitorCPUUsage = true) 
-            : base(parameters, runInterval, parent, delayStart, sleepInterval, runAtStart, monitorCPUUsage)
+        public WebSocketThread(ClientWebSocket clientWebSocket, TimeSpan runInterval) 
+            : base(clientWebSocket, runInterval)
         {
+            base.HangTimeout = Int32.MaxValue;
         }
     }
 }

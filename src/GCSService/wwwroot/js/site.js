@@ -121,25 +121,24 @@ var gSend = (function () {
             let i = 0;
 
             while (i < arrMachines.length) {
-                let mc = document.getElementById("mConn" + arrMachines[i][0]);
-                let ms = document.getElementById("mStat" + arrMachines[i][0]);
-                let mcpu = document.getElementById("mCpu" + arrMachines[i][0]);
+                let mc = document.getElementById("mConn" + arrMachines[i].Id);
+                let ms = document.getElementById("mStat" + arrMachines[i].Id);
+                let mcpu = document.getElementById("mCpu" + arrMachines[i].Id);
 
-                mc.innerText = arrMachines[i][1];
-                mcpu.innerText = arrMachines[i][3];
+                mc.innerText = arrMachines[i].Connected;
+                mcpu.innerText = arrMachines[i].CpuStatus;
 
-                if (arrMachines[i][1] == 'Yes') {
-                    let state = arrMachines[i][2];
+                if (arrMachines[i].Connected) {
                     let stateClass = "bg-secondary";
-                    let stateText = arrMachines[i][2];
+                    let stateText = arrMachines[i].State;
 
                     if (ms.style.display === "none")
                         ms.style.display = "block";
 
-                    switch (state) {
+                    switch (arrMachines[i].State) {
                         case "Undefined":
                             stateText = "Port Open";
-                            stateClass = "bg-dark";
+                            stateClass = "bg-warning";
                             break;
                         case "Idle":
                             stateClass = "bg-primary";
@@ -147,11 +146,17 @@ var gSend = (function () {
                         case "Run":
                             stateClass = "bg-success";
                             break;
-                        case "Hold":
-                            stateClass = "bg-warning";
-                            break;
                         case "Jog":
                             stateClass = "bg-success";
+                            break;
+                        case "Home":
+                            stateClass = "bg-success";
+                            break;
+                        case "Sleep":
+                            stateClass = "bg-warning";
+                            break;
+                        case "Hold":
+                            stateClass = "bg-warning";
                             break;
                         case "Alarm":
                             stateClass = "bg-danger";
@@ -161,12 +166,6 @@ var gSend = (function () {
                             break;
                         case "Check":
                             stateClass = "bg-danger";
-                            break;
-                        case "Home":
-                            stateClass = "bg-success";
-                            break;
-                        case "Sleep":
-                            stateClass = "bg-warning";
                             break;
                     }
 

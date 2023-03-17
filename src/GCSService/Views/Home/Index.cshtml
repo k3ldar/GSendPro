@@ -12,12 +12,12 @@
 <table class="table">
     <thead class="thead-dark">
         <th scope="col" width="6%"></th>
-        <th scope="col" width="25%">@Languages.LanguageStrings.Name</th>
+    <th scope="col" width="25%">@GSend.Language.Resources.Name</th>
         <th scope="col" width="8%">Type</th>
         <th scope="col" width="10%">CPU</th>
         <th scope="col" width="10%">ComPort</th>
         <th scope="col" width="10%">Connected</th>
-        <th scope="col" width="15%">@Languages.LanguageStrings.Status</th>
+        <th scope="col" width="15%">@GSend.Language.Resources.Status</th>
         <th scope="col" width="10%"></th>
     </th>
         @{
@@ -44,9 +44,9 @@
             <td>@machine.MachineType</td>
             <td><span id="@machineCpu">0.0%/0.0%</span></td>
             <td>@machine.ComPort</td>
-                <td><button id="@machineCon" class="btn bg-secondary" onclick="javascript:gSend.connectToMachine(@machine.Id);">@Languages.LanguageStrings.No</button></td>
+                <td><button id="@machineCon" class="btn bg-secondary" onclick="javascript:gSend.connectToMachine(@machine.Id);">@GSend.Language.Resources.No</button></td>
             <td><button id="@machineStatus" class="btn bg-secondary" onclick="javascript:gSend.clearAlarm(@machine.Id);"></button></td>
-            <td><a class="btn btn-primary" href="/ViewMachine/@machine.Id/" target="_blank" role="button">@Languages.LanguageStrings.View</a></td>
+                <td><a class="btn btn-primary" href="/ViewMachine/@machine.Id/" target="_blank" role="button">@GSend.Language.Resources.View</a></td>
         </tr>
     }
 }

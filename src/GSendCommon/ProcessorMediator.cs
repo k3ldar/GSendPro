@@ -20,14 +20,14 @@ namespace GSendCommon
     {
         private const int BufferSize = 8192;
         private readonly object _lockObject = new();
-        private readonly PluginManager.Abstractions.ILogger _logger;
+        private readonly ILogger _logger;
         private readonly IMachineProvider _machineProvider;
         private readonly IComPortFactory _comPortFactory;
         private readonly List<IGCodeProcessor> _machines = new();
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly GSendSettings _settings;
 
-        public ProcessorMediator(PluginManager.Abstractions.ILogger logger, 
+        public ProcessorMediator(ILogger logger, 
             IMachineProvider machineProvider,
             IComPortFactory comPortFactory, 
             INotificationService notificationService,
@@ -326,9 +326,10 @@ namespace GSendCommon
 
         private byte[] ProcessRequest(string request)
         {
-            DefaultResponse response = new()
+            ClientBaseMessage response = new()
             {
                 request = request,
+                ServerCpuStatus = ThreadManager.CpuUsage,
             };
 
             if (String.IsNullOrEmpty(request))
@@ -344,6 +345,24 @@ namespace GSendCommon
 
             switch (parts[0])
             {
+                case "mResumeAll":
+                    foreach (IGCodeProcessor processor in _machines)
+                    {
+                        if (processor.IsConnected && processor.IsPaused)
+                            processor.Resume();
+                    }
+
+                    break;
+
+                case "mPauseAll":
+                    foreach (IGCodeProcessor processor in _machines)
+                    {
+                        if (processor.IsConnected)
+                            processor.Pause();
+                    }
+
+                    break;
+
                 case "mClearAlm":
                     if (foundMachine && proc != null)
                     {
@@ -364,17 +383,35 @@ namespace GSendCommon
 
                     break;
 
+                case "mResume":
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.StateModel.MachineState != MachineState.Alarm)
+                            proc.Resume();
+                    }
+
+                    break;
+
+                case "mHome":
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.StateModel.MachineState != MachineState.Alarm)
+                            proc.Home();
+                    }
+
+                    break;
+
                 case "mStatus":
-                    List<object[]> machineStates = new();
+                    List<StatusResponseMessage> machineStates = new();
 
                     foreach (IGCodeProcessor processor in _machines)
                     {
-                        machineStates.Add(new object[]
+                        machineStates.Add(new StatusResponseMessage()
                             {
-                                processor.Id,
-                                processor.IsConnected ? LanguageStrings.Yes : LanguageStrings.No,
-                                processor.StateModel.MachineState.ToString(),
-                                processor.Cpu,
+                                Id = processor.Id,
+                                Connected = processor.IsConnected,
+                                State =  processor.StateModel.MachineState.ToString(),
+                                CpuStatus = processor.Cpu,
                             });
                     }
 
@@ -394,15 +431,6 @@ namespace GSendCommon
                 throw new InvalidOperationException();
 
             return json;
-        }
-
-        private class DefaultResponse
-        {
-            public bool success { get; set; }
-
-            public string request { get; set; }
-
-            public object message { get; set; }
         }
 
         #endregion Private Methods
