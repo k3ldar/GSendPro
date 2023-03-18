@@ -49,6 +49,7 @@ namespace GSendDesktop
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonGetMachines = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonAddMachine = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonRemoeMachine = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonPauseAll = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonResumeAll = new System.Windows.Forms.ToolStripButton();
@@ -59,7 +60,6 @@ namespace GSendDesktop
             this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonHome = new System.Windows.Forms.ToolStripButton();
             this.timerUpdateStatus = new System.Windows.Forms.Timer(this.components);
-            this.toolStripButtonRemoeMachine = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStripMain.SuspendLayout();
@@ -141,22 +141,24 @@ namespace GSendDesktop
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusConnected,
             this.toolStripStatusCpu});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 333);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 331);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(705, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(705, 24);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusConnected
             // 
+            this.toolStripStatusConnected.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusConnected.Name = "toolStripStatusConnected";
-            this.toolStripStatusConnected.Size = new System.Drawing.Size(88, 17);
+            this.toolStripStatusConnected.Size = new System.Drawing.Size(92, 19);
             this.toolStripStatusConnected.Text = "Not Connected";
             // 
             // toolStripStatusCpu
             // 
+            this.toolStripStatusCpu.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusCpu.Name = "toolStripStatusCpu";
-            this.toolStripStatusCpu.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusCpu.Size = new System.Drawing.Size(122, 19);
             this.toolStripStatusCpu.Text = "toolStripStatusLabel1";
             // 
             // menuStrip1
@@ -215,6 +217,15 @@ namespace GSendDesktop
             this.toolStripButtonAddMachine.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonAddMachine.Text = "Add";
             this.toolStripButtonAddMachine.Click += new System.EventHandler(this.toolStripButtonAddMachine_Click);
+            // 
+            // toolStripButtonRemoeMachine
+            // 
+            this.toolStripButtonRemoeMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRemoeMachine.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRemoeMachine.Image")));
+            this.toolStripButtonRemoeMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRemoeMachine.Name = "toolStripButtonRemoeMachine";
+            this.toolStripButtonRemoeMachine.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonRemoeMachine.Text = "toolStripButtonRemoeMachine";
             // 
             // toolStripSeparator1
             // 
@@ -299,15 +310,6 @@ namespace GSendDesktop
             // timerUpdateStatus
             // 
             this.timerUpdateStatus.Tick += new System.EventHandler(this.timerUpdateStatus_Tick);
-            // 
-            // toolStripButtonRemoeMachine
-            // 
-            this.toolStripButtonRemoeMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRemoeMachine.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRemoeMachine.Image")));
-            this.toolStripButtonRemoeMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRemoeMachine.Name = "toolStripButtonRemoeMachine";
-            this.toolStripButtonRemoeMachine.Size = new System.Drawing.Size(54, 54);
-            this.toolStripButtonRemoeMachine.Text = "toolStripButtonRemoeMachine";
             // 
             // FormMain
             // 

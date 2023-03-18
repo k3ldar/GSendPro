@@ -420,4 +420,51 @@
 
         InchPerSecond,
     }
+
+    public enum AxisConfiguration
+    {
+        None = 0,
+
+        ReverseX = 1,
+
+        ReverseY = 2,
+
+        ReverseXandY = 3,
+
+        ReverseZ = 4,
+
+        ReverseXandZ = 5,
+
+        ReverseYandZ = 6,
+
+        ReversAll = 7
+    }
+
+    public enum Pin
+    {
+        High = 0, 
+        
+        Low = 1
+    }
+
+    [Flags]
+    public enum ReportType
+    {
+        MachinePosition = 1,
+
+        WorkPosition = 2,
+
+        PlannerBuffer = 4,
+
+        RXBuffer = 8,
+
+        LimitPins = 16,
+    }
+
+    public enum FeedbackUnit
+    {
+        Mm = 0,
+
+        Inch = 1
+    }
 }

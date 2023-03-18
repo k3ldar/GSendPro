@@ -40,6 +40,10 @@
 
         public DisplayUnits DisplayUnits { get; set; }
 
+        public int OverrideSpeed { get; set; }
+
+        public int OverrideSpindle { get; set; }
+
         private void AddDefaultSettingsIfNotPresent()
         {
             AddValue(0, 10);

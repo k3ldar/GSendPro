@@ -279,20 +279,20 @@
             this.statusStrip.Location = new System.Drawing.Point(0, 372);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(804, 24);
+            this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 7;
-            this.statusStrip.Text = "statusStrip1";
+            this.statusStrip.Text = "statusStrip";
             // 
             // toolStripStatusLabelServerConnect
             // 
-            this.toolStripStatusLabelServerConnect.BorderStyle = System.Windows.Forms.Border3DStyle.RaisedOuter;
+            this.toolStripStatusLabelServerConnect.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabelServerConnect.Name = "toolStripStatusLabelServerConnect";
-            this.toolStripStatusLabelServerConnect.Size = new System.Drawing.Size(170, 19);
-            this.toolStripStatusLabelServerConnect.Text = "toolStripStatusLabelConnected";
+            this.toolStripStatusLabelServerConnect.Size = new System.Drawing.Size(92, 19);
+            this.toolStripStatusLabelServerConnect.Text = "Not Connected";
             // 
             // toolStripStatusLabelDisplayMeasurements
             // 
             this.toolStripStatusLabelDisplayMeasurements.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolStripStatusLabelDisplayMeasurements.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusLabelDisplayMeasurements.Name = "toolStripStatusLabelDisplayMeasurements";
             this.toolStripStatusLabelDisplayMeasurements.Size = new System.Drawing.Size(33, 19);
             this.toolStripStatusLabelDisplayMeasurements.Text = "asdf";

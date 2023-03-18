@@ -43,8 +43,9 @@ namespace GSendDesktop.Forms
                 tabControlMain.TabPages.Remove(tabPageOverrides);
 
             ConfigureMachine();
-            trackBarPercent.Value = 60;
-            selectionOverrideSpindle.Value = (int)_machine.Settings[30] / 2;
+
+            trackBarPercent.Value = machine.OverrideSpeed;
+            selectionOverrideSpindle.Value = machine.OverrideSpindle;
             cbOverridesDisable.Checked = true;
 
             _cancellationTokenRegistration = new();
@@ -229,7 +230,7 @@ namespace GSendDesktop.Forms
             }
 
             toolStripStatusLabelDisplayMeasurements.Text = labelFormat;
-            selectionOverrideSpindle.TickFrequency = _machine.Settings[30] / 100;
+            selectionOverrideSpindle.TickFrequency = (int)_machine.Settings[30] / 100;
         }
 
         private void FrmMachine_FormClosing(object sender, FormClosingEventArgs e)
