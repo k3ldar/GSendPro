@@ -129,14 +129,32 @@
   <data name="CPUUsage" xml:space="preserve">
     <value>CPU Usage</value>
   </data>
+  <data name="DisableOverrides" xml:space="preserve">
+    <value>Disable Overrides</value>
+  </data>
   <data name="Disconnect" xml:space="preserve">
     <value>Disconnect</value>
+  </data>
+  <data name="DisplayInchMinute" xml:space="preserve">
+    <value>Inch/min</value>
+  </data>
+  <data name="DisplayInchSecond" xml:space="preserve">
+    <value>Inch/sec</value>
+  </data>
+  <data name="DisplayMmMinute" xml:space="preserve">
+    <value>mm/min</value>
+  </data>
+  <data name="DisplayMmSec" xml:space="preserve">
+    <value>mm/sec</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="GrblSettings" xml:space="preserve">
+    <value>Grbl Settings</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
@@ -155,6 +173,9 @@
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="OverrideRpm" xml:space="preserve">
+    <value>{0} RPM</value>
   </data>
   <data name="Overrides" xml:space="preserve">
     <value>Overrides</value>
@@ -194,6 +215,9 @@
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="SpeedPercent" xml:space="preserve">
+    <value>{0}% of Speed</value>
   </data>
   <data name="Spindle" xml:space="preserve">
     <value>Spindle</value>

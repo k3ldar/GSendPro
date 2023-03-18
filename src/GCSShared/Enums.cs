@@ -409,4 +409,15 @@
 
         XMinusYMinus = 10,
     }
+
+    public enum DisplayUnits
+    {
+        MmPerMinute,
+
+        MmPerSecond,
+
+        InchPerMinute,
+
+        InchPerSecond,
+    }
 }

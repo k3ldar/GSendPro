@@ -30,6 +30,13 @@ namespace GSendDesktop.Controls
         }
 
         [Browsable(true)]
+        public int Minimum
+        {
+            get => trackBarValue.Minimum;
+            set => trackBarValue.Minimum = value;
+        }
+
+        [Browsable(true)]
         public int TickFrequency
         {
             get => trackBarValue.TickFrequency;
@@ -37,7 +44,11 @@ namespace GSendDesktop.Controls
         }
 
         [Browsable(true)]
-        public int Value { get; set; }
+        public int Value
+        {
+            get => trackBarValue.Value;
+            set => trackBarValue.Value = value; 
+        }
 
         public string LabelValue { get; set; }
 
@@ -48,9 +59,9 @@ namespace GSendDesktop.Controls
         {
             if (!DesignMode)
             {
-                //LabelValue = String.Format(LabelFormat, trackBarValue.Value);
+                LabelValue = String.Format(LabelFormat, trackBarValue.Value);
                 ValueChanged?.Invoke(this, EventArgs.Empty);
-                //lblDescription.Text = LabelValue;
+                lblDescription.Text = LabelValue;
             }
         }
     }

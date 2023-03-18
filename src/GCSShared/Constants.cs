@@ -4,6 +4,10 @@ namespace GSendShared
 {
     public sealed class Constants
     {
+        public const int MinConnectionWait = 500;
+
+        public const int SocketKeepAliveMinutes = 5;
+
         public const int ReceiveBufferSize = 1024 * 4;
 
         public const string ServerUri = "wss://localhost:7154/client2";

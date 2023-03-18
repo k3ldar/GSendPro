@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMachine));
-            this.groupBoxCoordinates = new System.Windows.Forms.GroupBox();
-            this.selection5 = new GSendDesktop.Controls.Selection();
-            this.selection4 = new GSendDesktop.Controls.Selection();
-            this.selection3 = new GSendDesktop.Controls.Selection();
-            this.selection2 = new GSendDesktop.Controls.Selection();
-            this.selection1 = new GSendDesktop.Controls.Selection();
+            this.selectionOverrideSpindle = new GSendDesktop.Controls.Selection();
+            this.selectionOverrideZDown = new GSendDesktop.Controls.Selection();
+            this.selectionOverrideZUp = new GSendDesktop.Controls.Selection();
+            this.selectionOverrideY = new GSendDesktop.Controls.Selection();
+            this.selectionOverrideX = new GSendDesktop.Controls.Selection();
             this.jogControl1 = new GSendDesktop.Controls.JogControl();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
@@ -48,102 +47,114 @@
             this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonPause = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelServerConnect = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelDisplayMeasurements = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
+            this.machinePosition1 = new GSendDesktop.Controls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
+            this.cbOverridesDisable = new System.Windows.Forms.CheckBox();
+            this.labelSpeedPercent = new System.Windows.Forms.Label();
+            this.trackBarPercent = new System.Windows.Forms.TrackBar();
+            this.machinePosition2 = new GSendDesktop.Controls.MachinePosition();
             this.tabPageJog = new System.Windows.Forms.TabPage();
+            this.machinePosition3 = new GSendDesktop.Controls.MachinePosition();
             this.tabPageSpindle = new System.Windows.Forms.TabPage();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
             this.tabPageUsage = new System.Windows.Forms.TabPage();
+            this.tabPageMachineSettings = new System.Windows.Forms.TabPage();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.toolStripMain.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
+            this.tabPageMain.SuspendLayout();
             this.tabPageOverrides.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).BeginInit();
             this.tabPageJog.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBoxCoordinates
+            // selectionOverrideSpindle
             // 
-            this.groupBoxCoordinates.BackColor = System.Drawing.Color.Transparent;
-            this.groupBoxCoordinates.Location = new System.Drawing.Point(25, 100);
-            this.groupBoxCoordinates.Name = "groupBoxCoordinates";
-            this.groupBoxCoordinates.Size = new System.Drawing.Size(318, 215);
-            this.groupBoxCoordinates.TabIndex = 1;
-            this.groupBoxCoordinates.TabStop = false;
-            this.groupBoxCoordinates.Text = "Position";
+            this.selectionOverrideSpindle.GroupName = "Spindle";
+            this.selectionOverrideSpindle.LabelFormat = "{0}";
+            this.selectionOverrideSpindle.LabelValue = null;
+            this.selectionOverrideSpindle.Location = new System.Drawing.Point(684, 6);
+            this.selectionOverrideSpindle.Maximum = 10;
+            this.selectionOverrideSpindle.Minimum = 0;
+            this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
+            this.selectionOverrideSpindle.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideSpindle.TabIndex = 4;
+            this.selectionOverrideSpindle.TickFrequency = 1;
+            this.selectionOverrideSpindle.Value = 0;
             // 
-            // selection5
+            // selectionOverrideZDown
             // 
-            this.selection5.GroupName = "Spindle";
-            this.selection5.LabelFormat = "{0}";
-            this.selection5.LabelValue = null;
-            this.selection5.Location = new System.Drawing.Point(684, 6);
-            this.selection5.Maximum = 10;
-            this.selection5.Name = "selection5";
-            this.selection5.Size = new System.Drawing.Size(82, 228);
-            this.selection5.TabIndex = 4;
-            this.selection5.TickFrequency = 1;
-            this.selection5.Value = 0;
+            this.selectionOverrideZDown.GroupName = "Z Down";
+            this.selectionOverrideZDown.LabelFormat = "{0}";
+            this.selectionOverrideZDown.LabelValue = null;
+            this.selectionOverrideZDown.Location = new System.Drawing.Point(597, 6);
+            this.selectionOverrideZDown.Maximum = 10;
+            this.selectionOverrideZDown.Minimum = 0;
+            this.selectionOverrideZDown.Name = "selectionOverrideZDown";
+            this.selectionOverrideZDown.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideZDown.TabIndex = 3;
+            this.selectionOverrideZDown.TickFrequency = 1;
+            this.selectionOverrideZDown.Value = 0;
             // 
-            // selection4
+            // selectionOverrideZUp
             // 
-            this.selection4.GroupName = "Z Down";
-            this.selection4.LabelFormat = "{0}";
-            this.selection4.LabelValue = null;
-            this.selection4.Location = new System.Drawing.Point(597, 6);
-            this.selection4.Maximum = 10;
-            this.selection4.Name = "selection4";
-            this.selection4.Size = new System.Drawing.Size(82, 228);
-            this.selection4.TabIndex = 3;
-            this.selection4.TickFrequency = 1;
-            this.selection4.Value = 0;
+            this.selectionOverrideZUp.GroupName = "Z Up";
+            this.selectionOverrideZUp.LabelFormat = "{0}";
+            this.selectionOverrideZUp.LabelValue = null;
+            this.selectionOverrideZUp.Location = new System.Drawing.Point(509, 6);
+            this.selectionOverrideZUp.Maximum = 10;
+            this.selectionOverrideZUp.Minimum = 0;
+            this.selectionOverrideZUp.Name = "selectionOverrideZUp";
+            this.selectionOverrideZUp.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideZUp.TabIndex = 2;
+            this.selectionOverrideZUp.TickFrequency = 1;
+            this.selectionOverrideZUp.Value = 0;
             // 
-            // selection3
+            // selectionOverrideY
             // 
-            this.selection3.GroupName = "Z Up";
-            this.selection3.LabelFormat = "{0}";
-            this.selection3.LabelValue = null;
-            this.selection3.Location = new System.Drawing.Point(509, 6);
-            this.selection3.Maximum = 10;
-            this.selection3.Name = "selection3";
-            this.selection3.Size = new System.Drawing.Size(82, 228);
-            this.selection3.TabIndex = 2;
-            this.selection3.TickFrequency = 1;
-            this.selection3.Value = 0;
+            this.selectionOverrideY.GroupName = "Y";
+            this.selectionOverrideY.LabelFormat = "{0}";
+            this.selectionOverrideY.LabelValue = null;
+            this.selectionOverrideY.Location = new System.Drawing.Point(421, 6);
+            this.selectionOverrideY.Maximum = 10;
+            this.selectionOverrideY.Minimum = 0;
+            this.selectionOverrideY.Name = "selectionOverrideY";
+            this.selectionOverrideY.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideY.TabIndex = 1;
+            this.selectionOverrideY.TickFrequency = 1;
+            this.selectionOverrideY.Value = 0;
             // 
-            // selection2
+            // selectionOverrideX
             // 
-            this.selection2.GroupName = "Y";
-            this.selection2.LabelFormat = "{0}";
-            this.selection2.LabelValue = null;
-            this.selection2.Location = new System.Drawing.Point(421, 6);
-            this.selection2.Maximum = 10;
-            this.selection2.Name = "selection2";
-            this.selection2.Size = new System.Drawing.Size(82, 228);
-            this.selection2.TabIndex = 1;
-            this.selection2.TickFrequency = 1;
-            this.selection2.Value = 0;
-            // 
-            // selection1
-            // 
-            this.selection1.GroupName = "X";
-            this.selection1.LabelFormat = "{0}";
-            this.selection1.LabelValue = null;
-            this.selection1.Location = new System.Drawing.Point(333, 6);
-            this.selection1.Maximum = 10;
-            this.selection1.Name = "selection1";
-            this.selection1.Size = new System.Drawing.Size(82, 228);
-            this.selection1.TabIndex = 0;
-            this.selection1.TickFrequency = 1;
-            this.selection1.Value = 0;
+            this.selectionOverrideX.GroupName = "X";
+            this.selectionOverrideX.LabelFormat = "{0}";
+            this.selectionOverrideX.LabelValue = null;
+            this.selectionOverrideX.Location = new System.Drawing.Point(333, 6);
+            this.selectionOverrideX.Maximum = 10;
+            this.selectionOverrideX.Minimum = 0;
+            this.selectionOverrideX.Name = "selectionOverrideX";
+            this.selectionOverrideX.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideX.TabIndex = 0;
+            this.selectionOverrideX.TickFrequency = 1;
+            this.selectionOverrideX.Value = 0;
             // 
             // jogControl1
             // 
             this.jogControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.jogControl1.FeedMaximum = 10;
+            this.jogControl1.FeedMinimum = 0;
             this.jogControl1.Location = new System.Drawing.Point(327, 30);
             this.jogControl1.Name = "jogControl1";
             this.jogControl1.Size = new System.Drawing.Size(439, 190);
+            this.jogControl1.StepsMaximum = 10;
+            this.jogControl1.StepsMinimum = 0;
             this.jogControl1.TabIndex = 3;
             // 
             // toolStripMain
@@ -160,7 +171,8 @@
             this.toolStripSeparator3,
             this.toolStripButtonResume,
             this.toolStripButtonPause,
-            this.toolStripButtonStop});
+            this.toolStripButtonStop,
+            this.toolStripSeparator4});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(804, 57);
@@ -254,13 +266,36 @@
             this.toolStripButtonStop.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonStop.Text = "toolStripButton2";
             // 
-            // statusStrip1
+            // toolStripSeparator4
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 394);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(804, 22);
-            this.statusStrip1.TabIndex = 7;
-            this.statusStrip1.Text = "statusStrip1";
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 57);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelServerConnect,
+            this.toolStripStatusLabelDisplayMeasurements});
+            this.statusStrip.Location = new System.Drawing.Point(0, 372);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(804, 24);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelServerConnect
+            // 
+            this.toolStripStatusLabelServerConnect.BorderStyle = System.Windows.Forms.Border3DStyle.RaisedOuter;
+            this.toolStripStatusLabelServerConnect.Name = "toolStripStatusLabelServerConnect";
+            this.toolStripStatusLabelServerConnect.Size = new System.Drawing.Size(170, 19);
+            this.toolStripStatusLabelServerConnect.Text = "toolStripStatusLabelConnected";
+            // 
+            // toolStripStatusLabelDisplayMeasurements
+            // 
+            this.toolStripStatusLabelDisplayMeasurements.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripStatusLabelDisplayMeasurements.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolStripStatusLabelDisplayMeasurements.Name = "toolStripStatusLabelDisplayMeasurements";
+            this.toolStripStatusLabelDisplayMeasurements.Size = new System.Drawing.Size(33, 19);
+            this.toolStripStatusLabelDisplayMeasurements.Text = "asdf";
             // 
             // tabControlMain
             // 
@@ -270,6 +305,7 @@
             this.tabControlMain.Controls.Add(this.tabPageSpindle);
             this.tabControlMain.Controls.Add(this.tabPageServiceSchedule);
             this.tabControlMain.Controls.Add(this.tabPageUsage);
+            this.tabControlMain.Controls.Add(this.tabPageMachineSettings);
             this.tabControlMain.Controls.Add(this.tabPageSettings);
             this.tabControlMain.HotTrack = true;
             this.tabControlMain.Location = new System.Drawing.Point(12, 60);
@@ -280,31 +316,84 @@
             // 
             // tabPageMain
             // 
+            this.tabPageMain.BackColor = System.Drawing.Color.White;
+            this.tabPageMain.Controls.Add(this.machinePosition1);
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageMain.Size = new System.Drawing.Size(772, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
-            this.tabPageMain.UseVisualStyleBackColor = true;
+            // 
+            // machinePosition1
+            // 
+            this.machinePosition1.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePosition1.Location = new System.Drawing.Point(6, 6);
+            this.machinePosition1.Name = "machinePosition1";
+            this.machinePosition1.Size = new System.Drawing.Size(280, 111);
+            this.machinePosition1.TabIndex = 0;
             // 
             // tabPageOverrides
             // 
-            this.tabPageOverrides.Controls.Add(this.selection5);
-            this.tabPageOverrides.Controls.Add(this.selection4);
-            this.tabPageOverrides.Controls.Add(this.selection1);
-            this.tabPageOverrides.Controls.Add(this.selection3);
-            this.tabPageOverrides.Controls.Add(this.selection2);
+            this.tabPageOverrides.BackColor = System.Drawing.Color.White;
+            this.tabPageOverrides.Controls.Add(this.cbOverridesDisable);
+            this.tabPageOverrides.Controls.Add(this.labelSpeedPercent);
+            this.tabPageOverrides.Controls.Add(this.trackBarPercent);
+            this.tabPageOverrides.Controls.Add(this.machinePosition2);
+            this.tabPageOverrides.Controls.Add(this.selectionOverrideSpindle);
+            this.tabPageOverrides.Controls.Add(this.selectionOverrideZDown);
+            this.tabPageOverrides.Controls.Add(this.selectionOverrideX);
+            this.tabPageOverrides.Controls.Add(this.selectionOverrideZUp);
+            this.tabPageOverrides.Controls.Add(this.selectionOverrideY);
             this.tabPageOverrides.Location = new System.Drawing.Point(4, 24);
             this.tabPageOverrides.Name = "tabPageOverrides";
             this.tabPageOverrides.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageOverrides.Size = new System.Drawing.Size(772, 242);
             this.tabPageOverrides.TabIndex = 1;
             this.tabPageOverrides.Text = "Overrides";
-            this.tabPageOverrides.UseVisualStyleBackColor = true;
+            // 
+            // cbOverridesDisable
+            // 
+            this.cbOverridesDisable.AutoSize = true;
+            this.cbOverridesDisable.Location = new System.Drawing.Point(6, 215);
+            this.cbOverridesDisable.Name = "cbOverridesDisable";
+            this.cbOverridesDisable.Size = new System.Drawing.Size(83, 19);
+            this.cbOverridesDisable.TabIndex = 14;
+            this.cbOverridesDisable.Text = "checkBox1";
+            this.cbOverridesDisable.UseVisualStyleBackColor = true;
+            this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.cbOverridesDisable_CheckedChanged);
+            // 
+            // labelSpeedPercent
+            // 
+            this.labelSpeedPercent.AutoSize = true;
+            this.labelSpeedPercent.Location = new System.Drawing.Point(6, 171);
+            this.labelSpeedPercent.Name = "labelSpeedPercent";
+            this.labelSpeedPercent.Size = new System.Drawing.Size(72, 15);
+            this.labelSpeedPercent.TabIndex = 13;
+            this.labelSpeedPercent.Text = "labelPercent";
+            // 
+            // trackBarPercent
+            // 
+            this.trackBarPercent.Location = new System.Drawing.Point(6, 123);
+            this.trackBarPercent.Maximum = 100;
+            this.trackBarPercent.Name = "trackBarPercent";
+            this.trackBarPercent.Size = new System.Drawing.Size(280, 45);
+            this.trackBarPercent.TabIndex = 12;
+            this.trackBarPercent.TickFrequency = 5;
+            this.trackBarPercent.ValueChanged += new System.EventHandler(this.trackBarPercent_ValueChanged);
+            // 
+            // machinePosition2
+            // 
+            this.machinePosition2.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePosition2.Location = new System.Drawing.Point(6, 6);
+            this.machinePosition2.Name = "machinePosition2";
+            this.machinePosition2.Size = new System.Drawing.Size(280, 111);
+            this.machinePosition2.TabIndex = 5;
             // 
             // tabPageJog
             // 
+            this.tabPageJog.BackColor = System.Drawing.Color.White;
+            this.tabPageJog.Controls.Add(this.machinePosition3);
             this.tabPageJog.Controls.Add(this.jogControl1);
             this.tabPageJog.Location = new System.Drawing.Point(4, 24);
             this.tabPageJog.Name = "tabPageJog";
@@ -312,65 +401,88 @@
             this.tabPageJog.Size = new System.Drawing.Size(772, 242);
             this.tabPageJog.TabIndex = 2;
             this.tabPageJog.Text = "Jog";
-            this.tabPageJog.UseVisualStyleBackColor = true;
+            // 
+            // machinePosition3
+            // 
+            this.machinePosition3.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePosition3.Location = new System.Drawing.Point(6, 6);
+            this.machinePosition3.Name = "machinePosition3";
+            this.machinePosition3.Size = new System.Drawing.Size(280, 111);
+            this.machinePosition3.TabIndex = 4;
             // 
             // tabPageSpindle
             // 
+            this.tabPageSpindle.BackColor = System.Drawing.Color.White;
             this.tabPageSpindle.Location = new System.Drawing.Point(4, 24);
             this.tabPageSpindle.Name = "tabPageSpindle";
             this.tabPageSpindle.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageSpindle.Size = new System.Drawing.Size(772, 242);
             this.tabPageSpindle.TabIndex = 4;
             this.tabPageSpindle.Text = "Spindle";
-            this.tabPageSpindle.UseVisualStyleBackColor = true;
             // 
             // tabPageServiceSchedule
             // 
+            this.tabPageServiceSchedule.BackColor = System.Drawing.Color.White;
             this.tabPageServiceSchedule.Location = new System.Drawing.Point(4, 24);
             this.tabPageServiceSchedule.Name = "tabPageServiceSchedule";
             this.tabPageServiceSchedule.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageServiceSchedule.Size = new System.Drawing.Size(772, 242);
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
-            this.tabPageServiceSchedule.UseVisualStyleBackColor = true;
             // 
             // tabPageUsage
             // 
+            this.tabPageUsage.BackColor = System.Drawing.Color.White;
             this.tabPageUsage.Location = new System.Drawing.Point(4, 24);
             this.tabPageUsage.Name = "tabPageUsage";
             this.tabPageUsage.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageUsage.Size = new System.Drawing.Size(772, 242);
             this.tabPageUsage.TabIndex = 7;
             this.tabPageUsage.Text = "Useage";
-            this.tabPageUsage.UseVisualStyleBackColor = true;
+            // 
+            // tabPageMachineSettings
+            // 
+            this.tabPageMachineSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageMachineSettings.Location = new System.Drawing.Point(4, 24);
+            this.tabPageMachineSettings.Name = "tabPageMachineSettings";
+            this.tabPageMachineSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMachineSettings.Size = new System.Drawing.Size(772, 242);
+            this.tabPageMachineSettings.TabIndex = 3;
+            this.tabPageMachineSettings.Text = "Machine Settings";
             // 
             // tabPageSettings
             // 
+            this.tabPageSettings.BackColor = System.Drawing.Color.White;
             this.tabPageSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageSettings.Size = new System.Drawing.Size(772, 242);
-            this.tabPageSettings.TabIndex = 3;
+            this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
-            this.tabPageSettings.UseVisualStyleBackColor = true;
             // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 416);
-            this.Controls.Add(this.groupBoxCoordinates);
+            this.ClientSize = new System.Drawing.Size(804, 396);
             this.Controls.Add(this.tabControlMain);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
             this.DoubleBuffered = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmMachine";
             this.Text = "FrmMachine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMachine_FormClosing);
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
+            this.tabPageMain.ResumeLayout(false);
             this.tabPageOverrides.ResumeLayout(false);
+            this.tabPageOverrides.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).EndInit();
             this.tabPageJog.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -378,20 +490,19 @@
         }
 
         #endregion
-        private System.Windows.Forms.GroupBox groupBoxCoordinates;
         private System.Windows.Forms.ToolStrip toolStripMain;
         private System.Windows.Forms.ToolStripButton toolStripButtonConnect;
         private System.Windows.Forms.ToolStripButton toolStripButtonDisconnect;
         private System.Windows.Forms.ToolStripButton toolStripButtonClearAlarm;
         private System.Windows.Forms.ToolStripButton toolStripButtonResume;
         private System.Windows.Forms.ToolStripButton toolStripButtonHome;
-        private Controls.Selection selection5;
-        private Controls.Selection selection4;
-        private Controls.Selection selection3;
-        private Controls.Selection selection2;
-        private Controls.Selection selection1;
+        private Controls.Selection selectionOverrideSpindle;
+        private Controls.Selection selectionOverrideZDown;
+        private Controls.Selection selectionOverrideZUp;
+        private Controls.Selection selectionOverrideY;
+        private Controls.Selection selectionOverrideX;
         private Controls.JogControl jogControl1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.TabControl tabControlMain;
         private System.Windows.Forms.TabPage tabPageMain;
         private System.Windows.Forms.TabPage tabPageOverrides;
@@ -401,10 +512,20 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonProbe;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonPause;
-        private System.Windows.Forms.TabPage tabPageSettings;
+        private System.Windows.Forms.TabPage tabPageMachineSettings;
         private System.Windows.Forms.TabPage tabPageSpindle;
         private System.Windows.Forms.TabPage tabPageServiceSchedule;
         private System.Windows.Forms.TabPage tabPageUsage;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelServerConnect;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDisplayMeasurements;
+        private Controls.MachinePosition machinePosition1;
+        private Controls.MachinePosition machinePosition2;
+        private Controls.MachinePosition machinePosition3;
+        private System.Windows.Forms.Label labelSpeedPercent;
+        private System.Windows.Forms.TrackBar trackBarPercent;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.TabPage tabPageSettings;
+        private System.Windows.Forms.CheckBox cbOverridesDisable;
     }
 }

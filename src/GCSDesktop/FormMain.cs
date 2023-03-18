@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Net.WebSockets;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendApi;
@@ -35,13 +31,13 @@ namespace GSendDesktop
         private readonly MachineApiWrapper _machineApiWrapper;
         private readonly IMessageNotifier _messageNotifier;
         private readonly ICommandProcessor _processCommand;
-        private readonly ClientWebSocket _clientWebSocket;
+        private readonly GSendWebSocket _clientWebSocket;
         private readonly object _lockObject = new();
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly Dictionary<long, ListViewItem> _machines = new();
         private IMachine _selectedMachine = null;
 
-        public FormMain(IGSendContext context, MachineApiWrapper machineApiWrapper, 
+        public FormMain(IGSendContext context, MachineApiWrapper machineApiWrapper,
             IMessageNotifier messageNotifier, ICommandProcessor processCommand)
         {
             InitializeComponent();
@@ -52,71 +48,25 @@ namespace GSendDesktop
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
 
             _cancellationTokenRegistration = new();
-            _clientWebSocket = SetupWebSocket();
-            Task.Run(() => ReceiveMessageAsync(_cancellationTokenRegistration.Token)).ConfigureAwait(false);
+            _clientWebSocket = new GSendWebSocket(_cancellationTokenRegistration.Token);
+            _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
+            _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
+            _clientWebSocket.Connected += ClientWebSocket_Connected;
         }
 
         #region Client Web Socket
 
-        private ClientWebSocket SetupWebSocket()
+        private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
-            ClientWebSocket result = new ClientWebSocket();
 
-            result.Options.KeepAliveInterval = TimeSpan.FromMinutes(5);
-            ConnectToWebSocket(result);
-            return result;
         }
 
-        private static void ConnectToWebSocket(ClientWebSocket result)
+        private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
-            result.ConnectAsync(new Uri(ServerUri), CancellationToken.None).ConfigureAwait(false);
+
         }
 
-        public async Task SendAsync(string message, CancellationToken token)
-        {
-            if (_clientWebSocket.State != WebSocketState.Open)
-                return;
-
-            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
-            await _clientWebSocket.SendAsync(new ArraySegment<byte>(messageBuffer), WebSocketMessageType.Text, true, token).ConfigureAwait(false);
-        }
-
-        private async Task ReceiveMessageAsync(CancellationToken token)
-        {
-            byte[] buffer = new byte[ReceiveBufferSize];
-
-            while (true)
-            {
-                if (_clientWebSocket.State != WebSocketState.Open)
-                    continue;
-
-                try
-                {
-                    WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), token);
-
-                    string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    ProcessMessage(message[..result.Count]);
-                    Trace.WriteLine($"Message Received: {message[..result.Count]}");
-                }
-                catch (IOException)
-                {
-                    Trace.WriteLine("IO Exception");
-                }
-                catch (InvalidOperationException)
-                {
-                    Trace.WriteLine("Invalid operation");
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine("Error in receiving messages: {err}", ex.Message);
-                    break;
-                }
-            }
-
-            toolStripStatusCpu.Text = GSend.Language.Resources.ServerCpuStateDisconnected;
-        }
-
-        private void ProcessMessage(string message)
+        private void ClientWebSocket_ProcessMessage(string message)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
@@ -269,19 +219,19 @@ namespace GSendDesktop
 
         private void toolStripButtonPauseAll_Click(object sender, EventArgs e)
         {
-            SendAsync(MessageMachinePauseAll, _cancellationTokenRegistration.Token).ConfigureAwait(false);
+            _clientWebSocket.SendAsync(MessageMachinePauseAll).ConfigureAwait(false);
         }
 
         private void toolStripButtonResumeAll_Click(object sender, EventArgs e)
         {
-            SendAsync(MessageMachineResumeAll, _cancellationTokenRegistration.Token).ConfigureAwait(false);
+            _clientWebSocket.SendAsync(MessageMachineResumeAll).ConfigureAwait(false);
         }
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
         {
             if (_selectedMachine != null)
             {
-                SendAsync(String.Format(MessageMachineConnect, _selectedMachine.Id), _cancellationTokenRegistration.Token).ConfigureAwait(false);
+                _clientWebSocket.SendAsync(String.Format(MessageMachineConnect, _selectedMachine.Id)).ConfigureAwait(false);
             }
         }
 
@@ -289,7 +239,7 @@ namespace GSendDesktop
         {
             if (_selectedMachine != null)
             {
-                SendAsync(String.Format(MessageMachineClearAlarm, _selectedMachine.Id), _cancellationTokenRegistration.Token).ConfigureAwait(false);
+                _clientWebSocket.SendAsync(String.Format(MessageMachineClearAlarm, _selectedMachine.Id)).ConfigureAwait(false);
             }
         }
 
@@ -297,7 +247,7 @@ namespace GSendDesktop
         {
             if (_selectedMachine != null)
             {
-                SendAsync(String.Format(MessageMachineResume, _selectedMachine.Id), _cancellationTokenRegistration.Token).ConfigureAwait(false);
+                _clientWebSocket.SendAsync(String.Format(MessageMachineResume, _selectedMachine.Id)).ConfigureAwait(false);
             }
         }
 
@@ -305,7 +255,7 @@ namespace GSendDesktop
         {
             if (_selectedMachine != null)
             {
-                SendAsync(String.Format(MessageMachineHome, _selectedMachine.Id), _cancellationTokenRegistration.Token).ConfigureAwait(false);
+                _clientWebSocket.SendAsync(String.Format(MessageMachineHome, _selectedMachine.Id)).ConfigureAwait(false);
             }
         }
 
@@ -387,15 +337,7 @@ namespace GSendDesktop
 
         private void timerUpdateStatus_Tick(object sender, EventArgs e)
         {
-            switch (_clientWebSocket.State)
-            {
-                case WebSocketState.Aborted:
-                case WebSocketState.Closed:
-                    ConnectToWebSocket(_clientWebSocket);
-                    break;
-            }
-
-            SendAsync(MessageMachineStatus, _cancellationTokenRegistration.Token).ConfigureAwait(false);
+            _clientWebSocket.SendAsync(MessageMachineStatus).ConfigureAwait(false);
 
             string connectedText = _clientWebSocket.State == WebSocketState.Open ?
                 GSend.Language.Resources.ServerConnected :
@@ -469,7 +411,7 @@ namespace GSendDesktop
             columnHeaderMachineType.Text = GSend.Language.Resources.Type;
             columnHeaderName.Text = GSend.Language.Resources.Name;
             columnHeaderStatus.Text = GSend.Language.Resources.Status;
-           
+
 
             toolStripButtonGetMachines.Text = GSend.Language.Resources.MachineRefresh;
             toolStripButtonGetMachines.ToolTipText = GSend.Language.Resources.MachineRefresh;
@@ -491,7 +433,7 @@ namespace GSendDesktop
             toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
 
 
-            
+
             toolStripStatusCpu.Text = GSend.Language.Resources.ServerCpuStateDisconnected;
         }
 

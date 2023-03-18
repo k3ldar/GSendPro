@@ -97,11 +97,56 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable Overrides.
+        /// </summary>
+        public static string DisableOverrides {
+            get {
+                return ResourceManager.GetString("DisableOverrides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnect.
         /// </summary>
         public static string Disconnect {
             get {
                 return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inch/min.
+        /// </summary>
+        public static string DisplayInchMinute {
+            get {
+                return ResourceManager.GetString("DisplayInchMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inch/sec.
+        /// </summary>
+        public static string DisplayInchSecond {
+            get {
+                return ResourceManager.GetString("DisplayInchSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm/min.
+        /// </summary>
+        public static string DisplayMmMinute {
+            get {
+                return ResourceManager.GetString("DisplayMmMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm/sec.
+        /// </summary>
+        public static string DisplayMmSec {
+            get {
+                return ResourceManager.GetString("DisplayMmSec", resourceCulture);
             }
         }
         
@@ -120,6 +165,15 @@ namespace GSend.Language {
         public static string General {
             get {
                 return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grbl Settings.
+        /// </summary>
+        public static string GrblSettings {
+            get {
+                return ResourceManager.GetString("GrblSettings", resourceCulture);
             }
         }
         
@@ -174,6 +228,15 @@ namespace GSend.Language {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} RPM.
+        /// </summary>
+        public static string OverrideRpm {
+            get {
+                return ResourceManager.GetString("OverrideRpm", resourceCulture);
             }
         }
         
@@ -291,6 +354,15 @@ namespace GSend.Language {
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}% of Speed.
+        /// </summary>
+        public static string SpeedPercent {
+            get {
+                return ResourceManager.GetString("SpeedPercent", resourceCulture);
             }
         }
         

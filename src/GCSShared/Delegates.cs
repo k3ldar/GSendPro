@@ -18,4 +18,7 @@ namespace GSendShared
     public delegate void ResponseReceivedHandler(IGCodeProcessor sender, string response);
 
     public delegate void GSendEventHandler(IGCodeProcessor sender, EventArgs e);
+
+    public delegate void ProcessMessageHandler(string message);
+
 }

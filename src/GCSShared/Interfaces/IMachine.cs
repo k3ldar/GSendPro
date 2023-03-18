@@ -17,6 +17,8 @@ namespace GSendShared
 
         byte AxisCount { get; set; }
 
+        DisplayUnits DisplayUnits { get; set; }
+
         Dictionary<uint, decimal> Settings { get; set; }
     }
 }
