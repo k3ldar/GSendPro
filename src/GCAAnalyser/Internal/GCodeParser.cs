@@ -1,8 +1,7 @@
 ﻿using System.Text;
 
-using GSendAnalyser.Abstractions;
-
 using GSendShared;
+using GSendShared.Interfaces;
 
 using static GSendAnalyser.Internal.Consts;
 

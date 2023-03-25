@@ -1,4 +1,4 @@
-﻿using GSendAnalyser.Abstractions;
+﻿using GSendShared.Interfaces;
 using GSendAnalyser.Internal;
 
 using GSendShared;

@@ -1,6 +1,6 @@
 ﻿using GSendShared;
 
-namespace GSendAnalyser.Abstractions
+namespace GSendShared.Interfaces
 {
     public interface IGCodeAnalyzer
     {

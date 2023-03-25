@@ -315,9 +315,10 @@ namespace GSendCommon
             if (String.IsNullOrEmpty(_machine.ProbeCommand))
                 return false;
 
-            IGCodeParser gcodeParser = new GCodeParser();
-            IGCodeAnalyses gCodeAnalyses = 
-            IGCodeProcessor gCodeProcessor = new 
+            //IGCodeParser gcodeParser = new GCodeParser();
+            //IGCodeAnalyses gCodeAnalyses = 
+            //IGCodeProcessor gCodeProcessor = new 
+            return false;
         }
 
         public string Help()

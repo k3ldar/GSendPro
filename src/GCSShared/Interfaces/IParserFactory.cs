@@ -1,4 +1,4 @@
-﻿namespace GSendAnalyser.Abstractions
+﻿namespace GSendShared.Interfaces
 {
     public interface IParserFactory
     {

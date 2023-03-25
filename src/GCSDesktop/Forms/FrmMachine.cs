@@ -466,6 +466,8 @@ namespace GSendDesktop.Forms
 
             if (newPropertyValue.GetType().BaseType.Name.Equals("Enum"))
                 newPropertyValue = (int)newPropertyValue;
+            else if (newPropertyValue.GetType() == typeof(bool))
+                newPropertyValue = newPropertyValue.Equals(true) ? 1 : 0;
 
             txtGrblUpdates.Text = $"{prefix}{newPropertyValue}\r\n{txtGrblUpdates.Text}";
         }
