@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+using GSendShared.Models;
+
 namespace GSendShared
 {
     [JsonConverter(typeof(Converters.JsonConverterMachine))]
@@ -23,6 +25,10 @@ namespace GSendShared
 
         int OverrideSpindle { get; set; }
 
-        Dictionary<uint, decimal> Settings { get; set; }
+        GrblSettings Settings { get; set; }
+
+        DateTime ConfigurationLastVerified { get; set; }
+
+        string ProbeCommand { get; set; }
     }
 }

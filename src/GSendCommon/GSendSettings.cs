@@ -1,8 +1,8 @@
-﻿using System.Security.Policy;
+﻿using GSendShared.Interfaces;
 
 namespace GSendCommon
 {
-    public sealed class GSendSettings
+    public sealed class GSendSettings : IGsendSettings
     {
         public bool AllowDuplicateComPorts { get; set; }
 
@@ -19,5 +19,9 @@ namespace GSendCommon
         public string StopBits { get; set; } = "One";
 
         public int SendTimeOut { get; set; } = 1000;
+
+        public int ConnectTimeOut { get; set; } = 10000;
+
+        public int UpdateMilliseconds { get; set; } = 200;
     }
 }

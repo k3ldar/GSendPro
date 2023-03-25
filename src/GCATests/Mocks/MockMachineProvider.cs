@@ -29,7 +29,12 @@ namespace GSendTests.Mocks
                 _machines.Add(new MachineModel(i, names[i],
                     i % 2 == 0 ? MachineType.CNC : MachineType.Laser, 
                     $"COM{i + 2}",
-                    MachineOptions.None, 3, new Dictionary<uint, decimal>()));
+                    MachineOptions.None, 3, new GrblSettings(),
+                    DisplayUnits.MmPerMinute,
+                    60,
+                    60,
+                    DateTime.UtcNow,
+                    String.Empty));
             }
         }
 

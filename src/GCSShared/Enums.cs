@@ -1,5 +1,27 @@
 ﻿namespace GSendShared
 {
+    public enum ConnectResult
+    {
+        Success = 0,
+
+        AlreadyConnected = 1,
+
+        TimeOut = 2,
+
+        Error = 3,
+    }
+
+    public enum UpdateSettingResult
+    {
+        Success = 0,
+
+        Failed = 1,
+
+        Timeout = 2,
+
+        Error = 3
+    }
+
     public enum MachineType
     {
         Unspecified,

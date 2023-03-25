@@ -9,5 +9,7 @@
         public string State { get; set; }
 
         public string CpuStatus { get; set; }
+
+        public bool UpdatedConfiguration { get; set; }
     }
 }

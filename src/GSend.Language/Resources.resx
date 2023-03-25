@@ -120,11 +120,20 @@
   <data name="ClearAlarm" xml:space="preserve">
     <value>Clear Alarm</value>
   </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfigurationUpdatedSinceLastConnect" xml:space="preserve">
+    <value>!! Grbl settings changed since last connected</value>
+  </data>
   <data name="Connect" xml:space="preserve">
     <value>Connect</value>
   </data>
   <data name="Connected" xml:space="preserve">
     <value>Connected</value>
+  </data>
+  <data name="Continuous" xml:space="preserve">
+    <value>Continuous</value>
   </data>
   <data name="CPUUsage" xml:space="preserve">
     <value>CPU Usage</value>
@@ -156,8 +165,14 @@
   <data name="GrblSettings" xml:space="preserve">
     <value>Grbl Settings</value>
   </data>
+  <data name="GrblValueUpdated" xml:space="preserve">
+    <value>${0}={1} ; {3} - Original value {1} was changed to {2}</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
   </data>
   <data name="MachineAdd" xml:space="preserve">
     <value>Add Machine</value>
@@ -213,8 +228,113 @@
   <data name="ServiceSchedule" xml:space="preserve">
     <value>Service Schedule</value>
   </data>
+  <data name="SettingDescription0" xml:space="preserve">
+    <value>Step pulse, microseconds</value>
+  </data>
+  <data name="SettingDescription1" xml:space="preserve">
+    <value>Step idle delay, milliseconds</value>
+  </data>
+  <data name="SettingDescription10" xml:space="preserve">
+    <value>Status report, ‘?’ status</value>
+  </data>
+  <data name="SettingDescription100" xml:space="preserve">
+    <value>Number of X steps to move 1mm</value>
+  </data>
+  <data name="SettingDescription101" xml:space="preserve">
+    <value>Number of Y steps to move 1mm</value>
+  </data>
+  <data name="SettingDescription102" xml:space="preserve">
+    <value>Number of Z steps to move 1mm</value>
+  </data>
+  <data name="SettingDescription11" xml:space="preserve">
+    <value>Junction deviation, mm</value>
+  </data>
+  <data name="SettingDescription110" xml:space="preserve">
+    <value>X Max rate, mm/min</value>
+  </data>
+  <data name="SettingDescription111" xml:space="preserve">
+    <value>Y Max rate, mm/min</value>
+  </data>
+  <data name="SettingDescription112" xml:space="preserve">
+    <value>Z Max rate, mm/min</value>
+  </data>
+  <data name="SettingDescription12" xml:space="preserve">
+    <value>Arc tolerance, mm</value>
+  </data>
+  <data name="SettingDescription120" xml:space="preserve">
+    <value>X Acceleration, mm/sec^2</value>
+  </data>
+  <data name="SettingDescription121" xml:space="preserve">
+    <value>Y Acceleration, mm/sec^2</value>
+  </data>
+  <data name="SettingDescription122" xml:space="preserve">
+    <value>Z Acceleration, mm/sec^2</value>
+  </data>
+  <data name="SettingDescription13" xml:space="preserve">
+    <value>Report mode</value>
+  </data>
+  <data name="SettingDescription130" xml:space="preserve">
+    <value>X Max travel, mm Only for Homing and Soft Limits</value>
+  </data>
+  <data name="SettingDescription131" xml:space="preserve">
+    <value>Y Max travel, mm Only for Homing and Soft Limits</value>
+  </data>
+  <data name="SettingDescription132" xml:space="preserve">
+    <value>Z Max travel, mm Only for Homing and Soft Limits</value>
+  </data>
+  <data name="SettingDescription2" xml:space="preserve">
+    <value>Step port invert, XYZmask</value>
+  </data>
+  <data name="SettingDescription20" xml:space="preserve">
+    <value>Soft limits, (Homing must be enabled)</value>
+  </data>
+  <data name="SettingDescription21" xml:space="preserve">
+    <value>Hard limits</value>
+  </data>
+  <data name="SettingDescription22" xml:space="preserve">
+    <value>Homing cycle</value>
+  </data>
+  <data name="SettingDescription23" xml:space="preserve">
+    <value>Homing direction invert, XYZmask</value>
+  </data>
+  <data name="SettingDescription24" xml:space="preserve">
+    <value>Homing feed, mm/min</value>
+  </data>
+  <data name="SettingDescription25" xml:space="preserve">
+    <value>Homing seek, mm/min</value>
+  </data>
+  <data name="SettingDescription26" xml:space="preserve">
+    <value>Homing debounce, milliseconds</value>
+  </data>
+  <data name="SettingDescription27" xml:space="preserve">
+    <value>Homing pull-off, mm</value>
+  </data>
+  <data name="SettingDescription3" xml:space="preserve">
+    <value>Direction port invert, XYZmask</value>
+  </data>
+  <data name="SettingDescription30" xml:space="preserve">
+    <value>Max spindle speed, RPM</value>
+  </data>
+  <data name="SettingDescription31" xml:space="preserve">
+    <value>Min spindle speed, RPM</value>
+  </data>
+  <data name="SettingDescription32" xml:space="preserve">
+    <value>Laser mode</value>
+  </data>
+  <data name="SettingDescription4" xml:space="preserve">
+    <value>Step enable invert</value>
+  </data>
+  <data name="SettingDescription5" xml:space="preserve">
+    <value>Limit pins invert</value>
+  </data>
+  <data name="SettingDescription6" xml:space="preserve">
+    <value>Probe pin invert</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="SettingsChanged" xml:space="preserve">
+    <value>Setting have changed or been updated</value>
   </data>
   <data name="SpeedPercent" xml:space="preserve">
     <value>{0}% of Speed</value>
@@ -230,6 +350,9 @@
   </data>
   <data name="StateDoor" xml:space="preserve">
     <value>Door</value>
+  </data>
+  <data name="StateHold" xml:space="preserve">
+    <value>Hold</value>
   </data>
   <data name="StateHome" xml:space="preserve">
     <value>Home</value>

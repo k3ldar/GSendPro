@@ -1,4 +1,6 @@
 using System;
+using System.Configuration;
+using System.Runtime;
 using System.Windows.Forms;
 
 using GSendApi;
@@ -38,6 +40,9 @@ namespace GSendDesktop
 
         private static void RegisterServices(IServiceCollection serviceCollection)
         {
+
+            //GSendSettings settings = settingsProvider.GetSettings<GSendSettings>(GSendShared.Constants.SettingsName);
+            serviceCollection.AddSingleton(new GSendSettings());
             serviceCollection.AddSingleton(new ApiSettings(new Uri("https://localhost:7154/")));
             serviceCollection.AddSingleton<MachineApiWrapper>();
             serviceCollection.AddTransient<IMessageNotifier, MessageNotifier>();

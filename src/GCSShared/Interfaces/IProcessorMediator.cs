@@ -10,7 +10,7 @@ namespace GSendShared
 
         void CloseProcessors();
 
-        Task ProcessClientCommunications(WebSocket webSocket);
+        Task ProcessClientCommunications(WebSocket webSocket, string clientId);
 
         CancellationToken CancellationToken { get; }
     }

@@ -104,7 +104,7 @@ var gSend = (function () {
                 if (event.data != '') {
                     var jsonData = $.parseJSON(event.data);
 
-                    if (jsonData.success && jsonData.request === 'mStatus') {
+                    if (jsonData.success && jsonData.request === 'mStatusAll') {
                         that.updateMachineStatus(jsonData.message);
                     }
                     else {

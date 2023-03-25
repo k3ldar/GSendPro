@@ -20,7 +20,8 @@ namespace GCATests.GSendDB
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_InvalidParam_NameNull_Throws_ArgumentNullException()
         {
-            new MachineModel(1, null, GSendShared.MachineType.Printer, "COM5", MachineOptions.None, 3, new Dictionary<uint, decimal>());
+            new MachineModel(1, null, GSendShared.MachineType.Printer, "COM5", MachineOptions.None, 3, new GrblSettings(), 
+                DisplayUnits.MmPerMinute, 50, 0, DateTime.UtcNow, String.Empty);
         }
     }
 }

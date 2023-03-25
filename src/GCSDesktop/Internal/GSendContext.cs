@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using GSendCommon;
+
 using GSendDesktop.Forms;
 
 using GSendShared;
+using GSendShared.Interfaces;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GSendDesktop.Internal
+namespace GSendDesktop
 {
     public sealed class GSendContext : IGSendContext
     {
@@ -47,5 +50,7 @@ namespace GSendDesktop.Internal
         public bool IsClosing { get; private set; } = false;
 
         public IServiceProvider ServiceProvider => _serviceProvider;
+
+        public IGsendSettings Settings { get; } = new GSendSettings();
     }
 }

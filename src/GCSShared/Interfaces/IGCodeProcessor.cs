@@ -6,7 +6,7 @@ namespace GSendShared
 {
     public interface IGCodeProcessor
     {
-        bool Connect();
+        ConnectResult Connect();
 
         bool Disconnect();
 
@@ -26,6 +26,8 @@ namespace GSendShared
 
         void Home();
 
+        bool Probe();
+
         string Help();
 
         void Unlock();
@@ -34,9 +36,11 @@ namespace GSendShared
 
         void JogStop();
 
+        UpdateSettingResult UpdateSetting(string updateCommand);
+
         void WriteLine(string gCode);
 
-        Dictionary<int, decimal> Settings();
+        Dictionary<int, object> Settings();
 
         void UpdateSpindleSpeed(int speed);
 

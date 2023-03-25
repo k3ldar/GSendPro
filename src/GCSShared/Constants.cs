@@ -8,9 +8,9 @@ namespace GSendShared
 
         public const int SocketKeepAliveMinutes = 5;
 
-        public const int ReceiveBufferSize = 1024 * 4;
+        public const int ReceiveBufferSize = 1024 * 8;
 
-        public const string ServerUri = "wss://localhost:7154/client2";
+        public const string ServerUri = "wss://localhost:7154/client2/{0}/";
 
         public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new();
 
@@ -22,19 +22,58 @@ namespace GSendShared
 
         public const string NotificationMachineUpdated = "MachineUpdate";
 
-        public const string MessageMachineStatus = "mStatus";
+        public const string MessageMachineStatusAll = "mStatusAll";
 
         public const string MessageMachinePauseAll = "mPauseAll";
 
         public const string MessageMachineResumeAll = "mResumeAll";
 
+        public const string MessageMachineStatusServer = "mStatus";
+
+        public const string MessageMachineStatus = "mStatus:{0}";
+
+        public const string MessageMachineResumeServer = "mResume";
+
         public const string MessageMachineResume = "mResume:{0}";
+
+        public const string MessageMachineHomeServer = "mHome";
 
         public const string MessageMachineHome = "mHome:{0}";
 
+        public const string MessageMachineConnectServer = "mConnect";
+
         public const string MessageMachineConnect = "mConnect:{0}";
 
+        public const string MessageMachineClearAlarmServer = "mClearAlm";
+
         public const string MessageMachineClearAlarm = "mClearAlm:{0}";
+
+        public const string MessageMachineProbeServer = "mProbe";
+
+        public const string MessageMachineProbe = "mProbe:{0}";
+
+        public const string MessageMachinePauseServer = "mPause";
+
+        public const string MessageMachinePause = "mPause:{0}";
+
+        public const string MessageMachineStopServer = "mStop";
+
+        public const string MessageMachineStop = "mStop:{0}";
+
+        public const string MessageMachineJogStopServer = "mJogStop";
+
+        public const string MessageMachineJogStop = "mJogStop:{0}";
+
+        public const string MessageMachineJogStartServer = "mJogStart";
+
+        public const string MessageMachineJogStart = "mJogStart:{0}:{1}:{2}:{3}";
+
+        public const string MessageMachineUpdateSettingServer = "mUpdateSetting";
+
+        public const string MessageMachineUpdateSetting = "mUpdateSetting:{0}:{1}";
+
+
+
 
         public const string StateUndefined = "Undefined";
 
@@ -53,5 +92,13 @@ namespace GSendShared
         public const string StateRun = "Run";
 
         public const string StateIdle = "Idle";
+
+        public const string StateHold = "Hold";
+
+
+
+        public const string SemiColon = ";";
+
+        public const char EqualsChar = '=';
     }
 }

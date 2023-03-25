@@ -29,119 +29,149 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JogControl));
-            this.btnXMinusYPos = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.btnXMinusYPlus = new System.Windows.Forms.Button();
+            this.btnYPlus = new System.Windows.Forms.Button();
+            this.btnXPlusYPlus = new System.Windows.Forms.Button();
+            this.btnXMinus = new System.Windows.Forms.Button();
+            this.btnXMinusYMinus = new System.Windows.Forms.Button();
+            this.btnXPlus = new System.Windows.Forms.Button();
+            this.btnYMinusXPlus = new System.Windows.Forms.Button();
+            this.btnYMinus = new System.Windows.Forms.Button();
+            this.btnZMinus = new System.Windows.Forms.Button();
+            this.btnZPlus = new System.Windows.Forms.Button();
             this.selectionSteps = new GSendDesktop.Controls.Selection();
             this.selectionFeed = new GSendDesktop.Controls.Selection();
             this.SuspendLayout();
             // 
-            // btnXMinusYPos
+            // btnXMinusYPlus
             // 
-            this.btnXMinusYPos.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXMinusYPos.BackgroundImage")));
-            this.btnXMinusYPos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnXMinusYPos.Location = new System.Drawing.Point(14, 13);
-            this.btnXMinusYPos.Name = "btnXMinusYPos";
-            this.btnXMinusYPos.Size = new System.Drawing.Size(50, 50);
-            this.btnXMinusYPos.TabIndex = 0;
-            this.btnXMinusYPos.UseVisualStyleBackColor = true;
+            this.btnXMinusYPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXMinusYPlus.BackgroundImage")));
+            this.btnXMinusYPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnXMinusYPlus.Location = new System.Drawing.Point(14, 13);
+            this.btnXMinusYPlus.Name = "btnXMinusYPlus";
+            this.btnXMinusYPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnXMinusYPlus.TabIndex = 0;
+            this.btnXMinusYPlus.UseVisualStyleBackColor = true;
+            this.btnXMinusYPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnXMinusYPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnXMinusYPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button2
+            // btnYPlus
             // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.Location = new System.Drawing.Point(70, 13);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(50, 50);
-            this.button2.TabIndex = 1;
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnYPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYPlus.BackgroundImage")));
+            this.btnYPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnYPlus.Location = new System.Drawing.Point(70, 13);
+            this.btnYPlus.Name = "btnYPlus";
+            this.btnYPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnYPlus.TabIndex = 1;
+            this.btnYPlus.UseVisualStyleBackColor = true;
+            this.btnYPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnYPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnYPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button3
+            // btnXPlusYPlus
             // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.Location = new System.Drawing.Point(126, 13);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(50, 50);
-            this.button3.TabIndex = 2;
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnXPlusYPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXPlusYPlus.BackgroundImage")));
+            this.btnXPlusYPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnXPlusYPlus.Location = new System.Drawing.Point(126, 13);
+            this.btnXPlusYPlus.Name = "btnXPlusYPlus";
+            this.btnXPlusYPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnXPlusYPlus.TabIndex = 2;
+            this.btnXPlusYPlus.UseVisualStyleBackColor = true;
+            this.btnXPlusYPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnXPlusYPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnXPlusYPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button4
+            // btnXMinus
             // 
-            this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
-            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button4.Location = new System.Drawing.Point(14, 69);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(50, 50);
-            this.button4.TabIndex = 3;
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnXMinus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXMinus.BackgroundImage")));
+            this.btnXMinus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnXMinus.Location = new System.Drawing.Point(14, 69);
+            this.btnXMinus.Name = "btnXMinus";
+            this.btnXMinus.Size = new System.Drawing.Size(50, 50);
+            this.btnXMinus.TabIndex = 3;
+            this.btnXMinus.UseVisualStyleBackColor = true;
+            this.btnXMinus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnXMinus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnXMinus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button5
+            // btnXMinusYMinus
             // 
-            this.button5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button5.BackgroundImage")));
-            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button5.Location = new System.Drawing.Point(14, 125);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(50, 50);
-            this.button5.TabIndex = 4;
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnXMinusYMinus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXMinusYMinus.BackgroundImage")));
+            this.btnXMinusYMinus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnXMinusYMinus.Location = new System.Drawing.Point(14, 125);
+            this.btnXMinusYMinus.Name = "btnXMinusYMinus";
+            this.btnXMinusYMinus.Size = new System.Drawing.Size(50, 50);
+            this.btnXMinusYMinus.TabIndex = 5;
+            this.btnXMinusYMinus.UseVisualStyleBackColor = true;
+            this.btnXMinusYMinus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnXMinusYMinus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnXMinusYMinus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button6
+            // btnXPlus
             // 
-            this.button6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button6.BackgroundImage")));
-            this.button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button6.Location = new System.Drawing.Point(126, 69);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(50, 50);
-            this.button6.TabIndex = 5;
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnXPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnXPlus.BackgroundImage")));
+            this.btnXPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnXPlus.Location = new System.Drawing.Point(126, 69);
+            this.btnXPlus.Name = "btnXPlus";
+            this.btnXPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnXPlus.TabIndex = 4;
+            this.btnXPlus.UseVisualStyleBackColor = true;
+            this.btnXPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnXPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnXPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button7
+            // btnYMinusXPlus
             // 
-            this.button7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button7.BackgroundImage")));
-            this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button7.Location = new System.Drawing.Point(126, 125);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(50, 50);
-            this.button7.TabIndex = 6;
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnYMinusXPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYMinusXPlus.BackgroundImage")));
+            this.btnYMinusXPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnYMinusXPlus.Location = new System.Drawing.Point(126, 125);
+            this.btnYMinusXPlus.Name = "btnYMinusXPlus";
+            this.btnYMinusXPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnYMinusXPlus.TabIndex = 7;
+            this.btnYMinusXPlus.UseVisualStyleBackColor = true;
+            this.btnYMinusXPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnYMinusXPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnYMinusXPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button8
+            // btnYMinus
             // 
-            this.button8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button8.BackgroundImage")));
-            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button8.Location = new System.Drawing.Point(70, 125);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(50, 50);
-            this.button8.TabIndex = 7;
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnYMinus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYMinus.BackgroundImage")));
+            this.btnYMinus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnYMinus.Location = new System.Drawing.Point(70, 125);
+            this.btnYMinus.Name = "btnYMinus";
+            this.btnYMinus.Size = new System.Drawing.Size(50, 50);
+            this.btnYMinus.TabIndex = 6;
+            this.btnYMinus.UseVisualStyleBackColor = true;
+            this.btnYMinus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnYMinus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnYMinus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button9
+            // btnZMinus
             // 
-            this.button9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button9.BackgroundImage")));
-            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button9.Location = new System.Drawing.Point(196, 95);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(50, 50);
-            this.button9.TabIndex = 8;
-            this.button9.UseVisualStyleBackColor = true;
+            this.btnZMinus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnZMinus.BackgroundImage")));
+            this.btnZMinus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnZMinus.Location = new System.Drawing.Point(196, 95);
+            this.btnZMinus.Name = "btnZMinus";
+            this.btnZMinus.Size = new System.Drawing.Size(50, 50);
+            this.btnZMinus.TabIndex = 9;
+            this.btnZMinus.UseVisualStyleBackColor = true;
+            this.btnZMinus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnZMinus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnZMinus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
-            // button10
+            // btnZPlus
             // 
-            this.button10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button10.BackgroundImage")));
-            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button10.Location = new System.Drawing.Point(196, 39);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(50, 50);
-            this.button10.TabIndex = 9;
-            this.button10.UseVisualStyleBackColor = true;
+            this.btnZPlus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnZPlus.BackgroundImage")));
+            this.btnZPlus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnZPlus.Location = new System.Drawing.Point(196, 39);
+            this.btnZPlus.Name = "btnZPlus";
+            this.btnZPlus.Size = new System.Drawing.Size(50, 50);
+            this.btnZPlus.TabIndex = 8;
+            this.btnZPlus.UseVisualStyleBackColor = true;
+            this.btnZPlus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseDown);
+            this.btnZPlus.MouseLeave += new System.EventHandler(this.JogButtonMouseLeave);
+            this.btnZPlus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.JogButtonMouseUp);
             // 
             // selectionSteps
             // 
@@ -150,11 +180,13 @@
             this.selectionSteps.LabelValue = null;
             this.selectionSteps.Location = new System.Drawing.Point(252, 13);
             this.selectionSteps.Maximum = 10;
+            this.selectionSteps.Minimum = 0;
             this.selectionSteps.Name = "selectionSteps";
             this.selectionSteps.Size = new System.Drawing.Size(82, 162);
             this.selectionSteps.TabIndex = 10;
             this.selectionSteps.TickFrequency = 1;
             this.selectionSteps.Value = 0;
+            this.selectionSteps.ValueChanged += new System.EventHandler(this.selectionSteps_ValueChanged);
             // 
             // selectionFeed
             // 
@@ -163,6 +195,7 @@
             this.selectionFeed.LabelValue = null;
             this.selectionFeed.Location = new System.Drawing.Point(340, 13);
             this.selectionFeed.Maximum = 10;
+            this.selectionFeed.Minimum = 0;
             this.selectionFeed.Name = "selectionFeed";
             this.selectionFeed.Size = new System.Drawing.Size(82, 162);
             this.selectionFeed.TabIndex = 11;
@@ -175,16 +208,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.selectionFeed);
             this.Controls.Add(this.selectionSteps);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.btnXMinusYPos);
+            this.Controls.Add(this.btnZPlus);
+            this.Controls.Add(this.btnZMinus);
+            this.Controls.Add(this.btnYMinus);
+            this.Controls.Add(this.btnYMinusXPlus);
+            this.Controls.Add(this.btnXPlus);
+            this.Controls.Add(this.btnXMinusYMinus);
+            this.Controls.Add(this.btnXMinus);
+            this.Controls.Add(this.btnXPlusYPlus);
+            this.Controls.Add(this.btnYPlus);
+            this.Controls.Add(this.btnXMinusYPlus);
             this.Name = "JogControl";
             this.Size = new System.Drawing.Size(439, 190);
             this.ResumeLayout(false);
@@ -193,16 +226,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnXMinusYPos;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button btnXMinusYPlus;
+        private System.Windows.Forms.Button btnYPlus;
+        private System.Windows.Forms.Button btnXPlusYPlus;
+        private System.Windows.Forms.Button btnXMinus;
+        private System.Windows.Forms.Button btnXMinusYMinus;
+        private System.Windows.Forms.Button btnXPlus;
+        private System.Windows.Forms.Button btnYMinusXPlus;
+        private System.Windows.Forms.Button btnYMinus;
+        private System.Windows.Forms.Button btnZMinus;
+        private System.Windows.Forms.Button btnZPlus;
         private Selection selectionSteps;
         private Selection selectionFeed;
     }

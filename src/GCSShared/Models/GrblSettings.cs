@@ -1,260 +1,213 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+
+using GSendShared.Attributes;
 
 namespace GSendShared.Models
 {
     public sealed class GrblSettings
     {
-        /// <summary>
-        /// $0
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(10)]
         [Category("Steps")]
+        [GrblSetting("$0")]
         public uint StepPulseTime { get; set; } = 10;
 
-        /// <summary>
-        /// $1
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(10)]
         [Category("Steps")]
-        public uint StepIdleDelay { get; set; } = 10;
+        [GrblSetting("$1")]
+        public uint StepIdleDelay { get; set; } = 255;
 
-        /// <summary>
-        /// $2
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(AxisConfiguration.None)]
         [Category("Steps")]
+        [GrblSetting("$2")]
         public AxisConfiguration StepPulseConfiguration { get; set; } = AxisConfiguration.None;
 
-        /// <summary>
-        /// $3
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(AxisConfiguration.None)]
         [Category("Steps")]
+        [GrblSetting("$3")]
         public AxisConfiguration AxisDirection { get; set; } = AxisConfiguration.None;
 
-        /// <summary>
-        /// $4
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(AxisConfiguration.None)]
         [Category("Step")]
+        [GrblSetting("$4")]
         public Pin StepEnableInvert { get; set; } = Pin.High;
 
-        /// <summary>
-        /// $5
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(Pin.High)]
         [Category("General")]
+        [GrblSetting("$5")]
         public Pin LimitPinInvert { get; set; } = Pin.High;
 
-        /// <summary>
-        /// $6
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(Pin.High)]
         [Category("General")]
+        [GrblSetting("$6")]
         public Pin ProbePinInvert { get; set; } = Pin.High;
 
-        /// <summary>
-        /// $10
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(ReportType.MachinePosition | ReportType.WorkPosition)]
         [Category("General")]
+        [GrblSetting("$10")]
         public ReportType StatusReport { get; set; } = ReportType.MachinePosition | ReportType.WorkPosition;
 
-        /// <summary>
-        /// $11
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(0.002)]
         [Category("Curves")]
-        public decimal JunctionDeviation { get; set; } = 0.002m;
+        [GrblSetting("$11")]
+        public decimal JunctionDeviation { get; set; } = 0.010m;
 
-        /// <summary>
-        /// $12
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(0.002)]
         [Category("Curves")]
+        [GrblSetting("$12")]
         public decimal ArcTolerance { get; set; } = 0.002m;
 
-        /// <summary>
-        /// $13
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(FeedbackUnit.Mm)]
         [Category("Feedback")]
+        [GrblSetting("$13")]
         public FeedbackUnit FeedbackUnit { get; set; } = FeedbackUnit.Mm;
 
-        /// <summary>
-        /// $20
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(false)]
         [Category("Limits")]
+        [GrblSetting("$20")]
         public bool SoftLimits { get; set; } = false;
 
-        /// <summary>
-        /// $21
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(false)]
         [Category("Limits")]
-        public bool HardLimits { get; set; } = false;
+        [GrblSetting("$21")]
+        public bool HardLimits { get; set; } = true;
 
-        /// <summary>
-        /// $22
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(true)]
         [Category("Homing")]
+        [GrblSetting("$22")]
         public bool HomingCycle { get; set; } = true;
 
-        /// <summary>
-        /// $23
-        /// </summary>
         [Browsable(true)]
-        [DefaultValue(AxisConfiguration.ReverseX)]
+        [DefaultValue(AxisConfiguration.ReverseXandY)]
         [Category("Homing")]
-        public AxisConfiguration HomingCycleDirection { get; set; } = AxisConfiguration.ReverseX;
+        [GrblSetting("$23")]
+        public AxisConfiguration HomingCycleDirection { get; set; } = AxisConfiguration.ReverseXandY;
 
-        /// <summary>
-        /// $24
-        /// </summary>
         [Browsable(true)]
-        [DefaultValue(50)]
+        [DefaultValue(25)]
         [Category("Homing")]
-        public decimal HomingFeedRate { get; set; } = 50;
+        [GrblSetting("$24")]
+        public decimal HomingFeedRate { get; set; } = 25;
 
-        /// <summary>
-        /// $25
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(635)]
         [Category("Homing")]
+        [GrblSetting("$25")]
         public decimal HomingSeekRate { get; set; } = 635;
 
-        /// <summary>
-        /// $26
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(250)]
         [Category("Homing")]
+        [GrblSetting("$26")]
         public uint HomingDebounce { get; set; } = 250;
 
-        /// <summary>
-        /// $27
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(1)]
         [Category("Homing")]
+        [GrblSetting("$27")]
         public decimal HomingPullOff { get; set; } = 1;
 
-        /// <summary>
-        /// $100
-        /// </summary>
+        [Browsable(true)]
+        [DefaultValue(10000)]
+        [Category("Spindle")]
+        [GrblSetting("$30")]
+        public uint MaxSpindleSpeed { get; set; } = 10000;
+
+        [Browsable(true)]
+        [DefaultValue(0)]
+        [Category("Spindle")]
+        [GrblSetting("$31")]
+        public uint MinSpindleSpeed { get; set; } = 0;
+
+        [Browsable(true)]
+        [DefaultValue(false)]
+        [Category("Laser")]
+        [GrblSetting("$32")]
+        public bool LaserModeEnabled { get; set; } = false;
+
+        [Browsable(true)]
+        [DefaultValue(80)]
+        [Category("StepperMotor")]
+        [GrblSetting("$100")]
+        public decimal StepsPerMmX { get; set; } = 80;
+
+        [Browsable(true)]
+        [DefaultValue(80)]
+        [Category("StepperMotor")]
+        [GrblSetting("$101")]
+        public decimal StepsPerMmY { get; set; } = 80;
+
         [Browsable(true)]
         [DefaultValue(250)]
         [Category("StepperMotor")]
-        public decimal StepsPerMmX { get; set; } = 250;
+        [GrblSetting("$102")]
+        public decimal StepsPerMmZ { get; set; } = 400;
 
-        /// <summary>
-        /// $101
-        /// </summary>
-        [Browsable(true)]
-        [DefaultValue(250)]
-        [Category("StepperMotor")]
-        public decimal StepsPerMmY { get; set; } = 250;
-
-        /// <summary>
-        /// $102
-        /// </summary>
-        [Browsable(true)]
-        [DefaultValue(250)]
-        [Category("StepperMotor")]
-        public decimal StepsPerMmZ { get; set; } = 250;
-
-        /// <summary>
-        /// $110
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(2000)]
         [Category("StepperMotor")]
+        [GrblSetting("$110")]
         public decimal MaxFeedRateX { get; set; } = 2000;
 
-        /// <summary>
-        /// $111
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(2000)]
         [Category("StepperMotor")]
+        [GrblSetting("$111")]
         public decimal MaxFeedRateY { get; set; } = 2000;
 
-        /// <summary>
-        /// $112
-        /// </summary>
         [Browsable(true)]
-        [DefaultValue(1000)]
+        [DefaultValue(1200)]
         [Category("StepperMotor")]
-        public decimal MaxFeedRateZ { get; set; } = 1000;
+        [GrblSetting("$112")]
+        public decimal MaxFeedRateZ { get; set; } = 1200;
 
-        /// <summary>
-        /// $120
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(50)]
         [Category("StepperMotor")]
-        public decimal MaxAccelerationX { get; set; } = 50;
+        [GrblSetting("$120")]
+        public decimal MaxAccelerationX { get; set; } = 300;
 
-        /// <summary>
-        /// $121
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(50)]
         [Category("StepperMotor")]
-        public decimal MaxAccelerationY { get; set; } = 50;
+        [GrblSetting("$121")]
+        public decimal MaxAccelerationY { get; set; } = 300;
 
-        /// <summary>
-        /// $122
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(50)]
         [Category("StepperMotor")]
-        public decimal MaxAccelerationZ { get; set; } = 50;
+        [GrblSetting("$122")]
+        public decimal MaxAccelerationZ { get; set; } = 300;
 
-        /// <summary>
-        /// $130
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(300)]
         [Category("Limits")]
+        [GrblSetting("$130")]
         public decimal MaxTravelX { get; set; } = 300;
 
-        /// <summary>
-        /// $131
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(400)]
         [Category("Limits")]
+        [GrblSetting("$131")]
         public decimal MaxTravelY { get; set; } = 400;
 
-        /// <summary>
-        /// $132
-        /// </summary>
         [Browsable(true)]
         [DefaultValue(100)]
         [Category("Limits")]
+        [GrblSetting("$132")]
         public decimal MaxTravelZ { get; set; } = 100;
     }
 }

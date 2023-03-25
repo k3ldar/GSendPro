@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using GSendShared;
+using GSendShared.Models;
 
 using SimpleDB;
 
@@ -19,12 +20,16 @@ namespace GSendDB.Tables
         private string _comPort;
         private MachineOptions _options;
         private byte _axisCount;
-        private ObservableDictionary<uint, decimal> _settings;
+        private GrblSettings _settings;
+        private DisplayUnits _displayUnits;
+        private int _overrideSpeed;
+        private int _overrideSpindle;
+        private DateTime _configurationLastVerified;
+        private string _probeCommand;
 
         public MachineDataRow()
         {
-            _settings = new ObservableDictionary<uint, decimal>();
-            _settings.Changed += ObservableDataChanged;
+            _settings = new GrblSettings();
         }
 
         [UniqueIndex]
@@ -98,7 +103,7 @@ namespace GSendDB.Tables
             }
         }
 
-        public ObservableDictionary<uint, decimal> Settings
+        public GrblSettings Settings
         {
             get => _settings;
 
@@ -110,16 +115,79 @@ namespace GSendDB.Tables
                 if (value == null)
                     return;
 
-                _settings.Changed -= ObservableItem_Changed;
                 _settings = value;
-                _settings.Changed += ObservableItem_Changed;
                 Update();
             }
         }
 
-        private void ObservableItem_Changed(object sender, EventArgs e)
+        public DisplayUnits DisplayUnits
         {
-            Update();
+            get => _displayUnits;
+
+            set
+            {
+                if (_displayUnits == value)
+                    return;
+
+                _displayUnits = value;
+                Update();
+            }
+        }
+
+        public int OverrideSpeed
+        {
+            get => _overrideSpeed;
+
+            set
+            {
+                if (_overrideSpeed == value)
+                    return;
+
+                _overrideSpeed = value;
+                Update();
+            }
+        }
+
+        public int OverrideSpindle
+        {
+            get => _overrideSpindle;
+
+            set
+            {
+                if (_overrideSpindle != value)
+                    return;
+
+                _overrideSpindle = value;
+                Update();
+            }
+        }
+
+        public DateTime ConfigurationLastVerified
+        {
+            get => _configurationLastVerified;
+
+            set
+            {
+                if (_configurationLastVerified == value)
+                    return;
+
+                _configurationLastVerified = value;
+                Update();
+            }
+        }
+
+        public string ProbeCommand
+        {
+            get => _probeCommand;
+
+            set
+            {
+                if (_probeCommand == value) 
+                    return;
+
+                _probeCommand = value;
+                Update();
+            }
         }
     }
 }

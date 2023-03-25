@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.WebSockets;
@@ -15,6 +16,7 @@ using GSendDesktop.Forms;
 using GSendDesktop.Internal;
 
 using GSendShared;
+using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,10 +37,11 @@ namespace GSendDesktop
         private readonly object _lockObject = new();
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly Dictionary<long, ListViewItem> _machines = new();
+        private readonly ConcurrentDictionary<long, bool> _machineStateModel = new();
         private IMachine _selectedMachine = null;
 
         public FormMain(IGSendContext context, MachineApiWrapper machineApiWrapper,
-            IMessageNotifier messageNotifier, ICommandProcessor processCommand)
+            IMessageNotifier messageNotifier, ICommandProcessor processCommand, GSendSettings settings)
         {
             InitializeComponent();
 
@@ -48,10 +51,11 @@ namespace GSendDesktop
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
 
             _cancellationTokenRegistration = new();
-            _clientWebSocket = new GSendWebSocket(_cancellationTokenRegistration.Token);
+            _clientWebSocket = new GSendWebSocket(_cancellationTokenRegistration.Token, nameof(FormMain));
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
+            timerUpdateStatus.Interval = settings.UpdateMilliseconds;
         }
 
         #region Client Web Socket
@@ -73,8 +77,21 @@ namespace GSendDesktop
 
             ClientBaseMessage clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message);
 
-            if (!clientMessage.success)
+            if (clientMessage.request.Equals(Constants.MessageMachineConnectServer))
+            {
+                JsonElement element = (JsonElement)clientMessage.message;
+
+                ConnectResult connectResult = (ConnectResult)element.GetInt32();
+
+                ProcessClientConnectMessage(connectResult);
+
                 return;
+            }
+
+            if (!clientMessage.success)
+            {
+                return;
+            }
 
             string serverCpu = String.Format(GSend.Language.Resources.ServerCpuStateConnected, clientMessage.ServerCpuStatus.ToString("N2"));
 
@@ -82,7 +99,7 @@ namespace GSendDesktop
                 toolStripStatusCpu.Text = serverCpu;
 
 
-            if (clientMessage.request.Equals(MessageMachineStatus))
+            if (clientMessage.request.Equals(MessageMachineStatusAll))
             {
                 List<StatusResponseMessage> statuses = JsonSerializer.Deserialize<List<StatusResponseMessage>>(clientMessage.message.ToString());
 
@@ -90,6 +107,31 @@ namespace GSendDesktop
             }
 
             UpdateEnabledState();
+        }
+
+        private void ProcessClientConnectMessage(ConnectResult connectResult)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(ProcessClientConnectMessage, connectResult);
+                return;
+            }
+
+
+            //switch (connectResult)
+            //{
+            //    case ConnectResult.Success:
+            //    case ConnectResult.AlreadyConnected:
+            //        break;
+
+            //    case ConnectResult.TimeOut:
+
+            //        break;
+
+            //    case ConnectResult.Error:
+
+            //        break;
+            //}
         }
 
         private void UpdateMachineStatus(List<StatusResponseMessage> statuses)
@@ -119,6 +161,18 @@ namespace GSendDesktop
 
                     if (status.Connected)
                     {
+
+                        if (status.UpdatedConfiguration)
+                        {
+                            if (machineItem.SubItems[0].BackColor != Color.Orange)
+                                machineItem.SubItems[0].BackColor = Color.Orange;
+                        }
+                        else
+                        {
+                            if (machineItem.SubItems[0].BackColor != Color.White)
+                                machineItem.SubItems[0].BackColor = Color.White;
+                        }
+
                         if (!machineItem.SubItems[3].Text.Equals(connectedText))
                             machineItem.SubItems[3].Text = connectedText;
 
@@ -126,7 +180,7 @@ namespace GSendDesktop
                         {
                             Color backColor = Color.White;
                             Color foreColor = Color.Black;
-                            string text = TranslateState(status.State);
+                            string text = HelperMethods.TranslateState(status.State);
 
                             switch (status.State)
                             {
@@ -141,14 +195,10 @@ namespace GSendDesktop
                                     foreColor = Color.White;
                                     break;
 
+                                case StateJog:
                                 case StateRun:
                                     backColor = Color.Green;
                                     foreColor = Color.White;
-                                    break;
-
-                                case StateJog:
-                                    backColor = Color.Yellow;
-                                    foreColor = Color.Black;
                                     break;
 
                                 case StateAlarm:
@@ -194,6 +244,10 @@ namespace GSendDesktop
                             machineItem.SubItems[4].Text = String.Empty;
                         }
                     }
+
+                    Color backLineColor = Color.White;
+                    Color foreLineColor = Color.Black;
+                    string configUpdate = String.Empty;
                 }
             }
         }
@@ -263,33 +317,6 @@ namespace GSendDesktop
 
         #region Form Methods
 
-        private string TranslateState(string state)
-        {
-            switch (state)
-            {
-                case StateUndefined:
-                    return GSend.Language.Resources.StatePortOpen;
-                case StateIdle:
-                    return GSend.Language.Resources.StateIdle;
-                case StateRun:
-                    return GSend.Language.Resources.StateRun;
-                case StateJog:
-                    return GSend.Language.Resources.StateJog;
-                case StateAlarm:
-                    return GSend.Language.Resources.StateAlarm;
-                case StateDoor:
-                    return GSend.Language.Resources.StateDoor;
-                case StateCheck:
-                    return GSend.Language.Resources.StateCheck;
-                case StateHome:
-                    return GSend.Language.Resources.StateHome;
-                case StateSleep:
-                    return GSend.Language.Resources.StateSleep;
-                default:
-                    return GSend.Language.Resources.StateUnknown;
-            }
-        }
-
         private void UpdateMachines()
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
@@ -337,7 +364,7 @@ namespace GSendDesktop
 
         private void timerUpdateStatus_Tick(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(MessageMachineStatus).ConfigureAwait(false);
+            _clientWebSocket.SendAsync(MessageMachineStatusAll).ConfigureAwait(false);
 
             string connectedText = _clientWebSocket.State == WebSocketState.Open ?
                 GSend.Language.Resources.ServerConnected :
@@ -435,6 +462,9 @@ namespace GSendDesktop
 
 
             toolStripStatusCpu.Text = GSend.Language.Resources.ServerCpuStateDisconnected;
+
+
+            // menu items
         }
 
         private void listViewMachines_DoubleClick(object sender, EventArgs e)
@@ -453,5 +483,19 @@ namespace GSendDesktop
         }
 
         #endregion Form Methods
+
+        #region Menu Items
+
+        private void mnuViewLargeIcons_Click(object sender, EventArgs e)
+        {
+            listViewMachines.View = View.LargeIcon;
+        }
+
+        private void mnuViewSmallIcons_Click(object sender, EventArgs e)
+        {
+            listViewMachines.View = View.Details;
+        }
+
+        #endregion Menu Items
     }
 }

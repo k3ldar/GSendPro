@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GSendShared.Models
+﻿namespace GSendShared.Models
 {
     public sealed class MachineStateModel
     {
@@ -32,6 +25,11 @@ namespace GSendShared.Models
         private bool _mistEnabled;
         private bool _spindleClockWise;
         private bool _spindleCounterClockWise;
+
+        public MachineStateModel()
+        {
+
+        }
 
         public MachineState MachineState
         {
@@ -364,6 +362,10 @@ namespace GSendShared.Models
                 return _machineState == MachineState.Alarm;
             }
         }
+
+        public bool IsConnected { get; set; }
+
+        public List<ChangedGrblSettings> UpdatedGrblConfiguration { get; set; } = new List<ChangedGrblSettings>();
 
         public void ResetUpdated()
         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GSendShared.Interfaces;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendShared
 {
@@ -12,6 +14,6 @@ namespace GSendShared
 
         bool IsClosing { get; }
 
-        
+        IGsendSettings Settings { get; }
     }
 }

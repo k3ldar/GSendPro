@@ -11,20 +11,22 @@ namespace GSendService.Controllers
     public class ClientCommunicationController : BaseController
     {
         private readonly IProcessorMediator _processorMediator;
+
         public ClientCommunicationController(IProcessorMediator processorMediator)
         {
             _processorMediator = processorMediator ?? throw new ArgumentNullException(nameof(processorMediator));
         }
 
-        [Route("/client")]
+        [Route("/webclient")]
         public async Task ClientConnection()
         {
+            string clientId = "Web";
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 try
                 {
                     using WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                    await _processorMediator.ProcessClientCommunications(webSocket);
+                    await _processorMediator.ProcessClientCommunications(webSocket, clientId);
                 }
                 catch (WebSocketException)
                 {
@@ -44,15 +46,15 @@ namespace GSendService.Controllers
             }
         }
 
-        [Route("/client2")]
-        public async Task ClientConnection2()
+        [Route("/client2/{clientId}")]
+        public async Task ClientConnection2(string clientId)
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 try
                 {
                     using WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                    await _processorMediator.ProcessClientCommunications(webSocket);
+                    await _processorMediator.ProcessClientCommunications(webSocket, clientId);
                 }
                 catch (WebSocketException)
                 {

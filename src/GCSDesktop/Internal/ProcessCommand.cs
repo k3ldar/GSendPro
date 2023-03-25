@@ -26,7 +26,7 @@ namespace GSendDesktop.Internal
             }
             catch (AggregateException)
             {
-                _messageNotifier.ShowMessage("Failed to connect to server");
+
             }
             catch (GSendApiException gs)
             {

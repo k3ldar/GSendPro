@@ -1,8 +1,15 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
+using AppSettings;
+
 using GSendShared;
+using GSendShared.Attributes;
 using GSendShared.Models;
+
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Mvc;
 
 using Shared.Classes;
 
@@ -50,6 +57,7 @@ namespace GSendCommon
         private readonly List<IGCodeLine> _commandsToSend = new();
         private readonly Queue<IGCodeLine> _sendQueue = new();
 
+        private readonly IMachineProvider _machineProvider;
         private readonly IMachine _machine;
         private readonly IComPort _port;
         private volatile bool _isRunning;
@@ -60,21 +68,27 @@ namespace GSendCommon
         private readonly object _lockObject = new();
         private readonly MachineStateModel _machineStateModel = new();
         private int _lineCount = 0;
+        private bool _initialising = false;
 
         #region Constructors
 
-        public GCodeProcessor(IMachine machine, IComPortFactory comPortFactory)
+        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine, IComPortFactory comPortFactory)
             : base(machine, TimeSpan.FromMilliseconds(QueueProcessMilliseconds))
         {
+            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+
             if (comPortFactory == null)
                 throw new ArgumentNullException(nameof(comPortFactory));
 
+            base.HangTimeout = int.MaxValue;
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
             _port = comPortFactory.CreateComPort(_machine);
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
             DefaultTimeOut = TimeSpan.FromSeconds(30);
+
+            ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort}", ThreadPriority.Normal);
         }
 
         #endregion Constructors
@@ -126,27 +140,41 @@ namespace GSendCommon
 
         #region IGCodeProcessor Methods
 
-        public bool Connect()
+        public ConnectResult Connect()
         {
             if (_port.IsOpen())
-                return true;
+                return ConnectResult.AlreadyConnected;
 
+
+            _initialising = true;
             try
             {
                 _port.Open();
                 OnConnect?.Invoke(this, EventArgs.Empty);
-                ThreadManager.ThreadStart(this, $"{_machine.Name} - {_machine.ComPort}", ThreadPriority.Normal);
-                InternalWriteLine(CommandGetStatus);
-
+                ProcessMessageResponse(SendCommandWaitForOKCommand(CommandGetStatus).Trim()[1..^1]);
+                ValidateGrblSettings();
                 Trace.WriteLine($"Connect: {_port.IsOpen()}");
+                _machineStateModel.IsConnected = _port.IsOpen();
+                return ConnectResult.Success;
             }
-            catch (Exception)
+            catch (TimeoutException)
             {
-                Trace.WriteLine("Connect Error");
-                OnInvalidComPort?.Invoke(this, EventArgs.Empty);
-            }
+                if (_port.IsOpen())
+                    _port.Close();
 
-            return _port.IsOpen();
+                return ConnectResult.TimeOut;
+            }
+            catch (Exception err)
+            {
+                Trace.WriteLine($"Connect Error: {err.Message}");
+                OnInvalidComPort?.Invoke(this, EventArgs.Empty);
+
+                return ConnectResult.Error;
+            }
+            finally
+            {
+                _initialising = false;
+            }
         }
 
         public bool Disconnect()
@@ -156,8 +184,10 @@ namespace GSendCommon
 
             _port.Close();
             OnDisconnect?.Invoke(this, EventArgs.Empty);
-            ThreadManager.Cancel($"{_machine.Name} - {_machine.ComPort}");
             Trace.WriteLine("Disconnect");
+
+            _machineStateModel.IsConnected = _port.IsOpen();
+            _machineStateModel.UpdatedGrblConfiguration.Clear();
 
             return !_port.IsOpen();
         }
@@ -269,96 +299,106 @@ namespace GSendCommon
             if (axis.HasFlag(Axis.Z))
                 zeroCommand += String.Format(CommandZeroAxis, Axis.Z);
 
-            SendCommandWaitForOKCommand(zeroCommand);
+            SendCommandWaitForResponse(zeroCommand);
             OnCommandSent?.Invoke(this, CommandSent.ZeroAxis);
         }
 
         public void Home()
         {
-            SendCommandWaitForOKCommand(CommandHome);
+            SendCommandWaitForResponse(CommandHome);
             Trace.WriteLine("Home");
             OnCommandSent?.Invoke(this, CommandSent.Home);
         }
 
+        public bool Probe()
+        {
+            if (String.IsNullOrEmpty(_machine.ProbeCommand))
+                return false;
+
+            IGCodeParser gcodeParser = new GCodeParser();
+            IGCodeAnalyses gCodeAnalyses = 
+            IGCodeProcessor gCodeProcessor = new 
+        }
+
         public string Help()
         {
-            return SendCommandWaitForResponse(CommandHelp);
+            return SendCommandWaitForOKCommand(CommandHelp);
         }
 
         public void Unlock()
         {
-            SendCommandWaitForOKCommand(CommandUnlock);
+            SendCommandWaitForResponse(CommandUnlock);
             Trace.WriteLine("Unlock");
             OnCommandSent?.Invoke(this, CommandSent.Unlock);
         }
 
         public void JogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
-            StringBuilder jogCommand = new("$J=G21G91");
+            StringBuilder jogCommand = new("$J=G20G91");
             decimal maxZTravel = Convert.ToDecimal(stepSize);
             decimal maxXTravel = Convert.ToDecimal(stepSize);
             decimal maxYTravel = Convert.ToDecimal(stepSize);
 
             if (stepSize < 0.01)
             {
-                maxZTravel = _machine.Settings[132] - Convert.ToDecimal(StateModel.MachineZ);
-                maxXTravel = _machine.Settings[130] - Convert.ToDecimal(StateModel.MachineX);
-                maxYTravel = _machine.Settings[131] - Convert.ToDecimal(StateModel.MachineY);
+                maxZTravel = _machine.Settings.MaxTravelX - Convert.ToDecimal(StateModel.MachineZ);
+                maxXTravel = _machine.Settings.MaxTravelY - Convert.ToDecimal(StateModel.MachineX);
+                maxYTravel = _machine.Settings.MaxTravelZ - Convert.ToDecimal(StateModel.MachineY);
             }
 
             switch (jogDirection)
             {
                 case JogDirection.ZPlus:
-                    jogCommand.AppendFormat("Z{0}", maxZTravel);
+                    jogCommand.AppendFormat("Z{0}", maxZTravel.ToString("N4"));
 
                     break;
 
                 case JogDirection.ZMinus:
-                    jogCommand.AppendFormat("Z{0}", 0 - maxZTravel);
+                    jogCommand.AppendFormat("Z{0}", (0 - maxZTravel).ToString("N4"));
 
                     break;
 
                 case JogDirection.XPlus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel);
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
 
                     break;
 
                 case JogDirection.XMinus:
-                    jogCommand.AppendFormat("X{0}", 0 - maxXTravel);
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
 
                     break;
 
                 case JogDirection.YPlus:
-                    jogCommand.AppendFormat("Y{0}", maxYTravel);
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
 
                     break;
 
                 case JogDirection.YMinus:
-                    jogCommand.AppendFormat("Y{0}", 0 - maxYTravel);
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
 
                     break;
 
                 case JogDirection.XPlusYMinus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel);
-                    jogCommand.AppendFormat("Y{0}", 0 - maxYTravel);
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
 
                     break;
 
                 case JogDirection.XPlusYPlus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel);
-                    jogCommand.AppendFormat("Y{0}", maxYTravel);
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
 
                     break;
 
                 case JogDirection.XMinusYMinus:
-                    jogCommand.AppendFormat("X{0}", 0 - maxXTravel);
-                    jogCommand.AppendFormat("Y{0}", 0 - maxYTravel);
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
 
                     break;
 
                 case JogDirection.XMinusYPlus:
-                    jogCommand.AppendFormat("X{0}", 0 - maxXTravel);
-                    jogCommand.AppendFormat("Y{0}", maxYTravel);
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
 
                     break;
             }
@@ -379,13 +419,13 @@ namespace GSendCommon
                 InternalWriteLine(gCode);
         }
 
-        public Dictionary<int, decimal> Settings()
+        public Dictionary<int, object> Settings()
         {
-            Dictionary<int, decimal> Result = new();
+            Dictionary<int, object> Result = new();
 
-            string allSettings = SendCommandWaitForResponse(CommandSettings);
+            string allSettings = SendCommandWaitForOKCommand(CommandSettings);
 
-            string[] settings = allSettings.Trim().Split('\r');
+            string[] settings = allSettings.Trim().Split('\r', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string s in settings)
             {
@@ -404,6 +444,91 @@ namespace GSendCommon
             return Result;
         }
 
+        public UpdateSettingResult UpdateSetting(string updateCommand)
+        {
+            _initialising = true;
+            try
+            {
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
+                {
+                    string response = SendCommandWaitForOKCommand(updateCommand);
+
+                    if (response.Trim().Equals(String.Empty))
+                    {
+                        object[] parts = updateCommand.Split(Constants.EqualsChar,
+                            StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                        if (Int32.TryParse(parts[0].ToString()[1..], out int settingValue))
+                        {
+                            PropertyInfo propertyInfo = GetPropertyWithAttributeValue(settingValue);
+
+                            if (propertyInfo != null)
+                            {
+                                if (propertyInfo.PropertyType == typeof(bool))
+                                {
+                                    int intValue = Convert.ToInt32(parts[1]);
+                                    bool boolValue = (int)intValue == 0 ? false : true;
+                                    propertyInfo.SetValue(_machine.Settings, boolValue, null);
+                                }
+                                else if (propertyInfo.PropertyType.Equals(typeof(AxisConfiguration)))
+                                {
+                                    int intEnum = Convert.ToInt32(parts[1]);
+                                    AxisConfiguration axisConfiguration = (AxisConfiguration)intEnum;
+                                    propertyInfo.SetValue(_machine.Settings, axisConfiguration, null);
+                                }
+                                else if (propertyInfo.PropertyType.Equals(typeof(FeedbackUnit)))
+                                {
+                                    int intEnum = Convert.ToInt32(parts[1]);
+                                    FeedbackUnit feedbackUnit = (FeedbackUnit)intEnum;
+                                    propertyInfo.SetValue(_machine.Settings, feedbackUnit, null);
+                                }
+                                else if (propertyInfo.PropertyType.Equals(typeof(ReportType)))
+                                {
+                                    int intEnum = Convert.ToInt32(parts[1]);
+                                    ReportType reportType = (ReportType)intEnum;
+                                    propertyInfo.SetValue(_machine.Settings, reportType, null);
+                                }
+                                else if (propertyInfo.PropertyType.Equals(typeof(Pin)))
+                                {
+                                    int intEnum = Convert.ToInt32(parts[1]);
+                                    Pin pin = (Pin)intEnum;
+                                    propertyInfo.SetValue(_machine.Settings, pin, null);
+                                }
+                                else if (propertyInfo.PropertyType == typeof(decimal))
+                                {
+                                    decimal decimalValue = Convert.ToDecimal(parts[1]);
+                                    propertyInfo.SetValue(_machine.Settings, decimalValue, null);
+                                }
+                                else if (propertyInfo.PropertyType == typeof(UInt32))
+                                {
+                                    uint uintValue = Convert.ToUInt32(parts[1]);
+                                    propertyInfo.SetValue(_machine.Settings, uintValue, null);
+                                }
+        
+                                _machineProvider.MachineUpdate(_machine);
+                            }
+                        }
+
+                        return UpdateSettingResult.Success;
+                    }
+                    else
+                        return UpdateSettingResult.Failed;
+                }
+            }
+            catch (TimeoutException)
+            {
+                return UpdateSettingResult.Timeout;
+            }
+            catch (Exception)
+            {
+                return UpdateSettingResult.Error;
+            }
+            finally
+            {
+                _initialising = false;
+            }
+        }
+
         public void UpdateSpindleSpeed(int speed)
         {
             if (speed < 0)
@@ -411,12 +536,12 @@ namespace GSendCommon
 
             if (speed > 0)
             {
-                SendCommandWaitForOKCommand(String.Format(CommandSpindleStart, speed));
+                SendCommandWaitForResponse(String.Format(CommandSpindleStart, speed));
                 OnCommandSent?.Invoke(this, CommandSent.SpindleSpeedSet);
             }
             else
             {
-                SendCommandWaitForOKCommand(CommandStopSpindle);
+                SendCommandWaitForResponse(CommandStopSpindle);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleOff);
             }
         }
@@ -425,7 +550,7 @@ namespace GSendCommon
         {
             if (!_machineStateModel.MistEnabled)
             {
-                SendCommandWaitForOKCommand(CommandMistCoolantOn);
+                SendCommandWaitForResponse(CommandMistCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.MistOn);
             }
         }
@@ -434,14 +559,14 @@ namespace GSendCommon
         {
             if (!FloodCoolantActive)
             {
-                SendCommandWaitForOKCommand(CommandFloodCoolantOn);
+                SendCommandWaitForResponse(CommandFloodCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.FloodOn);
             }
         }
 
         public void CoolantOff()
         {
-            SendCommandWaitForOKCommand(CommandCoolantOff);
+            SendCommandWaitForResponse(CommandCoolantOff);
             OnCommandSent?.Invoke(this, CommandSent.CoolantOff);
         }
 
@@ -536,9 +661,12 @@ namespace GSendCommon
 
         protected override bool Run(object parameters)
         {
+            if (!_port.IsOpen() || _initialising)
+                return !HasCancelled();
+
             TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
 
-            if (span.TotalMilliseconds > 300)
+            if (span.TotalMilliseconds > 250)
             {
                 _lastInformationCheck = DateTime.UtcNow;
                 InternalWriteLine(CommandRequestStatus);
@@ -565,7 +693,6 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                Trace.WriteLine($"Response: {response}");
 
                 if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -584,11 +711,12 @@ namespace GSendCommon
                 }
                 else if (response.StartsWith('['))
                 {
-                    ProcessMessageResponse(response[1..^1]);
+                    ProcessMessageResponse(response.Trim()[1..^1]);
                     return;
                 }
                 else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    Trace.WriteLine($"Response: {response}");
                     ProcessErrorResponse(response);
                     return;
                 }
@@ -599,6 +727,7 @@ namespace GSendCommon
                 }
                 else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    Trace.WriteLine($"Response: {response}");
                     ProcessAlarmResponse(response);
                     return;
                 }
@@ -788,17 +917,20 @@ namespace GSendCommon
 
             if (IsConnected)
                 Disconnect();
+
+            _machineStateModel.IsConnected = _port.IsOpen();
         }
 
-        private string SendCommandWaitForResponse(string commandText)
+        private string SendCommandWaitForOKCommand(string commandText)
         {
             StringBuilder Result = new(1024);
 
             _port.DataReceived -= Port_DataReceived;
             try
             {
-                DateTime sendTime = DateTime.UtcNow;
+                _ = _port.ReadLine();
                 InternalWriteLine(commandText);
+                DateTime sendTime = DateTime.UtcNow;
 
                 while (true)
                 {
@@ -823,7 +955,7 @@ namespace GSendCommon
             return Result.ToString();
         }
 
-        private void SendCommandWaitForOKCommand(string commandText)
+        private void SendCommandWaitForResponse(string commandText)
         {
             _waitingForResponse = true;
             DateTime sendTime = DateTime.UtcNow;
@@ -846,6 +978,52 @@ namespace GSendCommon
         private void InternalWriteByte(byte[] buffer)
         {
             _port.Write(buffer, 0, buffer.Length);
+        }
+
+        private void ValidateGrblSettings()
+        {
+            Dictionary<int, object> settings = Settings();
+
+            foreach (int key in settings.Keys)
+            {
+                PropertyInfo propertyInfo = GetPropertyWithAttributeValue(key);
+
+                if (propertyInfo == null)
+                    continue;
+
+                object newPropertyValue = propertyInfo.GetValue(_machine.Settings);
+
+                if (newPropertyValue.GetType().BaseType.Name.Equals("Enum"))
+                    newPropertyValue = (int)newPropertyValue;
+                else if (newPropertyValue.GetType().Equals(typeof(bool)))
+                {
+                    newPropertyValue = newPropertyValue.Equals(true) ? 1 : 0;
+                }
+
+                if (!newPropertyValue.ToString().Equals(settings[key].ToString()))
+                {
+                    // property has changed
+                    _machineStateModel.UpdatedGrblConfiguration.Add(
+                        new ChangedGrblSettings(propertyInfo.Name, key, newPropertyValue.ToString(), settings[key].ToString()));
+                }
+            }
+
+            _machine.ConfigurationLastVerified = DateTime.UtcNow;
+        }
+
+        private PropertyInfo GetPropertyWithAttributeValue(int key)
+        {
+            foreach (PropertyInfo propertyInfo in _machine.Settings.GetType().GetProperties())
+            {
+                GrblSettingAttribute grblSettingAttribute = propertyInfo.GetCustomAttribute<GrblSettingAttribute>();
+
+                if (grblSettingAttribute != null && grblSettingAttribute.IntValue.Equals(key))
+                {
+                    return propertyInfo;
+                }
+            }
+
+            return null;
         }
 
         #endregion Private Methods

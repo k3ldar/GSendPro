@@ -70,6 +70,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to !! Grbl settings changed since last connected.
+        /// </summary>
+        public static string ConfigurationUpdatedSinceLastConnect {
+            get {
+                return ResourceManager.GetString("ConfigurationUpdatedSinceLastConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string Connect {
@@ -84,6 +102,15 @@ namespace GSend.Language {
         public static string Connected {
             get {
                 return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continuous.
+        /// </summary>
+        public static string Continuous {
+            get {
+                return ResourceManager.GetString("Continuous", resourceCulture);
             }
         }
         
@@ -178,11 +205,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ${0}={1} ; {3} - Original value {1} was changed to {2}.
+        /// </summary>
+        public static string GrblValueUpdated {
+            get {
+                return ResourceManager.GetString("GrblValueUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {
             get {
                 return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine.
+        /// </summary>
+        public static string Machine {
+            get {
+                return ResourceManager.GetString("Machine", resourceCulture);
             }
         }
         
@@ -349,11 +394,326 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Step pulse, microseconds.
+        /// </summary>
+        public static string SettingDescription0 {
+            get {
+                return ResourceManager.GetString("SettingDescription0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step idle delay, milliseconds.
+        /// </summary>
+        public static string SettingDescription1 {
+            get {
+                return ResourceManager.GetString("SettingDescription1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status report, ‘?’ status.
+        /// </summary>
+        public static string SettingDescription10 {
+            get {
+                return ResourceManager.GetString("SettingDescription10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of X steps to move 1mm.
+        /// </summary>
+        public static string SettingDescription100 {
+            get {
+                return ResourceManager.GetString("SettingDescription100", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of Y steps to move 1mm.
+        /// </summary>
+        public static string SettingDescription101 {
+            get {
+                return ResourceManager.GetString("SettingDescription101", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of Z steps to move 1mm.
+        /// </summary>
+        public static string SettingDescription102 {
+            get {
+                return ResourceManager.GetString("SettingDescription102", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junction deviation, mm.
+        /// </summary>
+        public static string SettingDescription11 {
+            get {
+                return ResourceManager.GetString("SettingDescription11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X Max rate, mm/min.
+        /// </summary>
+        public static string SettingDescription110 {
+            get {
+                return ResourceManager.GetString("SettingDescription110", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y Max rate, mm/min.
+        /// </summary>
+        public static string SettingDescription111 {
+            get {
+                return ResourceManager.GetString("SettingDescription111", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Max rate, mm/min.
+        /// </summary>
+        public static string SettingDescription112 {
+            get {
+                return ResourceManager.GetString("SettingDescription112", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arc tolerance, mm.
+        /// </summary>
+        public static string SettingDescription12 {
+            get {
+                return ResourceManager.GetString("SettingDescription12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X Acceleration, mm/sec^2.
+        /// </summary>
+        public static string SettingDescription120 {
+            get {
+                return ResourceManager.GetString("SettingDescription120", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y Acceleration, mm/sec^2.
+        /// </summary>
+        public static string SettingDescription121 {
+            get {
+                return ResourceManager.GetString("SettingDescription121", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Acceleration, mm/sec^2.
+        /// </summary>
+        public static string SettingDescription122 {
+            get {
+                return ResourceManager.GetString("SettingDescription122", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report mode.
+        /// </summary>
+        public static string SettingDescription13 {
+            get {
+                return ResourceManager.GetString("SettingDescription13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X Max travel, mm Only for Homing and Soft Limits.
+        /// </summary>
+        public static string SettingDescription130 {
+            get {
+                return ResourceManager.GetString("SettingDescription130", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y Max travel, mm Only for Homing and Soft Limits.
+        /// </summary>
+        public static string SettingDescription131 {
+            get {
+                return ResourceManager.GetString("SettingDescription131", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Max travel, mm Only for Homing and Soft Limits.
+        /// </summary>
+        public static string SettingDescription132 {
+            get {
+                return ResourceManager.GetString("SettingDescription132", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step port invert, XYZmask.
+        /// </summary>
+        public static string SettingDescription2 {
+            get {
+                return ResourceManager.GetString("SettingDescription2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soft limits, (Homing must be enabled).
+        /// </summary>
+        public static string SettingDescription20 {
+            get {
+                return ResourceManager.GetString("SettingDescription20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard limits.
+        /// </summary>
+        public static string SettingDescription21 {
+            get {
+                return ResourceManager.GetString("SettingDescription21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing cycle.
+        /// </summary>
+        public static string SettingDescription22 {
+            get {
+                return ResourceManager.GetString("SettingDescription22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing direction invert, XYZmask.
+        /// </summary>
+        public static string SettingDescription23 {
+            get {
+                return ResourceManager.GetString("SettingDescription23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing feed, mm/min.
+        /// </summary>
+        public static string SettingDescription24 {
+            get {
+                return ResourceManager.GetString("SettingDescription24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing seek, mm/min.
+        /// </summary>
+        public static string SettingDescription25 {
+            get {
+                return ResourceManager.GetString("SettingDescription25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing debounce, milliseconds.
+        /// </summary>
+        public static string SettingDescription26 {
+            get {
+                return ResourceManager.GetString("SettingDescription26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing pull-off, mm.
+        /// </summary>
+        public static string SettingDescription27 {
+            get {
+                return ResourceManager.GetString("SettingDescription27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direction port invert, XYZmask.
+        /// </summary>
+        public static string SettingDescription3 {
+            get {
+                return ResourceManager.GetString("SettingDescription3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max spindle speed, RPM.
+        /// </summary>
+        public static string SettingDescription30 {
+            get {
+                return ResourceManager.GetString("SettingDescription30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min spindle speed, RPM.
+        /// </summary>
+        public static string SettingDescription31 {
+            get {
+                return ResourceManager.GetString("SettingDescription31", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser mode.
+        /// </summary>
+        public static string SettingDescription32 {
+            get {
+                return ResourceManager.GetString("SettingDescription32", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step enable invert.
+        /// </summary>
+        public static string SettingDescription4 {
+            get {
+                return ResourceManager.GetString("SettingDescription4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit pins invert.
+        /// </summary>
+        public static string SettingDescription5 {
+            get {
+                return ResourceManager.GetString("SettingDescription5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe pin invert.
+        /// </summary>
+        public static string SettingDescription6 {
+            get {
+                return ResourceManager.GetString("SettingDescription6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting have changed or been updated.
+        /// </summary>
+        public static string SettingsChanged {
+            get {
+                return ResourceManager.GetString("SettingsChanged", resourceCulture);
             }
         }
         
@@ -399,6 +759,15 @@ namespace GSend.Language {
         public static string StateDoor {
             get {
                 return ResourceManager.GetString("StateDoor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hold.
+        /// </summary>
+        public static string StateHold {
+            get {
+                return ResourceManager.GetString("StateHold", resourceCulture);
             }
         }
         

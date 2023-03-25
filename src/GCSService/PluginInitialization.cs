@@ -41,7 +41,7 @@ namespace GSendService
             services.AddSingleton<IErrorManager, ErrorManagerProvider>();
             services.AddSingleton<IComPortProvider, ComPortProvider>();
             services.AddSingleton<IComPortFactory, ComPortFactory>();
-            services.AddSingleton<IProcessorMediator, ProcessorMediator>();
+            services.AddTransient<IProcessorMediator, ProcessorMediator>();
         }
 
         public void Configure(in IApplicationBuilder app)
@@ -55,7 +55,7 @@ namespace GSendService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IComPortProvider, ComPortProvider>();
+
         }
 
         public void Finalise()

@@ -23,6 +23,7 @@ namespace GSendCommon
         private readonly CancellationToken _cancellationToken;
         private bool _isConnected = false;
         private DateTime _lastConnectionAttempt = DateTime.MinValue;
+        private readonly string _clientId;
 
         public event ProcessMessageHandler ProcessMessage;
         public event EventHandler Connected;
@@ -30,8 +31,9 @@ namespace GSendCommon
 
         public WebSocketState State => _clientWebSocket.State;
 
-        public GSendWebSocket(CancellationToken cancellationToken)
+        public GSendWebSocket(CancellationToken cancellationToken, string clientId)
         {
+            _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
             _cancellationToken = cancellationToken;
             Task.Run(() => ReceiveMessageAsync()).ConfigureAwait(false);
         }
@@ -50,7 +52,7 @@ namespace GSendCommon
                 if (span.TotalMilliseconds > MinConnectionWait)
                 {
                     _lastConnectionAttempt = DateTime.UtcNow;
-                    await ConnectToWebSocket().ConfigureAwait(false);
+                    await ConnectToWebSocket(_clientId).ConfigureAwait(false);
                 }
             }
         }
@@ -62,11 +64,11 @@ namespace GSendCommon
             _clientWebSocket.Options.KeepAliveInterval = TimeSpan.FromMinutes(SocketKeepAliveMinutes);
         }
 
-        private async Task ConnectToWebSocket()
+        private async Task ConnectToWebSocket(string clientId)
         {
             try
             {
-                if (_clientWebSocket == null || _clientWebSocket.State == WebSocketState.Closed)
+                if (_clientWebSocket == null || _clientWebSocket.State == WebSocketState.Closed || _clientWebSocket.State == WebSocketState.Aborted)
                 {
                     Trace.Write("Calling SetupWebSocket");
                     SetupWebSocket();
@@ -75,7 +77,7 @@ namespace GSendCommon
                 if (_clientWebSocket.State != WebSocketState.Open && _clientWebSocket.State != WebSocketState.Connecting)
                 {
                     Trace.Write("Calling SocketConnectAsync");
-                    await _clientWebSocket.ConnectAsync(new Uri(ServerUri), _cancellationToken).ConfigureAwait(false);
+                    await _clientWebSocket.ConnectAsync(new Uri(String.Format(ServerUri, clientId)), _cancellationToken).ConfigureAwait(false);
                 }
 
                 while (_clientWebSocket.State == WebSocketState.Connecting || !_isConnected)
@@ -126,7 +128,7 @@ namespace GSendCommon
                     WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
 
                     string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    Trace.WriteLine($"Message Received: {message[..result.Count]}");
+                    //Trace.WriteLine($"Message Received: {message[..result.Count]}");
                     ProcessMessage?.Invoke(message[..result.Count]);
                 }
                 catch (IOException)

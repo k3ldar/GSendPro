@@ -101,7 +101,10 @@ namespace GSendDB.Providers
 
             return new MachineModel(machineDataRow.Id, machineDataRow.Name, machineDataRow.MachineType, 
                 machineDataRow.ComPort, machineDataRow.Options,
-                machineDataRow.AxisCount, machineDataRow.Settings );
+                machineDataRow.AxisCount, machineDataRow.Settings,
+                machineDataRow.DisplayUnits, machineDataRow.OverrideSpeed,
+                machineDataRow.OverrideSpindle, machineDataRow.ConfigurationLastVerified,
+                machineDataRow.ProbeCommand);
         }
 
         #endregion Private Methods
