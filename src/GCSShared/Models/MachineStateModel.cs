@@ -25,6 +25,9 @@
         private bool _mistEnabled;
         private bool _spindleClockWise;
         private bool _spindleCounterClockWise;
+        private bool _updateWorkPosition;
+        private bool _isRunning;
+        private bool _isPaused;
 
         public MachineStateModel()
         {
@@ -98,6 +101,7 @@
 
                 _machineX = value;
                 Updated = true;
+                _updateWorkPosition = false;
             }
         }
 
@@ -112,6 +116,7 @@
 
                 _machineY = value;
                 Updated = true;
+                _updateWorkPosition = false;
             }
         }
 
@@ -126,6 +131,7 @@
 
                 _machineZ = value;
                 Updated = true;
+                _updateWorkPosition = false;
             }
         }
 
@@ -140,6 +146,7 @@
 
                 _workX = value;
                 Updated = true;
+                _updateWorkPosition = true;
             }
         }
 
@@ -154,6 +161,7 @@
 
                 _workY = value;
                 Updated = true;
+                _updateWorkPosition = true;
             }
         }
 
@@ -168,6 +176,7 @@
 
                 _workZ = value;
                 Updated = true;
+                _updateWorkPosition = true;
             }
         }
 
@@ -182,6 +191,11 @@
 
                 _offsetX = value;
                 Updated = true;
+
+                if (_updateWorkPosition)
+                    _machineX = _machineX + _offsetX; 
+                else
+                    _workX = _machineX - _offsetX;
             }
         }
 
@@ -196,6 +210,11 @@
 
                 _offsetY = value;
                 Updated = true;
+
+                if (_updateWorkPosition)
+                    _machineY = _machineY + _offsetY;
+                else
+                    _workY = _machineY - _offsetY;
             }
         }
 
@@ -210,6 +229,11 @@
 
                 _offsetZ = value;
                 Updated = true;
+
+                if (_updateWorkPosition)
+                    _machineZ = _machineZ + _offsetZ;
+                else
+                    _workZ = _machineZ - _offsetZ;
             }
         }
 
@@ -360,6 +384,34 @@
             get
             {
                 return _machineState == MachineState.Alarm;
+            }
+        }
+
+        public bool IsPaused
+        {
+            get => _isPaused;
+
+            set
+            {
+                if (_isPaused.Equals(value))
+                    return;
+
+                _isPaused = value;
+                Updated = true;
+            }
+        }
+
+        public bool IsRunning
+        {
+            get => _isRunning;
+
+            set
+            {
+                if (_isRunning.Equals(value))
+                    return;
+
+                _isRunning = value;
+                Updated = true;
             }
         }
 

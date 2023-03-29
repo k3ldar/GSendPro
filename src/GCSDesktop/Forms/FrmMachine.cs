@@ -3,9 +3,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
+
+using GSendApi;
 
 using GSendCommon;
 
@@ -14,6 +17,8 @@ using GSendDesktop.Controls;
 using GSendShared;
 using GSendShared.Attributes;
 using GSendShared.Models;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
 
@@ -33,14 +38,18 @@ namespace GSendDesktop.Forms
         private volatile bool _threadRun = false;
         private bool _machineConnected = false;
         private bool _isPaused = false;
+        private bool _isRunning = false;
+        private bool _isJogging = false;
+        private bool _isAlarm = false;
         private bool _canCancelJog = false;
+        private bool _isProbing = false;
         private bool _appliedSettingsChanged = false;
+        private bool _configurationChanges = false;
 
         public FrmMachine()
         {
             InitializeComponent();
 
-            LoadResources();
         }
 
         public FrmMachine(IGSendContext gSendContext, IMachine machine)
@@ -53,8 +62,6 @@ namespace GSendDesktop.Forms
 
             if (machine.MachineType == MachineType.Printer)
                 tabControlMain.TabPages.Remove(tabPageOverrides);
-
-            ConfigureMachine();
 
             _cancellationTokenRegistration = new();
             _clientWebSocket = new GSendWebSocket(_cancellationTokenRegistration.Token, _machine.Name);
@@ -72,19 +79,32 @@ namespace GSendDesktop.Forms
 
             propertyGridGrblSettings.SelectedObject = machine.Settings;
 
-            jogControl.FeedMinimum = 0;
-            jogControl.FeedMaximum = (int)machine.Settings.MaxFeedRateX;
-            jogControl.StepValue = 7;
-
-            trackBarPercent.Value = machine.OverrideSpeed;
-            selectionOverrideSpindle.Value = machine.OverrideSpindle;
             cbOverridesDisable.Checked = true;
 
             lblPropertyHeader.Text = String.Empty;
             lblPropertyDesc.Text = String.Empty;
 
+            pictureZeroX.Tag = ZeroAxis.X;
+            pictureZeroY.Tag = ZeroAxis.Y;
+            pictureZeroZ.Tag = ZeroAxis.Z;
+            pictureZeroAll.Tag = ZeroAxis.All;
+
+            tabControlMain.SelectedTab = tabPageMain;
+
+            cmbSpindleType.Items.Add(SpindleType.Integrated);
+            cmbSpindleType.Items.Add(SpindleType.VFD);
+            cmbSpindleType.Items.Add(SpindleType.External);
+
             UpdateDisplay();
             UpdateEnabledState();
+            probingCommand1.InitializeProbingCommand(_machine.ProbeCommand, _machine.ProbeSpeed, _machine.ProbeThickness);
+            probingCommand1.OnSave += ProbingCommand1_OnSave;
+
+            ConfigureMachine();
+
+            _configurationChanges = false;
+
+            LoadResources();
         }
 
         #region Client Web Socket
@@ -99,7 +119,8 @@ namespace GSendDesktop.Forms
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
-            flowLayoutWarningErrors.Visible = false;
+            StopJogging();
+            warningsAndErrors.Visible = false;
             _threadRun = false;
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerNotConnected;
             UpdateEnabledState();
@@ -127,14 +148,23 @@ namespace GSendDesktop.Forms
             }
 
             //Trace.WriteLine(String.Format("Machine {0} Socket Message: {1}", _machine.Name, clientMessage.success));
-
-            if (clientMessage == null || !clientMessage.success)
+            Trace.WriteLine(message);
+            if (clientMessage == null)
                 return;
+
+            if (!clientMessage.success)
+            {
+                ProcessFailedMessage(clientMessage);
+            }
 
             string serverCpu = String.Format(GSend.Language.Resources.ServerCpuStateConnected, clientMessage.ServerCpuStatus.ToString("N2"));
 
             switch (clientMessage.request)
             {
+                case "mProbe":
+                    _isProbing = false;
+                    break;
+
                 case "mStatus":
                     _machineStatusModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString());
 
@@ -148,14 +178,16 @@ namespace GSendDesktop.Forms
                 case "Connect":
                     _machineConnected = true;
                     UpdateEnabledState();
+                    ConfigureMachine();
+                    _configurationChanges = false;
                     break;
 
                 case "Disconnect":
                     _machineConnected = false;
                     txtGrblUpdates.Text = String.Empty;
                     _appliedSettingsChanged = false;
-                    flowLayoutWarningErrors.Controls.Clear();
-                    UpdateWarningStatusBarItem();
+                    warningsAndErrors.Clear();
+                    warningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
                     UpdateEnabledState();
                     break;
 
@@ -181,21 +213,28 @@ namespace GSendDesktop.Forms
                         UpdateMachineStatus(model);
 
                     break;
+                case "Alarm":
+                    ProcessAlarmResponse(clientMessage);
+                    break;
             }
-
         }
 
         private void UpdateEnabledState()
         {
+            toolStripButtonSave.Enabled = _configurationChanges;
             toolStripButtonConnect.Enabled = !_machineConnected;
-            toolStripButtonDisconnect.Enabled = _machineConnected;
-            toolStripButtonClearAlarm.Enabled = _machineConnected;
-            toolStripButtonHome.Enabled = _machineConnected;
-            toolStripButtonProbe.Enabled = _machineConnected;
+            toolStripButtonDisconnect.Enabled = _machineConnected && !_isJogging && !_isProbing;
+            toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
+            toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
+            toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             toolStripButtonResume.Enabled = _machineConnected && _isPaused;
-            toolStripButtonPause.Enabled = _machineConnected && !_isPaused;
-            toolStripButtonStop.Enabled = _machineConnected;
-            jogControl.Enabled = _machineConnected;
+            toolStripButtonPause.Enabled = _machineConnected & (_isPaused || _isRunning);
+            toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging);
+            jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
+            pictureZeroAll.Enabled = toolStripButtonProbe.Enabled;
+            pictureZeroX.Enabled = toolStripButtonProbe.Enabled;
+            pictureZeroY.Enabled = toolStripButtonProbe.Enabled;
+            pictureZeroZ.Enabled = toolStripButtonProbe.Enabled;
 
             tabPageOverrides.Enabled = _machineConnected;
 
@@ -217,6 +256,8 @@ namespace GSendDesktop.Forms
 
                 if (status.IsConnected)
                 {
+                    toolStripStatusLabelBuffer.Text = $"Available bytes/blocks:{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
+
                     if (!_appliedSettingsChanged)
                     {
                         LoadAllStatusChangeWarnings(status);
@@ -228,17 +269,22 @@ namespace GSendDesktop.Forms
                     machinePositionOverrides.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
                     machinePositionJog.UpdateMachinePosition(status.MachineX, status.MachineY, status.MachineZ);
                     machinePositionJog.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
+                    _isPaused = status.IsPaused;
+                    _isRunning = status.IsRunning;
+                    _isJogging = status.MachineState == MachineState.Jog;
+                    _isAlarm = status.IsLocked;
 
                     if (!toolStripStatusLabelStatus.Text.Equals(HelperMethods.TranslateState(status.MachineState)))
                     {
                         Color backColor = SystemColors.Control;
-                        Color foreColor = Color.Black;
+                        Color foreColor = SystemColors.ControlText;
+
                         string text = HelperMethods.TranslateState(status.MachineState);
 
                         switch (status.MachineState)
                         {
                             case MachineState.Undefined:
-                                text = GSend.Language.Resources.StatePortOpen;
+                                text = status.IsPaused ? GSend.Language.Resources.StatePaused : GSend.Language.Resources.StatePortOpen;
                                 backColor = Color.Yellow;
                                 foreColor = Color.Black;
                                 break;
@@ -275,24 +321,36 @@ namespace GSendDesktop.Forms
                                 break;
                         }
 
-                        if (!toolStripStatusLabelStatus.Text.Equals(text))
-                            toolStripStatusLabelStatus.Text = text;
-
-                        if (toolStripStatusLabelStatus.BackColor != backColor)
-                            toolStripStatusLabelStatus.BackColor = backColor;
-
-                        if (toolStripStatusLabelStatus.ForeColor != foreColor)
-                            toolStripStatusLabelStatus.ForeColor = foreColor;
+                        UpdateMachineStatusLabel(backColor, foreColor, text);
                     }
                 }
                 else
                 {
+                    toolStripStatusLabelBuffer.Text = String.Empty;
+                    toolStripStatusLabelBuffer.Text = String.Empty;
+                    UpdateMachineStatusLabel(SystemColors.Control, SystemColors.ControlText, String.Empty);
                     machinePositionGeneral.ResetPositions();
                     machinePositionJog.ResetPositions();
                     machinePositionOverrides.ResetPositions();
-                    flowLayoutWarningErrors.Visible = false;
+                    warningsAndErrors.Visible = false;
+                    _isRunning = false;
+                    _isJogging = false;
+                    _isPaused = false;
+                    _isAlarm = false;
                 }
             }
+        }
+
+        private void UpdateMachineStatusLabel(Color backColor, Color foreColor, string text)
+        {
+            if (!toolStripStatusLabelStatus.Text.Equals(text))
+                toolStripStatusLabelStatus.Text = text;
+
+            if (toolStripStatusLabelStatus.BackColor != backColor)
+                toolStripStatusLabelStatus.BackColor = backColor;
+
+            if (toolStripStatusLabelStatus.ForeColor != foreColor)
+                toolStripStatusLabelStatus.ForeColor = foreColor;
         }
 
         #endregion Client Web Socket
@@ -345,12 +403,18 @@ namespace GSendDesktop.Forms
             selectionOverrideZDown.Minimum = 0;
             selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
             selectionOverrideZUp.Minimum = 0;
-            selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
 
             jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
             jogControl.FeedMinimum = 0;
             jogControl.FeedRate = jogControl.FeedMaximum / 2;
+            jogControl.FeedMinimum = 0;
+            jogControl.StepValue = 7;
+            jogControl.FeedRate = _machine.JogFeedrate;
+            trackBarPercent.Value = _machine.OverrideSpeed;
+            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
+            cmbSpindleType.SelectedItem = _machine.SpindleType;
+            cbSoftStart.Checked = _machine.SoftStart;
+            trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
         }
 
         private void LoadResources()
@@ -387,6 +451,15 @@ namespace GSendDesktop.Forms
             //General tab
 
 
+            //Spindle tab
+            lblSpindleType.Text = GSend.Language.Resources.SpindleType;
+            cbSoftStart.Text = GSend.Language.Resources.SpindleSoftStart;
+
+            if (_machine.SpindleType == SpindleType.Integrated)
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
+            else
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
+
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
             viewToolStripMenuItem.Text = GSend.Language.Resources.View;
@@ -394,12 +467,19 @@ namespace GSendDesktop.Forms
 
             // Override tab
             cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
-
         }
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
         {
             UpdateOverrides();
+            _machine.OverrideSpeed = trackBarPercent.Value;
+            _configurationChanges = true;
+        }
+
+        private void selectionOverrideSpindle_ValueChanged(object sender, EventArgs e)
+        {
+            _machine.OverrideSpindle = selectionOverrideSpindle.Value;
+            _configurationChanges = true;
         }
 
         private void UpdateOverrides()
@@ -422,19 +502,26 @@ namespace GSendDesktop.Forms
             selectionOverrideZUp.Enabled = !cbOverridesDisable.Checked;
         }
 
-        private void jogControl1_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
+        private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             _canCancelJog = stepSize == 0;
             _clientWebSocket.SendAsync(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate)).ConfigureAwait(false);
         }
 
-        private void jogControl1_OnJogStop(object sender, EventArgs e)
+        private void jogControl_OnJogStop(object sender, EventArgs e)
         {
             machinePositionJog.Focus();
 
             if (_canCancelJog)
-                _clientWebSocket.SendAsync(String.Format(MessageMachineJogStop, _machine.Id)).ConfigureAwait(false);
+                StopJogging();
         }
+
+        private void StopJogging()
+        {
+            _clientWebSocket.SendAsync(String.Format(MessageMachineJogStop, _machine.Id)).ConfigureAwait(false);
+        }
+
+        #region Grbl Settings
 
         private void propertyGridGrblSettings_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
@@ -510,7 +597,14 @@ namespace GSendDesktop.Forms
                 command = String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, command);
                 _clientWebSocket.SendAsync(command).ConfigureAwait(false);
             }
+
+            SaveChanges(true);
+            ConfigureMachine();
         }
+
+        #endregion Grbl Settings
+
+        #region Update thread
 
         private void UpdateThread()
         {
@@ -524,40 +618,9 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void flowLayoutWarningErrors_VisibleChanged(object sender, EventArgs e)
-        {
-           
-            if (flowLayoutWarningErrors.Visible && flowLayoutWarningErrors.Controls.Count > 0)
-            {
-                if (flowLayoutWarningErrors.Controls.Count < 2)
-                    flowLayoutWarningErrors.Height = 27;
-                else
-                    flowLayoutWarningErrors.Height = 48;
+        #endregion Update thread
 
-                tabControlMain.Top = flowLayoutWarningErrors.Top + flowLayoutWarningErrors.Height + 8;
-                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
-                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
-            }
-            else
-            {
-                tabControlMain.Top = 86;
-                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
-                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
-            }
-        }
-
-        private void ResetLayoutWarningErrorSize()
-        {
-            int minusScrollBar = 0;
-
-            if (flowLayoutWarningErrors.Controls.Count > 1)
-                minusScrollBar = 12;
-
-            foreach (Control control in flowLayoutWarningErrors.Controls)
-            {
-                control.Width = flowLayoutWarningErrors.ClientSize.Width - minusScrollBar;
-            }
-        }
+        #region Warnings and Error Handling
 
         private void LoadAllStatusChangeWarnings(MachineStateModel status)
         {
@@ -569,51 +632,87 @@ namespace GSendDesktop.Forms
                     changedGrblSetting.NewValue,
                     changedGrblSetting.PropertyName);
 
-                AddWarningPanel(setting);
+                warningsAndErrors.AddWarningPanel(InformationType.Warning, setting);
             }
 
             _appliedSettingsChanged = true;
         }
 
-        private void AddWarningPanel(string message)
+        private void WarningContainer_VisibleChanged(object sender, EventArgs e)
         {
-            WarningPanel warningPanel = new WarningPanel(message);
-            warningPanel.Width = flowLayoutWarningErrors.ClientSize.Width - 10;
-            warningPanel.WarningClose += WarningPanel_WarningClose;
-            flowLayoutWarningErrors.Controls.Add(warningPanel);
-            UpdateWarningStatusBarItem();
-            flowLayoutWarningErrors.Visible = flowLayoutWarningErrors.Controls.Count > 0;
-            ResetLayoutWarningErrorSize();
+            if (warningsAndErrors.Visible)
+            {
+                tabControlMain.Top = warningsAndErrors.Top + warningsAndErrors.Height + 8;
+                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
+                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
+            }
+            else
+            {
+                tabControlMain.Top = 86;
+                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
+                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
+            }
         }
 
-        private void WarningPanel_WarningClose(object sender, EventArgs e)
+        private void warningsAndErrors_OnUpdate(object sender, EventArgs e)
         {
-            if (sender is  WarningPanel warningPanel)
-            {
-                warningPanel.WarningClose -= WarningPanel_WarningClose;
-                flowLayoutWarningErrors.Controls.Remove(warningPanel);
-            }
-
-            UpdateWarningStatusBarItem();
-            flowLayoutWarningErrors.Visible = flowLayoutWarningErrors.Controls.Count > 0;
-            ResetLayoutWarningErrorSize();
-            flowLayoutWarningErrors_VisibleChanged(flowLayoutWarningErrors, EventArgs.Empty);
+            int warningCount = warningsAndErrors.WarningCount();
+            toolStripStatusLabelWarnings.Text = warningCount.ToString();
+            toolStripStatusLabelWarnings.Visible = warningCount > 0;
         }
 
-        private void UpdateWarningStatusBarItem()
+        private void ProcessAlarmResponse(ClientBaseMessage clientMessage)
         {
-            int count = 0;
+            _isProbing = false;
+            JsonElement element = (JsonElement)clientMessage.message;
+            GrblAlarm alarm = (GrblAlarm)element.GetInt32();
+            string alarmDescription = GSend.Language.Resources.ResourceManager.GetString($"Alarm{(int)alarm}");
+            warningsAndErrors.AddWarningPanel(InformationType.Alarm, alarmDescription);
+        }
 
-            foreach (Control control in flowLayoutWarningErrors.Controls)
+        private void ProcessFailedMessage(ClientBaseMessage clientMessage)
+        {
+            string[] message = clientMessage.request.Split(Constants.ColonChar, 
+                StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (message.Length == 0)
+                return;
+
+            switch (message[0])
             {
-                if (control is WarningPanel warningPanel)
-                {
-                    count++;
-                }
-            }
+                case Constants.MessageMachineProbeServer:
+                    if (_isProbing)
+                    {
+                        _isProbing = false;
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ProbingFailed);
+                    }
 
-            toolStripStatusLabelWarnings.Text = count.ToString();
-            toolStripStatusLabelWarnings.Visible = count > 0;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        #endregion Warnings and Error Handling
+
+        #region Toolbar Buttons
+
+        private void toolStripButtonSave_Click(object sender, EventArgs e)
+        {
+            SaveChanges(false);
+        }
+
+        private void SaveChanges(bool forceOverride)
+        { 
+            if (_configurationChanges || forceOverride)
+            {
+                MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+
+                machineApiWrapper.MachineUpdate(_machine);
+
+                _configurationChanges = false;
+            }
         }
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
@@ -623,12 +722,13 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineConnect, _machine.Id)).ConfigureAwait(false);
+            _clientWebSocket.SendAsync(String.Format(MessageMachineDisconnect, _machine.Id)).ConfigureAwait(false);
         }
 
         private void toolStripButtonClearAlarm_Click(object sender, EventArgs e)
         {
             _clientWebSocket.SendAsync(String.Format(MessageMachineClearAlarm, _machine.Id)).ConfigureAwait(false);
+            warningsAndErrors.ClearAlarm();
         }
 
         private void toolStripButtonHome_Click(object sender, EventArgs e)
@@ -638,7 +738,9 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonProbe_Click(object sender, EventArgs e)
         {
+            _isProbing = true;
             _clientWebSocket.SendAsync(String.Format(MessageMachineProbe, _machine.Id)).ConfigureAwait(false);
+            UpdateEnabledState();
         }
 
         private void toolStripButtonResume_Click(object sender, EventArgs e)
@@ -653,7 +755,73 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineStop, _machine.Id)).ConfigureAwait(false);
+            if (_isJogging)
+                StopJogging();
+            else
+                _clientWebSocket.SendAsync(String.Format(MessageMachineStop, _machine.Id)).ConfigureAwait(false);
+        }
+
+        #endregion Toolbar Buttons
+
+        #region Zeroing
+
+        public void SetZeroForAxes(object sender, EventArgs e)
+        {
+            ZeroAxis zeroAxis = (ZeroAxis)((PictureBox)sender).Tag;
+            _clientWebSocket.SendAsync(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0)).ConfigureAwait(false);
+        }
+
+        #endregion Zeroing
+
+        #region Probing
+
+        private void ProbingCommand1_OnSave(object sender, EventArgs e)
+        {
+            _machine.ProbeThickness = probingCommand1.Thickness;
+            _machine.ProbeSpeed = probingCommand1.TravelSpeed;
+            _machine.ProbeCommand = probingCommand1.ProbeCommand;
+
+            _configurationChanges = true;
+            UpdateEnabledState();
+
+            ConfigureMachine();
+        }
+
+        #endregion Probing
+
+        private void jogControl_OnUpdate(object sender, EventArgs e)
+        {
+            _machine.JogUnits = jogControl.StepValue;
+            _machine.JogFeedrate = jogControl.FeedRate;
+            _configurationChanges = true;
+        }
+
+        private void cmbSpindleType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _machine.SpindleType = (SpindleType)cmbSpindleType.SelectedItem;
+            _configurationChanges = true;
+            cbSoftStart.Visible = _machine.SpindleType == SpindleType.Integrated;
+            trackBarDelaySpindle.Visible = _machine.SpindleType != SpindleType.External;
+            lblDelaySpindleStart.Visible = _machine.SpindleType != SpindleType.External;
+            trackBarDelaySpindle_ValueChanged(sender, e);
+        }
+
+        private void trackBarDelaySpindle_ValueChanged(object sender, EventArgs e)
+        {
+            _machine.SoftStartSeconds = trackBarDelaySpindle.Value;
+
+            if (_machine.SpindleType == SpindleType.Integrated)
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
+            else
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
+
+            _configurationChanges = true;
+        }
+
+        private void cbSoftStart_CheckedChanged(object sender, EventArgs e)
+        {
+            _machine.SoftStart = cbSoftStart.Checked;
+            _configurationChanges = true;
         }
     }
 }

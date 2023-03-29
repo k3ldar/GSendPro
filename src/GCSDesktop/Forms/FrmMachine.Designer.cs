@@ -36,6 +36,8 @@
             this.selectionOverrideX = new GSendDesktop.Controls.Selection();
             this.jogControl = new GSendDesktop.Controls.JogControl();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDisconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -47,13 +49,13 @@
             this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonPause = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelServerConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelDisplayMeasurements = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelCpu = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
@@ -63,8 +65,17 @@
             this.trackBarPercent = new System.Windows.Forms.TrackBar();
             this.machinePositionOverrides = new GSendDesktop.Controls.MachinePosition();
             this.tabPageJog = new System.Windows.Forms.TabPage();
+            this.pictureZeroAll = new System.Windows.Forms.PictureBox();
+            this.pictureZeroZ = new System.Windows.Forms.PictureBox();
+            this.pictureZeroY = new System.Windows.Forms.PictureBox();
+            this.pictureZeroX = new System.Windows.Forms.PictureBox();
             this.machinePositionJog = new GSendDesktop.Controls.MachinePosition();
             this.tabPageSpindle = new System.Windows.Forms.TabPage();
+            this.lblDelaySpindleStart = new System.Windows.Forms.Label();
+            this.trackBarDelaySpindle = new System.Windows.Forms.TrackBar();
+            this.cbSoftStart = new System.Windows.Forms.CheckBox();
+            this.lblSpindleType = new System.Windows.Forms.Label();
+            this.cmbSpindleType = new System.Windows.Forms.ComboBox();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
             this.tabPageUsage = new System.Windows.Forms.TabPage();
             this.tabPageMachineSettings = new System.Windows.Forms.TabPage();
@@ -74,11 +85,12 @@
             this.lblPropertyHeader = new System.Windows.Forms.Label();
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.probingCommand1 = new GSendDesktop.Controls.ProbingCommand();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.machineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.flowLayoutWarningErrors = new System.Windows.Forms.FlowLayoutPanel();
+            this.warningsAndErrors = new GSendDesktop.Controls.WarningContainer();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -86,16 +98,24 @@
             this.tabPageOverrides.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).BeginInit();
             this.tabPageJog.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroX)).BeginInit();
+            this.tabPageSpindle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).BeginInit();
             this.tabPageMachineSettings.SuspendLayout();
+            this.tabPageSettings.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectionOverrideSpindle
             // 
+            this.selectionOverrideSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideSpindle.GroupName = "Spindle";
             this.selectionOverrideSpindle.LabelFormat = "{0}";
             this.selectionOverrideSpindle.LabelValue = null;
-            this.selectionOverrideSpindle.Location = new System.Drawing.Point(649, 6);
+            this.selectionOverrideSpindle.Location = new System.Drawing.Point(671, 6);
             this.selectionOverrideSpindle.Maximum = 10;
             this.selectionOverrideSpindle.Minimum = 0;
             this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
@@ -103,13 +123,15 @@
             this.selectionOverrideSpindle.TabIndex = 4;
             this.selectionOverrideSpindle.TickFrequency = 1;
             this.selectionOverrideSpindle.Value = 0;
+            this.selectionOverrideSpindle.ValueChanged += new System.EventHandler(this.selectionOverrideSpindle_ValueChanged);
             // 
             // selectionOverrideZDown
             // 
+            this.selectionOverrideZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideZDown.GroupName = "Z Down";
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
-            this.selectionOverrideZDown.Location = new System.Drawing.Point(562, 6);
+            this.selectionOverrideZDown.Location = new System.Drawing.Point(584, 6);
             this.selectionOverrideZDown.Maximum = 10;
             this.selectionOverrideZDown.Minimum = 0;
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
@@ -120,10 +142,11 @@
             // 
             // selectionOverrideZUp
             // 
+            this.selectionOverrideZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideZUp.GroupName = "Z Up";
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
-            this.selectionOverrideZUp.Location = new System.Drawing.Point(474, 6);
+            this.selectionOverrideZUp.Location = new System.Drawing.Point(496, 6);
             this.selectionOverrideZUp.Maximum = 10;
             this.selectionOverrideZUp.Minimum = 0;
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
@@ -134,10 +157,11 @@
             // 
             // selectionOverrideY
             // 
+            this.selectionOverrideY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideY.GroupName = "Y";
             this.selectionOverrideY.LabelFormat = "{0}";
             this.selectionOverrideY.LabelValue = null;
-            this.selectionOverrideY.Location = new System.Drawing.Point(386, 6);
+            this.selectionOverrideY.Location = new System.Drawing.Point(408, 6);
             this.selectionOverrideY.Maximum = 10;
             this.selectionOverrideY.Minimum = 0;
             this.selectionOverrideY.Name = "selectionOverrideY";
@@ -148,10 +172,11 @@
             // 
             // selectionOverrideX
             // 
+            this.selectionOverrideX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideX.GroupName = "X";
             this.selectionOverrideX.LabelFormat = "{0}";
             this.selectionOverrideX.LabelValue = null;
-            this.selectionOverrideX.Location = new System.Drawing.Point(298, 6);
+            this.selectionOverrideX.Location = new System.Drawing.Point(320, 6);
             this.selectionOverrideX.Maximum = 10;
             this.selectionOverrideX.Minimum = 0;
             this.selectionOverrideX.Name = "selectionOverrideX";
@@ -166,18 +191,21 @@
             this.jogControl.FeedMaximum = 10;
             this.jogControl.FeedMinimum = 0;
             this.jogControl.FeedRate = 0;
-            this.jogControl.Location = new System.Drawing.Point(330, 30);
+            this.jogControl.Location = new System.Drawing.Point(320, 6);
             this.jogControl.Name = "jogControl";
             this.jogControl.Size = new System.Drawing.Size(439, 190);
             this.jogControl.StepValue = 0;
             this.jogControl.TabIndex = 3;
-            this.jogControl.OnJogStart += new GSendShared.JogCommand(this.jogControl1_OnJogStart);
-            this.jogControl.OnJogStop += new System.EventHandler(this.jogControl1_OnJogStop);
+            this.jogControl.OnJogStart += new GSendShared.JogCommand(this.jogControl_OnJogStart);
+            this.jogControl.OnJogStop += new System.EventHandler(this.jogControl_OnJogStop);
+            this.jogControl.OnUpdate += new System.EventHandler(this.jogControl_OnUpdate);
             // 
             // toolStripMain
             // 
             this.toolStripMain.ImageScalingSize = new System.Drawing.Size(50, 50);
             this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSave,
+            this.toolStripSeparator4,
             this.toolStripButtonConnect,
             this.toolStripButtonDisconnect,
             this.toolStripSeparator1,
@@ -188,13 +216,27 @@
             this.toolStripSeparator3,
             this.toolStripButtonResume,
             this.toolStripButtonPause,
-            this.toolStripButtonStop,
-            this.toolStripSeparator4});
+            this.toolStripButtonStop});
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(774, 57);
+            this.toolStripMain.Size = new System.Drawing.Size(796, 57);
             this.toolStripMain.TabIndex = 6;
             this.toolStripMain.Text = "toolStrip1";
+            // 
+            // toolStripButtonSave
+            // 
+            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSave.Name = "toolStripButtonSave";
+            this.toolStripButtonSave.Size = new System.Drawing.Size(54, 54);
+            this.toolStripButtonSave.Text = "toolStripButton1";
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButtonSave_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 57);
             // 
             // toolStripButtonConnect
             // 
@@ -291,11 +333,6 @@
             this.toolStripButtonStop.Text = "toolStripButton2";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 57);
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -303,10 +340,11 @@
             this.toolStripStatusLabelDisplayMeasurements,
             this.toolStripStatusLabelStatus,
             this.toolStripStatusLabelCpu,
-            this.toolStripStatusLabelWarnings});
+            this.toolStripStatusLabelWarnings,
+            this.toolStripStatusLabelBuffer});
             this.statusStrip.Location = new System.Drawing.Point(0, 621);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(774, 24);
+            this.statusStrip.Size = new System.Drawing.Size(796, 24);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 7;
             this.statusStrip.Text = "statusStrip";
@@ -344,6 +382,12 @@
             this.toolStripStatusLabelWarnings.Text = "0";
             this.toolStripStatusLabelWarnings.Visible = false;
             // 
+            // toolStripStatusLabelBuffer
+            // 
+            this.toolStripStatusLabelBuffer.Name = "toolStripStatusLabelBuffer";
+            this.toolStripStatusLabelBuffer.Size = new System.Drawing.Size(118, 19);
+            this.toolStripStatusLabelBuffer.Text = "toolStripStatusLabel1";
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -360,7 +404,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(12, 135);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(751, 270);
+            this.tabControlMain.Size = new System.Drawing.Size(773, 270);
             this.tabControlMain.TabIndex = 8;
             // 
             // tabPageMain
@@ -370,7 +414,7 @@
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(743, 242);
+            this.tabPageMain.Size = new System.Drawing.Size(765, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
             // 
@@ -379,7 +423,7 @@
             this.machinePositionGeneral.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
             this.machinePositionGeneral.Location = new System.Drawing.Point(6, 6);
             this.machinePositionGeneral.Name = "machinePositionGeneral";
-            this.machinePositionGeneral.Size = new System.Drawing.Size(280, 111);
+            this.machinePositionGeneral.Size = new System.Drawing.Size(314, 112);
             this.machinePositionGeneral.TabIndex = 0;
             // 
             // tabPageOverrides
@@ -397,7 +441,7 @@
             this.tabPageOverrides.Location = new System.Drawing.Point(4, 24);
             this.tabPageOverrides.Name = "tabPageOverrides";
             this.tabPageOverrides.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOverrides.Size = new System.Drawing.Size(743, 242);
+            this.tabPageOverrides.Size = new System.Drawing.Size(765, 242);
             this.tabPageOverrides.TabIndex = 1;
             this.tabPageOverrides.Text = "Overrides";
             // 
@@ -417,9 +461,8 @@
             this.labelSpeedPercent.AutoSize = true;
             this.labelSpeedPercent.Location = new System.Drawing.Point(6, 171);
             this.labelSpeedPercent.Name = "labelSpeedPercent";
-            this.labelSpeedPercent.Size = new System.Drawing.Size(72, 15);
+            this.labelSpeedPercent.Size = new System.Drawing.Size(0, 15);
             this.labelSpeedPercent.TabIndex = 13;
-            this.labelSpeedPercent.Text = "labelPercent";
             // 
             // trackBarPercent
             // 
@@ -436,38 +479,137 @@
             this.machinePositionOverrides.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
             this.machinePositionOverrides.Location = new System.Drawing.Point(6, 6);
             this.machinePositionOverrides.Name = "machinePositionOverrides";
-            this.machinePositionOverrides.Size = new System.Drawing.Size(280, 111);
+            this.machinePositionOverrides.Size = new System.Drawing.Size(314, 112);
             this.machinePositionOverrides.TabIndex = 5;
             // 
             // tabPageJog
             // 
             this.tabPageJog.BackColor = System.Drawing.Color.White;
+            this.tabPageJog.Controls.Add(this.pictureZeroAll);
+            this.tabPageJog.Controls.Add(this.pictureZeroZ);
+            this.tabPageJog.Controls.Add(this.pictureZeroY);
+            this.tabPageJog.Controls.Add(this.pictureZeroX);
             this.tabPageJog.Controls.Add(this.machinePositionJog);
             this.tabPageJog.Controls.Add(this.jogControl);
             this.tabPageJog.Location = new System.Drawing.Point(4, 24);
             this.tabPageJog.Name = "tabPageJog";
             this.tabPageJog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageJog.Size = new System.Drawing.Size(743, 242);
+            this.tabPageJog.Size = new System.Drawing.Size(765, 242);
             this.tabPageJog.TabIndex = 2;
             this.tabPageJog.Text = "Jog";
+            // 
+            // pictureZeroAll
+            // 
+            this.pictureZeroAll.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroAll.Image")));
+            this.pictureZeroAll.Location = new System.Drawing.Point(246, 123);
+            this.pictureZeroAll.Name = "pictureZeroAll";
+            this.pictureZeroAll.Size = new System.Drawing.Size(64, 64);
+            this.pictureZeroAll.TabIndex = 9;
+            this.pictureZeroAll.TabStop = false;
+            this.pictureZeroAll.Click += new System.EventHandler(this.SetZeroForAxes);
+            // 
+            // pictureZeroZ
+            // 
+            this.pictureZeroZ.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroZ.Image")));
+            this.pictureZeroZ.Location = new System.Drawing.Point(167, 123);
+            this.pictureZeroZ.Name = "pictureZeroZ";
+            this.pictureZeroZ.Size = new System.Drawing.Size(64, 64);
+            this.pictureZeroZ.TabIndex = 8;
+            this.pictureZeroZ.TabStop = false;
+            this.pictureZeroZ.Click += new System.EventHandler(this.SetZeroForAxes);
+            // 
+            // pictureZeroY
+            // 
+            this.pictureZeroY.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroY.Image")));
+            this.pictureZeroY.Location = new System.Drawing.Point(88, 123);
+            this.pictureZeroY.Name = "pictureZeroY";
+            this.pictureZeroY.Size = new System.Drawing.Size(64, 64);
+            this.pictureZeroY.TabIndex = 7;
+            this.pictureZeroY.TabStop = false;
+            this.pictureZeroY.Click += new System.EventHandler(this.SetZeroForAxes);
+            // 
+            // pictureZeroX
+            // 
+            this.pictureZeroX.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroX.Image")));
+            this.pictureZeroX.Location = new System.Drawing.Point(9, 123);
+            this.pictureZeroX.Name = "pictureZeroX";
+            this.pictureZeroX.Size = new System.Drawing.Size(64, 64);
+            this.pictureZeroX.TabIndex = 6;
+            this.pictureZeroX.TabStop = false;
+            this.pictureZeroX.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
             // machinePositionJog
             // 
             this.machinePositionJog.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
             this.machinePositionJog.Location = new System.Drawing.Point(6, 6);
             this.machinePositionJog.Name = "machinePositionJog";
-            this.machinePositionJog.Size = new System.Drawing.Size(280, 111);
+            this.machinePositionJog.Size = new System.Drawing.Size(314, 112);
             this.machinePositionJog.TabIndex = 4;
             // 
             // tabPageSpindle
             // 
             this.tabPageSpindle.BackColor = System.Drawing.Color.White;
+            this.tabPageSpindle.Controls.Add(this.lblDelaySpindleStart);
+            this.tabPageSpindle.Controls.Add(this.trackBarDelaySpindle);
+            this.tabPageSpindle.Controls.Add(this.cbSoftStart);
+            this.tabPageSpindle.Controls.Add(this.lblSpindleType);
+            this.tabPageSpindle.Controls.Add(this.cmbSpindleType);
             this.tabPageSpindle.Location = new System.Drawing.Point(4, 24);
             this.tabPageSpindle.Name = "tabPageSpindle";
             this.tabPageSpindle.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSpindle.Size = new System.Drawing.Size(743, 242);
+            this.tabPageSpindle.Size = new System.Drawing.Size(765, 242);
             this.tabPageSpindle.TabIndex = 4;
             this.tabPageSpindle.Text = "Spindle";
+            // 
+            // lblDelaySpindleStart
+            // 
+            this.lblDelaySpindleStart.AutoSize = true;
+            this.lblDelaySpindleStart.Location = new System.Drawing.Point(211, 72);
+            this.lblDelaySpindleStart.Name = "lblDelaySpindleStart";
+            this.lblDelaySpindleStart.Size = new System.Drawing.Size(38, 15);
+            this.lblDelaySpindleStart.TabIndex = 4;
+            this.lblDelaySpindleStart.Text = "label1";
+            // 
+            // trackBarDelaySpindle
+            // 
+            this.trackBarDelaySpindle.Location = new System.Drawing.Point(211, 24);
+            this.trackBarDelaySpindle.Maximum = 120;
+            this.trackBarDelaySpindle.Name = "trackBarDelaySpindle";
+            this.trackBarDelaySpindle.Size = new System.Drawing.Size(240, 45);
+            this.trackBarDelaySpindle.TabIndex = 3;
+            this.trackBarDelaySpindle.TickFrequency = 10;
+            this.trackBarDelaySpindle.Value = 30;
+            this.trackBarDelaySpindle.ValueChanged += new System.EventHandler(this.trackBarDelaySpindle_ValueChanged);
+            // 
+            // cbSoftStart
+            // 
+            this.cbSoftStart.AutoSize = true;
+            this.cbSoftStart.Location = new System.Drawing.Point(6, 77);
+            this.cbSoftStart.Name = "cbSoftStart";
+            this.cbSoftStart.Size = new System.Drawing.Size(83, 19);
+            this.cbSoftStart.TabIndex = 2;
+            this.cbSoftStart.Text = "checkBox1";
+            this.cbSoftStart.UseVisualStyleBackColor = true;
+            this.cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
+            // 
+            // lblSpindleType
+            // 
+            this.lblSpindleType.AutoSize = true;
+            this.lblSpindleType.Location = new System.Drawing.Point(6, 6);
+            this.lblSpindleType.Name = "lblSpindleType";
+            this.lblSpindleType.Size = new System.Drawing.Size(38, 15);
+            this.lblSpindleType.TabIndex = 1;
+            this.lblSpindleType.Text = "label1";
+            // 
+            // cmbSpindleType
+            // 
+            this.cmbSpindleType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSpindleType.FormattingEnabled = true;
+            this.cmbSpindleType.Location = new System.Drawing.Point(6, 24);
+            this.cmbSpindleType.Name = "cmbSpindleType";
+            this.cmbSpindleType.Size = new System.Drawing.Size(164, 23);
+            this.cmbSpindleType.TabIndex = 0;
+            this.cmbSpindleType.SelectedIndexChanged += new System.EventHandler(this.cmbSpindleType_SelectedIndexChanged);
             // 
             // tabPageServiceSchedule
             // 
@@ -475,7 +617,7 @@
             this.tabPageServiceSchedule.Location = new System.Drawing.Point(4, 24);
             this.tabPageServiceSchedule.Name = "tabPageServiceSchedule";
             this.tabPageServiceSchedule.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageServiceSchedule.Size = new System.Drawing.Size(743, 242);
+            this.tabPageServiceSchedule.Size = new System.Drawing.Size(765, 242);
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
             // 
@@ -485,7 +627,7 @@
             this.tabPageUsage.Location = new System.Drawing.Point(4, 24);
             this.tabPageUsage.Name = "tabPageUsage";
             this.tabPageUsage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageUsage.Size = new System.Drawing.Size(743, 242);
+            this.tabPageUsage.Size = new System.Drawing.Size(765, 242);
             this.tabPageUsage.TabIndex = 7;
             this.tabPageUsage.Text = "Useage";
             // 
@@ -500,7 +642,7 @@
             this.tabPageMachineSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageMachineSettings.Name = "tabPageMachineSettings";
             this.tabPageMachineSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMachineSettings.Size = new System.Drawing.Size(743, 242);
+            this.tabPageMachineSettings.Size = new System.Drawing.Size(765, 242);
             this.tabPageMachineSettings.TabIndex = 3;
             this.tabPageMachineSettings.Text = "Machine Settings";
             // 
@@ -565,12 +707,21 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageSettings.Controls.Add(this.probingCommand1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSettings.Size = new System.Drawing.Size(743, 242);
+            this.tabPageSettings.Size = new System.Drawing.Size(765, 242);
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
+            // 
+            // probingCommand1
+            // 
+            this.probingCommand1.Location = new System.Drawing.Point(501, 6);
+            this.probingCommand1.MinimumSize = new System.Drawing.Size(220, 172);
+            this.probingCommand1.Name = "probingCommand1";
+            this.probingCommand1.Size = new System.Drawing.Size(258, 230);
+            this.probingCommand1.TabIndex = 0;
             // 
             // textBox2
             // 
@@ -581,7 +732,7 @@
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(750, 193);
+            this.textBox2.Size = new System.Drawing.Size(772, 193);
             this.textBox2.TabIndex = 9;
             // 
             // menuStrip1
@@ -591,7 +742,7 @@
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(774, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(796, 24);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -607,25 +758,27 @@
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
             // 
-            // flowLayoutWarningErrors
+            // warningsAndErrors
             // 
-            this.flowLayoutWarningErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutWarningErrors.AutoScroll = true;
-            this.flowLayoutWarningErrors.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutWarningErrors.Location = new System.Drawing.Point(12, 86);
-            this.flowLayoutWarningErrors.Name = "flowLayoutWarningErrors";
-            this.flowLayoutWarningErrors.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.flowLayoutWarningErrors.Size = new System.Drawing.Size(750, 48);
-            this.flowLayoutWarningErrors.TabIndex = 11;
-            this.flowLayoutWarningErrors.VisibleChanged += new System.EventHandler(this.flowLayoutWarningErrors_VisibleChanged);
+            this.warningsAndErrors.Location = new System.Drawing.Point(12, 86);
+            this.warningsAndErrors.Margin = new System.Windows.Forms.Padding(0);
+            this.warningsAndErrors.MaximumSize = new System.Drawing.Size(2048, 48);
+            this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
+            this.warningsAndErrors.Name = "warningsAndErrors";
+            this.warningsAndErrors.Size = new System.Drawing.Size(772, 48);
+            this.warningsAndErrors.TabIndex = 12;
+            this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningsAndErrors_OnUpdate);
+            this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
+            this.warningsAndErrors.Resize += new System.EventHandler(this.WarningContainer_VisibleChanged);
             // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(774, 645);
-            this.Controls.Add(this.flowLayoutWarningErrors);
+            this.ClientSize = new System.Drawing.Size(796, 645);
+            this.Controls.Add(this.warningsAndErrors);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.statusStrip);
@@ -634,7 +787,7 @@
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(790, 0);
+            this.MinimumSize = new System.Drawing.Size(812, 0);
             this.Name = "FrmMachine";
             this.Text = "FrmMachine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMachine_FormClosing);
@@ -648,8 +801,16 @@
             this.tabPageOverrides.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).EndInit();
             this.tabPageJog.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroX)).EndInit();
+            this.tabPageSpindle.ResumeLayout(false);
+            this.tabPageSpindle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).EndInit();
             this.tabPageMachineSettings.ResumeLayout(false);
             this.tabPageMachineSettings.PerformLayout();
+            this.tabPageSettings.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -706,7 +867,19 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem machineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutWarningErrors;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelWarnings;
+        private Controls.WarningContainer warningsAndErrors;
+        private System.Windows.Forms.PictureBox pictureZeroAll;
+        private System.Windows.Forms.PictureBox pictureZeroZ;
+        private System.Windows.Forms.PictureBox pictureZeroY;
+        private System.Windows.Forms.PictureBox pictureZeroX;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBuffer;
+        private Controls.ProbingCommand probingCommand1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSave;
+        private System.Windows.Forms.Label lblSpindleType;
+        private System.Windows.Forms.ComboBox cmbSpindleType;
+        private System.Windows.Forms.CheckBox cbSoftStart;
+        private System.Windows.Forms.Label lblDelaySpindleStart;
+        private System.Windows.Forms.TrackBar trackBarDelaySpindle;
     }
 }

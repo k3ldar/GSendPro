@@ -30,5 +30,19 @@ namespace GSendShared
         DateTime ConfigurationLastVerified { get; set; }
 
         string ProbeCommand { get; set; }
+
+        int ProbeSpeed { get; set; }
+        
+        decimal ProbeThickness { get; set; }
+
+        int JogUnits { get; set; }
+
+        int JogFeedrate { get; set; }
+
+        SpindleType SpindleType { get; set; }
+
+        int SoftStartSeconds { get; set; }
+
+        bool SoftStart {  get; set; }
     }
 }

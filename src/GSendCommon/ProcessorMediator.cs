@@ -120,10 +120,13 @@ namespace GSendCommon
                 _machines.ForEach(m => RemoveEventsFromProcessor(m));
             }
 
-            await webSocket.CloseAsync(
-                receiveResult.CloseStatus.Value,
-                receiveResult.CloseStatusDescription,
-                CancellationToken);
+            if (receiveResult.CloseStatus != null || receiveResult.CloseStatusDescription != null)
+            {
+                await webSocket.CloseAsync(
+                    receiveResult.CloseStatus.Value,
+                    receiveResult.CloseStatusDescription,
+                    CancellationToken);
+            }
 
             _cancellationTokenSource.Cancel();
 
@@ -166,11 +169,11 @@ namespace GSendCommon
 
                     break;
 
-                case Constants.NotificationMachineUpdated:
-                    RemoveMachine(machineId);
-                    AddMachine(machineId);
+                //case Constants.NotificationMachineUpdated:
+                //    UpdateMachine(machineId);
+                //    AddMachine(machineId);
 
-                    break;
+                //    break;
             }
 
         }
@@ -388,7 +391,10 @@ namespace GSendCommon
                             if (Double.TryParse(parts[3], out double stepSize))
                             if (Double.TryParse(parts[4], out double feedRate))
                             proc.JogStart(jogDirection, stepSize, feedRate);
-
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;
@@ -397,6 +403,10 @@ namespace GSendCommon
                         if (foundMachine && proc != null)
                         {
                             proc.JogStop();
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;
@@ -433,16 +443,37 @@ namespace GSendCommon
 
                         if (foundMachine && proc != null)
                         {
-                            if (proc.IsConnected)
+                            if (!proc.IsConnected)
                             {
-                                response.message = proc.Disconnect() ? (int)ConnectResult.Success : (int)ConnectResult.Error;
+                                response.message = (int)proc.Connect();
+                                response.success = true;
                             }
                             else
                             {
-                                response.message = (int)proc.Connect();
+                                response.success = false;
                             }
+                        }
+                        else
+                        {
+                            response.success = false;
+                            response.message = (int)ConnectResult.Error;
+                        }
 
-                            response.success = true;
+                        break;
+                    case Constants.MessageMachineDisconnectServer:
+                        response.request = Constants.MessageMachineConnectServer;
+
+                        if (foundMachine && proc != null)
+                        {
+                            if (proc.IsConnected)
+                            {
+                                response.message = proc.Disconnect() ? (int)ConnectResult.Success : (int)ConnectResult.Error;
+                                response.success = true;
+                            }
+                            else
+                            {
+                                response.success = false;
+                            }
                         }
                         else
                         {
@@ -458,6 +489,10 @@ namespace GSendCommon
                             if (proc.StateModel.MachineState != MachineState.Alarm)
                                 proc.Resume();
                         }
+                        else
+                        {
+                            response.success = false;
+                        }
 
                         break;
 
@@ -467,13 +502,21 @@ namespace GSendCommon
                             if (proc.StateModel.MachineState != MachineState.Alarm)
                                 proc.Home();
                         }
+                        else
+                        {
+                            response.success = false;
+                        }
 
                         break;
 
                     case Constants.MessageMachineProbeServer:
                         if (foundMachine && proc != null)
                         {
-                            proc.Probe();
+                            response.success = proc.Probe();
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;
@@ -481,7 +524,11 @@ namespace GSendCommon
                     case Constants.MessageMachinePauseServer:
                         if (foundMachine && proc != null)
                         {
-                            proc.Pause();
+                            response.success = proc.Pause();
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;
@@ -489,7 +536,11 @@ namespace GSendCommon
                     case Constants.MessageMachineStopServer:
                         if (foundMachine && proc != null)
                         {
-                            proc.Stop();
+                            response.success = proc.Stop();
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;
@@ -499,6 +550,10 @@ namespace GSendCommon
                         {
                             _processEvents = true;
                         }
+                        else
+                        {
+                            response.success = false;
+                        }
 
                         break;
 
@@ -507,8 +562,28 @@ namespace GSendCommon
                         {
                             _processEvents = false;
                         }
+                        else
+                        {
+                            response.success = false;
+                        }
 
                         break;
+
+                    case Constants.MessageMachineSetZeroServer:
+                        if (foundMachine && proc != null && parts.Length == 4 &&
+                            Int32.TryParse(parts[2], out int zeroEnumInt) &&
+                            Int32.TryParse(parts[3], out int coordinateSystem))
+                        {
+                            ZeroAxis zeroAxis = (ZeroAxis)zeroEnumInt;
+                            response.success = proc.ZeroAxes(zeroAxis, coordinateSystem);
+                        }
+                        else
+                        {
+                            response.success = false;
+                        }
+
+                        break;
+
 
                     case Constants.MessageMachineUpdateSettingServer:
                         
@@ -534,6 +609,10 @@ namespace GSendCommon
                             response.request = Constants.MessageMachineStatusServer;
                             response.success = true;
                             response.IsConnected = proc.IsConnected;
+                        }
+                        else
+                        {
+                            response.success = false;
                         }
 
                         break;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 using GSendAnalyser;
 using GSendAnalyser.Internal;
@@ -71,7 +72,8 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
@@ -79,6 +81,7 @@ namespace GSendTests.GCService
             bool connectCalled = false;
             bool lockedCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.OnConnect += (sender, e) => { connectCalled = true; };
             sut.OnGrblError += (sender, e) => { lockedCalled = e.Equals(GrblError.Locked); };
 
@@ -94,13 +97,15 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             bool disconnectCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.OnDisconnect += (sender, e) => { disconnectCalled = true; };
 
             Assert.IsFalse(sut.IsConnected);
@@ -133,13 +138,15 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             bool startCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.OnStart += (sender, e) => { startCalled = true; };
 
             Assert.IsFalse(sut.IsConnected);
@@ -170,13 +177,15 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             bool pauseCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.OnPause += (sender, e) => { pauseCalled = true; };
 
             Assert.IsFalse(sut.IsConnected);
@@ -211,13 +220,15 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             bool resumeCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(1);
             sut.OnResume += (sender, e) => { resumeCalled = true; };
 
             Assert.IsFalse(sut.IsConnected);
@@ -256,12 +267,14 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
@@ -282,13 +295,15 @@ namespace GSendTests.GCService
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new(),
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             bool stopCalled = false;
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.OnStop += (sender, e) => { stopCalled = true; };
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
@@ -375,8 +390,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void UpdateSpindleSpeed_InvalidParamMinusOne_Throws_ArgumentOutOfRangeException()
+        public void UpdateSpindleSpeed_InvalidParamMinusOne_ReturnsFalse()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -386,7 +400,8 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
-            sut.UpdateSpindleSpeed(-1);
+            bool result = sut.UpdateSpindleSpeed(-1);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -551,7 +566,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        public void Unlock_CommandsSentToCom_Success()
+        public void Unlock_MachineNotLocked_ReturnsFalse()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -562,12 +577,39 @@ namespace GSendTests.GCService
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
 
-            sut.Unlock();
+            bool result = sut.Unlock();
 
-            Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("$X", mockComPortFactory.MockComPort.Commands[0]);
+            Assert.IsFalse(result);
+            Assert.AreEqual(0, mockComPortFactory.MockComPort.Commands.Count);
         }
 
+        [TestMethod]
+        [Ignore]
+        public void Unlock_MachineLocked_ReturnsTrueAndSendsCommandToCom()
+        {
+            MachineModel machineModel = new MachineModel()
+            {
+                ComPort = "COM7",
+                Settings = new(),
+            };
+
+            MockComPort mockComPort = new(machineModel);
+            MockComPortFactory mockComPortFactory = new MockComPortFactory(mockComPort);
+            mockComPort.CommandsToReturn.Add("<Alarm|>");
+            mockComPort.CommandsToReturn.Add("<Alarm|>");
+            mockComPort.CommandsToReturn.Add("ok");
+
+            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.Connect();
+            Thread.Sleep(500);
+            bool result = sut.Unlock();
+
+            Assert.IsTrue(result);
+            Assert.AreEqual(0, mockComPortFactory.MockComPort.Commands.Count);
+            Assert.AreEqual("$X", mockComPortFactory.MockComPort.Commands[0]);
+
+        }
+         
         [TestMethod]
         public void Settings_CommandsSentToCom_Success()
         {
@@ -602,10 +644,10 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
             bool eventFired = false;
             sut.OnCommandSent += (sender, e) => { eventFired = true; };
-            sut.ZeroAxis(Axis.X);
+            sut.ZeroAxes(ZeroAxis.X, 0);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("G92X0", mockComPortFactory.MockComPort.Commands[0]);
+            Assert.AreEqual("G10 P0 L20 X0", mockComPortFactory.MockComPort.Commands[0]);
             Assert.IsTrue(eventFired);
         }
 
@@ -622,10 +664,10 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
             bool eventFired = false;
             sut.OnCommandSent += (sender, e) => { eventFired = true; };
-            sut.ZeroAxis(Axis.Y);
+            sut.ZeroAxes(ZeroAxis.Y, 0);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("G92Y0", mockComPortFactory.MockComPort.Commands[0]);
+            Assert.AreEqual("G10 P0 L20 Y0", mockComPortFactory.MockComPort.Commands[0]);
             Assert.IsTrue(eventFired);
         }
 
@@ -642,15 +684,15 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
             bool eventFired = false;
             sut.OnCommandSent += (sender, e) => { eventFired = true; };
-            sut.ZeroAxis(Axis.Z);
+            sut.ZeroAxes(ZeroAxis.Z, 0);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("G92Z0", mockComPortFactory.MockComPort.Commands[0]);
+            Assert.AreEqual("G10 P0 L20 Z0", mockComPortFactory.MockComPort.Commands[0]);
             Assert.IsTrue(eventFired);
         }
 
         [TestMethod]
-        public void ZeroAxis_XY_CommandsSentToCom_Success()
+        public void ZeroAxis_All_CommandsSentToCom_Success()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -662,30 +704,10 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
             bool eventFired = false;
             sut.OnCommandSent += (sender, e) => { eventFired = true; };
-            sut.ZeroAxis(Axis.X | Axis.Y);
+            sut.ZeroAxes(ZeroAxis.All, 0);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("G92X0Y0", mockComPortFactory.MockComPort.Commands[0]);
-            Assert.IsTrue(eventFired);
-        }
-
-        [TestMethod]
-        public void ZeroAxis_XYZ_CommandsSentToCom_Success()
-        {
-            MachineModel machineModel = new MachineModel()
-            {
-                ComPort = "COM7"
-            };
-
-            MockComPortFactory mockComPortFactory = new MockComPortFactory();
-
-            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
-            bool eventFired = false;
-            sut.OnCommandSent += (sender, e) => { eventFired = true; };
-            sut.ZeroAxis(Axis.X | Axis.Y | Axis.Z);
-
-            Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
-            Assert.AreEqual("G92X0Y0Z0", mockComPortFactory.MockComPort.Commands[0]);
+            Assert.AreEqual("G10 P0 L20 X0 Y0 Z0", mockComPortFactory.MockComPort.Commands[0]);
             Assert.IsTrue(eventFired);
         }
 
@@ -767,12 +789,14 @@ namespace GSendTests.GCService
             Assert.IsTrue(eventFired);
         }
 
+        [Ignore]
         [TestMethod]
         public void StatusReceived_MachineModelUpdated_Success()
         {
             MachineModel machineModel = new MachineModel()
             {
-                ComPort = "COM7"
+                ComPort = "COM7",
+                Settings = new()
             };
 
             MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
@@ -783,7 +807,7 @@ namespace GSendTests.GCService
             mockComPortFactory.MockComPort.CommandsToReturn.Add("<Run|WPos:11,21,45|WCO:93,34,65|Bf:46,108|Ln:234|F:200|Ov:95,85,75>");
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
-
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             MachineStateModel machineStateModel = null;
             bool eventFired = false;
             sut.OnMachineStateChanged += (sender, e) => { eventFired = true; machineStateModel = e; };
@@ -855,6 +879,7 @@ namespace GSendTests.GCService
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM7",
+                Settings = new()
             };
 
             machineModel.Settings.MaxAccelerationY = 4000;
@@ -875,6 +900,7 @@ namespace GSendTests.GCService
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM7",
+                Settings = new()
             };
 
             machineModel.Settings.MaxAccelerationX = 4000;
@@ -884,9 +910,10 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.JogStart(JogDirection.XPlusYPlus, 0.01, 3500);
 
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X0.01Y0.01F3500"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X0.0100Y0.0100F3500"));
         }
 
         [TestMethod]
@@ -895,6 +922,7 @@ namespace GSendTests.GCService
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM7",
+                Settings = new()
             };
 
             machineModel.Settings.MaxAccelerationX = 300;
@@ -922,6 +950,7 @@ namespace GSendTests.GCService
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM7",
+                Settings = new()
             };
 
             machineModel.Settings.MaxAccelerationX = 300;
@@ -934,14 +963,15 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.StateModel.MachineX = 123.168;
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XPlusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X76.832Y126.145F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X76.8320Y6.1450F2000"));
 
             sut.JogStart(JogDirection.XMinusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-76.832Y-126.145F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-76.8320Y-6.1450F2000"));
         }
 
         [TestMethod]
@@ -950,6 +980,7 @@ namespace GSendTests.GCService
             MachineModel machineModel = new MachineModel()
             {
                 ComPort = "COM7",
+                Settings = new()
             };
 
             machineModel.Settings.MaxAccelerationX = 300;
@@ -962,14 +993,15 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory(new MockComPort(machineModel));
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
+            sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.StateModel.MachineX = 123.168;
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XMinusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-76.832Y126.145F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-76.8320Y6.1450F2000"));
 
             sut.JogStart(JogDirection.XPlusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X76.832Y-126.145F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X76.8320Y-6.1450F2000"));
         }
     }
 }

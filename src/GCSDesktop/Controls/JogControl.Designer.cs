@@ -201,6 +201,7 @@
             this.selectionFeed.TabIndex = 11;
             this.selectionFeed.TickFrequency = 1;
             this.selectionFeed.Value = 0;
+            this.selectionFeed.ValueChanged += new System.EventHandler(this.selectionFeed_ValueChanged);
             // 
             // JogControl
             // 

@@ -36,10 +36,10 @@ namespace GSendApi
 
         //}
 
-        //public void MachineUpdate(IMachine machine)
-        //{
-
-        //}
+        public void MachineUpdate(IMachine machine)
+        {
+            CallPutApi("MachineApi/MachineUpdate", machine);
+        }
 
         private HttpClient CreateApiClient()
         {
@@ -50,8 +50,13 @@ namespace GSendApi
             httpClient.DefaultRequestHeaders.UserAgent.Clear();
             httpClient.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("GSend", _apiSettings.ApiVersion));
-            httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
 
+#if DEBUG
+            httpClient.Timeout = TimeSpan.FromMinutes(5);
+#else
+     
+            httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
+#endif
             return httpClient;
         }
 
@@ -106,6 +111,33 @@ namespace GSendApi
                 if (responseModel.success)
                 {
                     return JsonSerializer.Deserialize<T>(responseModel.responseData);
+                }
+
+                throw new GSendApiException(responseModel.responseData);
+            }
+            catch (Exception)
+            {
+                //log?
+                throw;
+            }
+        }
+
+        private void CallPutApi<T>(string endPoint, T data)
+        {
+            try
+            {
+                using HttpClient httpClient = CreateApiClient();
+                string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+                HttpContent content = CreateContent(data);
+                using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return;
                 }
 
                 throw new GSendApiException(responseModel.responseData);

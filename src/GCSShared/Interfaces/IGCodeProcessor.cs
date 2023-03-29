@@ -18,23 +18,23 @@ namespace GSendShared
 
         bool Stop();
 
-        void LoadGCode(IGCodeAnalyses gCodeAnalyses);
+        bool LoadGCode(IGCodeAnalyses gCodeAnalyses);
 
-        void ZeroAxis(Axis axis);
+        bool ZeroAxes(ZeroAxis axis, int coordinateSystem);
 
         void Clear();
 
-        void Home();
+        bool Home();
 
         bool Probe();
 
         string Help();
 
-        void Unlock();
+        bool Unlock();
 
-        void JogStart(JogDirection jogDirection, double stepSize, double feedRate);
+        bool JogStart(JogDirection jogDirection, double stepSize, double feedRate);
 
-        void JogStop();
+        bool JogStop();
 
         UpdateSettingResult UpdateSetting(string updateCommand);
 
@@ -42,17 +42,19 @@ namespace GSendShared
 
         Dictionary<int, object> Settings();
 
-        void UpdateSpindleSpeed(int speed);
+        bool UpdateSpindleSpeed(int speed);
 
-        void TurnMistCoolantOn();
+        bool TurnMistCoolantOn();
 
-        void TurnFloodCoolantOn();
+        bool TurnFloodCoolantOn();
 
-        void CoolantOff();
+        bool CoolantOff();
 
         long Id { get; }
 
         TimeSpan TimeOut { get; set; }
+
+        TimeSpan HomingTimeout { get; set; }
 
         string Cpu { get; }
 

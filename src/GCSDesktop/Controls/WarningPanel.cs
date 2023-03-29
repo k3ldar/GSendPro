@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+
+using GSendShared;
 
 namespace GSendDesktop.Controls
 {
@@ -10,10 +13,29 @@ namespace GSendDesktop.Controls
             InitializeComponent();
         }
 
-        public WarningPanel(string message)
+        public InformationType InformationType { get; }
+
+        public WarningPanel(InformationType informationType, string message)
             : this()
         {
             lblMessage.Text = message;
+            InformationType = informationType;
+
+            switch (informationType)
+            {
+                case InformationType.Warning:
+                    panel1.BackColor = Color.Orange;
+                    break;
+                case InformationType.Alarm:
+                case InformationType.Error:
+                    panel1.BackColor = Color.Red;
+                    break;
+                case InformationType.Information:
+                    panel1.BackColor = Color.White;
+                    break;
+            }
+
+            imageWarning.Image = imageList1.Images[(int)informationType];
         }
 
         public event EventHandler WarningClose;

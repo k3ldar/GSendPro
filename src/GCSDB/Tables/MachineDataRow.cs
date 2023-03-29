@@ -26,6 +26,15 @@ namespace GSendDB.Tables
         private int _overrideSpindle;
         private DateTime _configurationLastVerified;
         private string _probeCommand;
+        private int _probeSpeed;
+        private decimal _probeThickness;
+        private int _jogUnits;
+        private int _jogFeedrate;
+        private SpindleType _spindleType;
+        private int _softStartSeconds;
+        private bool _softStart;
+
+        // Update ConvertFromIMachineToMachineDataRow in machineprovider
 
         public MachineDataRow()
         {
@@ -154,7 +163,7 @@ namespace GSendDB.Tables
 
             set
             {
-                if (_overrideSpindle != value)
+                if (_overrideSpindle == value)
                     return;
 
                 _overrideSpindle = value;
@@ -186,6 +195,104 @@ namespace GSendDB.Tables
                     return;
 
                 _probeCommand = value;
+                Update();
+            }
+        }
+
+        public int ProbeSpeed
+        {
+            get => _probeSpeed;
+
+            set
+            {
+                if (_probeSpeed == value)
+                    return;
+
+                _probeSpeed = value;
+                Update();
+            }
+        }
+
+        public decimal ProbeThickness
+        {
+            get => _probeThickness;
+
+            set
+            {
+                if (_probeThickness == value)
+                    return;
+
+                _probeThickness = value;
+                Update();
+            }
+        }
+
+        public int JogUnits
+        {
+            get => _jogUnits;
+
+            set
+            {
+                if (_jogUnits == value)
+                    return;
+
+                _jogUnits = value;
+                Update();
+            }
+        }
+
+        public int JogFeedRate
+        {
+            get => _jogFeedrate;
+
+            set
+            {
+                if (_jogFeedrate == value)
+                    return;
+
+                _jogFeedrate = value;
+                Update();
+            }
+        }
+
+        public SpindleType SpindleType
+        {
+            get => _spindleType;
+
+            set
+            {
+                if (_spindleType == value)
+                    return;
+
+                _spindleType = value;
+                Update();
+            }
+        }
+
+        public int SoftStartSeconds
+        {
+            get => _softStartSeconds;
+
+            set
+            {
+                if (_softStartSeconds == value)
+                    return;
+
+                _softStartSeconds = value;
+                Update();
+            }
+        }
+
+        public bool SoftStart
+        {
+            get => _softStart;
+
+            set
+            {
+                if (_softStart == value)
+                    return;
+
+                _softStart = value;
                 Update();
             }
         }

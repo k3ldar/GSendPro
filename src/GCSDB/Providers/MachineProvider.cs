@@ -78,6 +78,21 @@ namespace GSendDB.Providers
             machineDataRow.Name = machine.Name;
             machineDataRow.MachineType = machine.MachineType;
             machineDataRow.ComPort = machine.ComPort;
+            machineDataRow.Options = machine.Options;
+            machineDataRow.AxisCount = machine.AxisCount;
+            machineDataRow.Settings = machine.Settings;
+            machineDataRow.DisplayUnits = machine.DisplayUnits;
+            machineDataRow.OverrideSpeed = machine.OverrideSpeed;
+            machineDataRow.OverrideSpindle = machine.OverrideSpindle;
+            machineDataRow.ConfigurationLastVerified = machine.ConfigurationLastVerified;
+            machineDataRow.ProbeCommand = machine.ProbeCommand;
+            machineDataRow.ProbeSpeed = machine.ProbeSpeed;
+            machineDataRow.ProbeThickness = machine.ProbeThickness;
+            machineDataRow.JogFeedRate = machine.JogFeedrate;
+            machineDataRow.JogUnits = machine.JogUnits;
+            machineDataRow.SpindleType = machine.SpindleType;
+            machineDataRow.SoftStart = machine.SoftStart;
+            machineDataRow.SoftStartSeconds = machine.SoftStartSeconds;
 
             return machineDataRow;
         }
@@ -104,7 +119,9 @@ namespace GSendDB.Providers
                 machineDataRow.AxisCount, machineDataRow.Settings,
                 machineDataRow.DisplayUnits, machineDataRow.OverrideSpeed,
                 machineDataRow.OverrideSpindle, machineDataRow.ConfigurationLastVerified,
-                machineDataRow.ProbeCommand);
+                machineDataRow.ProbeCommand, machineDataRow.ProbeSpeed, machineDataRow.ProbeThickness,
+                machineDataRow.JogFeedRate, machineDataRow.JogUnits,
+                machineDataRow.SpindleType, machineDataRow.SoftStartSeconds, machineDataRow.SoftStart);
         }
 
         #endregion Private Methods

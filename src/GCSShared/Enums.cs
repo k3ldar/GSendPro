@@ -1,5 +1,25 @@
 ﻿namespace GSendShared
 {
+    public enum SpindleType
+    {
+        Integrated = 0,
+
+        VFD = 1,
+
+        External = 2
+    }
+
+    public enum InformationType
+    {
+        Alarm = 0,
+
+        Error = 1,
+
+        Warning = 2,
+
+        Information = 3
+    }
+
     public enum ConnectResult
     {
         Success = 0,
@@ -39,8 +59,6 @@
         None = 0,
 
         LimitSwitches = 1,
-
-        CanHome = 2,
     }
 
     [Flags]
@@ -148,6 +166,19 @@
         Y = 2,
 
         Z = 4
+    }
+
+    public enum ZeroAxis
+    {
+        None = 0,
+
+        X = 1, 
+        
+        Y = 2, 
+        
+        Z = 3, 
+        
+        All = 4
     }
 
     /// <summary>

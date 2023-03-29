@@ -44,6 +44,10 @@ namespace GSendShared
 
         public const string MessageMachineConnect = "mConnect:{0}";
 
+        public const string MessageMachineDisconnectServer = "mDisconnect";
+
+        public const string MessageMachineDisconnect = "mDisconnect:{0}";
+
         public const string MessageMachineClearAlarmServer = "mClearAlm";
 
         public const string MessageMachineClearAlarm = "mClearAlm:{0}";
@@ -71,6 +75,10 @@ namespace GSendShared
         public const string MessageMachineUpdateSettingServer = "mUpdateSetting";
 
         public const string MessageMachineUpdateSetting = "mUpdateSetting:{0}:{1}";
+
+        public const string MessageMachineSetZeroServer = "mZero";
+
+        public const string MessageMachineSetZero = "mZero:{0}:{1}:{2}";
 
 
 
@@ -100,5 +108,11 @@ namespace GSendShared
         public const string SemiColon = ";";
 
         public const char EqualsChar = '=';
+
+        public const char ColonChar = ':';
+
+
+        public const string ProbeCommand = "G91 G21\r\nG38.2 Z-50 F{0}\r\nG92 Z{1}\r\nG0 Z28\r\nM30";
+
     }
 }

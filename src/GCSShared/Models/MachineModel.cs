@@ -4,12 +4,13 @@
     {
         public MachineModel()
         {
-
+            
         }
 
         public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount, 
             GrblSettings settings, DisplayUnits displayUnits, int overrideSpeed, int overrideSpindle, DateTime configurationLastVerified,
-            string probeCommand)
+            string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
+            int softStartSeconds, bool softStart)
             : this()
         {
             if (String.IsNullOrWhiteSpace(name))
@@ -27,6 +28,13 @@
             OverrideSpindle = overrideSpindle;
             ConfigurationLastVerified = configurationLastVerified;
             ProbeCommand = probeCommand;
+            ProbeSpeed = probeSpeed;
+            ProbeThickness = probeThickness;
+            JogFeedrate = jogFeedRate;
+            JogUnits = jogUnits;
+            SpindleType = spindleType;
+            SoftStartSeconds = softStartSeconds;
+            SoftStart = softStart;
         }
 
         public long Id { get; set; } = Int64.MinValue;
@@ -52,5 +60,19 @@
         public DateTime ConfigurationLastVerified { get; set; }
 
         public string ProbeCommand { get; set; }
+
+        public int ProbeSpeed { get; set; }
+
+        public decimal ProbeThickness { get; set; }
+
+        public int JogUnits { get; set; }
+
+        public int JogFeedrate { get; set; }
+
+        public SpindleType SpindleType { get; set; }
+
+        public int SoftStartSeconds { get; set; }
+
+        public bool SoftStart { get; set; }
     }
 }

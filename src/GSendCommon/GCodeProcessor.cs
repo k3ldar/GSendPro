@@ -4,8 +4,11 @@ using System.Text;
 
 using AppSettings;
 
+using GSendAnalyser.Internal;
+
 using GSendShared;
 using GSendShared.Attributes;
+using GSendShared.Interfaces;
 using GSendShared.Models;
 
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
@@ -31,8 +34,8 @@ namespace GSendCommon
         private const string CommandMistCoolantOn = "M7";
         private const string CommandFloodCoolantOn = "M8";
         private const string CommandCoolantOff = "M9";
-        private const string CommandZero = "G92";
-        private const string CommandZeroAxis = "{0}0";
+        private const string CommandZero = "G10 P{0} L20";
+        private const string CommandZeroAxis = " {0}0";
         private const string StatusIdle = "Idle";
         private const string CommandGetStatus = "$I";
         private const string CommandStartResume = "~";
@@ -52,7 +55,7 @@ namespace GSendCommon
         private const string OptionFeedRate = "f";
         private const string OptionOverrides = "ov";
         private const string OptionAccessoryState = "a";
-        private static TimeSpan DefaultTimeOut;
+        private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
         private readonly List<IGCodeLine> _commandsToSend = new();
         private readonly Queue<IGCodeLine> _sendQueue = new();
@@ -62,6 +65,7 @@ namespace GSendCommon
         private readonly IComPort _port;
         private volatile bool _isRunning;
         private volatile bool _isPaused;
+        private volatile bool _isAlarm;
         private volatile bool _waitingForResponse;
         private int _currentBufferSize = 0;
         private DateTime _lastInformationCheck = DateTime.MinValue;
@@ -86,7 +90,6 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            DefaultTimeOut = TimeSpan.FromSeconds(30);
 
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort}", ThreadPriority.Normal);
         }
@@ -149,9 +152,15 @@ namespace GSendCommon
             _initialising = true;
             try
             {
+                _isAlarm = false;
                 _port.Open();
                 OnConnect?.Invoke(this, EventArgs.Empty);
-                ProcessMessageResponse(SendCommandWaitForOKCommand(CommandGetStatus).Trim()[1..^1]);
+                string connectMessage = SendCommandWaitForOKCommand(CommandGetStatus).Trim();
+
+                if (connectMessage.Length > 2)
+                    connectMessage = connectMessage[1..^1];
+
+                ProcessMessageResponse(connectMessage);
                 ValidateGrblSettings();
                 Trace.WriteLine($"Connect: {_port.IsOpen()}");
                 _machineStateModel.IsConnected = _port.IsOpen();
@@ -184,6 +193,7 @@ namespace GSendCommon
 
             _port.Close();
             OnDisconnect?.Invoke(this, EventArgs.Empty);
+            _isAlarm = false;
             Trace.WriteLine("Disconnect");
 
             _machineStateModel.IsConnected = _port.IsOpen();
@@ -261,7 +271,7 @@ namespace GSendCommon
             NextCommand = FirstCommand;
         }
 
-        public void LoadGCode(IGCodeAnalyses gCodeAnalyses)
+        public bool LoadGCode(IGCodeAnalyses gCodeAnalyses)
         {
             if (gCodeAnalyses == null)
                 throw new InvalidOperationException(nameof(gCodeAnalyses));
@@ -284,30 +294,37 @@ namespace GSendCommon
 
                 currentLine.Commands.Add(command);
             }
+
+            return true;
         }
 
-        public void ZeroAxis(Axis axis)
+        public bool ZeroAxes(ZeroAxis axis, int coordinateSystem)
         {
-            string zeroCommand = CommandZero;
+            string zeroCommand = String.Format(CommandZero, coordinateSystem);
 
-            if (axis.HasFlag(Axis.X))
-                zeroCommand += String.Format(CommandZeroAxis, Axis.X);
+            if (axis == ZeroAxis.X || axis == ZeroAxis.All)
+                zeroCommand += String.Format(CommandZeroAxis, ZeroAxis.X);
 
-            if (axis.HasFlag(Axis.Y))
-                zeroCommand += String.Format(CommandZeroAxis, Axis.Y);
+            if (axis == ZeroAxis.Y || axis == ZeroAxis.All)
+                zeroCommand += String.Format(CommandZeroAxis, ZeroAxis.Y);
 
-            if (axis.HasFlag(Axis.Z))
-                zeroCommand += String.Format(CommandZeroAxis, Axis.Z);
+            if (axis == ZeroAxis.Z || axis == ZeroAxis.All)
+                zeroCommand += String.Format(CommandZeroAxis, ZeroAxis.Z);
 
-            SendCommandWaitForResponse(zeroCommand);
+            if (zeroCommand.Equals(CommandZero))
+                return false;
+
+            SendCommandWaitForResponse(zeroCommand, TimeOut);
             OnCommandSent?.Invoke(this, CommandSent.ZeroAxis);
+            return true;
         }
 
-        public void Home()
+        public bool Home()
         {
-            SendCommandWaitForResponse(CommandHome);
+            SendCommandWaitForResponse(CommandHome, HomingTimeout);
             Trace.WriteLine("Home");
             OnCommandSent?.Invoke(this, CommandSent.Home);
+            return true;
         }
 
         public bool Probe()
@@ -315,10 +332,13 @@ namespace GSendCommon
             if (String.IsNullOrEmpty(_machine.ProbeCommand))
                 return false;
 
-            //IGCodeParser gcodeParser = new GCodeParser();
-            //IGCodeAnalyses gCodeAnalyses = 
+            IGCodeParser gcodeParser = new GCodeParser();
+            IGCodeAnalyses gCodeAnalyses = gcodeParser.Parse(_machine.ProbeCommand);
+            LoadGCode(gCodeAnalyses);
+
+            Start();
             //IGCodeProcessor gCodeProcessor = new 
-            return false;
+            return true;
         }
 
         public string Help()
@@ -326,14 +346,19 @@ namespace GSendCommon
             return SendCommandWaitForOKCommand(CommandHelp);
         }
 
-        public void Unlock()
+        public bool Unlock()
         {
-            SendCommandWaitForResponse(CommandUnlock);
+            if (!_isAlarm)
+                return false;
+
+            SendCommandWaitForResponse(CommandUnlock, TimeOut);
+            _isAlarm = false;
             Trace.WriteLine("Unlock");
             OnCommandSent?.Invoke(this, CommandSent.Unlock);
+            return true;
         }
 
-        public void JogStart(JogDirection jogDirection, double stepSize, double feedRate)
+        public bool JogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             StringBuilder jogCommand = new("$J=G20G91");
             decimal maxZTravel = Convert.ToDecimal(stepSize);
@@ -407,11 +432,13 @@ namespace GSendCommon
             jogCommand.AppendFormat("F{0}", feedRate);
 
             InternalWriteLine(jogCommand.ToString());
+            return true;
         }
 
-        public void JogStop()
+        public bool JogStop()
         {
             InternalWriteByte(new byte[] { 0x85 });
+            return false;
         }
 
         public void WriteLine(string gCode)
@@ -530,45 +557,54 @@ namespace GSendCommon
             }
         }
 
-        public void UpdateSpindleSpeed(int speed)
+        public bool UpdateSpindleSpeed(int speed)
         {
             if (speed < 0)
-                throw new ArgumentOutOfRangeException(nameof(speed));
+                return false;
 
             if (speed > 0)
             {
-                SendCommandWaitForResponse(String.Format(CommandSpindleStart, speed));
+                SendCommandWaitForResponse(String.Format(CommandSpindleStart, speed), TimeOut);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleSpeedSet);
             }
             else
             {
-                SendCommandWaitForResponse(CommandStopSpindle);
+                SendCommandWaitForResponse(CommandStopSpindle, TimeOut);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleOff);
             }
+                
+            return true;
         }
 
-        public void TurnMistCoolantOn()
+        public bool TurnMistCoolantOn()
         {
             if (!_machineStateModel.MistEnabled)
             {
-                SendCommandWaitForResponse(CommandMistCoolantOn);
+                SendCommandWaitForResponse(CommandMistCoolantOn, TimeOut);
                 OnCommandSent?.Invoke(this, CommandSent.MistOn);
+                return true;
             }
+
+            return false;
         }
 
-        public void TurnFloodCoolantOn()
+        public bool TurnFloodCoolantOn()
         {
             if (!FloodCoolantActive)
             {
-                SendCommandWaitForResponse(CommandFloodCoolantOn);
+                SendCommandWaitForResponse(CommandFloodCoolantOn, TimeOut);
                 OnCommandSent?.Invoke(this, CommandSent.FloodOn);
+                return true;
             }
+
+            return false;
         }
 
-        public void CoolantOff()
+        public bool CoolantOff()
         {
-            SendCommandWaitForResponse(CommandCoolantOff);
+            SendCommandWaitForResponse(CommandCoolantOff, TimeOut);
             OnCommandSent?.Invoke(this, CommandSent.CoolantOff);
+            return true;
         }
 
         #endregion IGCodeProcessor Methods
@@ -609,6 +645,8 @@ namespace GSendCommon
         }
 
         public TimeSpan TimeOut { get; set; } = DefaultTimeOut;
+
+        public TimeSpan HomingTimeout { get; set; } = TimeSpan.FromSeconds(180);
 
         public bool SpindleActive { get => _machineStateModel.SpindleClockWise || _machineStateModel.SpindleCounterClockWise; }
 
@@ -665,20 +703,23 @@ namespace GSendCommon
             if (!_port.IsOpen() || _initialising)
                 return !HasCancelled();
 
-            TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
-
-            if (span.TotalMilliseconds > 250)
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                _lastInformationCheck = DateTime.UtcNow;
-                InternalWriteLine(CommandRequestStatus);
-            }
+                TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
 
-            if (_isRunning && !IsPaused)
-            {
-                ProcessNextCommand();
-            }
+                if (span.TotalMilliseconds > 250)
+                {
+                    _lastInformationCheck = DateTime.UtcNow;
+                    InternalWriteLine(CommandRequestStatus);
+                }
 
-            return !HasCancelled();
+                if (_isRunning && !IsPaused)
+                {
+                    ProcessNextCommand();
+                }
+
+                return !HasCancelled();
+            }
         }
 
         #endregion ThreadManager
@@ -735,7 +776,7 @@ namespace GSendCommon
             }
 
 #if DEBUG
-            throw new NotImplementedException();
+            Trace.WriteLine($"Junk Data: {response}");
 #endif
         }
 
@@ -770,6 +811,12 @@ namespace GSendCommon
                     _machineStateModel.SubState = Convert.ToInt32(status[1]);
                 else
                     _machineStateModel.SubState = -1;
+
+                if (machineState.Equals(MachineState.Alarm) && !_isAlarm)
+                {
+                    _isAlarm = true;
+                    OnGrblAlarm(this, GrblAlarm.Undefined);
+                }
             }
 
             for (int i = 1; i < parts.Length; i++)
@@ -834,6 +881,9 @@ namespace GSendCommon
                 }
             }
 
+            _machineStateModel.IsPaused = _isPaused;
+            _machineStateModel.IsRunning = _isRunning;
+
             if (_machineStateModel.Updated)
             {
                 OnMachineStateChanged?.Invoke(this, _machineStateModel);
@@ -886,7 +936,7 @@ namespace GSendCommon
             }
             else
             {
-                OnGrblAlarm?.Invoke(this, error);
+                 OnGrblAlarm?.Invoke(this, error);
             }
         }
 
@@ -929,23 +979,26 @@ namespace GSendCommon
             _port.DataReceived -= Port_DataReceived;
             try
             {
-                _ = _port.ReadLine();
-                InternalWriteLine(commandText);
-                DateTime sendTime = DateTime.UtcNow;
-
-                while (true)
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
-                    string line = _port.ReadLine();
+                    _ = _port.ReadLine();
+                    InternalWriteLine(commandText);
+                    DateTime sendTime = DateTime.UtcNow;
 
-                    if (line.Trim().Equals(ResultOk))
-                        break;
+                    while (true)
+                    {
+                        string line = _port.ReadLine();
 
-                    Result.AppendLine(line);
+                        if (line.Trim().Equals(ResultOk))
+                            break;
 
-                    if (DateTime.UtcNow - sendTime > TimeOut)
-                        throw new TimeoutException();
+                        Result.AppendLine(line);
 
-                    Thread.Sleep(TimeSpan.Zero);
+                        if (DateTime.UtcNow - sendTime > TimeOut)
+                            throw new TimeoutException();
+
+                        Thread.Sleep(TimeSpan.Zero);
+                    }
                 }
             }
             finally
@@ -956,7 +1009,7 @@ namespace GSendCommon
             return Result.ToString();
         }
 
-        private void SendCommandWaitForResponse(string commandText)
+        private void SendCommandWaitForResponse(string commandText, TimeSpan timeout)
         {
             _waitingForResponse = true;
             DateTime sendTime = DateTime.UtcNow;
@@ -964,7 +1017,7 @@ namespace GSendCommon
 
             while (_waitingForResponse)
             {
-                if (DateTime.UtcNow - sendTime > TimeOut)
+                if (DateTime.UtcNow - sendTime > timeout)
                     throw new TimeoutException();
 
                 Thread.Sleep(TimeSpan.Zero);

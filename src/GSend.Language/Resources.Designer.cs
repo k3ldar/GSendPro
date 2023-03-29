@@ -61,6 +61,96 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alarm.
+        /// </summary>
+        public static string Alarm0 {
+            get {
+                return ResourceManager.GetString("Alarm0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard limit triggered. Machine position is likely lost due to sudden and immediate halt..
+        /// </summary>
+        public static string Alarm1 {
+            get {
+                return ResourceManager.GetString("Alarm1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-code motion target exceeds machine travel..
+        /// </summary>
+        public static string Alarm2 {
+            get {
+                return ResourceManager.GetString("Alarm2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset while in motion. Grbl cannot guarantee position..
+        /// </summary>
+        public static string Alarm3 {
+            get {
+                return ResourceManager.GetString("Alarm3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe fail. The probe is not in the expected initial state before starting probe cycle.
+        /// </summary>
+        public static string Alarm4 {
+            get {
+                return ResourceManager.GetString("Alarm4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe fail. Probe did not contact the workpiece.
+        /// </summary>
+        public static string Alarm5 {
+            get {
+                return ResourceManager.GetString("Alarm5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing fail. Reset during active homing cycle..
+        /// </summary>
+        public static string Alarm6 {
+            get {
+                return ResourceManager.GetString("Alarm6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing fail. Safety door was opened during active homing cycle..
+        /// </summary>
+        public static string Alarm7 {
+            get {
+                return ResourceManager.GetString("Alarm7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing fail. Cycle failed to clear limit switch when pulling off..
+        /// </summary>
+        public static string Alarm8 {
+            get {
+                return ResourceManager.GetString("Alarm8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing fail. Could not find limit switch within search distance..
+        /// </summary>
+        public static string Alarm9 {
+            get {
+                return ResourceManager.GetString("Alarm9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Alarm.
         /// </summary>
         public static string ClearAlarm {
@@ -192,6 +282,15 @@ namespace GSend.Language {
         public static string General {
             get {
                 return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Generate {
+            get {
+                return ResourceManager.GetString("Generate", resourceCulture);
             }
         }
         
@@ -331,6 +430,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Probe Command.
+        /// </summary>
+        public static string ProbeCommand {
+            get {
+                return ResourceManager.GetString("ProbeCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe Thickness (mm).
+        /// </summary>
+        public static string ProbeThickness {
+            get {
+                return ResourceManager.GetString("ProbeThickness", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe travel speed {0}mm/min.
+        /// </summary>
+        public static string ProbeTravelSpeed {
+            get {
+                return ResourceManager.GetString("ProbeTravelSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probing failed, ensure you have a valid probing command setup..
+        /// </summary>
+        public static string ProbingFailed {
+            get {
+                return ResourceManager.GetString("ProbingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume.
         /// </summary>
         public static string Resume {
@@ -345,6 +480,15 @@ namespace GSend.Language {
         public static string ResumeAll {
             get {
                 return ResourceManager.GetString("ResumeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         
@@ -727,11 +871,83 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} RPM.
+        /// </summary>
+        public static string SpeedRpm {
+            get {
+                return ResourceManager.GetString("SpeedRpm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spindle.
         /// </summary>
         public static string Spindle {
             get {
                 return ResourceManager.GetString("Spindle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delay start for {0} seconds.
+        /// </summary>
+        public static string SpindleDelayStartVFD {
+            get {
+                return ResourceManager.GetString("SpindleDelayStartVFD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External.
+        /// </summary>
+        public static string SpindleExternal {
+            get {
+                return ResourceManager.GetString("SpindleExternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integrated.
+        /// </summary>
+        public static string SpindleIntegrated {
+            get {
+                return ResourceManager.GetString("SpindleIntegrated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soft start.
+        /// </summary>
+        public static string SpindleSoftStart {
+            get {
+                return ResourceManager.GetString("SpindleSoftStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup over {0} seconds.
+        /// </summary>
+        public static string SpindleSoftStartSeconds {
+            get {
+                return ResourceManager.GetString("SpindleSoftStartSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spindle Type.
+        /// </summary>
+        public static string SpindleType {
+            get {
+                return ResourceManager.GetString("SpindleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VFD.
+        /// </summary>
+        public static string SpindleVFD {
+            get {
+                return ResourceManager.GetString("SpindleVFD", resourceCulture);
             }
         }
         
@@ -799,11 +1015,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paused.
+        /// </summary>
+        public static string StatePaused {
+            get {
+                return ResourceManager.GetString("StatePaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Port Open.
         /// </summary>
         public static string StatePortOpen {
             get {
                 return ResourceManager.GetString("StatePortOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probing.
+        /// </summary>
+        public static string StateProbing {
+            get {
+                return ResourceManager.GetString("StateProbing", resourceCulture);
             }
         }
         

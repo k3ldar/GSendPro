@@ -72,7 +72,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
-        public IActionResult MachineUpdate(MachineModel model)
+        public IActionResult MachineUpdate([FromBody]MachineModel model)
         {
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -112,7 +112,7 @@ namespace GSendService.Api
 
             IReadOnlyList<IMachine> machines = _machineProvider.MachinesGet();
 
-            if (machines.Any(m => m.Name.Equals(model.Name)))
+            if (machines.Any(m => !m.Id.Equals(model.Id) && m.Name.Equals(model.Name)))
             {
                 errorMessage = "Name already exists";
                 return false;

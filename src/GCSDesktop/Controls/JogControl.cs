@@ -15,6 +15,7 @@ namespace GSendDesktop.Controls
         {
             InitializeComponent();
             LoadResources();
+            selectionFeed.LabelFormat = GSend.Language.Resources.SpeedRpm;
             btnXMinus.Tag = JogDirection.XMinus;
             btnXPlus.Tag = JogDirection.XPlus;
             btnYMinus.Tag = JogDirection.YMinus;
@@ -110,11 +111,20 @@ namespace GSendDesktop.Controls
             set => selectionSteps.Value = value;
         }
 
+        public event EventHandler OnUpdate;
+
         private void selectionSteps_ValueChanged(object sender, EventArgs e)
         {
             selectionSteps.LabelValue = _steps[selectionSteps.Value] == 0 ? 
                 GSend.Language.Resources.Continuous : 
                 _steps[selectionSteps.Value].ToString();
+
+            OnUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void selectionFeed_ValueChanged(object sender, EventArgs e)
+        {
+            OnUpdate?.Invoke(this, EventArgs.Empty);
         }
     }
 }

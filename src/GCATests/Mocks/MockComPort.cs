@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using GSendShared;
 
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
@@ -63,6 +65,20 @@ namespace GSendTests.Mocks
             {
                 _activeRequest = String.Empty;
                 return "HLP:$$ $# $G $I $N $x=val $Nx=line $J=line $SLP $C $X $H ~ ! ? ctrl-x]";
+            }
+            else if (_activeRequest == "$I")
+            {
+                _lastCommandId++;
+
+                switch (_lastCommandId)
+                {
+                    case 0:
+                        return "[VER: 1.1f.20170802:]";
+                    case 1:
+                        return "[OPT: VNM, 35, 255]";
+                    case 2:
+                        return "ok";
+                }
             }
             else if (_activeRequest == "$$")
             {

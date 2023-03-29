@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.groupBoxWorkCoords = new System.Windows.Forms.GroupBox();
-            this.lblWorkXDesc = new System.Windows.Forms.Label();
-            this.lblWorkX = new System.Windows.Forms.Label();
-            this.lblWorkY = new System.Windows.Forms.Label();
-            this.lblWorkYDesc = new System.Windows.Forms.Label();
             this.lblWorkZ = new System.Windows.Forms.Label();
             this.lblWorkZDesc = new System.Windows.Forms.Label();
+            this.lblWorkY = new System.Windows.Forms.Label();
+            this.lblWorkYDesc = new System.Windows.Forms.Label();
+            this.lblWorkX = new System.Windows.Forms.Label();
+            this.lblWorkXDesc = new System.Windows.Forms.Label();
             this.groupBoxMachineCoords = new System.Windows.Forms.GroupBox();
             this.lblMachineZ = new System.Windows.Forms.Label();
             this.lblMachineZDesc = new System.Windows.Forms.Label();
@@ -48,6 +48,8 @@
             // 
             // groupBoxWorkCoords
             // 
+            this.groupBoxWorkCoords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxWorkCoords.Controls.Add(this.lblWorkZ);
             this.groupBoxWorkCoords.Controls.Add(this.lblWorkZDesc);
             this.groupBoxWorkCoords.Controls.Add(this.lblWorkY);
@@ -56,73 +58,77 @@
             this.groupBoxWorkCoords.Controls.Add(this.lblWorkXDesc);
             this.groupBoxWorkCoords.Location = new System.Drawing.Point(3, 3);
             this.groupBoxWorkCoords.Name = "groupBoxWorkCoords";
-            this.groupBoxWorkCoords.Size = new System.Drawing.Size(274, 48);
+            this.groupBoxWorkCoords.Size = new System.Drawing.Size(303, 48);
             this.groupBoxWorkCoords.TabIndex = 0;
             this.groupBoxWorkCoords.TabStop = false;
             this.groupBoxWorkCoords.Text = "Work Coordinates";
             // 
-            // lblWorkXDesc
+            // lblWorkZ
             // 
-            this.lblWorkXDesc.AutoSize = true;
-            this.lblWorkXDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkXDesc.Location = new System.Drawing.Point(10, 23);
-            this.lblWorkXDesc.Name = "lblWorkXDesc";
-            this.lblWorkXDesc.Size = new System.Drawing.Size(21, 17);
-            this.lblWorkXDesc.TabIndex = 0;
-            this.lblWorkXDesc.Text = "X:";
+            this.lblWorkZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWorkZ.AutoSize = true;
+            this.lblWorkZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkZ.Location = new System.Drawing.Point(223, 23);
+            this.lblWorkZ.Name = "lblWorkZ";
+            this.lblWorkZ.Size = new System.Drawing.Size(73, 15);
+            this.lblWorkZ.TabIndex = 5;
+            this.lblWorkZ.Text = "10000.0000";
             // 
-            // lblWorkX
+            // lblWorkZDesc
             // 
-            this.lblWorkX.AutoSize = true;
-            this.lblWorkX.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkX.Location = new System.Drawing.Point(37, 23);
-            this.lblWorkX.Name = "lblWorkX";
-            this.lblWorkX.Size = new System.Drawing.Size(46, 17);
-            this.lblWorkX.TabIndex = 1;
-            this.lblWorkX.Text = "label1";
+            this.lblWorkZDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWorkZDesc.AutoSize = true;
+            this.lblWorkZDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkZDesc.Location = new System.Drawing.Point(203, 23);
+            this.lblWorkZDesc.Name = "lblWorkZDesc";
+            this.lblWorkZDesc.Size = new System.Drawing.Size(19, 15);
+            this.lblWorkZDesc.TabIndex = 4;
+            this.lblWorkZDesc.Text = "Z:";
             // 
             // lblWorkY
             // 
             this.lblWorkY.AutoSize = true;
-            this.lblWorkY.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkY.Location = new System.Drawing.Point(124, 23);
+            this.lblWorkY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkY.Location = new System.Drawing.Point(127, 23);
             this.lblWorkY.Name = "lblWorkY";
-            this.lblWorkY.Size = new System.Drawing.Size(46, 17);
+            this.lblWorkY.Size = new System.Drawing.Size(73, 15);
             this.lblWorkY.TabIndex = 3;
-            this.lblWorkY.Text = "label1";
+            this.lblWorkY.Text = "10000.0000";
             // 
             // lblWorkYDesc
             // 
             this.lblWorkYDesc.AutoSize = true;
-            this.lblWorkYDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkYDesc.Location = new System.Drawing.Point(97, 23);
+            this.lblWorkYDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkYDesc.Location = new System.Drawing.Point(107, 23);
             this.lblWorkYDesc.Name = "lblWorkYDesc";
-            this.lblWorkYDesc.Size = new System.Drawing.Size(21, 17);
+            this.lblWorkYDesc.Size = new System.Drawing.Size(19, 15);
             this.lblWorkYDesc.TabIndex = 2;
             this.lblWorkYDesc.Text = "Y:";
             // 
-            // lblWorkZ
+            // lblWorkX
             // 
-            this.lblWorkZ.AutoSize = true;
-            this.lblWorkZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkZ.Location = new System.Drawing.Point(214, 23);
-            this.lblWorkZ.Name = "lblWorkZ";
-            this.lblWorkZ.Size = new System.Drawing.Size(46, 17);
-            this.lblWorkZ.TabIndex = 5;
-            this.lblWorkZ.Text = "label1";
+            this.lblWorkX.AutoSize = true;
+            this.lblWorkX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkX.Location = new System.Drawing.Point(31, 23);
+            this.lblWorkX.Name = "lblWorkX";
+            this.lblWorkX.Size = new System.Drawing.Size(73, 15);
+            this.lblWorkX.TabIndex = 1;
+            this.lblWorkX.Text = "10000.0000";
             // 
-            // lblWorkZDesc
+            // lblWorkXDesc
             // 
-            this.lblWorkZDesc.AutoSize = true;
-            this.lblWorkZDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWorkZDesc.Location = new System.Drawing.Point(187, 23);
-            this.lblWorkZDesc.Name = "lblWorkZDesc";
-            this.lblWorkZDesc.Size = new System.Drawing.Size(21, 17);
-            this.lblWorkZDesc.TabIndex = 4;
-            this.lblWorkZDesc.Text = "Z:";
+            this.lblWorkXDesc.AutoSize = true;
+            this.lblWorkXDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblWorkXDesc.Location = new System.Drawing.Point(10, 23);
+            this.lblWorkXDesc.Name = "lblWorkXDesc";
+            this.lblWorkXDesc.Size = new System.Drawing.Size(20, 15);
+            this.lblWorkXDesc.TabIndex = 0;
+            this.lblWorkXDesc.Text = "X:";
             // 
             // groupBoxMachineCoords
             // 
+            this.groupBoxMachineCoords.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxMachineCoords.Controls.Add(this.lblMachineZ);
             this.groupBoxMachineCoords.Controls.Add(this.lblMachineZDesc);
             this.groupBoxMachineCoords.Controls.Add(this.lblMachineY);
@@ -131,68 +137,70 @@
             this.groupBoxMachineCoords.Controls.Add(this.lblMachineXDesc);
             this.groupBoxMachineCoords.Location = new System.Drawing.Point(3, 57);
             this.groupBoxMachineCoords.Name = "groupBoxMachineCoords";
-            this.groupBoxMachineCoords.Size = new System.Drawing.Size(274, 48);
+            this.groupBoxMachineCoords.Size = new System.Drawing.Size(303, 48);
             this.groupBoxMachineCoords.TabIndex = 1;
             this.groupBoxMachineCoords.TabStop = false;
             this.groupBoxMachineCoords.Text = "Machine Coordinates";
             // 
             // lblMachineZ
             // 
+            this.lblMachineZ.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMachineZ.AutoSize = true;
-            this.lblMachineZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMachineZ.Location = new System.Drawing.Point(211, 23);
+            this.lblMachineZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineZ.Location = new System.Drawing.Point(223, 23);
             this.lblMachineZ.Name = "lblMachineZ";
-            this.lblMachineZ.Size = new System.Drawing.Size(44, 16);
+            this.lblMachineZ.Size = new System.Drawing.Size(73, 15);
             this.lblMachineZ.TabIndex = 5;
-            this.lblMachineZ.Text = "label1";
+            this.lblMachineZ.Text = "10000.0000";
             // 
             // lblMachineZDesc
             // 
+            this.lblMachineZDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMachineZDesc.AutoSize = true;
-            this.lblMachineZDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMachineZDesc.Location = new System.Drawing.Point(187, 23);
+            this.lblMachineZDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineZDesc.Location = new System.Drawing.Point(203, 23);
             this.lblMachineZDesc.Name = "lblMachineZDesc";
-            this.lblMachineZDesc.Size = new System.Drawing.Size(18, 16);
+            this.lblMachineZDesc.Size = new System.Drawing.Size(19, 15);
             this.lblMachineZDesc.TabIndex = 4;
             this.lblMachineZDesc.Text = "Z:";
             // 
             // lblMachineY
             // 
             this.lblMachineY.AutoSize = true;
-            this.lblMachineY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMachineY.Location = new System.Drawing.Point(122, 23);
+            this.lblMachineY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineY.Location = new System.Drawing.Point(127, 23);
             this.lblMachineY.Name = "lblMachineY";
-            this.lblMachineY.Size = new System.Drawing.Size(44, 16);
+            this.lblMachineY.Size = new System.Drawing.Size(73, 15);
             this.lblMachineY.TabIndex = 3;
-            this.lblMachineY.Text = "label1";
+            this.lblMachineY.Text = "10000.0000";
             // 
             // lblMachineYDesc
             // 
             this.lblMachineYDesc.AutoSize = true;
-            this.lblMachineYDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMachineYDesc.Location = new System.Drawing.Point(97, 23);
+            this.lblMachineYDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineYDesc.Location = new System.Drawing.Point(107, 23);
             this.lblMachineYDesc.Name = "lblMachineYDesc";
-            this.lblMachineYDesc.Size = new System.Drawing.Size(19, 16);
+            this.lblMachineYDesc.Size = new System.Drawing.Size(19, 15);
             this.lblMachineYDesc.TabIndex = 2;
             this.lblMachineYDesc.Text = "Y:";
             // 
             // lblMachineX
             // 
             this.lblMachineX.AutoSize = true;
-            this.lblMachineX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMachineX.Location = new System.Drawing.Point(34, 23);
+            this.lblMachineX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineX.Location = new System.Drawing.Point(31, 23);
             this.lblMachineX.Name = "lblMachineX";
-            this.lblMachineX.Size = new System.Drawing.Size(44, 16);
+            this.lblMachineX.Size = new System.Drawing.Size(73, 15);
             this.lblMachineX.TabIndex = 1;
-            this.lblMachineX.Text = "label1";
+            this.lblMachineX.Text = "10000.0000";
             // 
             // lblMachineXDesc
             // 
             this.lblMachineXDesc.AutoSize = true;
-            this.lblMachineXDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblMachineXDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblMachineXDesc.Location = new System.Drawing.Point(10, 23);
             this.lblMachineXDesc.Name = "lblMachineXDesc";
-            this.lblMachineXDesc.Size = new System.Drawing.Size(18, 16);
+            this.lblMachineXDesc.Size = new System.Drawing.Size(20, 15);
             this.lblMachineXDesc.TabIndex = 0;
             this.lblMachineXDesc.Text = "X:";
             // 
@@ -203,7 +211,7 @@
             this.Controls.Add(this.groupBoxMachineCoords);
             this.Controls.Add(this.groupBoxWorkCoords);
             this.Name = "MachinePosition";
-            this.Size = new System.Drawing.Size(280, 111);
+            this.Size = new System.Drawing.Size(314, 112);
             this.groupBoxWorkCoords.ResumeLayout(false);
             this.groupBoxWorkCoords.PerformLayout();
             this.groupBoxMachineCoords.ResumeLayout(false);

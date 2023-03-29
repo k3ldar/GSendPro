@@ -34,7 +34,12 @@ namespace GSendTests.Mocks
                     60,
                     60,
                     DateTime.UtcNow,
-                    String.Empty));
+                    String.Empty,
+                    10,
+                    10,
+                    10,
+                    10,
+                    SpindleType.Integrated, 0, false));
             }
         }
 
