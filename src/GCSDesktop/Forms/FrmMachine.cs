@@ -84,10 +84,10 @@ namespace GSendDesktop.Forms
             lblPropertyHeader.Text = String.Empty;
             lblPropertyDesc.Text = String.Empty;
 
-            pictureZeroX.Tag = ZeroAxis.X;
-            pictureZeroY.Tag = ZeroAxis.Y;
-            pictureZeroZ.Tag = ZeroAxis.Z;
-            pictureZeroAll.Tag = ZeroAxis.All;
+            btnZeroX.Tag = ZeroAxis.X;
+            btnZeroY.Tag = ZeroAxis.Y;
+            btnZeroZ.Tag = ZeroAxis.Z;
+            btnZeroAll.Tag = ZeroAxis.All;
 
             tabControlMain.SelectedTab = tabPageMain;
 
@@ -231,10 +231,10 @@ namespace GSendDesktop.Forms
             toolStripButtonPause.Enabled = _machineConnected & (_isPaused || _isRunning);
             toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging);
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
-            pictureZeroAll.Enabled = toolStripButtonProbe.Enabled;
-            pictureZeroX.Enabled = toolStripButtonProbe.Enabled;
-            pictureZeroY.Enabled = toolStripButtonProbe.Enabled;
-            pictureZeroZ.Enabled = toolStripButtonProbe.Enabled;
+            btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
+            btnZeroX.Enabled = toolStripButtonProbe.Enabled;
+            btnZeroY.Enabled = toolStripButtonProbe.Enabled;
+            btnZeroZ.Enabled = toolStripButtonProbe.Enabled;
 
             tabPageOverrides.Enabled = _machineConnected;
 
@@ -767,8 +767,9 @@ namespace GSendDesktop.Forms
 
         public void SetZeroForAxes(object sender, EventArgs e)
         {
-            ZeroAxis zeroAxis = (ZeroAxis)((PictureBox)sender).Tag;
+            ZeroAxis zeroAxis = (ZeroAxis)((System.Windows.Forms.Button)sender).Tag;
             _clientWebSocket.SendAsync(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0)).ConfigureAwait(false);
+            tabPageJog.Focus();
         }
 
         #endregion Zeroing

@@ -65,10 +65,10 @@
             this.trackBarPercent = new System.Windows.Forms.TrackBar();
             this.machinePositionOverrides = new GSendDesktop.Controls.MachinePosition();
             this.tabPageJog = new System.Windows.Forms.TabPage();
-            this.pictureZeroAll = new System.Windows.Forms.PictureBox();
-            this.pictureZeroZ = new System.Windows.Forms.PictureBox();
-            this.pictureZeroY = new System.Windows.Forms.PictureBox();
-            this.pictureZeroX = new System.Windows.Forms.PictureBox();
+            this.btnZeroAll = new System.Windows.Forms.Button();
+            this.btnZeroZ = new System.Windows.Forms.Button();
+            this.btnZeroY = new System.Windows.Forms.Button();
+            this.btnZeroX = new System.Windows.Forms.Button();
             this.machinePositionJog = new GSendDesktop.Controls.MachinePosition();
             this.tabPageSpindle = new System.Windows.Forms.TabPage();
             this.lblDelaySpindleStart = new System.Windows.Forms.Label();
@@ -98,10 +98,6 @@
             this.tabPageOverrides.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).BeginInit();
             this.tabPageJog.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroAll)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroX)).BeginInit();
             this.tabPageSpindle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).BeginInit();
             this.tabPageMachineSettings.SuspendLayout();
@@ -485,10 +481,10 @@
             // tabPageJog
             // 
             this.tabPageJog.BackColor = System.Drawing.Color.White;
-            this.tabPageJog.Controls.Add(this.pictureZeroAll);
-            this.tabPageJog.Controls.Add(this.pictureZeroZ);
-            this.tabPageJog.Controls.Add(this.pictureZeroY);
-            this.tabPageJog.Controls.Add(this.pictureZeroX);
+            this.tabPageJog.Controls.Add(this.btnZeroAll);
+            this.tabPageJog.Controls.Add(this.btnZeroZ);
+            this.tabPageJog.Controls.Add(this.btnZeroY);
+            this.tabPageJog.Controls.Add(this.btnZeroX);
             this.tabPageJog.Controls.Add(this.machinePositionJog);
             this.tabPageJog.Controls.Add(this.jogControl);
             this.tabPageJog.Location = new System.Drawing.Point(4, 24);
@@ -498,45 +494,45 @@
             this.tabPageJog.TabIndex = 2;
             this.tabPageJog.Text = "Jog";
             // 
-            // pictureZeroAll
+            // btnZeroAll
             // 
-            this.pictureZeroAll.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroAll.Image")));
-            this.pictureZeroAll.Location = new System.Drawing.Point(246, 123);
-            this.pictureZeroAll.Name = "pictureZeroAll";
-            this.pictureZeroAll.Size = new System.Drawing.Size(64, 64);
-            this.pictureZeroAll.TabIndex = 9;
-            this.pictureZeroAll.TabStop = false;
-            this.pictureZeroAll.Click += new System.EventHandler(this.SetZeroForAxes);
+            this.btnZeroAll.Image = ((System.Drawing.Image)(resources.GetObject("btnZeroAll.Image")));
+            this.btnZeroAll.Location = new System.Drawing.Point(249, 123);
+            this.btnZeroAll.Name = "btnZeroAll";
+            this.btnZeroAll.Size = new System.Drawing.Size(64, 64);
+            this.btnZeroAll.TabIndex = 13;
+            this.btnZeroAll.UseVisualStyleBackColor = true;
+            this.btnZeroAll.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
-            // pictureZeroZ
+            // btnZeroZ
             // 
-            this.pictureZeroZ.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroZ.Image")));
-            this.pictureZeroZ.Location = new System.Drawing.Point(167, 123);
-            this.pictureZeroZ.Name = "pictureZeroZ";
-            this.pictureZeroZ.Size = new System.Drawing.Size(64, 64);
-            this.pictureZeroZ.TabIndex = 8;
-            this.pictureZeroZ.TabStop = false;
-            this.pictureZeroZ.Click += new System.EventHandler(this.SetZeroForAxes);
+            this.btnZeroZ.Image = ((System.Drawing.Image)(resources.GetObject("btnZeroZ.Image")));
+            this.btnZeroZ.Location = new System.Drawing.Point(168, 123);
+            this.btnZeroZ.Name = "btnZeroZ";
+            this.btnZeroZ.Size = new System.Drawing.Size(64, 64);
+            this.btnZeroZ.TabIndex = 12;
+            this.btnZeroZ.UseVisualStyleBackColor = true;
+            this.btnZeroZ.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
-            // pictureZeroY
+            // btnZeroY
             // 
-            this.pictureZeroY.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroY.Image")));
-            this.pictureZeroY.Location = new System.Drawing.Point(88, 123);
-            this.pictureZeroY.Name = "pictureZeroY";
-            this.pictureZeroY.Size = new System.Drawing.Size(64, 64);
-            this.pictureZeroY.TabIndex = 7;
-            this.pictureZeroY.TabStop = false;
-            this.pictureZeroY.Click += new System.EventHandler(this.SetZeroForAxes);
+            this.btnZeroY.Image = ((System.Drawing.Image)(resources.GetObject("btnZeroY.Image")));
+            this.btnZeroY.Location = new System.Drawing.Point(87, 123);
+            this.btnZeroY.Name = "btnZeroY";
+            this.btnZeroY.Size = new System.Drawing.Size(64, 64);
+            this.btnZeroY.TabIndex = 11;
+            this.btnZeroY.UseVisualStyleBackColor = true;
+            this.btnZeroY.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
-            // pictureZeroX
+            // btnZeroX
             // 
-            this.pictureZeroX.Image = ((System.Drawing.Image)(resources.GetObject("pictureZeroX.Image")));
-            this.pictureZeroX.Location = new System.Drawing.Point(9, 123);
-            this.pictureZeroX.Name = "pictureZeroX";
-            this.pictureZeroX.Size = new System.Drawing.Size(64, 64);
-            this.pictureZeroX.TabIndex = 6;
-            this.pictureZeroX.TabStop = false;
-            this.pictureZeroX.Click += new System.EventHandler(this.SetZeroForAxes);
+            this.btnZeroX.Image = ((System.Drawing.Image)(resources.GetObject("btnZeroX.Image")));
+            this.btnZeroX.Location = new System.Drawing.Point(6, 123);
+            this.btnZeroX.Name = "btnZeroX";
+            this.btnZeroX.Size = new System.Drawing.Size(64, 64);
+            this.btnZeroX.TabIndex = 10;
+            this.btnZeroX.UseVisualStyleBackColor = true;
+            this.btnZeroX.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
             // machinePositionJog
             // 
@@ -801,10 +797,6 @@
             this.tabPageOverrides.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).EndInit();
             this.tabPageJog.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroAll)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureZeroX)).EndInit();
             this.tabPageSpindle.ResumeLayout(false);
             this.tabPageSpindle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).EndInit();
@@ -869,10 +861,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelWarnings;
         private Controls.WarningContainer warningsAndErrors;
-        private System.Windows.Forms.PictureBox pictureZeroAll;
-        private System.Windows.Forms.PictureBox pictureZeroZ;
-        private System.Windows.Forms.PictureBox pictureZeroY;
-        private System.Windows.Forms.PictureBox pictureZeroX;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBuffer;
         private Controls.ProbingCommand probingCommand1;
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
@@ -881,5 +869,9 @@
         private System.Windows.Forms.CheckBox cbSoftStart;
         private System.Windows.Forms.Label lblDelaySpindleStart;
         private System.Windows.Forms.TrackBar trackBarDelaySpindle;
+        private System.Windows.Forms.Button btnZeroY;
+        private System.Windows.Forms.Button btnZeroX;
+        private System.Windows.Forms.Button btnZeroAll;
+        private System.Windows.Forms.Button btnZeroZ;
     }
 }
