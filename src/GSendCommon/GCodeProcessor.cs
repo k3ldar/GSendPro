@@ -222,8 +222,8 @@ namespace GSendCommon
 
         public bool Pause()
         {
-            if (!_isRunning)
-                return false;
+            //if (!_isRunning)
+            //    return false;
 
             _isPaused = true;
             OnPause?.Invoke(this, EventArgs.Empty);
@@ -235,8 +235,8 @@ namespace GSendCommon
 
         public bool Resume()
         {
-            if (!_isPaused)
-                return false;
+            //if (!_isPaused)
+            //    return false;
 
             _isPaused = false;
             OnResume?.Invoke(this, EventArgs.Empty);
@@ -248,8 +248,8 @@ namespace GSendCommon
 
         public bool Stop()
         {
-            if (!_isRunning)
-                return false;
+            //if (!_isRunning)
+            //    return false;
 
             Trace.WriteLine("Stop");
             InternalWriteByte(new byte[] { 0x85 });
@@ -441,10 +441,15 @@ namespace GSendCommon
             return false;
         }
 
-        public void WriteLine(string gCode)
+        public bool WriteLine(string gCode)
         {
             if (IsConnected && !IsPaused && !IsRunning)
+            {
                 InternalWriteLine(gCode);
+                return true;
+            }
+
+            return false;
         }
 
         public Dictionary<int, object> Settings()
@@ -688,6 +693,8 @@ namespace GSendCommon
 
         public event GSendEventHandler OnInvalidComPort;
 
+        public event GSendEventHandler OnComPortTimeOut;
+
         public event MachineStateHandler OnMachineStateChanged;
 
         public event MessageHandler OnMessageReceived;
@@ -802,7 +809,15 @@ namespace GSendCommon
             {
                 string[] status = parts[0].Split(SeparatorPipe, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-                if (Enum.TryParse<MachineState>(status[0], true, out MachineState machineState))
+                string statusDesc = status[0];
+                int statusSep = statusDesc.IndexOf(":");
+
+                if (statusSep > -1)
+                {
+                    statusDesc = statusDesc[..statusSep];
+                }
+
+                if (Enum.TryParse<MachineState>(statusDesc, true, out MachineState machineState))
                     _machineStateModel.MachineState = machineState;
                 else
                     _machineStateModel.MachineState = MachineState.Undefined;
@@ -954,7 +969,14 @@ namespace GSendCommon
 
         private void Port_DataReceived(object sender, EventArgs e)
         {
-            ProcessGrblResponse(_port.ReadLine().Trim());
+            try
+            {
+                ProcessGrblResponse(_port.ReadLine().Trim());
+            }
+            catch (TimeoutException)
+            {
+                OnComPortTimeOut?.Invoke(this, e);
+            }
         }
 
         #endregion Com Port Events

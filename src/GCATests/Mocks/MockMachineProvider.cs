@@ -39,7 +39,7 @@ namespace GSendTests.Mocks
                     10,
                     10,
                     10,
-                    SpindleType.Integrated, 0, false));
+                    SpindleType.Integrated, 0));
             }
         }
 

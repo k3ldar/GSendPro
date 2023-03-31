@@ -17,7 +17,9 @@
 
         Warning = 2,
 
-        Information = 3
+        Information = 3,
+
+        ErrorKeep = 4,
     }
 
     public enum ConnectResult
@@ -56,9 +58,20 @@
     [Flags]
     public enum MachineOptions
     {
+        /// <summary>
+        /// No options available
+        /// </summary>
         None = 0,
 
+        /// <summary>
+        /// Machine has limit switches
+        /// </summary>
         LimitSwitches = 1,
+
+        /// <summary>
+        /// Spindle soft start/stop
+        /// </summary>
+        SoftStart = 2,
     }
 
     [Flags]

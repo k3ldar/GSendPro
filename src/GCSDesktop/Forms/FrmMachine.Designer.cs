@@ -56,6 +56,7 @@
             this.toolStripStatusLabelCpu = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelSpindle = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
@@ -86,11 +87,16 @@
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.probingCommand1 = new GSendDesktop.Controls.ProbingCommand();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.machineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.warningsAndErrors = new GSendDesktop.Controls.WarningContainer();
+            this.tabControlSecondary = new System.Windows.Forms.TabControl();
+            this.tabPageConsole = new System.Windows.Forms.TabPage();
+            this.btnGrblCommandSend = new System.Windows.Forms.Button();
+            this.btnGrblCommandClear = new System.Windows.Forms.Button();
+            this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
+            this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -103,6 +109,8 @@
             this.tabPageMachineSettings.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabControlSecondary.SuspendLayout();
+            this.tabPageConsole.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectionOverrideSpindle
@@ -337,9 +345,11 @@
             this.toolStripStatusLabelStatus,
             this.toolStripStatusLabelCpu,
             this.toolStripStatusLabelWarnings,
-            this.toolStripStatusLabelBuffer});
+            this.toolStripStatusLabelBuffer,
+            this.toolStripStatusLabelSpindle});
             this.statusStrip.Location = new System.Drawing.Point(0, 621);
             this.statusStrip.Name = "statusStrip";
+            this.statusStrip.ShowItemToolTips = true;
             this.statusStrip.Size = new System.Drawing.Size(796, 24);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 7;
@@ -363,7 +373,8 @@
             // 
             this.toolStripStatusLabelStatus.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabelStatus.Name = "toolStripStatusLabelStatus";
-            this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(4, 19);
+            this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(43, 19);
+            this.toolStripStatusLabelStatus.Text = "Status";
             // 
             // toolStripStatusLabelCpu
             // 
@@ -380,9 +391,17 @@
             // 
             // toolStripStatusLabelBuffer
             // 
+            this.toolStripStatusLabelBuffer.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabelBuffer.Name = "toolStripStatusLabelBuffer";
-            this.toolStripStatusLabelBuffer.Size = new System.Drawing.Size(118, 19);
-            this.toolStripStatusLabelBuffer.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabelBuffer.Size = new System.Drawing.Size(43, 19);
+            this.toolStripStatusLabelBuffer.Text = "Buffer";
+            // 
+            // toolStripStatusLabelSpindle
+            // 
+            this.toolStripStatusLabelSpindle.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripStatusLabelSpindle.Name = "toolStripStatusLabelSpindle";
+            this.toolStripStatusLabelSpindle.Size = new System.Drawing.Size(50, 19);
+            this.toolStripStatusLabelSpindle.Text = "Spindle";
             // 
             // tabControlMain
             // 
@@ -586,7 +605,6 @@
             this.cbSoftStart.TabIndex = 2;
             this.cbSoftStart.Text = "checkBox1";
             this.cbSoftStart.UseVisualStyleBackColor = true;
-            this.cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
             // 
             // lblSpindleType
             // 
@@ -719,18 +737,6 @@
             this.probingCommand1.Size = new System.Drawing.Size(258, 230);
             this.probingCommand1.TabIndex = 0;
             // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(12, 411);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(772, 193);
-            this.textBox2.TabIndex = 9;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -769,13 +775,85 @@
             this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
             this.warningsAndErrors.Resize += new System.EventHandler(this.WarningContainer_VisibleChanged);
             // 
+            // tabControlSecondary
+            // 
+            this.tabControlSecondary.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControlSecondary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControlSecondary.Controls.Add(this.tabPageConsole);
+            this.tabControlSecondary.Location = new System.Drawing.Point(16, 411);
+            this.tabControlSecondary.Name = "tabControlSecondary";
+            this.tabControlSecondary.SelectedIndex = 0;
+            this.tabControlSecondary.Size = new System.Drawing.Size(765, 197);
+            this.tabControlSecondary.TabIndex = 13;
+            // 
+            // tabPageConsole
+            // 
+            this.tabPageConsole.Controls.Add(this.btnGrblCommandSend);
+            this.tabPageConsole.Controls.Add(this.btnGrblCommandClear);
+            this.tabPageConsole.Controls.Add(this.txtUserGrblCommand);
+            this.tabPageConsole.Controls.Add(this.textBoxConsoleText);
+            this.tabPageConsole.Location = new System.Drawing.Point(4, 4);
+            this.tabPageConsole.Name = "tabPageConsole";
+            this.tabPageConsole.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageConsole.Size = new System.Drawing.Size(757, 169);
+            this.tabPageConsole.TabIndex = 0;
+            this.tabPageConsole.Text = "tabPageConsole";
+            this.tabPageConsole.UseVisualStyleBackColor = true;
+            // 
+            // btnGrblCommandSend
+            // 
+            this.btnGrblCommandSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGrblCommandSend.Location = new System.Drawing.Point(595, 139);
+            this.btnGrblCommandSend.Name = "btnGrblCommandSend";
+            this.btnGrblCommandSend.Size = new System.Drawing.Size(75, 23);
+            this.btnGrblCommandSend.TabIndex = 3;
+            this.btnGrblCommandSend.Text = "button2";
+            this.btnGrblCommandSend.UseVisualStyleBackColor = true;
+            this.btnGrblCommandSend.Click += new System.EventHandler(this.btnGrblCommandSend_Click);
+            // 
+            // btnGrblCommandClear
+            // 
+            this.btnGrblCommandClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGrblCommandClear.Location = new System.Drawing.Point(676, 139);
+            this.btnGrblCommandClear.Name = "btnGrblCommandClear";
+            this.btnGrblCommandClear.Size = new System.Drawing.Size(75, 23);
+            this.btnGrblCommandClear.TabIndex = 2;
+            this.btnGrblCommandClear.Text = "button1";
+            this.btnGrblCommandClear.UseVisualStyleBackColor = true;
+            this.btnGrblCommandClear.Click += new System.EventHandler(this.btnGrblCommandClear_Click);
+            // 
+            // txtUserGrblCommand
+            // 
+            this.txtUserGrblCommand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtUserGrblCommand.Location = new System.Drawing.Point(6, 140);
+            this.txtUserGrblCommand.Name = "txtUserGrblCommand";
+            this.txtUserGrblCommand.Size = new System.Drawing.Size(583, 23);
+            this.txtUserGrblCommand.TabIndex = 1;
+            this.txtUserGrblCommand.TextChanged += new System.EventHandler(this.txtUserGrblCommand_TextChanged);
+            this.txtUserGrblCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserGrblCommand_KeyDown);
+            // 
+            // textBoxConsoleText
+            // 
+            this.textBoxConsoleText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxConsoleText.Location = new System.Drawing.Point(6, 6);
+            this.textBoxConsoleText.Multiline = true;
+            this.textBoxConsoleText.Name = "textBoxConsoleText";
+            this.textBoxConsoleText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxConsoleText.Size = new System.Drawing.Size(745, 128);
+            this.textBoxConsoleText.TabIndex = 0;
+            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 645);
+            this.Controls.Add(this.tabControlSecondary);
             this.Controls.Add(this.warningsAndErrors);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.tabControlMain);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
@@ -805,6 +883,9 @@
             this.tabPageSettings.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabControlSecondary.ResumeLayout(false);
+            this.tabPageConsole.ResumeLayout(false);
+            this.tabPageConsole.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -851,7 +932,6 @@
         private System.Windows.Forms.PropertyGrid propertyGridGrblSettings;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelStatus;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCpu;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label lblPropertyDesc;
         private System.Windows.Forms.Label lblPropertyHeader;
         private System.Windows.Forms.TextBox txtGrblUpdates;
@@ -873,5 +953,12 @@
         private System.Windows.Forms.Button btnZeroX;
         private System.Windows.Forms.Button btnZeroAll;
         private System.Windows.Forms.Button btnZeroZ;
+        private System.Windows.Forms.TabControl tabControlSecondary;
+        private System.Windows.Forms.TabPage tabPageConsole;
+        private System.Windows.Forms.TextBox textBoxConsoleText;
+        private System.Windows.Forms.Button btnGrblCommandSend;
+        private System.Windows.Forms.Button btnGrblCommandClear;
+        private System.Windows.Forms.TextBox txtUserGrblCommand;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpindle;
     }
 }

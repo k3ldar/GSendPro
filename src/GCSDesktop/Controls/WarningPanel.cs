@@ -28,6 +28,7 @@ namespace GSendDesktop.Controls
                     break;
                 case InformationType.Alarm:
                 case InformationType.Error:
+                case InformationType.ErrorKeep:
                     panel1.BackColor = Color.Red;
                     break;
                 case InformationType.Information:

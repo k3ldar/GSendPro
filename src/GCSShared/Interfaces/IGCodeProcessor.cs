@@ -38,7 +38,7 @@ namespace GSendShared
 
         UpdateSettingResult UpdateSetting(string updateCommand);
 
-        void WriteLine(string gCode);
+        bool WriteLine(string gCode);
 
         Dictionary<int, object> Settings();
 
@@ -109,6 +109,8 @@ namespace GSendShared
         event GrblAlarmHandler OnGrblAlarm;
 
         event GSendEventHandler OnInvalidComPort;
+
+        event GSendEventHandler OnComPortTimeOut;
 
         event MachineStateHandler OnMachineStateChanged;
 

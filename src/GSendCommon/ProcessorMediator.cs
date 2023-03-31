@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Net.WebSockets;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
 
@@ -50,6 +49,7 @@ namespace GSendCommon
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
+                _machines.Clear();
                 _logger.AddToLog(PluginManager.LogLevel.Information, nameof(OpenProcessors));
                 IReadOnlyList<IMachine> machines = _machineProvider.MachinesGet();
 
@@ -169,11 +169,11 @@ namespace GSendCommon
 
                     break;
 
-                //case Constants.NotificationMachineUpdated:
-                //    UpdateMachine(machineId);
-                //    AddMachine(machineId);
+                    //case Constants.NotificationMachineUpdated:
+                    //    UpdateMachine(machineId);
+                    //    AddMachine(machineId);
 
-                //    break;
+                    //    break;
             }
 
         }
@@ -234,6 +234,7 @@ namespace GSendCommon
             processor.OnGrblError += Processor_OnGrblError;
             processor.OnGrblAlarm += Processor_OnGrblAlarm;
             processor.OnInvalidComPort += Processor_OnInvalidComPort;
+            processor.OnComPortTimeOut += Processor_OnComPortTimeOut;
             processor.OnMachineStateChanged += Processor_OnMachineStateChanged;
             processor.OnMessageReceived += Processor_OnMessageReceived;
             processor.OnResponseReceived += Processor_OnResponseReceived;
@@ -254,9 +255,15 @@ namespace GSendCommon
             processor.OnGrblError -= Processor_OnGrblError;
             processor.OnGrblAlarm -= Processor_OnGrblAlarm;
             processor.OnInvalidComPort -= Processor_OnInvalidComPort;
+            processor.OnComPortTimeOut -= Processor_OnComPortTimeOut;
             processor.OnMachineStateChanged -= Processor_OnMachineStateChanged;
             processor.OnMessageReceived -= Processor_OnMessageReceived;
             processor.OnResponseReceived -= Processor_OnResponseReceived;
+        }
+
+        private void Processor_OnComPortTimeOut(IGCodeProcessor sender, EventArgs e)
+        {
+            SendMessage(new ClientBaseMessage("ComPortTimeout"));
         }
 
         private void Processor_OnResponseReceived(IGCodeProcessor sender, string response)
@@ -388,9 +395,9 @@ namespace GSendCommon
                         if (foundMachine && proc != null && parts.Length == 5)
                         {
                             if (Enum.TryParse(parts[2], true, out JogDirection jogDirection))
-                            if (Double.TryParse(parts[3], out double stepSize))
-                            if (Double.TryParse(parts[4], out double feedRate))
-                            proc.JogStart(jogDirection, stepSize, feedRate);
+                                if (Double.TryParse(parts[3], out double stepSize))
+                                    if (Double.TryParse(parts[4], out double feedRate))
+                                        proc.JogStart(jogDirection, stepSize, feedRate);
                         }
                         else
                         {
@@ -545,6 +552,18 @@ namespace GSendCommon
 
                         break;
 
+                    case Constants.MessageMachineWriteLineServer:
+                        if (foundMachine && proc != null)
+                        {
+                            response.success = proc.WriteLine(parts[2]);
+                        }
+                        else
+                        {
+                            response.success = false;
+                        }
+
+                        break;
+
                     case "mAddEvents":
                         if (foundMachine && proc != null)
                         {
@@ -586,7 +605,7 @@ namespace GSendCommon
 
 
                     case Constants.MessageMachineUpdateSettingServer:
-                        
+
                         response.request = Constants.MessageMachineUpdateSettingServer;
 
                         if (foundMachine && proc != null)

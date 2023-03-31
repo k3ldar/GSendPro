@@ -25,9 +25,24 @@ namespace GSendDesktop.Controls
             OnUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Clear()
+        public void Clear(bool forceAll)
         {
-            flowLayoutWarningErrors.Controls.Clear();
+            if (forceAll)
+            {
+                flowLayoutWarningErrors.Controls.Clear();
+            }
+            else
+            {
+                for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
+                {
+                    WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
+
+                    if (panel != null && panel.InformationType != InformationType.ErrorKeep)
+                    {
+                        flowLayoutWarningErrors.Controls.Remove(panel);
+                    }
+                }
+            }
         }
 
         public int WarningCount()

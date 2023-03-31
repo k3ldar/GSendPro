@@ -91,6 +91,7 @@
             this.imageList1.Images.SetKeyName(1, "Error_red_16x16.png");
             this.imageList1.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
             this.imageList1.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
+            this.imageList1.Images.SetKeyName(4, "Error_red_16x16.png");
             // 
             // WarningPanel
             // 

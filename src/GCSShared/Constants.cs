@@ -80,6 +80,9 @@ namespace GSendShared
 
         public const string MessageMachineSetZero = "mZero:{0}:{1}:{2}";
 
+        public const string MessageMachineWriteLineServer = "mWriteLine";
+
+        public const string MessageMachineWriteLine = "mWriteLine:{0}:{1}";
 
 
 

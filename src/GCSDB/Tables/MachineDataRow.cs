@@ -32,7 +32,6 @@ namespace GSendDB.Tables
         private int _jogFeedrate;
         private SpindleType _spindleType;
         private int _softStartSeconds;
-        private bool _softStart;
 
         // Update ConvertFromIMachineToMachineDataRow in machineprovider
 
@@ -279,20 +278,6 @@ namespace GSendDB.Tables
                     return;
 
                 _softStartSeconds = value;
-                Update();
-            }
-        }
-
-        public bool SoftStart
-        {
-            get => _softStart;
-
-            set
-            {
-                if (_softStart == value)
-                    return;
-
-                _softStart = value;
                 Update();
             }
         }

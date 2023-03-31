@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -103,13 +104,17 @@ namespace GSendTests.GCService
 
             sut.OpenProcessors();
 
+            foreach (IGCodeProcessor machine in sut.Machines)
+            {
+                Debug.WriteLine($"MachineId: {machine.Id}");
+            }
+
             Assert.AreEqual(2, sut.Machines.Count);
         }
 
         [TestMethod]
         public void CloseProcessors_ClosesAllProcessors_Success()
-        {
-            
+        {    
             ProcessorMediator sut = new ProcessorMediator(new Logger(),
                 new MockMachineProvider(new string[] { "Machine 1", "Machine 2" }),
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
@@ -137,6 +142,11 @@ namespace GSendTests.GCService
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
 
             sut.OpenProcessors();
+
+            foreach (IGCodeProcessor machine in sut.Machines)
+            {
+                Debug.WriteLine($"MachineId: {machine.Id}");
+            }
 
             Assert.AreEqual(2, sut.Machines.Count);
 
@@ -186,6 +196,11 @@ namespace GSendTests.GCService
                 mockMachineProvider, new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
 
             sut.OpenProcessors();
+
+            foreach (IGCodeProcessor machine in sut.Machines)
+            {
+                Debug.WriteLine($"MachineId: {machine.Id}");
+            }
 
             Assert.AreEqual(2, sut.Machines.Count);
 

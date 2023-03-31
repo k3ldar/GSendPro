@@ -55,6 +55,19 @@ namespace GSendCommon
                     await ConnectToWebSocket(_clientId).ConfigureAwait(false);
                 }
             }
+
+            DateTime startTime = DateTime.UtcNow;
+
+            while (_clientWebSocket.State == WebSocketState.Connecting)
+            {
+                await Task.Delay(10);
+
+                if (startTime - DateTime.UtcNow > TimeSpan.FromSeconds(10))
+                    throw new TimeoutException();
+
+                if (_clientWebSocket.State != WebSocketState.Connecting)
+                    break;
+            }
         }
 
         private void SetupWebSocket()
@@ -107,6 +120,9 @@ namespace GSendCommon
         public async Task SendAsync(string message)
         {
             await ValidateConnection();
+
+            if (_clientWebSocket.State == WebSocketState.Closed)
+                return;
 
             byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
             await _clientWebSocket.SendAsync(new ArraySegment<byte>(messageBuffer), WebSocketMessageType.Text, true, _cancellationToken).ConfigureAwait(false);

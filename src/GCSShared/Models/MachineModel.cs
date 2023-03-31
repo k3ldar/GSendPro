@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Models
+﻿using System.Reflection.PortableExecutable;
+
+namespace GSendShared.Models
 {
     public sealed class MachineModel : IMachine
     {
@@ -10,7 +12,7 @@
         public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount, 
             GrblSettings settings, DisplayUnits displayUnits, int overrideSpeed, int overrideSpindle, DateTime configurationLastVerified,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
-            int softStartSeconds, bool softStart)
+            int softStartSeconds)
             : this()
         {
             if (String.IsNullOrWhiteSpace(name))
@@ -34,7 +36,6 @@
             JogUnits = jogUnits;
             SpindleType = spindleType;
             SoftStartSeconds = softStartSeconds;
-            SoftStart = softStart;
         }
 
         public long Id { get; set; } = Int64.MinValue;
@@ -73,6 +74,16 @@
 
         public int SoftStartSeconds { get; set; }
 
-        public bool SoftStart { get; set; }
+        public bool SoftStart => Options.HasFlag(MachineOptions.SoftStart);
+
+        public void AddOptions(MachineOptions options)
+        {
+            Options |= options;
+        }
+
+        public void RemoveOptions(MachineOptions options)
+        {
+            Options &= ~options;
+        }
     }
 }

@@ -151,6 +151,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Alarm.
         /// </summary>
         public static string ClearAlarm {
@@ -192,6 +201,15 @@ namespace GSend.Language {
         public static string Connected {
             get {
                 return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Console.
+        /// </summary>
+        public static string Console {
+            get {
+                return ResourceManager.GetString("Console", resourceCulture);
             }
         }
         
@@ -264,6 +282,357 @@ namespace GSend.Language {
         public static string DisplayMmSec {
             get {
                 return ResourceManager.GetString("DisplayMmSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undefined Grbl error.
+        /// </summary>
+        public static string Error0 {
+            get {
+                return ResourceManager.GetString("Error0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-code words consist of a letter and a value. Letter was not found.
+        /// </summary>
+        public static string Error1 {
+            get {
+                return ResourceManager.GetString("Error1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soft limits cannot be enabled without homing also enabled..
+        /// </summary>
+        public static string Error10 {
+            get {
+                return ResourceManager.GetString("Error10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max characters per line exceeded. File most likely formatted improperly.
+        /// </summary>
+        public static string Error11 {
+            get {
+                return ResourceManager.GetString("Error11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error12 {
+            get {
+                return ResourceManager.GetString("Error12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error13 {
+            get {
+                return ResourceManager.GetString("Error13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build info or startup line exceeded EEPROM line length limit. Line not stored..
+        /// </summary>
+        public static string Error14 {
+            get {
+                return ResourceManager.GetString("Error14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog target exceeds machine travel. Jog command has been ignored..
+        /// </summary>
+        public static string Error15 {
+            get {
+                return ResourceManager.GetString("Error15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error16 {
+            get {
+                return ResourceManager.GetString("Error16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser mode requires PWM output..
+        /// </summary>
+        public static string Error17 {
+            get {
+                return ResourceManager.GetString("Error17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error18 {
+            get {
+                return ResourceManager.GetString("Error18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error19 {
+            get {
+                return ResourceManager.GetString("Error19", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing the expected G-code word value or numeric value format is not valid.
+        /// </summary>
+        public static string Error2 {
+            get {
+                return ResourceManager.GetString("Error2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported or invalid g-code command found in block. This usually means that you used the wrong post-Processor has been used..
+        /// </summary>
+        public static string Error20 {
+            get {
+                return ResourceManager.GetString("Error20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than one g-code command from same modal group found in block.
+        /// </summary>
+        public static string Error21 {
+            get {
+                return ResourceManager.GetString("Error21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed rate has not yet been set or is undefined.
+        /// </summary>
+        public static string Error22 {
+            get {
+                return ResourceManager.GetString("Error22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-code command in block requires an integer value.
+        /// </summary>
+        public static string Error23 {
+            get {
+                return ResourceManager.GetString("Error23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than one g-code command that requires axis words found in block.
+        /// </summary>
+        public static string Error24 {
+            get {
+                return ResourceManager.GetString("Error24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeated g-code word found in block.
+        /// </summary>
+        public static string Error25 {
+            get {
+                return ResourceManager.GetString("Error25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No axis words found in block for g-code command or current modal state which requires them.
+        /// </summary>
+        public static string Error26 {
+            get {
+                return ResourceManager.GetString("Error26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line number value is invalid.
+        /// </summary>
+        public static string Error27 {
+            get {
+                return ResourceManager.GetString("Error27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-code command is missing a required value word.
+        /// </summary>
+        public static string Error28 {
+            get {
+                return ResourceManager.GetString("Error28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G59.x work coordinate systems are not supported.
+        /// </summary>
+        public static string Error29 {
+            get {
+                return ResourceManager.GetString("Error29", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grbl ‘$’ system command was not recognized or supported.
+        /// </summary>
+        public static string Error3 {
+            get {
+                return ResourceManager.GetString("Error3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G53 only allowed with G0 and G1 motion modes.
+        /// </summary>
+        public static string Error30 {
+            get {
+                return ResourceManager.GetString("Error30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Axis words found in block when no command or current modal state uses them.
+        /// </summary>
+        public static string Error31 {
+            get {
+                return ResourceManager.GetString("Error31", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G2 and G3 arcs require at least one in-plane axis word.
+        /// </summary>
+        public static string Error32 {
+            get {
+                return ResourceManager.GetString("Error32", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Motion command target is invali.
+        /// </summary>
+        public static string Error33 {
+            get {
+                return ResourceManager.GetString("Error33", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arc radius value is invalid.
+        /// </summary>
+        public static string Error34 {
+            get {
+                return ResourceManager.GetString("Error34", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G2 and G3 arcs require at least one in-plane offset word..
+        /// </summary>
+        public static string Error35 {
+            get {
+                return ResourceManager.GetString("Error35", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unused value words found in block..
+        /// </summary>
+        public static string Error36 {
+            get {
+                return ResourceManager.GetString("Error36", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G43.1 dynamic tool length offset is not assigned to configured tool length axis..
+        /// </summary>
+        public static string Error37 {
+            get {
+                return ResourceManager.GetString("Error37", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool number greater than max supported value.
+        /// </summary>
+        public static string Error38 {
+            get {
+                return ResourceManager.GetString("Error38", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Negative value received for an expected positive value..
+        /// </summary>
+        public static string Error4 {
+            get {
+                return ResourceManager.GetString("Error4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing cycle failure. Homing is not enabled via settings..
+        /// </summary>
+        public static string Error5 {
+            get {
+                return ResourceManager.GetString("Error5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Grbl Error.
+        /// </summary>
+        public static string Error6 {
+            get {
+                return ResourceManager.GetString("Error6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An EEPROM read failed. Auto-restoring affected EEPROM to default values..
+        /// </summary>
+        public static string Error7 {
+            get {
+                return ResourceManager.GetString("Error7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grbl ‘$’ command cannot be used unless Grbl is IDLE. Ensures smooth operation during a job..
+        /// </summary>
+        public static string Error8 {
+            get {
+                return ResourceManager.GetString("Error8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G-code commands are locked out during alarm or jog state..
+        /// </summary>
+        public static string Error9 {
+            get {
+                return ResourceManager.GetString("Error9", resourceCulture);
             }
         }
         
@@ -489,6 +858,15 @@ namespace GSend.Language {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
             }
         }
         
@@ -889,6 +1267,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On.
+        /// </summary>
+        public static string SpindleActive {
+            get {
+                return ResourceManager.GetString("SpindleActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CW {0} RPM.
+        /// </summary>
+        public static string SpindleClockwise {
+            get {
+                return ResourceManager.GetString("SpindleClockwise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CCW {0} RPM.
+        /// </summary>
+        public static string SpindleCounterClockwise {
+            get {
+                return ResourceManager.GetString("SpindleCounterClockwise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delay start for {0} seconds.
         /// </summary>
         public static string SpindleDelayStartVFD {
@@ -907,6 +1312,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spindle Status.
+        /// </summary>
+        public static string SpindleHint {
+            get {
+                return ResourceManager.GetString("SpindleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off.
+        /// </summary>
+        public static string SpindleInactive {
+            get {
+                return ResourceManager.GetString("SpindleInactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Integrated.
         /// </summary>
         public static string SpindleIntegrated {
@@ -916,7 +1339,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Soft start.
+        ///   Looks up a localized string similar to Soft start/stop.
         /// </summary>
         public static string SpindleSoftStart {
             get {

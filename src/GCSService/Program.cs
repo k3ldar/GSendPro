@@ -25,6 +25,8 @@ namespace GSendService
             ThreadManager.Initialise(new SharedLib.Win.WindowsCpuUsage());
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
+            ThreadManager.ThreadExceptionRaised += ThreadManager_ThreadExceptionRaised;
+            ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
@@ -88,6 +90,16 @@ namespace GSendService
                 ThreadManager.CancelAll();
                 PluginManagerService.Finalise();
             }
+        }
+
+        private static void ThreadManager_ThreadStopped(object sender, Shared.ThreadManagerEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

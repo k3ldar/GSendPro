@@ -43,6 +43,10 @@ namespace GSendShared
 
         int SoftStartSeconds { get; set; }
 
-        bool SoftStart {  get; set; }
+        bool SoftStart { get; }
+
+        void AddOptions(MachineOptions options);
+
+        void RemoveOptions(MachineOptions options);
     }
 }

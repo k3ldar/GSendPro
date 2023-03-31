@@ -147,6 +147,9 @@
   <data name="Alarm9" xml:space="preserve">
     <value>Homing fail. Could not find limit switch within search distance.</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="ClearAlarm" xml:space="preserve">
     <value>Clear Alarm</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="Connected" xml:space="preserve">
     <value>Connected</value>
+  </data>
+  <data name="Console" xml:space="preserve">
+    <value>Console</value>
   </data>
   <data name="Continuous" xml:space="preserve">
     <value>Continuous</value>
@@ -185,6 +191,123 @@
   </data>
   <data name="DisplayMmSec" xml:space="preserve">
     <value>mm/sec</value>
+  </data>
+  <data name="Error0" xml:space="preserve">
+    <value>Undefined Grbl error</value>
+  </data>
+  <data name="Error1" xml:space="preserve">
+    <value>G-code words consist of a letter and a value. Letter was not found</value>
+  </data>
+  <data name="Error10" xml:space="preserve">
+    <value>Soft limits cannot be enabled without homing also enabled.</value>
+  </data>
+  <data name="Error11" xml:space="preserve">
+    <value>Max characters per line exceeded. File most likely formatted improperly</value>
+  </data>
+  <data name="Error12" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error13" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error14" xml:space="preserve">
+    <value>Build info or startup line exceeded EEPROM line length limit. Line not stored.</value>
+  </data>
+  <data name="Error15" xml:space="preserve">
+    <value>Jog target exceeds machine travel. Jog command has been ignored.</value>
+  </data>
+  <data name="Error16" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error17" xml:space="preserve">
+    <value>Laser mode requires PWM output.</value>
+  </data>
+  <data name="Error18" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error19" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error2" xml:space="preserve">
+    <value>Missing the expected G-code word value or numeric value format is not valid</value>
+  </data>
+  <data name="Error20" xml:space="preserve">
+    <value>Unsupported or invalid g-code command found in block. This usually means that you used the wrong post-Processor has been used.</value>
+  </data>
+  <data name="Error21" xml:space="preserve">
+    <value>More than one g-code command from same modal group found in block</value>
+  </data>
+  <data name="Error22" xml:space="preserve">
+    <value>Feed rate has not yet been set or is undefined</value>
+  </data>
+  <data name="Error23" xml:space="preserve">
+    <value>G-code command in block requires an integer value</value>
+  </data>
+  <data name="Error24" xml:space="preserve">
+    <value>More than one g-code command that requires axis words found in block</value>
+  </data>
+  <data name="Error25" xml:space="preserve">
+    <value>Repeated g-code word found in block</value>
+  </data>
+  <data name="Error26" xml:space="preserve">
+    <value>No axis words found in block for g-code command or current modal state which requires them</value>
+  </data>
+  <data name="Error27" xml:space="preserve">
+    <value>Line number value is invalid</value>
+  </data>
+  <data name="Error28" xml:space="preserve">
+    <value>G-code command is missing a required value word</value>
+  </data>
+  <data name="Error29" xml:space="preserve">
+    <value>G59.x work coordinate systems are not supported</value>
+  </data>
+  <data name="Error3" xml:space="preserve">
+    <value>Grbl ‘$’ system command was not recognized or supported</value>
+  </data>
+  <data name="Error30" xml:space="preserve">
+    <value>G53 only allowed with G0 and G1 motion modes</value>
+  </data>
+  <data name="Error31" xml:space="preserve">
+    <value>Axis words found in block when no command or current modal state uses them</value>
+  </data>
+  <data name="Error32" xml:space="preserve">
+    <value>G2 and G3 arcs require at least one in-plane axis word</value>
+  </data>
+  <data name="Error33" xml:space="preserve">
+    <value>Motion command target is invali</value>
+  </data>
+  <data name="Error34" xml:space="preserve">
+    <value>Arc radius value is invalid</value>
+  </data>
+  <data name="Error35" xml:space="preserve">
+    <value>G2 and G3 arcs require at least one in-plane offset word.</value>
+  </data>
+  <data name="Error36" xml:space="preserve">
+    <value>Unused value words found in block.</value>
+  </data>
+  <data name="Error37" xml:space="preserve">
+    <value>G43.1 dynamic tool length offset is not assigned to configured tool length axis.</value>
+  </data>
+  <data name="Error38" xml:space="preserve">
+    <value>Tool number greater than max supported value</value>
+  </data>
+  <data name="Error4" xml:space="preserve">
+    <value>Negative value received for an expected positive value.</value>
+  </data>
+  <data name="Error5" xml:space="preserve">
+    <value>Homing cycle failure. Homing is not enabled via settings.</value>
+  </data>
+  <data name="Error6" xml:space="preserve">
+    <value>Unknown Grbl Error</value>
+  </data>
+  <data name="Error7" xml:space="preserve">
+    <value>An EEPROM read failed. Auto-restoring affected EEPROM to default values.</value>
+  </data>
+  <data name="Error8" xml:space="preserve">
+    <value>Grbl ‘$’ command cannot be used unless Grbl is IDLE. Ensures smooth operation during a job.</value>
+  </data>
+  <data name="Error9" xml:space="preserve">
+    <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
@@ -260,6 +383,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
   </data>
   <data name="ServerConnected" xml:space="preserve">
     <value>Connected to Server</value>
@@ -393,17 +519,32 @@
   <data name="Spindle" xml:space="preserve">
     <value>Spindle</value>
   </data>
+  <data name="SpindleActive" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SpindleClockwise" xml:space="preserve">
+    <value>CW {0} RPM</value>
+  </data>
+  <data name="SpindleCounterClockwise" xml:space="preserve">
+    <value>CCW {0} RPM</value>
+  </data>
   <data name="SpindleDelayStartVFD" xml:space="preserve">
     <value>Delay start for {0} seconds</value>
   </data>
   <data name="SpindleExternal" xml:space="preserve">
     <value>External</value>
   </data>
+  <data name="SpindleHint" xml:space="preserve">
+    <value>Spindle Status</value>
+  </data>
+  <data name="SpindleInactive" xml:space="preserve">
+    <value>Off</value>
+  </data>
   <data name="SpindleIntegrated" xml:space="preserve">
     <value>Integrated</value>
   </data>
   <data name="SpindleSoftStart" xml:space="preserve">
-    <value>Soft start</value>
+    <value>Soft start/stop</value>
   </data>
   <data name="SpindleSoftStartSeconds" xml:space="preserve">
     <value>Startup over {0} seconds</value>

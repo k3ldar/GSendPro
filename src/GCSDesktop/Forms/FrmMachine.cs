@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -11,8 +10,6 @@ using System.Windows.Forms;
 using GSendApi;
 
 using GSendCommon;
-
-using GSendDesktop.Controls;
 
 using GSendShared;
 using GSendShared.Attributes;
@@ -22,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
 
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
@@ -45,6 +41,7 @@ namespace GSendDesktop.Forms
         private bool _isProbing = false;
         private bool _appliedSettingsChanged = false;
         private bool _configurationChanges = false;
+        private bool _lastMessageWasHiddenCommand = false;
 
         public FrmMachine()
         {
@@ -101,8 +98,12 @@ namespace GSendDesktop.Forms
             probingCommand1.OnSave += ProbingCommand1_OnSave;
 
             ConfigureMachine();
+            toolStripStatusLabelSpindle.Visible = false;
+            toolStripStatusLabelBuffer.Visible = false;
+            toolStripStatusLabelStatus.Visible = false;
 
             _configurationChanges = false;
+            HookUpEvents();
 
             LoadResources();
         }
@@ -112,7 +113,7 @@ namespace GSendDesktop.Forms
         private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
             _threadRun = true;
-            _clientWebSocket.SendAsync(String.Format("mAddEvents:{0}", _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format("mAddEvents:{0}", _machine.Id));
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerConnected;
             UpdateEnabledState();
         }
@@ -120,10 +121,15 @@ namespace GSendDesktop.Forms
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
             StopJogging();
-            warningsAndErrors.Visible = false;
+            warningsAndErrors.Visible = warningsAndErrors.TotalCount() > 0;
             _threadRun = false;
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerNotConnected;
             UpdateEnabledState();
+        }
+
+        private void HookUpEvents()
+        {
+            cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -161,6 +167,14 @@ namespace GSendDesktop.Forms
 
             switch (clientMessage.request)
             {
+                case "ComPortTimeout":
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, "Com port time out");
+                    break;
+
+                case "InvalidComPort":
+                    warningsAndErrors.AddWarningPanel(InformationType.ErrorKeep, "Com port bad");
+                    break;
+
                 case "mProbe":
                     _isProbing = false;
                     break;
@@ -180,14 +194,20 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     ConfigureMachine();
                     _configurationChanges = false;
+                    toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
+                    toolStripStatusLabelBuffer.Visible = true;
+                    toolStripStatusLabelStatus.Visible = true;
                     break;
 
                 case "Disconnect":
                     _machineConnected = false;
                     txtGrblUpdates.Text = String.Empty;
                     _appliedSettingsChanged = false;
-                    warningsAndErrors.Clear();
+                    warningsAndErrors.Clear(false);
                     warningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
+                    toolStripStatusLabelSpindle.Visible = false;
+                    toolStripStatusLabelBuffer.Visible = false;
+                    toolStripStatusLabelStatus.Visible = false;
                     UpdateEnabledState();
                     break;
 
@@ -203,7 +223,23 @@ namespace GSendDesktop.Forms
 
                 case "ResponseReceived":
                 case "MessageReceived":
-                    //textBox2.Text += $"{clientMessage.message}\r\n";
+                    if (clientMessage.message.ToString().StartsWith("<") || _isJogging)
+                    {
+                        _lastMessageWasHiddenCommand = true;
+                    }
+                    else if (_lastMessageWasHiddenCommand && clientMessage.message.ToString().Equals("ok"))
+                    {
+                        _lastMessageWasHiddenCommand = false;
+                    }
+                    else if (clientMessage.message.ToString().Equals("ok") && textBoxConsoleText.Text.EndsWith("ok\r\n"))
+                    {
+
+                    }
+                    else
+                    {
+                        AddMessageToConsole(clientMessage.message.ToString());
+                    }
+
                     break;
 
                 case "StateChanged":
@@ -213,6 +249,11 @@ namespace GSendDesktop.Forms
                         UpdateMachineStatus(model);
 
                     break;
+
+                case "GrblError":
+                    ProcessErrorResponse(clientMessage);
+                    break;
+
                 case "Alarm":
                     ProcessAlarmResponse(clientMessage);
                     break;
@@ -229,7 +270,7 @@ namespace GSendDesktop.Forms
             toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             toolStripButtonResume.Enabled = _machineConnected && _isPaused;
             toolStripButtonPause.Enabled = _machineConnected & (_isPaused || _isRunning);
-            toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging);
+            toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
             btnZeroX.Enabled = toolStripButtonProbe.Enabled;
@@ -240,6 +281,7 @@ namespace GSendDesktop.Forms
 
             tabPageMachineSettings.Enabled = _machineConnected && _machineStatusModel?.MachineState == MachineState.Idle;
             btnApplyGrblUpdates.Enabled = _machineConnected && !String.IsNullOrEmpty(txtGrblUpdates.Text);
+            tabPageConsole.Enabled = _machineConnected && !_isRunning && !_isPaused && !_isProbing && !_isAlarm;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -263,14 +305,31 @@ namespace GSendDesktop.Forms
                         LoadAllStatusChangeWarnings(status);
                     }
 
+                    if (_machine.SpindleType.Equals(SpindleType.Integrated))
+                    {
+                        if (status.SpindleClockWise && status.SpindleSpeed > 0)
+                            toolStripStatusLabelSpindle.Text = String.Format(GSend.Language.Resources.SpindleClockwise, status.SpindleSpeed);
+                        else if (status.SpindleCounterClockWise && status.SpindleSpeed > 0)
+                            toolStripStatusLabelSpindle.Text = String.Format(GSend.Language.Resources.SpindleCounterClockwise, status.SpindleSpeed);
+                        else
+                            toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleInactive;
+                    }
+                    else
+                    {
+                        if (status.SpindleSpeed > 0 && status.SpindleClockWise || status.SpindleCounterClockWise)
+                            toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleActive;
+                        else
+                            toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleInactive;
+                    }
+
                     machinePositionGeneral.UpdateMachinePosition(status.MachineX, status.MachineY, status.MachineZ);
                     machinePositionGeneral.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
                     machinePositionOverrides.UpdateMachinePosition(status.MachineX, status.MachineY, status.MachineZ);
                     machinePositionOverrides.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
                     machinePositionJog.UpdateMachinePosition(status.MachineX, status.MachineY, status.MachineZ);
                     machinePositionJog.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
-                    _isPaused = status.IsPaused;
-                    _isRunning = status.IsRunning;
+                    _isPaused = status.IsPaused || status.MachineState == MachineState.Hold;
+                    _isRunning = status.IsRunning || status.MachineState == MachineState.Run;
                     _isJogging = status.MachineState == MachineState.Jog;
                     _isAlarm = status.IsLocked;
 
@@ -332,7 +391,7 @@ namespace GSendDesktop.Forms
                     machinePositionGeneral.ResetPositions();
                     machinePositionJog.ResetPositions();
                     machinePositionOverrides.ResetPositions();
-                    warningsAndErrors.Visible = false;
+                    warningsAndErrors.Visible = warningsAndErrors.TotalCount() > 0;
                     _isRunning = false;
                     _isJogging = false;
                     _isPaused = false;
@@ -436,6 +495,7 @@ namespace GSendDesktop.Forms
             toolStripButtonPause.ToolTipText = GSend.Language.Resources.Pause;
             toolStripButtonStop.Text = GSend.Language.Resources.Stop;
             toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
+            toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
 
 
             //tab pages
@@ -467,6 +527,11 @@ namespace GSendDesktop.Forms
 
             // Override tab
             cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
+
+            // Console
+            tabPageConsole.Text = GSend.Language.Resources.Console;
+            btnGrblCommandSend.Text = GSend.Language.Resources.Send;
+            btnGrblCommandClear.Text = GSend.Language.Resources.Clear;
         }
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
@@ -505,7 +570,7 @@ namespace GSendDesktop.Forms
         private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             _canCancelJog = stepSize == 0;
-            _clientWebSocket.SendAsync(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
         }
 
         private void jogControl_OnJogStop(object sender, EventArgs e)
@@ -518,7 +583,7 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineJogStop, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineJogStop, _machine.Id));
         }
 
         #region Grbl Settings
@@ -538,7 +603,7 @@ namespace GSendDesktop.Forms
                 ReportType newValue = (ReportType)e.ChangedItem.Value;
 
                 if (existingItems.HasFlag(newValue))
-                    existingItems &= ~ newValue;
+                    existingItems &= ~newValue;
                 else
                     existingItems |= newValue;
 
@@ -595,7 +660,7 @@ namespace GSendDesktop.Forms
                     continue;
 
                 command = String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, command);
-                _clientWebSocket.SendAsync(command).ConfigureAwait(false);
+                SendMessage(command);
             }
 
             SaveChanges(true);
@@ -612,7 +677,7 @@ namespace GSendDesktop.Forms
             {
                 if (_threadRun)
                 {
-                    _clientWebSocket.SendAsync(String.Format(MessageMachineStatus, _machine.Id)).ConfigureAwait(false);
+                    SendMessage(String.Format(MessageMachineStatus, _machine.Id));
                     Thread.Sleep(_gSendContext.Settings.UpdateMilliseconds);
                 }
             }
@@ -643,14 +708,14 @@ namespace GSendDesktop.Forms
             if (warningsAndErrors.Visible)
             {
                 tabControlMain.Top = warningsAndErrors.Top + warningsAndErrors.Height + 8;
-                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
-                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
+                tabControlSecondary.Top = tabControlMain.Top + tabControlMain.Height + 8;
+                tabControlSecondary.Height = statusStrip.Top - (tabControlSecondary.Top + 6);
             }
             else
             {
                 tabControlMain.Top = 86;
-                textBox2.Top = tabControlMain.Top + tabControlMain.Height + 8;
-                textBox2.Height = statusStrip.Top - (textBox2.Top + 6);
+                tabControlSecondary.Top = tabControlMain.Top + tabControlMain.Height + 8;
+                tabControlSecondary.Height = statusStrip.Top - (tabControlSecondary.Top + 6);
             }
         }
 
@@ -670,9 +735,18 @@ namespace GSendDesktop.Forms
             warningsAndErrors.AddWarningPanel(InformationType.Alarm, alarmDescription);
         }
 
+        private void ProcessErrorResponse(ClientBaseMessage clientMessage)
+        {
+            _isProbing = false;
+            JsonElement element = (JsonElement)clientMessage.message;
+            GrblError error = (GrblError)element.GetInt32();
+            string alarmDescription = GSend.Language.Resources.ResourceManager.GetString($"Error{(int)error}");
+            warningsAndErrors.AddWarningPanel(InformationType.Error, alarmDescription);
+        }
+
         private void ProcessFailedMessage(ClientBaseMessage clientMessage)
         {
-            string[] message = clientMessage.request.Split(Constants.ColonChar, 
+            string[] message = clientMessage.request.Split(Constants.ColonChar,
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             if (message.Length == 0)
@@ -704,7 +778,7 @@ namespace GSendDesktop.Forms
         }
 
         private void SaveChanges(bool forceOverride)
-        { 
+        {
             if (_configurationChanges || forceOverride)
             {
                 MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
@@ -717,40 +791,40 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineConnect, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineConnect, _machine.Id));
         }
 
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineDisconnect, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineDisconnect, _machine.Id));
         }
 
         private void toolStripButtonClearAlarm_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineClearAlarm, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineClearAlarm, _machine.Id));
             warningsAndErrors.ClearAlarm();
         }
 
         private void toolStripButtonHome_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineHome, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineHome, _machine.Id));
         }
 
         private void toolStripButtonProbe_Click(object sender, EventArgs e)
         {
             _isProbing = true;
-            _clientWebSocket.SendAsync(String.Format(MessageMachineProbe, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineProbe, _machine.Id));
             UpdateEnabledState();
         }
 
         private void toolStripButtonResume_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachineResume, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineResume, _machine.Id));
         }
 
         private void toolStripButtonPause_Click(object sender, EventArgs e)
         {
-            _clientWebSocket.SendAsync(String.Format(MessageMachinePause, _machine.Id)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachinePause, _machine.Id));
         }
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
@@ -758,7 +832,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                _clientWebSocket.SendAsync(String.Format(MessageMachineStop, _machine.Id)).ConfigureAwait(false);
+                SendMessage(String.Format(MessageMachineStop, _machine.Id));
         }
 
         #endregion Toolbar Buttons
@@ -768,7 +842,7 @@ namespace GSendDesktop.Forms
         public void SetZeroForAxes(object sender, EventArgs e)
         {
             ZeroAxis zeroAxis = (ZeroAxis)((System.Windows.Forms.Button)sender).Tag;
-            _clientWebSocket.SendAsync(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0)).ConfigureAwait(false);
+            SendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0));
             tabPageJog.Focus();
         }
 
@@ -821,8 +895,52 @@ namespace GSendDesktop.Forms
 
         private void cbSoftStart_CheckedChanged(object sender, EventArgs e)
         {
-            _machine.SoftStart = cbSoftStart.Checked;
+            if (cbSoftStart.Checked)
+                _machine.AddOptions(MachineOptions.SoftStart);
+            else
+                _machine.RemoveOptions(MachineOptions.SoftStart);
+
             _configurationChanges = true;
+        }
+
+        private void btnGrblCommandClear_Click(object sender, EventArgs e)
+        {
+            textBoxConsoleText.Text = String.Empty;
+        }
+
+        private void btnGrblCommandSend_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtUserGrblCommand.Text))
+                return;
+
+            AddMessageToConsole(txtUserGrblCommand.Text);
+            SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, txtUserGrblCommand.Text));
+            txtUserGrblCommand.Text = String.Empty;
+            txtUserGrblCommand.Focus();
+        }
+
+        private void AddMessageToConsole(string message)
+        {
+            textBoxConsoleText.AppendText($"{message}\r\n");
+            textBoxConsoleText.ScrollToCaret();
+        }
+
+        private void SendMessage(string message)
+        {
+            _clientWebSocket.SendAsync(message).ConfigureAwait(false);
+        }
+
+        private void txtUserGrblCommand_TextChanged(object sender, EventArgs e)
+        {
+            btnGrblCommandSend.Enabled = txtUserGrblCommand.Text.Length > 0;
+        }
+
+        private void txtUserGrblCommand_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnGrblCommandSend_Click(sender, EventArgs.Empty);
+            }
         }
     }
 }
