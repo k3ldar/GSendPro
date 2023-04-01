@@ -15,7 +15,6 @@ namespace GSendDesktop.Controls
         {
             InitializeComponent();
             LoadResources();
-            selectionFeed.LabelFormat = GSend.Language.Resources.SpeedRpm;
             btnXMinus.Tag = JogDirection.XMinus;
             btnXPlus.Tag = JogDirection.XPlus;
             btnYMinus.Tag = JogDirection.YMinus;

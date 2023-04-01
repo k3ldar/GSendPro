@@ -48,5 +48,27 @@ namespace GSendAnalyser
         public bool HasEndProgram { get; set; }
 
         public bool HasCommandsAfterEndProgram { get; set; }
+
+        public List<IGCodeLine> Lines(out int lineCount)
+        {
+            List<IGCodeLine> Result = new();
+
+            lineCount = 0;
+            GCodeLine currentLine = null;
+
+            foreach (IGCodeCommand command in Commands)
+            {
+                if (command.LineNumber > lineCount)
+                {
+                    currentLine = new();
+                    lineCount++;
+                    Result.Add(currentLine);
+                }
+
+                currentLine.Commands.Add(command);
+            }
+
+            return Result;
+        }
     }
 }

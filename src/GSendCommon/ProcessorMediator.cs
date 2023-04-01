@@ -564,6 +564,32 @@ namespace GSendCommon
 
                         break;
 
+                    case Constants.MessageMachineSpindleAdmin:
+                        if (foundMachine && proc != null && parts.Length == 4)
+                        {
+                            if (Int32.TryParse(parts[2], out int speed))
+                            {
+                                if (Boolean.TryParse(parts[3], out bool clockWise))
+                                {
+                                    response.success = proc.UpdateSpindleSpeed(speed, clockWise);
+                                }
+                                else
+                                {
+                                    response.success = false;
+                                }
+                            }
+                            else
+                            { 
+                                response.success = false; 
+                            }
+                        }
+                        else
+                        {
+                            response.success = false;
+                        }
+
+                        break;
+
                     case "mAddEvents":
                         if (foundMachine && proc != null)
                         {

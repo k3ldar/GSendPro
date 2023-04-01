@@ -23,5 +23,7 @@
         bool HasCommandsAfterEndProgram { get; set; }
 
         void Analyse();
+
+        List<IGCodeLine> Lines(out int lineCount);
     }
 }

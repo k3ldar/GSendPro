@@ -1285,6 +1285,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spindle Control.
+        /// </summary>
+        public static string SpindleControl {
+            get {
+                return ResourceManager.GetString("SpindleControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CCW {0} RPM.
         /// </summary>
         public static string SpindleCounterClockwise {
@@ -1299,6 +1308,15 @@ namespace GSend.Language {
         public static string SpindleDelayStartVFD {
             get {
                 return ResourceManager.GetString("SpindleDelayStartVFD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clockwise.
+        /// </summary>
+        public static string SpindleDirectionClockwise {
+            get {
+                return ResourceManager.GetString("SpindleDirectionClockwise", resourceCulture);
             }
         }
         
@@ -1353,6 +1371,24 @@ namespace GSend.Language {
         public static string SpindleSoftStartSeconds {
             get {
                 return ResourceManager.GetString("SpindleSoftStartSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string SpindleStart {
+            get {
+                return ResourceManager.GetString("SpindleStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string SpindleStop {
+            get {
+                return ResourceManager.GetString("SpindleStop", resourceCulture);
             }
         }
         

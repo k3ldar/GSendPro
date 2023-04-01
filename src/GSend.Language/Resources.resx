@@ -525,11 +525,17 @@
   <data name="SpindleClockwise" xml:space="preserve">
     <value>CW {0} RPM</value>
   </data>
+  <data name="SpindleControl" xml:space="preserve">
+    <value>Spindle Control</value>
+  </data>
   <data name="SpindleCounterClockwise" xml:space="preserve">
     <value>CCW {0} RPM</value>
   </data>
   <data name="SpindleDelayStartVFD" xml:space="preserve">
     <value>Delay start for {0} seconds</value>
+  </data>
+  <data name="SpindleDirectionClockwise" xml:space="preserve">
+    <value>Clockwise</value>
   </data>
   <data name="SpindleExternal" xml:space="preserve">
     <value>External</value>
@@ -548,6 +554,12 @@
   </data>
   <data name="SpindleSoftStartSeconds" xml:space="preserve">
     <value>Startup over {0} seconds</value>
+  </data>
+  <data name="SpindleStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="SpindleStop" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="SpindleType" xml:space="preserve">
     <value>Spindle Type</value>

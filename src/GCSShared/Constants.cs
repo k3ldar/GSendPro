@@ -84,6 +84,10 @@ namespace GSendShared
 
         public const string MessageMachineWriteLine = "mWriteLine:{0}:{1}";
 
+        public const string MessageMachineSpindleAdmin = "mSpindle";
+
+        public const string MessageMachineSpindle = "mSpindle:{0}:{1}:{2}";
+
 
 
         public const string StateUndefined = "Undefined";

@@ -400,7 +400,7 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
-            bool result = sut.UpdateSpindleSpeed(-1);
+            bool result = sut.UpdateSpindleSpeed(-1, true);
             Assert.IsFalse(result);
         }
 
@@ -415,7 +415,7 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory);
-            sut.UpdateSpindleSpeed(8000);
+            sut.UpdateSpindleSpeed(8000, true);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
             Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("S8000M3"));
@@ -447,12 +447,12 @@ namespace GSendTests.GCService
                         break;
                 }
             };
-            sut.UpdateSpindleSpeed(8000);
+            sut.UpdateSpindleSpeed(8000, true);
 
             Assert.AreEqual(1, mockComPortFactory.MockComPort.Commands.Count);
             Assert.AreEqual("S8000M3", mockComPortFactory.MockComPort.Commands[0]);
 
-            sut.UpdateSpindleSpeed(0);
+            sut.UpdateSpindleSpeed(0, true);
             Assert.AreEqual(2, mockComPortFactory.MockComPort.Commands.Count);
             Assert.AreEqual("M5", mockComPortFactory.MockComPort.Commands[1]);
 
@@ -475,7 +475,7 @@ namespace GSendTests.GCService
 
             mockComPortFactory.MockComPort.DelayResponse = TimeSpan.FromSeconds(1);
             sut.TimeOut = TimeSpan.MinValue;
-            sut.UpdateSpindleSpeed(8000);
+            sut.UpdateSpindleSpeed(8000, true);
         }
 
         [TestMethod]

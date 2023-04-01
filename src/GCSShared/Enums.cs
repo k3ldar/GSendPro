@@ -72,6 +72,11 @@
         /// Spindle soft start/stop
         /// </summary>
         SoftStart = 2,
+
+        /// <summary>
+        /// Default clock wise for spindle
+        /// </summary>
+        SpindleClockWise = 4,
     }
 
     [Flags]

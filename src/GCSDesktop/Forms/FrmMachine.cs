@@ -46,7 +46,6 @@ namespace GSendDesktop.Forms
         public FrmMachine()
         {
             InitializeComponent();
-
         }
 
         public FrmMachine(IGSendContext gSendContext, IMachine machine)
@@ -130,6 +129,17 @@ namespace GSendDesktop.Forms
         private void HookUpEvents()
         {
             cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
+            cbSpindleClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
+        }
+
+        private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSpindleClockwise.Checked)
+                _machine.AddOptions(MachineOptions.SpindleClockWise);
+            else
+                _machine.RemoveOptions(MachineOptions.SpindleClockWise);
+
+            _configurationChanges = true;
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -154,7 +164,8 @@ namespace GSendDesktop.Forms
             }
 
             //Trace.WriteLine(String.Format("Machine {0} Socket Message: {1}", _machine.Name, clientMessage.success));
-            Trace.WriteLine(message);
+            //Trace.WriteLine(message);
+
             if (clientMessage == null)
                 return;
 
@@ -282,6 +293,7 @@ namespace GSendDesktop.Forms
             tabPageMachineSettings.Enabled = _machineConnected && _machineStatusModel?.MachineState == MachineState.Idle;
             btnApplyGrblUpdates.Enabled = _machineConnected && !String.IsNullOrEmpty(txtGrblUpdates.Text);
             tabPageConsole.Enabled = _machineConnected && !_isRunning && !_isPaused && !_isProbing && !_isAlarm;
+            grpBoxSpindleSpeed.Enabled = _machineConnected;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -321,6 +333,9 @@ namespace GSendDesktop.Forms
                         else
                             toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleInactive;
                     }
+
+                    btnSpindleStart.Enabled = status.SpindleSpeed == 0;
+                    btnSpindleStop.Enabled = status.SpindleSpeed > 0;
 
                     machinePositionGeneral.UpdateMachinePosition(status.MachineX, status.MachineY, status.MachineZ);
                     machinePositionGeneral.UpdateWorkPosition(status.WorkX, status.WorkY, status.WorkZ);
@@ -414,6 +429,70 @@ namespace GSendDesktop.Forms
 
         #endregion Client Web Socket
 
+        private void LoadResources()
+        {
+            //toolbar
+            toolStripButtonConnect.Text = GSend.Language.Resources.Connect;
+            toolStripButtonConnect.ToolTipText = GSend.Language.Resources.Connect;
+            toolStripButtonDisconnect.Text = GSend.Language.Resources.Disconnect;
+            toolStripButtonDisconnect.ToolTipText = GSend.Language.Resources.Disconnect;
+            toolStripButtonClearAlarm.Text = GSend.Language.Resources.ClearAlarm;
+            toolStripButtonClearAlarm.ToolTipText = GSend.Language.Resources.ClearAlarm;
+            toolStripButtonHome.Text = GSend.Language.Resources.Home;
+            toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
+            toolStripButtonProbe.Text = GSend.Language.Resources.Probe;
+            toolStripButtonProbe.ToolTipText = GSend.Language.Resources.Probe;
+            toolStripButtonResume.Text = GSend.Language.Resources.Resume;
+            toolStripButtonResume.ToolTipText = GSend.Language.Resources.Resume;
+            toolStripButtonPause.Text = GSend.Language.Resources.Pause;
+            toolStripButtonPause.ToolTipText = GSend.Language.Resources.Pause;
+            toolStripButtonStop.Text = GSend.Language.Resources.Stop;
+            toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
+            toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
+
+
+            //tab pages
+            tabPageMain.Text = GSend.Language.Resources.General;
+            tabPageOverrides.Text = GSend.Language.Resources.Overrides;
+            tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
+            tabPageMachineSettings.Text = GSend.Language.Resources.GrblSettings;
+            tabPageSpindle.Text = GSend.Language.Resources.Spindle;
+            tabPageUsage.Text = GSend.Language.Resources.Usage;
+            tabPageSettings.Text = GSend.Language.Resources.Settings;
+            selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
+
+            //General tab
+
+
+            //Spindle tab
+            lblSpindleType.Text = GSend.Language.Resources.SpindleType;
+            cbSoftStart.Text = GSend.Language.Resources.SpindleSoftStart;
+
+            if (_machine.SpindleType == SpindleType.Integrated)
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
+            else
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
+
+            btnSpindleStart.Text = GSend.Language.Resources.SpindleStart;
+            btnSpindleStop.Text = GSend.Language.Resources.SpindleStop;
+            grpBoxSpindleSpeed.Text = GSend.Language.Resources.SpindleControl;
+            cbSpindleClockwise.Text = GSend.Language.Resources.SpindleDirectionClockwise;
+
+            // menu items
+            machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
+            viewToolStripMenuItem.Text = GSend.Language.Resources.View;
+
+
+
+            // Override tab
+            cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
+
+            // Console
+            tabPageConsole.Text = GSend.Language.Resources.Console;
+            btnGrblCommandSend.Text = GSend.Language.Resources.Send;
+            btnGrblCommandClear.Text = GSend.Language.Resources.Clear;
+        }
+
         private void UpdateDisplay()
         {
             if (InvokeRequired)
@@ -474,64 +553,14 @@ namespace GSendDesktop.Forms
             cmbSpindleType.SelectedItem = _machine.SpindleType;
             cbSoftStart.Checked = _machine.SoftStart;
             trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
-        }
 
-        private void LoadResources()
-        {
-            //toolbar
-            toolStripButtonConnect.Text = GSend.Language.Resources.Connect;
-            toolStripButtonConnect.ToolTipText = GSend.Language.Resources.Connect;
-            toolStripButtonDisconnect.Text = GSend.Language.Resources.Disconnect;
-            toolStripButtonDisconnect.ToolTipText = GSend.Language.Resources.Disconnect;
-            toolStripButtonClearAlarm.Text = GSend.Language.Resources.ClearAlarm;
-            toolStripButtonClearAlarm.ToolTipText = GSend.Language.Resources.ClearAlarm;
-            toolStripButtonHome.Text = GSend.Language.Resources.Home;
-            toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
-            toolStripButtonProbe.Text = GSend.Language.Resources.Probe;
-            toolStripButtonProbe.ToolTipText = GSend.Language.Resources.Probe;
-            toolStripButtonResume.Text = GSend.Language.Resources.Resume;
-            toolStripButtonResume.ToolTipText = GSend.Language.Resources.Resume;
-            toolStripButtonPause.Text = GSend.Language.Resources.Pause;
-            toolStripButtonPause.ToolTipText = GSend.Language.Resources.Pause;
-            toolStripButtonStop.Text = GSend.Language.Resources.Stop;
-            toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
-            toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
+            // spindle
+            trackBarSpindleSpeed.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
+            trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
+            //trackBarSpindleSpeed.TickFrequency = 
+            trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
+            cbSpindleClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleClockWise);
 
-
-            //tab pages
-            tabPageMain.Text = GSend.Language.Resources.General;
-            tabPageOverrides.Text = GSend.Language.Resources.Overrides;
-            tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
-            tabPageMachineSettings.Text = GSend.Language.Resources.GrblSettings;
-            tabPageSpindle.Text = GSend.Language.Resources.Spindle;
-            tabPageUsage.Text = GSend.Language.Resources.Usage;
-            tabPageSettings.Text = GSend.Language.Resources.Settings;
-            selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
-
-            //General tab
-
-
-            //Spindle tab
-            lblSpindleType.Text = GSend.Language.Resources.SpindleType;
-            cbSoftStart.Text = GSend.Language.Resources.SpindleSoftStart;
-
-            if (_machine.SpindleType == SpindleType.Integrated)
-                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
-            else
-                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
-
-            // menu items
-            machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
-            viewToolStripMenuItem.Text = GSend.Language.Resources.View;
-
-
-            // Override tab
-            cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
-
-            // Console
-            tabPageConsole.Text = GSend.Language.Resources.Console;
-            btnGrblCommandSend.Text = GSend.Language.Resources.Send;
-            btnGrblCommandClear.Text = GSend.Language.Resources.Clear;
         }
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
@@ -930,6 +959,8 @@ namespace GSendDesktop.Forms
             _clientWebSocket.SendAsync(message).ConfigureAwait(false);
         }
 
+        #region Console
+
         private void txtUserGrblCommand_TextChanged(object sender, EventArgs e)
         {
             btnGrblCommandSend.Enabled = txtUserGrblCommand.Text.Length > 0;
@@ -942,5 +973,26 @@ namespace GSendDesktop.Forms
                 btnGrblCommandSend_Click(sender, EventArgs.Empty);
             }
         }
+
+        #endregion Console
+
+        #region Spindle Control
+
+        private void trackBarSpindleSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            lblSpindleSpeed.Text = String.Format(GSend.Language.Resources.SpeedRpm, trackBarSpindleSpeed.Value);
+        }
+
+        private void btnSpindleStart_Click(object sender, EventArgs e)
+        {
+            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleClockwise.Checked));
+        }
+
+        private void btnSpindleStop_Click(object sender, EventArgs e)
+        {
+            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleClockwise.Checked));
+        }
+
+        #endregion Spindle Control
     }
 }

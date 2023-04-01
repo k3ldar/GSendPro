@@ -42,7 +42,7 @@ namespace GSendShared
 
         Dictionary<int, object> Settings();
 
-        bool UpdateSpindleSpeed(int speed);
+        bool UpdateSpindleSpeed(int speed, bool clockWise);
 
         bool TurnMistCoolantOn();
 

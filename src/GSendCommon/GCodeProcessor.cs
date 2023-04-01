@@ -29,7 +29,8 @@ namespace GSendCommon
         private const string CommandHelp = "$";
         private const string CommandSettings = "$$";
         private const string CommandUnlock = "$X";
-        private const string CommandSpindleStart = "S{0}M3";
+        private const string CommandSpindleStartClockWise = "S{0}M3";
+        private const string CommandSpindleStartCounterClockWise = "S{0}M4";
         private const string CommandStopSpindle = "M5";
         private const string CommandMistCoolantOn = "M7";
         private const string CommandFloodCoolantOn = "M8";
@@ -57,12 +58,13 @@ namespace GSendCommon
         private const string OptionAccessoryState = "a";
         private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
-        private readonly List<IGCodeLine> _commandsToSend = new();
+        private List<IGCodeLine> _commandsToSend = null;
         private readonly Queue<IGCodeLine> _sendQueue = new();
 
         private readonly IMachineProvider _machineProvider;
         private readonly IMachine _machine;
         private readonly IComPort _port;
+        private readonly IGCodeParser _gcodeParser = new GCodeParser();
         private volatile bool _isRunning;
         private volatile bool _isPaused;
         private volatile bool _isAlarm;
@@ -124,11 +126,10 @@ namespace GSendCommon
                     Trace.WriteLine($"Line {NextCommand} added to queue");
 
                     commandToSend.Status = LineStatus.Sent;
-                    //todo overrides
 
                     BufferSize += commandText.Length;
 
-                    InternalWriteLine(commandText);
+                    InternalWriteLine(commandToSend);
 
                     NextCommand++;
                 }
@@ -215,7 +216,7 @@ namespace GSendCommon
             _isPaused = false;
 
             Trace.WriteLine("Start");
-            InternalWriteLine(CommandStartResume);
+            _port.WriteLine(CommandStartResume);
             OnStart?.Invoke(this, EventArgs.Empty);
             return true;
         }
@@ -229,7 +230,7 @@ namespace GSendCommon
             OnPause?.Invoke(this, EventArgs.Empty);
 
             Trace.WriteLine("Pause");
-            InternalWriteLine(CommandPause);
+            _port.WriteLine(CommandPause);
             return true;
         }
 
@@ -242,7 +243,7 @@ namespace GSendCommon
             OnResume?.Invoke(this, EventArgs.Empty);
 
             Trace.WriteLine($"Resume");
-            InternalWriteLine(CommandStartResume);
+            _port.WriteLine(CommandStartResume);
             return true;
         }
 
@@ -280,20 +281,21 @@ namespace GSendCommon
 
             Clear();
 
-            _lineCount = 0;
-            GCodeLine currentLine = null;
+            _commandsToSend = gCodeAnalyses.Lines(out _lineCount);
+            //_lineCount = 0;
+            //GCodeLine currentLine = null;
 
-            foreach (IGCodeCommand command in gCodeAnalyses.Commands)
-            {
-                if (command.LineNumber > _lineCount)
-                {
-                    currentLine = new();
-                    _lineCount++;
-                    _commandsToSend.Add(currentLine);
-                }
+            //foreach (IGCodeCommand command in gCodeAnalyses.Commands)
+            //{
+            //    if (command.LineNumber > _lineCount)
+            //    {
+            //        currentLine = new();
+            //        _lineCount++;
+            //        _commandsToSend.Add(currentLine);
+            //    }
 
-                currentLine.Commands.Add(command);
-            }
+            //    currentLine.Commands.Add(command);
+            //}
 
             return true;
         }
@@ -332,12 +334,11 @@ namespace GSendCommon
             if (String.IsNullOrEmpty(_machine.ProbeCommand))
                 return false;
 
-            IGCodeParser gcodeParser = new GCodeParser();
-            IGCodeAnalyses gCodeAnalyses = gcodeParser.Parse(_machine.ProbeCommand);
+            IGCodeAnalyses gCodeAnalyses = _gcodeParser.Parse(_machine.ProbeCommand);
             LoadGCode(gCodeAnalyses);
 
             Start();
-            //IGCodeProcessor gCodeProcessor = new 
+
             return true;
         }
 
@@ -431,7 +432,7 @@ namespace GSendCommon
 
             jogCommand.AppendFormat("F{0}", feedRate);
 
-            InternalWriteLine(jogCommand.ToString());
+            _port.WriteLine(jogCommand.ToString());
             return true;
         }
 
@@ -562,19 +563,23 @@ namespace GSendCommon
             }
         }
 
-        public bool UpdateSpindleSpeed(int speed)
+        public bool UpdateSpindleSpeed(int speed, bool clockWise)
         {
             if (speed < 0)
                 return false;
 
             if (speed > 0)
             {
-                SendCommandWaitForResponse(String.Format(CommandSpindleStart, speed), TimeOut);
+                if (clockWise)
+                    InternalWriteLine(String.Format(CommandSpindleStartClockWise, speed));
+                else
+                    InternalWriteLine(String.Format(CommandSpindleStartCounterClockWise, speed));
+
                 OnCommandSent?.Invoke(this, CommandSent.SpindleSpeedSet);
             }
             else
             {
-                SendCommandWaitForResponse(CommandStopSpindle, TimeOut);
+                InternalWriteLine(CommandStopSpindle);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleOff);
             }
                 
@@ -585,7 +590,7 @@ namespace GSendCommon
         {
             if (!_machineStateModel.MistEnabled)
             {
-                SendCommandWaitForResponse(CommandMistCoolantOn, TimeOut);
+                InternalWriteLine(CommandMistCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.MistOn);
                 return true;
             }
@@ -597,7 +602,7 @@ namespace GSendCommon
         {
             if (!FloodCoolantActive)
             {
-                SendCommandWaitForResponse(CommandFloodCoolantOn, TimeOut);
+                InternalWriteLine(CommandFloodCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.FloodOn);
                 return true;
             }
@@ -607,7 +612,7 @@ namespace GSendCommon
 
         public bool CoolantOff()
         {
-            SendCommandWaitForResponse(CommandCoolantOff, TimeOut);
+            InternalWriteLine(CommandCoolantOff);
             OnCommandSent?.Invoke(this, CommandSent.CoolantOff);
             return true;
         }
@@ -717,7 +722,9 @@ namespace GSendCommon
                 if (span.TotalMilliseconds > 250)
                 {
                     _lastInformationCheck = DateTime.UtcNow;
-                    InternalWriteLine(CommandRequestStatus);
+
+                    //bypass internal send commands
+                    _port.WriteLine(CommandRequestStatus);
                 }
 
                 if (_isRunning && !IsPaused)
@@ -783,7 +790,7 @@ namespace GSendCommon
             }
 
 #if DEBUG
-            Trace.WriteLine($"Junk Data: {response}");
+            //Trace.WriteLine($"Junk Data: {response}");
 #endif
         }
 
@@ -1004,7 +1011,7 @@ namespace GSendCommon
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
                     _ = _port.ReadLine();
-                    InternalWriteLine(commandText);
+                    _port.WriteLine(commandText);
                     DateTime sendTime = DateTime.UtcNow;
 
                     while (true)
@@ -1035,7 +1042,7 @@ namespace GSendCommon
         {
             _waitingForResponse = true;
             DateTime sendTime = DateTime.UtcNow;
-            InternalWriteLine(commandText);
+            _port.WriteLine(commandText);
 
             while (_waitingForResponse)
             {
@@ -1048,7 +1055,31 @@ namespace GSendCommon
 
         private void InternalWriteLine(string commandText)
         {
-            _port.WriteLine(commandText);
+            if (!String.IsNullOrEmpty(commandText) && commandText.Length > 0 && commandText[0] == '$')
+            {
+                _port.WriteLine(commandText);
+            }
+            else
+            {
+                IGCodeAnalyses gCode = _gcodeParser.Parse(commandText);
+
+                IList<IGCodeLine> lines = gCode.Lines(out int lineNumber);
+
+                Debug.Assert(lineNumber == 1);
+                InternalWriteLine(lines[0]);
+                //foreach (IGCodeLine line in lines)
+                //{
+                //    InternalWriteLine(line);
+                //}
+            }
+        }
+
+        private void InternalWriteLine(IGCodeLine commandLine)
+        {
+            // overrides
+            string gcodeLine = commandLine.GetGCode();
+
+            _port.WriteLine(gcodeLine);
         }
 
         private void InternalWriteByte(byte[] buffer)
