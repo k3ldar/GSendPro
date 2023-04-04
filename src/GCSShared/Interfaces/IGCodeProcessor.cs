@@ -40,6 +40,8 @@ namespace GSendShared
 
         bool WriteLine(string gCode);
 
+        string SendCommandWaitForOKCommand(string commandText);
+
         Dictionary<int, object> Settings();
 
         bool UpdateSpindleSpeed(int speed, bool clockWise);
@@ -83,6 +85,8 @@ namespace GSendShared
         bool FloodCoolantActive { get; }
 
         MachineStateModel StateModel { get; }
+
+        IMachine Machine { get; }
 
         event GSendEventHandler OnConnect;
 

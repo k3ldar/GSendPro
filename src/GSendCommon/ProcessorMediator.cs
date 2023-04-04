@@ -169,11 +169,11 @@ namespace GSendCommon
 
                     break;
 
-                    //case Constants.NotificationMachineUpdated:
-                    //    UpdateMachine(machineId);
+                    case Constants.NotificationMachineUpdated:
+                        UpdateMachine(machineId);
                     //    AddMachine(machineId);
 
-                    //    break;
+                        break;
             }
 
         }
@@ -203,6 +203,30 @@ namespace GSendCommon
 
                 _machines.Remove(machineToDelete);
             }
+        }
+
+        private void UpdateMachine(long machineId)
+        {
+            IGCodeProcessor processor = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+
+            if (processor == null)
+                return;
+
+            IMachine updateMachine = _machineProvider.MachineGet(machineId);
+
+            if (updateMachine == null)
+                return;
+
+            processor.Machine.Options = updateMachine.Options;
+            processor.Machine.Name = updateMachine.Name;
+            processor.Machine.ProbeCommand = updateMachine.ProbeCommand;
+            processor.Machine.ProbeSpeed = updateMachine.ProbeSpeed;
+            processor.Machine.ProbeThickness = updateMachine.ProbeThickness;
+            processor.Machine.JogFeedrate = updateMachine.JogFeedrate;
+            processor.Machine.JogUnits = updateMachine.JogUnits;
+            processor.Machine.SpindleType = updateMachine.SpindleType;
+            processor.Machine.SoftStartSeconds = updateMachine.SoftStartSeconds;
+
         }
 
         public List<string> GetEvents()
@@ -361,13 +385,12 @@ namespace GSendCommon
             byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(clientBaseMessage));
 
             _webSocket.SendAsync(new ArraySegment<byte>(json, 0, json.Length), WebSocketMessageType.Binary, true, CancellationToken).ConfigureAwait(false);
-
         }
 
         private byte[] ProcessRequest(string request)
         {
             if (_messageId > ulong.MaxValue - 50)
-                _messageId = 50;
+                _messageId = 0;
 
             ClientBaseMessage response = new()
             {
@@ -387,73 +410,189 @@ namespace GSendCommon
             if (foundMachine)
                 proc = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
 
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            switch (parts[0])
             {
-                switch (parts[0])
-                {
-                    case Constants.MessageMachineJogStartServer:
-                        if (foundMachine && proc != null && parts.Length == 5)
+                case Constants.MessageMachineJogStartServer:
+                    if (foundMachine && proc != null && parts.Length == 5)
+                    {
+                        if (Enum.TryParse(parts[2], true, out JogDirection jogDirection))
+                            if (Double.TryParse(parts[3], out double stepSize))
+                                if (Double.TryParse(parts[4], out double feedRate))
+                                    proc.JogStart(jogDirection, stepSize, feedRate);
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineJogStopServer:
+                    if (foundMachine && proc != null)
+                    {
+                        proc.JogStop();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineResumeAll:
+                    foreach (IGCodeProcessor processor in _machines)
+                    {
+                        if (processor.IsConnected && processor.IsPaused)
+                            processor.Resume();
+                    }
+
+                    break;
+
+                case Constants.MessageMachinePauseAll:
+                    foreach (IGCodeProcessor processor in _machines)
+                    {
+                        if (processor.IsConnected)
+                            processor.Pause();
+                    }
+
+                    break;
+
+                case Constants.MessageMachineClearAlarmServer:
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.StateModel.MachineState == MachineState.Alarm)
+                            proc.Unlock();
+                    }
+
+                    break;
+
+                case Constants.MessageMachineConnectServer:
+                    response.request = Constants.MessageMachineConnectServer;
+
+                    if (foundMachine && proc != null)
+                    {
+                        if (!proc.IsConnected)
                         {
-                            if (Enum.TryParse(parts[2], true, out JogDirection jogDirection))
-                                if (Double.TryParse(parts[3], out double stepSize))
-                                    if (Double.TryParse(parts[4], out double feedRate))
-                                        proc.JogStart(jogDirection, stepSize, feedRate);
+                            response.message = (int)proc.Connect();
+                            response.success = true;
                         }
                         else
                         {
                             response.success = false;
                         }
+                    }
+                    else
+                    {
+                        response.success = false;
+                        response.message = (int)ConnectResult.Error;
+                    }
 
-                        break;
+                    break;
+                case Constants.MessageMachineDisconnectServer:
+                    response.request = Constants.MessageMachineConnectServer;
 
-                    case Constants.MessageMachineJogStopServer:
-                        if (foundMachine && proc != null)
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.IsConnected)
                         {
-                            proc.JogStop();
+                            response.message = proc.Disconnect() ? (int)ConnectResult.Success : (int)ConnectResult.Error;
+                            response.success = true;
                         }
                         else
                         {
                             response.success = false;
                         }
+                    }
+                    else
+                    {
+                        response.success = false;
+                        response.message = (int)ConnectResult.Error;
+                    }
 
-                        break;
+                    break;
 
-                    case Constants.MessageMachineResumeAll:
-                        foreach (IGCodeProcessor processor in _machines)
+                case Constants.MessageMachineResumeServer:
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.StateModel.MachineState != MachineState.Alarm)
+                            proc.Resume();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineHomeServer:
+                    if (foundMachine && proc != null)
+                    {
+                        if (proc.StateModel.MachineState != MachineState.Alarm)
+                            proc.Home();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineProbeServer:
+                    if (foundMachine && proc != null)
+                    {
+                        response.success = proc.Probe();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachinePauseServer:
+                    if (foundMachine && proc != null)
+                    {
+                        response.success = proc.Pause();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineStopServer:
+                    if (foundMachine && proc != null)
+                    {
+                        response.success = proc.Stop();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineWriteLineServer:
+                    if (foundMachine && proc != null)
+                    {
+                        response.success = proc.WriteLine(parts[2]);
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageMachineSpindleAdmin:
+                    if (foundMachine && proc != null && parts.Length == 4)
+                    {
+                        if (Int32.TryParse(parts[2], out int speed))
                         {
-                            if (processor.IsConnected && processor.IsPaused)
-                                processor.Resume();
-                        }
-
-                        break;
-
-                    case Constants.MessageMachinePauseAll:
-                        foreach (IGCodeProcessor processor in _machines)
-                        {
-                            if (processor.IsConnected)
-                                processor.Pause();
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineClearAlarmServer:
-                        if (foundMachine && proc != null)
-                        {
-                            if (proc.StateModel.MachineState == MachineState.Alarm)
-                                proc.Unlock();
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineConnectServer:
-                        response.request = Constants.MessageMachineConnectServer;
-
-                        if (foundMachine && proc != null)
-                        {
-                            if (!proc.IsConnected)
+                            if (Boolean.TryParse(parts[3], out bool clockWise))
                             {
-                                response.message = (int)proc.Connect();
-                                response.success = true;
+                                response.success = proc.UpdateSpindleSpeed(speed, clockWise);
                             }
                             else
                             {
@@ -461,239 +600,120 @@ namespace GSendCommon
                             }
                         }
                         else
-                        {
-                            response.success = false;
-                            response.message = (int)ConnectResult.Error;
+                        { 
+                            response.success = false; 
                         }
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
 
-                        break;
-                    case Constants.MessageMachineDisconnectServer:
-                        response.request = Constants.MessageMachineConnectServer;
+                    break;
 
-                        if (foundMachine && proc != null)
-                        {
-                            if (proc.IsConnected)
-                            {
-                                response.message = proc.Disconnect() ? (int)ConnectResult.Success : (int)ConnectResult.Error;
-                                response.success = true;
-                            }
-                            else
-                            {
-                                response.success = false;
-                            }
-                        }
-                        else
-                        {
-                            response.success = false;
-                            response.message = (int)ConnectResult.Error;
-                        }
+                case "mAddEvents":
+                    if (foundMachine && proc != null)
+                    {
+                        _processEvents = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
 
-                        break;
+                    break;
 
-                    case Constants.MessageMachineResumeServer:
-                        if (foundMachine && proc != null)
-                        {
-                            if (proc.StateModel.MachineState != MachineState.Alarm)
-                                proc.Resume();
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
+                case "mRemoveEvents":
+                    if (foundMachine && proc != null)
+                    {
+                        _processEvents = false;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
 
-                        break;
+                    break;
 
-                    case Constants.MessageMachineHomeServer:
-                        if (foundMachine && proc != null)
-                        {
-                            if (proc.StateModel.MachineState != MachineState.Alarm)
-                                proc.Home();
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
+                case Constants.MessageMachineSetZeroServer:
+                    if (foundMachine && proc != null && parts.Length == 4 &&
+                        Int32.TryParse(parts[2], out int zeroEnumInt) &&
+                        Int32.TryParse(parts[3], out int coordinateSystem))
+                    {
+                        ZeroAxis zeroAxis = (ZeroAxis)zeroEnumInt;
+                        response.success = proc.ZeroAxes(zeroAxis, coordinateSystem);
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
 
-                        break;
-
-                    case Constants.MessageMachineProbeServer:
-                        if (foundMachine && proc != null)
-                        {
-                            response.success = proc.Probe();
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachinePauseServer:
-                        if (foundMachine && proc != null)
-                        {
-                            response.success = proc.Pause();
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineStopServer:
-                        if (foundMachine && proc != null)
-                        {
-                            response.success = proc.Stop();
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineWriteLineServer:
-                        if (foundMachine && proc != null)
-                        {
-                            response.success = proc.WriteLine(parts[2]);
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineSpindleAdmin:
-                        if (foundMachine && proc != null && parts.Length == 4)
-                        {
-                            if (Int32.TryParse(parts[2], out int speed))
-                            {
-                                if (Boolean.TryParse(parts[3], out bool clockWise))
-                                {
-                                    response.success = proc.UpdateSpindleSpeed(speed, clockWise);
-                                }
-                                else
-                                {
-                                    response.success = false;
-                                }
-                            }
-                            else
-                            { 
-                                response.success = false; 
-                            }
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case "mAddEvents":
-                        if (foundMachine && proc != null)
-                        {
-                            _processEvents = true;
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case "mRemoveEvents":
-                        if (foundMachine && proc != null)
-                        {
-                            _processEvents = false;
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineSetZeroServer:
-                        if (foundMachine && proc != null && parts.Length == 4 &&
-                            Int32.TryParse(parts[2], out int zeroEnumInt) &&
-                            Int32.TryParse(parts[3], out int coordinateSystem))
-                        {
-                            ZeroAxis zeroAxis = (ZeroAxis)zeroEnumInt;
-                            response.success = proc.ZeroAxes(zeroAxis, coordinateSystem);
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
+                    break;
 
 
-                    case Constants.MessageMachineUpdateSettingServer:
+                case Constants.MessageMachineUpdateSettingServer:
 
-                        response.request = Constants.MessageMachineUpdateSettingServer;
+                    response.request = Constants.MessageMachineUpdateSettingServer;
 
-                        if (foundMachine && proc != null)
-                        {
-                            response.message = (int)proc.UpdateSetting(parts[2]);
-                            response.success = true;
-                        }
-                        else
-                        {
-                            response.success = false;
-                            response.message = (int)UpdateSettingResult.Error;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineStatusServer:
-                        if (foundMachine && proc != null)
-                        {
-                            response.message = proc.StateModel;
-                            response.request = Constants.MessageMachineStatusServer;
-                            response.success = true;
-                            response.IsConnected = proc.IsConnected;
-                        }
-                        else
-                        {
-                            response.success = false;
-                        }
-
-                        break;
-
-                    case Constants.MessageMachineStatusAll:
-                        List<StatusResponseMessage> machineStates = new();
-
-                        foreach (IGCodeProcessor processor in _machines)
-                        {
-                            machineStates.Add(new StatusResponseMessage()
-                            {
-                                Id = processor.Id,
-                                Connected = processor.IsConnected,
-                                State = processor.StateModel.MachineState.ToString(),
-                                CpuStatus = processor.Cpu,
-                                UpdatedConfiguration = processor.StateModel.UpdatedGrblConfiguration.Count > 0,
-                            });
-                        }
-
-                        response.message = machineStates;
+                    if (foundMachine && proc != null)
+                    {
+                        response.message = (int)proc.UpdateSetting(parts[2]);
                         response.success = true;
-                        break;
+                    }
+                    else
+                    {
+                        response.success = false;
+                        response.message = (int)UpdateSettingResult.Error;
+                    }
 
-                    default:
-                        response.message = "Invalid Request";
-                        break;
+                    break;
 
-                }
+                case Constants.MessageMachineStatusServer:
+                    if (foundMachine && proc != null)
+                    {
+                        response.message = proc.StateModel;
+                        response.request = Constants.MessageMachineStatusServer;
+                        response.success = true;
+                        response.IsConnected = proc.IsConnected;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
 
-                byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response));
+                    break;
 
-                if (json.Length > BufferSize)
-                    throw new InvalidOperationException();
+                case Constants.MessageMachineStatusAll:
+                    List<StatusResponseMessage> machineStates = new();
 
-                return json;
+                    foreach (IGCodeProcessor processor in _machines)
+                    {
+                        machineStates.Add(new StatusResponseMessage()
+                        {
+                            Id = processor.Id,
+                            Connected = processor.IsConnected,
+                            State = processor.StateModel.MachineState.ToString(),
+                            CpuStatus = processor.Cpu,
+                            UpdatedConfiguration = processor.StateModel.UpdatedGrblConfiguration.Count > 0,
+                        });
+                    }
+
+                    response.message = machineStates;
+                    response.success = true;
+                    break;
+
+                default:
+                    response.message = "Invalid Request";
+                    break;
+
             }
+
+            byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response));
+
+            if (json.Length > BufferSize)
+                throw new InvalidOperationException();
+
+            return json;
         }
 
         #endregion Private Methods

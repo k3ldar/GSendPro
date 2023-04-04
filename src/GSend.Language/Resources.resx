@@ -534,8 +534,8 @@
   <data name="SpindleDelayStartVFD" xml:space="preserve">
     <value>Delay start for {0} seconds</value>
   </data>
-  <data name="SpindleDirectionClockwise" xml:space="preserve">
-    <value>Clockwise</value>
+  <data name="SpindleDirectionCounterClockwise" xml:space="preserve">
+    <value>Counter Clockwise</value>
   </data>
   <data name="SpindleExternal" xml:space="preserve">
     <value>External</value>

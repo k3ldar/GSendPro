@@ -74,9 +74,9 @@
         SoftStart = 2,
 
         /// <summary>
-        /// Default clock wise for spindle
+        /// Spindle default to counter clock wise 
         /// </summary>
-        SpindleClockWise = 4,
+        SpindleCounterClockWise = 4,
     }
 
     [Flags]

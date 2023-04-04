@@ -1,6 +1,4 @@
-﻿using GSendShared;
-
-namespace GSendShared.Interfaces
+﻿namespace GSendShared.Interfaces
 {
     public interface IGCodeAnalyzer
     {

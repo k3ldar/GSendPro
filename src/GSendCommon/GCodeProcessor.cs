@@ -2,17 +2,13 @@
 using System.Reflection;
 using System.Text;
 
-using AppSettings;
-
 using GSendAnalyser.Internal;
 
 using GSendShared;
 using GSendShared.Attributes;
 using GSendShared.Interfaces;
 using GSendShared.Models;
-
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Mvc;
+using GSendShared.Overrides;
 
 using Shared.Classes;
 
@@ -73,8 +69,11 @@ namespace GSendCommon
         private DateTime _lastInformationCheck = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly MachineStateModel _machineStateModel = new();
+        private readonly IGCodeOverrideContext _overrideContext;
+
         private int _lineCount = 0;
         private bool _initialising = false;
+
 
         #region Constructors
 
@@ -92,7 +91,7 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-
+            _overrideContext = new GCodeOverrideContext(new StaticMethods(), this, _machine, _port);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort}", ThreadPriority.Normal);
         }
 
@@ -223,9 +222,6 @@ namespace GSendCommon
 
         public bool Pause()
         {
-            //if (!_isRunning)
-            //    return false;
-
             _isPaused = true;
             OnPause?.Invoke(this, EventArgs.Empty);
 
@@ -236,9 +232,6 @@ namespace GSendCommon
 
         public bool Resume()
         {
-            //if (!_isPaused)
-            //    return false;
-
             _isPaused = false;
             OnResume?.Invoke(this, EventArgs.Empty);
 
@@ -249,11 +242,9 @@ namespace GSendCommon
 
         public bool Stop()
         {
-            //if (!_isRunning)
-            //    return false;
-
             Trace.WriteLine("Stop");
             InternalWriteByte(new byte[] { 0x85 });
+            _overrideContext.Cancel();
 
             _isRunning = false;
             _isPaused = false;
@@ -538,7 +529,7 @@ namespace GSendCommon
                                     uint uintValue = Convert.ToUInt32(parts[1]);
                                     propertyInfo.SetValue(_machine.Settings, uintValue, null);
                                 }
-        
+
                                 _machineProvider.MachineUpdate(_machine);
                             }
                         }
@@ -579,10 +570,11 @@ namespace GSendCommon
             }
             else
             {
+                _overrideContext.Cancel();
                 InternalWriteLine(CommandStopSpindle);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleOff);
             }
-                
+
             return true;
         }
 
@@ -622,6 +614,8 @@ namespace GSendCommon
         #region IGCodeProcessor Properties
 
         public long Id => _machine.Id;
+
+        public IMachine Machine => _machine;
 
         public string Cpu => $"{ProcessCpuUsage.ToString("n1")}%/{SystemCpuUsage.ToString("n1")}%";
 
@@ -742,6 +736,7 @@ namespace GSendCommon
 
         private void ProcessGrblResponse(string response)
         {
+            //Trace.WriteLine($"Response: {response}");
             if (String.IsNullOrWhiteSpace(response))
                 return;
 
@@ -958,7 +953,7 @@ namespace GSendCommon
             }
             else
             {
-                 OnGrblAlarm?.Invoke(this, error);
+                OnGrblAlarm?.Invoke(this, error);
             }
         }
 
@@ -1001,7 +996,7 @@ namespace GSendCommon
             _machineStateModel.IsConnected = _port.IsOpen();
         }
 
-        private string SendCommandWaitForOKCommand(string commandText)
+        public string SendCommandWaitForOKCommand(string commandText)
         {
             StringBuilder Result = new(1024);
 
@@ -1067,19 +1062,19 @@ namespace GSendCommon
 
                 Debug.Assert(lineNumber == 1);
                 InternalWriteLine(lines[0]);
-                //foreach (IGCodeLine line in lines)
-                //{
-                //    InternalWriteLine(line);
-                //}
             }
         }
 
         private void InternalWriteLine(IGCodeLine commandLine)
         {
-            // overrides
-            string gcodeLine = commandLine.GetGCode();
+            _overrideContext.ProcessGCodeLine(commandLine);
 
-            _port.WriteLine(gcodeLine);
+            if (_overrideContext.SendCommand)
+            {
+                string gcodeLine = commandLine.GetGCode();
+
+                _port.WriteLine(gcodeLine);
+            }
         }
 
         private void InternalWriteByte(byte[] buffer)

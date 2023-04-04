@@ -1312,11 +1312,11 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clockwise.
+        ///   Looks up a localized string similar to Counter Clockwise.
         /// </summary>
-        public static string SpindleDirectionClockwise {
+        public static string SpindleDirectionCounterClockwise {
             get {
-                return ResourceManager.GetString("SpindleDirectionClockwise", resourceCulture);
+                return ResourceManager.GetString("SpindleDirectionCounterClockwise", resourceCulture);
             }
         }
         

@@ -135,9 +135,9 @@ namespace GSendDesktop.Forms
         private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
         {
             if (cbSpindleClockwise.Checked)
-                _machine.AddOptions(MachineOptions.SpindleClockWise);
+                _machine.AddOptions(MachineOptions.SpindleCounterClockWise);
             else
-                _machine.RemoveOptions(MachineOptions.SpindleClockWise);
+                _machine.RemoveOptions(MachineOptions.SpindleCounterClockWise);
 
             _configurationChanges = true;
         }
@@ -254,7 +254,8 @@ namespace GSendDesktop.Forms
                     break;
 
                 case "StateChanged":
-                    MachineStateModel model = clientMessage.message as MachineStateModel;
+                    JsonElement element = (JsonElement)clientMessage.message;
+                    MachineStateModel model = element.Deserialize<MachineStateModel>();
 
                     if (model != null)
                         UpdateMachineStatus(model);
@@ -476,7 +477,7 @@ namespace GSendDesktop.Forms
             btnSpindleStart.Text = GSend.Language.Resources.SpindleStart;
             btnSpindleStop.Text = GSend.Language.Resources.SpindleStop;
             grpBoxSpindleSpeed.Text = GSend.Language.Resources.SpindleControl;
-            cbSpindleClockwise.Text = GSend.Language.Resources.SpindleDirectionClockwise;
+            cbSpindleClockwise.Text = GSend.Language.Resources.SpindleCounterClockwise;
 
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
@@ -559,7 +560,7 @@ namespace GSendDesktop.Forms
             trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
             //trackBarSpindleSpeed.TickFrequency = 
             trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
-            cbSpindleClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleClockWise);
+            cbSpindleClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
 
         }
 
