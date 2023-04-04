@@ -129,12 +129,18 @@ namespace GSendDesktop.Forms
         private void HookUpEvents()
         {
             cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
-            cbSpindleClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
+            cbSpindleCounterClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
+            trackBarDelaySpindle.ValueChanged += trackBarDelaySpindle_ValueChanged;
+
+            if (_machine.SpindleType == SpindleType.Integrated)
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
+            else
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
         }
 
         private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbSpindleClockwise.Checked)
+            if (cbSpindleCounterClockwise.Checked)
                 _machine.AddOptions(MachineOptions.SpindleCounterClockWise);
             else
                 _machine.RemoveOptions(MachineOptions.SpindleCounterClockWise);
@@ -477,7 +483,7 @@ namespace GSendDesktop.Forms
             btnSpindleStart.Text = GSend.Language.Resources.SpindleStart;
             btnSpindleStop.Text = GSend.Language.Resources.SpindleStop;
             grpBoxSpindleSpeed.Text = GSend.Language.Resources.SpindleControl;
-            cbSpindleClockwise.Text = GSend.Language.Resources.SpindleCounterClockwise;
+            cbSpindleCounterClockwise.Text = GSend.Language.Resources.SpindleDirectionCounterClockwise;
 
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
@@ -551,7 +557,6 @@ namespace GSendDesktop.Forms
             jogControl.FeedRate = _machine.JogFeedrate;
             trackBarPercent.Value = _machine.OverrideSpeed;
             selectionOverrideSpindle.Value = _machine.OverrideSpindle;
-            cmbSpindleType.SelectedItem = _machine.SpindleType;
             cbSoftStart.Checked = _machine.SoftStart;
             trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
 
@@ -560,8 +565,8 @@ namespace GSendDesktop.Forms
             trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
             //trackBarSpindleSpeed.TickFrequency = 
             trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
-            cbSpindleClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
-
+            cbSpindleCounterClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
+            cmbSpindleType.SelectedItem = _machine.SpindleType;
         }
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
@@ -986,12 +991,12 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStart_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleClockwise.Checked));
+            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
         }
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleClockwise.Checked));
+            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control

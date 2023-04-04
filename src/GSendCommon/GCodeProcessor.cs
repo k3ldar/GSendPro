@@ -52,6 +52,7 @@ namespace GSendCommon
         private const string OptionFeedRate = "f";
         private const string OptionOverrides = "ov";
         private const string OptionAccessoryState = "a";
+        private const string JogNumberFormat = "F4";
         private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
         private List<IGCodeLine> _commandsToSend = null;
@@ -259,7 +260,7 @@ namespace GSendCommon
         public void Clear()
         {
             Trace.WriteLine("Clear");
-            _commandsToSend.Clear();
+            _commandsToSend?.Clear();
             NextCommand = FirstCommand;
         }
 
@@ -367,56 +368,56 @@ namespace GSendCommon
             switch (jogDirection)
             {
                 case JogDirection.ZPlus:
-                    jogCommand.AppendFormat("Z{0}", maxZTravel.ToString("N4"));
+                    jogCommand.AppendFormat("Z{0}", maxZTravel.ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.ZMinus:
-                    jogCommand.AppendFormat("Z{0}", (0 - maxZTravel).ToString("N4"));
+                    jogCommand.AppendFormat("Z{0}", (0 - maxZTravel).ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XPlus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XMinus:
-                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.YPlus:
-                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.YMinus:
-                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XPlusYMinus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
-                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString(JogNumberFormat));
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XPlusYPlus:
-                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString("N4"));
-                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", maxXTravel.ToString(JogNumberFormat));
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XMinusYMinus:
-                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
-                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString(JogNumberFormat));
+                    jogCommand.AppendFormat("Y{0}", (0 - maxYTravel).ToString(JogNumberFormat));
 
                     break;
 
                 case JogDirection.XMinusYPlus:
-                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString("N4"));
-                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString("N4"));
+                    jogCommand.AppendFormat("X{0}", (0 - maxXTravel).ToString(JogNumberFormat));
+                    jogCommand.AppendFormat("Y{0}", maxYTravel.ToString(JogNumberFormat));
 
                     break;
             }

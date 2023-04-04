@@ -73,6 +73,7 @@
             this.machinePositionJog = new GSendDesktop.Controls.MachinePosition();
             this.tabPageSpindle = new System.Windows.Forms.TabPage();
             this.grpBoxSpindleSpeed = new System.Windows.Forms.GroupBox();
+            this.cbSpindleCounterClockwise = new System.Windows.Forms.CheckBox();
             this.btnSpindleStop = new System.Windows.Forms.Button();
             this.btnSpindleStart = new System.Windows.Forms.Button();
             this.lblSpindleSpeed = new System.Windows.Forms.Label();
@@ -102,7 +103,6 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
-            this.cbSpindleClockwise = new System.Windows.Forms.CheckBox();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -588,7 +588,7 @@
             // 
             this.grpBoxSpindleSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpBoxSpindleSpeed.Controls.Add(this.cbSpindleClockwise);
+            this.grpBoxSpindleSpeed.Controls.Add(this.cbSpindleCounterClockwise);
             this.grpBoxSpindleSpeed.Controls.Add(this.btnSpindleStop);
             this.grpBoxSpindleSpeed.Controls.Add(this.btnSpindleStart);
             this.grpBoxSpindleSpeed.Controls.Add(this.lblSpindleSpeed);
@@ -599,6 +599,15 @@
             this.grpBoxSpindleSpeed.TabIndex = 8;
             this.grpBoxSpindleSpeed.TabStop = false;
             this.grpBoxSpindleSpeed.Text = "groupBox1";
+            // 
+            // cbSpindleCounterClockwise
+            // 
+            this.cbSpindleCounterClockwise.Location = new System.Drawing.Point(70, 99);
+            this.cbSpindleCounterClockwise.Name = "cbSpindleCounterClockwise";
+            this.cbSpindleCounterClockwise.Size = new System.Drawing.Size(83, 61);
+            this.cbSpindleCounterClockwise.TabIndex = 12;
+            this.cbSpindleCounterClockwise.Text = "checkBox1";
+            this.cbSpindleCounterClockwise.UseVisualStyleBackColor = true;
             // 
             // btnSpindleStop
             // 
@@ -662,7 +671,6 @@
             this.trackBarDelaySpindle.TabIndex = 3;
             this.trackBarDelaySpindle.TickFrequency = 10;
             this.trackBarDelaySpindle.Value = 30;
-            this.trackBarDelaySpindle.ValueChanged += new System.EventHandler(this.trackBarDelaySpindle_ValueChanged);
             // 
             // cbSoftStart
             // 
@@ -915,16 +923,6 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 128);
             this.textBoxConsoleText.TabIndex = 0;
             // 
-            // cbSpindleClockwise
-            // 
-            this.cbSpindleClockwise.AutoSize = true;
-            this.cbSpindleClockwise.Location = new System.Drawing.Point(70, 99);
-            this.cbSpindleClockwise.Name = "cbSpindleClockwise";
-            this.cbSpindleClockwise.Size = new System.Drawing.Size(83, 19);
-            this.cbSpindleClockwise.TabIndex = 12;
-            this.cbSpindleClockwise.Text = "checkBox1";
-            this.cbSpindleClockwise.UseVisualStyleBackColor = true;
-            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1046,6 +1044,6 @@
         private System.Windows.Forms.Button btnSpindleStart;
         private System.Windows.Forms.Label lblSpindleSpeed;
         private System.Windows.Forms.TrackBar trackBarSpindleSpeed;
-        private System.Windows.Forms.CheckBox cbSpindleClockwise;
+        private System.Windows.Forms.CheckBox cbSpindleCounterClockwise;
     }
 }
