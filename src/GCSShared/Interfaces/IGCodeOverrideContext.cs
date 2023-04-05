@@ -20,6 +20,9 @@
         /// </summary>
         bool Overridden { get; }
 
+        /// <summary>
+        /// Indicates the command will be sent to Grbl after processing
+        /// </summary>
         bool SendCommand { get; set; }
 
         /// <summary>
@@ -35,8 +38,6 @@
         IMachine Machine { get; }
 
         IStaticMethods StaticMethods { get; }
-
-        bool HasCancelled { get; }
 
         void ProcessGCodeLine(IGCodeLine line);
 

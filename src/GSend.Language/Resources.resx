@@ -387,6 +387,9 @@
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
   </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>

@@ -55,6 +55,8 @@ namespace GSendDB
         {
             // initialize all tables
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineDataRow>>();
+            _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineSpindleTimeDataRow>>();
+            _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineServiceDataRow>>();
         }
 
         public void Configure(in IApplicationBuilder app)
@@ -66,6 +68,8 @@ namespace GSendDB
         {
             // register tables
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineDataRow));
+            services.AddSingleton(typeof(TableRowDefinition), typeof(MachineSpindleTimeDataRow));
+            services.AddSingleton(typeof(TableRowDefinition), typeof(MachineServiceDataRow));
         }
 
         public void AfterConfigureServices(in IServiceCollection services)

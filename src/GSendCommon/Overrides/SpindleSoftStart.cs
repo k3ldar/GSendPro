@@ -1,6 +1,7 @@
-﻿using GSendShared.Interfaces;
+﻿using GSendShared;
+using GSendShared.Interfaces;
 
-namespace GSendShared.Overrides
+namespace GSendCommon.Overrides
 {
     public sealed class SpindleSoftStart : IGCodeOverride
     {

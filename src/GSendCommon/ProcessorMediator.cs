@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 
 using GSendShared;
+using GSendShared.Interfaces;
 
 using PluginManager.Abstractions;
 
@@ -21,17 +22,21 @@ namespace GSendCommon
         private readonly IComPortFactory _comPortFactory;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly GSendSettings _settings;
+        private readonly IServiceProvider _serviceProvider;
         private System.Net.WebSockets.WebSocket _webSocket;
         private bool _processEvents = false;
         private ulong _messageId = 0;
         private string _clientId = null;
 
-        public ProcessorMediator(ILogger logger,
+        public ProcessorMediator(IServiceProvider serviceProvider, 
+            ILogger logger,
             IMachineProvider machineProvider,
             IComPortFactory comPortFactory,
             INotificationService notificationService,
             ISettingsProvider settingsProvider)
         {
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
             if (notificationService == null)
                 throw new ArgumentNullException(nameof(notificationService));
 
@@ -55,7 +60,7 @@ namespace GSendCommon
 
                 foreach (IMachine machine in machines)
                 {
-                    IGCodeProcessor processor = new GCodeProcessor(_machineProvider, machine, _comPortFactory);
+                    IGCodeProcessor processor = new GCodeProcessor(_machineProvider, machine, _comPortFactory, _serviceProvider);
                     _machines.Add(processor);
                     processor.TimeOut = TimeSpan.FromMilliseconds(_settings.ConnectTimeOut);
                 }
@@ -187,7 +192,7 @@ namespace GSendCommon
 
             if (newMachine != null)
             {
-                IGCodeProcessor processor = new GCodeProcessor(_machineProvider, newMachine, _comPortFactory);
+                IGCodeProcessor processor = new GCodeProcessor(_machineProvider, newMachine, _comPortFactory, _serviceProvider);
                 _machines.Add(processor);
             }
         }
@@ -404,7 +409,7 @@ namespace GSendCommon
 
             long machineId = -1;
             string[] parts = request.Split(":", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            bool foundMachine = parts.Length > 1 ? Int64.TryParse(parts[1], out machineId) : false;
+            bool foundMachine = parts.Length > 1 && Int64.TryParse(parts[1], out machineId);
             IGCodeProcessor proc = null;
 
             if (foundMachine)

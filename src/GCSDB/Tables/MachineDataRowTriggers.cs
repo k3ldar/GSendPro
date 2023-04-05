@@ -22,7 +22,12 @@ namespace GSendDB.Tables
 
         public void AfterInsert(List<MachineDataRow> records)
         {
-            // not used but declared as part of interface
+            records.ForEach(r =>
+            {
+                r.ServiceWeeks = 20;
+                r.ServiceSpindleHours = 50;
+                r.SoftStartSeconds = 15;
+            });
         }
 
         public void AfterUpdate(List<MachineDataRow> records)

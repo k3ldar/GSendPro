@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GSendShared;
+﻿using GSendShared;
 using GSendShared.Models;
 
 using SimpleDB;
@@ -13,7 +6,7 @@ using SimpleDB;
 namespace GSendDB.Tables
 {
     [Table("Machines", CompressionType.Brotli, CachingStrategy.Memory, WriteStrategy.Forced)]
-    public class MachineDataRow : TableRowDefinition
+    public sealed class MachineDataRow : TableRowDefinition
     {
         private string _name;
         private MachineType _machineType;
@@ -193,7 +186,7 @@ namespace GSendDB.Tables
 
             set
             {
-                if (_probeCommand == value) 
+                if (_probeCommand == value)
                     return;
 
                 _probeCommand = value;

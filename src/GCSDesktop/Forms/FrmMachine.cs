@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -123,6 +124,7 @@ namespace GSendDesktop.Forms
             SendMessage(String.Format("mAddEvents:{0}", _machine.Id));
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerConnected;
             UpdateEnabledState();
+            btnServiceRefresh_Click(sender, e);
         }
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
@@ -465,6 +467,17 @@ namespace GSendDesktop.Forms
             lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
             btnServiceReset.Text = GSend.Language.Resources.Reset;
             lblNextService.Text = GSend.Language.Resources.NextService;
+
+            trackBarServiceSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
+            trackBarServiceWeeks.Enabled = cbMaintainServiceSchedule.Checked;
+            lblSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
+            lblServiceSchedule.Enabled = cbMaintainServiceSchedule.Checked;
+            lblNextService.Enabled = cbMaintainServiceSchedule.Checked;
+            lblServiceDate.Enabled = cbMaintainServiceSchedule.Checked;
+            lblSpindleHoursRemaining.Enabled = cbMaintainServiceSchedule.Checked;
+            btnServiceRefresh.Enabled = cbMaintainServiceSchedule.Checked;
+            btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
+
         }
 
         private void HookUpEvents()
@@ -510,6 +523,11 @@ namespace GSendDesktop.Forms
             trackBarServiceWeeks.Enabled = cbMaintainServiceSchedule.Checked;
             lblSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
             lblServiceSchedule.Enabled = cbMaintainServiceSchedule.Checked;
+            lblNextService.Enabled = cbMaintainServiceSchedule.Checked;
+            lblServiceDate.Enabled = cbMaintainServiceSchedule.Checked;
+            lblSpindleHoursRemaining.Enabled = cbMaintainServiceSchedule.Checked;
+            btnServiceRefresh.Enabled = cbMaintainServiceSchedule.Checked;
+            btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
 
             _configurationChanges = true;
         }
@@ -600,7 +618,7 @@ namespace GSendDesktop.Forms
 
             // service schedule
             cbMaintainServiceSchedule.Text = GSend.Language.Resources.MaintainServiceSchedule;
-
+            btnServiceRefresh.Text = GSend.Language.Resources.Refresh;
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
             viewToolStripMenuItem.Text = GSend.Language.Resources.View;
@@ -1094,5 +1112,33 @@ namespace GSendDesktop.Forms
         }
 
         #endregion Spindle Control
+
+        private void btnServiceReset_Click(object sender, EventArgs e)
+        {
+            MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+
+            machineApiWrapper.MachineServiceAdd(_machine.Id, DateTime.UtcNow);
+        }
+
+        private void btnServiceRefresh_Click(object sender, EventArgs e)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                lstServices.Items.Clear();
+                MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+
+                List<DateTime> services = machineApiWrapper.MachineServices(_machine.Id);
+
+                foreach (DateTime service in services)
+                {
+                    lstServices.Items.Add(service.ToString("g"));
+                }
+
+                DateTime latestService = services.Max();
+                DateTime nextService = latestService.AddDays(_machine.ServiceWeeks * 7);
+                TimeSpan span = nextService - latestService;
+                lblServiceDate.Text = $"{nextService.ToString("g")} ({span.TotalDays} days)";
+            }
+        }
     }
 }

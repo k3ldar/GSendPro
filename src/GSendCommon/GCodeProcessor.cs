@@ -4,11 +4,12 @@ using System.Text;
 
 using GSendAnalyser.Internal;
 
+using GSendCommon;
+
 using GSendShared;
 using GSendShared.Attributes;
 using GSendShared.Interfaces;
 using GSendShared.Models;
-using GSendShared.Overrides;
 
 using Shared.Classes;
 
@@ -78,7 +79,8 @@ namespace GSendCommon
 
         #region Constructors
 
-        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine, IComPortFactory comPortFactory)
+        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine, 
+            IComPortFactory comPortFactory, IServiceProvider serviceProvider)
             : base(machine, TimeSpan.FromMilliseconds(QueueProcessMilliseconds))
         {
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
@@ -92,7 +94,7 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            _overrideContext = new GCodeOverrideContext(new StaticMethods(), this, _machine, _port);
+            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this, _machine, _port);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort}", ThreadPriority.Normal);
         }
 
@@ -493,7 +495,7 @@ namespace GSendCommon
                                 if (propertyInfo.PropertyType == typeof(bool))
                                 {
                                     int intValue = Convert.ToInt32(parts[1]);
-                                    bool boolValue = (int)intValue == 0 ? false : true;
+                                    bool boolValue = (int)intValue != 0;
                                     propertyInfo.SetValue(_machine.Settings, boolValue, null);
                                 }
                                 else if (propertyInfo.PropertyType.Equals(typeof(AxisConfiguration)))

@@ -84,6 +84,10 @@
             this.lblSpindleType = new System.Windows.Forms.Label();
             this.cmbSpindleType = new System.Windows.Forms.ComboBox();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
+            this.btnServiceRefresh = new System.Windows.Forms.Button();
+            this.lstServices = new System.Windows.Forms.ListBox();
+            this.lblSpindleHoursRemaining = new System.Windows.Forms.Label();
+            this.lblServiceDate = new System.Windows.Forms.Label();
             this.btnServiceReset = new System.Windows.Forms.Button();
             this.lblNextService = new System.Windows.Forms.Label();
             this.lblSpindleHours = new System.Windows.Forms.Label();
@@ -112,8 +116,6 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
-            this.lblServiceDate = new System.Windows.Forms.Label();
-            this.lblSpindleHoursRemaining = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -141,11 +143,13 @@
             this.selectionOverrideSpindle.GroupName = "Spindle";
             this.selectionOverrideSpindle.LabelFormat = "{0}";
             this.selectionOverrideSpindle.LabelValue = null;
+            this.selectionOverrideSpindle.LargeTickChange = 5;
             this.selectionOverrideSpindle.Location = new System.Drawing.Point(671, 6);
             this.selectionOverrideSpindle.Maximum = 10;
             this.selectionOverrideSpindle.Minimum = 0;
             this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
             this.selectionOverrideSpindle.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideSpindle.SmallTickChange = 1;
             this.selectionOverrideSpindle.TabIndex = 8;
             this.selectionOverrideSpindle.TickFrequency = 1;
             this.selectionOverrideSpindle.Value = 0;
@@ -157,11 +161,13 @@
             this.selectionOverrideZDown.GroupName = "Z Down";
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
+            this.selectionOverrideZDown.LargeTickChange = 5;
             this.selectionOverrideZDown.Location = new System.Drawing.Point(584, 6);
             this.selectionOverrideZDown.Maximum = 10;
             this.selectionOverrideZDown.Minimum = 0;
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
             this.selectionOverrideZDown.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideZDown.SmallTickChange = 1;
             this.selectionOverrideZDown.TabIndex = 7;
             this.selectionOverrideZDown.TickFrequency = 1;
             this.selectionOverrideZDown.Value = 0;
@@ -172,11 +178,13 @@
             this.selectionOverrideZUp.GroupName = "Z Up";
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
+            this.selectionOverrideZUp.LargeTickChange = 5;
             this.selectionOverrideZUp.Location = new System.Drawing.Point(496, 6);
             this.selectionOverrideZUp.Maximum = 10;
             this.selectionOverrideZUp.Minimum = 0;
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
             this.selectionOverrideZUp.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideZUp.SmallTickChange = 1;
             this.selectionOverrideZUp.TabIndex = 6;
             this.selectionOverrideZUp.TickFrequency = 1;
             this.selectionOverrideZUp.Value = 0;
@@ -187,11 +195,13 @@
             this.selectionOverrideY.GroupName = "Y";
             this.selectionOverrideY.LabelFormat = "{0}";
             this.selectionOverrideY.LabelValue = null;
+            this.selectionOverrideY.LargeTickChange = 5;
             this.selectionOverrideY.Location = new System.Drawing.Point(408, 6);
             this.selectionOverrideY.Maximum = 10;
             this.selectionOverrideY.Minimum = 0;
             this.selectionOverrideY.Name = "selectionOverrideY";
             this.selectionOverrideY.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideY.SmallTickChange = 1;
             this.selectionOverrideY.TabIndex = 5;
             this.selectionOverrideY.TickFrequency = 1;
             this.selectionOverrideY.Value = 0;
@@ -202,11 +212,13 @@
             this.selectionOverrideX.GroupName = "X";
             this.selectionOverrideX.LabelFormat = "{0}";
             this.selectionOverrideX.LabelValue = null;
+            this.selectionOverrideX.LargeTickChange = 5;
             this.selectionOverrideX.Location = new System.Drawing.Point(320, 6);
             this.selectionOverrideX.Maximum = 10;
             this.selectionOverrideX.Minimum = 0;
             this.selectionOverrideX.Name = "selectionOverrideX";
             this.selectionOverrideX.Size = new System.Drawing.Size(82, 228);
+            this.selectionOverrideX.SmallTickChange = 1;
             this.selectionOverrideX.TabIndex = 4;
             this.selectionOverrideX.TickFrequency = 1;
             this.selectionOverrideX.Value = 0;
@@ -718,6 +730,8 @@
             // tabPageServiceSchedule
             // 
             this.tabPageServiceSchedule.BackColor = System.Drawing.Color.White;
+            this.tabPageServiceSchedule.Controls.Add(this.btnServiceRefresh);
+            this.tabPageServiceSchedule.Controls.Add(this.lstServices);
             this.tabPageServiceSchedule.Controls.Add(this.lblSpindleHoursRemaining);
             this.tabPageServiceSchedule.Controls.Add(this.lblServiceDate);
             this.tabPageServiceSchedule.Controls.Add(this.btnServiceReset);
@@ -734,6 +748,44 @@
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
             // 
+            // btnServiceRefresh
+            // 
+            this.btnServiceRefresh.Location = new System.Drawing.Point(684, 89);
+            this.btnServiceRefresh.Name = "btnServiceRefresh";
+            this.btnServiceRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnServiceRefresh.TabIndex = 10;
+            this.btnServiceRefresh.Text = "button1";
+            this.btnServiceRefresh.UseVisualStyleBackColor = true;
+            this.btnServiceRefresh.Click += new System.EventHandler(this.btnServiceRefresh_Click);
+            // 
+            // lstServices
+            // 
+            this.lstServices.FormattingEnabled = true;
+            this.lstServices.HorizontalScrollbar = true;
+            this.lstServices.ItemHeight = 15;
+            this.lstServices.Location = new System.Drawing.Point(388, 118);
+            this.lstServices.Name = "lstServices";
+            this.lstServices.Size = new System.Drawing.Size(371, 109);
+            this.lstServices.TabIndex = 9;
+            // 
+            // lblSpindleHoursRemaining
+            // 
+            this.lblSpindleHoursRemaining.AutoSize = true;
+            this.lblSpindleHoursRemaining.Location = new System.Drawing.Point(388, 73);
+            this.lblSpindleHoursRemaining.Name = "lblSpindleHoursRemaining";
+            this.lblSpindleHoursRemaining.Size = new System.Drawing.Size(38, 15);
+            this.lblSpindleHoursRemaining.TabIndex = 8;
+            this.lblSpindleHoursRemaining.Text = "label1";
+            // 
+            // lblServiceDate
+            // 
+            this.lblServiceDate.AutoSize = true;
+            this.lblServiceDate.Location = new System.Drawing.Point(388, 43);
+            this.lblServiceDate.Name = "lblServiceDate";
+            this.lblServiceDate.Size = new System.Drawing.Size(38, 15);
+            this.lblServiceDate.TabIndex = 7;
+            this.lblServiceDate.Text = "label1";
+            // 
             // btnServiceReset
             // 
             this.btnServiceReset.Location = new System.Drawing.Point(684, 12);
@@ -742,6 +794,7 @@
             this.btnServiceReset.TabIndex = 6;
             this.btnServiceReset.Text = "button1";
             this.btnServiceReset.UseVisualStyleBackColor = true;
+            this.btnServiceReset.Click += new System.EventHandler(this.btnServiceReset_Click);
             // 
             // lblNextService
             // 
@@ -1033,24 +1086,6 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 128);
             this.textBoxConsoleText.TabIndex = 0;
             // 
-            // lblServiceDate
-            // 
-            this.lblServiceDate.AutoSize = true;
-            this.lblServiceDate.Location = new System.Drawing.Point(388, 43);
-            this.lblServiceDate.Name = "lblServiceDate";
-            this.lblServiceDate.Size = new System.Drawing.Size(38, 15);
-            this.lblServiceDate.TabIndex = 7;
-            this.lblServiceDate.Text = "label1";
-            // 
-            // lblSpindleHoursRemaining
-            // 
-            this.lblSpindleHoursRemaining.AutoSize = true;
-            this.lblSpindleHoursRemaining.Location = new System.Drawing.Point(388, 73);
-            this.lblSpindleHoursRemaining.Name = "lblSpindleHoursRemaining";
-            this.lblSpindleHoursRemaining.Size = new System.Drawing.Size(38, 15);
-            this.lblSpindleHoursRemaining.TabIndex = 8;
-            this.lblSpindleHoursRemaining.Text = "label1";
-            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1189,5 +1224,7 @@
         private System.Windows.Forms.Label lblNextService;
         private System.Windows.Forms.Label lblSpindleHoursRemaining;
         private System.Windows.Forms.Label lblServiceDate;
+        private System.Windows.Forms.Button btnServiceRefresh;
+        private System.Windows.Forms.ListBox lstServices;
     }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 
 using GSendShared;
+using GSendShared.Models;
 
 namespace GSendApi
 {
@@ -39,6 +40,22 @@ namespace GSendApi
         public void MachineUpdate(IMachine machine)
         {
             CallPutApi("MachineApi/MachineUpdate", machine);
+        }
+
+        public List<DateTime> MachineServices(long machineId)
+        {
+            return CallGetApi<List<DateTime>>($"ServiceApi/ServicesGet/{machineId}");
+        }
+
+        public void MachineServiceAdd(long machineId, DateTime serviceDate)
+        {
+            MachineServiceModel machineServiceModel = new()
+            {
+                MachineId = machineId,
+                ServiceDate = serviceDate
+            };
+
+            CallPostApi("ServiceApi/ServiceAdd", machineServiceModel);
         }
 
         private HttpClient CreateApiClient()

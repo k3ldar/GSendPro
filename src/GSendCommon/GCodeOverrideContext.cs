@@ -1,8 +1,15 @@
-﻿using GSendShared;
+﻿using GSendCommon.Overrides;
+
+using GSendDB.Tables;
+
+using GSendShared;
 using GSendShared.Interfaces;
-using GSendShared.Overrides;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
+
+using SimpleDB;
 
 namespace GSendCommon
 {
@@ -12,10 +19,12 @@ namespace GSendCommon
         private IGCodeLine _gCodeLine = null;
         private readonly List<IGCodeOverride> _overrides;
         private CancellationTokenSource _cancellationTokenSource;
+        private readonly IServiceProvider _serviceProvider;
 
-        public GCodeOverrideContext(IStaticMethods staticMethods, IGCodeProcessor processor,
+        public GCodeOverrideContext(IServiceProvider serviceProvider, IStaticMethods staticMethods, IGCodeProcessor processor,
             IMachine machine, IComPort comPort)
         {
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             StaticMethods = staticMethods ?? throw new ArgumentNullException(nameof(staticMethods));
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
@@ -51,15 +60,12 @@ namespace GSendCommon
 
         public bool SendCommand { get; set; } = true;
 
-        public bool HasCancelled { get; set; }
-
         public void ProcessGCodeLine(IGCodeLine line)
         {
             using (TimedLock tl = TimedLock.Lock(_lockObj))
             {
                 _cancellationTokenSource = new CancellationTokenSource();
                 CancellationToken cancellationToken = _cancellationTokenSource.Token;
-                HasCancelled = false;
 
                 SendCommand = true;
 
@@ -86,8 +92,8 @@ namespace GSendCommon
             List<IGCodeOverride> Result = new()
             {
                 new SpindleSoftStart(),
-                new SpindleActiveTime(),
                 new SpindleSoftStop(),
+                new SpindleActiveTime(_serviceProvider.GetRequiredService<ISimpleDBOperations<MachineSpindleTimeDataRow>>()),
             };
 
             return Result.OrderBy(o => o.SortOrder).ToList();

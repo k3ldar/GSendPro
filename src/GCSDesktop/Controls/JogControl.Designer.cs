@@ -178,11 +178,13 @@
             this.selectionSteps.GroupName = "Step";
             this.selectionSteps.LabelFormat = "{0}";
             this.selectionSteps.LabelValue = null;
+            this.selectionSteps.LargeTickChange = 1;
             this.selectionSteps.Location = new System.Drawing.Point(252, 13);
             this.selectionSteps.Maximum = 10;
             this.selectionSteps.Minimum = 0;
             this.selectionSteps.Name = "selectionSteps";
             this.selectionSteps.Size = new System.Drawing.Size(82, 162);
+            this.selectionSteps.SmallTickChange = 1;
             this.selectionSteps.TabIndex = 10;
             this.selectionSteps.TickFrequency = 1;
             this.selectionSteps.Value = 0;
@@ -193,13 +195,15 @@
             this.selectionFeed.GroupName = "Feed";
             this.selectionFeed.LabelFormat = "{0}";
             this.selectionFeed.LabelValue = null;
+            this.selectionFeed.LargeTickChange = 5;
             this.selectionFeed.Location = new System.Drawing.Point(340, 13);
-            this.selectionFeed.Maximum = 10;
+            this.selectionFeed.Maximum = 50;
             this.selectionFeed.Minimum = 0;
             this.selectionFeed.Name = "selectionFeed";
             this.selectionFeed.Size = new System.Drawing.Size(82, 162);
+            this.selectionFeed.SmallTickChange = 5;
             this.selectionFeed.TabIndex = 11;
-            this.selectionFeed.TickFrequency = 1;
+            this.selectionFeed.TickFrequency = 40;
             this.selectionFeed.Value = 0;
             this.selectionFeed.ValueChanged += new System.EventHandler(this.selectionFeed_ValueChanged);
             // 

@@ -1,18 +1,17 @@
-﻿using System.Reflection.PortableExecutable;
+﻿using GSendCommon;
 
 using GSendShared;
 using GSendShared.Interfaces;
-using GSendShared.Models;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PluginManager.Abstractions;
+
 using SharedPluginFeatures;
 
-using MachineModel = GSendShared.Models.MachineModel;
 using static SharedPluginFeatures.Constants;
-using System.Reflection;
-using PluginManager.Abstractions;
-using GSendCommon;
+
+using MachineModel = GSendShared.Models.MachineModel;
 
 namespace GSendService.Api
 {
@@ -38,7 +37,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
-        public IActionResult MachineAdd([FromBody]MachineModel model)
+        public IActionResult MachineAdd([FromBody] MachineModel model)
         {
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -72,7 +71,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
-        public IActionResult MachineUpdate([FromBody]MachineModel model)
+        public IActionResult MachineUpdate([FromBody] MachineModel model)
         {
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -80,7 +79,7 @@ namespace GSendService.Api
             _machineProvider.MachineUpdate(model);
 
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineUpdated, model.Id);
-            
+
             return GenerateJsonSuccessResponse();
         }
 

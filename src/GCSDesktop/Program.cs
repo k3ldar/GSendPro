@@ -48,7 +48,7 @@ namespace GSendDesktop
             serviceCollection.AddTransient<IMessageNotifier, MessageNotifier>();
             serviceCollection.AddTransient<IComPortProvider, ComPortProvider>();
             serviceCollection.AddTransient<ICommandProcessor, CommandProcessor>();
-            serviceCollection.AddSingleton<IProcessorMediator, ProcessorMediator>();
+            //serviceCollection.AddSingleton<IProcessorMediator, ProcessorMediator>();
             serviceCollection.AddTransient<FormMain>();
             serviceCollection.AddTransient<FrmAddMachine>();
         }

@@ -1,6 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-
-using static GSendShared.Constants;
+﻿using static GSendShared.Constants;
 
 namespace GSendShared
 {
