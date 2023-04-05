@@ -15,6 +15,6 @@
         /// </summary>
         /// <param name="overrideContext"></param>
         /// <returns>bool</returns>
-        Task Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken);
+        void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken);
     }
 }

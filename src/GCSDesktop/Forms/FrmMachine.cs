@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -18,6 +19,7 @@ using GSendShared.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
+using Shared.Communication;
 
 using static GSendShared.Constants;
 
@@ -27,10 +29,12 @@ namespace GSendDesktop.Forms
     {
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly GSendWebSocket _clientWebSocket;
+        private readonly GSendWebSocket _clientWebSocketCancel;
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
         private MachineStateModel _machineStatusModel = null;
         private readonly object _lockObject = new();
+        private readonly ConcurrentQueue<string> _threadSendCommandQueue = new();
         private volatile bool _threadRun = false;
         private bool _machineConnected = false;
         private bool _isPaused = false;
@@ -64,6 +68,10 @@ namespace GSendDesktop.Forms
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
+            _clientWebSocketCancel = new GSendWebSocket(_cancellationTokenRegistration.Token, $"{_machine.Name} - Cancel");
+            _clientWebSocketCancel.ProcessMessage += ClientWebSocket_ProcessMessage;
+            _clientWebSocketCancel.ConnectionLost += ClientWebSocket_ConnectionLost;
+            _clientWebSocketCancel.Connected += ClientWebSocket_Connected;
 
             Thread updateThread = new Thread(new ThreadStart(UpdateThread))
             {
@@ -124,28 +132,6 @@ namespace GSendDesktop.Forms
             _threadRun = false;
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerNotConnected;
             UpdateEnabledState();
-        }
-
-        private void HookUpEvents()
-        {
-            cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
-            cbSpindleCounterClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
-            trackBarDelaySpindle.ValueChanged += trackBarDelaySpindle_ValueChanged;
-
-            if (_machine.SpindleType == SpindleType.Integrated)
-                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
-            else
-                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
-        }
-
-        private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbSpindleCounterClockwise.Checked)
-                _machine.AddOptions(MachineOptions.SpindleCounterClockWise);
-            else
-                _machine.RemoveOptions(MachineOptions.SpindleCounterClockWise);
-
-            _configurationChanges = true;
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -335,7 +321,7 @@ namespace GSendDesktop.Forms
                     }
                     else
                     {
-                        if (status.SpindleSpeed > 0 && status.SpindleClockWise || status.SpindleCounterClockWise)
+                        if (status.SpindleSpeed > 0 && (status.SpindleClockWise || status.SpindleCounterClockWise))
                             toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleActive;
                         else
                             toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleInactive;
@@ -436,6 +422,128 @@ namespace GSendDesktop.Forms
 
         #endregion Client Web Socket
 
+        private void ConfigureMachine()
+        {
+            selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
+            selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
+            selectionOverrideX.Maximum = (int)_machine.Settings.MaxFeedRateX;
+            selectionOverrideX.Minimum = 0;
+            selectionOverrideY.Maximum = (int)_machine.Settings.MaxFeedRateY;
+            selectionOverrideY.Minimum = 0;
+            selectionOverrideZDown.Maximum = (int)_machine.Settings.MaxFeedRateZ;
+            selectionOverrideZDown.Minimum = 0;
+            selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
+            selectionOverrideZUp.Minimum = 0;
+
+            jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
+            jogControl.FeedMinimum = 0;
+            jogControl.FeedRate = jogControl.FeedMaximum / 2;
+            jogControl.FeedMinimum = 0;
+            jogControl.StepValue = 7;
+            jogControl.FeedRate = _machine.JogFeedrate;
+            trackBarPercent.Value = _machine.OverrideSpeed;
+            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
+            cbSoftStart.Checked = _machine.SoftStart;
+            trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
+
+            // spindle
+            trackBarSpindleSpeed.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
+            trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
+            //trackBarSpindleSpeed.TickFrequency = 
+            trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
+            cbSpindleCounterClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
+            cmbSpindleType.SelectedItem = _machine.SpindleType;
+
+            // settings
+            cbLimitSwitches.Checked = _machine.Options.HasFlag(MachineOptions.LimitSwitches);
+            cbToolChanger.Checked = _machine.Options.HasFlag(MachineOptions.ToolChanger);
+
+            // service schedule
+            cbMaintainServiceSchedule.Checked = _machine.Options.HasFlag(MachineOptions.ServiceSchedule);
+            trackBarServiceWeeks.Value = _machine.ServiceWeeks;
+            lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
+            lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
+            btnServiceReset.Text = GSend.Language.Resources.Reset;
+            lblNextService.Text = GSend.Language.Resources.NextService;
+        }
+
+        private void HookUpEvents()
+        {
+            cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
+            cbSpindleCounterClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
+            trackBarDelaySpindle.ValueChanged += trackBarDelaySpindle_ValueChanged;
+
+            if (_machine.SpindleType == SpindleType.Integrated)
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleSoftStartSeconds, trackBarDelaySpindle.Value);
+            else
+                lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
+
+            cbToolChanger.CheckedChanged += CbToolChanger_CheckedChanged;
+            cbLimitSwitches.CheckedChanged += CbLimitSwitches_CheckedChanged;
+            cbMaintainServiceSchedule.CheckedChanged += CbMaintainServiceSchedule_CheckedChanged;
+            trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
+            trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
+        }
+
+        private void TrackBarServiceSpindleHours_ValueChanged(object sender, EventArgs e)
+        {
+            _machine.ServiceSpindleHours = trackBarServiceSpindleHours.Value;
+            lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
+            _appliedSettingsChanged = true;
+        }
+
+        private void TrackBarServiceWeeks_ValueChanged(object sender, EventArgs e)
+        {
+            _machine.ServiceWeeks = trackBarServiceWeeks.Value;
+            lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
+            _appliedSettingsChanged = true;
+        }
+
+        private void CbMaintainServiceSchedule_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMaintainServiceSchedule.Checked)
+                _machine.AddOptions(MachineOptions.ServiceSchedule);
+            else
+                _machine.RemoveOptions(MachineOptions.ServiceSchedule);
+
+            trackBarServiceSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
+            trackBarServiceWeeks.Enabled = cbMaintainServiceSchedule.Checked;
+            lblSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
+            lblServiceSchedule.Enabled = cbMaintainServiceSchedule.Checked;
+
+            _configurationChanges = true;
+        }
+
+        private void CbLimitSwitches_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbLimitSwitches.Checked)
+                _machine.AddOptions(MachineOptions.LimitSwitches);
+            else
+                _machine.RemoveOptions(MachineOptions.LimitSwitches);
+
+            _configurationChanges = true;
+        }
+
+        private void CbToolChanger_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbToolChanger.Checked)
+                _machine.AddOptions(MachineOptions.ToolChanger);
+            else
+                _machine.RemoveOptions(MachineOptions.ToolChanger);
+
+            _configurationChanges = true;
+        }
+
+        private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSpindleCounterClockwise.Checked)
+                _machine.AddOptions(MachineOptions.SpindleCounterClockWise);
+            else
+                _machine.RemoveOptions(MachineOptions.SpindleCounterClockWise);
+
+            _configurationChanges = true;
+        }
+
         private void LoadResources()
         {
             //toolbar
@@ -484,6 +592,14 @@ namespace GSendDesktop.Forms
             btnSpindleStop.Text = GSend.Language.Resources.SpindleStop;
             grpBoxSpindleSpeed.Text = GSend.Language.Resources.SpindleControl;
             cbSpindleCounterClockwise.Text = GSend.Language.Resources.SpindleDirectionCounterClockwise;
+
+            // settings tab
+            cbLimitSwitches.Text = GSend.Language.Resources.MachineOptionLimitSwitches;
+            cbToolChanger.Text = GSend.Language.Resources.MachineOptionToolChanger;
+
+
+            // service schedule
+            cbMaintainServiceSchedule.Text = GSend.Language.Resources.MaintainServiceSchedule;
 
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
@@ -536,39 +652,6 @@ namespace GSendDesktop.Forms
             Hide();
         }
 
-        private void ConfigureMachine()
-        {
-            selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
-            selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            selectionOverrideX.Maximum = (int)_machine.Settings.MaxFeedRateX;
-            selectionOverrideX.Minimum = 0;
-            selectionOverrideY.Maximum = (int)_machine.Settings.MaxFeedRateY;
-            selectionOverrideY.Minimum = 0;
-            selectionOverrideZDown.Maximum = (int)_machine.Settings.MaxFeedRateZ;
-            selectionOverrideZDown.Minimum = 0;
-            selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
-            selectionOverrideZUp.Minimum = 0;
-
-            jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
-            jogControl.FeedMinimum = 0;
-            jogControl.FeedRate = jogControl.FeedMaximum / 2;
-            jogControl.FeedMinimum = 0;
-            jogControl.StepValue = 7;
-            jogControl.FeedRate = _machine.JogFeedrate;
-            trackBarPercent.Value = _machine.OverrideSpeed;
-            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
-            cbSoftStart.Checked = _machine.SoftStart;
-            trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
-
-            // spindle
-            trackBarSpindleSpeed.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
-            trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            //trackBarSpindleSpeed.TickFrequency = 
-            trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
-            cbSpindleCounterClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
-            cmbSpindleType.SelectedItem = _machine.SpindleType;
-        }
-
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
         {
             UpdateOverrides();
@@ -618,7 +701,7 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            SendMessage(String.Format(MessageMachineJogStop, _machine.Id));
+            _threadSendCommandQueue.Enqueue(String.Format(MessageMachineJogStop, _machine.Id));
         }
 
         #region Grbl Settings
@@ -708,13 +791,24 @@ namespace GSendDesktop.Forms
 
         private void UpdateThread()
         {
+            DateTime nextRun = DateTime.MinValue;
+
             while (true)
             {
-                if (_threadRun)
+                TimeSpan span = DateTime.UtcNow - nextRun;
+
+                if (_threadRun && span.TotalMilliseconds > _gSendContext.Settings.UpdateMilliseconds)
                 {
                     SendMessage(String.Format(MessageMachineStatus, _machine.Id));
-                    Thread.Sleep(_gSendContext.Settings.UpdateMilliseconds);
+                    nextRun = DateTime.UtcNow;
                 }
+
+                if (_threadSendCommandQueue.TryDequeue(out string sendCommand))
+                {
+                    _clientWebSocketCancel.SendAsync(sendCommand).ConfigureAwait(false);
+                }
+
+                Thread.Sleep(0);
             }
         }
 
@@ -867,7 +961,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                SendMessage(String.Format(MessageMachineStop, _machine.Id));
+                _threadSendCommandQueue.Enqueue(String.Format(MessageMachineStop, _machine.Id));
         }
 
         #endregion Toolbar Buttons
@@ -996,7 +1090,7 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
+            _threadSendCommandQueue.Enqueue(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control

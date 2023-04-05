@@ -56,7 +56,7 @@ namespace GSendTests.OverrideTests
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockStaticMethods(), processor, mockMachine, mockComport);
             context.ProcessGCodeLine(gCodeLine);
             SpindleActiveTime sut = new SpindleActiveTime();
-            sut.Process(context, CancellationToken.None).ConfigureAwait(false);
+            sut.Process(context, CancellationToken.None);
 
 
             Assert.IsTrue(false, "Record in table not saved or even created yet! finish this");
@@ -81,7 +81,7 @@ namespace GSendTests.OverrideTests
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory);
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockStaticMethods(), processor, mockMachine, mockComport);
             SpindleSoftStart sut = new SpindleSoftStart();
-            sut.Process(context, CancellationToken.None).ConfigureAwait(false);
+            sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(context.SendCommand);
 

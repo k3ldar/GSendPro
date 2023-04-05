@@ -77,6 +77,16 @@
         /// Spindle default to counter clock wise 
         /// </summary>
         SpindleCounterClockWise = 4,
+
+        /// <summary>
+        /// Machine has a tool changer
+        /// </summary>
+        ToolChanger = 8,
+
+        /// <summary>
+        /// maintain a service schedule
+        /// </summary>
+        ServiceSchedule = 16,
     }
 
     [Flags]

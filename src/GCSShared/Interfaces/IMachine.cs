@@ -45,6 +45,10 @@ namespace GSendShared
 
         bool SoftStart { get; }
 
+        int ServiceSpindleHours { get; set; }
+
+        int ServiceWeeks { get; set; }
+
         void AddOptions(MachineOptions options);
 
         void RemoveOptions(MachineOptions options);

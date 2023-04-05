@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-using GSendShared;
+﻿using GSendShared;
 using GSendShared.Interfaces;
 using GSendShared.Overrides;
 
@@ -10,12 +8,12 @@ namespace GSendCommon
 {
     public sealed class GCodeOverrideContext : IGCodeOverrideContext
     {
-        private readonly object _lockObject = new();
+        private readonly object _lockObj = new();
         private IGCodeLine _gCodeLine = null;
         private readonly List<IGCodeOverride> _overrides;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public GCodeOverrideContext(IStaticMethods staticMethods, IGCodeProcessor processor, 
+        public GCodeOverrideContext(IStaticMethods staticMethods, IGCodeProcessor processor,
             IMachine machine, IComPort comPort)
         {
             StaticMethods = staticMethods ?? throw new ArgumentNullException(nameof(staticMethods));
@@ -57,7 +55,7 @@ namespace GSendCommon
 
         public void ProcessGCodeLine(IGCodeLine line)
         {
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            using (TimedLock tl = TimedLock.Lock(_lockObj))
             {
                 _cancellationTokenSource = new CancellationTokenSource();
                 CancellationToken cancellationToken = _cancellationTokenSource.Token;
@@ -69,10 +67,7 @@ namespace GSendCommon
 
                 foreach (IGCodeOverride item in _overrides)
                 {
-                    if (HasCancelled)
-                        break;
-
-                    item.Process(this, cancellationToken).ConfigureAwait(false);
+                    item.Process(this, cancellationToken);
                 }
 
                 _cancellationTokenSource?.Cancel();
@@ -92,6 +87,7 @@ namespace GSendCommon
             {
                 new SpindleSoftStart(),
                 new SpindleActiveTime(),
+                new SpindleSoftStop(),
             };
 
             return Result.OrderBy(o => o.SortOrder).ToList();

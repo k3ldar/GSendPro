@@ -92,6 +92,8 @@ namespace GSendDB.Providers
             machineDataRow.JogUnits = machine.JogUnits;
             machineDataRow.SpindleType = machine.SpindleType;
             machineDataRow.SoftStartSeconds = machine.SoftStartSeconds;
+            machineDataRow.ServiceWeeks = machine.ServiceWeeks;
+            machineDataRow.ServiceSpindleHours = machine.ServiceSpindleHours;
 
             return machineDataRow;
         }
@@ -120,7 +122,8 @@ namespace GSendDB.Providers
                 machineDataRow.OverrideSpindle, machineDataRow.ConfigurationLastVerified,
                 machineDataRow.ProbeCommand, machineDataRow.ProbeSpeed, machineDataRow.ProbeThickness,
                 machineDataRow.JogFeedRate, machineDataRow.JogUnits,
-                machineDataRow.SpindleType, machineDataRow.SoftStartSeconds);
+                machineDataRow.SpindleType, machineDataRow.SoftStartSeconds,
+                machineDataRow.ServiceWeeks, machineDataRow.ServiceSpindleHours);
         }
 
         #endregion Private Methods

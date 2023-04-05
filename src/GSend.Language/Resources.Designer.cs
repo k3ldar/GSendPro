@@ -709,6 +709,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limit Switches.
+        /// </summary>
+        public static string MachineOptionLimitSwitches {
+            get {
+                return ResourceManager.GetString("MachineOptionLimitSwitches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool changer.
+        /// </summary>
+        public static string MachineOptionToolChanger {
+            get {
+                return ResourceManager.GetString("MachineOptionToolChanger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh Machines.
         /// </summary>
         public static string MachineRefresh {
@@ -727,11 +745,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maintain service schedule.
+        /// </summary>
+        public static string MaintainServiceSchedule {
+            get {
+                return ResourceManager.GetString("MaintainServiceSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NextService.
+        /// </summary>
+        public static string NextService {
+            get {
+                return ResourceManager.GetString("NextService", resourceCulture);
             }
         }
         
@@ -835,6 +871,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume.
         /// </summary>
         public static string Resume {
@@ -912,6 +957,24 @@ namespace GSend.Language {
         public static string ServiceSchedule {
             get {
                 return ResourceManager.GetString("ServiceSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours of spindle usage.
+        /// </summary>
+        public static string ServiceSpindleHours {
+            get {
+                return ResourceManager.GetString("ServiceSpindleHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service every {0} weeks or.
+        /// </summary>
+        public static string ServiceWeeks {
+            get {
+                return ResourceManager.GetString("ServiceWeeks", resourceCulture);
             }
         }
         

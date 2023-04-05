@@ -333,14 +333,26 @@
   <data name="MachineAdd" xml:space="preserve">
     <value>Add Machine</value>
   </data>
+  <data name="MachineOptionLimitSwitches" xml:space="preserve">
+    <value>Limit Switches</value>
+  </data>
+  <data name="MachineOptionToolChanger" xml:space="preserve">
+    <value>Tool changer</value>
+  </data>
   <data name="MachineRefresh" xml:space="preserve">
     <value>Refresh Machines</value>
   </data>
   <data name="MachineTitle" xml:space="preserve">
     <value>GSend - {0} - {1}</value>
   </data>
+  <data name="MaintainServiceSchedule" xml:space="preserve">
+    <value>Maintain service schedule</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NextService" xml:space="preserve">
+    <value>NextService</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -375,6 +387,9 @@
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Resume" xml:space="preserve">
     <value>Resume</value>
   </data>
@@ -401,6 +416,12 @@
   </data>
   <data name="ServiceSchedule" xml:space="preserve">
     <value>Service Schedule</value>
+  </data>
+  <data name="ServiceSpindleHours" xml:space="preserve">
+    <value>{0} hours of spindle usage</value>
+  </data>
+  <data name="ServiceWeeks" xml:space="preserve">
+    <value>Service every {0} weeks or</value>
   </data>
   <data name="SettingDescription0" xml:space="preserve">
     <value>Step pulse, microseconds</value>

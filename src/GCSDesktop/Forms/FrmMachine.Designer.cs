@@ -84,6 +84,13 @@
             this.lblSpindleType = new System.Windows.Forms.Label();
             this.cmbSpindleType = new System.Windows.Forms.ComboBox();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
+            this.btnServiceReset = new System.Windows.Forms.Button();
+            this.lblNextService = new System.Windows.Forms.Label();
+            this.lblSpindleHours = new System.Windows.Forms.Label();
+            this.trackBarServiceSpindleHours = new System.Windows.Forms.TrackBar();
+            this.cbMaintainServiceSchedule = new System.Windows.Forms.CheckBox();
+            this.trackBarServiceWeeks = new System.Windows.Forms.TrackBar();
+            this.lblServiceSchedule = new System.Windows.Forms.Label();
             this.tabPageUsage = new System.Windows.Forms.TabPage();
             this.tabPageMachineSettings = new System.Windows.Forms.TabPage();
             this.btnApplyGrblUpdates = new System.Windows.Forms.Button();
@@ -92,6 +99,8 @@
             this.lblPropertyHeader = new System.Windows.Forms.Label();
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.cbToolChanger = new System.Windows.Forms.CheckBox();
+            this.cbLimitSwitches = new System.Windows.Forms.CheckBox();
             this.probingCommand1 = new GSendDesktop.Controls.ProbingCommand();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.machineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,6 +112,8 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
+            this.lblServiceDate = new System.Windows.Forms.Label();
+            this.lblSpindleHoursRemaining = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -114,6 +125,9 @@
             this.grpBoxSpindleSpeed.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSpindleSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).BeginInit();
+            this.tabPageServiceSchedule.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceSpindleHours)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceWeeks)).BeginInit();
             this.tabPageMachineSettings.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -132,7 +146,7 @@
             this.selectionOverrideSpindle.Minimum = 0;
             this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
             this.selectionOverrideSpindle.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideSpindle.TabIndex = 4;
+            this.selectionOverrideSpindle.TabIndex = 8;
             this.selectionOverrideSpindle.TickFrequency = 1;
             this.selectionOverrideSpindle.Value = 0;
             this.selectionOverrideSpindle.ValueChanged += new System.EventHandler(this.selectionOverrideSpindle_ValueChanged);
@@ -148,7 +162,7 @@
             this.selectionOverrideZDown.Minimum = 0;
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
             this.selectionOverrideZDown.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideZDown.TabIndex = 3;
+            this.selectionOverrideZDown.TabIndex = 7;
             this.selectionOverrideZDown.TickFrequency = 1;
             this.selectionOverrideZDown.Value = 0;
             // 
@@ -163,7 +177,7 @@
             this.selectionOverrideZUp.Minimum = 0;
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
             this.selectionOverrideZUp.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideZUp.TabIndex = 2;
+            this.selectionOverrideZUp.TabIndex = 6;
             this.selectionOverrideZUp.TickFrequency = 1;
             this.selectionOverrideZUp.Value = 0;
             // 
@@ -178,7 +192,7 @@
             this.selectionOverrideY.Minimum = 0;
             this.selectionOverrideY.Name = "selectionOverrideY";
             this.selectionOverrideY.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideY.TabIndex = 1;
+            this.selectionOverrideY.TabIndex = 5;
             this.selectionOverrideY.TickFrequency = 1;
             this.selectionOverrideY.Value = 0;
             // 
@@ -193,7 +207,7 @@
             this.selectionOverrideX.Minimum = 0;
             this.selectionOverrideX.Name = "selectionOverrideX";
             this.selectionOverrideX.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideX.TabIndex = 0;
+            this.selectionOverrideX.TabIndex = 4;
             this.selectionOverrideX.TickFrequency = 1;
             this.selectionOverrideX.Value = 0;
             // 
@@ -207,7 +221,7 @@
             this.jogControl.Name = "jogControl";
             this.jogControl.Size = new System.Drawing.Size(439, 190);
             this.jogControl.StepValue = 0;
-            this.jogControl.TabIndex = 3;
+            this.jogControl.TabIndex = 5;
             this.jogControl.OnJogStart += new GSendShared.JogCommand(this.jogControl_OnJogStart);
             this.jogControl.OnJogStop += new System.EventHandler(this.jogControl_OnJogStop);
             this.jogControl.OnUpdate += new System.EventHandler(this.jogControl_OnUpdate);
@@ -232,7 +246,7 @@
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(796, 57);
-            this.toolStripMain.TabIndex = 6;
+            this.toolStripMain.TabIndex = 1;
             this.toolStripMain.Text = "toolStrip1";
             // 
             // toolStripButtonSave
@@ -359,7 +373,7 @@
             this.statusStrip.ShowItemToolTips = true;
             this.statusStrip.Size = new System.Drawing.Size(796, 24);
             this.statusStrip.SizingGrip = false;
-            this.statusStrip.TabIndex = 7;
+            this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip";
             // 
             // toolStripStatusLabelServerConnect
@@ -427,7 +441,7 @@
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
             this.tabControlMain.Size = new System.Drawing.Size(773, 270);
-            this.tabControlMain.TabIndex = 8;
+            this.tabControlMain.TabIndex = 3;
             // 
             // tabPageMain
             // 
@@ -473,7 +487,7 @@
             this.cbOverridesDisable.Location = new System.Drawing.Point(6, 215);
             this.cbOverridesDisable.Name = "cbOverridesDisable";
             this.cbOverridesDisable.Size = new System.Drawing.Size(83, 19);
-            this.cbOverridesDisable.TabIndex = 14;
+            this.cbOverridesDisable.TabIndex = 3;
             this.cbOverridesDisable.Text = "checkBox1";
             this.cbOverridesDisable.UseVisualStyleBackColor = true;
             this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.cbOverridesDisable_CheckedChanged);
@@ -484,7 +498,7 @@
             this.labelSpeedPercent.Location = new System.Drawing.Point(6, 171);
             this.labelSpeedPercent.Name = "labelSpeedPercent";
             this.labelSpeedPercent.Size = new System.Drawing.Size(0, 15);
-            this.labelSpeedPercent.TabIndex = 13;
+            this.labelSpeedPercent.TabIndex = 2;
             // 
             // trackBarPercent
             // 
@@ -492,7 +506,7 @@
             this.trackBarPercent.Maximum = 100;
             this.trackBarPercent.Name = "trackBarPercent";
             this.trackBarPercent.Size = new System.Drawing.Size(280, 45);
-            this.trackBarPercent.TabIndex = 12;
+            this.trackBarPercent.TabIndex = 1;
             this.trackBarPercent.TickFrequency = 5;
             this.trackBarPercent.ValueChanged += new System.EventHandler(this.trackBarPercent_ValueChanged);
             // 
@@ -502,7 +516,7 @@
             this.machinePositionOverrides.Location = new System.Drawing.Point(6, 6);
             this.machinePositionOverrides.Name = "machinePositionOverrides";
             this.machinePositionOverrides.Size = new System.Drawing.Size(314, 112);
-            this.machinePositionOverrides.TabIndex = 5;
+            this.machinePositionOverrides.TabIndex = 0;
             // 
             // tabPageJog
             // 
@@ -526,7 +540,7 @@
             this.btnZeroAll.Location = new System.Drawing.Point(249, 123);
             this.btnZeroAll.Name = "btnZeroAll";
             this.btnZeroAll.Size = new System.Drawing.Size(64, 64);
-            this.btnZeroAll.TabIndex = 13;
+            this.btnZeroAll.TabIndex = 4;
             this.btnZeroAll.UseVisualStyleBackColor = true;
             this.btnZeroAll.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
@@ -536,7 +550,7 @@
             this.btnZeroZ.Location = new System.Drawing.Point(168, 123);
             this.btnZeroZ.Name = "btnZeroZ";
             this.btnZeroZ.Size = new System.Drawing.Size(64, 64);
-            this.btnZeroZ.TabIndex = 12;
+            this.btnZeroZ.TabIndex = 3;
             this.btnZeroZ.UseVisualStyleBackColor = true;
             this.btnZeroZ.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
@@ -546,7 +560,7 @@
             this.btnZeroY.Location = new System.Drawing.Point(87, 123);
             this.btnZeroY.Name = "btnZeroY";
             this.btnZeroY.Size = new System.Drawing.Size(64, 64);
-            this.btnZeroY.TabIndex = 11;
+            this.btnZeroY.TabIndex = 2;
             this.btnZeroY.UseVisualStyleBackColor = true;
             this.btnZeroY.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
@@ -556,7 +570,7 @@
             this.btnZeroX.Location = new System.Drawing.Point(6, 123);
             this.btnZeroX.Name = "btnZeroX";
             this.btnZeroX.Size = new System.Drawing.Size(64, 64);
-            this.btnZeroX.TabIndex = 10;
+            this.btnZeroX.TabIndex = 1;
             this.btnZeroX.UseVisualStyleBackColor = true;
             this.btnZeroX.Click += new System.EventHandler(this.SetZeroForAxes);
             // 
@@ -566,7 +580,7 @@
             this.machinePositionJog.Location = new System.Drawing.Point(6, 6);
             this.machinePositionJog.Name = "machinePositionJog";
             this.machinePositionJog.Size = new System.Drawing.Size(314, 112);
-            this.machinePositionJog.TabIndex = 4;
+            this.machinePositionJog.TabIndex = 0;
             // 
             // tabPageSpindle
             // 
@@ -596,7 +610,7 @@
             this.grpBoxSpindleSpeed.Location = new System.Drawing.Point(571, 6);
             this.grpBoxSpindleSpeed.Name = "grpBoxSpindleSpeed";
             this.grpBoxSpindleSpeed.Size = new System.Drawing.Size(188, 227);
-            this.grpBoxSpindleSpeed.TabIndex = 8;
+            this.grpBoxSpindleSpeed.TabIndex = 5;
             this.grpBoxSpindleSpeed.TabStop = false;
             this.grpBoxSpindleSpeed.Text = "groupBox1";
             // 
@@ -605,7 +619,7 @@
             this.cbSpindleCounterClockwise.Location = new System.Drawing.Point(70, 99);
             this.cbSpindleCounterClockwise.Name = "cbSpindleCounterClockwise";
             this.cbSpindleCounterClockwise.Size = new System.Drawing.Size(83, 61);
-            this.cbSpindleCounterClockwise.TabIndex = 12;
+            this.cbSpindleCounterClockwise.TabIndex = 4;
             this.cbSpindleCounterClockwise.Text = "checkBox1";
             this.cbSpindleCounterClockwise.UseVisualStyleBackColor = true;
             // 
@@ -614,7 +628,7 @@
             this.btnSpindleStop.Location = new System.Drawing.Point(70, 62);
             this.btnSpindleStop.Name = "btnSpindleStop";
             this.btnSpindleStop.Size = new System.Drawing.Size(75, 23);
-            this.btnSpindleStop.TabIndex = 11;
+            this.btnSpindleStop.TabIndex = 3;
             this.btnSpindleStop.Text = "button1";
             this.btnSpindleStop.UseVisualStyleBackColor = true;
             this.btnSpindleStop.Click += new System.EventHandler(this.btnSpindleStop_Click);
@@ -624,7 +638,7 @@
             this.btnSpindleStart.Location = new System.Drawing.Point(70, 29);
             this.btnSpindleStart.Name = "btnSpindleStart";
             this.btnSpindleStart.Size = new System.Drawing.Size(75, 23);
-            this.btnSpindleStart.TabIndex = 10;
+            this.btnSpindleStart.TabIndex = 2;
             this.btnSpindleStart.Text = "button1";
             this.btnSpindleStart.UseVisualStyleBackColor = true;
             this.btnSpindleStart.Click += new System.EventHandler(this.btnSpindleStart_Click);
@@ -635,7 +649,7 @@
             this.lblSpindleSpeed.Location = new System.Drawing.Point(19, 201);
             this.lblSpindleSpeed.Name = "lblSpindleSpeed";
             this.lblSpindleSpeed.Size = new System.Drawing.Size(38, 15);
-            this.lblSpindleSpeed.TabIndex = 9;
+            this.lblSpindleSpeed.TabIndex = 1;
             this.lblSpindleSpeed.Text = "label1";
             // 
             // trackBarSpindleSpeed
@@ -649,7 +663,7 @@
             this.trackBarSpindleSpeed.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.trackBarSpindleSpeed.Size = new System.Drawing.Size(45, 165);
             this.trackBarSpindleSpeed.SmallChange = 50;
-            this.trackBarSpindleSpeed.TabIndex = 8;
+            this.trackBarSpindleSpeed.TabIndex = 0;
             this.trackBarSpindleSpeed.TickFrequency = 300;
             this.trackBarSpindleSpeed.ValueChanged += new System.EventHandler(this.trackBarSpindleSpeed_ValueChanged);
             // 
@@ -688,7 +702,7 @@
             this.lblSpindleType.Location = new System.Drawing.Point(6, 6);
             this.lblSpindleType.Name = "lblSpindleType";
             this.lblSpindleType.Size = new System.Drawing.Size(38, 15);
-            this.lblSpindleType.TabIndex = 1;
+            this.lblSpindleType.TabIndex = 0;
             this.lblSpindleType.Text = "label1";
             // 
             // cmbSpindleType
@@ -698,18 +712,92 @@
             this.cmbSpindleType.Location = new System.Drawing.Point(6, 24);
             this.cmbSpindleType.Name = "cmbSpindleType";
             this.cmbSpindleType.Size = new System.Drawing.Size(164, 23);
-            this.cmbSpindleType.TabIndex = 0;
+            this.cmbSpindleType.TabIndex = 1;
             this.cmbSpindleType.SelectedIndexChanged += new System.EventHandler(this.cmbSpindleType_SelectedIndexChanged);
             // 
             // tabPageServiceSchedule
             // 
             this.tabPageServiceSchedule.BackColor = System.Drawing.Color.White;
+            this.tabPageServiceSchedule.Controls.Add(this.lblSpindleHoursRemaining);
+            this.tabPageServiceSchedule.Controls.Add(this.lblServiceDate);
+            this.tabPageServiceSchedule.Controls.Add(this.btnServiceReset);
+            this.tabPageServiceSchedule.Controls.Add(this.lblNextService);
+            this.tabPageServiceSchedule.Controls.Add(this.lblSpindleHours);
+            this.tabPageServiceSchedule.Controls.Add(this.trackBarServiceSpindleHours);
+            this.tabPageServiceSchedule.Controls.Add(this.cbMaintainServiceSchedule);
+            this.tabPageServiceSchedule.Controls.Add(this.trackBarServiceWeeks);
+            this.tabPageServiceSchedule.Controls.Add(this.lblServiceSchedule);
             this.tabPageServiceSchedule.Location = new System.Drawing.Point(4, 24);
             this.tabPageServiceSchedule.Name = "tabPageServiceSchedule";
             this.tabPageServiceSchedule.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageServiceSchedule.Size = new System.Drawing.Size(765, 242);
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
+            // 
+            // btnServiceReset
+            // 
+            this.btnServiceReset.Location = new System.Drawing.Point(684, 12);
+            this.btnServiceReset.Name = "btnServiceReset";
+            this.btnServiceReset.Size = new System.Drawing.Size(75, 23);
+            this.btnServiceReset.TabIndex = 6;
+            this.btnServiceReset.Text = "button1";
+            this.btnServiceReset.UseVisualStyleBackColor = true;
+            // 
+            // lblNextService
+            // 
+            this.lblNextService.AutoSize = true;
+            this.lblNextService.Location = new System.Drawing.Point(388, 16);
+            this.lblNextService.Name = "lblNextService";
+            this.lblNextService.Size = new System.Drawing.Size(38, 15);
+            this.lblNextService.TabIndex = 5;
+            this.lblNextService.Text = "label1";
+            // 
+            // lblSpindleHours
+            // 
+            this.lblSpindleHours.AutoSize = true;
+            this.lblSpindleHours.Location = new System.Drawing.Point(18, 168);
+            this.lblSpindleHours.Name = "lblSpindleHours";
+            this.lblSpindleHours.Size = new System.Drawing.Size(38, 15);
+            this.lblSpindleHours.TabIndex = 4;
+            this.lblSpindleHours.Text = "label1";
+            // 
+            // trackBarServiceSpindleHours
+            // 
+            this.trackBarServiceSpindleHours.Location = new System.Drawing.Point(18, 120);
+            this.trackBarServiceSpindleHours.Maximum = 200;
+            this.trackBarServiceSpindleHours.Name = "trackBarServiceSpindleHours";
+            this.trackBarServiceSpindleHours.Size = new System.Drawing.Size(286, 45);
+            this.trackBarServiceSpindleHours.TabIndex = 3;
+            this.trackBarServiceSpindleHours.TickFrequency = 10;
+            // 
+            // cbMaintainServiceSchedule
+            // 
+            this.cbMaintainServiceSchedule.AutoSize = true;
+            this.cbMaintainServiceSchedule.Location = new System.Drawing.Point(6, 6);
+            this.cbMaintainServiceSchedule.Name = "cbMaintainServiceSchedule";
+            this.cbMaintainServiceSchedule.Size = new System.Drawing.Size(83, 19);
+            this.cbMaintainServiceSchedule.TabIndex = 2;
+            this.cbMaintainServiceSchedule.Text = "checkBox1";
+            this.cbMaintainServiceSchedule.UseVisualStyleBackColor = true;
+            // 
+            // trackBarServiceWeeks
+            // 
+            this.trackBarServiceWeeks.LargeChange = 1;
+            this.trackBarServiceWeeks.Location = new System.Drawing.Point(18, 43);
+            this.trackBarServiceWeeks.Maximum = 26;
+            this.trackBarServiceWeeks.Name = "trackBarServiceWeeks";
+            this.trackBarServiceWeeks.Size = new System.Drawing.Size(286, 45);
+            this.trackBarServiceWeeks.TabIndex = 1;
+            this.trackBarServiceWeeks.Value = 1;
+            // 
+            // lblServiceSchedule
+            // 
+            this.lblServiceSchedule.AutoSize = true;
+            this.lblServiceSchedule.Location = new System.Drawing.Point(18, 91);
+            this.lblServiceSchedule.Name = "lblServiceSchedule";
+            this.lblServiceSchedule.Size = new System.Drawing.Size(38, 15);
+            this.lblServiceSchedule.TabIndex = 0;
+            this.lblServiceSchedule.Text = "label1";
             // 
             // tabPageUsage
             // 
@@ -743,7 +831,7 @@
             this.btnApplyGrblUpdates.Location = new System.Drawing.Point(662, 6);
             this.btnApplyGrblUpdates.Name = "btnApplyGrblUpdates";
             this.btnApplyGrblUpdates.Size = new System.Drawing.Size(75, 23);
-            this.btnApplyGrblUpdates.TabIndex = 5;
+            this.btnApplyGrblUpdates.TabIndex = 4;
             this.btnApplyGrblUpdates.Text = "Apply";
             this.btnApplyGrblUpdates.UseVisualStyleBackColor = true;
             this.btnApplyGrblUpdates.Click += new System.EventHandler(this.btnApplyGrblUpdates_Click);
@@ -758,7 +846,7 @@
             this.txtGrblUpdates.Name = "txtGrblUpdates";
             this.txtGrblUpdates.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtGrblUpdates.Size = new System.Drawing.Size(276, 130);
-            this.txtGrblUpdates.TabIndex = 4;
+            this.txtGrblUpdates.TabIndex = 1;
             this.txtGrblUpdates.TextChanged += new System.EventHandler(this.txtGrblUpdates_TextChanged);
             // 
             // lblPropertyDesc
@@ -790,13 +878,15 @@
             this.propertyGridGrblSettings.Location = new System.Drawing.Point(6, 6);
             this.propertyGridGrblSettings.Name = "propertyGridGrblSettings";
             this.propertyGridGrblSettings.Size = new System.Drawing.Size(368, 230);
-            this.propertyGridGrblSettings.TabIndex = 1;
+            this.propertyGridGrblSettings.TabIndex = 0;
             this.propertyGridGrblSettings.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGridGrblSettings_PropertyValueChanged);
             this.propertyGridGrblSettings.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGridGrblSettings_SelectedGridItemChanged);
             // 
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageSettings.Controls.Add(this.cbToolChanger);
+            this.tabPageSettings.Controls.Add(this.cbLimitSwitches);
             this.tabPageSettings.Controls.Add(this.probingCommand1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageSettings.Name = "tabPageSettings";
@@ -805,13 +895,33 @@
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
             // 
+            // cbToolChanger
+            // 
+            this.cbToolChanger.AutoSize = true;
+            this.cbToolChanger.Location = new System.Drawing.Point(6, 31);
+            this.cbToolChanger.Name = "cbToolChanger";
+            this.cbToolChanger.Size = new System.Drawing.Size(83, 19);
+            this.cbToolChanger.TabIndex = 1;
+            this.cbToolChanger.Text = "checkBox2";
+            this.cbToolChanger.UseVisualStyleBackColor = true;
+            // 
+            // cbLimitSwitches
+            // 
+            this.cbLimitSwitches.AutoSize = true;
+            this.cbLimitSwitches.Location = new System.Drawing.Point(6, 6);
+            this.cbLimitSwitches.Name = "cbLimitSwitches";
+            this.cbLimitSwitches.Size = new System.Drawing.Size(83, 19);
+            this.cbLimitSwitches.TabIndex = 0;
+            this.cbLimitSwitches.Text = "checkBox1";
+            this.cbLimitSwitches.UseVisualStyleBackColor = true;
+            // 
             // probingCommand1
             // 
             this.probingCommand1.Location = new System.Drawing.Point(501, 6);
             this.probingCommand1.MinimumSize = new System.Drawing.Size(220, 172);
             this.probingCommand1.Name = "probingCommand1";
             this.probingCommand1.Size = new System.Drawing.Size(258, 230);
-            this.probingCommand1.TabIndex = 0;
+            this.probingCommand1.TabIndex = 2;
             // 
             // menuStrip1
             // 
@@ -821,7 +931,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(796, 24);
-            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // machineToolStripMenuItem
@@ -846,7 +956,7 @@
             this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
             this.warningsAndErrors.Name = "warningsAndErrors";
             this.warningsAndErrors.Size = new System.Drawing.Size(772, 48);
-            this.warningsAndErrors.TabIndex = 12;
+            this.warningsAndErrors.TabIndex = 2;
             this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningsAndErrors_OnUpdate);
             this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
             this.warningsAndErrors.Resize += new System.EventHandler(this.WarningContainer_VisibleChanged);
@@ -862,7 +972,7 @@
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
             this.tabControlSecondary.Size = new System.Drawing.Size(773, 197);
-            this.tabControlSecondary.TabIndex = 13;
+            this.tabControlSecondary.TabIndex = 4;
             // 
             // tabPageConsole
             // 
@@ -884,7 +994,7 @@
             this.btnGrblCommandSend.Location = new System.Drawing.Point(603, 139);
             this.btnGrblCommandSend.Name = "btnGrblCommandSend";
             this.btnGrblCommandSend.Size = new System.Drawing.Size(75, 23);
-            this.btnGrblCommandSend.TabIndex = 3;
+            this.btnGrblCommandSend.TabIndex = 2;
             this.btnGrblCommandSend.Text = "button2";
             this.btnGrblCommandSend.UseVisualStyleBackColor = true;
             this.btnGrblCommandSend.Click += new System.EventHandler(this.btnGrblCommandSend_Click);
@@ -895,7 +1005,7 @@
             this.btnGrblCommandClear.Location = new System.Drawing.Point(684, 139);
             this.btnGrblCommandClear.Name = "btnGrblCommandClear";
             this.btnGrblCommandClear.Size = new System.Drawing.Size(75, 23);
-            this.btnGrblCommandClear.TabIndex = 2;
+            this.btnGrblCommandClear.TabIndex = 3;
             this.btnGrblCommandClear.Text = "button1";
             this.btnGrblCommandClear.UseVisualStyleBackColor = true;
             this.btnGrblCommandClear.Click += new System.EventHandler(this.btnGrblCommandClear_Click);
@@ -922,6 +1032,24 @@
             this.textBoxConsoleText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 128);
             this.textBoxConsoleText.TabIndex = 0;
+            // 
+            // lblServiceDate
+            // 
+            this.lblServiceDate.AutoSize = true;
+            this.lblServiceDate.Location = new System.Drawing.Point(388, 43);
+            this.lblServiceDate.Name = "lblServiceDate";
+            this.lblServiceDate.Size = new System.Drawing.Size(38, 15);
+            this.lblServiceDate.TabIndex = 7;
+            this.lblServiceDate.Text = "label1";
+            // 
+            // lblSpindleHoursRemaining
+            // 
+            this.lblSpindleHoursRemaining.AutoSize = true;
+            this.lblSpindleHoursRemaining.Location = new System.Drawing.Point(388, 73);
+            this.lblSpindleHoursRemaining.Name = "lblSpindleHoursRemaining";
+            this.lblSpindleHoursRemaining.Size = new System.Drawing.Size(38, 15);
+            this.lblSpindleHoursRemaining.TabIndex = 8;
+            this.lblSpindleHoursRemaining.Text = "label1";
             // 
             // FrmMachine
             // 
@@ -957,9 +1085,14 @@
             this.grpBoxSpindleSpeed.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSpindleSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDelaySpindle)).EndInit();
+            this.tabPageServiceSchedule.ResumeLayout(false);
+            this.tabPageServiceSchedule.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceSpindleHours)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceWeeks)).EndInit();
             this.tabPageMachineSettings.ResumeLayout(false);
             this.tabPageMachineSettings.PerformLayout();
             this.tabPageSettings.ResumeLayout(false);
+            this.tabPageSettings.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControlSecondary.ResumeLayout(false);
@@ -1045,5 +1178,16 @@
         private System.Windows.Forms.Label lblSpindleSpeed;
         private System.Windows.Forms.TrackBar trackBarSpindleSpeed;
         private System.Windows.Forms.CheckBox cbSpindleCounterClockwise;
+        private System.Windows.Forms.CheckBox cbToolChanger;
+        private System.Windows.Forms.CheckBox cbLimitSwitches;
+        private System.Windows.Forms.CheckBox cbMaintainServiceSchedule;
+        private System.Windows.Forms.TrackBar trackBarServiceWeeks;
+        private System.Windows.Forms.Label lblServiceSchedule;
+        private System.Windows.Forms.Label lblSpindleHours;
+        private System.Windows.Forms.TrackBar trackBarServiceSpindleHours;
+        private System.Windows.Forms.Button btnServiceReset;
+        private System.Windows.Forms.Label lblNextService;
+        private System.Windows.Forms.Label lblSpindleHoursRemaining;
+        private System.Windows.Forms.Label lblServiceDate;
     }
 }

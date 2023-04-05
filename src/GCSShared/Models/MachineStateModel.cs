@@ -101,7 +101,7 @@
 
                 _machineX = value;
                 Updated = true;
-                _updateWorkPosition = false;
+                _updateWorkPosition = true;
             }
         }
 
@@ -116,7 +116,7 @@
 
                 _machineY = value;
                 Updated = true;
-                _updateWorkPosition = false;
+                _updateWorkPosition = true;
             }
         }
 
@@ -131,7 +131,7 @@
 
                 _machineZ = value;
                 Updated = true;
-                _updateWorkPosition = false;
+                _updateWorkPosition = true;
             }
         }
 
@@ -146,7 +146,7 @@
 
                 _workX = value;
                 Updated = true;
-                _updateWorkPosition = true;
+                _updateWorkPosition = false;
             }
         }
 
@@ -161,7 +161,7 @@
 
                 _workY = value;
                 Updated = true;
-                _updateWorkPosition = true;
+                _updateWorkPosition = false;
             }
         }
 
@@ -176,7 +176,7 @@
 
                 _workZ = value;
                 Updated = true;
-                _updateWorkPosition = true;
+                _updateWorkPosition = false;
             }
         }
 

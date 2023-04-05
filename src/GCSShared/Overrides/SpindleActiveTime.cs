@@ -9,18 +9,12 @@ namespace GSendShared.Overrides
     {
         public int SortOrder => int.MinValue;
 
-        public async Task Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
+        public void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            await Task.Run(() =>
+            if (overrideContext.GCode.Commands.Any(c => c.Command.Equals('M') && (c.CommandValue.Equals(3) || c.CommandValue.Equals(4))))
             {
-                if (overrideContext.Machine.MachineType != MachineType.CNC)
-                    return;
-
-                if (overrideContext.GCode.Commands.Any(c => c.Command.Equals('M') && (c.CommandValue.Equals(3) || c.CommandValue.Equals(4))))
-                {
-                    // turn on spindle timer
-                }
-            });
+                // turn on spindle timer
+            }
         }
     }
 }

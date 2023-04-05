@@ -12,7 +12,7 @@ namespace GSendShared.Models
         public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount, 
             GrblSettings settings, DisplayUnits displayUnits, int overrideSpeed, int overrideSpindle, DateTime configurationLastVerified,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
-            int softStartSeconds)
+            int softStartSeconds, int serviceWeeks, int serviceSpindleHours)
             : this()
         {
             if (String.IsNullOrWhiteSpace(name))
@@ -36,6 +36,8 @@ namespace GSendShared.Models
             JogUnits = jogUnits;
             SpindleType = spindleType;
             SoftStartSeconds = softStartSeconds;
+            ServiceWeeks = serviceWeeks;
+            ServiceSpindleHours = serviceSpindleHours;
         }
 
         public long Id { get; set; } = Int64.MinValue;
@@ -75,6 +77,10 @@ namespace GSendShared.Models
         public int SoftStartSeconds { get; set; }
 
         public bool SoftStart => Options.HasFlag(MachineOptions.SoftStart);
+
+        public int ServiceWeeks { get; set; }
+
+        public int ServiceSpindleHours { get; set; }
 
         public void AddOptions(MachineOptions options)
         {

@@ -53,6 +53,20 @@ namespace GSendDesktop.Controls
         public string LabelValue { get; set; }
 
         [Browsable(true)]
+        public int SmallTickChange
+        {
+            get => trackBarValue.SmallChange;
+            set => trackBarValue.SmallChange = value;
+        }
+
+        [Browsable(true)]
+        public int LargeTickChange
+        {
+            get => trackBarValue.LargeChange;
+            set => trackBarValue.LargeChange = value;
+        }
+
+        [Browsable(true)]
         public event EventHandler ValueChanged;
 
         private void trackBarValue_ValueChanged(object sender, System.EventArgs e)

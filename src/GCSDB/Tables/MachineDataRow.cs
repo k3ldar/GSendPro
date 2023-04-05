@@ -32,6 +32,9 @@ namespace GSendDB.Tables
         private int _jogFeedrate;
         private SpindleType _spindleType;
         private int _softStartSeconds;
+        private int _serviceWeeks;
+        private int _serviceSpindleHours;
+
 
         // Update ConvertFromIMachineToMachineDataRow in machineprovider
 
@@ -278,6 +281,34 @@ namespace GSendDB.Tables
                     return;
 
                 _softStartSeconds = value;
+                Update();
+            }
+        }
+
+        public int ServiceWeeks
+        {
+            get => _serviceWeeks;
+
+            set
+            {
+                if (_serviceWeeks == value)
+                    return;
+
+                _serviceWeeks = value;
+                Update();
+            }
+        }
+
+        public int ServiceSpindleHours
+        {
+            get => _serviceSpindleHours;
+
+            set
+            {
+                if (_serviceSpindleHours == value)
+                    return;
+
+                _serviceSpindleHours = value;
                 Update();
             }
         }
