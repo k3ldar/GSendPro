@@ -16,5 +16,17 @@
         /// <param name="overrideContext"></param>
         /// <returns>bool</returns>
         void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Process a grbl alarm
+        /// </summary>
+        /// <param name="alarm"></param>
+        void Process(GrblAlarm alarm);
+
+        /// <summary>
+        /// Process a grbl error
+        /// </summary>
+        /// <param name="error"></param>
+        void Process(GrblError error);
     }
 }

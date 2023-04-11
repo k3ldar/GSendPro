@@ -81,6 +81,23 @@ namespace GSendCommon
             }
         }
 
+        public void ProcessAlarm(GrblAlarm alarm)
+        {
+            foreach (IGCodeOverride item in _overrides)
+            {
+                item.Process(alarm);
+            }
+        }
+
+        public void ProcessError(GrblError error)
+        {
+            foreach (IGCodeOverride item in _overrides)
+            {
+                item.Process(error);
+            }
+        }
+
+
         public void Cancel()
         {
             if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)

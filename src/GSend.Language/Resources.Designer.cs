@@ -169,6 +169,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear GCode.
+        /// </summary>
+        public static string ClearGCode {
+            get {
+                return ResourceManager.GetString("ClearGCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Configuration {
@@ -691,6 +709,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jog.
+        /// </summary>
+        public static string Jog {
+            get {
+                return ResourceManager.GetString("Jog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load GCode.
+        /// </summary>
+        public static string LoadGCode {
+            get {
+                return ResourceManager.GetString("LoadGCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
@@ -732,6 +768,15 @@ namespace GSend.Language {
         public static string MachineRefresh {
             get {
                 return ResourceManager.GetString("MachineRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine Settings.
+        /// </summary>
+        public static string MachineSettings {
+            get {
+                return ResourceManager.GetString("MachineSettings", resourceCulture);
             }
         }
         
@@ -912,6 +957,15 @@ namespace GSend.Language {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Configuration.
+        /// </summary>
+        public static string SaveConfiguration {
+            get {
+                return ResourceManager.GetString("SaveConfiguration", resourceCulture);
             }
         }
         
@@ -1605,6 +1659,15 @@ namespace GSend.Language {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spindle time remaining: {0} hours and {1} minutes.
+        /// </summary>
+        public static string StatusServiceSpindleTime {
+            get {
+                return ResourceManager.GetString("StatusServiceSpindleTime", resourceCulture);
             }
         }
         

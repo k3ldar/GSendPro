@@ -57,13 +57,28 @@ namespace GSendCommon.Overrides
                 }
                 else
                 {
-                    if (_activeRow != null)
-                    {
-                        _activeRow.FinishTime = DateTime.UtcNow;
-                        _spindleTimeTable.Update(_activeRow);
-                        _activeRow = null;
-                    }
+                    StopSpindleTimer();
                 }
+            }
+        }
+
+        public void Process(GrblAlarm alarm)
+        {
+            StopSpindleTimer();
+        }
+
+        public void Process(GrblError error)
+        {
+            StopSpindleTimer();
+        }
+
+        private void StopSpindleTimer()
+        {
+            if (_activeRow != null)
+            {
+                _activeRow.FinishTime = DateTime.UtcNow;
+                _spindleTimeTable.Update(_activeRow);
+                _activeRow = null;
             }
         }
     }

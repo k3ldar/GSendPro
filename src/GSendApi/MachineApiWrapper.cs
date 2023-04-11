@@ -9,6 +9,8 @@ namespace GSendApi
 {
     public sealed class MachineApiWrapper
     {
+        #region Private Members
+
         private class JsonResponseModel
         {
             public bool success { get; set; }
@@ -17,10 +19,18 @@ namespace GSendApi
 
         private readonly ApiSettings _apiSettings;
 
+        #endregion Private Members
+
+        #region Constructors
+
         public MachineApiWrapper(ApiSettings apiSettings)
         {
             _apiSettings = apiSettings;
         }
+
+        #endregion Constructors
+
+        #region Machines
 
         public List<IMachine> MachinesGet()
         {
@@ -42,6 +52,10 @@ namespace GSendApi
             CallPutApi("MachineApi/MachineUpdate", machine);
         }
 
+        #endregion Machines
+
+        #region Services
+
         public List<DateTime> MachineServices(long machineId)
         {
             return CallGetApi<List<DateTime>>($"ServiceApi/ServicesGet/{machineId}");
@@ -57,6 +71,19 @@ namespace GSendApi
 
             CallPostApi("ServiceApi/ServiceAdd", machineServiceModel);
         }
+
+        #endregion Services
+
+        #region Spindle Time
+
+        public List<SpindleHoursModel> GetSpindleTime(long machineId, DateTime fromDate)
+        {
+            return CallGetApi<List<SpindleHoursModel>>($"SpindleHoursApi/SpindleHoursGet/{machineId}/{fromDate.Ticks}/");
+        }
+
+        #endregion Spindle Time
+
+        #region Private Methods
 
         private HttpClient CreateApiClient()
         {
@@ -165,5 +192,7 @@ namespace GSendApi
                 throw;
             }
         }
+
+        #endregion Private Methods
     }
 }

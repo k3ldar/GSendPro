@@ -934,6 +934,8 @@ namespace GSendCommon
             {
                 OnGrblError?.Invoke(this, error);
             }
+
+            _overrideContext.ProcessError(error);
         }
 
         private void ProcessAlarmResponse(string response)
@@ -944,20 +946,22 @@ namespace GSendCommon
                 BufferSize -= activeCommand.GetGCode().Length;
             }
 
-            GrblAlarm error = GrblAlarm.Undefined;
+            GrblAlarm alarm = GrblAlarm.Undefined;
 
             Stop();
 
-            if (Int32.TryParse(response[6..], out int errorCode))
+            if (Int32.TryParse(response[6..], out int alarmCode))
             {
-                error = (GrblAlarm)errorCode;
+                alarm = (GrblAlarm)alarmCode;
 
-                OnGrblAlarm?.Invoke(this, error);
+                OnGrblAlarm?.Invoke(this, alarm);
             }
             else
             {
-                OnGrblAlarm?.Invoke(this, error);
+                OnGrblAlarm?.Invoke(this, alarm);
             }
+
+            _overrideContext.ProcessAlarm(alarm);
         }
 
         private void Port_PinChanged(object sender, System.IO.Ports.SerialPinChangedEventArgs e)

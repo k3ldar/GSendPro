@@ -48,5 +48,15 @@ namespace GSendCommon.Overrides
                 return;
             }
         }
+
+        public void Process(GrblAlarm alarm)
+        {
+            
+        }
+
+        public void Process(GrblError error)
+        {
+            
+        }
     }
 }

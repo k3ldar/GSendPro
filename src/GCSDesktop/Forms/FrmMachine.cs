@@ -103,15 +103,15 @@ namespace GSendDesktop.Forms
             UpdateDisplay();
             UpdateEnabledState();
             probingCommand1.InitializeProbingCommand(_machine.ProbeCommand, _machine.ProbeSpeed, _machine.ProbeThickness);
-            probingCommand1.OnSave += ProbingCommand1_OnSave;
 
             ConfigureMachine();
             toolStripStatusLabelSpindle.Visible = false;
             toolStripStatusLabelBuffer.Visible = false;
             toolStripStatusLabelStatus.Visible = false;
-
+            warningsAndErrors_OnUpdate(this, EventArgs.Empty);
             _configurationChanges = false;
             HookUpEvents();
+            UpdateMachineStatus(new MachineStateModel());
 
             LoadResources();
         }
@@ -463,6 +463,7 @@ namespace GSendDesktop.Forms
             // service schedule
             cbMaintainServiceSchedule.Checked = _machine.Options.HasFlag(MachineOptions.ServiceSchedule);
             trackBarServiceWeeks.Value = _machine.ServiceWeeks;
+            trackBarServiceSpindleHours.Value = _machine.ServiceSpindleHours;
             lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
             lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
             btnServiceReset.Text = GSend.Language.Resources.Reset;
@@ -482,6 +483,7 @@ namespace GSendDesktop.Forms
 
         private void HookUpEvents()
         {
+            probingCommand1.OnSave += ProbingCommand1_OnSave;
             cbSoftStart.CheckedChanged += new System.EventHandler(this.cbSoftStart_CheckedChanged);
             cbSpindleCounterClockwise.CheckedChanged += CbSpindleClockwise_CheckedChanged;
             trackBarDelaySpindle.ValueChanged += trackBarDelaySpindle_ValueChanged;
@@ -496,13 +498,16 @@ namespace GSendDesktop.Forms
             cbMaintainServiceSchedule.CheckedChanged += CbMaintainServiceSchedule_CheckedChanged;
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
+
+            btnGrblCommandClear.Click += btnGrblCommandClear_Click;
+            btnGrblCommandSend.Click += btnGrblCommandSend_Click;
         }
 
         private void TrackBarServiceSpindleHours_ValueChanged(object sender, EventArgs e)
         {
             _machine.ServiceSpindleHours = trackBarServiceSpindleHours.Value;
             lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
-            _appliedSettingsChanged = true;
+            UpdateConfigurationChanged();
         }
 
         private void TrackBarServiceWeeks_ValueChanged(object sender, EventArgs e)
@@ -529,7 +534,7 @@ namespace GSendDesktop.Forms
             btnServiceRefresh.Enabled = cbMaintainServiceSchedule.Checked;
             btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void CbLimitSwitches_CheckedChanged(object sender, EventArgs e)
@@ -539,7 +544,7 @@ namespace GSendDesktop.Forms
             else
                 _machine.RemoveOptions(MachineOptions.LimitSwitches);
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void CbToolChanger_CheckedChanged(object sender, EventArgs e)
@@ -549,7 +554,7 @@ namespace GSendDesktop.Forms
             else
                 _machine.RemoveOptions(MachineOptions.ToolChanger);
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void CbSpindleClockwise_CheckedChanged(object sender, EventArgs e)
@@ -559,7 +564,7 @@ namespace GSendDesktop.Forms
             else
                 _machine.RemoveOptions(MachineOptions.SpindleCounterClockWise);
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void LoadResources()
@@ -592,6 +597,7 @@ namespace GSendDesktop.Forms
             tabPageSpindle.Text = GSend.Language.Resources.Spindle;
             tabPageUsage.Text = GSend.Language.Resources.Usage;
             tabPageSettings.Text = GSend.Language.Resources.Settings;
+            tabPageConsole.Text = GSend.Language.Resources.Console;
             selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
 
             //General tab
@@ -632,6 +638,36 @@ namespace GSendDesktop.Forms
             tabPageConsole.Text = GSend.Language.Resources.Console;
             btnGrblCommandSend.Text = GSend.Language.Resources.Send;
             btnGrblCommandClear.Text = GSend.Language.Resources.Clear;
+
+
+            // menu
+
+            //Machine
+            loadToolStripMenuItem.Text = GSend.Language.Resources.LoadGCode;
+            clearToolStripMenuItem.Text = GSend.Language.Resources.ClearGCode;
+            closeToolStripMenuItem.Text = GSend.Language.Resources.Close;
+
+            //view
+            generalToolStripMenuItem.Text= GSend.Language.Resources.General;
+            overridesToolStripMenuItem.Text = GSend.Language.Resources.Overrides;
+            jogToolStripMenuItem.Text = GSend.Language.Resources.Jog;
+            spindleToolStripMenuItem.Text = GSend.Language.Resources.Spindle;
+            serviceScheduleToolStripMenuItem.Text = GSend.Language.Resources.ServiceSchedule;
+            usageToolStripMenuItem.Text = GSend.Language.Resources.Usage;
+            machineSettingsToolStripMenuItem.Text = GSend.Language.Resources.MachineSettings;
+            settingsToolStripMenuItem.Text = GSend.Language.Resources.Settings;
+            consoleToolStripMenuItem.Text = GSend.Language.Resources.Console;
+
+            // action
+            saveConfigurationToolStripMenuItem.Text = GSend.Language.Resources.SaveConfiguration;
+            connectToolStripMenuItem.Text = GSend.Language.Resources.Connect;
+            disconnectToolStripMenuItem.Text = GSend.Language.Resources.Disconnect;
+            clearAlarmToolStripMenuItem.Text = GSend.Language.Resources.ClearAlarm;
+            homeToolStripMenuItem.Text = GSend.Language.Resources.Home;
+            probeToolStripMenuItem.Text = GSend.Language.Resources.Probe;
+            runToolStripMenuItem.Text = GSend.Language.Resources.Resume;
+            pauseToolStripMenuItem.Text = GSend.Language.Resources.Pause;
+            stopToolStripMenuItem.Text = GSend.Language.Resources.Stop;
         }
 
         private void UpdateDisplay()
@@ -674,13 +710,13 @@ namespace GSendDesktop.Forms
         {
             UpdateOverrides();
             _machine.OverrideSpeed = trackBarPercent.Value;
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void selectionOverrideSpindle_ValueChanged(object sender, EventArgs e)
         {
             _machine.OverrideSpindle = selectionOverrideSpindle.Value;
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void UpdateOverrides()
@@ -1003,7 +1039,7 @@ namespace GSendDesktop.Forms
             _machine.ProbeSpeed = probingCommand1.TravelSpeed;
             _machine.ProbeCommand = probingCommand1.ProbeCommand;
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
             UpdateEnabledState();
 
             ConfigureMachine();
@@ -1015,13 +1051,13 @@ namespace GSendDesktop.Forms
         {
             _machine.JogUnits = jogControl.StepValue;
             _machine.JogFeedrate = jogControl.FeedRate;
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void cmbSpindleType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _machine.SpindleType = (SpindleType)cmbSpindleType.SelectedItem;
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
             cbSoftStart.Visible = _machine.SpindleType == SpindleType.Integrated;
             trackBarDelaySpindle.Visible = _machine.SpindleType != SpindleType.External;
             lblDelaySpindleStart.Visible = _machine.SpindleType != SpindleType.External;
@@ -1037,7 +1073,7 @@ namespace GSendDesktop.Forms
             else
                 lblDelaySpindleStart.Text = String.Format(GSend.Language.Resources.SpindleDelayStartVFD, trackBarDelaySpindle.Value);
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void cbSoftStart_CheckedChanged(object sender, EventArgs e)
@@ -1047,7 +1083,7 @@ namespace GSendDesktop.Forms
             else
                 _machine.RemoveOptions(MachineOptions.SoftStart);
 
-            _configurationChanges = true;
+            UpdateConfigurationChanged();
         }
 
         private void btnGrblCommandClear_Click(object sender, EventArgs e)
@@ -1137,8 +1173,26 @@ namespace GSendDesktop.Forms
                 DateTime latestService = services.Max();
                 DateTime nextService = latestService.AddDays(_machine.ServiceWeeks * 7);
                 TimeSpan span = nextService - latestService;
-                lblServiceDate.Text = $"{nextService.ToString("g")} ({span.TotalDays} days)";
+                lblServiceDate.Text = $"{nextService:g} ({span.TotalDays} days)";
+
+                List<SpindleHoursModel> spindleHours = machineApiWrapper.GetSpindleTime(_machine.Id, latestService);
+
+                long totalTicks = spindleHours.Where(tt => tt.TotalTime.Ticks > 0).Sum(sh => sh.TotalTime.Ticks);
+                TimeSpan remaining = new TimeSpan((trackBarServiceSpindleHours.Value * TimeSpan.TicksPerHour) - totalTicks);
+                lblSpindleHoursRemaining.Text = String.Format(GSend.Language.Resources.StatusServiceSpindleTime, 
+                    (int)remaining.TotalHours, remaining.Minutes);
             }
+        }
+
+        private void UpdateConfigurationChanged()
+        {
+            _configurationChanges = true;
+            UpdateEnabledState();
+        }
+
+        private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControlSecondary.SelectedTab = tabPageConsole;
         }
     }
 }

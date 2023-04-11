@@ -41,6 +41,10 @@
 
         void ProcessGCodeLine(IGCodeLine line);
 
+        void ProcessAlarm(GrblAlarm error);
+
+        void ProcessError(GrblError error);
+
         void Cancel();
     }
 }

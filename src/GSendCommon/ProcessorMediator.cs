@@ -597,7 +597,7 @@ namespace GSendCommon
                         {
                             if (Boolean.TryParse(parts[3], out bool clockWise))
                             {
-                                response.success = proc.UpdateSpindleSpeed(speed, clockWise);
+                                response.success = proc.UpdateSpindleSpeed(speed, !clockWise);
                             }
                             else
                             {

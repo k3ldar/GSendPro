@@ -87,6 +87,16 @@
         /// maintain a service schedule
         /// </summary>
         ServiceSchedule = 16,
+
+        /// <summary>
+        /// Has mist coolant
+        /// </summary>
+        MistCoolant = 32,
+
+        /// <summary>
+        /// Has flood coolant
+        /// </summary>
+        FloodCoolant = 64,
     }
 
     [Flags]

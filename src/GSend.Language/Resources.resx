@@ -153,6 +153,12 @@
   <data name="ClearAlarm" xml:space="preserve">
     <value>Clear Alarm</value>
   </data>
+  <data name="ClearGCode" xml:space="preserve">
+    <value>Clear GCode</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Configuration" xml:space="preserve">
     <value>Configuration</value>
   </data>
@@ -327,6 +333,12 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Jog" xml:space="preserve">
+    <value>Jog</value>
+  </data>
+  <data name="LoadGCode" xml:space="preserve">
+    <value>Load GCode</value>
+  </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
   </data>
@@ -341,6 +353,9 @@
   </data>
   <data name="MachineRefresh" xml:space="preserve">
     <value>Refresh Machines</value>
+  </data>
+  <data name="MachineSettings" xml:space="preserve">
+    <value>Machine Settings</value>
   </data>
   <data name="MachineTitle" xml:space="preserve">
     <value>GSend - {0} - {1}</value>
@@ -401,6 +416,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SaveConfiguration" xml:space="preserve">
+    <value>Save Configuration</value>
   </data>
   <data name="Send" xml:space="preserve">
     <value>Send</value>
@@ -632,6 +650,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="StatusServiceSpindleTime" xml:space="preserve">
+    <value>Spindle time remaining: {0} hours and {1} minutes</value>
   </data>
   <data name="Steps" xml:space="preserve">
     <value>Steps</value>

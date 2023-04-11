@@ -52,8 +52,8 @@ namespace GSendTests.OverrideTests
             MockComPort mockComport = new MockComPort(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
-            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory);
-            IGCodeOverrideContext context = new GCodeOverrideContext(new MockStaticMethods(), processor, mockMachine, mockComport);
+            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
+            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
             context.ProcessGCodeLine(gCodeLine);
             SpindleActiveTime sut = new SpindleActiveTime();
             sut.Process(context, CancellationToken.None);
@@ -78,8 +78,8 @@ namespace GSendTests.OverrideTests
             MockComPort mockComport = new MockComPort(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
-            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory);
-            IGCodeOverrideContext context = new GCodeOverrideContext(new MockStaticMethods(), processor, mockMachine, mockComport);
+            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
+            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
             SpindleSoftStart sut = new SpindleSoftStart();
             sut.Process(context, CancellationToken.None);
 
