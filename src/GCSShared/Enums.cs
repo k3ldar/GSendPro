@@ -1,5 +1,14 @@
 ﻿namespace GSendShared
 {
+    public enum ServiceType
+    {
+        Daily = 0,
+
+        Minor = 1,
+
+        Major = 2
+    }
+
     public enum SpindleType
     {
         Integrated = 0,
@@ -7,6 +16,16 @@
         VFD = 1,
 
         External = 2
+    }
+
+    public enum CoordinateSystem
+    {
+        G54,
+        G55,
+        G56,
+        G57,
+        G58,
+        G59,
     }
 
     public enum InformationType
@@ -97,6 +116,11 @@
         /// Has flood coolant
         /// </summary>
         FloodCoolant = 64,
+
+        /// <summary>
+        /// Will autocorrect between laser and spindle $31
+        /// </summary>
+        AutoCorrectLaserSpindleMode = 128,
     }
 
     [Flags]

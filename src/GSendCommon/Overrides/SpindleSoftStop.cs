@@ -43,6 +43,7 @@ namespace GSendCommon.Overrides
                     overrideContext.StaticMethods.Sleep(200);
                 }
 
+                overrideContext.ComPort.WriteLine("S0");
                 overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
 
                 return;

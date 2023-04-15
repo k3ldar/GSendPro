@@ -1,4 +1,6 @@
-﻿using SimpleDB;
+﻿using GSendShared;
+
+using SimpleDB;
 
 namespace GSendDB.Tables
 {
@@ -7,6 +9,8 @@ namespace GSendDB.Tables
     {
         private long _machineId;
         private DateTime _date;
+        private ServiceType _serviceType;
+        private long _spindleHours;
 
         [ForeignKey("Machines")]
         public long MachineId
@@ -33,6 +37,34 @@ namespace GSendDB.Tables
                     return;
 
                 _date = value;
+                Update();
+            }
+        }
+
+        public ServiceType ServiceType
+        {
+            get => _serviceType;
+
+            set
+            {
+                if (value == _serviceType)
+                    return;
+
+                _serviceType = value;
+                Update();
+            }
+        }
+
+        public long SpindleHours
+        {
+            get => _spindleHours;
+
+            set
+            {
+                if (value == _spindleHours)
+                    return;
+
+                _spindleHours = value;
                 Update();
             }
         }

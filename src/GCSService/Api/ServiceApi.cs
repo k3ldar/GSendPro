@@ -1,5 +1,6 @@
 ﻿using GSendDB.Tables;
 
+using GSendShared;
 using GSendShared.Models;
 
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +23,12 @@ namespace GSendService.Api
         [HttpGet]
         public IActionResult ServicesGet(long machineId)
         {
-            List<DateTime> dates = new List<DateTime>();
+            List<MachineServiceModel> dates = new();
             IReadOnlyList<MachineServiceDataRow> services = _serviceTable.Select(m => m.MachineId.Equals(machineId));
 
             foreach (MachineServiceDataRow service in services)
             {
-                dates.Add(service.ServiceDate);
+                dates.Add(new MachineServiceModel(service.MachineId, service.ServiceDate, (ServiceType)service.ServiceType, service.SpindleHours));
             }
 
             return GenerateJsonSuccessResponse(dates);
@@ -36,7 +37,14 @@ namespace GSendService.Api
         [HttpPost]
         public IActionResult ServiceAdd([FromBody] MachineServiceModel machineServiceModel)
         {
-            _serviceTable.Insert(new MachineServiceDataRow { MachineId = machineServiceModel.MachineId, ServiceDate = machineServiceModel.ServiceDate });
+            _serviceTable.Insert(new MachineServiceDataRow 
+            { 
+                MachineId = machineServiceModel.MachineId, 
+                ServiceDate = machineServiceModel.ServiceDate,
+                ServiceType = machineServiceModel.ServiceType,
+                SpindleHours = machineServiceModel.SpindleHours,
+            });
+
             return GenerateJsonSuccessResponse();
         }
     }

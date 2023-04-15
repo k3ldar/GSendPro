@@ -56,17 +56,19 @@ namespace GSendApi
 
         #region Services
 
-        public List<DateTime> MachineServices(long machineId)
+        public List<MachineServiceModel> MachineServices(long machineId)
         {
-            return CallGetApi<List<DateTime>>($"ServiceApi/ServicesGet/{machineId}");
+            return CallGetApi<List<MachineServiceModel>>($"ServiceApi/ServicesGet/{machineId}");
         }
 
-        public void MachineServiceAdd(long machineId, DateTime serviceDate)
+        public void MachineServiceAdd(long machineId, DateTime serviceDate, ServiceType serviceType, long spindleHours)
         {
             MachineServiceModel machineServiceModel = new()
             {
                 MachineId = machineId,
-                ServiceDate = serviceDate
+                ServiceDate = serviceDate,
+                ServiceType = serviceType,
+                SpindleHours = spindleHours
             };
 
             CallPostApi("ServiceApi/ServiceAdd", machineServiceModel);

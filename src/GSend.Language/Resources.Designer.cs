@@ -61,6 +61,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Service.
+        /// </summary>
+        public static string AddService {
+            get {
+                return ResourceManager.GetString("AddService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alarm.
         /// </summary>
         public static string Alarm0 {
@@ -147,6 +156,51 @@ namespace GSend.Language {
         public static string Alarm9 {
             get {
                 return ResourceManager.GetString("Alarm9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser mode was disabled, changed to enabled as machine is a laser.
+        /// </summary>
+        public static string AutomaticallySelectedLaserMode {
+            get {
+                return ResourceManager.GetString("AutomaticallySelectedLaserMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser mode was enabled, changed to disabled as machine is CNC.
+        /// </summary>
+        public static string AutomaticallySelectedSpindleMode {
+            get {
+                return ResourceManager.GetString("AutomaticallySelectedSpindleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically set laser mode $32.
+        /// </summary>
+        public static string AutoUpdateLaserMode {
+            get {
+                return ResourceManager.GetString("AutoUpdateLaserMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically set spindle mode $32.
+        /// </summary>
+        public static string AutoUpdateSpindleMode {
+            get {
+                return ResourceManager.GetString("AutoUpdateSpindleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
         
@@ -664,6 +718,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Supports flood coolant.
+        /// </summary>
+        public static string FloodCoolant {
+            get {
+                return ResourceManager.GetString("FloodCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -705,6 +768,15 @@ namespace GSend.Language {
         public static string Home {
             get {
                 return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        public static string Hours {
+            get {
+                return ResourceManager.GetString("Hours", resourceCulture);
             }
         }
         
@@ -799,6 +871,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        public static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supports mist coolant.
+        /// </summary>
+        public static string MistCoolant {
+            get {
+                return ResourceManager.GetString("MistCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -808,7 +898,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NextService.
+        ///   Looks up a localized string similar to Next Service.
         /// </summary>
         public static string NextService {
             get {
@@ -822,6 +912,15 @@ namespace GSend.Language {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         
@@ -925,6 +1024,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Register Service.
+        /// </summary>
+        public static string RegisterService {
+            get {
+                return ResourceManager.GetString("RegisterService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         public static string Reset {
@@ -1015,6 +1123,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Date.
+        /// </summary>
+        public static string ServiceDate {
+            get {
+                return ResourceManager.GetString("ServiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service Schedule.
         /// </summary>
         public static string ServiceSchedule {
@@ -1029,6 +1146,42 @@ namespace GSend.Language {
         public static string ServiceSpindleHours {
             get {
                 return ResourceManager.GetString("ServiceSpindleHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Type.
+        /// </summary>
+        public static string ServiceType {
+            get {
+                return ResourceManager.GetString("ServiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily.
+        /// </summary>
+        public static string ServiceTypeDaily {
+            get {
+                return ResourceManager.GetString("ServiceTypeDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Major.
+        /// </summary>
+        public static string ServiceTypeMajor {
+            get {
+                return ResourceManager.GetString("ServiceTypeMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minor.
+        /// </summary>
+        public static string ServiceTypeMinor {
+            get {
+                return ResourceManager.GetString("ServiceTypeMinor", resourceCulture);
             }
         }
         
@@ -1461,6 +1614,15 @@ namespace GSend.Language {
         public static string SpindleHint {
             get {
                 return ResourceManager.GetString("SpindleHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spindle Hours.
+        /// </summary>
+        public static string SpindleHours {
+            get {
+                return ResourceManager.GetString("SpindleHours", resourceCulture);
             }
         }
         

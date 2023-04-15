@@ -590,6 +590,21 @@ namespace GSendCommon
 
                     break;
 
+                case Constants.MessageMachineWriteLineServerR:
+                    response.request = Constants.MessageMachineWriteLineServerR;
+                    if (foundMachine && proc != null)
+                    {
+                        response.message = proc.SendCommandWaitForOKCommand(parts[2]);
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+
                 case Constants.MessageMachineSpindleAdmin:
                     if (foundMachine && proc != null && parts.Length == 4)
                     {

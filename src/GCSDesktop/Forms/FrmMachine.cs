@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shared.Classes;
 using Shared.Communication;
 
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
@@ -202,6 +203,7 @@ namespace GSendDesktop.Forms
                     toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
                     toolStripStatusLabelBuffer.Visible = true;
                     toolStripStatusLabelStatus.Visible = true;
+
                     break;
 
                 case "Disconnect":
@@ -213,6 +215,7 @@ namespace GSendDesktop.Forms
                     toolStripStatusLabelSpindle.Visible = false;
                     toolStripStatusLabelBuffer.Visible = false;
                     toolStripStatusLabelStatus.Visible = false;
+                    _isPaused = false;
                     UpdateEnabledState();
                     break;
 
@@ -262,6 +265,11 @@ namespace GSendDesktop.Forms
 
                 case "Alarm":
                     ProcessAlarmResponse(clientMessage);
+                    break;
+
+                case Constants.MessageMachineWriteLineServerR:
+                    string response = clientMessage.message.ToString();
+                    textBoxConsoleText.AppendText(response);
                     break;
             }
         }
@@ -459,6 +467,12 @@ namespace GSendDesktop.Forms
             // settings
             cbLimitSwitches.Checked = _machine.Options.HasFlag(MachineOptions.LimitSwitches);
             cbToolChanger.Checked = _machine.Options.HasFlag(MachineOptions.ToolChanger);
+            cbToolChanger.Enabled = _machine.MachineType.Equals(MachineType.CNC);
+            cbFloodCoolant.Checked = _machine.Options.HasFlag(MachineOptions.FloodCoolant);
+            cbFloodCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
+            cbMistCoolant.Checked = _machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode);
+            cbMistCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
+
 
             // service schedule
             cbMaintainServiceSchedule.Checked = _machine.Options.HasFlag(MachineOptions.ServiceSchedule);
@@ -466,8 +480,11 @@ namespace GSendDesktop.Forms
             trackBarServiceSpindleHours.Value = _machine.ServiceSpindleHours;
             lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
             lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
-            btnServiceReset.Text = GSend.Language.Resources.Reset;
+            btnServiceReset.Text = GSend.Language.Resources.AddService;
             lblNextService.Text = GSend.Language.Resources.NextService;
+            columnServiceHeaderDateTime.Text = GSend.Language.Resources.ServiceDate;
+            columnServiceHeaderServiceType.Text = GSend.Language.Resources.ServiceType;
+            columnServiceHeaderSpindleHours.Text = GSend.Language.Resources.SpindleHours;
 
             trackBarServiceSpindleHours.Enabled = cbMaintainServiceSchedule.Checked;
             trackBarServiceWeeks.Enabled = cbMaintainServiceSchedule.Checked;
@@ -495,6 +512,9 @@ namespace GSendDesktop.Forms
 
             cbToolChanger.CheckedChanged += CbToolChanger_CheckedChanged;
             cbLimitSwitches.CheckedChanged += CbLimitSwitches_CheckedChanged;
+            cbCorrectMode.CheckedChanged += CbCorrectMode_CheckedChanged;
+            cbFloodCoolant.CheckedChanged += CbFloodCoolant_CheckedChanged;
+            cbMistCoolant.CheckedChanged += CbMistCoolant_CheckedChanged;
             cbMaintainServiceSchedule.CheckedChanged += CbMaintainServiceSchedule_CheckedChanged;
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
@@ -553,6 +573,36 @@ namespace GSendDesktop.Forms
                 _machine.AddOptions(MachineOptions.ToolChanger);
             else
                 _machine.RemoveOptions(MachineOptions.ToolChanger);
+
+            UpdateConfigurationChanged();
+        }
+
+        private void CbMistCoolant_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMistCoolant.Checked)
+                _machine.AddOptions(MachineOptions.MistCoolant);
+            else
+                _machine.RemoveOptions(MachineOptions.MistCoolant);
+
+            UpdateConfigurationChanged();
+        }
+
+        private void CbFloodCoolant_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbFloodCoolant.Checked)
+                _machine.AddOptions(MachineOptions.FloodCoolant);
+            else
+                _machine.RemoveOptions(MachineOptions.FloodCoolant);
+
+            UpdateConfigurationChanged();
+        }
+
+        private void CbCorrectMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbCorrectMode.Checked)
+                _machine.AddOptions(MachineOptions.AutoCorrectLaserSpindleMode);
+            else
+                _machine.RemoveOptions(MachineOptions.AutoCorrectLaserSpindleMode);
 
             UpdateConfigurationChanged();
         }
@@ -620,11 +670,15 @@ namespace GSendDesktop.Forms
             // settings tab
             cbLimitSwitches.Text = GSend.Language.Resources.MachineOptionLimitSwitches;
             cbToolChanger.Text = GSend.Language.Resources.MachineOptionToolChanger;
+            cbFloodCoolant.Text = GSend.Language.Resources.FloodCoolant;
+            cbMistCoolant.Text = GSend.Language.Resources.MistCoolant;
+            cbCorrectMode.Text = _machine.MachineType == MachineType.Laser ? GSend.Language.Resources.AutoUpdateLaserMode : GSend.Language.Resources.AutoUpdateSpindleMode;
 
 
             // service schedule
             cbMaintainServiceSchedule.Text = GSend.Language.Resources.MaintainServiceSchedule;
             btnServiceRefresh.Text = GSend.Language.Resources.Refresh;
+
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
             viewToolStripMenuItem.Text = GSend.Language.Resources.View;
@@ -872,6 +926,7 @@ namespace GSendDesktop.Forms
 
         private void LoadAllStatusChangeWarnings(MachineStateModel status)
         {
+            ValidateLaserSpindleMode(status);
             foreach (ChangedGrblSettings changedGrblSetting in status.UpdatedGrblConfiguration)
             {
                 string setting = String.Format(GSend.Language.Resources.GrblValueUpdated,
@@ -882,8 +937,40 @@ namespace GSendDesktop.Forms
 
                 warningsAndErrors.AddWarningPanel(InformationType.Warning, setting);
             }
-
             _appliedSettingsChanged = true;
+        }
+
+        private void ValidateLaserSpindleMode(MachineStateModel status)
+        {
+            if (_machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode))
+            {
+                switch (_machine.MachineType)
+                {
+                    case MachineType.CNC:
+                        if (status.UpdatedGrblConfiguration.Any(s => s.DollarValue.Equals(32) && s.OldValue.Equals("0") && s.NewValue.Equals("1")))
+                        {
+                            warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedSpindleMode);
+                            _machine.Settings.LaserModeEnabled = false;
+                            SendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=0"));
+                            SaveChanges(true);
+                            ConfigureMachine();
+                        }
+
+                        break;
+
+                    case MachineType.Laser:
+                        if (status.UpdatedGrblConfiguration.Any(s => s.DollarValue.Equals(32) && s.OldValue.Equals("1") && s.NewValue.Equals("2")))
+                        {
+                            warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedLaserMode);
+                            _machine.Settings.LaserModeEnabled = true;
+                            SendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=1"));
+                            SaveChanges(true);
+                            ConfigureMachine();
+                        }
+
+                        break;
+                }
+            }
         }
 
         private void WarningContainer_VisibleChanged(object sender, EventArgs e)
@@ -1097,7 +1184,14 @@ namespace GSendDesktop.Forms
                 return;
 
             AddMessageToConsole(txtUserGrblCommand.Text);
-            SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, txtUserGrblCommand.Text));
+
+            string command = txtUserGrblCommand.Text.Trim();
+
+            if (txtUserGrblCommand.Text.StartsWith("$"))
+                SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));
+            else
+                SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, command));
+
             txtUserGrblCommand.Text = String.Empty;
             txtUserGrblCommand.Focus();
         }
@@ -1153,27 +1247,45 @@ namespace GSendDesktop.Forms
         {
             MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
 
-            machineApiWrapper.MachineServiceAdd(_machine.Id, DateTime.UtcNow);
+            using (FrmRegisterService frmRegisterService = new FrmRegisterService(_machine.Id, machineApiWrapper))
+            {
+                if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
+                {
+                    btnServiceRefresh_Click(sender, e);
+                }
+            }
         }
 
         private void btnServiceRefresh_Click(object sender, EventArgs e)
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                lstServices.Items.Clear();
+                lvServices.Items.Clear();
                 MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
 
-                List<DateTime> services = machineApiWrapper.MachineServices(_machine.Id);
+                List<MachineServiceModel> services = machineApiWrapper.MachineServices(_machine.Id);
 
-                foreach (DateTime service in services)
+                foreach (MachineServiceModel service in services.OrderByDescending(s => s.ServiceDate))
                 {
-                    lstServices.Items.Add(service.ToString("g"));
+                    TimeSpan spanSpindleHours = new TimeSpan(service.SpindleHours);
+                    ListViewItem serviceItem = new ListViewItem(service.ServiceDate.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern));
+
+                    string serviceType = GSend.Language.Resources.ServiceTypeDaily;
+
+                    if (service.ServiceType.Equals(ServiceType.Major))
+                        serviceType = GSend.Language.Resources.ServiceTypeMajor;
+                    else if (service.ServiceType.Equals(ServiceType.Minor))
+                        serviceType = GSend.Language.Resources.ServiceTypeMinor;
+
+                    serviceItem.SubItems.Add(serviceType);
+                    serviceItem.SubItems.Add($"{(int)spanSpindleHours.TotalHours} {GSend.Language.Resources.Hours} and {spanSpindleHours.Minutes} {GSend.Language.Resources.Minutes}");
+                    lvServices.Items.Add(serviceItem);
                 }
 
-                DateTime latestService = services.Max();
+                DateTime latestService = services.Max(s => s.ServiceDate);
                 DateTime nextService = latestService.AddDays(_machine.ServiceWeeks * 7);
-                TimeSpan span = nextService - latestService;
-                lblServiceDate.Text = $"{nextService:g} ({span.TotalDays} days)";
+                TimeSpan span = nextService - DateTime.UtcNow;
+                lblServiceDate.Text = $"{nextService:g} ({(int)span.TotalDays} days)";
 
                 List<SpindleHoursModel> spindleHours = machineApiWrapper.GetSpindleTime(_machine.Id, latestService);
 

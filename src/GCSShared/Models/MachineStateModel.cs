@@ -28,6 +28,7 @@
         private bool _updateWorkPosition;
         private bool _isRunning;
         private bool _isPaused;
+        private CoordinateSystem _coordinateSystem;
 
         public MachineStateModel()
         {
@@ -58,6 +59,20 @@
                     return;
 
                 _subState = value;
+                Updated = true;
+            }
+        }
+
+        public CoordinateSystem CoordinateSystem
+        {
+            get => _coordinateSystem;
+
+            set
+            {
+                if (_coordinateSystem.Equals(value))
+                    return;
+
+                _coordinateSystem = value;
                 Updated = true;
             }
         }

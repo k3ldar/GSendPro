@@ -84,8 +84,11 @@
             this.lblSpindleType = new System.Windows.Forms.Label();
             this.cmbSpindleType = new System.Windows.Forms.ComboBox();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
+            this.lvServices = new System.Windows.Forms.ListView();
+            this.columnServiceHeaderDateTime = new System.Windows.Forms.ColumnHeader();
+            this.columnServiceHeaderServiceType = new System.Windows.Forms.ColumnHeader();
+            this.columnServiceHeaderSpindleHours = new System.Windows.Forms.ColumnHeader();
             this.btnServiceRefresh = new System.Windows.Forms.Button();
-            this.lstServices = new System.Windows.Forms.ListBox();
             this.lblSpindleHoursRemaining = new System.Windows.Forms.Label();
             this.lblServiceDate = new System.Windows.Forms.Label();
             this.btnServiceReset = new System.Windows.Forms.Button();
@@ -143,6 +146,9 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
+            this.cbMistCoolant = new System.Windows.Forms.CheckBox();
+            this.cbFloodCoolant = new System.Windows.Forms.CheckBox();
+            this.cbCorrectMode = new System.Windows.Forms.CheckBox();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -758,8 +764,8 @@
             // tabPageServiceSchedule
             // 
             this.tabPageServiceSchedule.BackColor = System.Drawing.Color.White;
+            this.tabPageServiceSchedule.Controls.Add(this.lvServices);
             this.tabPageServiceSchedule.Controls.Add(this.btnServiceRefresh);
-            this.tabPageServiceSchedule.Controls.Add(this.lstServices);
             this.tabPageServiceSchedule.Controls.Add(this.lblSpindleHoursRemaining);
             this.tabPageServiceSchedule.Controls.Add(this.lblServiceDate);
             this.tabPageServiceSchedule.Controls.Add(this.btnServiceReset);
@@ -776,30 +782,47 @@
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
             // 
+            // lvServices
+            // 
+            this.lvServices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnServiceHeaderDateTime,
+            this.columnServiceHeaderServiceType,
+            this.columnServiceHeaderSpindleHours});
+            this.lvServices.Location = new System.Drawing.Point(332, 126);
+            this.lvServices.MultiSelect = false;
+            this.lvServices.Name = "lvServices";
+            this.lvServices.ShowItemToolTips = true;
+            this.lvServices.Size = new System.Drawing.Size(427, 110);
+            this.lvServices.TabIndex = 11;
+            this.lvServices.UseCompatibleStateImageBehavior = false;
+            this.lvServices.View = System.Windows.Forms.View.Details;
+            // 
+            // columnServiceHeaderDateTime
+            // 
+            this.columnServiceHeaderDateTime.Width = 130;
+            // 
+            // columnServiceHeaderServiceType
+            // 
+            this.columnServiceHeaderServiceType.Width = 80;
+            // 
+            // columnServiceHeaderSpindleHours
+            // 
+            this.columnServiceHeaderSpindleHours.Width = 180;
+            // 
             // btnServiceRefresh
             // 
-            this.btnServiceRefresh.Location = new System.Drawing.Point(684, 89);
+            this.btnServiceRefresh.Location = new System.Drawing.Point(657, 89);
             this.btnServiceRefresh.Name = "btnServiceRefresh";
-            this.btnServiceRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnServiceRefresh.Size = new System.Drawing.Size(102, 23);
             this.btnServiceRefresh.TabIndex = 10;
             this.btnServiceRefresh.Text = "button1";
             this.btnServiceRefresh.UseVisualStyleBackColor = true;
             this.btnServiceRefresh.Click += new System.EventHandler(this.btnServiceRefresh_Click);
             // 
-            // lstServices
-            // 
-            this.lstServices.FormattingEnabled = true;
-            this.lstServices.HorizontalScrollbar = true;
-            this.lstServices.ItemHeight = 15;
-            this.lstServices.Location = new System.Drawing.Point(388, 118);
-            this.lstServices.Name = "lstServices";
-            this.lstServices.Size = new System.Drawing.Size(371, 109);
-            this.lstServices.TabIndex = 9;
-            // 
             // lblSpindleHoursRemaining
             // 
             this.lblSpindleHoursRemaining.AutoSize = true;
-            this.lblSpindleHoursRemaining.Location = new System.Drawing.Point(388, 73);
+            this.lblSpindleHoursRemaining.Location = new System.Drawing.Point(332, 73);
             this.lblSpindleHoursRemaining.Name = "lblSpindleHoursRemaining";
             this.lblSpindleHoursRemaining.Size = new System.Drawing.Size(38, 15);
             this.lblSpindleHoursRemaining.TabIndex = 8;
@@ -808,7 +831,7 @@
             // lblServiceDate
             // 
             this.lblServiceDate.AutoSize = true;
-            this.lblServiceDate.Location = new System.Drawing.Point(388, 43);
+            this.lblServiceDate.Location = new System.Drawing.Point(332, 43);
             this.lblServiceDate.Name = "lblServiceDate";
             this.lblServiceDate.Size = new System.Drawing.Size(38, 15);
             this.lblServiceDate.TabIndex = 7;
@@ -816,9 +839,9 @@
             // 
             // btnServiceReset
             // 
-            this.btnServiceReset.Location = new System.Drawing.Point(684, 12);
+            this.btnServiceReset.Location = new System.Drawing.Point(657, 12);
             this.btnServiceReset.Name = "btnServiceReset";
-            this.btnServiceReset.Size = new System.Drawing.Size(75, 23);
+            this.btnServiceReset.Size = new System.Drawing.Size(102, 23);
             this.btnServiceReset.TabIndex = 6;
             this.btnServiceReset.Text = "button1";
             this.btnServiceReset.UseVisualStyleBackColor = true;
@@ -827,7 +850,7 @@
             // lblNextService
             // 
             this.lblNextService.AutoSize = true;
-            this.lblNextService.Location = new System.Drawing.Point(388, 16);
+            this.lblNextService.Location = new System.Drawing.Point(332, 16);
             this.lblNextService.Name = "lblNextService";
             this.lblNextService.Size = new System.Drawing.Size(38, 15);
             this.lblNextService.TabIndex = 5;
@@ -966,6 +989,9 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageSettings.Controls.Add(this.cbCorrectMode);
+            this.tabPageSettings.Controls.Add(this.cbFloodCoolant);
+            this.tabPageSettings.Controls.Add(this.cbMistCoolant);
             this.tabPageSettings.Controls.Add(this.cbToolChanger);
             this.tabPageSettings.Controls.Add(this.cbLimitSwitches);
             this.tabPageSettings.Controls.Add(this.probingCommand1);
@@ -1329,6 +1355,36 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 102);
             this.textBoxConsoleText.TabIndex = 0;
             // 
+            // cbMistCoolant
+            // 
+            this.cbMistCoolant.AutoSize = true;
+            this.cbMistCoolant.Location = new System.Drawing.Point(6, 56);
+            this.cbMistCoolant.Name = "cbMistCoolant";
+            this.cbMistCoolant.Size = new System.Drawing.Size(83, 19);
+            this.cbMistCoolant.TabIndex = 3;
+            this.cbMistCoolant.Text = "checkBox1";
+            this.cbMistCoolant.UseVisualStyleBackColor = true;
+            // 
+            // cbFloodCoolant
+            // 
+            this.cbFloodCoolant.AutoSize = true;
+            this.cbFloodCoolant.Location = new System.Drawing.Point(6, 81);
+            this.cbFloodCoolant.Name = "cbFloodCoolant";
+            this.cbFloodCoolant.Size = new System.Drawing.Size(83, 19);
+            this.cbFloodCoolant.TabIndex = 4;
+            this.cbFloodCoolant.Text = "checkBox2";
+            this.cbFloodCoolant.UseVisualStyleBackColor = true;
+            // 
+            // cbCorrectMode
+            // 
+            this.cbCorrectMode.AutoSize = true;
+            this.cbCorrectMode.Location = new System.Drawing.Point(6, 106);
+            this.cbCorrectMode.Name = "cbCorrectMode";
+            this.cbCorrectMode.Size = new System.Drawing.Size(83, 19);
+            this.cbCorrectMode.TabIndex = 5;
+            this.cbCorrectMode.Text = "checkBox3";
+            this.cbCorrectMode.UseVisualStyleBackColor = true;
+            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1468,7 +1524,6 @@
         private System.Windows.Forms.Label lblSpindleHoursRemaining;
         private System.Windows.Forms.Label lblServiceDate;
         private System.Windows.Forms.Button btnServiceRefresh;
-        private System.Windows.Forms.ListBox lstServices;
         private System.Windows.Forms.ToolStripMenuItem generalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem overridesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem jogToolStripMenuItem;
@@ -1496,5 +1551,12 @@
         private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ListView lvServices;
+        private System.Windows.Forms.ColumnHeader columnServiceHeaderDateTime;
+        private System.Windows.Forms.ColumnHeader columnServiceHeaderServiceType;
+        private System.Windows.Forms.ColumnHeader columnServiceHeaderSpindleHours;
+        private System.Windows.Forms.CheckBox cbCorrectMode;
+        private System.Windows.Forms.CheckBox cbFloodCoolant;
+        private System.Windows.Forms.CheckBox cbMistCoolant;
     }
 }

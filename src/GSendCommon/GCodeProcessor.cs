@@ -36,6 +36,7 @@ namespace GSendCommon
         private const string CommandZeroAxis = " {0}0";
         private const string StatusIdle = "Idle";
         private const string CommandGetStatus = "$I";
+        private const string CommonadGetConfiguration = "$G";
         private const string CommandStartResume = "~";
         private const string StatusMistEnabled = "M";
         private const string CommandPause = "!";
@@ -74,7 +75,7 @@ namespace GSendCommon
         private readonly IGCodeOverrideContext _overrideContext;
 
         private int _lineCount = 0;
-        private bool _initialising = false;
+        private bool _initialising = true;
 
 
         #region Constructors
@@ -158,15 +159,13 @@ namespace GSendCommon
                 _isAlarm = false;
                 _port.Open();
                 OnConnect?.Invoke(this, EventArgs.Empty);
-                string connectMessage = SendCommandWaitForOKCommand(CommandGetStatus).Trim();
-
-                if (connectMessage.Length > 2)
-                    connectMessage = connectMessage[1..^1];
-
-                ProcessMessageResponse(connectMessage);
+                SendAndProcessMessage(CommandGetStatus);
+                SendAndProcessMessage(CommonadGetConfiguration);
                 ValidateGrblSettings();
                 Trace.WriteLine($"Connect: {_port.IsOpen()}");
                 _machineStateModel.IsConnected = _port.IsOpen();
+                _isPaused = false;
+
                 return ConnectResult.Success;
             }
             catch (TimeoutException)
@@ -458,6 +457,9 @@ namespace GSendCommon
             foreach (string s in settings)
             {
                 string[] parts = s.Split(SeparatorEquals, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                if (parts[0] == ">")
+                    continue;
 
                 if (!Int32.TryParse(parts[0][1..], out int settingValue))
                     throw new InvalidCastException("Setting not recognized");
@@ -798,6 +800,22 @@ namespace GSendCommon
 
             if (parts.Length > 1)
             {
+                if (parts[0] == "GC")
+                {
+                    if (parts[1].Contains("G54"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G54;
+                    else if (parts[1].Contains("G55"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G55;
+                    else if (parts[1].Contains("G56"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G56;
+                    else if (parts[1].Contains("G57"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G57;
+                    else if (parts[1].Contains("G58"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G58;
+                    else if (parts[1].Contains("G59"))
+                        _machineStateModel.CoordinateSystem = CoordinateSystem.G59;
+                }
+
                 OnMessageReceived?.Invoke(this, parts[1]);
 
                 if (parts[1].Equals("Pgm End"))
@@ -992,6 +1010,16 @@ namespace GSendCommon
 
         #region Private Methods
 
+        private void SendAndProcessMessage(string message)
+        {
+            string connectMessage = SendCommandWaitForOKCommand(message).Trim();
+
+            if (connectMessage.Length > 2)
+                connectMessage = connectMessage[1..^1];
+
+            ProcessMessageResponse(connectMessage);
+        }
+
         private void DisconnectForSerialError()
         {
             if (IsRunning)
@@ -1006,37 +1034,45 @@ namespace GSendCommon
         public string SendCommandWaitForOKCommand(string commandText)
         {
             StringBuilder Result = new(1024);
-
-            _port.DataReceived -= Port_DataReceived;
+            _initialising = true;
             try
             {
-                using (TimedLock tl = TimedLock.Lock(_lockObject))
+
+                _port.DataReceived -= Port_DataReceived;
+                try
                 {
-                    _ = _port.ReadLine();
-                    _port.WriteLine(commandText);
-                    DateTime sendTime = DateTime.UtcNow;
-
-                    while (true)
+                    using (TimedLock tl = TimedLock.Lock(_lockObject))
                     {
-                        string line = _port.ReadLine();
+                        _ = _port.ReadLine();
+                        _port.WriteLine(commandText);
+                        DateTime sendTime = DateTime.UtcNow;
 
-                        if (line.Trim().Equals(ResultOk))
-                            break;
+                        while (true)
+                        {
+                            string line = _port.ReadLine();
 
-                        Result.AppendLine(line);
+                            if (line.Trim().Equals(ResultOk))
+                                break;
 
-                        if (DateTime.UtcNow - sendTime > TimeOut)
-                            throw new TimeoutException();
+                            if (!String.IsNullOrEmpty(line.Trim()))
+                                Result.AppendLine(line);
 
-                        Thread.Sleep(TimeSpan.Zero);
+                            if (DateTime.UtcNow - sendTime > TimeOut)
+                                throw new TimeoutException();
+
+                            Thread.Sleep(TimeSpan.Zero);
+                        }
                     }
+                }
+                finally
+                {
+                    _port.DataReceived += Port_DataReceived;
                 }
             }
             finally
             {
-                _port.DataReceived += Port_DataReceived;
+                _initialising = false;
             }
-
             return Result.ToString();
         }
 
@@ -1103,7 +1139,9 @@ namespace GSendCommon
                 object newPropertyValue = propertyInfo.GetValue(_machine.Settings);
 
                 if (newPropertyValue.GetType().BaseType.Name.Equals("Enum"))
+                {
                     newPropertyValue = (int)newPropertyValue;
+                }
                 else if (newPropertyValue.GetType().Equals(typeof(bool)))
                 {
                     newPropertyValue = newPropertyValue.Equals(true) ? 1 : 0;

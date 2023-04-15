@@ -55,7 +55,7 @@ namespace GSendTests.OverrideTests
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
             context.ProcessGCodeLine(gCodeLine);
-            SpindleActiveTime sut = new SpindleActiveTime();
+            SpindleActiveTime sut = new SpindleActiveTime(null);
             sut.Process(context, CancellationToken.None);
 
 

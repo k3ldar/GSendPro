@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddService" xml:space="preserve">
+    <value>Add Service</value>
+  </data>
   <data name="Alarm0" xml:space="preserve">
     <value>Alarm</value>
   </data>
@@ -146,6 +149,21 @@
   </data>
   <data name="Alarm9" xml:space="preserve">
     <value>Homing fail. Could not find limit switch within search distance.</value>
+  </data>
+  <data name="AutomaticallySelectedLaserMode" xml:space="preserve">
+    <value>Laser mode was disabled, changed to enabled as machine is a laser</value>
+  </data>
+  <data name="AutomaticallySelectedSpindleMode" xml:space="preserve">
+    <value>Laser mode was enabled, changed to disabled as machine is CNC</value>
+  </data>
+  <data name="AutoUpdateLaserMode" xml:space="preserve">
+    <value>Automatically set laser mode $32</value>
+  </data>
+  <data name="AutoUpdateSpindleMode" xml:space="preserve">
+    <value>Automatically set spindle mode $32</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
@@ -318,6 +336,9 @@
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
   </data>
+  <data name="FloodCoolant" xml:space="preserve">
+    <value>Supports flood coolant</value>
+  </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
@@ -332,6 +353,9 @@
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Hours</value>
   </data>
   <data name="Jog" xml:space="preserve">
     <value>Jog</value>
@@ -363,14 +387,23 @@
   <data name="MaintainServiceSchedule" xml:space="preserve">
     <value>Maintain service schedule</value>
   </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="MistCoolant" xml:space="preserve">
+    <value>Supports mist coolant</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="NextService" xml:space="preserve">
-    <value>NextService</value>
+    <value>Next Service</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="OverrideRpm" xml:space="preserve">
     <value>{0} RPM</value>
@@ -405,6 +438,9 @@
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="RegisterService" xml:space="preserve">
+    <value>Register Service</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -435,11 +471,26 @@
   <data name="ServerNotConnected" xml:space="preserve">
     <value>No connection to Server</value>
   </data>
+  <data name="ServiceDate" xml:space="preserve">
+    <value>Service Date</value>
+  </data>
   <data name="ServiceSchedule" xml:space="preserve">
     <value>Service Schedule</value>
   </data>
   <data name="ServiceSpindleHours" xml:space="preserve">
     <value>{0} hours of spindle usage</value>
+  </data>
+  <data name="ServiceType" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
+  <data name="ServiceTypeDaily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="ServiceTypeMajor" xml:space="preserve">
+    <value>Major</value>
+  </data>
+  <data name="ServiceTypeMinor" xml:space="preserve">
+    <value>Minor</value>
   </data>
   <data name="ServiceWeeks" xml:space="preserve">
     <value>Service every {0} weeks or</value>
@@ -584,6 +635,9 @@
   </data>
   <data name="SpindleHint" xml:space="preserve">
     <value>Spindle Status</value>
+  </data>
+  <data name="SpindleHours" xml:space="preserve">
+    <value>Spindle Hours</value>
   </data>
   <data name="SpindleInactive" xml:space="preserve">
     <value>Off</value>
