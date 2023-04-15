@@ -101,6 +101,9 @@ namespace GSendDesktop.Forms
             cmbSpindleType.Items.Add(SpindleType.VFD);
             cmbSpindleType.Items.Add(SpindleType.External);
 
+            mmFeedbackUnitToolStripMenuItem.Tag = FeedbackUnit.Mm;
+            inchFeedbackToolStripMenuItem.Tag = FeedbackUnit.Inch;
+
             UpdateDisplay();
             UpdateEnabledState();
             probingCommand1.InitializeProbingCommand(_machine.ProbeCommand, _machine.ProbeSpeed, _machine.ProbeThickness);
@@ -668,6 +671,9 @@ namespace GSendDesktop.Forms
             toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
+            toolStripDropDownButtonDisplayUnit.ToolTipText = GSend.Language.Resources.DisplayUnits;
+            mmFeedbackUnitToolStripMenuItem.Text = GSend.Language.Resources.DisplayMm;
+            inchFeedbackToolStripMenuItem.Text = GSend.Language.Resources.DisplayInch;
 
 
             //tab pages
@@ -765,23 +771,23 @@ namespace GSendDesktop.Forms
 
             string labelFormat = GSend.Language.Resources.DisplayMmMinute;
 
-            switch (_machine.DisplayUnits)
+            switch (_machine.FeedbackUnit)
             {
-                case DisplayUnits.MmPerMinute:
-                    labelFormat = GSend.Language.Resources.DisplayMmMinute;
+                case FeedbackUnit.Mm:
+                    labelFormat = GSend.Language.Resources.DisplayMmAbreviated;
+                    mmFeedbackUnitToolStripMenuItem.Checked = true;
                     break;
-                case DisplayUnits.MmPerSecond:
-                    labelFormat = GSend.Language.Resources.DisplayMmSec;
-                    break;
-                case DisplayUnits.InchPerMinute:
-                    labelFormat = GSend.Language.Resources.DisplayInchMinute;
-                    break;
-                case DisplayUnits.InchPerSecond:
-                    labelFormat = GSend.Language.Resources.DisplayInchSecond;
+
+                case FeedbackUnit.Inch:
+                    labelFormat = GSend.Language.Resources.DisplayInchAbreviated;
+                    inchFeedbackToolStripMenuItem.Checked = true;
                     break;
             }
 
-            toolStripStatusLabelDisplayMeasurements.Text = labelFormat;
+            machinePositionGeneral.DisplayFeedbackUnit = _machine.FeedbackUnit;
+            machinePositionJog.DisplayFeedbackUnit = _machine.FeedbackUnit;
+            machinePositionOverrides.DisplayFeedbackUnit = _machine.FeedbackUnit;
+            toolStripDropDownButtonDisplayUnit.Text = labelFormat;
             selectionOverrideSpindle.TickFrequency = (int)_machine.Settings.MaxSpindleSpeed / 100;
         }
 
@@ -1155,6 +1161,18 @@ namespace GSendDesktop.Forms
             g57ToolStripMenuItem.Checked = false;
             g58ToolStripMenuItem.Checked = false;
             g59ToolStripMenuItem.Checked = false;
+        }
+
+        private void ToolstripMeasurement_Click(object sender, EventArgs e)
+        {
+            mmFeedbackUnitToolStripMenuItem.Checked = false;
+            inchFeedbackToolStripMenuItem.Checked = false;
+
+            ToolStripMenuItem selected = sender as ToolStripMenuItem;
+            selected.Checked = true;
+            _machine.FeedbackUnit = (FeedbackUnit)selected.Tag;
+            UpdateDisplay();
+            _appliedSettingsChanged = true;
         }
 
         #endregion Toolbar Buttons

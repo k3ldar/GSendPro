@@ -331,6 +331,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to inches.
+        /// </summary>
+        public static string DisplayInch {
+            get {
+                return ResourceManager.GetString("DisplayInch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to in.
+        /// </summary>
+        public static string DisplayInchAbreviated {
+            get {
+                return ResourceManager.GetString("DisplayInchAbreviated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inch/min.
         /// </summary>
         public static string DisplayInchMinute {
@@ -349,6 +367,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to millimeters.
+        /// </summary>
+        public static string DisplayMm {
+            get {
+                return ResourceManager.GetString("DisplayMm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm.
+        /// </summary>
+        public static string DisplayMmAbreviated {
+            get {
+                return ResourceManager.GetString("DisplayMmAbreviated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to mm/min.
         /// </summary>
         public static string DisplayMmMinute {
@@ -363,6 +399,15 @@ namespace GSend.Language {
         public static string DisplayMmSec {
             get {
                 return ResourceManager.GetString("DisplayMmSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display units.
+        /// </summary>
+        public static string DisplayUnits {
+            get {
+                return ResourceManager.GetString("DisplayUnits", resourceCulture);
             }
         }
         

@@ -15,6 +15,7 @@ namespace GSendDB.Tables
         private byte _axisCount;
         private GrblSettings _settings;
         private DisplayUnits _displayUnits;
+        private FeedbackUnit _feedbackUnits;
         private int _overrideSpeed;
         private int _overrideSpindle;
         private DateTime _configurationLastVerified;
@@ -134,6 +135,20 @@ namespace GSendDB.Tables
                     return;
 
                 _displayUnits = value;
+                Update();
+            }
+        }
+
+        public FeedbackUnit FeedbackUnits
+        {
+            get => _feedbackUnits;
+
+            set
+            {
+                if (_feedbackUnits == value)
+                    return;
+
+                _feedbackUnits = value;
                 Update();
             }
         }

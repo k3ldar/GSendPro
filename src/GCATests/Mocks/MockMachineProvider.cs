@@ -31,6 +31,7 @@ namespace GSendTests.Mocks
                     $"COM{i + 2}",
                     MachineOptions.None, 3, new GrblSettings(),
                     DisplayUnits.MmPerMinute,
+                    FeedbackUnit.Mm,
                     60,
                     60,
                     DateTime.UtcNow,

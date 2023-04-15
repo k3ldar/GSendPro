@@ -207,17 +207,32 @@
   <data name="Disconnect" xml:space="preserve">
     <value>Disconnect</value>
   </data>
+  <data name="DisplayInch" xml:space="preserve">
+    <value>inches</value>
+  </data>
+  <data name="DisplayInchAbreviated" xml:space="preserve">
+    <value>in</value>
+  </data>
   <data name="DisplayInchMinute" xml:space="preserve">
     <value>Inch/min</value>
   </data>
   <data name="DisplayInchSecond" xml:space="preserve">
     <value>Inch/sec</value>
   </data>
+  <data name="DisplayMm" xml:space="preserve">
+    <value>millimeters</value>
+  </data>
+  <data name="DisplayMmAbreviated" xml:space="preserve">
+    <value>mm</value>
+  </data>
   <data name="DisplayMmMinute" xml:space="preserve">
     <value>mm/min</value>
   </data>
   <data name="DisplayMmSec" xml:space="preserve">
     <value>mm/sec</value>
+  </data>
+  <data name="DisplayUnits" xml:space="preserve">
+    <value>Display units</value>
   </data>
   <data name="Error0" xml:space="preserve">
     <value>Undefined Grbl error</value>

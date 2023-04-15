@@ -4,22 +4,37 @@ namespace GSendShared
 {
     public static class HelperMethods
     {
-        public static string ConvertMeasurementForDisplay(DisplayUnits displayUnits, double mmMin)
+        public static string ConvertMeasurementForDisplay(FeedbackUnit feedbackUnit, double mmMin)
         {
-            switch (displayUnits)
+            switch (feedbackUnit)
             {
-                case DisplayUnits.MmPerSecond:
-                    return (mmMin / 60.0).ToString("N4");
+                case FeedbackUnit.Mm:
+                    return (mmMin).ToString("N4");
 
-                case DisplayUnits.InchPerMinute:
+                case FeedbackUnit.Inch:
                     return (mmMin / 25.4).ToString("N5");
-
-                case DisplayUnits.InchPerSecond:
-                    return (mmMin / 25.4 / 60).ToString("N5");
             }
 
             return mmMin.ToString("N4");
         }
+
+        //public static string ConvertMeasurementForDisplay(DisplayUnits displayUnits, double mmMin)
+        //{
+        //    switch (displayUnits)
+        //    {
+        //        case DisplayUnits.MmPerMinute:
+        //        case DisplayUnits.MmPerSecond:
+        //            return (mmMin / 60.0).ToString("N4");
+
+        //        case DisplayUnits.InchPerMinute:
+        //            return (mmMin / 25.4).ToString("N5");
+
+        //        case DisplayUnits.InchPerSecond:
+        //            return (mmMin / 25.4 / 60).ToString("N5");
+        //    }
+
+        //    return mmMin.ToString("N4");
+        //}
 
         public static string TranslateState(string state)
         {

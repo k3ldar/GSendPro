@@ -21,6 +21,8 @@ namespace GSendShared
 
         DisplayUnits DisplayUnits { get; set; }
 
+        FeedbackUnit FeedbackUnit { get; set; }
+
         int OverrideSpeed { get; set; }
 
         int OverrideSpindle { get; set; }

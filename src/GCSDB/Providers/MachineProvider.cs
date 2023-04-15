@@ -118,7 +118,7 @@ namespace GSendDB.Providers
             return new MachineModel(machineDataRow.Id, machineDataRow.Name, machineDataRow.MachineType, 
                 machineDataRow.ComPort, machineDataRow.Options,
                 machineDataRow.AxisCount, machineDataRow.Settings,
-                machineDataRow.DisplayUnits, machineDataRow.OverrideSpeed,
+                machineDataRow.DisplayUnits, machineDataRow.FeedbackUnits, machineDataRow.OverrideSpeed,
                 machineDataRow.OverrideSpindle, machineDataRow.ConfigurationLastVerified,
                 machineDataRow.ProbeCommand, machineDataRow.ProbeSpeed, machineDataRow.ProbeThickness,
                 machineDataRow.JogFeedRate, machineDataRow.JogUnits,

@@ -13,7 +13,7 @@ namespace GSendDesktop.Controls
         }
 
         [Browsable(true)]
-        public DisplayUnits DisplayMeasurements { get; set; }
+        public FeedbackUnit DisplayFeedbackUnit { get; set; }
 
         public void ResetPositions()
         {
@@ -27,16 +27,16 @@ namespace GSendDesktop.Controls
 
         public void UpdateWorkPosition(double x, double y, double z)
         {
-            UpdateLabel(lblWorkX, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, x));
-            UpdateLabel(lblWorkY, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, y));
-            UpdateLabel(lblWorkZ, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, z));
+            UpdateLabel(lblWorkX, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, x));
+            UpdateLabel(lblWorkY, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, y));
+            UpdateLabel(lblWorkZ, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, z));
         }
 
         public void UpdateMachinePosition(double x, double y, double z)
         {
-            UpdateLabel(lblMachineX, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, x));
-            UpdateLabel(lblMachineY, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, y));
-            UpdateLabel(lblMachineZ, HelperMethods.ConvertMeasurementForDisplay(DisplayMeasurements, z));
+            UpdateLabel(lblMachineX, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, x));
+            UpdateLabel(lblMachineY, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, y));
+            UpdateLabel(lblMachineZ, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, z));
         }
 
         private void UpdateLabel(Label label, string newText)

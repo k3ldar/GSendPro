@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMachine));
+            this.mmFeedbackUnitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inchFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectionOverrideSpindle = new GSendDesktop.Controls.Selection();
             this.selectionOverrideZDown = new GSendDesktop.Controls.Selection();
             this.selectionOverrideZUp = new GSendDesktop.Controls.Selection();
@@ -57,9 +59,9 @@
             this.g57ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.g58ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.g59ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelServerConnect = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelDisplayMeasurements = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelCpu = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
@@ -157,6 +159,7 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
+            this.toolStripDropDownButtonDisplayUnit = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -177,6 +180,24 @@
             this.tabControlSecondary.SuspendLayout();
             this.tabPageConsole.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // mmFeedbackUnitToolStripMenuItem
+            // 
+            this.mmFeedbackUnitToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.mmFeedbackUnitToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.mmFeedbackUnitToolStripMenuItem.Name = "mmFeedbackUnitToolStripMenuItem";
+            this.mmFeedbackUnitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.mmFeedbackUnitToolStripMenuItem.Text = "MM Per Second";
+            this.mmFeedbackUnitToolStripMenuItem.Click += new System.EventHandler(this.ToolstripMeasurement_Click);
+            // 
+            // inchFeedbackToolStripMenuItem
+            // 
+            this.inchFeedbackToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.inchFeedbackToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.inchFeedbackToolStripMenuItem.Name = "inchFeedbackToolStripMenuItem";
+            this.inchFeedbackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inchFeedbackToolStripMenuItem.Text = "Inch Per Minute";
+            this.inchFeedbackToolStripMenuItem.Click += new System.EventHandler(this.ToolstripMeasurement_Click);
             // 
             // selectionOverrideSpindle
             // 
@@ -297,7 +318,9 @@
             this.toolStripButtonPause,
             this.toolStripButtonStop,
             this.toolStripSeparator5,
-            this.toolStripDropDownButtonCoordinateSystem});
+            this.toolStripDropDownButtonCoordinateSystem,
+            this.toolStripSeparator6,
+            this.toolStripDropDownButtonDisplayUnit});
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(796, 57);
@@ -440,58 +463,81 @@
             this.g54ToolStripMenuItem.Checked = true;
             this.g54ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.g54ToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.g54ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g54ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g54ToolStripMenuItem.Name = "g54ToolStripMenuItem";
-            this.g54ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g54ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g54ToolStripMenuItem.Text = "G54";
             this.g54ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // g55ToolStripMenuItem
             // 
+            this.g55ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g55ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g55ToolStripMenuItem.Name = "g55ToolStripMenuItem";
-            this.g55ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g55ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g55ToolStripMenuItem.Text = "G55";
             this.g55ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // g56ToolStripMenuItem
             // 
             this.g56ToolStripMenuItem.CheckOnClick = true;
+            this.g56ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g56ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g56ToolStripMenuItem.Name = "g56ToolStripMenuItem";
-            this.g56ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g56ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g56ToolStripMenuItem.Text = "G56";
             this.g56ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // g57ToolStripMenuItem
             // 
+            this.g57ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g57ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g57ToolStripMenuItem.Name = "g57ToolStripMenuItem";
-            this.g57ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g57ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g57ToolStripMenuItem.Text = "G57";
             this.g57ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // g58ToolStripMenuItem
             // 
+            this.g58ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g58ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g58ToolStripMenuItem.Name = "g58ToolStripMenuItem";
-            this.g58ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g58ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g58ToolStripMenuItem.Text = "G58";
             this.g58ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // g59ToolStripMenuItem
             // 
+            this.g59ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g59ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g59ToolStripMenuItem.Name = "g59ToolStripMenuItem";
-            this.g59ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g59ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.g59ToolStripMenuItem.Text = "G59";
             this.g59ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 57);
+            // 
+            // toolStripDropDownButtonDisplayUnit
+            // 
+            this.toolStripDropDownButtonDisplayUnit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButtonDisplayUnit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mmFeedbackUnitToolStripMenuItem,
+            this.inchFeedbackToolStripMenuItem});
+            this.toolStripDropDownButtonDisplayUnit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.toolStripDropDownButtonDisplayUnit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonDisplayUnit.Image")));
+            this.toolStripDropDownButtonDisplayUnit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonDisplayUnit.Name = "toolStripDropDownButtonDisplayUnit";
+            this.toolStripDropDownButtonDisplayUnit.Size = new System.Drawing.Size(68, 54);
+            this.toolStripDropDownButtonDisplayUnit.Text = "mm/min";
             // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelServerConnect,
-            this.toolStripStatusLabelDisplayMeasurements,
             this.toolStripStatusLabelStatus,
             this.toolStripStatusLabelCpu,
             this.toolStripStatusLabelWarnings,
@@ -511,13 +557,6 @@
             this.toolStripStatusLabelServerConnect.Name = "toolStripStatusLabelServerConnect";
             this.toolStripStatusLabelServerConnect.Size = new System.Drawing.Size(92, 19);
             this.toolStripStatusLabelServerConnect.Text = "Not Connected";
-            // 
-            // toolStripStatusLabelDisplayMeasurements
-            // 
-            this.toolStripStatusLabelDisplayMeasurements.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolStripStatusLabelDisplayMeasurements.Name = "toolStripStatusLabelDisplayMeasurements";
-            this.toolStripStatusLabelDisplayMeasurements.Size = new System.Drawing.Size(33, 19);
-            this.toolStripStatusLabelDisplayMeasurements.Text = "asdf";
             // 
             // toolStripStatusLabelStatus
             // 
@@ -586,7 +625,7 @@
             // 
             // machinePositionGeneral
             // 
-            this.machinePositionGeneral.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePositionGeneral.DisplayFeedbackUnit = GSendShared.FeedbackUnit.Mm;
             this.machinePositionGeneral.Location = new System.Drawing.Point(6, 6);
             this.machinePositionGeneral.Name = "machinePositionGeneral";
             this.machinePositionGeneral.Size = new System.Drawing.Size(314, 112);
@@ -642,7 +681,7 @@
             // 
             // machinePositionOverrides
             // 
-            this.machinePositionOverrides.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePositionOverrides.DisplayFeedbackUnit = GSendShared.FeedbackUnit.Mm;
             this.machinePositionOverrides.Location = new System.Drawing.Point(6, 6);
             this.machinePositionOverrides.Name = "machinePositionOverrides";
             this.machinePositionOverrides.Size = new System.Drawing.Size(314, 112);
@@ -706,7 +745,7 @@
             // 
             // machinePositionJog
             // 
-            this.machinePositionJog.DisplayMeasurements = GSendShared.DisplayUnits.MmPerMinute;
+            this.machinePositionJog.DisplayFeedbackUnit = GSendShared.FeedbackUnit.Mm;
             this.machinePositionJog.Location = new System.Drawing.Point(6, 6);
             this.machinePositionJog.Name = "machinePositionJog";
             this.machinePositionJog.Size = new System.Drawing.Size(314, 112);
@@ -1550,7 +1589,6 @@
         private System.Windows.Forms.TabPage tabPageUsage;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelServerConnect;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDisplayMeasurements;
         private Controls.MachinePosition machinePositionGeneral;
         private Controls.MachinePosition machinePositionOverrides;
         private Controls.MachinePosition machinePositionJog;
@@ -1650,5 +1688,9 @@
         private System.Windows.Forms.ToolStripMenuItem g57ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem g58ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem g59ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonDisplayUnit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem mmFeedbackUnitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inchFeedbackToolStripMenuItem;
     }
 }

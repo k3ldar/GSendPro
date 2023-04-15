@@ -21,7 +21,7 @@ namespace GCATests.GSendDB
         public void Create_InvalidParam_NameNull_Throws_ArgumentNullException()
         {
             new MachineModel(1, null, GSendShared.MachineType.Printer, "COM5", MachineOptions.None, 3, new GrblSettings(), 
-                DisplayUnits.MmPerMinute, 50, 0, DateTime.UtcNow, String.Empty, 10, 20, 10, 10, SpindleType.Integrated,
+                DisplayUnits.MmPerMinute, FeedbackUnit.Mm, 50, 0, DateTime.UtcNow, String.Empty, 10, 20, 10, 10, SpindleType.Integrated,
                 0, 0, 0);
         }
     }
