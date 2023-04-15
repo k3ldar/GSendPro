@@ -285,6 +285,8 @@ namespace GSendDesktop.Forms
             toolStripButtonResume.Enabled = _machineConnected && _isPaused;
             toolStripButtonPause.Enabled = _machineConnected & (_isPaused || _isRunning);
             toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
+            toolStripDropDownButtonCoordinateSystem.Enabled = _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
+
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
             btnZeroX.Enabled = toolStripButtonProbe.Enabled;
@@ -310,6 +312,34 @@ namespace GSendDesktop.Forms
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
                 _machineConnected = status.IsConnected;
+
+                if (toolStripDropDownButtonCoordinateSystem.Text != status.CoordinateSystem.ToString())
+                {
+                    toolStripDropDownButtonCoordinateSystem.Text = status.CoordinateSystem.ToString();
+                    DeselectCoordinateMenuItems();
+
+                    switch (status.CoordinateSystem)
+                    {
+                        case CoordinateSystem.G54:
+                            g54ToolStripMenuItem.Checked = true;
+                            break;
+                        case CoordinateSystem.G55:
+                            g55ToolStripMenuItem.Checked = true;
+                            break;
+                        case CoordinateSystem.G56:
+                            g56ToolStripMenuItem.Checked = true;
+                            break;
+                        case CoordinateSystem.G57:
+                            g57ToolStripMenuItem.Checked = true;
+                            break;
+                        case CoordinateSystem.G58:
+                            g58ToolStripMenuItem.Checked = true;
+                            break;
+                        case CoordinateSystem.G59:
+                            g59ToolStripMenuItem.Checked = true;
+                            break;
+                    }
+                }
 
                 if (status.IsConnected)
                 {
@@ -637,6 +667,7 @@ namespace GSendDesktop.Forms
             toolStripButtonStop.Text = GSend.Language.Resources.Stop;
             toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
+            toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
 
 
             //tab pages
@@ -1105,6 +1136,27 @@ namespace GSendDesktop.Forms
                 _threadSendCommandQueue.Enqueue(String.Format(MessageMachineStop, _machine.Id));
         }
 
+        private void ToolstripButtonCoordinates_Click(object sender, EventArgs e)
+        {
+            DeselectCoordinateMenuItems();
+
+            ToolStripMenuItem selected = sender as ToolStripMenuItem;
+            selected.Checked = true;
+            toolStripDropDownButtonCoordinateSystem.Text = selected.Text;
+            SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, selected.Text));
+            SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, "$G"));
+        }
+
+        private void DeselectCoordinateMenuItems()
+        {
+            g54ToolStripMenuItem.Checked = false;
+            g55ToolStripMenuItem.Checked = false;
+            g56ToolStripMenuItem.Checked = false;
+            g57ToolStripMenuItem.Checked = false;
+            g58ToolStripMenuItem.Checked = false;
+            g59ToolStripMenuItem.Checked = false;
+        }
+
         #endregion Toolbar Buttons
 
         #region Zeroing
@@ -1176,6 +1228,7 @@ namespace GSendDesktop.Forms
         private void btnGrblCommandClear_Click(object sender, EventArgs e)
         {
             textBoxConsoleText.Text = String.Empty;
+            txtUserGrblCommand.Focus();
         }
 
         private void btnGrblCommandSend_Click(object sender, EventArgs e)
@@ -1187,7 +1240,7 @@ namespace GSendDesktop.Forms
 
             string command = txtUserGrblCommand.Text.Trim();
 
-            if (txtUserGrblCommand.Text.StartsWith("$"))
+            if (txtUserGrblCommand.Text.StartsWith("$") || txtUserGrblCommand.Text == "?")
                 SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));
             else
                 SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, command));

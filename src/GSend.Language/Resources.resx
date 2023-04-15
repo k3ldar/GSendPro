@@ -195,6 +195,9 @@
   <data name="Continuous" xml:space="preserve">
     <value>Continuous</value>
   </data>
+  <data name="CoordinateSystem" xml:space="preserve">
+    <value>Selected Coordinates</value>
+  </data>
   <data name="CPUUsage" xml:space="preserve">
     <value>CPU Usage</value>
   </data>

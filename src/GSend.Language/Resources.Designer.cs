@@ -295,6 +295,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected Coordinates.
+        /// </summary>
+        public static string CoordinateSystem {
+            get {
+                return ResourceManager.GetString("CoordinateSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CPU Usage.
         /// </summary>
         public static string CPUUsage {

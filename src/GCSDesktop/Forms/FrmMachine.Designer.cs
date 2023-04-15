@@ -49,6 +49,14 @@
             this.toolStripButtonResume = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonPause = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonStop = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownButtonCoordinateSystem = new System.Windows.Forms.ToolStripDropDownButton();
+            this.g54ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.g55ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.g56ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.g57ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.g58ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.g59ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelServerConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelDisplayMeasurements = new System.Windows.Forms.ToolStripStatusLabel();
@@ -106,6 +114,9 @@
             this.lblPropertyHeader = new System.Windows.Forms.Label();
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.cbCorrectMode = new System.Windows.Forms.CheckBox();
+            this.cbFloodCoolant = new System.Windows.Forms.CheckBox();
+            this.cbMistCoolant = new System.Windows.Forms.CheckBox();
             this.cbToolChanger = new System.Windows.Forms.CheckBox();
             this.cbLimitSwitches = new System.Windows.Forms.CheckBox();
             this.probingCommand1 = new GSendDesktop.Controls.ProbingCommand();
@@ -146,9 +157,6 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
-            this.cbMistCoolant = new System.Windows.Forms.CheckBox();
-            this.cbFloodCoolant = new System.Windows.Forms.CheckBox();
-            this.cbCorrectMode = new System.Windows.Forms.CheckBox();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -287,7 +295,9 @@
             this.toolStripSeparator3,
             this.toolStripButtonResume,
             this.toolStripButtonPause,
-            this.toolStripButtonStop});
+            this.toolStripButtonStop,
+            this.toolStripSeparator5,
+            this.toolStripDropDownButtonCoordinateSystem});
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(796, 57);
@@ -402,6 +412,80 @@
             this.toolStripButtonStop.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonStop.Text = "toolStripButton2";
             this.toolStripButtonStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 57);
+            // 
+            // toolStripDropDownButtonCoordinateSystem
+            // 
+            this.toolStripDropDownButtonCoordinateSystem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButtonCoordinateSystem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.g54ToolStripMenuItem,
+            this.g55ToolStripMenuItem,
+            this.g56ToolStripMenuItem,
+            this.g57ToolStripMenuItem,
+            this.g58ToolStripMenuItem,
+            this.g59ToolStripMenuItem});
+            this.toolStripDropDownButtonCoordinateSystem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.toolStripDropDownButtonCoordinateSystem.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonCoordinateSystem.Image")));
+            this.toolStripDropDownButtonCoordinateSystem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonCoordinateSystem.Name = "toolStripDropDownButtonCoordinateSystem";
+            this.toolStripDropDownButtonCoordinateSystem.Size = new System.Drawing.Size(43, 54);
+            this.toolStripDropDownButtonCoordinateSystem.Text = "G54";
+            // 
+            // g54ToolStripMenuItem
+            // 
+            this.g54ToolStripMenuItem.Checked = true;
+            this.g54ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.g54ToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.g54ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g54ToolStripMenuItem.Name = "g54ToolStripMenuItem";
+            this.g54ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g54ToolStripMenuItem.Text = "G54";
+            this.g54ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // g55ToolStripMenuItem
+            // 
+            this.g55ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g55ToolStripMenuItem.Name = "g55ToolStripMenuItem";
+            this.g55ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g55ToolStripMenuItem.Text = "G55";
+            this.g55ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // g56ToolStripMenuItem
+            // 
+            this.g56ToolStripMenuItem.CheckOnClick = true;
+            this.g56ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g56ToolStripMenuItem.Name = "g56ToolStripMenuItem";
+            this.g56ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g56ToolStripMenuItem.Text = "G56";
+            this.g56ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // g57ToolStripMenuItem
+            // 
+            this.g57ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g57ToolStripMenuItem.Name = "g57ToolStripMenuItem";
+            this.g57ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g57ToolStripMenuItem.Text = "G57";
+            this.g57ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // g58ToolStripMenuItem
+            // 
+            this.g58ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g58ToolStripMenuItem.Name = "g58ToolStripMenuItem";
+            this.g58ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g58ToolStripMenuItem.Text = "G58";
+            this.g58ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
+            // 
+            // g59ToolStripMenuItem
+            // 
+            this.g59ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.g59ToolStripMenuItem.Name = "g59ToolStripMenuItem";
+            this.g59ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.g59ToolStripMenuItem.Text = "G59";
+            this.g59ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
             // statusStrip
             // 
@@ -1002,6 +1086,36 @@
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
             // 
+            // cbCorrectMode
+            // 
+            this.cbCorrectMode.AutoSize = true;
+            this.cbCorrectMode.Location = new System.Drawing.Point(6, 106);
+            this.cbCorrectMode.Name = "cbCorrectMode";
+            this.cbCorrectMode.Size = new System.Drawing.Size(83, 19);
+            this.cbCorrectMode.TabIndex = 5;
+            this.cbCorrectMode.Text = "checkBox3";
+            this.cbCorrectMode.UseVisualStyleBackColor = true;
+            // 
+            // cbFloodCoolant
+            // 
+            this.cbFloodCoolant.AutoSize = true;
+            this.cbFloodCoolant.Location = new System.Drawing.Point(6, 81);
+            this.cbFloodCoolant.Name = "cbFloodCoolant";
+            this.cbFloodCoolant.Size = new System.Drawing.Size(83, 19);
+            this.cbFloodCoolant.TabIndex = 4;
+            this.cbFloodCoolant.Text = "checkBox2";
+            this.cbFloodCoolant.UseVisualStyleBackColor = true;
+            // 
+            // cbMistCoolant
+            // 
+            this.cbMistCoolant.AutoSize = true;
+            this.cbMistCoolant.Location = new System.Drawing.Point(6, 56);
+            this.cbMistCoolant.Name = "cbMistCoolant";
+            this.cbMistCoolant.Size = new System.Drawing.Size(83, 19);
+            this.cbMistCoolant.TabIndex = 3;
+            this.cbMistCoolant.Text = "checkBox1";
+            this.cbMistCoolant.UseVisualStyleBackColor = true;
+            // 
             // cbToolChanger
             // 
             this.cbToolChanger.AutoSize = true;
@@ -1355,36 +1469,6 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 102);
             this.textBoxConsoleText.TabIndex = 0;
             // 
-            // cbMistCoolant
-            // 
-            this.cbMistCoolant.AutoSize = true;
-            this.cbMistCoolant.Location = new System.Drawing.Point(6, 56);
-            this.cbMistCoolant.Name = "cbMistCoolant";
-            this.cbMistCoolant.Size = new System.Drawing.Size(83, 19);
-            this.cbMistCoolant.TabIndex = 3;
-            this.cbMistCoolant.Text = "checkBox1";
-            this.cbMistCoolant.UseVisualStyleBackColor = true;
-            // 
-            // cbFloodCoolant
-            // 
-            this.cbFloodCoolant.AutoSize = true;
-            this.cbFloodCoolant.Location = new System.Drawing.Point(6, 81);
-            this.cbFloodCoolant.Name = "cbFloodCoolant";
-            this.cbFloodCoolant.Size = new System.Drawing.Size(83, 19);
-            this.cbFloodCoolant.TabIndex = 4;
-            this.cbFloodCoolant.Text = "checkBox2";
-            this.cbFloodCoolant.UseVisualStyleBackColor = true;
-            // 
-            // cbCorrectMode
-            // 
-            this.cbCorrectMode.AutoSize = true;
-            this.cbCorrectMode.Location = new System.Drawing.Point(6, 106);
-            this.cbCorrectMode.Name = "cbCorrectMode";
-            this.cbCorrectMode.Size = new System.Drawing.Size(83, 19);
-            this.cbCorrectMode.TabIndex = 5;
-            this.cbCorrectMode.Text = "checkBox3";
-            this.cbCorrectMode.UseVisualStyleBackColor = true;
-            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1558,5 +1642,13 @@
         private System.Windows.Forms.CheckBox cbCorrectMode;
         private System.Windows.Forms.CheckBox cbFloodCoolant;
         private System.Windows.Forms.CheckBox cbMistCoolant;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonCoordinateSystem;
+        private System.Windows.Forms.ToolStripMenuItem g54ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem g55ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem g56ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem g57ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem g58ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem g59ToolStripMenuItem;
     }
 }

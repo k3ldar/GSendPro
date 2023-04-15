@@ -458,7 +458,7 @@ namespace GSendCommon
             {
                 string[] parts = s.Split(SeparatorEquals, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-                if (parts[0] == ">")
+                if (parts[0] == ">" || parts[0] == "ok")
                     continue;
 
                 if (!Int32.TryParse(parts[0][1..], out int settingValue))
@@ -542,7 +542,9 @@ namespace GSendCommon
                         return UpdateSettingResult.Success;
                     }
                     else
+                    {
                         return UpdateSettingResult.Failed;
+                    }
                 }
             }
             catch (TimeoutException)
@@ -814,6 +816,8 @@ namespace GSendCommon
                         _machineStateModel.CoordinateSystem = CoordinateSystem.G58;
                     else if (parts[1].Contains("G59"))
                         _machineStateModel.CoordinateSystem = CoordinateSystem.G59;
+
+                    return;
                 }
 
                 OnMessageReceived?.Invoke(this, parts[1]);

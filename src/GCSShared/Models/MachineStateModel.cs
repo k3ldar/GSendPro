@@ -25,7 +25,6 @@
         private bool _mistEnabled;
         private bool _spindleClockWise;
         private bool _spindleCounterClockWise;
-        private bool _updateWorkPosition;
         private bool _isRunning;
         private bool _isPaused;
         private CoordinateSystem _coordinateSystem;
@@ -116,7 +115,6 @@
 
                 _machineX = value;
                 Updated = true;
-                _updateWorkPosition = true;
             }
         }
 
@@ -131,7 +129,6 @@
 
                 _machineY = value;
                 Updated = true;
-                _updateWorkPosition = true;
             }
         }
 
@@ -146,7 +143,6 @@
 
                 _machineZ = value;
                 Updated = true;
-                _updateWorkPosition = true;
             }
         }
 
@@ -161,7 +157,6 @@
 
                 _workX = value;
                 Updated = true;
-                _updateWorkPosition = false;
             }
         }
 
@@ -176,7 +171,6 @@
 
                 _workY = value;
                 Updated = true;
-                _updateWorkPosition = false;
             }
         }
 
@@ -191,7 +185,6 @@
 
                 _workZ = value;
                 Updated = true;
-                _updateWorkPosition = false;
             }
         }
 
@@ -207,10 +200,7 @@
                 _offsetX = value;
                 Updated = true;
 
-                if (_updateWorkPosition)
-                    _machineX = _machineX + _offsetX; 
-                else
-                    _workX = _machineX - _offsetX;
+                _workX = _machineX - _offsetX;
             }
         }
 
@@ -226,10 +216,7 @@
                 _offsetY = value;
                 Updated = true;
 
-                if (_updateWorkPosition)
-                    _machineY = _machineY + _offsetY;
-                else
-                    _workY = _machineY - _offsetY;
+                _workY = _machineY - _offsetY;
             }
         }
 
@@ -245,10 +232,7 @@
                 _offsetZ = value;
                 Updated = true;
 
-                if (_updateWorkPosition)
-                    _machineZ = _machineZ + _offsetZ;
-                else
-                    _workZ = _machineZ - _offsetZ;
+                _workZ = _machineZ - _offsetZ;
             }
         }
 
