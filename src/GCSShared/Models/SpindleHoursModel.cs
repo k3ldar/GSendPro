@@ -8,6 +8,17 @@
 
         public DateTime StartDateTime { get; set; }
 
-        public TimeSpan TotalTime { get; set; }
+        public DateTime FinishDateTime { get; set; }
+
+        public TimeSpan TotalTime
+        { 
+            get
+            {
+                if (FinishDateTime > StartDateTime)
+                    return FinishDateTime - StartDateTime;
+
+                return DateTime.UtcNow - StartDateTime;
+            }
+        }
     }
 }

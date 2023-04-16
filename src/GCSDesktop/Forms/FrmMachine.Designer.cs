@@ -69,6 +69,10 @@
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
+            this.cbOverrideLinkZDown = new System.Windows.Forms.CheckBox();
+            this.cbOverrideLinkZUp = new System.Windows.Forms.CheckBox();
+            this.cbOverrideLinkY = new System.Windows.Forms.CheckBox();
+            this.cbOverrideLinkX = new System.Windows.Forms.CheckBox();
             this.cbOverridesDisable = new System.Windows.Forms.CheckBox();
             this.labelSpeedPercent = new System.Windows.Forms.Label();
             this.trackBarPercent = new System.Windows.Forms.TrackBar();
@@ -204,7 +208,7 @@
             this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
             this.selectionOverrideSpindle.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideSpindle.SmallTickChange = 1;
-            this.selectionOverrideSpindle.TabIndex = 8;
+            this.selectionOverrideSpindle.TabIndex = 12;
             this.selectionOverrideSpindle.TickFrequency = 1;
             this.selectionOverrideSpindle.Value = 0;
             this.selectionOverrideSpindle.ValueChanged += new System.EventHandler(this.selectionOverrideSpindle_ValueChanged);
@@ -224,7 +228,7 @@
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
             this.selectionOverrideZDown.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideZDown.SmallTickChange = 1;
-            this.selectionOverrideZDown.TabIndex = 7;
+            this.selectionOverrideZDown.TabIndex = 11;
             this.selectionOverrideZDown.TickFrequency = 1;
             this.selectionOverrideZDown.Value = 0;
             // 
@@ -243,7 +247,7 @@
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
             this.selectionOverrideZUp.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideZUp.SmallTickChange = 1;
-            this.selectionOverrideZUp.TabIndex = 6;
+            this.selectionOverrideZUp.TabIndex = 10;
             this.selectionOverrideZUp.TickFrequency = 1;
             this.selectionOverrideZUp.Value = 0;
             // 
@@ -262,7 +266,7 @@
             this.selectionOverrideY.Name = "selectionOverrideY";
             this.selectionOverrideY.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideY.SmallTickChange = 1;
-            this.selectionOverrideY.TabIndex = 5;
+            this.selectionOverrideY.TabIndex = 9;
             this.selectionOverrideY.TickFrequency = 1;
             this.selectionOverrideY.Value = 0;
             // 
@@ -281,7 +285,7 @@
             this.selectionOverrideX.Name = "selectionOverrideX";
             this.selectionOverrideX.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideX.SmallTickChange = 1;
-            this.selectionOverrideX.TabIndex = 4;
+            this.selectionOverrideX.TabIndex = 8;
             this.selectionOverrideX.TickFrequency = 1;
             this.selectionOverrideX.Value = 0;
             // 
@@ -450,11 +454,11 @@
             this.g57ToolStripMenuItem,
             this.g58ToolStripMenuItem,
             this.g59ToolStripMenuItem});
-            this.toolStripDropDownButtonCoordinateSystem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.toolStripDropDownButtonCoordinateSystem.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.toolStripDropDownButtonCoordinateSystem.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonCoordinateSystem.Image")));
             this.toolStripDropDownButtonCoordinateSystem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButtonCoordinateSystem.Name = "toolStripDropDownButtonCoordinateSystem";
-            this.toolStripDropDownButtonCoordinateSystem.Size = new System.Drawing.Size(43, 54);
+            this.toolStripDropDownButtonCoordinateSystem.Size = new System.Drawing.Size(63, 54);
             this.toolStripDropDownButtonCoordinateSystem.Text = "G54";
             // 
             // g54ToolStripMenuItem
@@ -465,7 +469,7 @@
             this.g54ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g54ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g54ToolStripMenuItem.Name = "g54ToolStripMenuItem";
-            this.g54ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g54ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g54ToolStripMenuItem.Text = "G54";
             this.g54ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -474,7 +478,7 @@
             this.g55ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g55ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g55ToolStripMenuItem.Name = "g55ToolStripMenuItem";
-            this.g55ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g55ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g55ToolStripMenuItem.Text = "G55";
             this.g55ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -484,7 +488,7 @@
             this.g56ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g56ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g56ToolStripMenuItem.Name = "g56ToolStripMenuItem";
-            this.g56ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g56ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g56ToolStripMenuItem.Text = "G56";
             this.g56ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -493,7 +497,7 @@
             this.g57ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g57ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g57ToolStripMenuItem.Name = "g57ToolStripMenuItem";
-            this.g57ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g57ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g57ToolStripMenuItem.Text = "G57";
             this.g57ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -502,7 +506,7 @@
             this.g58ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g58ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g58ToolStripMenuItem.Name = "g58ToolStripMenuItem";
-            this.g58ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g58ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g58ToolStripMenuItem.Text = "G58";
             this.g58ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -511,7 +515,7 @@
             this.g59ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.g59ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.g59ToolStripMenuItem.Name = "g59ToolStripMenuItem";
-            this.g59ToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.g59ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.g59ToolStripMenuItem.Text = "G59";
             this.g59ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
@@ -623,6 +627,10 @@
             // tabPageOverrides
             // 
             this.tabPageOverrides.BackColor = System.Drawing.Color.White;
+            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZDown);
+            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZUp);
+            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkY);
+            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkX);
             this.tabPageOverrides.Controls.Add(this.cbOverridesDisable);
             this.tabPageOverrides.Controls.Add(this.labelSpeedPercent);
             this.tabPageOverrides.Controls.Add(this.trackBarPercent);
@@ -639,13 +647,57 @@
             this.tabPageOverrides.TabIndex = 1;
             this.tabPageOverrides.Text = "Overrides";
             // 
+            // cbOverrideLinkZDown
+            // 
+            this.cbOverrideLinkZDown.AutoSize = true;
+            this.cbOverrideLinkZDown.Location = new System.Drawing.Point(141, 192);
+            this.cbOverrideLinkZDown.Name = "cbOverrideLinkZDown";
+            this.cbOverrideLinkZDown.Size = new System.Drawing.Size(67, 19);
+            this.cbOverrideLinkZDown.TabIndex = 6;
+            this.cbOverrideLinkZDown.Text = "Z Down";
+            this.cbOverrideLinkZDown.UseVisualStyleBackColor = true;
+            this.cbOverrideLinkZDown.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
+            // 
+            // cbOverrideLinkZUp
+            // 
+            this.cbOverrideLinkZUp.AutoSize = true;
+            this.cbOverrideLinkZUp.Location = new System.Drawing.Point(84, 192);
+            this.cbOverrideLinkZUp.Name = "cbOverrideLinkZUp";
+            this.cbOverrideLinkZUp.Size = new System.Drawing.Size(51, 19);
+            this.cbOverrideLinkZUp.TabIndex = 5;
+            this.cbOverrideLinkZUp.Text = "Z Up";
+            this.cbOverrideLinkZUp.UseVisualStyleBackColor = true;
+            this.cbOverrideLinkZUp.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
+            // 
+            // cbOverrideLinkY
+            // 
+            this.cbOverrideLinkY.AutoSize = true;
+            this.cbOverrideLinkY.Location = new System.Drawing.Point(45, 192);
+            this.cbOverrideLinkY.Name = "cbOverrideLinkY";
+            this.cbOverrideLinkY.Size = new System.Drawing.Size(33, 19);
+            this.cbOverrideLinkY.TabIndex = 4;
+            this.cbOverrideLinkY.Text = "Y";
+            this.cbOverrideLinkY.UseVisualStyleBackColor = true;
+            this.cbOverrideLinkY.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
+            // 
+            // cbOverrideLinkX
+            // 
+            this.cbOverrideLinkX.AutoSize = true;
+            this.cbOverrideLinkX.Location = new System.Drawing.Point(6, 192);
+            this.cbOverrideLinkX.Name = "cbOverrideLinkX";
+            this.cbOverrideLinkX.Size = new System.Drawing.Size(33, 19);
+            this.cbOverrideLinkX.TabIndex = 3;
+            this.cbOverrideLinkX.Text = "X";
+            this.cbOverrideLinkX.UseVisualStyleBackColor = true;
+            this.cbOverrideLinkX.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
+            // 
             // cbOverridesDisable
             // 
             this.cbOverridesDisable.AutoSize = true;
-            this.cbOverridesDisable.Location = new System.Drawing.Point(6, 215);
+            this.cbOverridesDisable.Location = new System.Drawing.Point(6, 217);
             this.cbOverridesDisable.Name = "cbOverridesDisable";
             this.cbOverridesDisable.Size = new System.Drawing.Size(109, 19);
-            this.cbOverridesDisable.TabIndex = 3;
+            this.cbOverridesDisable.TabIndex = 7;
             this.cbOverridesDisable.Text = "override disable";
             this.cbOverridesDisable.UseVisualStyleBackColor = true;
             this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.cbOverridesDisable_CheckedChanged);
@@ -655,15 +707,16 @@
             this.labelSpeedPercent.AutoSize = true;
             this.labelSpeedPercent.Location = new System.Drawing.Point(6, 171);
             this.labelSpeedPercent.Name = "labelSpeedPercent";
-            this.labelSpeedPercent.Size = new System.Drawing.Size(0, 15);
+            this.labelSpeedPercent.Size = new System.Drawing.Size(17, 15);
             this.labelSpeedPercent.TabIndex = 2;
+            this.labelSpeedPercent.Text = "%";
             // 
             // trackBarPercent
             // 
             this.trackBarPercent.Location = new System.Drawing.Point(6, 123);
             this.trackBarPercent.Maximum = 100;
             this.trackBarPercent.Name = "trackBarPercent";
-            this.trackBarPercent.Size = new System.Drawing.Size(280, 45);
+            this.trackBarPercent.Size = new System.Drawing.Size(308, 45);
             this.trackBarPercent.TabIndex = 1;
             this.trackBarPercent.TickFrequency = 5;
             this.trackBarPercent.ValueChanged += new System.EventHandler(this.trackBarPercent_ValueChanged);
@@ -1798,5 +1851,9 @@
         private System.Windows.Forms.RadioButton rbFeedDisplayMmSec;
         private System.Windows.Forms.RadioButton rbFeedDisplayMmMin;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDisplayUnit;
+        private System.Windows.Forms.CheckBox cbOverrideLinkZDown;
+        private System.Windows.Forms.CheckBox cbOverrideLinkZUp;
+        private System.Windows.Forms.CheckBox cbOverrideLinkY;
+        private System.Windows.Forms.CheckBox cbOverrideLinkX;
     }
 }

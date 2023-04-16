@@ -36,7 +36,7 @@ namespace GSendService.Api
                     MachineId = spindleTime.MachineId,
                     MaxRpm = spindleTime.MaxRpm,
                     StartDateTime = spindleTime.StartTime,
-                    TotalTime = spindleTime.FinishTime - spindleTime.StartTime
+                    FinishDateTime = spindleTime.FinishTime,
                 });
             }
 

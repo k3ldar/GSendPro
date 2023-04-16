@@ -6,13 +6,16 @@
         {
         }
 
-        public MachineServiceModel(long machineId, DateTime serviceDate, ServiceType serviceType, long spindleHours)
+        public MachineServiceModel(long id, long machineId, DateTime serviceDate, ServiceType serviceType, long spindleHours)
         {
+            Id = id;
             MachineId = machineId;
             ServiceDate = serviceDate;
             ServiceType = serviceType;
             SpindleHours = spindleHours;
         }
+
+        public long Id { get; set; }
 
         public long MachineId { get; set; }
 

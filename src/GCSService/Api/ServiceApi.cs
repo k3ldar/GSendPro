@@ -28,7 +28,7 @@ namespace GSendService.Api
 
             foreach (MachineServiceDataRow service in services)
             {
-                dates.Add(new MachineServiceModel(service.MachineId, service.ServiceDate, (ServiceType)service.ServiceType, service.SpindleHours));
+                dates.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, (ServiceType)service.ServiceType, service.SpindleHours));
             }
 
             return GenerateJsonSuccessResponse(dates);

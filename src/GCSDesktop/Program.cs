@@ -17,6 +17,8 @@ using GSendShared.Providers;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using Shared.Classes;
+
 namespace GSendDesktop
 {
     internal static class Program
@@ -24,6 +26,10 @@ namespace GSendDesktop
         [STAThread]
         static void Main()
         {
+            ThreadManager.Initialise(new SharedLib.Win.WindowsCpuUsage());
+            ThreadManager.AllowThreadPool = true;
+            ThreadManager.MaximumPoolSize = 5000;
+
             IServiceCollection serviceCollection = new ServiceCollection();
             RegisterServices(serviceCollection);
             IGSendContext gSendContext = new GSendContext(serviceCollection);

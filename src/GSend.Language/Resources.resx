@@ -435,6 +435,18 @@
   <data name="Overrides" xml:space="preserve">
     <value>Overrides</value>
   </data>
+  <data name="OverrideX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="OverrideY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="OverrideZDown" xml:space="preserve">
+    <value>Z Down</value>
+  </data>
+  <data name="OverrideZUp" xml:space="preserve">
+    <value>Z Up</value>
+  </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
   </data>

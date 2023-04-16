@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,7 +23,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
-    public partial class FrmMachine : Form
+    public partial class FrmMachine : Form, IUiUpdate
     {
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly GSendWebSocket _clientWebSocket;
@@ -32,9 +31,8 @@ namespace GSendDesktop.Forms
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
         private MachineStateModel _machineStatusModel = null;
+        private readonly MachineUpdateThread _machineUpdateThread;
         private readonly object _lockObject = new();
-        private readonly ConcurrentQueue<string> _threadSendCommandQueue = new();
-        private volatile bool _threadRun = false;
         private bool _machineConnected = false;
         private bool _isPaused = false;
         private bool _isRunning = false;
@@ -71,14 +69,10 @@ namespace GSendDesktop.Forms
             _clientWebSocketCancel.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocketCancel.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocketCancel.Connected += ClientWebSocket_Connected;
-
-            Thread updateThread = new Thread(new ThreadStart(UpdateThread))
-            {
-                IsBackground = true,
-                Priority = ThreadPriority.Normal,
-                Name = $"{machine.Name} Update Status"
-            };
-            updateThread.Start();
+            _machineUpdateThread = new MachineUpdateThread(new TimeSpan(0, 0, 0, 0,
+                _gSendContext.Settings.UpdateMilliseconds), _clientWebSocket,
+                _machine, this);
+            ThreadManager.ThreadStart(_machineUpdateThread, $"{machine.Name} Update Status", ThreadPriority.Normal);
 
             propertyGridGrblSettings.SelectedObject = machine.Settings;
 
@@ -118,7 +112,7 @@ namespace GSendDesktop.Forms
 
         private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
-            _threadRun = true;
+            _machineUpdateThread.IsThreadRunning = true;
             SendMessage(String.Format("mAddEvents:{0}", _machine.Id));
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerConnected;
             UpdateEnabledState();
@@ -129,7 +123,7 @@ namespace GSendDesktop.Forms
         {
             StopJogging();
             warningsAndErrors.Visible = warningsAndErrors.TotalCount() > 0;
-            _threadRun = false;
+            _machineUpdateThread.IsThreadRunning = false;
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerNotConnected;
             UpdateEnabledState();
         }
@@ -459,6 +453,21 @@ namespace GSendDesktop.Forms
 
         #endregion Client Web Socket
 
+        #region Ui Update
+
+        public void RefreshServiceSchedule()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(RefreshServiceSchedule);
+                return;
+            }
+
+            btnServiceRefresh_Click(this, EventArgs.Empty);
+        }
+
+        #endregion Ui Update
+
         private void ConfigureMachine()
         {
             selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
@@ -471,6 +480,21 @@ namespace GSendDesktop.Forms
             selectionOverrideZDown.Minimum = 0;
             selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
             selectionOverrideZUp.Minimum = 0;
+
+            cbOverrideLinkX.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkY.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkZUp.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkZDown.CheckedChanged -= OverrideAxis_Checked;
+
+            cbOverrideLinkX.Checked = _machine.Options.HasFlag(MachineOptions.OverrideX);
+            cbOverrideLinkY.Checked = _machine.Options.HasFlag(MachineOptions.OverrideY);
+            cbOverrideLinkZUp.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZUp);
+            cbOverrideLinkZDown.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZDown);
+
+            cbOverrideLinkX.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkY.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkZUp.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkZDown.CheckedChanged += OverrideAxis_Checked;
 
             jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
             jogControl.FeedMinimum = 0;
@@ -737,6 +761,10 @@ namespace GSendDesktop.Forms
 
             // Override tab
             cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
+            cbOverrideLinkX.Text = GSend.Language.Resources.OverrideX;
+            cbOverrideLinkY.Text = GSend.Language.Resources.OverrideY;
+            cbOverrideLinkZUp.Text = GSend.Language.Resources.OverrideZUp;
+            cbOverrideLinkZDown.Text = GSend.Language.Resources.OverrideZDown;
 
             // Console
             tabPageConsole.Text = GSend.Language.Resources.Console;
@@ -838,7 +866,7 @@ namespace GSendDesktop.Forms
 
             probingCommand1.FeedRateDisplay = _machine.DisplayUnits;
             probingCommand1.UpdateFeedRateDisplay();
-            
+
             jogControl.FeedRateDisplay = _machine.DisplayUnits;
             jogControl.UpdateFeedRateDisplay();
 
@@ -938,10 +966,18 @@ namespace GSendDesktop.Forms
 
             selectionOverrideSpindle.Value = _machine.OverrideSpindle;
 
-            selectionOverrideX.Value = selectionOverrideX.Maximum / 100 * trackBarPercent.Value;
-            selectionOverrideY.Value = selectionOverrideY.Maximum / 100 * trackBarPercent.Value;
-            selectionOverrideZDown.Value = selectionOverrideZDown.Maximum / 100 * trackBarPercent.Value;
-            selectionOverrideZUp.Value = selectionOverrideZUp.Maximum / 100 * trackBarPercent.Value;
+            if (cbOverrideLinkX.Checked)
+                selectionOverrideX.Value = selectionOverrideX.Maximum / 100 * trackBarPercent.Value;
+
+            if (cbOverrideLinkY.Checked)
+                selectionOverrideY.Value = selectionOverrideY.Maximum / 100 * trackBarPercent.Value;
+
+            if (cbOverrideLinkZDown.Checked)
+                selectionOverrideZDown.Value = selectionOverrideZDown.Maximum / 100 * trackBarPercent.Value;
+
+            if (cbOverrideLinkZUp.Checked)
+                selectionOverrideZUp.Value = selectionOverrideZUp.Maximum / 100 * trackBarPercent.Value;
+
             labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
 
             selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
@@ -959,6 +995,10 @@ namespace GSendDesktop.Forms
             selectionOverrideY.Enabled = !cbOverridesDisable.Checked;
             selectionOverrideZDown.Enabled = !cbOverridesDisable.Checked;
             selectionOverrideZUp.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkX.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkY.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkZDown.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkZUp.Enabled = !cbOverridesDisable.Checked;
         }
 
         private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
@@ -977,8 +1017,38 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            _threadSendCommandQueue.Enqueue(String.Format(MessageMachineJogStop, _machine.Id));
+            _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineJogStop, _machine.Id));
         }
+
+        private void jogControl_OnUpdate(object sender, EventArgs e)
+        {
+            _machine.JogUnits = jogControl.StepValue;
+            _machine.JogFeedrate = jogControl.FeedRate;
+            UpdateConfigurationChanged();
+        }
+
+        #region Overrides
+
+        private void OverrideAxis_Checked(object sender, EventArgs e)
+        {
+            trackBarPercent_ValueChanged(sender, e);
+
+            if (cbOverrideLinkX.Checked)
+                _machine.AddOptions(MachineOptions.OverrideX);
+
+            if (cbOverrideLinkY.Checked)
+                _machine.AddOptions(MachineOptions.OverrideY);
+
+            if (cbOverrideLinkZUp.Checked)
+                _machine.AddOptions(MachineOptions.OverrideZUp);
+
+            if (cbOverrideLinkZDown.Checked)
+                _machine.AddOptions(MachineOptions.OverrideZDown);
+
+            UpdateConfigurationChanged();
+        }
+
+        #endregion Overrides
 
         #region Grbl Settings
 
@@ -1062,33 +1132,6 @@ namespace GSendDesktop.Forms
         }
 
         #endregion Grbl Settings
-
-        #region Update thread
-
-        private void UpdateThread()
-        {
-            DateTime nextRun = DateTime.MinValue;
-
-            while (true)
-            {
-                TimeSpan span = DateTime.UtcNow - nextRun;
-
-                if (_threadRun && span.TotalMilliseconds > _gSendContext.Settings.UpdateMilliseconds)
-                {
-                    SendMessage(String.Format(MessageMachineStatus, _machine.Id));
-                    nextRun = DateTime.UtcNow;
-                }
-
-                if (_threadSendCommandQueue.TryDequeue(out string sendCommand))
-                {
-                    _clientWebSocketCancel.SendAsync(sendCommand).ConfigureAwait(false);
-                }
-
-                Thread.Sleep(0);
-            }
-        }
-
-        #endregion Update thread
 
         #region Warnings and Error Handling
 
@@ -1272,7 +1315,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                _threadSendCommandQueue.Enqueue(String.Format(MessageMachineStop, _machine.Id));
+                _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineStop, _machine.Id));
         }
 
         private void ToolstripButtonCoordinates_Click(object sender, EventArgs e)
@@ -1325,13 +1368,6 @@ namespace GSendDesktop.Forms
 
         #endregion Probing
 
-        private void jogControl_OnUpdate(object sender, EventArgs e)
-        {
-            _machine.JogUnits = jogControl.StepValue;
-            _machine.JogFeedrate = jogControl.FeedRate;
-            UpdateConfigurationChanged();
-        }
-
         private void cmbSpindleType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _machine.SpindleType = (SpindleType)cmbSpindleType.SelectedItem;
@@ -1354,15 +1390,12 @@ namespace GSendDesktop.Forms
             UpdateConfigurationChanged();
         }
 
-        private void cbSoftStart_CheckedChanged(object sender, EventArgs e)
+        private void SendMessage(string message)
         {
-            if (cbSoftStart.Checked)
-                _machine.AddOptions(MachineOptions.SoftStart);
-            else
-                _machine.RemoveOptions(MachineOptions.SoftStart);
-
-            UpdateConfigurationChanged();
+            _clientWebSocket.SendAsync(message).ConfigureAwait(false);
         }
+
+        #region Console
 
         private void btnGrblCommandClear_Click(object sender, EventArgs e)
         {
@@ -1394,13 +1427,6 @@ namespace GSendDesktop.Forms
             textBoxConsoleText.ScrollToCaret();
         }
 
-        private void SendMessage(string message)
-        {
-            _clientWebSocket.SendAsync(message).ConfigureAwait(false);
-        }
-
-        #region Console
-
         private void txtUserGrblCommand_TextChanged(object sender, EventArgs e)
         {
             btnGrblCommandSend.Enabled = txtUserGrblCommand.Text.Length > 0;
@@ -1418,6 +1444,16 @@ namespace GSendDesktop.Forms
 
         #region Spindle Control
 
+        private void cbSoftStart_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSoftStart.Checked)
+                _machine.AddOptions(MachineOptions.SoftStart);
+            else
+                _machine.RemoveOptions(MachineOptions.SoftStart);
+
+            UpdateConfigurationChanged();
+        }
+
         private void trackBarSpindleSpeed_ValueChanged(object sender, EventArgs e)
         {
             lblSpindleSpeed.Text = String.Format(GSend.Language.Resources.SpeedRpm, trackBarSpindleSpeed.Value);
@@ -1430,10 +1466,12 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            _threadSendCommandQueue.Enqueue(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
+            _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control
+
+        #region Service
 
         private void btnServiceReset_Click(object sender, EventArgs e)
         {
@@ -1448,19 +1486,36 @@ namespace GSendDesktop.Forms
             }
         }
 
+        private bool ServiceListViewItemExists(MachineServiceModel machineServiceModel)
+        {
+            foreach (ListViewItem listViewItem in lvServices.Items)
+            {
+                if (listViewItem.Tag is MachineServiceModel serviceMachineServiceModel)
+                {
+                    if (serviceMachineServiceModel.Id.Equals(machineServiceModel.Id))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         private void btnServiceRefresh_Click(object sender, EventArgs e)
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                lvServices.Items.Clear();
                 MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
 
                 List<MachineServiceModel> services = machineApiWrapper.MachineServices(_machine.Id);
 
-                foreach (MachineServiceModel service in services.OrderByDescending(s => s.ServiceDate))
+                foreach (MachineServiceModel service in services.OrderBy(s => s.ServiceDate))
                 {
+                    if (ServiceListViewItemExists(service))
+                        continue;
+
                     TimeSpan spanSpindleHours = new TimeSpan(service.SpindleHours);
                     ListViewItem serviceItem = new ListViewItem(service.ServiceDate.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern));
+                    serviceItem.Tag = service;
 
                     string serviceType = GSend.Language.Resources.ServiceTypeDaily;
 
@@ -1471,7 +1526,7 @@ namespace GSendDesktop.Forms
 
                     serviceItem.SubItems.Add(serviceType);
                     serviceItem.SubItems.Add($"{(int)spanSpindleHours.TotalHours} {GSend.Language.Resources.Hours} and {spanSpindleHours.Minutes} {GSend.Language.Resources.Minutes}");
-                    lvServices.Items.Add(serviceItem);
+                    lvServices.Items.Insert(0, serviceItem);
                 }
 
                 DateTime latestService = services.Max(s => s.ServiceDate);
@@ -1490,7 +1545,7 @@ namespace GSendDesktop.Forms
                 if (cbMaintainServiceSchedule.Checked)
                 {
                     if ((span.TotalDays < 0 || remaining.TotalHours < 0) && !warningsAndErrors.Contains(InformationType.Warning, GSend.Language.Resources.ServiceOverdue))
-                    { 
+                    {
                         warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServiceOverdue);
                     }
                     else if ((span.TotalDays < 2 || remaining.TotalHours < 4) && !warningsAndErrors.Contains(InformationType.Information, GSend.Language.Resources.ServiceRequired))
@@ -1500,6 +1555,8 @@ namespace GSendDesktop.Forms
                 }
             }
         }
+
+        #endregion Service
 
         private void UpdateConfigurationChanged()
         {

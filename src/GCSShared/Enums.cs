@@ -126,6 +126,26 @@
         /// Automatically selects the correct display based on gcode file
         /// </summary>
         AutoUpdateDisplayFromFile = 256,
+
+        /// <summary>
+        /// Override slider for X is linked
+        /// </summary>
+        OverrideX = 512,
+
+        /// <summary>
+        /// Override slider for Y is linked
+        /// </summary>
+        OverrideY = 1024,
+
+        /// <summary>
+        /// Override slider for Z Up is linked
+        /// </summary>
+        OverrideZUp = 2048,
+
+        /// <summary>
+        /// Override slider for Z Down is linked
+        /// </summary>
+        OverrideZDown = 4196,
     }
 
     [Flags]

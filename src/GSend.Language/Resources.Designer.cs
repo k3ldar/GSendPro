@@ -1015,6 +1015,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to X.
+        /// </summary>
+        public static string OverrideX {
+            get {
+                return ResourceManager.GetString("OverrideX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        public static string OverrideY {
+            get {
+                return ResourceManager.GetString("OverrideY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Down.
+        /// </summary>
+        public static string OverrideZDown {
+            get {
+                return ResourceManager.GetString("OverrideZDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Up.
+        /// </summary>
+        public static string OverrideZUp {
+            get {
+                return ResourceManager.GetString("OverrideZUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
