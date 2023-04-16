@@ -234,6 +234,9 @@
   <data name="DisplayUnits" xml:space="preserve">
     <value>Display units</value>
   </data>
+  <data name="DisplayUpdateFromFile" xml:space="preserve">
+    <value>Automatically select from G Code file</value>
+  </data>
   <data name="Error0" xml:space="preserve">
     <value>Undefined Grbl error</value>
   </data>
@@ -351,6 +354,9 @@
   <data name="Error9" xml:space="preserve">
     <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
+  <data name="FeedDisplay" xml:space="preserve">
+    <value>Feed Rate Display</value>
+  </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
   </data>
@@ -448,7 +454,7 @@
     <value>Probe Thickness (mm)</value>
   </data>
   <data name="ProbeTravelSpeed" xml:space="preserve">
-    <value>Probe travel speed {0}mm/min</value>
+    <value>Probe travel speed {0} {1}</value>
   </data>
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
@@ -491,6 +497,12 @@
   </data>
   <data name="ServiceDate" xml:space="preserve">
     <value>Service Date</value>
+  </data>
+  <data name="ServiceOverdue" xml:space="preserve">
+    <value>This machine's service is overdue!</value>
+  </data>
+  <data name="ServiceRequired" xml:space="preserve">
+    <value>This machine is due a service shortly!</value>
   </data>
   <data name="ServiceSchedule" xml:space="preserve">
     <value>Service Schedule</value>
@@ -622,7 +634,7 @@
     <value>Setting have changed or been updated</value>
   </data>
   <data name="SpeedPercent" xml:space="preserve">
-    <value>{0}% of Speed</value>
+    <value>{0}% of Maximum Feed Rate</value>
   </data>
   <data name="SpeedRpm" xml:space="preserve">
     <value>{0} RPM</value>

@@ -19,7 +19,7 @@ namespace GSendShared
 
         byte AxisCount { get; set; }
 
-        DisplayUnits DisplayUnits { get; set; }
+        FeedRateDisplayUnits DisplayUnits { get; set; }
 
         FeedbackUnit FeedbackUnit { get; set; }
 

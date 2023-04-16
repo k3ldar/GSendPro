@@ -54,6 +54,7 @@
             this.MinimumSize = new System.Drawing.Size(204, 27);
             this.Name = "WarningContainer";
             this.Size = new System.Drawing.Size(309, 48);
+            this.SizeChanged += new System.EventHandler(this.WarningContainer_SizeChanged);
             this.ResumeLayout(false);
 
         }

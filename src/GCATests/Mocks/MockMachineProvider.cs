@@ -30,7 +30,7 @@ namespace GSendTests.Mocks
                     i % 2 == 0 ? MachineType.CNC : MachineType.Laser, 
                     $"COM{i + 2}",
                     MachineOptions.None, 3, new GrblSettings(),
-                    DisplayUnits.MmPerMinute,
+                    FeedRateDisplayUnits.MmPerMinute,
                     FeedbackUnit.Mm,
                     60,
                     60,

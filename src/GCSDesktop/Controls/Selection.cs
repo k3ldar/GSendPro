@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
+using GSendShared;
+
 namespace GSendDesktop.Controls
 {
-    public partial class Selection : UserControl
+    public partial class Selection : UserControl, IFeedRateUnitUpdate
     {
         public Selection()
         {
@@ -67,13 +69,28 @@ namespace GSendDesktop.Controls
         }
 
         [Browsable(true)]
+        public FeedRateDisplayUnits FeedRateDisplay { get; set; } = FeedRateDisplayUnits.MmPerMinute;
+
+        [Browsable(true)]
+        public bool HasDisplayUnits { get; set; } = false;
+
+        [Browsable(true)]
         public event EventHandler ValueChanged;
+
+        public void UpdateFeedRateDisplay()
+        {
+            trackBarValue_ValueChanged(this, EventArgs.Empty);
+        }
 
         private void trackBarValue_ValueChanged(object sender, System.EventArgs e)
         {
             if (!DesignMode)
             {
-                LabelValue = String.Format(LabelFormat, trackBarValue.Value);
+                if (HasDisplayUnits)
+                    LabelValue = String.Format(LabelFormat, HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplay, trackBarValue.Value));
+                else
+                    LabelValue = String.Format(LabelFormat, trackBarValue.Value);
+
                 ValueChanged?.Invoke(this, EventArgs.Empty);
                 lblDescription.Text = LabelValue;
             }

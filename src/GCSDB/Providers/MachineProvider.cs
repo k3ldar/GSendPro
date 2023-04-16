@@ -82,6 +82,7 @@ namespace GSendDB.Providers
             machineDataRow.AxisCount = machine.AxisCount;
             machineDataRow.Settings = machine.Settings;
             machineDataRow.DisplayUnits = machine.DisplayUnits;
+            machineDataRow.FeedbackUnits = machine.FeedbackUnit;
             machineDataRow.OverrideSpeed = machine.OverrideSpeed;
             machineDataRow.OverrideSpindle = machine.OverrideSpindle;
             machineDataRow.ConfigurationLastVerified = machine.ConfigurationLastVerified;

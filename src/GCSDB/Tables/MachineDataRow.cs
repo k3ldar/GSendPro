@@ -14,7 +14,7 @@ namespace GSendDB.Tables
         private MachineOptions _options;
         private byte _axisCount;
         private GrblSettings _settings;
-        private DisplayUnits _displayUnits;
+        private FeedRateDisplayUnits _displayUnits;
         private FeedbackUnit _feedbackUnits;
         private int _overrideSpeed;
         private int _overrideSpindle;
@@ -125,7 +125,7 @@ namespace GSendDB.Tables
             }
         }
 
-        public DisplayUnits DisplayUnits
+        public FeedRateDisplayUnits DisplayUnits
         {
             get => _displayUnits;
 

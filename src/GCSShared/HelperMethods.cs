@@ -18,23 +18,45 @@ namespace GSendShared
             return mmMin.ToString("N4");
         }
 
-        //public static string ConvertMeasurementForDisplay(DisplayUnits displayUnits, double mmMin)
-        //{
-        //    switch (displayUnits)
-        //    {
-        //        case DisplayUnits.MmPerMinute:
-        //        case DisplayUnits.MmPerSecond:
-        //            return (mmMin / 60.0).ToString("N4");
+        public static string ConvertFeedRateForDisplay(FeedRateDisplayUnits displayUnits, double mmMin)
+        {
+            switch (displayUnits)
+            {
+                case FeedRateDisplayUnits.MmPerMinute:
+                    return mmMin.ToString("N0");
 
-        //        case DisplayUnits.InchPerMinute:
-        //            return (mmMin / 25.4).ToString("N5");
+                case FeedRateDisplayUnits.MmPerSecond:
+                    return (mmMin / 60.0).ToString("N0");
 
-        //        case DisplayUnits.InchPerSecond:
-        //            return (mmMin / 25.4 / 60).ToString("N5");
-        //    }
+                case FeedRateDisplayUnits.InchPerMinute:
+                    return (mmMin / 25.4).ToString("N5");
 
-        //    return mmMin.ToString("N4");
-        //}
+                case FeedRateDisplayUnits.InchPerSecond:
+                    return (mmMin / 25.4 / 60).ToString("N5");
+            }
+
+            return mmMin.ToString("N4");
+        }
+
+        public static string TranslateDisplayUnit(FeedRateDisplayUnits displayUnits)
+        {
+            switch (displayUnits)
+            {
+                case FeedRateDisplayUnits.MmPerMinute:
+                    return GSend.Language.Resources.DisplayMmMinute;
+
+                case FeedRateDisplayUnits.MmPerSecond:
+                    return GSend.Language.Resources.DisplayMmSec;
+
+                case FeedRateDisplayUnits.InchPerMinute:
+                    return GSend.Language.Resources.DisplayInchMinute;
+
+                case FeedRateDisplayUnits.InchPerSecond:
+                    return GSend.Language.Resources.DisplayInchSecond;
+            }
+
+            return GSend.Language.Resources.DisplayMmMinute;
+        }
 
         public static string TranslateState(string state)
         {

@@ -121,6 +121,11 @@
         /// Will autocorrect between laser and spindle $31
         /// </summary>
         AutoCorrectLaserSpindleMode = 128,
+
+        /// <summary>
+        /// Automatically selects the correct display based on gcode file
+        /// </summary>
+        AutoUpdateDisplayFromFile = 256,
     }
 
     [Flags]
@@ -525,7 +530,7 @@
         XMinusYMinus = 10,
     }
 
-    public enum DisplayUnits
+    public enum FeedRateDisplayUnits
     {
         MmPerMinute,
 

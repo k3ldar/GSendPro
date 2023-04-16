@@ -175,7 +175,9 @@
             // 
             // selectionSteps
             // 
+            this.selectionSteps.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionSteps.GroupName = "Step";
+            this.selectionSteps.HasDisplayUnits = false;
             this.selectionSteps.LabelFormat = "{0}";
             this.selectionSteps.LabelValue = null;
             this.selectionSteps.LargeTickChange = 1;
@@ -192,7 +194,9 @@
             // 
             // selectionFeed
             // 
+            this.selectionFeed.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionFeed.GroupName = "Feed";
+            this.selectionFeed.HasDisplayUnits = true;
             this.selectionFeed.LabelFormat = "{0}";
             this.selectionFeed.LabelValue = null;
             this.selectionFeed.LargeTickChange = 5;

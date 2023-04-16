@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -20,9 +19,7 @@ using GSendShared.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
-using Shared.Communication;
 
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
@@ -100,9 +97,6 @@ namespace GSendDesktop.Forms
             cmbSpindleType.Items.Add(SpindleType.Integrated);
             cmbSpindleType.Items.Add(SpindleType.VFD);
             cmbSpindleType.Items.Add(SpindleType.External);
-
-            mmFeedbackUnitToolStripMenuItem.Tag = FeedbackUnit.Mm;
-            inchFeedbackToolStripMenuItem.Tag = FeedbackUnit.Inch;
 
             UpdateDisplay();
             UpdateEnabledState();
@@ -485,7 +479,6 @@ namespace GSendDesktop.Forms
             jogControl.StepValue = 7;
             jogControl.FeedRate = _machine.JogFeedrate;
             trackBarPercent.Value = _machine.OverrideSpeed;
-            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
             cbSoftStart.Checked = _machine.SoftStart;
             trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
 
@@ -505,6 +498,7 @@ namespace GSendDesktop.Forms
             cbFloodCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
             cbMistCoolant.Checked = _machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode);
             cbMistCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
+            cbAutoSelectFeedbackUnit.Checked = _machine.Options.HasFlag(MachineOptions.AutoUpdateDisplayFromFile);
 
 
             // service schedule
@@ -549,11 +543,22 @@ namespace GSendDesktop.Forms
             cbFloodCoolant.CheckedChanged += CbFloodCoolant_CheckedChanged;
             cbMistCoolant.CheckedChanged += CbMistCoolant_CheckedChanged;
             cbMaintainServiceSchedule.CheckedChanged += CbMaintainServiceSchedule_CheckedChanged;
+            cbAutoSelectFeedbackUnit.CheckedChanged += CbAutoSelectFeedbackUnit_CheckedChanged;
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
 
             btnGrblCommandClear.Click += btnGrblCommandClear_Click;
             btnGrblCommandSend.Click += btnGrblCommandSend_Click;
+        }
+
+        private void CbAutoSelectFeedbackUnit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAutoSelectFeedbackUnit.Checked)
+                _machine.AddOptions(MachineOptions.AutoUpdateDisplayFromFile);
+            else
+                _machine.RemoveOptions(MachineOptions.AutoUpdateDisplayFromFile);
+
+            UpdateConfigurationChanged();
         }
 
         private void TrackBarServiceSpindleHours_ValueChanged(object sender, EventArgs e)
@@ -567,7 +572,7 @@ namespace GSendDesktop.Forms
         {
             _machine.ServiceWeeks = trackBarServiceWeeks.Value;
             lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
-            _appliedSettingsChanged = true;
+            UpdateConfigurationChanged();
         }
 
         private void CbMaintainServiceSchedule_CheckedChanged(object sender, EventArgs e)
@@ -671,9 +676,6 @@ namespace GSendDesktop.Forms
             toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
-            toolStripDropDownButtonDisplayUnit.ToolTipText = GSend.Language.Resources.DisplayUnits;
-            mmFeedbackUnitToolStripMenuItem.Text = GSend.Language.Resources.DisplayMm;
-            inchFeedbackToolStripMenuItem.Text = GSend.Language.Resources.DisplayInch;
 
 
             //tab pages
@@ -710,11 +712,22 @@ namespace GSendDesktop.Forms
             cbFloodCoolant.Text = GSend.Language.Resources.FloodCoolant;
             cbMistCoolant.Text = GSend.Language.Resources.MistCoolant;
             cbCorrectMode.Text = _machine.MachineType == MachineType.Laser ? GSend.Language.Resources.AutoUpdateLaserMode : GSend.Language.Resources.AutoUpdateSpindleMode;
-
+            grpDisplayUnits.Text = GSend.Language.Resources.DisplayUnits;
+            rbFeedbackMm.Text = GSend.Language.Resources.DisplayMm;
+            rbFeedbackInch.Text = GSend.Language.Resources.DisplayInch;
+            cbAutoSelectFeedbackUnit.Text = GSend.Language.Resources.DisplayUpdateFromFile;
+            grpFeedDisplay.Text = GSend.Language.Resources.FeedDisplay;
+            rbFeedDisplayMmMin.Text = GSend.Language.Resources.DisplayMmMinute;
+            rbFeedDisplayMmSec.Text = GSend.Language.Resources.DisplayMmSec;
+            rbFeedDisplayInchMin.Text = GSend.Language.Resources.DisplayInchMinute;
+            rbFeedDisplayInchSec.Text = GSend.Language.Resources.DisplayInchSecond;
 
             // service schedule
             cbMaintainServiceSchedule.Text = GSend.Language.Resources.MaintainServiceSchedule;
             btnServiceRefresh.Text = GSend.Language.Resources.Refresh;
+            columnServiceHeaderDateTime.Text = GSend.Language.Resources.ServiceDate;
+            columnServiceHeaderServiceType.Text = GSend.Language.Resources.ServiceType;
+            columnServiceHeaderSpindleHours.Text = GSend.Language.Resources.SpindleHours;
 
             // menu items
             machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
@@ -739,7 +752,7 @@ namespace GSendDesktop.Forms
             closeToolStripMenuItem.Text = GSend.Language.Resources.Close;
 
             //view
-            generalToolStripMenuItem.Text= GSend.Language.Resources.General;
+            generalToolStripMenuItem.Text = GSend.Language.Resources.General;
             overridesToolStripMenuItem.Text = GSend.Language.Resources.Overrides;
             jogToolStripMenuItem.Text = GSend.Language.Resources.Jog;
             spindleToolStripMenuItem.Text = GSend.Language.Resources.Spindle;
@@ -769,26 +782,131 @@ namespace GSendDesktop.Forms
                 return;
             }
 
-            string labelFormat = GSend.Language.Resources.DisplayMmMinute;
+            rbFeedbackInch.CheckedChanged -= RbFeedback_CheckedChanged;
+            rbFeedbackMm.CheckedChanged -= RbFeedback_CheckedChanged;
 
             switch (_machine.FeedbackUnit)
             {
                 case FeedbackUnit.Mm:
-                    labelFormat = GSend.Language.Resources.DisplayMmAbreviated;
-                    mmFeedbackUnitToolStripMenuItem.Checked = true;
+                    rbFeedbackMm.Checked = true;
                     break;
 
                 case FeedbackUnit.Inch:
-                    labelFormat = GSend.Language.Resources.DisplayInchAbreviated;
-                    inchFeedbackToolStripMenuItem.Checked = true;
+                    rbFeedbackInch.Checked = true;
                     break;
             }
 
             machinePositionGeneral.DisplayFeedbackUnit = _machine.FeedbackUnit;
             machinePositionJog.DisplayFeedbackUnit = _machine.FeedbackUnit;
             machinePositionOverrides.DisplayFeedbackUnit = _machine.FeedbackUnit;
-            toolStripDropDownButtonDisplayUnit.Text = labelFormat;
             selectionOverrideSpindle.TickFrequency = (int)_machine.Settings.MaxSpindleSpeed / 100;
+            rbFeedbackInch.CheckedChanged += RbFeedback_CheckedChanged;
+            rbFeedbackMm.CheckedChanged += RbFeedback_CheckedChanged;
+
+            selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideX.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideY.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
+            rbFeedDisplayInchMin.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayInchSec.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmMin.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmSec.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+
+            switch (_machine.DisplayUnits)
+            {
+                case FeedRateDisplayUnits.InchPerMinute:
+                    rbFeedDisplayInchMin.Checked = true;
+                    toolStripStatusLabelDisplayUnit.Text = GSend.Language.Resources.DisplayInchMinute;
+                    break;
+
+                case FeedRateDisplayUnits.InchPerSecond:
+                    rbFeedDisplayInchSec.Checked = true;
+                    toolStripStatusLabelDisplayUnit.Text = GSend.Language.Resources.DisplayInchSecond;
+                    break;
+
+                case FeedRateDisplayUnits.MmPerSecond:
+                    rbFeedDisplayMmSec.Checked = true;
+                    toolStripStatusLabelDisplayUnit.Text = GSend.Language.Resources.DisplayMmSec;
+                    break;
+
+                case FeedRateDisplayUnits.MmPerMinute:
+                    rbFeedDisplayMmMin.Checked = true;
+                    toolStripStatusLabelDisplayUnit.Text = GSend.Language.Resources.DisplayMmMinute;
+                    break;
+            }
+
+            probingCommand1.FeedRateDisplay = _machine.DisplayUnits;
+            probingCommand1.UpdateFeedRateDisplay();
+            
+            jogControl.FeedRateDisplay = _machine.DisplayUnits;
+            jogControl.UpdateFeedRateDisplay();
+
+            selectionOverrideX.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideX.UpdateFeedRateDisplay();
+            selectionOverrideY.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideY.UpdateFeedRateDisplay();
+            selectionOverrideZDown.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideZDown.UpdateFeedRateDisplay();
+            selectionOverrideZUp.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideZUp.UpdateFeedRateDisplay();
+
+            rbFeedDisplayInchMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayInchSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideX.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideY.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
+        }
+
+        private void SelectionOverride_ValueChanged(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void RbFeedDisplay_CheckedChanged(object sender, EventArgs e)
+        {
+            rbFeedDisplayInchMin.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayInchSec.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmMin.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmSec.CheckedChanged -= RbFeedDisplay_CheckedChanged;
+
+            if (rbFeedDisplayInchMin.Checked)
+                _machine.DisplayUnits = FeedRateDisplayUnits.InchPerMinute;
+            else if (rbFeedDisplayInchSec.Checked)
+                _machine.DisplayUnits = FeedRateDisplayUnits.InchPerSecond;
+            else if (rbFeedDisplayMmMin.Checked)
+                _machine.DisplayUnits = FeedRateDisplayUnits.MmPerMinute;
+            else if (rbFeedDisplayMmSec.Checked)
+                _machine.DisplayUnits = FeedRateDisplayUnits.MmPerSecond;
+
+            UpdateConfigurationChanged();
+            UpdateDisplay();
+
+            rbFeedDisplayInchMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayInchSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
+            rbFeedDisplayMmSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
+        }
+
+        private void RbFeedback_CheckedChanged(object sender, EventArgs e)
+        {
+            rbFeedbackInch.CheckedChanged -= RbFeedback_CheckedChanged;
+            rbFeedbackMm.CheckedChanged -= RbFeedback_CheckedChanged;
+
+            if (rbFeedbackInch.Checked)
+                _machine.FeedbackUnit = FeedbackUnit.Inch;
+            else
+                _machine.FeedbackUnit = FeedbackUnit.Mm;
+
+            UpdateConfigurationChanged();
+            UpdateDisplay();
+
+            rbFeedbackInch.CheckedChanged += RbFeedback_CheckedChanged;
+            rbFeedbackMm.CheckedChanged += RbFeedback_CheckedChanged;
         }
 
         private void FrmMachine_FormClosing(object sender, FormClosingEventArgs e)
@@ -812,12 +930,25 @@ namespace GSendDesktop.Forms
 
         private void UpdateOverrides()
         {
+            selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideX.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideY.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
+
+            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
 
             selectionOverrideX.Value = selectionOverrideX.Maximum / 100 * trackBarPercent.Value;
             selectionOverrideY.Value = selectionOverrideY.Maximum / 100 * trackBarPercent.Value;
             selectionOverrideZDown.Value = selectionOverrideZDown.Maximum / 100 * trackBarPercent.Value;
             selectionOverrideZUp.Value = selectionOverrideZUp.Maximum / 100 * trackBarPercent.Value;
             labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
+
+            selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideX.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideY.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
         }
 
         private void cbOverridesDisable_CheckedChanged(object sender, EventArgs e)
@@ -964,6 +1095,7 @@ namespace GSendDesktop.Forms
         private void LoadAllStatusChangeWarnings(MachineStateModel status)
         {
             ValidateLaserSpindleMode(status);
+
             foreach (ChangedGrblSettings changedGrblSetting in status.UpdatedGrblConfiguration)
             {
                 string setting = String.Format(GSend.Language.Resources.GrblValueUpdated,
@@ -974,6 +1106,7 @@ namespace GSendDesktop.Forms
 
                 warningsAndErrors.AddWarningPanel(InformationType.Warning, setting);
             }
+
             _appliedSettingsChanged = true;
         }
 
@@ -1163,18 +1296,6 @@ namespace GSendDesktop.Forms
             g59ToolStripMenuItem.Checked = false;
         }
 
-        private void ToolstripMeasurement_Click(object sender, EventArgs e)
-        {
-            mmFeedbackUnitToolStripMenuItem.Checked = false;
-            inchFeedbackToolStripMenuItem.Checked = false;
-
-            ToolStripMenuItem selected = sender as ToolStripMenuItem;
-            selected.Checked = true;
-            _machine.FeedbackUnit = (FeedbackUnit)selected.Tag;
-            UpdateDisplay();
-            _appliedSettingsChanged = true;
-        }
-
         #endregion Toolbar Buttons
 
         #region Zeroing
@@ -1356,14 +1477,27 @@ namespace GSendDesktop.Forms
                 DateTime latestService = services.Max(s => s.ServiceDate);
                 DateTime nextService = latestService.AddDays(_machine.ServiceWeeks * 7);
                 TimeSpan span = nextService - DateTime.UtcNow;
+
                 lblServiceDate.Text = $"{nextService:g} ({(int)span.TotalDays} days)";
 
                 List<SpindleHoursModel> spindleHours = machineApiWrapper.GetSpindleTime(_machine.Id, latestService);
 
                 long totalTicks = spindleHours.Where(tt => tt.TotalTime.Ticks > 0).Sum(sh => sh.TotalTime.Ticks);
                 TimeSpan remaining = new TimeSpan((trackBarServiceSpindleHours.Value * TimeSpan.TicksPerHour) - totalTicks);
-                lblSpindleHoursRemaining.Text = String.Format(GSend.Language.Resources.StatusServiceSpindleTime, 
+                lblSpindleHoursRemaining.Text = String.Format(GSend.Language.Resources.StatusServiceSpindleTime,
                     (int)remaining.TotalHours, remaining.Minutes);
+
+                if (cbMaintainServiceSchedule.Checked)
+                {
+                    if ((span.TotalDays < 0 || remaining.TotalHours < 0) && !warningsAndErrors.Contains(InformationType.Warning, GSend.Language.Resources.ServiceOverdue))
+                    { 
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServiceOverdue);
+                    }
+                    else if ((span.TotalDays < 2 || remaining.TotalHours < 4) && !warningsAndErrors.Contains(InformationType.Information, GSend.Language.Resources.ServiceRequired))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.ServiceRequired);
+                    }
+                }
             }
         }
 

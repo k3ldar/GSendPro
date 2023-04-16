@@ -412,6 +412,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically select from G Code file.
+        /// </summary>
+        public static string DisplayUpdateFromFile {
+            get {
+                return ResourceManager.GetString("DisplayUpdateFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Undefined Grbl error.
         /// </summary>
         public static string Error0 {
@@ -763,6 +772,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feed Rate Display.
+        /// </summary>
+        public static string FeedDisplay {
+            get {
+                return ResourceManager.GetString("FeedDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed.
         /// </summary>
         public static string FeedRate {
@@ -1051,7 +1069,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Probe travel speed {0}mm/min.
+        ///   Looks up a localized string similar to Probe travel speed {0} {1}.
         /// </summary>
         public static string ProbeTravelSpeed {
             get {
@@ -1182,6 +1200,24 @@ namespace GSend.Language {
         public static string ServiceDate {
             get {
                 return ResourceManager.GetString("ServiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This machine&apos;s service is overdue!.
+        /// </summary>
+        public static string ServiceOverdue {
+            get {
+                return ResourceManager.GetString("ServiceOverdue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This machine is due a service shortly!.
+        /// </summary>
+        public static string ServiceRequired {
+            get {
+                return ResourceManager.GetString("ServiceRequired", resourceCulture);
             }
         }
         
@@ -1573,7 +1609,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}% of Speed.
+        ///   Looks up a localized string similar to {0}% of Maximum Feed Rate.
         /// </summary>
         public static string SpeedPercent {
             get {

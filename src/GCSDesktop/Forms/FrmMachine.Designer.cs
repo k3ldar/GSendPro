@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMachine));
-            this.mmFeedbackUnitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inchFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectionOverrideSpindle = new GSendDesktop.Controls.Selection();
             this.selectionOverrideZDown = new GSendDesktop.Controls.Selection();
             this.selectionOverrideZUp = new GSendDesktop.Controls.Selection();
@@ -59,7 +57,6 @@
             this.g57ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.g58ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.g59ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelServerConnect = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -67,6 +64,7 @@
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpindle = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelDisplayUnit = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
@@ -116,6 +114,15 @@
             this.lblPropertyHeader = new System.Windows.Forms.Label();
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.grpFeedDisplay = new System.Windows.Forms.GroupBox();
+            this.rbFeedDisplayInchMin = new System.Windows.Forms.RadioButton();
+            this.rbFeedDisplayInchSec = new System.Windows.Forms.RadioButton();
+            this.rbFeedDisplayMmSec = new System.Windows.Forms.RadioButton();
+            this.rbFeedDisplayMmMin = new System.Windows.Forms.RadioButton();
+            this.grpDisplayUnits = new System.Windows.Forms.GroupBox();
+            this.cbAutoSelectFeedbackUnit = new System.Windows.Forms.CheckBox();
+            this.rbFeedbackInch = new System.Windows.Forms.RadioButton();
+            this.rbFeedbackMm = new System.Windows.Forms.RadioButton();
             this.cbCorrectMode = new System.Windows.Forms.CheckBox();
             this.cbFloodCoolant = new System.Windows.Forms.CheckBox();
             this.cbMistCoolant = new System.Windows.Forms.CheckBox();
@@ -159,7 +166,6 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
-            this.toolStripDropDownButtonDisplayUnit = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -176,33 +182,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceWeeks)).BeginInit();
             this.tabPageMachineSettings.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
+            this.grpFeedDisplay.SuspendLayout();
+            this.grpDisplayUnits.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControlSecondary.SuspendLayout();
             this.tabPageConsole.SuspendLayout();
             this.SuspendLayout();
             // 
-            // mmFeedbackUnitToolStripMenuItem
-            // 
-            this.mmFeedbackUnitToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.mmFeedbackUnitToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.mmFeedbackUnitToolStripMenuItem.Name = "mmFeedbackUnitToolStripMenuItem";
-            this.mmFeedbackUnitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.mmFeedbackUnitToolStripMenuItem.Text = "MM Per Second";
-            this.mmFeedbackUnitToolStripMenuItem.Click += new System.EventHandler(this.ToolstripMeasurement_Click);
-            // 
-            // inchFeedbackToolStripMenuItem
-            // 
-            this.inchFeedbackToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.inchFeedbackToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.inchFeedbackToolStripMenuItem.Name = "inchFeedbackToolStripMenuItem";
-            this.inchFeedbackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.inchFeedbackToolStripMenuItem.Text = "Inch Per Minute";
-            this.inchFeedbackToolStripMenuItem.Click += new System.EventHandler(this.ToolstripMeasurement_Click);
-            // 
             // selectionOverrideSpindle
             // 
             this.selectionOverrideSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideSpindle.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideSpindle.GroupName = "Spindle";
+            this.selectionOverrideSpindle.HasDisplayUnits = false;
             this.selectionOverrideSpindle.LabelFormat = "{0}";
             this.selectionOverrideSpindle.LabelValue = null;
             this.selectionOverrideSpindle.LargeTickChange = 5;
@@ -220,7 +212,9 @@
             // selectionOverrideZDown
             // 
             this.selectionOverrideZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideZDown.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZDown.GroupName = "Z Down";
+            this.selectionOverrideZDown.HasDisplayUnits = true;
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
             this.selectionOverrideZDown.LargeTickChange = 5;
@@ -237,7 +231,9 @@
             // selectionOverrideZUp
             // 
             this.selectionOverrideZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideZUp.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZUp.GroupName = "Z Up";
+            this.selectionOverrideZUp.HasDisplayUnits = true;
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
             this.selectionOverrideZUp.LargeTickChange = 5;
@@ -254,7 +250,9 @@
             // selectionOverrideY
             // 
             this.selectionOverrideY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideY.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideY.GroupName = "Y";
+            this.selectionOverrideY.HasDisplayUnits = true;
             this.selectionOverrideY.LabelFormat = "{0}";
             this.selectionOverrideY.LabelValue = null;
             this.selectionOverrideY.LargeTickChange = 5;
@@ -271,7 +269,9 @@
             // selectionOverrideX
             // 
             this.selectionOverrideX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideX.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideX.GroupName = "X";
+            this.selectionOverrideX.HasDisplayUnits = true;
             this.selectionOverrideX.LabelFormat = "{0}";
             this.selectionOverrideX.LabelValue = null;
             this.selectionOverrideX.LargeTickChange = 5;
@@ -291,6 +291,7 @@
             this.jogControl.FeedMaximum = 10;
             this.jogControl.FeedMinimum = 0;
             this.jogControl.FeedRate = 0;
+            this.jogControl.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.jogControl.Location = new System.Drawing.Point(320, 6);
             this.jogControl.Name = "jogControl";
             this.jogControl.Size = new System.Drawing.Size(439, 190);
@@ -318,9 +319,7 @@
             this.toolStripButtonPause,
             this.toolStripButtonStop,
             this.toolStripSeparator5,
-            this.toolStripDropDownButtonCoordinateSystem,
-            this.toolStripSeparator6,
-            this.toolStripDropDownButtonDisplayUnit});
+            this.toolStripDropDownButtonCoordinateSystem});
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.Size = new System.Drawing.Size(796, 57);
@@ -516,24 +515,6 @@
             this.g59ToolStripMenuItem.Text = "G59";
             this.g59ToolStripMenuItem.Click += new System.EventHandler(this.ToolstripButtonCoordinates_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 57);
-            // 
-            // toolStripDropDownButtonDisplayUnit
-            // 
-            this.toolStripDropDownButtonDisplayUnit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButtonDisplayUnit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mmFeedbackUnitToolStripMenuItem,
-            this.inchFeedbackToolStripMenuItem});
-            this.toolStripDropDownButtonDisplayUnit.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.toolStripDropDownButtonDisplayUnit.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonDisplayUnit.Image")));
-            this.toolStripDropDownButtonDisplayUnit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButtonDisplayUnit.Name = "toolStripDropDownButtonDisplayUnit";
-            this.toolStripDropDownButtonDisplayUnit.Size = new System.Drawing.Size(68, 54);
-            this.toolStripDropDownButtonDisplayUnit.Text = "mm/min";
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -542,13 +523,14 @@
             this.toolStripStatusLabelCpu,
             this.toolStripStatusLabelWarnings,
             this.toolStripStatusLabelBuffer,
-            this.toolStripStatusLabelSpindle});
+            this.toolStripStatusLabelSpindle,
+            this.toolStripStatusLabelDisplayUnit});
             this.statusStrip.Location = new System.Drawing.Point(0, 591);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.ShowItemToolTips = true;
             this.statusStrip.Size = new System.Drawing.Size(796, 24);
             this.statusStrip.SizingGrip = false;
-            this.statusStrip.TabIndex = 5;
+            this.statusStrip.TabIndex = 4;
             this.statusStrip.Text = "statusStrip";
             // 
             // toolStripStatusLabelServerConnect
@@ -592,6 +574,13 @@
             this.toolStripStatusLabelSpindle.Size = new System.Drawing.Size(50, 19);
             this.toolStripStatusLabelSpindle.Text = "Spindle";
             // 
+            // toolStripStatusLabelDisplayUnit
+            // 
+            this.toolStripStatusLabelDisplayUnit.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+            this.toolStripStatusLabelDisplayUnit.Name = "toolStripStatusLabelDisplayUnit";
+            this.toolStripStatusLabelDisplayUnit.Size = new System.Drawing.Size(59, 19);
+            this.toolStripStatusLabelDisplayUnit.Text = "mm/min";
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -610,7 +599,7 @@
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
             this.tabControlMain.Size = new System.Drawing.Size(773, 270);
-            this.tabControlMain.TabIndex = 3;
+            this.tabControlMain.TabIndex = 2;
             // 
             // tabPageMain
             // 
@@ -655,9 +644,9 @@
             this.cbOverridesDisable.AutoSize = true;
             this.cbOverridesDisable.Location = new System.Drawing.Point(6, 215);
             this.cbOverridesDisable.Name = "cbOverridesDisable";
-            this.cbOverridesDisable.Size = new System.Drawing.Size(83, 19);
+            this.cbOverridesDisable.Size = new System.Drawing.Size(109, 19);
             this.cbOverridesDisable.TabIndex = 3;
-            this.cbOverridesDisable.Text = "checkBox1";
+            this.cbOverridesDisable.Text = "override disable";
             this.cbOverridesDisable.UseVisualStyleBackColor = true;
             this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.cbOverridesDisable_CheckedChanged);
             // 
@@ -991,11 +980,13 @@
             // trackBarServiceSpindleHours
             // 
             this.trackBarServiceSpindleHours.Location = new System.Drawing.Point(18, 120);
-            this.trackBarServiceSpindleHours.Maximum = 200;
+            this.trackBarServiceSpindleHours.Maximum = 500;
+            this.trackBarServiceSpindleHours.Minimum = 5;
             this.trackBarServiceSpindleHours.Name = "trackBarServiceSpindleHours";
             this.trackBarServiceSpindleHours.Size = new System.Drawing.Size(286, 45);
             this.trackBarServiceSpindleHours.TabIndex = 3;
-            this.trackBarServiceSpindleHours.TickFrequency = 10;
+            this.trackBarServiceSpindleHours.TickFrequency = 20;
+            this.trackBarServiceSpindleHours.Value = 5;
             // 
             // cbMaintainServiceSchedule
             // 
@@ -1011,10 +1002,12 @@
             // 
             this.trackBarServiceWeeks.LargeChange = 1;
             this.trackBarServiceWeeks.Location = new System.Drawing.Point(18, 43);
-            this.trackBarServiceWeeks.Maximum = 26;
+            this.trackBarServiceWeeks.Maximum = 52;
+            this.trackBarServiceWeeks.Minimum = 1;
             this.trackBarServiceWeeks.Name = "trackBarServiceWeeks";
             this.trackBarServiceWeeks.Size = new System.Drawing.Size(286, 45);
             this.trackBarServiceWeeks.TabIndex = 1;
+            this.trackBarServiceWeeks.TickFrequency = 3;
             this.trackBarServiceWeeks.Value = 1;
             // 
             // lblServiceSchedule
@@ -1112,6 +1105,8 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageSettings.Controls.Add(this.grpFeedDisplay);
+            this.tabPageSettings.Controls.Add(this.grpDisplayUnits);
             this.tabPageSettings.Controls.Add(this.cbCorrectMode);
             this.tabPageSettings.Controls.Add(this.cbFloodCoolant);
             this.tabPageSettings.Controls.Add(this.cbMistCoolant);
@@ -1125,13 +1120,113 @@
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
             // 
+            // grpFeedDisplay
+            // 
+            this.grpFeedDisplay.Controls.Add(this.rbFeedDisplayInchMin);
+            this.grpFeedDisplay.Controls.Add(this.rbFeedDisplayInchSec);
+            this.grpFeedDisplay.Controls.Add(this.rbFeedDisplayMmSec);
+            this.grpFeedDisplay.Controls.Add(this.rbFeedDisplayMmMin);
+            this.grpFeedDisplay.Location = new System.Drawing.Point(274, 154);
+            this.grpFeedDisplay.Name = "grpFeedDisplay";
+            this.grpFeedDisplay.Size = new System.Drawing.Size(221, 82);
+            this.grpFeedDisplay.TabIndex = 6;
+            this.grpFeedDisplay.TabStop = false;
+            this.grpFeedDisplay.Text = "groupBox1";
+            // 
+            // rbFeedDisplayInchMin
+            // 
+            this.rbFeedDisplayInchMin.AutoSize = true;
+            this.rbFeedDisplayInchMin.Location = new System.Drawing.Point(121, 22);
+            this.rbFeedDisplayInchMin.Name = "rbFeedDisplayInchMin";
+            this.rbFeedDisplayInchMin.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedDisplayInchMin.TabIndex = 2;
+            this.rbFeedDisplayInchMin.TabStop = true;
+            this.rbFeedDisplayInchMin.Text = "radioButton4";
+            this.rbFeedDisplayInchMin.UseVisualStyleBackColor = true;
+            // 
+            // rbFeedDisplayInchSec
+            // 
+            this.rbFeedDisplayInchSec.AutoSize = true;
+            this.rbFeedDisplayInchSec.Location = new System.Drawing.Point(121, 47);
+            this.rbFeedDisplayInchSec.Name = "rbFeedDisplayInchSec";
+            this.rbFeedDisplayInchSec.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedDisplayInchSec.TabIndex = 3;
+            this.rbFeedDisplayInchSec.TabStop = true;
+            this.rbFeedDisplayInchSec.Text = "radioButton3";
+            this.rbFeedDisplayInchSec.UseVisualStyleBackColor = true;
+            // 
+            // rbFeedDisplayMmSec
+            // 
+            this.rbFeedDisplayMmSec.AutoSize = true;
+            this.rbFeedDisplayMmSec.Location = new System.Drawing.Point(6, 47);
+            this.rbFeedDisplayMmSec.Name = "rbFeedDisplayMmSec";
+            this.rbFeedDisplayMmSec.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedDisplayMmSec.TabIndex = 1;
+            this.rbFeedDisplayMmSec.TabStop = true;
+            this.rbFeedDisplayMmSec.Text = "radioButton2";
+            this.rbFeedDisplayMmSec.UseVisualStyleBackColor = true;
+            // 
+            // rbFeedDisplayMmMin
+            // 
+            this.rbFeedDisplayMmMin.AutoSize = true;
+            this.rbFeedDisplayMmMin.Location = new System.Drawing.Point(6, 22);
+            this.rbFeedDisplayMmMin.Name = "rbFeedDisplayMmMin";
+            this.rbFeedDisplayMmMin.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedDisplayMmMin.TabIndex = 0;
+            this.rbFeedDisplayMmMin.TabStop = true;
+            this.rbFeedDisplayMmMin.Text = "radioButton1";
+            this.rbFeedDisplayMmMin.UseVisualStyleBackColor = true;
+            // 
+            // grpDisplayUnits
+            // 
+            this.grpDisplayUnits.Controls.Add(this.cbAutoSelectFeedbackUnit);
+            this.grpDisplayUnits.Controls.Add(this.rbFeedbackInch);
+            this.grpDisplayUnits.Controls.Add(this.rbFeedbackMm);
+            this.grpDisplayUnits.Location = new System.Drawing.Point(6, 154);
+            this.grpDisplayUnits.Name = "grpDisplayUnits";
+            this.grpDisplayUnits.Size = new System.Drawing.Size(262, 82);
+            this.grpDisplayUnits.TabIndex = 5;
+            this.grpDisplayUnits.TabStop = false;
+            this.grpDisplayUnits.Text = "groupBox1";
+            // 
+            // cbAutoSelectFeedbackUnit
+            // 
+            this.cbAutoSelectFeedbackUnit.Location = new System.Drawing.Point(121, 22);
+            this.cbAutoSelectFeedbackUnit.Name = "cbAutoSelectFeedbackUnit";
+            this.cbAutoSelectFeedbackUnit.Size = new System.Drawing.Size(135, 43);
+            this.cbAutoSelectFeedbackUnit.TabIndex = 2;
+            this.cbAutoSelectFeedbackUnit.Text = "Automatically select from G Code file";
+            this.cbAutoSelectFeedbackUnit.UseVisualStyleBackColor = true;
+            // 
+            // rbFeedbackInch
+            // 
+            this.rbFeedbackInch.AutoSize = true;
+            this.rbFeedbackInch.Location = new System.Drawing.Point(6, 47);
+            this.rbFeedbackInch.Name = "rbFeedbackInch";
+            this.rbFeedbackInch.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedbackInch.TabIndex = 1;
+            this.rbFeedbackInch.TabStop = true;
+            this.rbFeedbackInch.Text = "radioButton2";
+            this.rbFeedbackInch.UseVisualStyleBackColor = true;
+            // 
+            // rbFeedbackMm
+            // 
+            this.rbFeedbackMm.AutoSize = true;
+            this.rbFeedbackMm.Location = new System.Drawing.Point(6, 22);
+            this.rbFeedbackMm.Name = "rbFeedbackMm";
+            this.rbFeedbackMm.Size = new System.Drawing.Size(94, 19);
+            this.rbFeedbackMm.TabIndex = 0;
+            this.rbFeedbackMm.TabStop = true;
+            this.rbFeedbackMm.Text = "radioButton1";
+            this.rbFeedbackMm.UseVisualStyleBackColor = true;
+            // 
             // cbCorrectMode
             // 
             this.cbCorrectMode.AutoSize = true;
             this.cbCorrectMode.Location = new System.Drawing.Point(6, 106);
             this.cbCorrectMode.Name = "cbCorrectMode";
             this.cbCorrectMode.Size = new System.Drawing.Size(83, 19);
-            this.cbCorrectMode.TabIndex = 5;
+            this.cbCorrectMode.TabIndex = 4;
             this.cbCorrectMode.Text = "checkBox3";
             this.cbCorrectMode.UseVisualStyleBackColor = true;
             // 
@@ -1141,7 +1236,7 @@
             this.cbFloodCoolant.Location = new System.Drawing.Point(6, 81);
             this.cbFloodCoolant.Name = "cbFloodCoolant";
             this.cbFloodCoolant.Size = new System.Drawing.Size(83, 19);
-            this.cbFloodCoolant.TabIndex = 4;
+            this.cbFloodCoolant.TabIndex = 3;
             this.cbFloodCoolant.Text = "checkBox2";
             this.cbFloodCoolant.UseVisualStyleBackColor = true;
             // 
@@ -1151,7 +1246,7 @@
             this.cbMistCoolant.Location = new System.Drawing.Point(6, 56);
             this.cbMistCoolant.Name = "cbMistCoolant";
             this.cbMistCoolant.Size = new System.Drawing.Size(83, 19);
-            this.cbMistCoolant.TabIndex = 3;
+            this.cbMistCoolant.TabIndex = 2;
             this.cbMistCoolant.Text = "checkBox1";
             this.cbMistCoolant.UseVisualStyleBackColor = true;
             // 
@@ -1177,11 +1272,12 @@
             // 
             // probingCommand1
             // 
+            this.probingCommand1.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.probingCommand1.Location = new System.Drawing.Point(501, 6);
             this.probingCommand1.MinimumSize = new System.Drawing.Size(220, 172);
             this.probingCommand1.Name = "probingCommand1";
             this.probingCommand1.Size = new System.Drawing.Size(258, 230);
-            this.probingCommand1.TabIndex = 2;
+            this.probingCommand1.TabIndex = 7;
             // 
             // menuStrip1
             // 
@@ -1430,7 +1526,7 @@
             this.warningsAndErrors.MaximumSize = new System.Drawing.Size(2048, 48);
             this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
             this.warningsAndErrors.Name = "warningsAndErrors";
-            this.warningsAndErrors.Size = new System.Drawing.Size(772, 48);
+            this.warningsAndErrors.Size = new System.Drawing.Size(772, 27);
             this.warningsAndErrors.TabIndex = 2;
             this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningsAndErrors_OnUpdate);
             this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
@@ -1447,7 +1543,7 @@
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
             this.tabControlSecondary.Size = new System.Drawing.Size(773, 171);
-            this.tabControlSecondary.TabIndex = 4;
+            this.tabControlSecondary.TabIndex = 3;
             // 
             // tabPageConsole
             // 
@@ -1550,6 +1646,10 @@
             this.tabPageMachineSettings.PerformLayout();
             this.tabPageSettings.ResumeLayout(false);
             this.tabPageSettings.PerformLayout();
+            this.grpFeedDisplay.ResumeLayout(false);
+            this.grpFeedDisplay.PerformLayout();
+            this.grpDisplayUnits.ResumeLayout(false);
+            this.grpDisplayUnits.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControlSecondary.ResumeLayout(false);
@@ -1688,9 +1788,15 @@
         private System.Windows.Forms.ToolStripMenuItem g57ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem g58ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem g59ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonDisplayUnit;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem mmFeedbackUnitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem inchFeedbackToolStripMenuItem;
+        private System.Windows.Forms.GroupBox grpDisplayUnits;
+        private System.Windows.Forms.RadioButton rbFeedbackInch;
+        private System.Windows.Forms.RadioButton rbFeedbackMm;
+        private System.Windows.Forms.CheckBox cbAutoSelectFeedbackUnit;
+        private System.Windows.Forms.GroupBox grpFeedDisplay;
+        private System.Windows.Forms.RadioButton rbFeedDisplayInchMin;
+        private System.Windows.Forms.RadioButton rbFeedDisplayInchSec;
+        private System.Windows.Forms.RadioButton rbFeedDisplayMmSec;
+        private System.Windows.Forms.RadioButton rbFeedDisplayMmMin;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDisplayUnit;
     }
 }

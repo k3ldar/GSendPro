@@ -65,6 +65,21 @@ namespace GSendDesktop.Controls
             return flowLayoutWarningErrors.Controls.Count;
         }
 
+        public bool Contains(InformationType informationType, string message)
+        {
+            for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
+            {
+                WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
+
+                if (panel != null && panel.InformationType != informationType && panel.InformationText.Equals(message))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public event EventHandler OnUpdate;
 
         private static int Comparison(WarningPanel a, WarningPanel b)
@@ -152,6 +167,11 @@ namespace GSendDesktop.Controls
                     }
                 }
             }
+        }
+
+        private void WarningContainer_SizeChanged(object sender, EventArgs e)
+        {
+            ResetAfterRemove();
         }
     }
 }

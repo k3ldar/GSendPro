@@ -7,7 +7,7 @@ using GSendShared;
 
 namespace GSendDesktop.Controls
 {
-    public partial class JogControl : UserControl
+    public partial class JogControl : UserControl, IFeedRateUnitUpdate
     {
         private readonly double[] _steps;
 
@@ -78,6 +78,11 @@ namespace GSendDesktop.Controls
             selectionFeed.GroupName = GSend.Language.Resources.FeedRate;
         }
 
+        public void UpdateFeedRateDisplay()
+        {
+            selectionFeed.UpdateFeedRateDisplay();
+        }
+
         [Browsable(true)]
         public int FeedMaximum
         {
@@ -109,6 +114,8 @@ namespace GSendDesktop.Controls
             get => selectionSteps.Value;
             set => selectionSteps.Value = value;
         }
+
+        public FeedRateDisplayUnits FeedRateDisplay { get => selectionFeed.FeedRateDisplay; set => selectionFeed.FeedRateDisplay = value; }
 
         public event EventHandler OnUpdate;
 

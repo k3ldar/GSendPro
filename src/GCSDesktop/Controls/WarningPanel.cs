@@ -15,6 +15,8 @@ namespace GSendDesktop.Controls
 
         public InformationType InformationType { get; }
 
+        public string InformationText => lblMessage.Text;
+
         public WarningPanel(InformationType informationType, string message)
             : this()
         {

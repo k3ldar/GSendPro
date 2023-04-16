@@ -57,7 +57,7 @@
             0,
             0,
             131072});
-            this.numericProbeThickness.Location = new System.Drawing.Point(8, 18);
+            this.numericProbeThickness.Location = new System.Drawing.Point(3, 18);
             this.numericProbeThickness.Maximum = new decimal(new int[] {
             60,
             0,
@@ -80,7 +80,7 @@
             // lblTravelSpeed
             // 
             this.lblTravelSpeed.AutoSize = true;
-            this.lblTravelSpeed.Location = new System.Drawing.Point(3, 50);
+            this.lblTravelSpeed.Location = new System.Drawing.Point(3, 63);
             this.lblTravelSpeed.Name = "lblTravelSpeed";
             this.lblTravelSpeed.Size = new System.Drawing.Size(38, 15);
             this.lblTravelSpeed.TabIndex = 2;
@@ -88,7 +88,7 @@
             // 
             // trackBarTravelSpeed
             // 
-            this.trackBarTravelSpeed.Location = new System.Drawing.Point(8, 68);
+            this.trackBarTravelSpeed.Location = new System.Drawing.Point(3, 81);
             this.trackBarTravelSpeed.Maximum = 250;
             this.trackBarTravelSpeed.Minimum = 20;
             this.trackBarTravelSpeed.Name = "trackBarTravelSpeed";
@@ -125,21 +125,21 @@
             this.txtProbeCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProbeCommand.Location = new System.Drawing.Point(8, 125);
+            this.txtProbeCommand.Location = new System.Drawing.Point(3, 147);
             this.txtProbeCommand.Multiline = true;
             this.txtProbeCommand.Name = "txtProbeCommand";
             this.txtProbeCommand.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtProbeCommand.Size = new System.Drawing.Size(209, 44);
-            this.txtProbeCommand.TabIndex = 6;
+            this.txtProbeCommand.Size = new System.Drawing.Size(209, 71);
+            this.txtProbeCommand.TabIndex = 7;
             this.txtProbeCommand.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // lblProbeCommand
             // 
             this.lblProbeCommand.AutoSize = true;
-            this.lblProbeCommand.Location = new System.Drawing.Point(0, 107);
+            this.lblProbeCommand.Location = new System.Drawing.Point(3, 129);
             this.lblProbeCommand.Name = "lblProbeCommand";
             this.lblProbeCommand.Size = new System.Drawing.Size(38, 15);
-            this.lblProbeCommand.TabIndex = 7;
+            this.lblProbeCommand.TabIndex = 6;
             this.lblProbeCommand.Text = "label1";
             // 
             // ProbingCommand
@@ -156,7 +156,7 @@
             this.Controls.Add(this.lblProbeThickness);
             this.MinimumSize = new System.Drawing.Size(220, 172);
             this.Name = "ProbingCommand";
-            this.Size = new System.Drawing.Size(220, 172);
+            this.Size = new System.Drawing.Size(220, 221);
             ((System.ComponentModel.ISupportInitialize)(this.numericProbeThickness)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarTravelSpeed)).EndInit();
             this.ResumeLayout(false);

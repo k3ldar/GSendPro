@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using GSendShared;
 
 namespace GSendDesktop.Controls
 {
-    public partial class ProbingCommand : UserControl
+    public partial class ProbingCommand : UserControl, IFeedRateUnitUpdate
     {
         public ProbingCommand()
         {
             InitializeComponent();
             lblProbeThickness.Text = GSend.Language.Resources.ProbeThickness;
-            lblTravelSpeed.Text = String.Format(GSend.Language.Resources.ProbeTravelSpeed, trackBarTravelSpeed.Value);
             lblProbeCommand.Text = GSend.Language.Resources.ProbeCommand;
             btnSave.Text = GSend.Language.Resources.Save;
             btnGenerate.Text = GSend.Language.Resources.Generate;
         }
 
         public void InitializeProbingCommand(string existingCommand, int travelSpeed, decimal thickness)
-        { 
+        {
             txtProbeCommand.Text = existingCommand;
             trackBarTravelSpeed.Value = Math.Max(travelSpeed, trackBarTravelSpeed.Minimum);
             numericProbeThickness.Value = Math.Max(thickness, numericProbeThickness.Minimum);
@@ -38,9 +33,19 @@ namespace GSendDesktop.Controls
 
         public event EventHandler OnSave;
 
+        public void UpdateFeedRateDisplay()
+        {
+            trackBarTravelSpeed_ValueChanged(this, EventArgs.Empty);
+        }
+
+        [Browsable(true)]
+        public FeedRateDisplayUnits FeedRateDisplay { get; set; }
+
         private void trackBarTravelSpeed_ValueChanged(object sender, EventArgs e)
         {
-            lblTravelSpeed.Text = String.Format(GSend.Language.Resources.ProbeTravelSpeed, trackBarTravelSpeed.Value);
+            lblTravelSpeed.Text = String.Format(GSend.Language.Resources.ProbeTravelSpeed,
+                HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplay, trackBarTravelSpeed.Value),
+                HelperMethods.TranslateDisplayUnit(FeedRateDisplay));
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
