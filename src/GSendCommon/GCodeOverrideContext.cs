@@ -1,4 +1,4 @@
-﻿using GSendCommon.Overrides;
+﻿using GSendCommon.OverrideClasses;
 
 using GSendDB.Tables;
 
@@ -17,7 +17,7 @@ namespace GSendCommon
     {
         private readonly object _lockObj = new();
         private IGCodeLine _gCodeLine = null;
-        private readonly List<IGCodeOverride> _overrides;
+        private readonly List<IGCodeOverride> _overrideClasses;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _serviceProvider;
 
@@ -29,8 +29,8 @@ namespace GSendCommon
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
             ComPort = comPort ?? throw new ArgumentNullException(nameof(comPort));
-
-            _overrides = GetOverrides();
+            Overrides = new Overrides();
+            _overrideClasses = GetOverrides();
         }
 
         public IStaticMethods StaticMethods { get; }
@@ -60,6 +60,8 @@ namespace GSendCommon
 
         public bool SendCommand { get; set; } = true;
 
+        public IOverrides Overrides { get; }
+
         public void ProcessGCodeLine(IGCodeLine line)
         {
             using (TimedLock tl = TimedLock.Lock(_lockObj))
@@ -71,7 +73,7 @@ namespace GSendCommon
 
                 GCode = line ?? throw new ArgumentNullException(nameof(line));
 
-                foreach (IGCodeOverride item in _overrides)
+                foreach (IGCodeOverride item in _overrideClasses)
                 {
                     item.Process(this, cancellationToken);
                 }
@@ -83,7 +85,7 @@ namespace GSendCommon
 
         public void ProcessAlarm(GrblAlarm alarm)
         {
-            foreach (IGCodeOverride item in _overrides)
+            foreach (IGCodeOverride item in _overrideClasses)
             {
                 item.Process(alarm);
             }
@@ -91,12 +93,11 @@ namespace GSendCommon
 
         public void ProcessError(GrblError error)
         {
-            foreach (IGCodeOverride item in _overrides)
+            foreach (IGCodeOverride item in _overrideClasses)
             {
                 item.Process(error);
             }
         }
-
 
         public void Cancel()
         {
@@ -113,8 +114,7 @@ namespace GSendCommon
                 new SpindleActiveTime(_serviceProvider.GetRequiredService<ISimpleDBOperations<MachineSpindleTimeDataRow>>()),
             };
 
-            return Result.OrderBy(o => o.SortOrder).ToList();
+            return Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();
         }
-
     }
 }

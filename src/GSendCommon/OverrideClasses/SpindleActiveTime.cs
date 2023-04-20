@@ -5,7 +5,7 @@ using GSendShared.Interfaces;
 
 using SimpleDB;
 
-namespace GSendCommon.Overrides
+namespace GSendCommon.OverrideClasses
 {
     /// <summary>
     /// Logs spindle active time
@@ -19,6 +19,8 @@ namespace GSendCommon.Overrides
         {
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(_spindleTimeTable));
         }
+
+        public MachineType MachineType => MachineType.CNC;
 
         public int SortOrder => int.MinValue;
 

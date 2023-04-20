@@ -10,7 +10,7 @@ using GSendAnalyser;
 using GSendAnalyser.Internal;
 
 using GSendCommon;
-using GSendCommon.Overrides;
+using GSendCommon.OverrideClasses;
 
 using GSendShared;
 using GSendShared.Interfaces;

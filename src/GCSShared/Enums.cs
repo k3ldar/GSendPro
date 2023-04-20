@@ -145,7 +145,12 @@
         /// <summary>
         /// Override slider for Z Down is linked
         /// </summary>
-        OverrideZDown = 4196,
+        OverrideZDown = 4096,
+
+        /// <summary>
+        /// Override slider for spindle is linked
+        /// </summary>
+        OverrideSpindle = 8192
     }
 
     [Flags]

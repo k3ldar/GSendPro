@@ -1,12 +1,14 @@
 ﻿using GSendShared;
 using GSendShared.Interfaces;
 
-namespace GSendCommon.Overrides
+namespace GSendCommon.OverrideClasses
 {
-    public sealed class SpindleSoftStart : IGCodeOverride
+    public sealed class SpindleSoftStop : IGCodeOverride
     {
         private const int MillisecondsPerSecond = 1000;
         private const int DelayMilliseconds = 200;
+
+        public MachineType MachineType => MachineType.CNC;
 
         public int SortOrder => 0;
 
@@ -22,32 +24,29 @@ namespace GSendCommon.Overrides
                 return;
 
             IGCodeCommand startSpindle = overrideContext.GCode.Commands.FirstOrDefault(c =>
-                c.Command.Equals('M') && (c.CommandValue.Equals(3) || c.CommandValue.Equals(4)));
+                c.Command.Equals('M') && c.CommandValue.Equals(5));
 
             if (startSpindle != null)
             {
-                IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
-                overrideContext.SendCommand = false;
-
-                if (spindleSpeed == null)
-                    return;
+                int spindleSpeed = (int)overrideContext.Processor.StateModel.SpindleSpeed;
 
                 int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
-                int rpmPerStep = Convert.ToInt32(spindleSpeed.CommandValue / stepDelay);
+                int rpmPerStep = Convert.ToInt32(spindleSpeed / stepDelay);
                 int currentRpm = 0;
+                int spindleStartValue = overrideContext.Processor.StateModel.SpindleClockWise ? 3 : 4;
 
-                for (int i = 1; i <= stepDelay; i++)
+                for (int i = stepDelay; i > 0; i--)
                 {
-                    if (cancellationToken.IsCancellationRequested)
+                    if (cancellationToken.IsCancellationRequested || overrideContext.Processor.StateModel.SpindleSpeed == 0)
                         return;
 
                     currentRpm = i * rpmPerStep;
-                    overrideContext.ComPort.WriteLine($"S{currentRpm}M{startSpindle.CommandValue}");
+                    overrideContext.ComPort.WriteLine($"S{currentRpm}M{spindleStartValue}");
                     overrideContext.StaticMethods.Sleep(200);
                 }
 
-                if (currentRpm < spindleSpeed.CommandValue)
-                    overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
+                overrideContext.ComPort.WriteLine("S0");
+                overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
 
                 return;
             }

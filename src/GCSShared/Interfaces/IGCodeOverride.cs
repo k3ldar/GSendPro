@@ -6,6 +6,11 @@
     public interface IGCodeOverride
     {
         /// <summary>
+        /// Type of machine the override can be used with
+        /// </summary>
+        MachineType MachineType { get; }
+
+        /// <summary>
         /// Preferred sort order for override
         /// </summary>
         int SortOrder { get; }

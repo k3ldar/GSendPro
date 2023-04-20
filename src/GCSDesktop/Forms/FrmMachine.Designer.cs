@@ -69,6 +69,7 @@
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
+            this.cbOverrideLinkSpindle = new System.Windows.Forms.CheckBox();
             this.cbOverrideLinkZDown = new System.Windows.Forms.CheckBox();
             this.cbOverrideLinkZUp = new System.Windows.Forms.CheckBox();
             this.cbOverrideLinkY = new System.Windows.Forms.CheckBox();
@@ -627,6 +628,7 @@
             // tabPageOverrides
             // 
             this.tabPageOverrides.BackColor = System.Drawing.Color.White;
+            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkSpindle);
             this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZDown);
             this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZUp);
             this.tabPageOverrides.Controls.Add(this.cbOverrideLinkY);
@@ -647,10 +649,20 @@
             this.tabPageOverrides.TabIndex = 1;
             this.tabPageOverrides.Text = "Overrides";
             // 
+            // cbOverrideLinkSpindle
+            // 
+            this.cbOverrideLinkSpindle.AutoSize = true;
+            this.cbOverrideLinkSpindle.Location = new System.Drawing.Point(678, 9);
+            this.cbOverrideLinkSpindle.Name = "cbOverrideLinkSpindle";
+            this.cbOverrideLinkSpindle.Size = new System.Drawing.Size(83, 19);
+            this.cbOverrideLinkSpindle.TabIndex = 13;
+            this.cbOverrideLinkSpindle.Text = "checkBox1";
+            this.cbOverrideLinkSpindle.UseVisualStyleBackColor = true;
+            // 
             // cbOverrideLinkZDown
             // 
             this.cbOverrideLinkZDown.AutoSize = true;
-            this.cbOverrideLinkZDown.Location = new System.Drawing.Point(141, 192);
+            this.cbOverrideLinkZDown.Location = new System.Drawing.Point(592, 9);
             this.cbOverrideLinkZDown.Name = "cbOverrideLinkZDown";
             this.cbOverrideLinkZDown.Size = new System.Drawing.Size(67, 19);
             this.cbOverrideLinkZDown.TabIndex = 6;
@@ -661,7 +673,7 @@
             // cbOverrideLinkZUp
             // 
             this.cbOverrideLinkZUp.AutoSize = true;
-            this.cbOverrideLinkZUp.Location = new System.Drawing.Point(84, 192);
+            this.cbOverrideLinkZUp.Location = new System.Drawing.Point(504, 9);
             this.cbOverrideLinkZUp.Name = "cbOverrideLinkZUp";
             this.cbOverrideLinkZUp.Size = new System.Drawing.Size(51, 19);
             this.cbOverrideLinkZUp.TabIndex = 5;
@@ -672,7 +684,7 @@
             // cbOverrideLinkY
             // 
             this.cbOverrideLinkY.AutoSize = true;
-            this.cbOverrideLinkY.Location = new System.Drawing.Point(45, 192);
+            this.cbOverrideLinkY.Location = new System.Drawing.Point(416, 9);
             this.cbOverrideLinkY.Name = "cbOverrideLinkY";
             this.cbOverrideLinkY.Size = new System.Drawing.Size(33, 19);
             this.cbOverrideLinkY.TabIndex = 4;
@@ -683,7 +695,7 @@
             // cbOverrideLinkX
             // 
             this.cbOverrideLinkX.AutoSize = true;
-            this.cbOverrideLinkX.Location = new System.Drawing.Point(6, 192);
+            this.cbOverrideLinkX.Location = new System.Drawing.Point(328, 9);
             this.cbOverrideLinkX.Name = "cbOverrideLinkX";
             this.cbOverrideLinkX.Size = new System.Drawing.Size(33, 19);
             this.cbOverrideLinkX.TabIndex = 3;
@@ -715,10 +727,12 @@
             // 
             this.trackBarPercent.Location = new System.Drawing.Point(6, 123);
             this.trackBarPercent.Maximum = 100;
+            this.trackBarPercent.Minimum = 1;
             this.trackBarPercent.Name = "trackBarPercent";
             this.trackBarPercent.Size = new System.Drawing.Size(308, 45);
             this.trackBarPercent.TabIndex = 1;
             this.trackBarPercent.TickFrequency = 5;
+            this.trackBarPercent.Value = 1;
             this.trackBarPercent.ValueChanged += new System.EventHandler(this.trackBarPercent_ValueChanged);
             // 
             // machinePositionOverrides
@@ -1855,5 +1869,6 @@
         private System.Windows.Forms.CheckBox cbOverrideLinkZUp;
         private System.Windows.Forms.CheckBox cbOverrideLinkY;
         private System.Windows.Forms.CheckBox cbOverrideLinkX;
+        private System.Windows.Forms.CheckBox cbOverrideLinkSpindle;
     }
 }

@@ -4,8 +4,6 @@ using System.Text;
 
 using GSendAnalyser.Internal;
 
-using GSendCommon;
-
 using GSendShared;
 using GSendShared.Attributes;
 using GSendShared.Interfaces;
@@ -568,6 +566,9 @@ namespace GSendCommon
 
             if (speed > 0)
             {
+                OverrideValue overrideValue = _overrideContext.Overrides.Spindle as OverrideValue;
+                overrideValue.OriginalValue = speed;
+
                 if (clockWise)
                     InternalWriteLine(String.Format(CommandSpindleStartClockWise, speed));
                 else

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 
 using GSendShared;
 
@@ -12,6 +13,7 @@ namespace GSendCommon
         private readonly IMachine _machine;
         private readonly IUiUpdate _uiUpdate;
         private DateTime _lastUiUpdate;
+        private DateTime _lastOverrideUpdate;
 
         public MachineUpdateThread(TimeSpan runInterval, GSendWebSocket gSendWebSocket, IMachine machine, IUiUpdate uiUpdate)
             : base(null, runInterval)
@@ -21,10 +23,19 @@ namespace GSendCommon
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
             _uiUpdate = uiUpdate ?? throw new ArgumentNullException(nameof(uiUpdate));
             _lastUiUpdate = DateTime.UtcNow;
+            _lastOverrideUpdate = DateTime.MaxValue;
             IsThreadRunning = false;
+            Overrides = new();
         }
 
         public bool IsThreadRunning { get; set; }
+
+        public Overrides Overrides { get; }
+
+        public void OverridesUpdated()
+        {
+            _lastOverrideUpdate = DateTime.UtcNow;
+        }
 
         public ConcurrentQueue<string> ThreadSendCommandQueue { get; }
 
@@ -46,6 +57,14 @@ namespace GSendCommon
             {
                 ThreadManager.ThreadStart(new RefreshServiceScheduleThread(_uiUpdate, this), $"{this.Name} - Service Schedule", ThreadPriority.BelowNormal);
                 _lastUiUpdate = DateTime.UtcNow;
+            }
+
+            TimeSpan overrideUpdateSpan = DateTime.UtcNow - _lastOverrideUpdate;
+
+            if (overrideUpdateSpan.TotalMilliseconds > 400)
+            {
+                Trace.WriteLine("override send update");
+                _lastOverrideUpdate = DateTime.MaxValue;
             }
 
             return !HasCancelled();

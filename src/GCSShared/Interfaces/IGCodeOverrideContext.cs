@@ -39,6 +39,8 @@
 
         IStaticMethods StaticMethods { get; }
 
+        IOverrides Overrides { get; }
+
         void ProcessGCodeLine(IGCodeLine line);
 
         void ProcessAlarm(GrblAlarm error);
