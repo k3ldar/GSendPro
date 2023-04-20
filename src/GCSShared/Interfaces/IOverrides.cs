@@ -2,9 +2,9 @@
 {
     public interface IOverrides
     {
-        IOverriddenValue AxisX { get; }
+        IOverriddenValue Rapids { get; }
 
-        IOverriddenValue AxisY { get; }
+        IOverriddenValue AxisXY { get; }
 
         IOverriddenValue AxisZUp { get; }
 
@@ -12,9 +12,9 @@
 
         IOverriddenValue Spindle { get; }
 
-        bool OverrideX { get; }
+        bool OverrideRapids { get; }
 
-        bool OverrideY { get; }
+        bool OverrideXY { get; }
 
         bool OverrideZUp { get; }
 

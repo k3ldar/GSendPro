@@ -27,6 +27,10 @@ namespace GSendShared
 
         int OverrideSpindle { get; set; }
 
+        int OverrideZDownSpeed { get; set; }
+
+        int OverrideZUpSpeed { get; set; }
+
         GrblSettings Settings { get; set; }
 
         DateTime ConfigurationLastVerified { get; set; }

@@ -11,8 +11,6 @@ using GSendApi;
 
 using GSendCommon;
 
-using GSendDesktop.Controls;
-
 using GSendShared;
 using GSendShared.Attributes;
 using GSendShared.Models;
@@ -106,6 +104,7 @@ namespace GSendDesktop.Forms
 
             ConfigureMachine();
             toolStripStatusLabelSpindle.Visible = false;
+            toolStripStatusLabelFeedRate.Visible = false;
             toolStripStatusLabelBuffer.Visible = false;
             toolStripStatusLabelStatus.Visible = false;
             warningsAndErrors_OnUpdate(this, EventArgs.Empty);
@@ -207,6 +206,7 @@ namespace GSendDesktop.Forms
                     ConfigureMachine();
                     _configurationChanges = false;
                     toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
+                    toolStripStatusLabelFeedRate.Visible = true;
                     toolStripStatusLabelBuffer.Visible = true;
                     toolStripStatusLabelStatus.Visible = true;
 
@@ -219,6 +219,7 @@ namespace GSendDesktop.Forms
                     warningsAndErrors.Clear(false);
                     warningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
                     toolStripStatusLabelSpindle.Visible = false;
+                    toolStripStatusLabelFeedRate.Visible = false;
                     toolStripStatusLabelBuffer.Visible = false;
                     toolStripStatusLabelStatus.Visible = false;
                     _isPaused = false;
@@ -372,6 +373,8 @@ namespace GSendDesktop.Forms
                         else
                             toolStripStatusLabelSpindle.Text = GSend.Language.Resources.SpindleInactive;
                     }
+
+                    toolStripStatusLabelFeedRate.Text = HelperMethods.ConvertFeedRateForDisplay(_machine.DisplayUnits, status.FeedRate);
 
                     btnSpindleStart.Enabled = status.SpindleSpeed == 0;
                     btnSpindleStop.Enabled = status.SpindleSpeed > 0;
@@ -662,16 +665,26 @@ namespace GSendDesktop.Forms
         private void SelectionOverride_ValueChanged(object sender, EventArgs e)
         {
             _machineUpdateThread.Overrides.Spindle.NewValue = selectionOverrideSpindle.Value;
-            _machineUpdateThread.Overrides.AxisX.NewValue = selectionOverrideX.Value;
-            _machineUpdateThread.Overrides.AxisY.NewValue = selectionOverrideY.Value;
+            _machineUpdateThread.Overrides.Rapids.NewValue = selectionOverrideRapids.Value;
+            _machineUpdateThread.Overrides.AxisXY.NewValue = selectionOverrideXY.Value;
             _machineUpdateThread.Overrides.AxisZUp.NewValue = selectionOverrideZUp.Value;
             _machineUpdateThread.Overrides.AxisZDown.NewValue = selectionOverrideZDown.Value;
-            _machineUpdateThread.Overrides.OverrideX = cbOverrideLinkX.Checked;
-            _machineUpdateThread.Overrides.OverrideY = cbOverrideLinkY.Checked;
+
+            _machineUpdateThread.Overrides.OverrideSpindle = cbOverrideLinkSpindle.Checked;
+            _machineUpdateThread.Overrides.OverrideRapids = cbOverrideLinkRapids.Checked;
+            _machineUpdateThread.Overrides.OverrideXY = cbOverrideLinkXY.Checked;
             _machineUpdateThread.Overrides.OverrideZUp = cbOverrideLinkZUp.Checked;
             _machineUpdateThread.Overrides.OverrideZDown = cbOverrideLinkZDown.Checked;
 
+            _machineUpdateThread.Overrides.OverridesEnabled = !cbOverridesDisable.Checked;
+
             _machineUpdateThread.OverridesUpdated();
+
+            _machine.OverrideSpeed = trackBarPercent.Value;
+            _machine.OverrideSpindle = selectionOverrideSpindle.Value;
+            _machine.OverrideZDownSpeed = selectionOverrideZDown.Value;
+            _machine.OverrideZUpSpeed = selectionOverrideZUp.Value;
+            UpdateConfigurationChanged();
         }
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
@@ -685,12 +698,12 @@ namespace GSendDesktop.Forms
         {
             trackBarPercent.Enabled = !cbOverridesDisable.Checked;
             selectionOverrideSpindle.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideX.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideY.Enabled = !cbOverridesDisable.Checked;
+            selectionOverrideRapids.Enabled = !cbOverridesDisable.Checked;
+            selectionOverrideXY.Enabled = !cbOverridesDisable.Checked;
             selectionOverrideZDown.Enabled = !cbOverridesDisable.Checked;
             selectionOverrideZUp.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkX.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkY.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkRapids.Enabled = !cbOverridesDisable.Checked;
+            cbOverrideLinkXY.Enabled = !cbOverridesDisable.Checked;
             cbOverrideLinkZDown.Enabled = !cbOverridesDisable.Checked;
             cbOverrideLinkZUp.Enabled = !cbOverridesDisable.Checked;
             cbOverrideLinkSpindle.Enabled = !cbOverridesDisable.Checked;
@@ -704,53 +717,50 @@ namespace GSendDesktop.Forms
 
         private void UpdateOverrides()
         {
-            selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideX.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideY.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
 
-            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
-
-            if (cbOverrideLinkX.Checked)
-                selectionOverrideX.Value = selectionOverrideX.Maximum / 100 * trackBarPercent.Value;
-
-            if (cbOverrideLinkY.Checked)
-                selectionOverrideY.Value = selectionOverrideY.Maximum / 100 * trackBarPercent.Value;
-
-            if (cbOverrideLinkZDown.Checked)
-                selectionOverrideZDown.Value = selectionOverrideZDown.Maximum / 100 * trackBarPercent.Value;
-
-            if (cbOverrideLinkZUp.Checked)
-                selectionOverrideZUp.Value = selectionOverrideZUp.Maximum / 100 * trackBarPercent.Value;
+            selectionOverrideRapids.Value = selectionOverrideRapids.Maximum / 100 * trackBarPercent.Value;
+            selectionOverrideXY.Value = selectionOverrideXY.Maximum / 100 * trackBarPercent.Value;
 
             labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
 
-            selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideX.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideY.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
         }
 
         private void OverrideAxis_Checked(object sender, EventArgs e)
         {
             trackBarPercent_ValueChanged(sender, e);
 
-            if (cbOverrideLinkX.Checked)
-                _machine.AddOptions(MachineOptions.OverrideX);
+            if (cbOverrideLinkRapids.Checked)
+                _machine.AddOptions(MachineOptions.OverrideRapids);
+            else
+                _machine.RemoveOptions(MachineOptions.OverrideRapids);
 
-            if (cbOverrideLinkY.Checked)
-                _machine.AddOptions(MachineOptions.OverrideY);
+            if (cbOverrideLinkXY.Checked)
+                _machine.AddOptions(MachineOptions.OverrideXY);
+            else
+                _machine.RemoveOptions(MachineOptions.OverrideXY);
 
             if (cbOverrideLinkZUp.Checked)
                 _machine.AddOptions(MachineOptions.OverrideZUp);
+            else
+                _machine.RemoveOptions(MachineOptions.OverrideZUp);
 
             if (cbOverrideLinkZDown.Checked)
                 _machine.AddOptions(MachineOptions.OverrideZDown);
+            else
+                _machine.RemoveOptions(MachineOptions.OverrideZDown);
 
             if (cbOverrideLinkSpindle.Checked)
                 _machine.AddOptions(MachineOptions.OverrideSpindle);
+            else
+                _machine.RemoveOptions(MachineOptions.OverrideSpindle);
+
+            _machine.OverrideZUpSpeed = selectionOverrideZUp.Value;
+            _machine.OverrideZDownSpeed = selectionOverrideZDown.Value;
+            _machine.OverrideSpindle = selectionOverrideSpindle.Value;
 
             UpdateConfigurationChanged();
         }
@@ -1188,29 +1198,39 @@ namespace GSendDesktop.Forms
         {
             selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
             selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            selectionOverrideX.Maximum = (int)_machine.Settings.MaxFeedRateX;
-            selectionOverrideX.Minimum = 0;
-            selectionOverrideY.Maximum = (int)_machine.Settings.MaxFeedRateY;
-            selectionOverrideY.Minimum = 0;
+            selectionOverrideRapids.Maximum = (int)_machine.Settings.MaxFeedRateX;
+            selectionOverrideRapids.Minimum = 0;
+            selectionOverrideXY.Maximum = (int)_machine.Settings.MaxFeedRateY;
+            selectionOverrideXY.Minimum = 0;
             selectionOverrideZDown.Maximum = (int)_machine.Settings.MaxFeedRateZ;
             selectionOverrideZDown.Minimum = 0;
             selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
             selectionOverrideZUp.Minimum = 0;
 
-            cbOverrideLinkX.CheckedChanged -= OverrideAxis_Checked;
-            cbOverrideLinkY.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkRapids.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkXY.CheckedChanged -= OverrideAxis_Checked;
             cbOverrideLinkZUp.CheckedChanged -= OverrideAxis_Checked;
             cbOverrideLinkZDown.CheckedChanged -= OverrideAxis_Checked;
+            cbOverrideLinkSpindle.CheckedChanged -= OverrideAxis_Checked;
 
-            cbOverrideLinkX.Checked = _machine.Options.HasFlag(MachineOptions.OverrideX);
-            cbOverrideLinkY.Checked = _machine.Options.HasFlag(MachineOptions.OverrideY);
+            cbOverrideLinkRapids.Checked = _machine.Options.HasFlag(MachineOptions.OverrideRapids);
+            cbOverrideLinkXY.Checked = _machine.Options.HasFlag(MachineOptions.OverrideXY);
             cbOverrideLinkZUp.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZUp);
             cbOverrideLinkZDown.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZDown);
 
-            cbOverrideLinkX.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkY.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkRapids.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkXY.CheckedChanged += OverrideAxis_Checked;
             cbOverrideLinkZUp.CheckedChanged += OverrideAxis_Checked;
             cbOverrideLinkZDown.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
+
+            //trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
+            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
+
 
             jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
             jogControl.FeedMinimum = 0;
@@ -1219,8 +1239,18 @@ namespace GSendDesktop.Forms
             jogControl.StepValue = 7;
             jogControl.FeedRate = _machine.JogFeedrate;
             trackBarPercent.Value = _machine.OverrideSpeed;
+            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
+            selectionOverrideZDown.Value = _machine.OverrideZDownSpeed;
+            selectionOverrideZUp.Value = _machine.OverrideZUpSpeed;
             cbSoftStart.Checked = _machine.SoftStart;
             trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
+
+            //trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
+            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
 
             // spindle
             trackBarSpindleSpeed.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
@@ -1286,19 +1316,21 @@ namespace GSendDesktop.Forms
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
 
-            cbOverrideLinkX.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkY.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkRapids.CheckedChanged += OverrideAxis_Checked;
+            cbOverrideLinkXY.CheckedChanged += OverrideAxis_Checked;
             cbOverrideLinkZDown.CheckedChanged += OverrideAxis_Checked;
             cbOverrideLinkZUp.CheckedChanged += OverrideAxis_Checked;
             cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
             cbOverridesDisable.CheckedChanged += OverrideAxis_Checked;
 
-            cbOverrideLinkX.CheckedChanged += SelectionOverride_ValueChanged;
-            cbOverrideLinkY.CheckedChanged += SelectionOverride_ValueChanged;
+            cbOverrideLinkRapids.CheckedChanged += SelectionOverride_ValueChanged;
+            cbOverrideLinkXY.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverrideLinkZDown.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverrideLinkZUp.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverrideLinkSpindle.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverridesDisable.CheckedChanged += SelectionOverride_ValueChanged;
+
+            trackBarPercent.ValueChanged += SelectionOverride_ValueChanged;
 
             btnGrblCommandClear.Click += btnGrblCommandClear_Click;
             btnGrblCommandSend.Click += btnGrblCommandSend_Click;
@@ -1324,6 +1356,7 @@ namespace GSendDesktop.Forms
             toolStripButtonStop.Text = GSend.Language.Resources.Stop;
             toolStripButtonStop.ToolTipText = GSend.Language.Resources.Stop;
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
+            toolStripStatusLabelFeedRate.ToolTipText = GSend.Language.Resources.CurrentFeedRate;
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
 
 
@@ -1386,8 +1419,8 @@ namespace GSendDesktop.Forms
 
             // Override tab
             cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
-            cbOverrideLinkX.Text = GSend.Language.Resources.OverrideX;
-            cbOverrideLinkY.Text = GSend.Language.Resources.OverrideY;
+            cbOverrideLinkRapids.Text = GSend.Language.Resources.Rapids;
+            cbOverrideLinkXY.Text = GSend.Language.Resources.OverrideXY;
             cbOverrideLinkZUp.Text = GSend.Language.Resources.OverrideZUp;
             cbOverrideLinkZDown.Text = GSend.Language.Resources.OverrideZDown;
             cbOverrideLinkSpindle.Text = GSend.Language.Resources.Spindle;
@@ -1458,8 +1491,8 @@ namespace GSendDesktop.Forms
             rbFeedbackMm.CheckedChanged += RbFeedback_CheckedChanged;
 
             selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideX.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideY.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
             rbFeedDisplayInchMin.CheckedChanged -= RbFeedDisplay_CheckedChanged;
@@ -1496,10 +1529,10 @@ namespace GSendDesktop.Forms
             jogControl.FeedRateDisplay = _machine.DisplayUnits;
             jogControl.UpdateFeedRateDisplay();
 
-            selectionOverrideX.FeedRateDisplay = _machine.DisplayUnits;
-            selectionOverrideX.UpdateFeedRateDisplay();
-            selectionOverrideY.FeedRateDisplay = _machine.DisplayUnits;
-            selectionOverrideY.UpdateFeedRateDisplay();
+            selectionOverrideRapids.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideRapids.UpdateFeedRateDisplay();
+            selectionOverrideXY.FeedRateDisplay = _machine.DisplayUnits;
+            selectionOverrideXY.UpdateFeedRateDisplay();
             selectionOverrideZDown.FeedRateDisplay = _machine.DisplayUnits;
             selectionOverrideZDown.UpdateFeedRateDisplay();
             selectionOverrideZUp.FeedRateDisplay = _machine.DisplayUnits;
@@ -1510,8 +1543,8 @@ namespace GSendDesktop.Forms
             rbFeedDisplayMmMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
             rbFeedDisplayMmSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
             selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideX.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideY.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
         }

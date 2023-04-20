@@ -18,6 +18,8 @@ namespace GSendDB.Tables
         private FeedbackUnit _feedbackUnits;
         private int _overrideSpeed;
         private int _overrideSpindle;
+        private int _overrideZDown;
+        private int _overrideZUp;
         private DateTime _configurationLastVerified;
         private string _probeCommand;
         private int _probeSpeed;
@@ -177,6 +179,34 @@ namespace GSendDB.Tables
                     return;
 
                 _overrideSpindle = value;
+                Update();
+            }
+        }
+
+        public int OverrideZUp
+        {
+            get => _overrideZUp;
+
+            set
+            {
+                if (_overrideZUp == value)
+                    return;
+
+                _overrideZUp = value;
+                Update();
+            }
+        }
+
+        public int OverrideZDown
+        {
+            get => _overrideZDown;
+
+            set
+            {
+                if (_overrideZDown == value)
+                    return;
+
+                _overrideZDown = value;
                 Update();
             }
         }

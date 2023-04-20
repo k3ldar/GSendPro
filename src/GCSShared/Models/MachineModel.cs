@@ -10,7 +10,8 @@ namespace GSendShared.Models
         }
 
         public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount, 
-            GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle, DateTime configurationLastVerified,
+            GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle, 
+            int overrideZDown, int overrideZUp, DateTime configurationLastVerified,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
             int softStartSeconds, int serviceWeeks, int serviceSpindleHours)
             : this()
@@ -29,6 +30,8 @@ namespace GSendShared.Models
             FeedbackUnit = feedbackUnit;
             OverrideSpeed = overrideSpeed;
             OverrideSpindle = overrideSpindle;
+            OverrideZDownSpeed = overrideZDown;
+            OverrideZUpSpeed = overrideZUp;
             ConfigurationLastVerified = configurationLastVerified;
             ProbeCommand = probeCommand;
             ProbeSpeed = probeSpeed;
@@ -62,6 +65,10 @@ namespace GSendShared.Models
         public int OverrideSpeed { get; set; }
 
         public int OverrideSpindle { get; set; }
+
+        public int OverrideZDownSpeed { get; set; }
+
+        public int OverrideZUpSpeed { get; set; }
 
         public DateTime ConfigurationLastVerified { get; set; }
 

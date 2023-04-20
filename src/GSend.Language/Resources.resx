@@ -201,6 +201,9 @@
   <data name="CPUUsage" xml:space="preserve">
     <value>CPU Usage</value>
   </data>
+  <data name="CurrentFeedRate" xml:space="preserve">
+    <value>Current Feed Rate</value>
+  </data>
   <data name="DisableOverrides" xml:space="preserve">
     <value>Disable Overrides</value>
   </data>
@@ -438,6 +441,9 @@
   <data name="OverrideX" xml:space="preserve">
     <value>X</value>
   </data>
+  <data name="OverrideXY" xml:space="preserve">
+    <value>X/Y</value>
+  </data>
   <data name="OverrideY" xml:space="preserve">
     <value>Y</value>
   </data>
@@ -470,6 +476,9 @@
   </data>
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
+  </data>
+  <data name="Rapids" xml:space="preserve">
+    <value>Rapids</value>
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>

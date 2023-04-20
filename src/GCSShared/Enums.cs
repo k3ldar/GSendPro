@@ -130,12 +130,12 @@
         /// <summary>
         /// Override slider for X is linked
         /// </summary>
-        OverrideX = 512,
+        OverrideRapids = 512,
 
         /// <summary>
         /// Override slider for Y is linked
         /// </summary>
-        OverrideY = 1024,
+        OverrideXY = 1024,
 
         /// <summary>
         /// Override slider for Z Up is linked

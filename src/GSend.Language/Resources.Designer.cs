@@ -313,6 +313,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Feed Rate.
+        /// </summary>
+        public static string CurrentFeedRate {
+            get {
+                return ResourceManager.GetString("CurrentFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disable Overrides.
         /// </summary>
         public static string DisableOverrides {
@@ -1024,6 +1033,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to X/Y.
+        /// </summary>
+        public static string OverrideXY {
+            get {
+                return ResourceManager.GetString("OverrideXY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Y.
         /// </summary>
         public static string OverrideY {
@@ -1119,6 +1137,15 @@ namespace GSend.Language {
         public static string ProbingFailed {
             get {
                 return ResourceManager.GetString("ProbingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rapids.
+        /// </summary>
+        public static string Rapids {
+            get {
+                return ResourceManager.GetString("Rapids", resourceCulture);
             }
         }
         

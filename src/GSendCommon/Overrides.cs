@@ -12,16 +12,16 @@ namespace GSendCommon
     {
         public Overrides()
         {
-            AxisX = new OverrideValue();
-            AxisY = new OverrideValue();
+            Rapids = new OverrideValue();
+            AxisXY = new OverrideValue();
             AxisZDown = new OverrideValue();
             AxisZUp = new OverrideValue();
             Spindle = new OverrideValue();
         }
 
-        public IOverriddenValue AxisX { get; }
+        public IOverriddenValue Rapids { get; }
 
-        public IOverriddenValue AxisY { get; }
+        public IOverriddenValue AxisXY { get; }
 
         public IOverriddenValue AxisZUp { get; }
 
@@ -29,16 +29,16 @@ namespace GSendCommon
 
         public IOverriddenValue Spindle { get; }
 
-        public bool OverrideX { get; set; }
+        public bool OverrideRapids { get; set; }
 
-        public bool OverrideY { get; set; }
+        public bool OverrideXY { get; set; }
 
         public bool OverrideZUp { get; set; }
 
         public bool OverrideZDown { get; set; }
 
-        public bool OverrideSpindle { get; }
+        public bool OverrideSpindle { get; set; }
 
-        public bool OverridesEnabled { get; }
+        public bool OverridesEnabled { get; set; }
     }
 }

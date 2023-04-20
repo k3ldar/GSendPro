@@ -34,6 +34,8 @@ namespace GSendTests.Mocks
                     FeedbackUnit.Mm,
                     60,
                     60,
+                    10,
+                    10,
                     DateTime.UtcNow,
                     String.Empty,
                     10,
