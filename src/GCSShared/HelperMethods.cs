@@ -58,6 +58,20 @@ namespace GSendShared
             return GSend.Language.Resources.DisplayMmMinute;
         }
 
+        public static string TranslateRapidOverride(RapidsOverride rapidsOverride)
+        {
+            switch (rapidsOverride)
+            {
+                case RapidsOverride.Low:
+                    return GSend.Language.Resources.RapidRateLow;
+
+                case RapidsOverride.Medium:
+                    return GSend.Language.Resources.RapidRateMedium;
+            }
+
+            return GSend.Language.Resources.RapidRateHigh;
+        }
+
         public static string TranslateState(string state)
         {
             switch (state)

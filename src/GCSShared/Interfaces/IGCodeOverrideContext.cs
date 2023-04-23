@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Interfaces
+﻿using GSendShared.Models;
+
+namespace GSendShared.Interfaces
 {
     /// <summary>
     /// GCode override context
@@ -39,7 +41,7 @@
 
         IStaticMethods StaticMethods { get; }
 
-        IOverrides Overrides { get; }
+        OverrideModel Overrides { get; }
 
         void ProcessGCodeLine(IGCodeLine line);
 

@@ -72,6 +72,8 @@ namespace GSendCommon
         private readonly MachineStateModel _machineStateModel = new();
         private readonly IGCodeOverrideContext _overrideContext;
 
+        private OverrideModel _machineOverrides;
+        private RapidsOverride _rapidsSpeed = RapidsOverride.High;
         private int _lineCount = 0;
         private bool _initialising = true;
 
@@ -163,6 +165,7 @@ namespace GSendCommon
                 Trace.WriteLine($"Connect: {_port.IsOpen()}");
                 _machineStateModel.IsConnected = _port.IsOpen();
                 _isPaused = false;
+                RapidsSpeed = RapidsOverride.High;
 
                 return ConnectResult.Success;
             }
@@ -660,6 +663,31 @@ namespace GSendCommon
 
         public TimeSpan HomingTimeout { get; set; } = TimeSpan.FromSeconds(180);
 
+        public RapidsOverride RapidsSpeed
+        {
+            get => _rapidsSpeed;
+
+            set
+            {
+                _rapidsSpeed = value;
+
+                switch (value)
+                {
+                    case RapidsOverride.Low:
+                        InternalWriteByte(new byte[] { 0x97 });
+                        break;
+                    case RapidsOverride.Medium:
+                        InternalWriteByte(new byte[] { 0x96 });
+                        break;
+                    case RapidsOverride.High:
+                        InternalWriteByte(new byte[] { 0x95 });
+                        break;
+                }
+
+                _machineStateModel.RapidSpeed = value;
+            }
+        }
+
         public bool SpindleActive { get => _machineStateModel.SpindleClockWise || _machineStateModel.SpindleCounterClockWise; }
 
         public int SpindleSpeed { get => Convert.ToInt32(_machineStateModel.SpindleSpeed); }
@@ -669,6 +697,22 @@ namespace GSendCommon
         public bool FloodCoolantActive { get => _machineStateModel.FloodEnabled; }
 
         public MachineStateModel StateModel => _machineStateModel;
+
+        public OverrideModel MachineOverrides
+        {
+            get => _machineOverrides;
+
+            set
+            {
+                bool updateDefaults = _machineOverrides == null;
+                _machineOverrides = value;
+
+                if (_machineOverrides == null)
+                    return;
+
+
+            }
+        }
 
         #endregion IGCodeProcessor Properties
 

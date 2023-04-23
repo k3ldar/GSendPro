@@ -200,6 +200,7 @@
             this.selectionOverrideSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideSpindle.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideSpindle.GroupName = "Spindle";
+            this.selectionOverrideSpindle.HandleMouseWheel = false;
             this.selectionOverrideSpindle.HasDisplayUnits = false;
             this.selectionOverrideSpindle.LabelFormat = "{0}";
             this.selectionOverrideSpindle.LabelValue = null;
@@ -220,6 +221,7 @@
             this.selectionOverrideZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideZDown.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZDown.GroupName = "Z Down";
+            this.selectionOverrideZDown.HandleMouseWheel = false;
             this.selectionOverrideZDown.HasDisplayUnits = true;
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
@@ -239,6 +241,7 @@
             this.selectionOverrideZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideZUp.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZUp.GroupName = "Z Up";
+            this.selectionOverrideZUp.HandleMouseWheel = false;
             this.selectionOverrideZUp.HasDisplayUnits = true;
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
@@ -257,20 +260,21 @@
             // 
             this.selectionOverrideRapids.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideRapids.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
-            this.selectionOverrideRapids.GroupName = "X";
-            this.selectionOverrideRapids.HasDisplayUnits = true;
-            this.selectionOverrideRapids.LabelFormat = "{0}";
+            this.selectionOverrideRapids.GroupName = "Rapids";
+            this.selectionOverrideRapids.HandleMouseWheel = true;
+            this.selectionOverrideRapids.HasDisplayUnits = false;
+            this.selectionOverrideRapids.LabelFormat = "High";
             this.selectionOverrideRapids.LabelValue = null;
-            this.selectionOverrideRapids.LargeTickChange = 5;
+            this.selectionOverrideRapids.LargeTickChange = 1;
             this.selectionOverrideRapids.Location = new System.Drawing.Point(320, 6);
-            this.selectionOverrideRapids.Maximum = 10;
+            this.selectionOverrideRapids.Maximum = 2;
             this.selectionOverrideRapids.Minimum = 0;
             this.selectionOverrideRapids.Name = "selectionOverrideRapids";
             this.selectionOverrideRapids.Size = new System.Drawing.Size(82, 228);
             this.selectionOverrideRapids.SmallTickChange = 1;
             this.selectionOverrideRapids.TabIndex = 8;
             this.selectionOverrideRapids.TickFrequency = 1;
-            this.selectionOverrideRapids.Value = 0;
+            this.selectionOverrideRapids.Value = 2;
             // 
             // jogControl
             // 
@@ -737,6 +741,7 @@
             this.selectionOverrideXY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.selectionOverrideXY.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideXY.GroupName = "Y";
+            this.selectionOverrideXY.HandleMouseWheel = false;
             this.selectionOverrideXY.HasDisplayUnits = true;
             this.selectionOverrideXY.LabelFormat = "{0}";
             this.selectionOverrideXY.LabelValue = null;

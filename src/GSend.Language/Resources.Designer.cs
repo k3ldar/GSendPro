@@ -1141,6 +1141,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High.
+        /// </summary>
+        public static string RapidRateHigh {
+            get {
+                return ResourceManager.GetString("RapidRateHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Low.
+        /// </summary>
+        public static string RapidRateLow {
+            get {
+                return ResourceManager.GetString("RapidRateLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium.
+        /// </summary>
+        public static string RapidRateMedium {
+            get {
+                return ResourceManager.GetString("RapidRateMedium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rapids.
         /// </summary>
         public static string Rapids {

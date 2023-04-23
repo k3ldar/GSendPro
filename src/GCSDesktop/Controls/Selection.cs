@@ -11,6 +11,7 @@ namespace GSendDesktop.Controls
         public Selection()
         {
             InitializeComponent();
+            trackBarValue.MouseWheel += TrackBarValue_MouseWheel;
         }
 
         [Browsable(true)]
@@ -77,6 +78,9 @@ namespace GSendDesktop.Controls
         [Browsable(true)]
         public event EventHandler ValueChanged;
 
+        [Browsable(true)]
+        public bool HandleMouseWheel { get; set; } = false;
+
         public void UpdateFeedRateDisplay()
         {
             trackBarValue_ValueChanged(this, EventArgs.Empty);
@@ -93,6 +97,25 @@ namespace GSendDesktop.Controls
 
                 ValueChanged?.Invoke(this, EventArgs.Empty);
                 lblDescription.Text = LabelValue;
+            }
+        }
+
+        private void TrackBarValue_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!HandleMouseWheel)
+                return;
+
+            ((HandledMouseEventArgs)e).Handled = true;
+
+            if (e.Delta > 0)
+            {
+                if (trackBarValue.Value < trackBarValue.Maximum)
+                    trackBarValue.Value++;
+            }
+            else
+            {
+                if (trackBarValue.Value > trackBarValue.Minimum)
+                    trackBarValue.Value--;
             }
         }
     }

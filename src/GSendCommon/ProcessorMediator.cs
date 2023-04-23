@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Models;
 
 using PluginManager.Abstractions;
 
@@ -84,7 +84,7 @@ namespace GSendCommon
             }
         }
 
-        public async Task ProcessClientCommunications(System.Net.WebSockets.WebSocket webSocket, string clientId)
+        public async Task ProcessClientCommunications(WebSocket webSocket, string clientId)
         {
             _clientId = clientId ?? "Unknwon";
             _machines.ForEach(m => AddEventsToProcessor(m));
@@ -101,10 +101,10 @@ namespace GSendCommon
                     string request = Encoding.UTF8.GetString(receiveBuffer);
                     byte[] sendBuffer;
 
-                    using (TimedLock tl = TimedLock.Lock(_lockObject))
-                    {
+                    //using (TimedLock tl = TimedLock.Lock(_lockObject))
+                    //{
                         sendBuffer = ProcessRequest(request[..receiveResult.Count]);
-                    }
+                    //}
 
                     await webSocket.SendAsync(
                         new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length),
@@ -604,6 +604,32 @@ namespace GSendCommon
 
                     break;
 
+                case Constants.MessageMachineUpdateRapidOverridesAdmin:
+                    response.request = Constants.MessageMachineUpdateOverridesAdmin;
+                    if (foundMachine && proc != null)
+                    {
+                        RapidsOverride rapidsOverride = (RapidsOverride)Convert.ToInt32(parts[2]);
+                        proc.RapidsSpeed = rapidsOverride;
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+                    break;
+
+                case Constants.MessageMachineUpdateOverridesAdmin:
+                    response.request = Constants.MessageMachineUpdateOverridesAdmin;
+                    if (foundMachine && proc != null)
+                    {
+                        proc.MachineOverrides = JsonSerializer.Deserialize<OverrideModel>(Encoding.UTF8.GetString(Convert.FromBase64String(parts[2])));
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+                    break;
 
                 case Constants.MessageMachineSpindleAdmin:
                     if (foundMachine && proc != null && parts.Length == 4)

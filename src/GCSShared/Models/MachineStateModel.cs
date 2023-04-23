@@ -28,6 +28,7 @@
         private bool _isRunning;
         private bool _isPaused;
         private CoordinateSystem _coordinateSystem;
+        private RapidsOverride _rapidSpeed = RapidsOverride.High;
 
         public MachineStateModel()
         {
@@ -72,6 +73,20 @@
                     return;
 
                 _coordinateSystem = value;
+                Updated = true;
+            }
+        }
+
+        public RapidsOverride RapidSpeed
+        {
+            get => _rapidSpeed;
+
+            set
+            {
+                if (_rapidSpeed.Equals(value))
+                    return;
+
+                _rapidSpeed = value;
                 Updated = true;
             }
         }

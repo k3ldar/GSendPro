@@ -27,7 +27,8 @@ namespace GSendService.Api
         {
             DateTime fromDate = new DateTime(fromDateTimeTicks, DateTimeKind.Utc);
             List<SpindleHoursModel> Result = new();
-            IReadOnlyList<MachineSpindleTimeDataRow> allSpindleTime = _spindleTimeTable.Select(m => m.MachineId.Equals(machineId) && m.StartTime >= fromDate);
+            IReadOnlyList<MachineSpindleTimeDataRow> allSpindleTime = _spindleTimeTable.Select(m => m.MachineId.Equals(machineId) && 
+                m.StartTime >= fromDate && m.FinishTime > DateTime.MinValue);
 
             foreach (MachineSpindleTimeDataRow spindleTime in allSpindleTime)
             {

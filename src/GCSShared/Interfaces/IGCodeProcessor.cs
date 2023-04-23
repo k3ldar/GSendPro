@@ -1,4 +1,5 @@
-﻿using GSendShared.Models;
+﻿using GSendShared.Interfaces;
+using GSendShared.Models;
 
 using Shared.Communication;
 
@@ -52,11 +53,15 @@ namespace GSendShared
 
         bool CoolantOff();
 
+        OverrideModel MachineOverrides { get; set; }
+
         long Id { get; }
 
         TimeSpan TimeOut { get; set; }
 
         TimeSpan HomingTimeout { get; set; }
+
+        RapidsOverride RapidsSpeed { get; set; }
 
         string Cpu { get; }
 

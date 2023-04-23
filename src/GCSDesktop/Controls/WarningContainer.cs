@@ -71,7 +71,7 @@ namespace GSendDesktop.Controls
             {
                 WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
 
-                if (panel != null && panel.InformationType != informationType && panel.InformationText.Equals(message))
+                if (panel != null && panel.InformationType.Equals(informationType) && panel.InformationText.Equals(message))
                 {
                     return true;
                 }

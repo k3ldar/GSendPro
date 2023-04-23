@@ -477,6 +477,15 @@
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
   </data>
+  <data name="RapidRateHigh" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="RapidRateLow" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="RapidRateMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
   <data name="Rapids" xml:space="preserve">
     <value>Rapids</value>
   </data>

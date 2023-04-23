@@ -92,6 +92,13 @@ namespace GSendShared
 
         public const string MessageMachineSpindle = "mSpindle:{0}:{1}:{2}";
 
+        public const string MessageMachineUpdateOverridesAdmin = "mOverrides";
+
+        public const string MessageMachineUpdateOverrides = "mOverrides:{0}:{1}";
+
+        public const string MessageMachineUpdateRapidOverridesAdmin = "mRapidOverride";
+
+        public const string MessageMachineUpdateRapidOverrides = "mRapidOverride:{0}:{1}";
 
 
         public const string StateUndefined = "Undefined";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -29,7 +30,6 @@ namespace GSendDesktop.Forms
 
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly GSendWebSocket _clientWebSocket;
-        private readonly GSendWebSocket _clientWebSocketCancel;
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
         private MachineStateModel _machineStatusModel = null;
@@ -45,6 +45,7 @@ namespace GSendDesktop.Forms
         private bool _appliedSettingsChanged = false;
         private bool _configurationChanges = false;
         private bool _lastMessageWasHiddenCommand = false;
+        private bool _updatingRapidOverride = false;
 
         #endregion Private Fields
 
@@ -71,10 +72,6 @@ namespace GSendDesktop.Forms
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
-            _clientWebSocketCancel = new GSendWebSocket(_cancellationTokenRegistration.Token, $"{_machine.Name} - Cancel");
-            _clientWebSocketCancel.ProcessMessage += ClientWebSocket_ProcessMessage;
-            _clientWebSocketCancel.ConnectionLost += ClientWebSocket_ConnectionLost;
-            _clientWebSocketCancel.Connected += ClientWebSocket_Connected;
             _machineUpdateThread = new MachineUpdateThread(new TimeSpan(0, 0, 0, 0,
                 _gSendContext.Settings.UpdateMilliseconds), _clientWebSocket,
                 _machine, this);
@@ -186,11 +183,11 @@ namespace GSendDesktop.Forms
                     warningsAndErrors.AddWarningPanel(InformationType.ErrorKeep, "Com port bad");
                     break;
 
-                case "mProbe":
+                case Constants.MessageMachineProbeServer:
                     _isProbing = false;
                     break;
 
-                case "mStatus":
+                case Constants.MessageMachineStatusServer:
                     _machineStatusModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString());
 
                     if (_machineStatusModel.IsConnected != clientMessage.IsConnected)
@@ -270,13 +267,17 @@ namespace GSendDesktop.Forms
                     ProcessErrorResponse(clientMessage);
                     break;
 
-                case "Alarm":
+                case Constants.StateAlarm:
                     ProcessAlarmResponse(clientMessage);
                     break;
 
                 case Constants.MessageMachineWriteLineServerR:
                     string response = clientMessage.message.ToString();
                     textBoxConsoleText.AppendText(response);
+                    break;
+
+                case Constants.MessageMachineUpdateRapidOverridesAdmin:
+                    _updatingRapidOverride = false;
                     break;
             }
         }
@@ -346,6 +347,14 @@ namespace GSendDesktop.Forms
                             g59ToolStripMenuItem.Checked = true;
                             break;
                     }
+                }
+
+                if (!_updatingRapidOverride && selectionOverrideRapids.Value != (int)status.RapidSpeed)
+                {
+                    selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
+                    selectionOverrideRapids.Value = (int)status.RapidSpeed;
+                    selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride(status.RapidSpeed);
+                    selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
                 }
 
                 if (status.IsConnected)
@@ -470,6 +479,18 @@ namespace GSendDesktop.Forms
         }
 
         #endregion Client Web Socket
+
+        #region Thread Send
+
+        private void SendByThread(string message)
+        {
+            _machineUpdateThread.ThreadSendCommandQueue.Enqueue(message);
+
+            if (!ThreadManager.Exists($"{_machine.Name} Update Status"))
+                ThreadManager.ThreadStart(_machineUpdateThread, $"{_machine.Name} Update Status", ThreadPriority.Normal);
+        }
+
+        #endregion Thread Send
 
         #region Ui Update
 
@@ -648,7 +669,7 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineJogStop, _machine.Id));
+            SendByThread(String.Format(MessageMachineJogStop, _machine.Id));
         }
 
         private void jogControl_OnUpdate(object sender, EventArgs e)
@@ -665,13 +686,11 @@ namespace GSendDesktop.Forms
         private void SelectionOverride_ValueChanged(object sender, EventArgs e)
         {
             _machineUpdateThread.Overrides.Spindle.NewValue = selectionOverrideSpindle.Value;
-            _machineUpdateThread.Overrides.Rapids.NewValue = selectionOverrideRapids.Value;
             _machineUpdateThread.Overrides.AxisXY.NewValue = selectionOverrideXY.Value;
             _machineUpdateThread.Overrides.AxisZUp.NewValue = selectionOverrideZUp.Value;
             _machineUpdateThread.Overrides.AxisZDown.NewValue = selectionOverrideZDown.Value;
 
             _machineUpdateThread.Overrides.OverrideSpindle = cbOverrideLinkSpindle.Checked;
-            _machineUpdateThread.Overrides.OverrideRapids = cbOverrideLinkRapids.Checked;
             _machineUpdateThread.Overrides.OverrideXY = cbOverrideLinkXY.Checked;
             _machineUpdateThread.Overrides.OverrideZUp = cbOverrideLinkZUp.Checked;
             _machineUpdateThread.Overrides.OverrideZDown = cbOverrideLinkZDown.Checked;
@@ -717,15 +736,12 @@ namespace GSendDesktop.Forms
 
         private void UpdateOverrides()
         {
-            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
 
-            selectionOverrideRapids.Value = selectionOverrideRapids.Maximum / 100 * trackBarPercent.Value;
             selectionOverrideXY.Value = selectionOverrideXY.Maximum / 100 * trackBarPercent.Value;
 
             labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
 
-            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
         }
 
@@ -1100,7 +1116,7 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
+            SendByThread(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control
@@ -1178,9 +1194,10 @@ namespace GSendDesktop.Forms
 
                 if (cbMaintainServiceSchedule.Checked)
                 {
-                    if ((span.TotalDays < 0 || remaining.TotalHours < 0) && !warningsAndErrors.Contains(InformationType.Warning, GSend.Language.Resources.ServiceOverdue))
+                    if ((span.TotalDays < 0 || remaining.TotalHours < 0))
                     {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServiceOverdue);
+                        if (!warningsAndErrors.Contains(InformationType.Warning, GSend.Language.Resources.ServiceOverdue))
+                            warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServiceOverdue);
                     }
                     else if ((span.TotalDays < 2 || remaining.TotalHours < 4) && !warningsAndErrors.Contains(InformationType.Information, GSend.Language.Resources.ServiceRequired))
                     {
@@ -1198,7 +1215,7 @@ namespace GSendDesktop.Forms
         {
             selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
             selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            selectionOverrideRapids.Maximum = (int)_machine.Settings.MaxFeedRateX;
+            selectionOverrideRapids.Maximum = 2;
             selectionOverrideRapids.Minimum = 0;
             selectionOverrideXY.Maximum = (int)_machine.Settings.MaxFeedRateY;
             selectionOverrideXY.Minimum = 0;
@@ -1225,7 +1242,7 @@ namespace GSendDesktop.Forms
             cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
 
             //trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
-            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
@@ -1246,7 +1263,7 @@ namespace GSendDesktop.Forms
             trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
 
             //trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
-            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
@@ -1294,6 +1311,17 @@ namespace GSendDesktop.Forms
             btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
         }
 
+        private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
+        {
+            if (cbOverrideLinkRapids.Checked && !cbOverridesDisable.Checked)
+            {
+                _updatingRapidOverride = true;
+                _machineUpdateThread.RapidsOverride = (RapidsOverride)selectionOverrideRapids.Value;
+            }
+
+            selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride((RapidsOverride)selectionOverrideRapids.Value);
+        }
+
         private void HookUpEvents()
         {
             probingCommand1.OnSave += ProbingCommand1_OnSave;
@@ -1323,7 +1351,7 @@ namespace GSendDesktop.Forms
             cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
             cbOverridesDisable.CheckedChanged += OverrideAxis_Checked;
 
-            cbOverrideLinkRapids.CheckedChanged += SelectionOverride_ValueChanged;
+            cbOverrideLinkRapids.CheckedChanged += SelectionOverrideRapids_ValueChanged;
             cbOverrideLinkXY.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverrideLinkZDown.CheckedChanged += SelectionOverride_ValueChanged;
             cbOverrideLinkZUp.CheckedChanged += SelectionOverride_ValueChanged;
@@ -1424,6 +1452,7 @@ namespace GSendDesktop.Forms
             cbOverrideLinkZUp.Text = GSend.Language.Resources.OverrideZUp;
             cbOverrideLinkZDown.Text = GSend.Language.Resources.OverrideZDown;
             cbOverrideLinkSpindle.Text = GSend.Language.Resources.Spindle;
+            selectionOverrideRapids.LabelValue = GSend.Language.Resources.RapidRateHigh;
 
             // Console
             tabPageConsole.Text = GSend.Language.Resources.Console;
@@ -1491,7 +1520,7 @@ namespace GSendDesktop.Forms
             rbFeedbackMm.CheckedChanged += RbFeedback_CheckedChanged;
 
             selectionOverrideSpindle.ValueChanged -= SelectionOverride_ValueChanged;
-            selectionOverrideRapids.ValueChanged -= SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged -= SelectionOverride_ValueChanged;
@@ -1529,8 +1558,6 @@ namespace GSendDesktop.Forms
             jogControl.FeedRateDisplay = _machine.DisplayUnits;
             jogControl.UpdateFeedRateDisplay();
 
-            selectionOverrideRapids.FeedRateDisplay = _machine.DisplayUnits;
-            selectionOverrideRapids.UpdateFeedRateDisplay();
             selectionOverrideXY.FeedRateDisplay = _machine.DisplayUnits;
             selectionOverrideXY.UpdateFeedRateDisplay();
             selectionOverrideZDown.FeedRateDisplay = _machine.DisplayUnits;
@@ -1543,7 +1570,7 @@ namespace GSendDesktop.Forms
             rbFeedDisplayMmMin.CheckedChanged += RbFeedDisplay_CheckedChanged;
             rbFeedDisplayMmSec.CheckedChanged += RbFeedDisplay_CheckedChanged;
             selectionOverrideSpindle.ValueChanged += SelectionOverride_ValueChanged;
-            selectionOverrideRapids.ValueChanged += SelectionOverride_ValueChanged;
+            selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZUp.ValueChanged += SelectionOverride_ValueChanged;
@@ -1625,7 +1652,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                _machineUpdateThread.ThreadSendCommandQueue.Enqueue(String.Format(MessageMachineStop, _machine.Id));
+                SendByThread(String.Format(MessageMachineStop, _machine.Id));
         }
 
         private void ToolstripButtonCoordinates_Click(object sender, EventArgs e)

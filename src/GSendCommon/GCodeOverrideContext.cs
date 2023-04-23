@@ -4,6 +4,7 @@ using GSendDB.Tables;
 
 using GSendShared;
 using GSendShared.Interfaces;
+using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,7 +30,7 @@ namespace GSendCommon
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
             ComPort = comPort ?? throw new ArgumentNullException(nameof(comPort));
-            Overrides = new Overrides();
+            Overrides = new OverrideModel();
             _overrideClasses = GetOverrides();
         }
 
@@ -60,7 +61,7 @@ namespace GSendCommon
 
         public bool SendCommand { get; set; } = true;
 
-        public IOverrides Overrides { get; }
+        public OverrideModel Overrides { get; }
 
         public void ProcessGCodeLine(IGCodeLine line)
         {

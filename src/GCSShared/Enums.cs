@@ -153,6 +153,15 @@
         OverrideSpindle = 8192
     }
 
+    public enum RapidsOverride
+    {
+        Low = 0,
+
+        Medium = 1,
+
+        High = 2,
+    }
+
     [Flags]
     public enum CommandAttributes : uint
     {
