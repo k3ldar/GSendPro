@@ -160,6 +160,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Property.
+        /// </summary>
+        public static string AnalyserProperty {
+            get {
+                return ResourceManager.GetString("AnalyserProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string AnalyserValue {
+            get {
+                return ResourceManager.GetString("AnalyserValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Laser mode was disabled, changed to enabled as machine is a laser.
         /// </summary>
         public static string AutomaticallySelectedLaserMode {
@@ -192,6 +210,15 @@ namespace GSend.Language {
         public static string AutoUpdateSpindleMode {
             get {
                 return ResourceManager.GetString("AutoUpdateSpindleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available bytes/blocks.
+        /// </summary>
+        public static string AvailableBytesBlocks {
+            get {
+                return ResourceManager.GetString("AvailableBytesBlocks", resourceCulture);
             }
         }
         
@@ -781,6 +808,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coolant is used but not turned off.
+        /// </summary>
+        public static string ErrorCoolantNotTurnedOff {
+            get {
+                return ResourceManager.GetString("ErrorCoolantNotTurnedOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed Rate Display.
         /// </summary>
         public static string FeedDisplay {
@@ -799,11 +835,200 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*.
+        /// </summary>
+        public static string FileFilter {
+            get {
+                return ResourceManager.GetString("FileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File name:.
+        /// </summary>
+        public static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Supports flood coolant.
         /// </summary>
         public static string FloodCoolant {
             get {
                 return ResourceManager.GetString("FloodCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command Count.
+        /// </summary>
+        public static string GCodeCommandCount {
+            get {
+                return ResourceManager.GetString("GCodeCommandCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commands After End.
+        /// </summary>
+        public static string GCodeCommandsAfterEnd {
+            get {
+                return ResourceManager.GetString("GCodeCommandsAfterEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contains Duplicate Lines.
+        /// </summary>
+        public static string GCodeContainsDuplicates {
+            get {
+                return ResourceManager.GetString("GCodeContainsDuplicates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File CRC.
+        /// </summary>
+        public static string GCodeFileCRC {
+            get {
+                return ResourceManager.GetString("GCodeFileCRC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Created Time.
+        /// </summary>
+        public static string GCodeFileCreated {
+            get {
+                return ResourceManager.GetString("GCodeFileCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Last Write Time.
+        /// </summary>
+        public static string GCodeFileLastWrite {
+            get {
+                return ResourceManager.GetString("GCodeFileLastWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Size.
+        /// </summary>
+        public static string GCodeFileSize {
+            get {
+                return ResourceManager.GetString("GCodeFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flood Coolant.
+        /// </summary>
+        public static string GCodeFloodCoolant {
+            get {
+                return ResourceManager.GetString("GCodeFloodCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has End Program.
+        /// </summary>
+        public static string GCodeHasEndProgram {
+            get {
+                return ResourceManager.GetString("GCodeHasEndProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home Z.
+        /// </summary>
+        public static string GCodeHomeZ {
+            get {
+                return ResourceManager.GetString("GCodeHomeZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line Count.
+        /// </summary>
+        public static string GCodeLineCount {
+            get {
+                return ResourceManager.GetString("GCodeLineCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line Endings.
+        /// </summary>
+        public static string GCodeLineEndings {
+            get {
+                return ResourceManager.GetString("GCodeLineEndings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mist Coolant.
+        /// </summary>
+        public static string GCodeMistCoolant {
+            get {
+                return ResourceManager.GetString("GCodeMistCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Safe Z.
+        /// </summary>
+        public static string GCodeSafeZ {
+            get {
+                return ResourceManager.GetString("GCodeSafeZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Distance.
+        /// </summary>
+        public static string GCodeTotalDistance {
+            get {
+                return ResourceManager.GetString("GCodeTotalDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Time.
+        /// </summary>
+        public static string GCodeTotalTime {
+            get {
+                return ResourceManager.GetString("GCodeTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turns Off Coolant.
+        /// </summary>
+        public static string GCodeTurnOffCoolant {
+            get {
+                return ResourceManager.GetString("GCodeTurnOffCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit of Measure.
+        /// </summary>
+        public static string GCodeUnitOfMeasure {
+            get {
+                return ResourceManager.GetString("GCodeUnitOfMeasure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not automatically detect unit of measure from GCode.
+        /// </summary>
+        public static string GCodeUnitOfMeasureError {
+            get {
+                return ResourceManager.GetString("GCodeUnitOfMeasureError", resourceCulture);
             }
         }
         
@@ -867,6 +1092,15 @@ namespace GSend.Language {
         public static string Jog {
             get {
                 return ResourceManager.GetString("Jog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please load a G Code file..
+        /// </summary>
+        public static string LoadFileForDetails {
+            get {
+                return ResourceManager.GetString("LoadFileForDetails", resourceCulture);
             }
         }
         
@@ -2041,6 +2275,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GCode file uses {0}, display set to {1}.  Updating display to {0}.
+        /// </summary>
+        public static string UpdatingUnitOfMeasureFromGCode {
+            get {
+                return ResourceManager.GetString("UpdatingUnitOfMeasureFromGCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Usage.
         /// </summary>
         public static string Usage {
@@ -2055,6 +2298,15 @@ namespace GSend.Language {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors, warnings and information count.
+        /// </summary>
+        public static string WarningsAndInformation {
+            get {
+                return ResourceManager.GetString("WarningsAndInformation", resourceCulture);
             }
         }
         

@@ -14,7 +14,7 @@ namespace GSendAnalyser.Analysers
     {
         public int Order => int.MinValue;
 
-        public void Analyze(IGCodeAnalyses gCodeAnalyses)
+        public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
             IGCodeCommand command = gCodeAnalyses.Commands.FirstOrDefault(c => c.Attributes.HasFlag(CommandAttributes.EndProgram));
 

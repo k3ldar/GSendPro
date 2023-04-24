@@ -20,6 +20,9 @@ namespace GSendShared
 
         public static string ConvertFeedRateForDisplay(FeedRateDisplayUnits displayUnits, double mmMin)
         {
+            if (mmMin == 0)
+                return mmMin.ToString("N0");
+
             switch (displayUnits)
             {
                 case FeedRateDisplayUnits.MmPerMinute:

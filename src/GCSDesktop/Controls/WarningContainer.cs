@@ -47,17 +47,34 @@ namespace GSendDesktop.Controls
 
         public int WarningCount()
         {
-            return 0;
+            return GetCountOfType(InformationType.Warning);
         }
 
         public int ErrorCount()
         {
-            return 0;
+            return GetCountOfType(InformationType.Alarm) + GetCountOfType(InformationType.Error) + GetCountOfType(InformationType.ErrorKeep);
         }
 
         public int InformationCount()
         {
-            return 0;
+            return GetCountOfType(InformationType.Information);
+        }
+
+        private int GetCountOfType(InformationType informationType)
+        {
+            int Result = 0;
+
+            for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
+            {
+                WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
+
+                if (panel != null && panel.InformationType.Equals(informationType))
+                {
+                    Result++;
+                }
+            }
+
+            return Result;
         }
 
         public int TotalCount()
@@ -141,7 +158,7 @@ namespace GSendDesktop.Controls
             OnUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ResetLayoutWarningErrorSize()
+        public void ResetLayoutWarningErrorSize()
         {
             if (flowLayoutWarningErrors.Controls.Count < 2)
                 Height = 27;

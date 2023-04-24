@@ -22,7 +22,19 @@
 
         bool HasCommandsAfterEndProgram { get; set; }
 
+        bool UsesMistCoolant { get; set; }
+
+        bool UsesFloodCoolant { get; set; }
+
+        bool TurnsOffCoolant { get; set; }
+
+        FileInfo FileInformation { get; set; }
+
+        string FileCRC { get; set; }
+
         void Analyse();
+
+        void Analyse(string fileName);
 
         List<IGCodeLine> Lines(out int lineCount);
     }

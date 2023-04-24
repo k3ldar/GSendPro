@@ -2,7 +2,7 @@
 {
     public interface IGCodeAnalyzer
     {
-        void Analyze(IGCodeAnalyses gCodeAnalyses);
+        void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses);
 
         int Order { get; }
     }

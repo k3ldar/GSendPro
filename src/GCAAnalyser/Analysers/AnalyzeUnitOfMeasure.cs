@@ -8,7 +8,7 @@ namespace GSendAnalyser.Analysers
     {
         public int Order => int.MinValue;
 
-        public void Analyze(IGCodeAnalyses gCodeAnalyses)
+        public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
@@ -21,7 +21,7 @@ namespace GSendAnalyser.Analysers
             else if (inchesCount > 0)
                 gCodeAnalyses.UnitOfMeasurement = UnitOfMeasurement.Inch;
             else if (mmCount > 0)
-                gCodeAnalyses.UnitOfMeasurement = UnitOfMeasurement.MM;
+                gCodeAnalyses.UnitOfMeasurement = UnitOfMeasurement.Mm;
         }
     }
 }

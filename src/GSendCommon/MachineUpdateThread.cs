@@ -24,6 +24,7 @@ namespace GSendCommon
         public MachineUpdateThread(TimeSpan runInterval, GSendWebSocket gSendWebSocket, IMachine machine, IUiUpdate uiUpdate)
             : base(null, runInterval)
         {
+            ContinueIfGlobalException = true;
             ThreadSendCommandQueue = new();
             _gSendWebSocket = gSendWebSocket ?? throw new ArgumentNullException(nameof(gSendWebSocket));
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));

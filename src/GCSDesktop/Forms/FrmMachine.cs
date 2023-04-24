@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
 
+using GSendAnalyser.Internal;
+
 using GSendApi;
 
 using GSendCommon;
+
+using GSendDesktop.Controls;
 
 using GSendShared;
 using GSendShared.Attributes;
@@ -26,6 +30,7 @@ namespace GSendDesktop.Forms
 {
     public partial class FrmMachine : Form, IUiUpdate
     {
+        private const int WarningStatusWidth = 40;
         #region Private Fields
 
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
@@ -33,8 +38,10 @@ namespace GSendDesktop.Forms
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
         private MachineStateModel _machineStatusModel = null;
-        private readonly MachineUpdateThread _machineUpdateThread;
+        private MachineUpdateThread _machineUpdateThread;
+        private IGCodeAnalyses _gCodeAnalyses = null;
         private readonly object _lockObject = new();
+        private readonly Pen _borderPen = new Pen(SystemColors.ButtonShadow);
         private bool _machineConnected = false;
         private bool _isPaused = false;
         private bool _isRunning = false;
@@ -110,6 +117,7 @@ namespace GSendDesktop.Forms
             UpdateMachineStatus(new MachineStateModel());
 
             LoadResources();
+            WarningContainer_VisibleChanged(this, EventArgs.Empty);
         }
 
         #endregion Constructors
@@ -307,6 +315,9 @@ namespace GSendDesktop.Forms
             btnApplyGrblUpdates.Enabled = _machineConnected && !String.IsNullOrEmpty(txtGrblUpdates.Text);
             tabPageConsole.Enabled = _machineConnected && !_isRunning && !_isPaused && !_isProbing && !_isAlarm;
             grpBoxSpindleSpeed.Enabled = _machineConnected;
+
+            loadToolStripMenuItem.Enabled = _gCodeAnalyses == null;
+            clearToolStripMenuItem.Enabled = _gCodeAnalyses != null;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -359,7 +370,7 @@ namespace GSendDesktop.Forms
 
                 if (status.IsConnected)
                 {
-                    toolStripStatusLabelBuffer.Text = $"Available bytes/blocks:{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
+                    toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
 
                     if (!_appliedSettingsChanged)
                     {
@@ -484,28 +495,18 @@ namespace GSendDesktop.Forms
 
         private void SendByThread(string message)
         {
+            if (!ThreadManager.Exists($"{_machine.Name} Update Status"))
+            {
+                _machineUpdateThread = new MachineUpdateThread(new TimeSpan(0, 0, 0, 0,
+                    _gSendContext.Settings.UpdateMilliseconds), _clientWebSocket, _machine, this);
+                ThreadManager.ThreadStart(_machineUpdateThread, $"{_machine.Name} Update Status", ThreadPriority.Normal);
+            }
+
             _machineUpdateThread.ThreadSendCommandQueue.Enqueue(message);
 
-            if (!ThreadManager.Exists($"{_machine.Name} Update Status"))
-                ThreadManager.ThreadStart(_machineUpdateThread, $"{_machine.Name} Update Status", ThreadPriority.Normal);
         }
 
         #endregion Thread Send
-
-        #region Ui Update
-
-        public void RefreshServiceSchedule()
-        {
-            if (InvokeRequired)
-            {
-                Invoke(RefreshServiceSchedule);
-                return;
-            }
-
-            btnServiceRefresh_Click(this, EventArgs.Empty);
-        }
-
-        #endregion Ui Update
 
         #region Service
 
@@ -541,6 +542,17 @@ namespace GSendDesktop.Forms
             btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
 
             UpdateConfigurationChanged();
+        }
+
+        public void RefreshServiceSchedule()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(RefreshServiceSchedule);
+                return;
+            }
+
+            btnServiceRefresh_Click(this, EventArgs.Empty);
         }
 
         #endregion Service
@@ -682,6 +694,17 @@ namespace GSendDesktop.Forms
         #endregion Jog
 
         #region Overrides
+
+        private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
+        {
+            if (cbOverrideLinkRapids.Checked && !cbOverridesDisable.Checked)
+            {
+                _updatingRapidOverride = true;
+                _machineUpdateThread.RapidsOverride = (RapidsOverride)selectionOverrideRapids.Value;
+            }
+
+            selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride((RapidsOverride)selectionOverrideRapids.Value);
+        }
 
         private void SelectionOverride_ValueChanged(object sender, EventArgs e)
         {
@@ -937,9 +960,22 @@ namespace GSendDesktop.Forms
 
         private void warningsAndErrors_OnUpdate(object sender, EventArgs e)
         {
-            int warningCount = warningsAndErrors.WarningCount();
-            toolStripStatusLabelWarnings.Text = warningCount.ToString();
-            toolStripStatusLabelWarnings.Visible = warningCount > 0;
+            int width = 0;
+
+            if (warningsAndErrors.WarningCount() > 0)
+                width += WarningStatusWidth;
+
+            if (warningsAndErrors.ErrorCount() > 0)
+                width += WarningStatusWidth;
+            
+            if (warningsAndErrors.InformationCount() > 0)
+                width += WarningStatusWidth;
+
+            toolStripStatusLabelWarnings.Visible = warningsAndErrors.TotalCount() > 0;
+            toolStripStatusLabelWarnings.Width = width;
+
+            WarningContainer_VisibleChanged(sender, e);
+            toolStripStatusLabelWarnings.Invalidate();
         }
 
         private void ProcessAlarmResponse(ClientBaseMessage clientMessage)
@@ -949,6 +985,7 @@ namespace GSendDesktop.Forms
             GrblAlarm alarm = (GrblAlarm)element.GetInt32();
             string alarmDescription = GSend.Language.Resources.ResourceManager.GetString($"Alarm{(int)alarm}");
             warningsAndErrors.AddWarningPanel(InformationType.Alarm, alarmDescription);
+            UpdateEnabledState();
         }
 
         private void ProcessErrorResponse(ClientBaseMessage clientMessage)
@@ -958,6 +995,7 @@ namespace GSendDesktop.Forms
             GrblError error = (GrblError)element.GetInt32();
             string alarmDescription = GSend.Language.Resources.ResourceManager.GetString($"Error{(int)error}");
             warningsAndErrors.AddWarningPanel(InformationType.Error, alarmDescription);
+            UpdateEnabledState();
         }
 
         private void ProcessFailedMessage(ClientBaseMessage clientMessage)
@@ -982,6 +1020,8 @@ namespace GSendDesktop.Forms
                 default:
                     break;
             }
+
+            UpdateEnabledState();
         }
 
         #endregion Warnings and Error Handling
@@ -1311,17 +1351,6 @@ namespace GSendDesktop.Forms
             btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
         }
 
-        private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
-        {
-            if (cbOverrideLinkRapids.Checked && !cbOverridesDisable.Checked)
-            {
-                _updatingRapidOverride = true;
-                _machineUpdateThread.RapidsOverride = (RapidsOverride)selectionOverrideRapids.Value;
-            }
-
-            selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride((RapidsOverride)selectionOverrideRapids.Value);
-        }
-
         private void HookUpEvents()
         {
             probingCommand1.OnSave += ProbingCommand1_OnSave;
@@ -1362,6 +1391,22 @@ namespace GSendDesktop.Forms
 
             btnGrblCommandClear.Click += btnGrblCommandClear_Click;
             btnGrblCommandSend.Click += btnGrblCommandSend_Click;
+
+            //menu
+            generalToolStripMenuItem.Tag = tabPageMain;
+            generalToolStripMenuItem.Click += SelectTabControlMainTab;
+            overridesToolStripMenuItem.Tag = tabPageOverrides;
+            overridesToolStripMenuItem.Click += SelectTabControlMainTab;
+            jogToolStripMenuItem.Tag = tabPageJog;
+            jogToolStripMenuItem.Click += SelectTabControlMainTab;
+            spindleToolStripMenuItem.Tag = tabPageSpindle;
+            spindleToolStripMenuItem.Click += SelectTabControlMainTab;
+            serviceScheduleToolStripMenuItem.Tag = tabPageServiceSchedule;
+            serviceScheduleToolStripMenuItem.Click += SelectTabControlMainTab;
+            machineSettingsToolStripMenuItem.Tag = tabPageMachineSettings;
+            machineSettingsToolStripMenuItem.Click += SelectTabControlMainTab;
+            settingsToolStripMenuItem.Tag = tabPageSettings;
+            settingsToolStripMenuItem.Click += SelectTabControlMainTab;
         }
 
         private void LoadResources()
@@ -1386,6 +1431,8 @@ namespace GSendDesktop.Forms
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
             toolStripStatusLabelFeedRate.ToolTipText = GSend.Language.Resources.CurrentFeedRate;
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
+            toolStripStatusLabelBuffer.ToolTipText = GSend.Language.Resources.AvailableBytesBlocks;
+            toolStripStatusLabelWarnings.ToolTipText = GSend.Language.Resources.WarningsAndInformation;
 
 
             //tab pages
@@ -1394,7 +1441,6 @@ namespace GSendDesktop.Forms
             tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
             tabPageMachineSettings.Text = GSend.Language.Resources.GrblSettings;
             tabPageSpindle.Text = GSend.Language.Resources.Spindle;
-            tabPageUsage.Text = GSend.Language.Resources.Usage;
             tabPageSettings.Text = GSend.Language.Resources.Settings;
             tabPageConsole.Text = GSend.Language.Resources.Console;
             selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
@@ -1461,6 +1507,7 @@ namespace GSendDesktop.Forms
 
 
             // menu
+            openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
 
             //Machine
             loadToolStripMenuItem.Text = GSend.Language.Resources.LoadGCode;
@@ -1473,7 +1520,6 @@ namespace GSendDesktop.Forms
             jogToolStripMenuItem.Text = GSend.Language.Resources.Jog;
             spindleToolStripMenuItem.Text = GSend.Language.Resources.Spindle;
             serviceScheduleToolStripMenuItem.Text = GSend.Language.Resources.ServiceSchedule;
-            usageToolStripMenuItem.Text = GSend.Language.Resources.Usage;
             machineSettingsToolStripMenuItem.Text = GSend.Language.Resources.MachineSettings;
             settingsToolStripMenuItem.Text = GSend.Language.Resources.Settings;
             consoleToolStripMenuItem.Text = GSend.Language.Resources.Console;
@@ -1588,6 +1634,51 @@ namespace GSendDesktop.Forms
             UpdateEnabledState();
         }
 
+        private void toolStripStatusLabelWarnings_Paint(object sender, PaintEventArgs e)
+        {
+            using (WarningPanel warningPanel = new WarningPanel())
+            {
+                e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
+                int count = warningsAndErrors.ErrorCount();
+                int leftPos = 2;
+
+                if (count > 0)
+                {
+                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
+                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                    leftPos += WarningStatusWidth;
+                }
+
+                count = warningsAndErrors.WarningCount();
+
+                if (count > 0)
+                {
+                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
+                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                    leftPos += WarningStatusWidth;
+                }
+
+                count = warningsAndErrors.InformationCount();
+
+                if (count > 0)
+                {
+                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Information), new Point(leftPos, 1));
+                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                }
+
+                e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right -1, e.ClipRectangle.Top, e.ClipRectangle.Right -1, e.ClipRectangle.Bottom - 2);
+            }
+
+        }
+
+        private void FrmMachine_Shown(object sender, EventArgs e)
+        {
+            warningsAndErrors.ResetLayoutWarningErrorSize();
+        }
+
         #endregion Form Methods
 
         #region Toolbar Buttons
@@ -1670,9 +1761,43 @@ namespace GSendDesktop.Forms
 
         #region Menu
 
+        private void SelectTabControlMainTab(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menu = sender as ToolStripMenuItem;
+
+            if (sender == null)
+                return;
+
+            TabPage tabPage = menu.Tag as TabPage;
+
+            if (tabPage == null)
+                return;
+
+            tabControlMain.SelectedTab = tabPage;
+        }
         private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControlSecondary.SelectedTab = tabPageConsole;
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.FileName = String.Empty;
+
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadGCode(openFileDialog1.FileName);
+            }
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnloadGCode();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void DeselectCoordinateMenuItems()
@@ -1686,5 +1811,78 @@ namespace GSendDesktop.Forms
         }
 
         #endregion Menu
+
+        #region G Code
+
+        private void LoadGCode(string fileName)
+        {
+            UnloadGCode();
+
+            try
+            {
+                GCodeParser gCodeParser = new GCodeParser();
+
+                _gCodeAnalyses = gCodeParser.Parse(File.ReadAllText(fileName));
+                _gCodeAnalyses.Analyse(fileName);
+
+                if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
+                {
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning,
+                        String.Format(GSend.Language.Resources.UpdatingUnitOfMeasureFromGCode,
+                        _gCodeAnalyses.UnitOfMeasurement,
+                        _machine.FeedbackUnit));
+
+                    _machine.FeedbackUnit = (FeedbackUnit)(int)_gCodeAnalyses.UnitOfMeasurement;
+
+                    _machine.DisplayUnits = _gCodeAnalyses.UnitOfMeasurement == UnitOfMeasurement.Mm ? FeedRateDisplayUnits.MmPerMinute : FeedRateDisplayUnits.InchPerMinute;
+
+                    UpdateDisplay();
+                }
+
+                switch (_gCodeAnalyses.UnitOfMeasurement)
+                {
+                    case UnitOfMeasurement.None:
+                    case UnitOfMeasurement.Error:
+                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
+                        break;
+                }
+
+                if ((_gCodeAnalyses.UsesMistCoolant || _gCodeAnalyses.UsesFloodCoolant) && !_gCodeAnalyses.TurnsOffCoolant)
+                {
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
+                }
+
+                if (_gCodeAnalyses.UsesMistCoolant && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
+                {
+                    add warning not supported
+                }
+
+                if (_gCodeAnalyses.UsesFloodCoolant && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
+                {
+                    add warning not supported
+                }
+
+                gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
+            }
+            catch (Exception ex)
+            {
+                warningsAndErrors.AddWarningPanel(InformationType.Error, ex.Message);
+            }
+
+            UpdateEnabledState();
+        }
+
+        private void UnloadGCode()
+        {
+            if (_gCodeAnalyses != null)
+                _gCodeAnalyses = null;
+
+
+            gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
+
+            UpdateEnabledState();
+        }
+
+        #endregion G Code
     }
 }

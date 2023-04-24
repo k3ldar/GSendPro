@@ -8,7 +8,7 @@ namespace GSendAnalyser.Analysers
     {
         public int Order => 0;
 
-        public void Analyze(IGCodeAnalyses gCodeAnalyses)
+        public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));

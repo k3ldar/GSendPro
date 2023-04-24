@@ -19,13 +19,18 @@ namespace GSendAnalyser
 
         public void Analyse()
         {
+            Analyse(null);
+        }
+
+        public void Analyse(string fileName)
+        {
             IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory();
 
             IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
 
             Parallel.ForEach(analyzers, gCodeAnalyzer =>
             {
-                gCodeAnalyzer.Analyze(this);
+                gCodeAnalyzer.Analyze(fileName, this);
             });
         }
 
@@ -48,6 +53,16 @@ namespace GSendAnalyser
         public bool HasEndProgram { get; set; }
 
         public bool HasCommandsAfterEndProgram { get; set; }
+
+        public bool UsesMistCoolant { get; set; }
+
+        public bool UsesFloodCoolant { get; set; }
+
+        public bool TurnsOffCoolant { get; set; }
+
+        public FileInfo FileInformation { get; set; }
+
+        public string FileCRC { get; set; }
 
         public List<IGCodeLine> Lines(out int lineCount)
         {

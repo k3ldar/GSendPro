@@ -38,7 +38,7 @@ namespace GSendDesktop.Controls
                     break;
             }
 
-            imageWarning.Image = imageList1.Images[(int)informationType];
+            imageWarning.Image = ImageList.Images[(int)informationType];
         }
 
         public event EventHandler WarningClose;
@@ -48,6 +48,9 @@ namespace GSendDesktop.Controls
             WarningClose?.Invoke(this, EventArgs.Empty);
         }
 
-        
+        public Image GetImageForInformationType(InformationType informationType)
+        {
+            return ImageList.Images[(int)informationType];
+        }
     }
 }

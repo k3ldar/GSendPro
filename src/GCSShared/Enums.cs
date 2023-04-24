@@ -235,7 +235,7 @@
 
         Inch = 1,
 
-        MM = 2,
+        Mm = 2,
 
         Error = 4,
     }
@@ -617,8 +617,8 @@
 
     public enum FeedbackUnit
     {
-        Mm = 0,
+        Inch = 1,
 
-        Inch = 1
+        Mm = 2,
     }
 }

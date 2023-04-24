@@ -112,7 +112,6 @@
             this.cbMaintainServiceSchedule = new System.Windows.Forms.CheckBox();
             this.trackBarServiceWeeks = new System.Windows.Forms.TrackBar();
             this.lblServiceSchedule = new System.Windows.Forms.Label();
-            this.tabPageUsage = new System.Windows.Forms.TabPage();
             this.tabPageMachineSettings = new System.Windows.Forms.TabPage();
             this.btnApplyGrblUpdates = new System.Windows.Forms.Button();
             this.txtGrblUpdates = new System.Windows.Forms.TextBox();
@@ -143,14 +142,14 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spindleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serviceScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.usageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.machineSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -172,6 +171,8 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.gCodeAnalysesDetails = new GSendDesktop.Controls.GCodeAnalysesDetails();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -546,11 +547,13 @@
             // 
             // toolStripStatusLabelWarnings
             // 
+            this.toolStripStatusLabelWarnings.AutoSize = false;
+            this.toolStripStatusLabelWarnings.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabelWarnings.Image = ((System.Drawing.Image)(resources.GetObject("toolStripStatusLabelWarnings.Image")));
             this.toolStripStatusLabelWarnings.Name = "toolStripStatusLabelWarnings";
             this.toolStripStatusLabelWarnings.Size = new System.Drawing.Size(29, 19);
             this.toolStripStatusLabelWarnings.Text = "0";
-            this.toolStripStatusLabelWarnings.Visible = false;
+            this.toolStripStatusLabelWarnings.Paint += new System.Windows.Forms.PaintEventHandler(this.toolStripStatusLabelWarnings_Paint);
             // 
             // toolStripStatusLabelBuffer
             // 
@@ -588,7 +591,6 @@
             this.tabControlMain.Controls.Add(this.tabPageJog);
             this.tabControlMain.Controls.Add(this.tabPageSpindle);
             this.tabControlMain.Controls.Add(this.tabPageServiceSchedule);
-            this.tabControlMain.Controls.Add(this.tabPageUsage);
             this.tabControlMain.Controls.Add(this.tabPageMachineSettings);
             this.tabControlMain.Controls.Add(this.tabPageSettings);
             this.tabControlMain.HotTrack = true;
@@ -602,6 +604,7 @@
             // tabPageMain
             // 
             this.tabPageMain.BackColor = System.Drawing.Color.White;
+            this.tabPageMain.Controls.Add(this.gCodeAnalysesDetails);
             this.tabPageMain.Controls.Add(this.machinePositionGeneral);
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
             this.tabPageMain.Name = "tabPageMain";
@@ -1099,16 +1102,6 @@
             this.lblServiceSchedule.TabIndex = 0;
             this.lblServiceSchedule.Text = "label1";
             // 
-            // tabPageUsage
-            // 
-            this.tabPageUsage.BackColor = System.Drawing.Color.White;
-            this.tabPageUsage.Location = new System.Drawing.Point(4, 24);
-            this.tabPageUsage.Name = "tabPageUsage";
-            this.tabPageUsage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageUsage.Size = new System.Drawing.Size(765, 242);
-            this.tabPageUsage.TabIndex = 7;
-            this.tabPageUsage.Text = "Useage";
-            // 
             // tabPageMachineSettings
             // 
             this.tabPageMachineSettings.BackColor = System.Drawing.Color.White;
@@ -1385,38 +1378,43 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.loadToolStripMenuItem.Text = "Load G Code";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.clearToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.clearToolStripMenuItem.Text = "Clear G Code";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(140, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generalToolStripMenuItem,
-            this.consoleToolStripMenuItem,
             this.overridesToolStripMenuItem,
             this.jogToolStripMenuItem,
             this.spindleToolStripMenuItem,
             this.serviceScheduleToolStripMenuItem,
-            this.usageToolStripMenuItem,
             this.machineSettingsToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.consoleToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "&View";
@@ -1427,14 +1425,6 @@
             this.generalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
             this.generalToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.generalToolStripMenuItem.Text = "General";
-            // 
-            // consoleToolStripMenuItem
-            // 
-            this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.consoleToolStripMenuItem.Text = "Console";
-            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
             // 
             // overridesToolStripMenuItem
             // 
@@ -1464,13 +1454,6 @@
             this.serviceScheduleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.serviceScheduleToolStripMenuItem.Text = "Service Schedule";
             // 
-            // usageToolStripMenuItem
-            // 
-            this.usageToolStripMenuItem.Name = "usageToolStripMenuItem";
-            this.usageToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-            this.usageToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.usageToolStripMenuItem.Text = "Usage";
-            // 
             // machineSettingsToolStripMenuItem
             // 
             this.machineSettingsToolStripMenuItem.Name = "machineSettingsToolStripMenuItem";
@@ -1484,6 +1467,19 @@
             this.settingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            // 
+            // consoleToolStripMenuItem
+            // 
+            this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
+            this.consoleToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
+            this.consoleToolStripMenuItem.Text = "Console";
+            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
             // 
             // actionToolStripMenuItem
             // 
@@ -1684,6 +1680,21 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 102);
             this.textBoxConsoleText.TabIndex = 0;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            // 
+            // gCodeAnalysesDetails
+            // 
+            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gCodeAnalysesDetails.Location = new System.Drawing.Point(325, 6);
+            this.gCodeAnalysesDetails.MinimumSize = new System.Drawing.Size(433, 218);
+            this.gCodeAnalysesDetails.Name = "gCodeAnalysesDetails";
+            this.gCodeAnalysesDetails.Size = new System.Drawing.Size(434, 226);
+            this.gCodeAnalysesDetails.TabIndex = 1;
+            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1702,6 +1713,7 @@
             this.Name = "FrmMachine";
             this.Text = "FrmMachine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMachine_FormClosing);
+            this.Shown += new System.EventHandler(this.FrmMachine_Shown);
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -1765,7 +1777,6 @@
         private System.Windows.Forms.TabPage tabPageMachineSettings;
         private System.Windows.Forms.TabPage tabPageSpindle;
         private System.Windows.Forms.TabPage tabPageServiceSchedule;
-        private System.Windows.Forms.TabPage tabPageUsage;
         private System.Windows.Forms.ToolStripButton toolStripButtonStop;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelServerConnect;
         private Controls.MachinePosition machinePositionGeneral;
@@ -1830,7 +1841,6 @@
         private System.Windows.Forms.ToolStripMenuItem jogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spindleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem serviceScheduleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem usageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem machineSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
@@ -1884,5 +1894,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFeedRate;
         private System.Windows.Forms.CheckBox cbOverrideLinkXY;
         private Controls.Selection selectionOverrideXY;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private Controls.GCodeAnalysesDetails gCodeAnalysesDetails;
     }
 }

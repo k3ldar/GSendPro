@@ -34,7 +34,7 @@
             this.imageClose = new System.Windows.Forms.PictureBox();
             this.imageWarning = new System.Windows.Forms.PictureBox();
             this.lblMessage = new System.Windows.Forms.Label();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.ImageList = new System.Windows.Forms.ImageList(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageWarning)).BeginInit();
@@ -82,16 +82,16 @@
             this.lblMessage.TabIndex = 0;
             this.lblMessage.Text = "label1";
             // 
-            // imageList1
+            // ImageList
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "Error_red_16x16.png");
-            this.imageList1.Images.SetKeyName(1, "Error_red_16x16.png");
-            this.imageList1.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
-            this.imageList1.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
-            this.imageList1.Images.SetKeyName(4, "Error_red_16x16.png");
+            this.ImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList.ImageStream")));
+            this.ImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ImageList.Images.SetKeyName(0, "Error_red_16x16.png");
+            this.ImageList.Images.SetKeyName(1, "Error_red_16x16.png");
+            this.ImageList.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
+            this.ImageList.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
+            this.ImageList.Images.SetKeyName(4, "Error_red_16x16.png");
             // 
             // WarningPanel
             // 
@@ -116,6 +116,6 @@
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.PictureBox imageWarning;
         private System.Windows.Forms.PictureBox imageClose;
-        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ImageList ImageList;
     }
 }

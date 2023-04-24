@@ -150,6 +150,12 @@
   <data name="Alarm9" xml:space="preserve">
     <value>Homing fail. Could not find limit switch within search distance.</value>
   </data>
+  <data name="AnalyserProperty" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="AnalyserValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
   <data name="AutomaticallySelectedLaserMode" xml:space="preserve">
     <value>Laser mode was disabled, changed to enabled as machine is a laser</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="AutoUpdateSpindleMode" xml:space="preserve">
     <value>Automatically set spindle mode $32</value>
+  </data>
+  <data name="AvailableBytesBlocks" xml:space="preserve">
+    <value>Available bytes/blocks</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -357,14 +366,80 @@
   <data name="Error9" xml:space="preserve">
     <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
+  <data name="ErrorCoolantNotTurnedOff" xml:space="preserve">
+    <value>Coolant is used but not turned off</value>
+  </data>
   <data name="FeedDisplay" xml:space="preserve">
     <value>Feed Rate Display</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
   </data>
+  <data name="FileFilter" xml:space="preserve">
+    <value>G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File name:</value>
+  </data>
   <data name="FloodCoolant" xml:space="preserve">
     <value>Supports flood coolant</value>
+  </data>
+  <data name="GCodeCommandCount" xml:space="preserve">
+    <value>Command Count</value>
+  </data>
+  <data name="GCodeCommandsAfterEnd" xml:space="preserve">
+    <value>Commands After End</value>
+  </data>
+  <data name="GCodeContainsDuplicates" xml:space="preserve">
+    <value>Contains Duplicate Lines</value>
+  </data>
+  <data name="GCodeFileCRC" xml:space="preserve">
+    <value>File CRC</value>
+  </data>
+  <data name="GCodeFileCreated" xml:space="preserve">
+    <value>File Created Time</value>
+  </data>
+  <data name="GCodeFileLastWrite" xml:space="preserve">
+    <value>File Last Write Time</value>
+  </data>
+  <data name="GCodeFileSize" xml:space="preserve">
+    <value>File Size</value>
+  </data>
+  <data name="GCodeFloodCoolant" xml:space="preserve">
+    <value>Flood Coolant</value>
+  </data>
+  <data name="GCodeHasEndProgram" xml:space="preserve">
+    <value>Has End Program</value>
+  </data>
+  <data name="GCodeHomeZ" xml:space="preserve">
+    <value>Home Z</value>
+  </data>
+  <data name="GCodeLineCount" xml:space="preserve">
+    <value>Line Count</value>
+  </data>
+  <data name="GCodeLineEndings" xml:space="preserve">
+    <value>Line Endings</value>
+  </data>
+  <data name="GCodeMistCoolant" xml:space="preserve">
+    <value>Mist Coolant</value>
+  </data>
+  <data name="GCodeSafeZ" xml:space="preserve">
+    <value>Safe Z</value>
+  </data>
+  <data name="GCodeTotalDistance" xml:space="preserve">
+    <value>Total Distance</value>
+  </data>
+  <data name="GCodeTotalTime" xml:space="preserve">
+    <value>Total Time</value>
+  </data>
+  <data name="GCodeTurnOffCoolant" xml:space="preserve">
+    <value>Turns Off Coolant</value>
+  </data>
+  <data name="GCodeUnitOfMeasure" xml:space="preserve">
+    <value>Unit of Measure</value>
+  </data>
+  <data name="GCodeUnitOfMeasureError" xml:space="preserve">
+    <value>Could not automatically detect unit of measure from GCode</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
@@ -386,6 +461,9 @@
   </data>
   <data name="Jog" xml:space="preserve">
     <value>Jog</value>
+  </data>
+  <data name="LoadFileForDetails" xml:space="preserve">
+    <value>Please load a G Code file.</value>
   </data>
   <data name="LoadGCode" xml:space="preserve">
     <value>Load GCode</value>
@@ -777,11 +855,17 @@
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="UpdatingUnitOfMeasureFromGCode" xml:space="preserve">
+    <value>GCode file uses {0}, display set to {1}.  Updating display to {0}</value>
+  </data>
   <data name="Usage" xml:space="preserve">
     <value>Usage</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="WarningsAndInformation" xml:space="preserve">
+    <value>Errors, warnings and information count</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
