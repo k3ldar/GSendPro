@@ -638,7 +638,7 @@ namespace GSendCommon
 
         public bool IsLocked { get => _machineStateModel.IsLocked; }
 
-        public int CommandCount => _commandsToSend.Count;
+        public int CommandCount => _commandsToSend?.Count ?? 0;
 
         public int LineCount => _lineCount;
 

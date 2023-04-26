@@ -42,5 +42,6 @@
         public const char CharX = 'X';
         public const char CharY = 'Y';
         public const char CharZ = 'Z';
+        public const char CharPercent = '%';
     }
 }

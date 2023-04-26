@@ -18,12 +18,15 @@ namespace GSendAnalyser.Analysers
         {
             IGCodeCommand command = gCodeAnalyses.Commands.FirstOrDefault(c => c.Attributes.HasFlag(CommandAttributes.EndProgram));
 
-            gCodeAnalyses.HasEndProgram = command != null;
+            if (command != null)
+                gCodeAnalyses.AddOptions(AnalysesOptions.HasEndProgram);
 
             if (command != null)
             {
                 GCodeCommand cmd = command as GCodeCommand;
-                gCodeAnalyses.HasCommandsAfterEndProgram = cmd.NextCommand != null;
+
+                if (cmd.NextCommand != null)
+                    gCodeAnalyses.AddOptions(AnalysesOptions.HasCommandAfterEnd);
             }
         }
     }

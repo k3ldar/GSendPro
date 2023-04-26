@@ -1,5 +1,29 @@
 ﻿namespace GSendShared
 {
+    [Flags]
+    public enum AnalysesOptions
+    {
+        None = 0,
+
+        ContainsDuplicates = 1,
+
+        HasEndProgram = 2,
+
+        HasCommandAfterEnd = 4,
+
+        UsesMistCoolant = 8,
+
+        UsesFloodCoolant = 16,
+
+        TurnsOffCoolant = 32,
+
+        ContainsToolChanges = 64,
+
+        ContainsAutomaticToolChanges = 128,
+
+        ContainsCRLF = 256,
+    }
+
     public enum ServiceType
     {
         Daily = 0,
@@ -227,6 +251,8 @@
         DoNotProcess = 32768,
 
         EndProgram = 65536,
+
+        StartProgram = 131072,
     }
 
     public enum UnitOfMeasurement

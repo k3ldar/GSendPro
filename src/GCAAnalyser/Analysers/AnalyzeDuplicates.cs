@@ -13,7 +13,8 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.ContainsDuplicates = gCodeAnalyses.Commands.Any(c => c.Attributes.HasFlag(CommandAttributes.Duplicate));
+            if (gCodeAnalyses.Commands.Any(c => c.Attributes.HasFlag(CommandAttributes.Duplicate)))
+                gCodeAnalyses.AddOptions(AnalysesOptions.ContainsDuplicates);
         }
     }
 }

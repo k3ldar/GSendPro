@@ -862,6 +862,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic Tool Changes.
+        /// </summary>
+        public static string GCodeAutomaticToolChanges {
+            get {
+                return ResourceManager.GetString("GCodeAutomaticToolChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command Count.
         /// </summary>
         public static string GCodeCommandCount {
@@ -970,6 +979,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max X/Y Feed Rate.
+        /// </summary>
+        public static string GCodeMaxXYFeed {
+            get {
+                return ResourceManager.GetString("GCodeMaxXYFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Z Feed Rate.
+        /// </summary>
+        public static string GCodeMaxZFeed {
+            get {
+                return ResourceManager.GetString("GCodeMaxZFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mist Coolant.
         /// </summary>
         public static string GCodeMistCoolant {
@@ -984,6 +1011,15 @@ namespace GSend.Language {
         public static string GCodeSafeZ {
             get {
                 return ResourceManager.GetString("GCodeSafeZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools Used.
+        /// </summary>
+        public static string GCodeToolsUsed {
+            get {
+                return ResourceManager.GetString("GCodeToolsUsed", resourceCulture);
             }
         }
         
@@ -2298,6 +2334,33 @@ namespace GSend.Language {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string WarningContainsFloodCoolantOption {
+            get {
+                return ResourceManager.GetString("WarningContainsFloodCoolantOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string WarningContainsMistCoolantOption {
+            get {
+                return ResourceManager.GetString("WarningContainsMistCoolantOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to change tools but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string WarningContainsToolChangeOption {
+            get {
+                return ResourceManager.GetString("WarningContainsToolChangeOption", resourceCulture);
             }
         }
         

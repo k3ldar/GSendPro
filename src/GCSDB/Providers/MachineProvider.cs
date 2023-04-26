@@ -10,10 +10,13 @@ namespace GSendDB.Providers
     internal class MachineProvider : IMachineProvider
     {
         private readonly ISimpleDBOperations<MachineDataRow> _machineDataRow;
+        private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
 
-        public MachineProvider(ISimpleDBOperations<MachineDataRow> machineDataRow)
+        public MachineProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
+            ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
+            _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(_spindleTimeTable));
         }
 
         public bool MachineAdd(IMachine machine)
@@ -62,6 +65,33 @@ namespace GSendDB.Providers
         {
             return ConvertFromMachineDataRow(_machineDataRow.Select(id));
         }
+
+        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)
+        {
+            MachineSpindleTimeDataRow Result = new MachineSpindleTimeDataRow()
+            {
+                StartTime = DateTime.UtcNow,
+                FinishTime = DateTime.MinValue,
+                MachineId = machineId,
+                MaxRpm = maxSpindleSpeed,
+            };
+
+            _spindleTimeTable.Insert(Result);
+            
+            return Result.Id;
+        }
+
+        public void SpindleTimeFinish(long spindleTimeId)
+        {
+            MachineSpindleTimeDataRow spindleTime = _spindleTimeTable.Select(spindleTimeId);
+
+            if (spindleTime != null)
+            {
+                spindleTime.FinishTime = DateTime.UtcNow;
+                _spindleTimeTable.Update(spindleTime);
+            }
+        }
+
 
         #region Private Methods
 

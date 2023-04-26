@@ -10,14 +10,19 @@ namespace GSendCommon.OverrideClasses
     /// <summary>
     /// Logs spindle active time
     /// </summary>
-    public sealed class SpindleActiveTime : IGCodeOverride
+    public sealed class SpindleActiveTime : IGCodeOverride, IDisposable
     {
-        private MachineSpindleTimeDataRow _activeRow = null;
-        private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
+        private readonly IMachineProvider _machineProvider;
+        private long _spindleTimeId = -1;
 
-        public SpindleActiveTime(ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable)
+        public SpindleActiveTime(IMachineProvider machineProvider)
         {
-            _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(_spindleTimeTable));
+            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+        }
+
+        ~SpindleActiveTime()
+        {
+            Dispose();
         }
 
         public MachineType MachineType => MachineType.CNC;
@@ -41,21 +46,13 @@ namespace GSendCommon.OverrideClasses
                 {
                     IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
 
-                    if (_activeRow != null)
+                    if (_spindleTimeId > -1)
                     {
-                        _activeRow.FinishTime = DateTime.UtcNow;
-                        _spindleTimeTable.Update(_activeRow);
+                        _machineProvider.SpindleTimeFinish(_spindleTimeId);
                     }
 
-                    _activeRow = new MachineSpindleTimeDataRow()
-                    {
-                        StartTime = DateTime.UtcNow,
-                        FinishTime = DateTime.MinValue,
-                        MachineId = overrideContext.Machine.Id,
-                        MaxRpm = spindleSpeed == null ? 0 : (int)spindleSpeed.CommandValue,
-                    };
-
-                    _spindleTimeTable.Insert(_activeRow);
+                    _spindleTimeId = _machineProvider.SpindleTimeCreate(overrideContext.Machine.Id,
+                        spindleSpeed == null ? 0 : (int)spindleSpeed.CommandValue);
                 }
                 else
                 {
@@ -76,12 +73,17 @@ namespace GSendCommon.OverrideClasses
 
         private void StopSpindleTimer()
         {
-            if (_activeRow != null)
+            if (_spindleTimeId > -1)
             {
-                _activeRow.FinishTime = DateTime.UtcNow;
-                _spindleTimeTable.Update(_activeRow);
-                _activeRow = null;
+                _machineProvider.SpindleTimeFinish(_spindleTimeId);
+                _spindleTimeId = -1;
             }
+        }
+
+        public void Dispose()
+        {
+            StopSpindleTimer();
+            GC.SuppressFinalize(this);
         }
     }
 }

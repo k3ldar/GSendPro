@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using GSendShared;
 
 namespace GSendTests.Mocks
 {
@@ -10,7 +8,13 @@ namespace GSendTests.Mocks
     {
         public object GetService(Type serviceType)
         {
-            throw new NotImplementedException();
+            if (serviceType != null)
+            {
+                if (serviceType.Equals(typeof(IMachineProvider)))
+                    return new MockMachineProvider();
+            }
+                
+            return null;
         }
     }
 }

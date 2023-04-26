@@ -112,7 +112,7 @@ namespace GSendCommon
             {
                 new SpindleSoftStart(),
                 new SpindleSoftStop(),
-                new SpindleActiveTime(_serviceProvider.GetRequiredService<ISimpleDBOperations<MachineSpindleTimeDataRow>>()),
+                new SpindleActiveTime(_serviceProvider.GetRequiredService<IMachineProvider>()),
             };
 
             return Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();

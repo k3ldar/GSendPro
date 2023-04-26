@@ -3,6 +3,8 @@
 using GSendShared;
 using GSendShared.Interfaces;
 
+using Microsoft.CodeAnalysis.Text;
+
 using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser.Internal
@@ -40,6 +42,7 @@ namespace GSendAnalyser.Internal
             Span<char> line = new(new char[MaxLineSize]);
             int position = 0;
             int currentLine = 1;
+            bool isComment = false;
             ClearLineData(line);
             GCodeCommand lastCommand = null;
             StringBuilder lineValues = new(MaxLineSize);
@@ -52,15 +55,18 @@ namespace GSendAnalyser.Internal
 
                 switch (c)
                 {
-
                     case CharG:
-                        if (line[0] != CharNull)
+                        if (!isComment)
                         {
-                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
-                            ClearLineData(line);
+                            if (line[0] != CharNull)
+                            {
+                                lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                                ClearLineData(line);
+                            }
+
+                            position = 0;
                         }
 
-                        position = 0;
                         line[position++] = c;
 
                         continue;
@@ -74,7 +80,14 @@ namespace GSendAnalyser.Internal
                         continue;
 
                     case CharCarriageReturn:
-                        Result.ContainsCarriageReturn = true;
+                        Result.AddOptions(AnalysesOptions.ContainsCRLF);
+
+                        continue;
+
+                    case CharOpeningBracket:
+                    case CharSemiColon:
+                        line[position++] = c;
+                        isComment = true;
 
                         continue;
 
@@ -120,13 +133,13 @@ namespace GSendAnalyser.Internal
 
             GCodeCommand UpdateGCodeValue()
             {
-                if (currentCommand != CharNull && lineValues.Length > 0)
-                {
-                    if (isComment)
-                    {
-                        comment = lineValues.ToString();
-                    }
-                }
+                //if (currentCommand != CharNull && lineValues.Length > 0)
+                //{
+                //    if (isComment)
+                //    {
+                //        comment = lineValues.ToString();
+                //    }
+                //}
 
                 bool commandValueConvert = Decimal.TryParse(lineValues.ToString(), out decimal commandValue);
                 Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
@@ -187,6 +200,11 @@ namespace GSendAnalyser.Internal
                             currentValues.Attributes |= CommandAttributes.EndProgram;
 
                         break;
+
+                    case CharPercent:
+                        currentValues.Attributes |= CommandAttributes.StartProgram;
+
+                        break;
                 }
 
                 CurrentCommandValues newValues = currentValues.Clone();
@@ -208,7 +226,7 @@ namespace GSendAnalyser.Internal
 
                 if (isComment && c != CharNull && c != CharClosingBracket)
                 {
-                    lineValues.Append(c);
+                    comment += c;
                     continue;
                 }
 
@@ -238,6 +256,7 @@ namespace GSendAnalyser.Internal
                     case CharX:
                     case CharY:
                     case CharZ:
+                    case CharPercent:
                         // new command
                         if (currentCommand != CharNull)
                             lastCommand = UpdateGCodeValue();
@@ -272,8 +291,7 @@ namespace GSendAnalyser.Internal
                         }
                         else
                         {
-                            lastCommand = UpdateGCodeValue();
-                            comment = String.Empty;
+                            comment += c;
                             isComment = true;
                         }
 
@@ -281,7 +299,7 @@ namespace GSendAnalyser.Internal
 
                     case CharClosingBracket:
                         //comment end
-                        lastCommand = UpdateGCodeValue();
+                        comment += c;
                         isComment = false;
 
                         continue;

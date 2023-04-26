@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using GSendShared.Models;
 
@@ -76,5 +74,19 @@ namespace GSendTests.Mocks
         {
             return _machines.FirstOrDefault(m => m.Id.Equals(id));
         }
+
+        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)
+        {
+            SpindleTimeCreateCalled = true;
+            return 10;
+        }
+
+        public void SpindleTimeFinish(long spindleTimeId)
+        {
+            SpindleTimeFinishCalled = spindleTimeId == 10;
+        }
+
+        public bool SpindleTimeCreateCalled { get; private set; }
+        public bool SpindleTimeFinishCalled { get; private set; }
     }
 }

@@ -55,11 +55,12 @@ namespace GSendTests.OverrideTests
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
             context.ProcessGCodeLine(gCodeLine);
-            SpindleActiveTime sut = new SpindleActiveTime(null);
-            sut.Process(context, CancellationToken.None);
+            using (SpindleActiveTime sut = new SpindleActiveTime(mockMachineProvider))
+                sut.Process(context, CancellationToken.None);
 
 
-            Assert.IsTrue(false, "Record in table not saved or even created yet! finish this");
+            Assert.IsTrue(mockMachineProvider.SpindleTimeCreateCalled);
+            Assert.IsTrue(mockMachineProvider.SpindleTimeFinishCalled);
         }
 
         [TestMethod]
@@ -80,14 +81,19 @@ namespace GSendTests.OverrideTests
 
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
+            context.ProcessGCodeLine(analyses.Lines(out int lineCount)[0]);
+
+            Assert.AreEqual(150, mockComport.Commands.Count);
+            Assert.AreEqual("S3000M3", mockComport.Commands[149]);
+
             SpindleSoftStart sut = new SpindleSoftStart();
             sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(context.SendCommand);
 
 
-            Assert.AreEqual(150, mockComport.Commands.Count);
-            Assert.AreEqual("S3000M3", mockComport.Commands[149]);
+            Assert.AreEqual(300, mockComport.Commands.Count);
+            Assert.AreEqual("S3000M3", mockComport.Commands[299]);
         }
     }
 }

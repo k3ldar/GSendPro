@@ -130,4 +130,7 @@
   <data name="test_toolpath4_Area Clear_Ball Nose 3.175 mm Roughing" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\TestFiles\test_toolpath4_Area Clear_Ball Nose 3.175 mm Roughing.gcode;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="test_toolpath5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\testfiles\test_toolpath5.ngc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

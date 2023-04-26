@@ -2,6 +2,7 @@
 using GSendAnalyser.Internal;
 
 using GSendShared;
+using Shared.Classes;
 
 namespace GSendAnalyser
 {
@@ -34,9 +35,17 @@ namespace GSendAnalyser
             });
         }
 
-        public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
+        public void AddOptions(AnalysesOptions options)
+        {
+            using (TimedLock tl = TimedLock.Lock(_commands))
+            {
+                AnalysesOptions |= options;
+            }
+        }
 
-        public bool ContainsCarriageReturn { get; internal set; }
+        public AnalysesOptions AnalysesOptions { get; private set; }
+
+        public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
 
         public decimal HomeZ { get; set; }
 
@@ -48,17 +57,11 @@ namespace GSendAnalyser
 
         public TimeSpan TotalTime { get; set; }
 
-        public bool ContainsDuplicates { get; set; }
+        public string Tools { get; set; } = "";
 
-        public bool HasEndProgram { get; set; }
+        public decimal FeedX { get; set; }
 
-        public bool HasCommandsAfterEndProgram { get; set; }
-
-        public bool UsesMistCoolant { get; set; }
-
-        public bool UsesFloodCoolant { get; set; }
-
-        public bool TurnsOffCoolant { get; set; }
+        public decimal FeedZ { get; set; }
 
         public FileInfo FileInformation { get; set; }
 

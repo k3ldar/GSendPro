@@ -18,9 +18,14 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.UsesMistCoolant = gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M7"));
-            gCodeAnalyses.UsesFloodCoolant = gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M8"));
-            gCodeAnalyses.TurnsOffCoolant = gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M9"));
+            if (gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M7")))
+                gCodeAnalyses.AddOptions(AnalysesOptions.UsesMistCoolant);
+
+            if (gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M8")))
+                gCodeAnalyses.AddOptions(AnalysesOptions.UsesFloodCoolant);
+
+            if (gCodeAnalyses.Commands.Any(c => c.ToString().Equals("M9")))
+                gCodeAnalyses.AddOptions(AnalysesOptions.TurnsOffCoolant);
         }
     }
 }

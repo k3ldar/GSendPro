@@ -1847,19 +1847,25 @@ namespace GSendDesktop.Forms
                         break;
                 }
 
-                if ((_gCodeAnalyses.UsesMistCoolant || _gCodeAnalyses.UsesFloodCoolant) && !_gCodeAnalyses.TurnsOffCoolant)
+                if ((_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) || _gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant)) && 
+                    !_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
                 {
                     warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
                 }
 
-                if (_gCodeAnalyses.UsesMistCoolant && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
+                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
                 {
-                    add warning not supported
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsMistCoolantOption);
                 }
 
-                if (_gCodeAnalyses.UsesFloodCoolant && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
+                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant) && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
                 {
-                    add warning not supported
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsFloodCoolantOption);
+                }
+
+                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsToolChanges) && !_machine.Options.HasFlag(MachineOptions.ToolChanger))
+                {
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsToolChangeOption);
                 }
 
                 gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);

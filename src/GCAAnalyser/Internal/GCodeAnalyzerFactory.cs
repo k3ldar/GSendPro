@@ -19,6 +19,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeFileDetails(),
                 new AnalyzeCoolantUsage(),
                 new AnalyzeToolChange(),
+                new AnalyzeFeedsAndSpeeds(),
 
             }
             .OrderBy(o => o.Order)

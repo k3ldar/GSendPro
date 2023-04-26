@@ -384,6 +384,9 @@
   <data name="FloodCoolant" xml:space="preserve">
     <value>Supports flood coolant</value>
   </data>
+  <data name="GCodeAutomaticToolChanges" xml:space="preserve">
+    <value>Automatic Tool Changes</value>
+  </data>
   <data name="GCodeCommandCount" xml:space="preserve">
     <value>Command Count</value>
   </data>
@@ -420,11 +423,20 @@
   <data name="GCodeLineEndings" xml:space="preserve">
     <value>Line Endings</value>
   </data>
+  <data name="GCodeMaxXYFeed" xml:space="preserve">
+    <value>Max X/Y Feed Rate</value>
+  </data>
+  <data name="GCodeMaxZFeed" xml:space="preserve">
+    <value>Max Z Feed Rate</value>
+  </data>
   <data name="GCodeMistCoolant" xml:space="preserve">
     <value>Mist Coolant</value>
   </data>
   <data name="GCodeSafeZ" xml:space="preserve">
     <value>Safe Z</value>
+  </data>
+  <data name="GCodeToolsUsed" xml:space="preserve">
+    <value>Tools Used</value>
   </data>
   <data name="GCodeTotalDistance" xml:space="preserve">
     <value>Total Distance</value>
@@ -863,6 +875,15 @@
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="WarningContainsFloodCoolantOption" xml:space="preserve">
+    <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>
+  </data>
+  <data name="WarningContainsMistCoolantOption" xml:space="preserve">
+    <value>GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored.</value>
+  </data>
+  <data name="WarningContainsToolChangeOption" xml:space="preserve">
+    <value>GCode file contains option to change tools but is not supported.  This command will be ignored.</value>
   </data>
   <data name="WarningsAndInformation" xml:space="preserve">
     <value>Errors, warnings and information count</value>

@@ -19,5 +19,9 @@ namespace GSendShared
         void MachineRemove(long machineId);
 
         void MachineUpdate(IMachine machine);
+
+        long SpindleTimeCreate(long machineId, int maxSpindleSpeed);
+
+        void SpindleTimeFinish(long spindleTimeId);
     }
 }

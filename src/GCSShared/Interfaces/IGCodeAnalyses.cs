@@ -4,8 +4,6 @@
     {
         IReadOnlyList<IGCodeCommand> Commands { get; }
 
-        bool ContainsCarriageReturn { get; }
-
         decimal SafeZ { get; set; }
 
         decimal HomeZ { get; set; }
@@ -16,25 +14,23 @@
 
         UnitOfMeasurement UnitOfMeasurement { get; set; }
 
-        bool ContainsDuplicates { get; set; }
+        string Tools { get; set; }
 
-        bool HasEndProgram { get; set; }
+        decimal FeedX { get; set; }
 
-        bool HasCommandsAfterEndProgram { get; set; }
-
-        bool UsesMistCoolant { get; set; }
-
-        bool UsesFloodCoolant { get; set; }
-
-        bool TurnsOffCoolant { get; set; }
+        decimal FeedZ { get; set; }
 
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }
 
+        AnalysesOptions AnalysesOptions { get; }
+
         void Analyse();
 
         void Analyse(string fileName);
+
+        void AddOptions(AnalysesOptions options);
 
         List<IGCodeLine> Lines(out int lineCount);
     }

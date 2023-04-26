@@ -62,21 +62,23 @@ namespace GSendDesktop.Controls
             AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
             AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
             AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
+            AddAnalyserProperty(GCodeMaxXYFeed, gCodeAnalyses?.FeedX);
+            AddAnalyserProperty(GCodeMaxZFeed, gCodeAnalyses?.FeedZ);
             AddAnalyserProperty(GCodeTotalDistance, gCodeAnalyses?.TotalDistance);
             AddAnalyserProperty(GCodeTotalTime, gCodeAnalyses?.TotalTime.ToString("hh\\:mm\\:ss"));
             AddAnalyserProperty(GCodeLineCount, lineCount);
             AddAnalyserProperty(GCodeCommandCount, gCodeAnalyses?.Commands.Count);
-            AddAnalyserProperty(GCodeMistCoolant, gCodeAnalyses?.UsesMistCoolant);
-            AddAnalyserProperty(GCodeFloodCoolant, gCodeAnalyses?.UsesFloodCoolant);
-            AddAnalyserProperty(GCodeTurnOffCoolant, gCodeAnalyses?.TurnsOffCoolant);
+            AddAnalyserProperty(GCodeMistCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant));
+            AddAnalyserProperty(GCodeFloodCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant));
+            AddAnalyserProperty(GCodeTurnOffCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant));
+            AddAnalyserProperty(GCodeAutomaticToolChanges, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges));
+            AddAnalyserProperty(GCodeToolsUsed, gCodeAnalyses?.Tools);
 
 
-
-
-            AddAnalyserProperty(GCodeLineEndings, gCodeAnalyses == null ? null : gCodeAnalyses.ContainsCarriageReturn ? "crlf" : "lf");
-            AddAnalyserProperty(GCodeHasEndProgram, gCodeAnalyses?.HasEndProgram);
-            AddAnalyserProperty(GCodeCommandsAfterEnd, gCodeAnalyses?.HasCommandsAfterEndProgram);
-            AddAnalyserProperty(GCodeContainsDuplicates, gCodeAnalyses?.ContainsDuplicates);
+            AddAnalyserProperty(GCodeLineEndings, gCodeAnalyses == null ? null : gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsCRLF) ? "crlf" : "lf");
+            AddAnalyserProperty(GCodeHasEndProgram, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram));
+            AddAnalyserProperty(GCodeCommandsAfterEnd, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasCommandAfterEnd));
+            AddAnalyserProperty(GCodeContainsDuplicates, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
             AddAnalyserProperty(GCodeFileSize, gCodeAnalyses == null || gCodeAnalyses.FileInformation == null ? null : Shared.Utilities.FileSize(gCodeAnalyses.FileInformation.Length, 2));
             AddAnalyserProperty(GCodeFileCRC, gCodeAnalyses?.FileCRC);

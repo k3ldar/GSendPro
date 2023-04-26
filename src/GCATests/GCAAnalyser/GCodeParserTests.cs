@@ -69,7 +69,7 @@ namespace GSendTests.GSendAnalyser
             IGCodeAnalyses analyses = sut.Parse(finish);
             analyses.Analyse();
             Assert.AreEqual(17, analyses.Commands.Count);
-            Assert.IsTrue(analyses.ContainsDuplicates);
+            Assert.IsTrue(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace GSendTests.GSendAnalyser
             IGCodeAnalyses analyses = sut.Parse(finish);
             analyses.Analyse();
             Assert.AreEqual(2260, analyses.Commands.Count);
-            Assert.IsFalse(analyses.ContainsDuplicates);
+            Assert.IsFalse(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
             List<IGCodeCommand> movesToSafeZ = analyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.HomeZ)).ToList();
             Assert.AreEqual(2, movesToSafeZ.Count);
@@ -100,12 +100,24 @@ namespace GSendTests.GSendAnalyser
             IGCodeAnalyses analyses = sut.Parse(finish);
             analyses.Analyse();
             Assert.AreEqual(44, analyses.Commands.Count);
-            Assert.IsFalse(analyses.ContainsDuplicates);
+            Assert.IsFalse(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
             List<IGCodeCommand> movesToSafeZ = analyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.HomeZ)).ToList();
             Assert.AreEqual(2, movesToSafeZ.Count);
             Assert.AreEqual(148530164, analyses.TotalTime.Ticks);
             Assert.AreEqual(703.494m, analyses.TotalDistance);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseLocalToolChanges()
+        {
+            GCodeParser sut = new();
+            IGCodeAnalyses analyses = sut.Parse(Encoding.UTF8.GetString(Properties.Resources.test_toolpath5));
+            List<IGCodeCommand> toolChanges = analyses.Commands.Where(c => c.Command.Equals('T')).ToList();
+            Assert.AreEqual(2, toolChanges.Count);
+            Assert.AreEqual(18305, analyses.Commands.Count);
+
         }
     }
 }

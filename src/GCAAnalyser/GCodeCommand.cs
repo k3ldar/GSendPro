@@ -28,7 +28,7 @@ namespace GSendAnalyser
 
         public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues, int lineNumber)
         {
-            if (currentCommand < 'A' || currentCommand > 'Z')
+            if ((currentCommand < 'A' || currentCommand > 'Z') && currentCommand != '%')
                 throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;

@@ -99,5 +99,15 @@ namespace GSendTests.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] test_toolpath5 {
+            get {
+                object obj = ResourceManager.GetObject("test_toolpath5", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
