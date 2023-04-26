@@ -20,7 +20,8 @@ namespace GSendAnalyser.Analysers
                 if (c.CurrentZ == gCodeAnalyses.HomeZ &&
                     (
                         c.Attributes.HasFlag(CommandAttributes.MovementZDown) ||
-                        c.Attributes.HasFlag(CommandAttributes.MovementZUp)
+                        c.Attributes.HasFlag(CommandAttributes.MovementZUp) ||
+                        c.Attributes.HasFlag(CommandAttributes.None)
                     ))
                 {
                     GCodeCommand gCodeCommand = c as GCodeCommand;

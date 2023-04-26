@@ -20,6 +20,10 @@
 
         decimal FeedZ { get; set; }
 
+        int Layers { get; set; }
+
+        decimal MaxLayerDepth { get; set; }
+
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }

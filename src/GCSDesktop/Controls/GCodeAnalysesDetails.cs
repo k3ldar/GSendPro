@@ -62,6 +62,8 @@ namespace GSendDesktop.Controls
             AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
             AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
             AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
+            AddAnalyserProperty(GCodeMaxLayerHeight, gCodeAnalyses?.MaxLayerDepth);
+            AddAnalyserProperty(GCodeLayerCount, gCodeAnalyses?.Layers);
             AddAnalyserProperty(GCodeMaxXYFeed, gCodeAnalyses?.FeedX);
             AddAnalyserProperty(GCodeMaxZFeed, gCodeAnalyses?.FeedZ);
             AddAnalyserProperty(GCodeTotalDistance, gCodeAnalyses?.TotalDistance);
@@ -75,11 +77,11 @@ namespace GSendDesktop.Controls
             AddAnalyserProperty(GCodeToolsUsed, gCodeAnalyses?.Tools);
 
 
-            AddAnalyserProperty(GCodeLineEndings, gCodeAnalyses == null ? null : gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsCRLF) ? "crlf" : "lf");
             AddAnalyserProperty(GCodeHasEndProgram, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram));
             AddAnalyserProperty(GCodeCommandsAfterEnd, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasCommandAfterEnd));
             AddAnalyserProperty(GCodeContainsDuplicates, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
+            AddAnalyserProperty(GCodeLineEndings, gCodeAnalyses == null ? null : gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsCRLF) ? "crlf" : "lf");
             AddAnalyserProperty(GCodeFileSize, gCodeAnalyses == null || gCodeAnalyses.FileInformation == null ? null : Shared.Utilities.FileSize(gCodeAnalyses.FileInformation.Length, 2));
             AddAnalyserProperty(GCodeFileCRC, gCodeAnalyses?.FileCRC);
             AddAnalyserProperty(GCodeFileLastWrite, gCodeAnalyses?.FileInformation?.LastWriteTimeUtc.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern));

@@ -961,6 +961,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Layers.
+        /// </summary>
+        public static string GCodeLayerCount {
+            get {
+                return ResourceManager.GetString("GCodeLayerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line Count.
         /// </summary>
         public static string GCodeLineCount {
@@ -975,6 +984,15 @@ namespace GSend.Language {
         public static string GCodeLineEndings {
             get {
                 return ResourceManager.GetString("GCodeLineEndings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Layer Height.
+        /// </summary>
+        public static string GCodeMaxLayerHeight {
+            get {
+                return ResourceManager.GetString("GCodeMaxLayerHeight", resourceCulture);
             }
         }
         

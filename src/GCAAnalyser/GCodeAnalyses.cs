@@ -63,6 +63,10 @@ namespace GSendAnalyser
 
         public decimal FeedZ { get; set; }
 
+        public int Layers { get; set; }
+
+        public decimal MaxLayerDepth { get; set; }
+
         public FileInfo FileInformation { get; set; }
 
         public string FileCRC { get; set; }

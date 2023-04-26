@@ -26,6 +26,30 @@ namespace GSendAnalyser.Analysers
                     gCodeCommand.Attributes |= CommandAttributes.SafeZ;
                 }
             });
+
+
+            List<IGCodeCommand> layerCommands = gCodeAnalyses.Commands.Where(c =>
+                c.Command.Equals('Z') &&
+                c.CommandValue < gCodeAnalyses.SafeZ &&
+                (
+                    !c.Attributes.HasFlag(CommandAttributes.SafeZ) &&
+                    !c.Attributes.HasFlag(CommandAttributes.HomeZ) &&
+                    !c.Attributes.HasFlag(CommandAttributes.StartProgram)
+                )
+            )
+            .DistinctBy(c => c.CurrentZ)
+            .OrderByDescending(c => c.CurrentZ)
+            .ToList();
+
+            gCodeAnalyses.Layers = layerCommands.Count;
+
+            for (int i = 1; i < layerCommands.Count; i++)
+            {
+                decimal height = layerCommands[i - 1].CurrentZ - layerCommands[i].CurrentZ;
+
+                if (height > gCodeAnalyses.MaxLayerDepth)
+                    gCodeAnalyses.MaxLayerDepth = height;
+            }
         }
     }
 }

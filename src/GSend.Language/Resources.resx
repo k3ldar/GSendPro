@@ -417,11 +417,17 @@
   <data name="GCodeHomeZ" xml:space="preserve">
     <value>Home Z</value>
   </data>
+  <data name="GCodeLayerCount" xml:space="preserve">
+    <value>Total Layers</value>
+  </data>
   <data name="GCodeLineCount" xml:space="preserve">
     <value>Line Count</value>
   </data>
   <data name="GCodeLineEndings" xml:space="preserve">
     <value>Line Endings</value>
+  </data>
+  <data name="GCodeMaxLayerHeight" xml:space="preserve">
+    <value>Max Layer Height</value>
   </data>
   <data name="GCodeMaxXYFeed" xml:space="preserve">
     <value>Max X/Y Feed Rate</value>

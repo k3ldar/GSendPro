@@ -133,14 +133,6 @@ namespace GSendAnalyser.Internal
 
             GCodeCommand UpdateGCodeValue()
             {
-                //if (currentCommand != CharNull && lineValues.Length > 0)
-                //{
-                //    if (isComment)
-                //    {
-                //        comment = lineValues.ToString();
-                //    }
-                //}
-
                 bool commandValueConvert = Decimal.TryParse(lineValues.ToString(), out decimal commandValue);
                 Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
                 decimal mantissa = Math.Round(100 * (commandValue - commandCode));
@@ -198,6 +190,11 @@ namespace GSendAnalyser.Internal
                     case CharM:
                         if (commandValueConvert && (commandValue == 2 || commandValue == 30))
                             currentValues.Attributes |= CommandAttributes.EndProgram;
+                        else if (commandValueConvert && commandValue == 5)
+                        {
+                            currentValues.SpindleSpeed = 0;
+                            currentValues.Attributes &= ~CommandAttributes.SpindleSpeed;
+                        }
 
                         break;
 
@@ -206,6 +203,9 @@ namespace GSendAnalyser.Internal
 
                         break;
                 }
+
+                if (currentValues.Attributes.HasFlag(CommandAttributes.StartProgram))
+                    currentValues.Attributes &= ~CommandAttributes.StartProgram;
 
                 CurrentCommandValues newValues = currentValues.Clone();
                 result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment, newValues, lineNumber);
