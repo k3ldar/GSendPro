@@ -1323,8 +1323,10 @@ namespace GSendDesktop.Forms
             cbToolChanger.Enabled = _machine.MachineType.Equals(MachineType.CNC);
             cbFloodCoolant.Checked = _machine.Options.HasFlag(MachineOptions.FloodCoolant);
             cbFloodCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
-            cbMistCoolant.Checked = _machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode);
+            cbMistCoolant.Checked = _machine.Options.HasFlag(MachineOptions.MistCoolant);
             cbMistCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
+            cbCorrectMode.Checked = _machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode);
+            cbCorrectMode.Enabled = _machine.MachineType.Equals(MachineType.CNC) || _machine.MachineType.Equals(MachineType.Laser);
             cbAutoSelectFeedbackUnit.Checked = _machine.Options.HasFlag(MachineOptions.AutoUpdateDisplayFromFile);
 
 
