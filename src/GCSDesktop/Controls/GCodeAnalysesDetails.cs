@@ -75,6 +75,9 @@ namespace GSendDesktop.Controls
             AddAnalyserProperty(GCodeTurnOffCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant));
             AddAnalyserProperty(GCodeAutomaticToolChanges, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges));
             AddAnalyserProperty(GCodeToolsUsed, gCodeAnalyses?.Tools);
+            AddAnalyserProperty(GCodeComments, gCodeAnalyses?.CommentCount > 0);
+
+
 
 
             AddAnalyserProperty(GCodeHasEndProgram, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram));

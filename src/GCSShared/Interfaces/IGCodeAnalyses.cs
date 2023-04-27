@@ -24,6 +24,8 @@
 
         decimal MaxLayerDepth { get; set; }
 
+        int CommentCount { get; set; }
+
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }

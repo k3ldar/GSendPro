@@ -67,6 +67,8 @@ namespace GSendAnalyser
 
         public decimal MaxLayerDepth { get; set; }
 
+        public int CommentCount { get; set; }
+
         public FileInfo FileInformation { get; set; }
 
         public string FileCRC { get; set; }

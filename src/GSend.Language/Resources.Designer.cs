@@ -889,6 +889,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string GCodeComments {
+            get {
+                return ResourceManager.GetString("GCodeComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contains Duplicate Lines.
         /// </summary>
         public static string GCodeContainsDuplicates {

@@ -393,6 +393,9 @@
   <data name="GCodeCommandsAfterEnd" xml:space="preserve">
     <value>Commands After End</value>
   </data>
+  <data name="GCodeComments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
   <data name="GCodeContainsDuplicates" xml:space="preserve">
     <value>Contains Duplicate Lines</value>
   </data>
