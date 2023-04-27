@@ -1901,6 +1901,20 @@ namespace GSendDesktop.Forms
                         _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
                 }
 
+                if (_gCodeAnalyses.SubProgramCount > 0)
+                {
+                    foreach (IGCodeCommand item in _gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')))
+                    {
+                        string subProgram = $"{item}";
+
+                        if (!String.IsNullOrEmpty(item.Comment))
+                            subProgram += $" {item.Comment}";
+
+                        warningsAndErrors.AddWarningPanel(InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
+                            subProgram, item.LineNumber));
+                    }
+                }
+
                 gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
             }
             catch (Exception ex)

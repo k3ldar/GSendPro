@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Interfaces
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace GSendShared.Interfaces
 {
     public interface IGCodeAnalyzerFactory
     {

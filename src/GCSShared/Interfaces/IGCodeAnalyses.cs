@@ -26,6 +26,8 @@
 
         int CommentCount { get; set; }
 
+        int SubProgramCount { get; set; }
+
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }

@@ -3,8 +3,6 @@
 using GSendShared;
 using GSendShared.Interfaces;
 
-using Microsoft.CodeAnalysis.Text;
-
 using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser.Internal
@@ -245,6 +243,7 @@ namespace GSendAnalyser.Internal
                     case CharL:
                     case CharM:
                     case CharN:
+                    case CharO:
                     case CharP:
                     case CharQ:
                     case CharR:
@@ -266,7 +265,6 @@ namespace GSendAnalyser.Internal
                         continue;
 
                     case CharE:
-                    case CharO:
                         // not currently supported
                         break;
 

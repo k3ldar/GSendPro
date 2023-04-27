@@ -349,6 +349,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disable Overrides.
         /// </summary>
         public static string DisableOverrides {
@@ -817,6 +826,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GCode file uses a sub program {0} on line {1} which can not be found..
+        /// </summary>
+        public static string ErrorSubProgramMissing {
+            get {
+                return ResourceManager.GetString("ErrorSubProgramMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed Rate Display.
         /// </summary>
         public static string FeedDisplay {
@@ -1132,6 +1150,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string HelpAbout {
+            get {
+                return ResourceManager.GetString("HelpAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Help.
+        /// </summary>
+        public static string HelpView {
+            get {
+                return ResourceManager.GetString("HelpView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {
@@ -1155,6 +1200,15 @@ namespace GSend.Language {
         public static string Jog {
             get {
                 return ResourceManager.GetString("Jog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Large Icons.
+        /// </summary>
+        public static string LargeIcons {
+            get {
+                return ResourceManager.GetString("LargeIcons", resourceCulture);
             }
         }
         
@@ -1218,6 +1272,15 @@ namespace GSend.Language {
         public static string MachineRefresh {
             get {
                 return ResourceManager.GetString("MachineRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Machine.
+        /// </summary>
+        public static string MachineRemove {
+            get {
+                return ResourceManager.GetString("MachineRemove", resourceCulture);
             }
         }
         
@@ -2334,6 +2397,15 @@ namespace GSend.Language {
         public static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub Programs.
+        /// </summary>
+        public static string SubPrograms {
+            get {
+                return ResourceManager.GetString("SubPrograms", resourceCulture);
             }
         }
         

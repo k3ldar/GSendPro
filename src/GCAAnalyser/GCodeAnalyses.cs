@@ -69,6 +69,8 @@ namespace GSendAnalyser
 
         public int CommentCount { get; set; }
 
+        public int SubProgramCount { get; set; }
+
         public FileInfo FileInformation { get; set; }
 
         public string FileCRC { get; set; }

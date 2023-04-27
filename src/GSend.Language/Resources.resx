@@ -213,6 +213,9 @@
   <data name="CurrentFeedRate" xml:space="preserve">
     <value>Current Feed Rate</value>
   </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
   <data name="DisableOverrides" xml:space="preserve">
     <value>Disable Overrides</value>
   </data>
@@ -369,6 +372,9 @@
   <data name="ErrorCoolantNotTurnedOff" xml:space="preserve">
     <value>Coolant is used but not turned off</value>
   </data>
+  <data name="ErrorSubProgramMissing" xml:space="preserve">
+    <value>GCode file uses a sub program {0} on line {1} which can not be found.</value>
+  </data>
   <data name="FeedDisplay" xml:space="preserve">
     <value>Feed Rate Display</value>
   </data>
@@ -474,6 +480,15 @@
   <data name="GrblValueUpdated" xml:space="preserve">
     <value>${0}={1} ; {3} - Original value {1} was changed to {2}</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HelpAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="HelpView" xml:space="preserve">
+    <value>View Help</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
@@ -482,6 +497,9 @@
   </data>
   <data name="Jog" xml:space="preserve">
     <value>Jog</value>
+  </data>
+  <data name="LargeIcons" xml:space="preserve">
+    <value>Large Icons</value>
   </data>
   <data name="LoadFileForDetails" xml:space="preserve">
     <value>Please load a G Code file.</value>
@@ -503,6 +521,9 @@
   </data>
   <data name="MachineRefresh" xml:space="preserve">
     <value>Refresh Machines</value>
+  </data>
+  <data name="MachineRemove" xml:space="preserve">
+    <value>Remove Machine</value>
   </data>
   <data name="MachineSettings" xml:space="preserve">
     <value>Machine Settings</value>
@@ -875,6 +896,9 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="SubPrograms" xml:space="preserve">
+    <value>Sub Programs</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>

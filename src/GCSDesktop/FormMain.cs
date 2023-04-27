@@ -16,7 +16,6 @@ using GSendDesktop.Forms;
 using GSendDesktop.Internal;
 
 using GSendShared;
-using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -432,6 +431,7 @@ namespace GSendDesktop
 
         private void UpdateResources()
         {
+            // list view headers
             columnHeaderComPort.Text = GSend.Language.Resources.Port;
             columnHeaderConnected.Text = GSend.Language.Resources.Connected;
             columnHeaderCpu.Text = GSend.Language.Resources.CPUUsage;
@@ -439,11 +439,13 @@ namespace GSendDesktop
             columnHeaderName.Text = GSend.Language.Resources.Name;
             columnHeaderStatus.Text = GSend.Language.Resources.Status;
 
-
+            // toolbar buttons
             toolStripButtonGetMachines.Text = GSend.Language.Resources.MachineRefresh;
             toolStripButtonGetMachines.ToolTipText = GSend.Language.Resources.MachineRefresh;
             toolStripButtonAddMachine.Text = GSend.Language.Resources.MachineAdd;
             toolStripButtonAddMachine.ToolTipText = GSend.Language.Resources.MachineAdd;
+            toolStripButtonRemoeMachine.Text = GSend.Language.Resources.MachineRemove;
+            toolStripButtonRemoeMachine.ToolTipText = GSend.Language.Resources.MachineRemove;
             toolStripButtonPauseAll.Text = GSend.Language.Resources.PauseAll;
             toolStripButtonPauseAll.ToolTipText = GSend.Language.Resources.PauseAll;
             toolStripButtonResumeAll.Text = GSend.Language.Resources.ResumeAll;
@@ -460,11 +462,26 @@ namespace GSendDesktop
             toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
 
 
-
+            // status strip 
             toolStripStatusCpu.Text = GSend.Language.Resources.ServerCpuStateDisconnected;
 
 
             // menu items
+            machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
+            refreshToolStripMenuItem.Text = GSend.Language.Resources.MachineRefresh;
+            addMachineToolStripMenuItem.Text = GSend.Language.Resources.MachineAdd;
+            removeMachineToolStripMenuItem.Text = GSend.Language.Resources.MachineRemove;
+
+            viewToolStripMenuItem.Text = GSend.Language.Resources.View;
+            mnuViewLargeIcons.Text = GSend.Language.Resources.LargeIcons;
+            mnuViewDetails.Text = GSend.Language.Resources.Details;
+
+            subProgramsToolStripMenuItem.Text = GSend.Language.Resources.SubPrograms;
+            viewSubProgramToolStripMenuItem.Text = GSend.Language.Resources.View;
+
+            helpToolStripMenuItem.Text = GSend.Language.Resources.Help;
+            viewHelpToolStripMenuItem.Text = GSend.Language.Resources.HelpView;
+            aboutToolStripMenuItem.Text = GSend.Language.Resources.HelpAbout;
         }
 
         private void listViewMachines_DoubleClick(object sender, EventArgs e)

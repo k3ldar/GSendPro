@@ -1,5 +1,6 @@
 ﻿using GSendShared.Interfaces;
 using GSendAnalyser.Analysers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendAnalyser.Internal
 {
@@ -21,7 +22,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeToolChange(),
                 new AnalyzeFeedsAndSpeeds(),
                 new AnalyzeComments(),
-
+                new AnalyzeSubPrograms(),
             }
             .OrderBy(o => o.Order)
             .ToList();
