@@ -504,6 +504,9 @@
   <data name="MachineSettings" xml:space="preserve">
     <value>Machine Settings</value>
   </data>
+  <data name="MachineStatus" xml:space="preserve">
+    <value>Machine Status</value>
+  </data>
   <data name="MachineTitle" xml:space="preserve">
     <value>GSend - {0} - {1}</value>
   </data>
@@ -891,8 +894,14 @@
   <data name="WarningContainsToolChangeOption" xml:space="preserve">
     <value>GCode file contains option to change tools but is not supported.  This command will be ignored.</value>
   </data>
+  <data name="WarningLayerHeightTooMuch" xml:space="preserve">
+    <value>Maximum layer height is {0} which exceeds warning level of {1}</value>
+  </data>
   <data name="WarningsAndInformation" xml:space="preserve">
     <value>Errors, warnings and information count</value>
+  </data>
+  <data name="WarnLayerHeight" xml:space="preserve">
+    <value>Warn if layer height is more than</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

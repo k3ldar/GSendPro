@@ -67,6 +67,7 @@
             this.toolStripStatusLabelDisplayUnit = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
+            this.gCodeAnalysesDetails = new GSendDesktop.Controls.GCodeAnalysesDetails();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
             this.cbOverrideLinkSpindle = new System.Windows.Forms.CheckBox();
@@ -119,6 +120,9 @@
             this.lblPropertyHeader = new System.Windows.Forms.Label();
             this.propertyGridGrblSettings = new System.Windows.Forms.PropertyGrid();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
+            this.lblLayerHeightMeasure = new System.Windows.Forms.Label();
+            this.numericLayerHeight = new System.Windows.Forms.NumericUpDown();
+            this.cbLayerHeightWarning = new System.Windows.Forms.CheckBox();
             this.grpFeedDisplay = new System.Windows.Forms.GroupBox();
             this.rbFeedDisplayInchMin = new System.Windows.Forms.RadioButton();
             this.rbFeedDisplayInchSec = new System.Windows.Forms.RadioButton();
@@ -172,7 +176,6 @@
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.gCodeAnalysesDetails = new GSendDesktop.Controls.GCodeAnalysesDetails();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -189,6 +192,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarServiceWeeks)).BeginInit();
             this.tabPageMachineSettings.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLayerHeight)).BeginInit();
             this.grpFeedDisplay.SuspendLayout();
             this.grpDisplayUnits.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -612,6 +616,17 @@
             this.tabPageMain.Size = new System.Drawing.Size(765, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
+            // 
+            // gCodeAnalysesDetails
+            // 
+            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gCodeAnalysesDetails.Location = new System.Drawing.Point(325, 6);
+            this.gCodeAnalysesDetails.MinimumSize = new System.Drawing.Size(433, 218);
+            this.gCodeAnalysesDetails.Name = "gCodeAnalysesDetails";
+            this.gCodeAnalysesDetails.Size = new System.Drawing.Size(434, 226);
+            this.gCodeAnalysesDetails.TabIndex = 1;
             // 
             // machinePositionGeneral
             // 
@@ -1178,6 +1193,9 @@
             // tabPageSettings
             // 
             this.tabPageSettings.BackColor = System.Drawing.Color.White;
+            this.tabPageSettings.Controls.Add(this.lblLayerHeightMeasure);
+            this.tabPageSettings.Controls.Add(this.numericLayerHeight);
+            this.tabPageSettings.Controls.Add(this.cbLayerHeightWarning);
             this.tabPageSettings.Controls.Add(this.grpFeedDisplay);
             this.tabPageSettings.Controls.Add(this.grpDisplayUnits);
             this.tabPageSettings.Controls.Add(this.cbCorrectMode);
@@ -1192,6 +1210,48 @@
             this.tabPageSettings.Size = new System.Drawing.Size(765, 242);
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
+            // 
+            // lblLayerHeightMeasure
+            // 
+            this.lblLayerHeightMeasure.AutoSize = true;
+            this.lblLayerHeightMeasure.Location = new System.Drawing.Point(299, 132);
+            this.lblLayerHeightMeasure.Name = "lblLayerHeightMeasure";
+            this.lblLayerHeightMeasure.Size = new System.Drawing.Size(38, 15);
+            this.lblLayerHeightMeasure.TabIndex = 10;
+            this.lblLayerHeightMeasure.Text = "label1";
+            // 
+            // numericLayerHeight
+            // 
+            this.numericLayerHeight.DecimalPlaces = 1;
+            this.numericLayerHeight.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericLayerHeight.Location = new System.Drawing.Point(235, 130);
+            this.numericLayerHeight.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericLayerHeight.Name = "numericLayerHeight";
+            this.numericLayerHeight.Size = new System.Drawing.Size(58, 23);
+            this.numericLayerHeight.TabIndex = 9;
+            this.numericLayerHeight.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            // 
+            // cbLayerHeightWarning
+            // 
+            this.cbLayerHeightWarning.AutoSize = true;
+            this.cbLayerHeightWarning.Location = new System.Drawing.Point(6, 131);
+            this.cbLayerHeightWarning.Name = "cbLayerHeightWarning";
+            this.cbLayerHeightWarning.Size = new System.Drawing.Size(148, 19);
+            this.cbLayerHeightWarning.TabIndex = 8;
+            this.cbLayerHeightWarning.Text = "cbLayerHeightWarning";
+            this.cbLayerHeightWarning.UseVisualStyleBackColor = true;
             // 
             // grpFeedDisplay
             // 
@@ -1684,17 +1744,6 @@
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
-            // gCodeAnalysesDetails
-            // 
-            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gCodeAnalysesDetails.Location = new System.Drawing.Point(325, 6);
-            this.gCodeAnalysesDetails.MinimumSize = new System.Drawing.Size(433, 218);
-            this.gCodeAnalysesDetails.Name = "gCodeAnalysesDetails";
-            this.gCodeAnalysesDetails.Size = new System.Drawing.Size(434, 226);
-            this.gCodeAnalysesDetails.TabIndex = 1;
-            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1738,6 +1787,7 @@
             this.tabPageMachineSettings.PerformLayout();
             this.tabPageSettings.ResumeLayout(false);
             this.tabPageSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLayerHeight)).EndInit();
             this.grpFeedDisplay.ResumeLayout(false);
             this.grpFeedDisplay.PerformLayout();
             this.grpDisplayUnits.ResumeLayout(false);
@@ -1897,5 +1947,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private Controls.GCodeAnalysesDetails gCodeAnalysesDetails;
+        private System.Windows.Forms.CheckBox cbLayerHeightWarning;
+        private System.Windows.Forms.NumericUpDown numericLayerHeight;
+        private System.Windows.Forms.Label lblLayerHeightMeasure;
     }
 }

@@ -30,6 +30,7 @@ namespace GSendDB.Tables
         private int _softStartSeconds;
         private int _serviceWeeks;
         private int _serviceSpindleHours;
+        private decimal _layerHeightWarning;
 
 
         // Update ConvertFromIMachineToMachineDataRow in machineprovider
@@ -347,6 +348,20 @@ namespace GSendDB.Tables
                     return;
 
                 _serviceSpindleHours = value;
+                Update();
+            }
+        }
+
+        public decimal LayerHeightWarning
+        {
+            get => _layerHeightWarning;
+
+            set
+            {
+                if (_layerHeightWarning == value)
+                    return;
+
+                _layerHeightWarning = value;
                 Update();
             }
         }

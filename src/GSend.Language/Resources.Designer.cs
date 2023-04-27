@@ -1222,6 +1222,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine Status.
+        /// </summary>
+        public static string MachineStatus {
+            get {
+                return ResourceManager.GetString("MachineStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GSend - {0} - {1}.
         /// </summary>
         public static string MachineTitle {
@@ -2383,11 +2392,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum layer height is {0} which exceeds warning level of {1}.
+        /// </summary>
+        public static string WarningLayerHeightTooMuch {
+            get {
+                return ResourceManager.GetString("WarningLayerHeightTooMuch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors, warnings and information count.
         /// </summary>
         public static string WarningsAndInformation {
             get {
                 return ResourceManager.GetString("WarningsAndInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warn if layer height is more than.
+        /// </summary>
+        public static string WarnLayerHeight {
+            get {
+                return ResourceManager.GetString("WarnLayerHeight", resourceCulture);
             }
         }
         

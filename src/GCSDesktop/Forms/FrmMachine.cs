@@ -463,7 +463,7 @@ namespace GSendDesktop.Forms
                 else
                 {
                     toolStripStatusLabelBuffer.Text = String.Empty;
-                    toolStripStatusLabelBuffer.Text = String.Empty;
+                    toolStripStatusLabelStatus.Text = String.Empty;
                     UpdateMachineStatusLabel(SystemColors.Control, SystemColors.ControlText, String.Empty);
                     machinePositionGeneral.ResetPositions();
                     machinePositionJog.ResetPositions();
@@ -565,6 +565,23 @@ namespace GSendDesktop.Forms
                 _machine.AddOptions(MachineOptions.AutoUpdateDisplayFromFile);
             else
                 _machine.RemoveOptions(MachineOptions.AutoUpdateDisplayFromFile);
+
+            UpdateConfigurationChanged();
+        }
+
+        private void CbLayerHeightWarning_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbLayerHeightWarning.Checked)
+                _machine.AddOptions(MachineOptions.LayerHeightWarning);
+            else
+                _machine.RemoveOptions(MachineOptions.LayerHeightWarning);
+
+            UpdateConfigurationChanged();
+        }
+
+        private void NumericLayerHeight_CheckedChanged(object sender, EventArgs e)
+        {
+            _machine.LayerHeightWarning = numericLayerHeight.Value;
 
             UpdateConfigurationChanged();
         }
@@ -1327,6 +1344,9 @@ namespace GSendDesktop.Forms
             cbMistCoolant.Enabled = _machine.MachineType.Equals(MachineType.CNC);
             cbCorrectMode.Checked = _machine.Options.HasFlag(MachineOptions.AutoCorrectLaserSpindleMode);
             cbCorrectMode.Enabled = _machine.MachineType.Equals(MachineType.CNC) || _machine.MachineType.Equals(MachineType.Laser);
+            cbLayerHeightWarning.Checked = _machine.Options.HasFlag(MachineOptions.LayerHeightWarning);
+            cbLayerHeightWarning.Enabled = true;
+            numericLayerHeight.Value = _machine.LayerHeightWarning;
             cbAutoSelectFeedbackUnit.Checked = _machine.Options.HasFlag(MachineOptions.AutoUpdateDisplayFromFile);
 
 
@@ -1371,6 +1391,8 @@ namespace GSendDesktop.Forms
             cbFloodCoolant.CheckedChanged += CbFloodCoolant_CheckedChanged;
             cbMistCoolant.CheckedChanged += CbMistCoolant_CheckedChanged;
             cbMaintainServiceSchedule.CheckedChanged += CbMaintainServiceSchedule_CheckedChanged;
+            cbLayerHeightWarning.CheckedChanged += CbLayerHeightWarning_CheckedChanged;
+            numericLayerHeight.ValueChanged += NumericLayerHeight_CheckedChanged;
             cbAutoSelectFeedbackUnit.CheckedChanged += CbAutoSelectFeedbackUnit_CheckedChanged;
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
@@ -1435,6 +1457,7 @@ namespace GSendDesktop.Forms
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
             toolStripStatusLabelBuffer.ToolTipText = GSend.Language.Resources.AvailableBytesBlocks;
             toolStripStatusLabelWarnings.ToolTipText = GSend.Language.Resources.WarningsAndInformation;
+            toolStripStatusLabelStatus.ToolTipText = GSend.Language.Resources.MachineStatus;
 
 
             //tab pages
@@ -1470,6 +1493,7 @@ namespace GSendDesktop.Forms
             cbFloodCoolant.Text = GSend.Language.Resources.FloodCoolant;
             cbMistCoolant.Text = GSend.Language.Resources.MistCoolant;
             cbCorrectMode.Text = _machine.MachineType == MachineType.Laser ? GSend.Language.Resources.AutoUpdateLaserMode : GSend.Language.Resources.AutoUpdateSpindleMode;
+            cbLayerHeightWarning.Text = GSend.Language.Resources.WarnLayerHeight;
             grpDisplayUnits.Text = GSend.Language.Resources.DisplayUnits;
             rbFeedbackMm.Text = GSend.Language.Resources.DisplayMm;
             rbFeedbackInch.Text = GSend.Language.Resources.DisplayInch;
@@ -1479,6 +1503,7 @@ namespace GSendDesktop.Forms
             rbFeedDisplayMmSec.Text = GSend.Language.Resources.DisplayMmSec;
             rbFeedDisplayInchMin.Text = GSend.Language.Resources.DisplayInchMinute;
             rbFeedDisplayInchSec.Text = GSend.Language.Resources.DisplayInchSecond;
+            lblLayerHeightMeasure.Text = GSend.Language.Resources.DisplayMmAbreviated;
 
             // service schedule
             cbMaintainServiceSchedule.Text = GSend.Language.Resources.MaintainServiceSchedule;
@@ -1868,6 +1893,12 @@ namespace GSendDesktop.Forms
                 if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsToolChanges) && !_machine.Options.HasFlag(MachineOptions.ToolChanger))
                 {
                     warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsToolChangeOption);
+                }
+
+                if (_gCodeAnalyses.MaxLayerDepth > _machine.LayerHeightWarning && _machine.Options.HasFlag(MachineOptions.LayerHeightWarning))
+                {
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.WarningLayerHeightTooMuch,
+                        _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
                 }
 
                 gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);

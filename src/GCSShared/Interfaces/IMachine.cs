@@ -55,6 +55,8 @@ namespace GSendShared
 
         int ServiceWeeks { get; set; }
 
+        decimal LayerHeightWarning { get; set; }
+
         void AddOptions(MachineOptions options);
 
         void RemoveOptions(MachineOptions options);

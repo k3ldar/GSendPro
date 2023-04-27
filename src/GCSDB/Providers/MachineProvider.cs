@@ -113,6 +113,7 @@ namespace GSendDB.Providers
             machineDataRow.Settings = machine.Settings;
             machineDataRow.DisplayUnits = machine.DisplayUnits;
             machineDataRow.FeedbackUnits = machine.FeedbackUnit;
+            machineDataRow.LayerHeightWarning = machine.LayerHeightWarning;
             machineDataRow.OverrideSpeed = machine.OverrideSpeed;
             machineDataRow.OverrideSpindle = machine.OverrideSpindle;
             machineDataRow.OverrideZDown = machine.OverrideZDownSpeed;
@@ -153,7 +154,7 @@ namespace GSendDB.Providers
                 machineDataRow.AxisCount, machineDataRow.Settings,
                 machineDataRow.DisplayUnits, machineDataRow.FeedbackUnits, machineDataRow.OverrideSpeed,
                 machineDataRow.OverrideSpindle, machineDataRow.OverrideZDown, machineDataRow.OverrideZUp, 
-                machineDataRow.ConfigurationLastVerified, machineDataRow.ProbeCommand, 
+                machineDataRow.ConfigurationLastVerified, machineDataRow.LayerHeightWarning, machineDataRow.ProbeCommand, 
                 machineDataRow.ProbeSpeed, machineDataRow.ProbeThickness,
                 machineDataRow.JogFeedRate, machineDataRow.JogUnits,
                 machineDataRow.SpindleType, machineDataRow.SoftStartSeconds,

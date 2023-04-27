@@ -174,7 +174,12 @@
         /// <summary>
         /// Override slider for spindle is linked
         /// </summary>
-        OverrideSpindle = 8192
+        OverrideSpindle = 8192,
+
+        /// <summary>
+        /// Provides a warning if layer height is greater than set amount
+        /// </summary>
+        LayerHeightWarning = 16384,
     }
 
     public enum RapidsOverride
