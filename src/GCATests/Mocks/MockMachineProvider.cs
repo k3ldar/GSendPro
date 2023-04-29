@@ -71,9 +71,9 @@ namespace GSendTests.Mocks
             return _machines;
         }
 
-        public IMachine MachineGet(long id)
+        public IMachine MachineGet(long machineId)
         {
-            return _machines.FirstOrDefault(m => m.Id.Equals(id));
+            return _machines.FirstOrDefault(m => m.Id.Equals(machineId));
         }
 
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)

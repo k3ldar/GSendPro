@@ -26,7 +26,7 @@ namespace GSendDesktop.Internal
             }
             catch (AggregateException)
             {
-
+                // ignore
             }
             catch (GSendApiException gs)
             {

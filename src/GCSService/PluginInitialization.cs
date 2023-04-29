@@ -18,22 +18,17 @@ namespace GSendService
 
         public void AfterConfigure(in IApplicationBuilder app)
         {
-
+            // not used in this context
         }
 
         public void AfterConfigureServices(in IServiceCollection services)
         {
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy(
-            //        STConsts.PolicyManageLicense,
-            //        policyBuilder => policyBuilder.RequireClaim(STConsts.ClaimManageLicense));
-            //});
+            // not implemented at this time
         }
 
         public void BeforeConfigure(in IApplicationBuilder app)
         {
-
+            // not implemented at this time
         }
 
         public void BeforeConfigureServices(in IServiceCollection services)
@@ -47,7 +42,7 @@ namespace GSendService
 
         public void Configure(in IApplicationBuilder app)
         {
-
+            // not implemented at this time
         }
 
         #endregion IInitialiseEvents Methods
@@ -56,12 +51,12 @@ namespace GSendService
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            // not implemented at this time
         }
 
         public void Finalise()
         {
-
+            // not implemented at this time
         }
 
         public ushort GetVersion()
@@ -71,7 +66,7 @@ namespace GSendService
 
         public void Initialise(PluginManager.Abstractions.ILogger logger)
         {
-
+            // not implemented at this time
         }
 
         #endregion IPlugin Methods

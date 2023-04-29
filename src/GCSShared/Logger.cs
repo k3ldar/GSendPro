@@ -25,7 +25,7 @@ namespace GSendShared
         }
 
 
-        public void AddToLog(in LogLevel logLevel, in string module, in string data)
+        public void AddToLog(in LogLevel logLevel, in string moduleName, in string data)
         {
 #if TRACE
             System.Diagnostics.Trace.WriteLine($"{logLevel.ToString()} {data}");
@@ -36,15 +36,15 @@ namespace GSendShared
 #endif
         }
 
-        public void AddToLog(in LogLevel logLevel, in string module, in Exception exception)
+        public void AddToLog(in LogLevel logLevel, in string moduleName, in Exception exception)
         {
-            AddToLog(logLevel, module, exception, String.Empty);
+            AddToLog(logLevel, moduleName, exception, String.Empty);
         }
 
-        public void AddToLog(in LogLevel logLevel, in string module, in Exception exception, string data)
+        public void AddToLog(in LogLevel logLevel, in string moduleName, in Exception exception, string data)
         {
 #if TRACE
-            System.Diagnostics.Trace.WriteLine($"{logLevel.ToString()} {module} {exception?.Message}\r\n{data}");
+            System.Diagnostics.Trace.WriteLine($"{logLevel.ToString()} {moduleName} {exception?.Message}\r\n{data}");
 #endif
 
 #if !DEBUG

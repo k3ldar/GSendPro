@@ -9,7 +9,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            gCodeAnalyses.SubProgramCount = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).Count();
+            gCodeAnalyses.SubProgramCount = gCodeAnalyses.Commands.Count(c => c.Command.Equals('O'));
         }
     }
 }

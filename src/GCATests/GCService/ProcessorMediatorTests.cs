@@ -80,7 +80,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore("not yet finished")]
         public void ExecuteAsync_StartsAllMachines_Success()
         {
             throw new NotImplementedException("needs work");

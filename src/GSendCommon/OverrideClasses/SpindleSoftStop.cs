@@ -47,19 +47,17 @@ namespace GSendCommon.OverrideClasses
 
                 overrideContext.ComPort.WriteLine("S0");
                 overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
-
-                return;
             }
         }
 
         public void Process(GrblAlarm alarm)
         {
-            
+            // not used in this context
         }
 
         public void Process(GrblError error)
         {
-            
+            // not used in this context
         }
     }
 }

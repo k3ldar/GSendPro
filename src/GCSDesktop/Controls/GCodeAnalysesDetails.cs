@@ -76,7 +76,10 @@ namespace GSendDesktop.Controls
             AddAnalyserProperty(GCodeAutomaticToolChanges, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges));
             AddAnalyserProperty(GCodeToolsUsed, gCodeAnalyses?.Tools);
             AddAnalyserProperty(GCodeComments, gCodeAnalyses?.CommentCount > 0);
+            AddAnalyserProperty(GCodeCoordinates, gCodeAnalyses?.CoordinateSystems.Length > 0);
 
+            if (gCodeAnalyses?.CoordinateSystems.Length > 0)
+                AddAnalyserProperty(GCodeCoordinateSystems, gCodeAnalyses?.CoordinateSystems);
 
 
 

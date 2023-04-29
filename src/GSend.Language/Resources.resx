@@ -171,6 +171,9 @@
   <data name="AvailableBytesBlocks" xml:space="preserve">
     <value>Available bytes/blocks</value>
   </data>
+  <data name="BufferSize" xml:space="preserve">
+    <value>Buffer Size: {0}</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -405,6 +408,12 @@
   <data name="GCodeContainsDuplicates" xml:space="preserve">
     <value>Contains Duplicate Lines</value>
   </data>
+  <data name="GCodeCoordinates" xml:space="preserve">
+    <value>Changes Coordinate System</value>
+  </data>
+  <data name="GCodeCoordinateSystems" xml:space="preserve">
+    <value>Coordinate Systems</value>
+  </data>
   <data name="GCodeFileCRC" xml:space="preserve">
     <value>File CRC</value>
   </data>
@@ -599,6 +608,9 @@
   </data>
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
+  </data>
+  <data name="QueueSize" xml:space="preserve">
+    <value>Queue Size: {0}</value>
   </data>
   <data name="RapidRateHigh" xml:space="preserve">
     <value>High</value>
@@ -845,6 +857,15 @@
   </data>
   <data name="SpindleVFD" xml:space="preserve">
     <value>VFD</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartJobWizard" xml:space="preserve">
+    <value>Start Job Wizard</value>
+  </data>
+  <data name="StartOrResume" xml:space="preserve">
+    <value>Start or Resume</value>
   </data>
   <data name="StateAlarm" xml:space="preserve">
     <value>Alarm</value>

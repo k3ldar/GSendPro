@@ -109,11 +109,11 @@ namespace GSendCommon
             }
             catch (ObjectDisposedException)
             {
-
+                //ignore
             }
             catch (InvalidOperationException)
             {
-
+                //ignore
             }
         }
 

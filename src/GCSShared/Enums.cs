@@ -1,6 +1,48 @@
 ﻿namespace GSendShared
 {
     [Flags]
+    public enum MachineStateOptions
+    {
+        None = 0,
+
+        G54ZeroZSet = 1,
+
+        G54ZeroXSet = 2,
+
+        G54ZeroYSet = 4,
+
+        G55ZeroZSet = 8,
+
+        G55ZeroXSet = 16,
+
+        G55ZeroYSet = 32,
+
+        G56ZeroZSet = 64,
+
+        G56ZeroXSet = 128,
+
+        G56ZeroYSet = 256,
+
+        G57ZeroZSet = 512,
+
+        G57ZeroXSet = 1024,
+
+        G57ZeroYSet = 2048,
+
+        G58ZeroZSet = 4096,
+
+        G58ZeroXSet = 8192,
+
+        G58ZeroYSet = 16384,
+
+        G59ZeroZSet = 32768,
+
+        G59ZeroXSet = 65536,
+
+        G59ZeroYSet = 131072,
+    }
+
+    [Flags]
     public enum AnalysesOptions
     {
         None = 0,
@@ -22,6 +64,8 @@
         ContainsAutomaticToolChanges = 128,
 
         ContainsCRLF = 256,
+
+        ContainsCoordinateCommands = 512,
     }
 
     public enum ServiceType

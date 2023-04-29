@@ -50,19 +50,17 @@ namespace GSendCommon.OverrideClasses
 
                 if (currentRpm < spindleSpeed.CommandValue)
                     overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
-
-                return;
             }
         }
 
         public void Process(GrblAlarm alarm)
         {
-            
+            // not used in this context
         }
 
         public void Process(GrblError error)
         {
-            
+            // not used in this context
         }
     }
 }

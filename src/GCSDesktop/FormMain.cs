@@ -61,12 +61,12 @@ namespace GSendDesktop
 
         private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
-
+            // not used in this context
         }
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
-
+            // not used in this context
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -137,7 +137,7 @@ namespace GSendDesktop
         {
             if (InvokeRequired)
             {
-                Invoke(UpdateMachineStatus, new object[] { statuses });
+                Invoke(UpdateMachineStatus, statuses);
                 return;
             }
 
@@ -243,10 +243,6 @@ namespace GSendDesktop
                             machineItem.SubItems[4].Text = String.Empty;
                         }
                     }
-
-                    Color backLineColor = Color.White;
-                    Color foreLineColor = Color.Black;
-                    string configUpdate = String.Empty;
                 }
             }
         }

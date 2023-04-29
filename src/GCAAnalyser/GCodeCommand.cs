@@ -8,7 +8,7 @@ using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser
 {
-    [DebuggerDisplay("{Command}{CommandValue}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}; Status: {Status}")]
+    [DebuggerDisplay("{Command}{CommandValue}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}")]
     public class GCodeCommand : IGCodeCommand
     {
         #region Private Members

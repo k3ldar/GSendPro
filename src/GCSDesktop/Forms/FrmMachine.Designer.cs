@@ -176,6 +176,8 @@
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblBufferSize = new System.Windows.Forms.Label();
+            this.lblQueueSize = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -608,6 +610,8 @@
             // tabPageMain
             // 
             this.tabPageMain.BackColor = System.Drawing.Color.White;
+            this.tabPageMain.Controls.Add(this.lblQueueSize);
+            this.tabPageMain.Controls.Add(this.lblBufferSize);
             this.tabPageMain.Controls.Add(this.gCodeAnalysesDetails);
             this.tabPageMain.Controls.Add(this.machinePositionGeneral);
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
@@ -1744,6 +1748,24 @@
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
+            // lblBufferSize
+            // 
+            this.lblBufferSize.AutoSize = true;
+            this.lblBufferSize.Location = new System.Drawing.Point(6, 121);
+            this.lblBufferSize.Name = "lblBufferSize";
+            this.lblBufferSize.Size = new System.Drawing.Size(38, 15);
+            this.lblBufferSize.TabIndex = 2;
+            this.lblBufferSize.Text = "label1";
+            // 
+            // lblQueueSize
+            // 
+            this.lblQueueSize.AutoSize = true;
+            this.lblQueueSize.Location = new System.Drawing.Point(6, 146);
+            this.lblQueueSize.Name = "lblQueueSize";
+            this.lblQueueSize.Size = new System.Drawing.Size(38, 15);
+            this.lblQueueSize.TabIndex = 3;
+            this.lblQueueSize.Text = "label1";
+            // 
             // FrmMachine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1769,6 +1791,7 @@
             this.statusStrip.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
+            this.tabPageMain.PerformLayout();
             this.tabPageOverrides.ResumeLayout(false);
             this.tabPageOverrides.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPercent)).EndInit();
@@ -1950,5 +1973,7 @@
         private System.Windows.Forms.CheckBox cbLayerHeightWarning;
         private System.Windows.Forms.NumericUpDown numericLayerHeight;
         private System.Windows.Forms.Label lblLayerHeightMeasure;
+        private System.Windows.Forms.Label lblQueueSize;
+        private System.Windows.Forms.Label lblBufferSize;
     }
 }

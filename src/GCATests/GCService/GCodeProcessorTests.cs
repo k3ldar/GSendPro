@@ -584,7 +584,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        [Ignore]
+        [Ignore("unstable")]
         public void Unlock_MachineLocked_ReturnsTrueAndSendsCommandToCom()
         {
             MachineModel machineModel = new MachineModel()
@@ -789,7 +789,7 @@ namespace GSendTests.GCService
             Assert.IsTrue(eventFired);
         }
 
-        [Ignore]
+        [Ignore("unstable")]
         [TestMethod]
         public void StatusReceived_MachineModelUpdated_Success()
         {

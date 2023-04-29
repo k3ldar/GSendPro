@@ -71,6 +71,8 @@ namespace GSendAnalyser
 
         public int SubProgramCount { get; set; }
 
+        public string CoordinateSystems { get; set; }
+
         public FileInfo FileInformation { get; set; }
 
         public string FileCRC { get; set; }

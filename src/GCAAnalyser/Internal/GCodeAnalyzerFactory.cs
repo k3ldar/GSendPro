@@ -23,6 +23,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeFeedsAndSpeeds(),
                 new AnalyzeComments(),
                 new AnalyzeSubPrograms(),
+                new AnalyzeCoordinateSystemsUsed(),
             }
             .OrderBy(o => o.Order)
             .ToList();

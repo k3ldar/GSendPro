@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -205,6 +206,15 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     break;
 
+                case "StateChanged":
+                    JsonElement element = (JsonElement)clientMessage.message;
+                    _machineStatusModel = element.Deserialize<MachineStateModel>();
+
+                    if (_machineStatusModel != null)
+                        UpdateMachineStatus(_machineStatusModel);
+
+                    break;
+
                 case "Connect":
                     _machineConnected = true;
                     UpdateEnabledState();
@@ -253,21 +263,12 @@ namespace GSendDesktop.Forms
                     }
                     else if (clientMessage.message.ToString().Equals("ok") && textBoxConsoleText.Text.EndsWith("ok\r\n"))
                     {
-
+                        // not used in this context
                     }
                     else
                     {
                         AddMessageToConsole(clientMessage.message.ToString());
                     }
-
-                    break;
-
-                case "StateChanged":
-                    JsonElement element = (JsonElement)clientMessage.message;
-                    MachineStateModel model = element.Deserialize<MachineStateModel>();
-
-                    if (model != null)
-                        UpdateMachineStatus(model);
 
                     break;
 
@@ -287,6 +288,20 @@ namespace GSendDesktop.Forms
                 case Constants.MessageMachineUpdateRapidOverridesAdmin:
                     _updatingRapidOverride = false;
                     break;
+
+                case Constants.MessageLoadGCodeAdmin:
+
+                    break;
+
+                case "BufferSize":
+                    string bufferResponse = clientMessage.message.ToString();
+                    lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, bufferResponse);
+                    break;
+
+                case "QueueSize":
+                    string queueResponse = clientMessage.message.ToString();
+                    lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, queueResponse);
+                    break;
             }
         }
 
@@ -298,8 +313,8 @@ namespace GSendDesktop.Forms
             toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
             toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
-            toolStripButtonResume.Enabled = _machineConnected && _isPaused;
-            toolStripButtonPause.Enabled = _machineConnected & (_isPaused || _isRunning);
+            toolStripButtonResume.Enabled = _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
+            toolStripButtonPause.Enabled = _machineConnected && (_isPaused || _isRunning);
             toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
             toolStripDropDownButtonCoordinateSystem.Enabled = _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
 
@@ -324,7 +339,7 @@ namespace GSendDesktop.Forms
         {
             if (InvokeRequired)
             {
-                Invoke(UpdateMachineStatus, new object[] { status });
+                Invoke(UpdateMachineStatus, status);
                 return;
             }
 
@@ -1047,7 +1062,7 @@ namespace GSendDesktop.Forms
 
         public void SetZeroForAxes(object sender, EventArgs e)
         {
-            ZeroAxis zeroAxis = (ZeroAxis)((System.Windows.Forms.Button)sender).Tag;
+            ZeroAxis zeroAxis = (ZeroAxis)((Button)sender).Tag;
             SendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0));
             tabPageJog.Focus();
         }
@@ -1197,10 +1212,10 @@ namespace GSendDesktop.Forms
         {
             foreach (ListViewItem listViewItem in lvServices.Items)
             {
-                if (listViewItem.Tag is MachineServiceModel serviceMachineServiceModel)
+                if (listViewItem.Tag is MachineServiceModel serviceMachineServiceModel &&
+                    serviceMachineServiceModel.Id.Equals(machineServiceModel.Id))
                 {
-                    if (serviceMachineServiceModel.Id.Equals(machineServiceModel.Id))
-                        return true;
+                    return true;
                 }
             }
 
@@ -1446,8 +1461,8 @@ namespace GSendDesktop.Forms
             toolStripButtonHome.ToolTipText = GSend.Language.Resources.Home;
             toolStripButtonProbe.Text = GSend.Language.Resources.Probe;
             toolStripButtonProbe.ToolTipText = GSend.Language.Resources.Probe;
-            toolStripButtonResume.Text = GSend.Language.Resources.Resume;
-            toolStripButtonResume.ToolTipText = GSend.Language.Resources.Resume;
+            toolStripButtonResume.Text = GSend.Language.Resources.StartOrResume;
+            toolStripButtonResume.ToolTipText = GSend.Language.Resources.StartOrResume;
             toolStripButtonPause.Text = GSend.Language.Resources.Pause;
             toolStripButtonPause.ToolTipText = GSend.Language.Resources.Pause;
             toolStripButtonStop.Text = GSend.Language.Resources.Stop;
@@ -1471,7 +1486,8 @@ namespace GSendDesktop.Forms
             selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
 
             //General tab
-
+            lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, 0);
+            lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, 0);
 
             //Spindle tab
             lblSpindleType.Text = GSend.Language.Resources.SpindleType;
@@ -1757,7 +1773,23 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonResume_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineResume, _machine.Id));
+            if (_machineConnected)
+            {
+                if (_isPaused)
+                {
+                    SendMessage(String.Format(MessageMachineResume, _machine.Id));
+                }
+                else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
+                {
+                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses))
+                    {
+                        if (startJobWizard.ShowDialog() == DialogResult.OK)
+                        {
+                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id));
+                        }
+                    }
+                }
+            }
         }
 
         private void toolStripButtonPause_Click(object sender, EventArgs e)
@@ -1916,6 +1948,8 @@ namespace GSendDesktop.Forms
                 }
 
                 gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
+                string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
+                SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
             }
             catch (Exception ex)
             {
@@ -1932,7 +1966,7 @@ namespace GSendDesktop.Forms
 
 
             gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
-
+            SendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
             UpdateEnabledState();
         }
 

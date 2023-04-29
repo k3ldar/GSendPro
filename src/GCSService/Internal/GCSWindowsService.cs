@@ -20,7 +20,7 @@ using ILogger = PluginManager.Abstractions.ILogger;
 namespace GSendService.Internal
 {
     [ExcludeFromCodeCoverage]
-    public class GCSWindowsService : BackgroundService
+    public class GcsWindowsService : BackgroundService
     {
         #region Private Members
 
@@ -29,7 +29,7 @@ namespace GSendService.Internal
 
         #endregion Private Members
 
-        public GCSWindowsService(ILogger logger, IProcessorMediator processorMediator)
+        public GcsWindowsService(ILogger logger, IProcessorMediator processorMediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _processorMediator = processorMediator ?? throw new ArgumentNullException(nameof(processorMediator));

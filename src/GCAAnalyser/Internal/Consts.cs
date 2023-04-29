@@ -1,6 +1,6 @@
 ﻿namespace GSendAnalyser.Internal
 {
-    internal class Consts
+    public static class Consts
     {
         public const int MinSpindleSpeed = 0;
         public const int MaxSpindleSpeed = 35000;

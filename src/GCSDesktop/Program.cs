@@ -47,14 +47,12 @@ namespace GSendDesktop
         private static void RegisterServices(IServiceCollection serviceCollection)
         {
 
-            //GSendSettings settings = settingsProvider.GetSettings<GSendSettings>(GSendShared.Constants.SettingsName);
             serviceCollection.AddSingleton(new GSendSettings());
             serviceCollection.AddSingleton(new ApiSettings(new Uri("https://localhost:7154/")));
             serviceCollection.AddSingleton<MachineApiWrapper>();
             serviceCollection.AddTransient<IMessageNotifier, MessageNotifier>();
             serviceCollection.AddTransient<IComPortProvider, ComPortProvider>();
             serviceCollection.AddTransient<ICommandProcessor, CommandProcessor>();
-            //serviceCollection.AddSingleton<IProcessorMediator, ProcessorMediator>();
             serviceCollection.AddTransient<FormMain>();
             serviceCollection.AddTransient<FrmAddMachine>();
         }

@@ -45,7 +45,7 @@ namespace GSendShared.Interfaces
 
         void ProcessGCodeLine(IGCodeLine line);
 
-        void ProcessAlarm(GrblAlarm error);
+        void ProcessAlarm(GrblAlarm alarm);
 
         void ProcessError(GrblError error);
 

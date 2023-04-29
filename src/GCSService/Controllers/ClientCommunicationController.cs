@@ -30,13 +30,13 @@ namespace GSendService.Controllers
                 }
                 catch (WebSocketException)
                 {
-
+                    // not used in this context
                 }
                 catch (Exception ex)
                 {
                     if (ex.Message == "hello")
                     {
-
+                        // used for breakpoints only
                     }
                 }
             }

@@ -16,7 +16,7 @@ namespace GSendCommon
     public class GCodeProcessor : ThreadManager, IGCodeProcessor
     {
         private const int QueueProcessMilliseconds = 20;
-        private const int MaxBufferSize = 120;
+        private const int MaxBufferSize = 60;
         private const int FirstCommand = 0;
 
         private const string ResultOk = "ok";
@@ -80,7 +80,7 @@ namespace GSendCommon
 
         #region Constructors
 
-        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine, 
+        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine,
             IComPortFactory comPortFactory, IServiceProvider serviceProvider)
             : base(machine, TimeSpan.FromMilliseconds(QueueProcessMilliseconds))
         {
@@ -110,7 +110,7 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (NextCommand < CommandCount)
+                if (NextCommand < CommandCount && _machineStateModel.AvailableRXbytes > 100)
                 {
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
 
@@ -126,8 +126,8 @@ namespace GSendCommon
                         return;
 
                     _sendQueue.Enqueue(commandToSend);
-                    Trace.WriteLine($"Line {NextCommand} added to queue");
-
+                    OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+                    Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                     commandToSend.Status = LineStatus.Sent;
 
                     BufferSize += commandText.Length;
@@ -254,7 +254,7 @@ namespace GSendCommon
             OnStop?.Invoke(this, EventArgs.Empty);
             NextCommand = FirstCommand;
             _sendQueue.Clear();
-
+            OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
 
             return true;
         }
@@ -263,6 +263,8 @@ namespace GSendCommon
         {
             Trace.WriteLine("Clear");
             _commandsToSend?.Clear();
+            _lineCount = 0;
+            _machineStateModel.TotalLines = _lineCount;
             NextCommand = FirstCommand;
         }
 
@@ -276,21 +278,7 @@ namespace GSendCommon
             Clear();
 
             _commandsToSend = gCodeAnalyses.Lines(out _lineCount);
-            //_lineCount = 0;
-            //GCodeLine currentLine = null;
-
-            //foreach (IGCodeCommand command in gCodeAnalyses.Commands)
-            //{
-            //    if (command.LineNumber > _lineCount)
-            //    {
-            //        currentLine = new();
-            //        _lineCount++;
-            //        _commandsToSend.Add(currentLine);
-            //    }
-
-            //    currentLine.Commands.Add(command);
-            //}
-
+            _machineStateModel.TotalLines = _lineCount;
             return true;
         }
 
@@ -299,7 +287,9 @@ namespace GSendCommon
             string zeroCommand = String.Format(CommandZero, coordinateSystem);
 
             if (axis == ZeroAxis.X || axis == ZeroAxis.All)
+            {
                 zeroCommand += String.Format(CommandZeroAxis, ZeroAxis.X);
+            }
 
             if (axis == ZeroAxis.Y || axis == ZeroAxis.All)
                 zeroCommand += String.Format(CommandZeroAxis, ZeroAxis.Y);
@@ -310,9 +300,82 @@ namespace GSendCommon
             if (zeroCommand.Equals(CommandZero))
                 return false;
 
+            _machineStateModel.OptionAdd(GetCoordinateZeroAxis(axis));
             SendCommandWaitForResponse(zeroCommand, TimeOut);
             OnCommandSent?.Invoke(this, CommandSent.ZeroAxis);
             return true;
+        }
+
+        private MachineStateOptions GetCoordinateZeroAxis(ZeroAxis axis)
+        {
+            if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G54))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G54ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G54ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G54ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G54ZeroZSet | MachineStateOptions.G54ZeroXSet | MachineStateOptions.G54ZeroYSet;
+            }
+            else if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G55))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G55ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G55ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G55ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G55ZeroZSet | MachineStateOptions.G55ZeroXSet | MachineStateOptions.G55ZeroYSet;
+            }
+            else if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G56))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G56ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G56ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G56ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G56ZeroZSet | MachineStateOptions.G56ZeroXSet | MachineStateOptions.G56ZeroYSet;
+            }
+            else if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G57))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G57ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G57ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G57ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G57ZeroZSet | MachineStateOptions.G57ZeroXSet | MachineStateOptions.G57ZeroYSet;
+            }
+            else if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G58))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G58ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G58ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G58ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G58ZeroZSet | MachineStateOptions.G58ZeroXSet | MachineStateOptions.G58ZeroYSet;
+            }
+            else if (_machineStateModel.CoordinateSystem.Equals(CoordinateSystem.G59))
+            {
+                if (axis == ZeroAxis.Z)
+                    return MachineStateOptions.G59ZeroZSet;
+                else if (axis == ZeroAxis.X)
+                    return MachineStateOptions.G59ZeroXSet;
+                else if (axis == ZeroAxis.Y)
+                    return MachineStateOptions.G59ZeroYSet;
+                else if (axis == ZeroAxis.All)
+                    return MachineStateOptions.G59ZeroZSet | MachineStateOptions.G59ZeroXSet | MachineStateOptions.G59ZeroYSet;
+            }
+
+            throw new InvalidOperationException();
         }
 
         public bool Home()
@@ -498,7 +561,7 @@ namespace GSendCommon
                                 if (propertyInfo.PropertyType == typeof(bool))
                                 {
                                     int intValue = Convert.ToInt32(parts[1]);
-                                    bool boolValue = (int)intValue != 0;
+                                    bool boolValue = intValue != 0;
                                     propertyInfo.SetValue(_machine.Settings, boolValue, null);
                                 }
                                 else if (propertyInfo.PropertyType.Equals(typeof(AxisConfiguration)))
@@ -569,7 +632,7 @@ namespace GSendCommon
 
             if (speed > 0)
             {
-                OverrideValue overrideValue = _overrideContext.Overrides.Spindle as OverrideValue;
+                OverrideValue overrideValue = _overrideContext.Overrides.Spindle;
                 overrideValue.OriginalValue = speed;
 
                 if (clockWise)
@@ -650,12 +713,11 @@ namespace GSendCommon
 
             private set
             {
-                if (_currentBufferSize + value > MaxBufferSize)
+                if (value > MaxBufferSize)
                     throw new InvalidOperationException("Buffer size too large");
-
+                Trace.WriteLine($"Buffer Size: {value}");
                 _currentBufferSize = value;
                 OnBufferSizeChanged?.Invoke(this, _currentBufferSize);
-                Trace.WriteLine($"BufferSize: {BufferSize}");
             }
         }
 
@@ -734,6 +796,8 @@ namespace GSendCommon
 
         public event BufferSizeHandler OnBufferSizeChanged;
 
+        public event BufferSizeHandler OnQueueSizeChanged;
+
         public event GSendEventHandler OnSerialError;
 
         public event GSendEventHandler OnSerialPinChanged;
@@ -765,7 +829,7 @@ namespace GSendCommon
             {
                 TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
 
-                if (span.TotalMilliseconds > 250)
+                if (span.TotalMilliseconds > 150)
                 {
                     _lastInformationCheck = DateTime.UtcNow;
 
@@ -799,40 +863,32 @@ namespace GSendCommon
 
                 if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (_isRunning)
+                    if (_isRunning && _sendQueue.TryDequeue(out IGCodeLine activeCommand))
                     {
-                        if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
-                        {
-                            activeCommand.Status = LineStatus.Processed;
-                            BufferSize -= activeCommand.GetGCode().Length;
-                        }
+                        activeCommand.Status = LineStatus.Processed;
+                        BufferSize -= activeCommand.GetGCode().Length;
+                        OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
                     }
 
                     _waitingForResponse = false;
-
-                    return;
                 }
                 else if (response.StartsWith('['))
                 {
                     ProcessMessageResponse(response.Trim()[1..^1]);
-                    return;
                 }
                 else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Trace.WriteLine($"Response: {response}");
                     ProcessErrorResponse(response);
-                    return;
                 }
                 else if (response.StartsWith('<'))
                 {
                     ProcessInformationResponse(response[1..^1]);
-                    return;
                 }
                 else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Trace.WriteLine($"Response: {response}");
                     ProcessAlarmResponse(response);
-                    return;
                 }
             }
 
@@ -983,8 +1039,12 @@ namespace GSendCommon
         {
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
-                activeCommand.Status = LineStatus.Failed;
-                BufferSize -= activeCommand.GetGCode().Length;
+               OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+               using (TimedLock tl = TimedLock.Lock(_lockObject))
+                {
+                    activeCommand.Status = LineStatus.Failed;
+                    BufferSize -= activeCommand.GetGCode().Length;
+                }
             }
 
             Stop();
@@ -1009,8 +1069,12 @@ namespace GSendCommon
         {
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
-                activeCommand.Status = LineStatus.Failed;
-                BufferSize -= activeCommand.GetGCode().Length;
+                OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
+                {
+                    activeCommand.Status = LineStatus.Failed;
+                    BufferSize -= activeCommand.GetGCode().Length;
+                }
             }
 
             GrblAlarm alarm = GrblAlarm.Undefined;
@@ -1164,6 +1228,7 @@ namespace GSendCommon
             if (_overrideContext.SendCommand)
             {
                 string gcodeLine = commandLine.GetGCode();
+                File.AppendAllLines("C:\\Users\\user\\Documents\\Carveco\\Projects\\Candle Files\\testsend.txt", new string[] { gcodeLine });
 
                 _port.WriteLine(gcodeLine);
             }

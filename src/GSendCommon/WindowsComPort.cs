@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using System.Diagnostics;
+using System.IO.Ports;
 
 using GSendShared;
 
@@ -66,6 +67,7 @@ namespace GSendCommon
         {
             if (IsOpen() && !String.IsNullOrEmpty(line))
             {
+                Trace.WriteLine(line);
                 _serialPort.WriteLine(line);
             }
         }

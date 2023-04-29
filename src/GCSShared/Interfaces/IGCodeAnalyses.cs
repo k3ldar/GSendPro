@@ -28,6 +28,8 @@
 
         int SubProgramCount { get; set; }
 
+        string CoordinateSystems { get; set; }
+
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }

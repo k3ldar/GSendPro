@@ -223,6 +223,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buffer Size: {0}.
+        /// </summary>
+        public static string BufferSize {
+            get {
+                return ResourceManager.GetString("BufferSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -925,6 +934,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changes Coordinate System.
+        /// </summary>
+        public static string GCodeCoordinates {
+            get {
+                return ResourceManager.GetString("GCodeCoordinates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coordinate Systems.
+        /// </summary>
+        public static string GCodeCoordinateSystems {
+            get {
+                return ResourceManager.GetString("GCodeCoordinateSystems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File CRC.
         /// </summary>
         public static string GCodeFileCRC {
@@ -1506,6 +1533,15 @@ namespace GSend.Language {
         public static string ProbingFailed {
             get {
                 return ResourceManager.GetString("ProbingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue Size: {0}.
+        /// </summary>
+        public static string QueueSize {
+            get {
+                return ResourceManager.GetString("QueueSize", resourceCulture);
             }
         }
         
@@ -2244,6 +2280,33 @@ namespace GSend.Language {
         public static string SpindleVFD {
             get {
                 return ResourceManager.GetString("SpindleVFD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Job Wizard.
+        /// </summary>
+        public static string StartJobWizard {
+            get {
+                return ResourceManager.GetString("StartJobWizard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start or Resume.
+        /// </summary>
+        public static string StartOrResume {
+            get {
+                return ResourceManager.GetString("StartOrResume", resourceCulture);
             }
         }
         

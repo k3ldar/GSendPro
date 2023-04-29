@@ -24,7 +24,7 @@ namespace GSendTests.GCService
     [ExcludeFromCodeCoverage]
     public class LiveTestsWithArduino
     {
-        [Ignore]
+        [Ignore("To be run occasionally for dev purposes")]
         [TestMethod]
         public void ConnectToGrblAfterReset()
         {
@@ -44,7 +44,7 @@ namespace GSendTests.GCService
             Assert.IsFalse(sut.IsConnected);
         }
 
-        [Ignore]
+        [Ignore("To be run occasionally for dev purposes")]
         [TestMethod]
         public void HomeAndPause()
         {
@@ -91,7 +91,7 @@ namespace GSendTests.GCService
 
             if (unlocked)
             {
-
+                // do nothing
             }
 
             for (int i = 0; i < 10; i++)
@@ -102,7 +102,7 @@ namespace GSendTests.GCService
             Assert.IsFalse(sut.IsConnected);
         }
 
-        [Ignore]
+        [Ignore("To be run occasionally for dev purposes")]
         [TestMethod]
         public void ConnectToGrbl_InvalidPort_AfterReset()
         {
@@ -123,7 +123,7 @@ namespace GSendTests.GCService
             Assert.IsTrue(eventFired);
         }
 
-        [Ignore]
+        [Ignore("To be run occasionally for dev purposes")]
         [TestMethod]
         public void ConnectToGrblSendTwoCommands()
         {

@@ -8,10 +8,9 @@ namespace GSendTests.Mocks
     {
         public object GetService(Type serviceType)
         {
-            if (serviceType != null)
+            if (serviceType != null && serviceType.Equals(typeof(IMachineProvider)))
             {
-                if (serviceType.Equals(typeof(IMachineProvider)))
-                    return new MockMachineProvider();
+                return new MockMachineProvider();
             }
                 
             return null;

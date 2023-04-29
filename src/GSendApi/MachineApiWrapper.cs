@@ -117,82 +117,58 @@ namespace GSendApi
 
         private void CallPostApi<T>(string endPoint, T data)
         {
-            try
+            using HttpClient httpClient = CreateApiClient();
+            string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+            HttpContent content = CreateContent(data);
+            using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
+
+            string jsonData = response.Content.ReadAsStringAsync().Result;
+            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+            if (responseModel.success)
             {
-                using HttpClient httpClient = CreateApiClient();
-                string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-                HttpContent content = CreateContent(data);
-                using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
-
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-                if (responseModel.success)
-                {
-                    return;
-                }
-
-                throw new GSendApiException(responseModel.responseData);
+                return;
             }
-            catch (Exception)
-            {
-                //log?
-                throw;
-            }
+
+            throw new GSendApiException(responseModel.responseData);
         }
 
         private T CallGetApi<T>(string endPoint)
         {
-            try
+            using HttpClient httpClient = CreateApiClient();
+            string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+            using HttpResponseMessage response = httpClient.GetAsync(address).Result;
+
+            string jsonData = response.Content.ReadAsStringAsync().Result;
+            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+            if (responseModel.success)
             {
-                using HttpClient httpClient = CreateApiClient();
-                string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-                using HttpResponseMessage response = httpClient.GetAsync(address).Result;
-
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-                if (responseModel.success)
-                {
-                    return JsonSerializer.Deserialize<T>(responseModel.responseData);
-                }
-
-                throw new GSendApiException(responseModel.responseData);
+                return JsonSerializer.Deserialize<T>(responseModel.responseData);
             }
-            catch (Exception)
-            {
-                //log?
-                throw;
-            }
+
+            throw new GSendApiException(responseModel.responseData);
         }
 
         private void CallPutApi<T>(string endPoint, T data)
         {
-            try
+            using HttpClient httpClient = CreateApiClient();
+            string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+            HttpContent content = CreateContent(data);
+            using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
+
+            string jsonData = response.Content.ReadAsStringAsync().Result;
+            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+            if (responseModel.success)
             {
-                using HttpClient httpClient = CreateApiClient();
-                string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-                HttpContent content = CreateContent(data);
-                using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
-
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-                if (responseModel.success)
-                {
-                    return;
-                }
-
-                throw new GSendApiException(responseModel.responseData);
+                return;
             }
-            catch (Exception)
-            {
-                //log?
-                throw;
-            }
+
+            throw new GSendApiException(responseModel.responseData);
         }
 
         #endregion Private Methods

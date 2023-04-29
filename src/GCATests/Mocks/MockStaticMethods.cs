@@ -6,7 +6,7 @@ namespace GSendTests.Mocks
     {
         public void Sleep(int milliseconds)
         {
-
+            // not used in this context
         }
     }
 }

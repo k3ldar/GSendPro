@@ -13,10 +13,6 @@ namespace GSendDesktop.Controls
             InitializeComponent();
         }
 
-        public InformationType InformationType { get; }
-
-        public string InformationText => lblMessage.Text;
-
         public WarningPanel(InformationType informationType, string message)
             : this()
         {
@@ -40,6 +36,10 @@ namespace GSendDesktop.Controls
 
             imageWarning.Image = ImageList.Images[(int)informationType];
         }
+
+        public InformationType InformationType { get; }
+
+        public string InformationText => lblMessage.Text;
 
         public event EventHandler WarningClose;
 

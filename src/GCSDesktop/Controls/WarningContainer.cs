@@ -175,13 +175,11 @@ namespace GSendDesktop.Controls
         {
             for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
             {
-                if (flowLayoutWarningErrors.Controls[i] is WarningPanel warningPanel)
+                if (flowLayoutWarningErrors.Controls[i] is WarningPanel warningPanel &&
+                    warningPanel.InformationType.Equals(InformationType.Alarm))
                 {
-                    if (warningPanel.InformationType.Equals(InformationType.Alarm))
-                    {
-                        flowLayoutWarningErrors.Controls.Remove(warningPanel);
-                        ResetAfterRemove();
-                    }
+                    flowLayoutWarningErrors.Controls.Remove(warningPanel);
+                    ResetAfterRemove();
                 }
             }
         }

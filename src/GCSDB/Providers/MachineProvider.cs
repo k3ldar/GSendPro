@@ -16,7 +16,7 @@ namespace GSendDB.Providers
             ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
-            _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(_spindleTimeTable));
+            _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
         }
 
         public bool MachineAdd(IMachine machine)
@@ -61,9 +61,9 @@ namespace GSendDB.Providers
             return InternalGetMachines();
         }
 
-        public IMachine MachineGet(long id)
+        public IMachine MachineGet(long machineId)
         {
-            return ConvertFromMachineDataRow(_machineDataRow.Select(id));
+            return ConvertFromMachineDataRow(_machineDataRow.Select(machineId));
         }
 
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)

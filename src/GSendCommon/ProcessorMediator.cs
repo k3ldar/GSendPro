@@ -3,6 +3,8 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 
+using GSendAnalyser.Internal;
+
 using GSendShared;
 using GSendShared.Models;
 
@@ -28,7 +30,7 @@ namespace GSendCommon
         private ulong _messageId = 0;
         private string _clientId = null;
 
-        public ProcessorMediator(IServiceProvider serviceProvider, 
+        public ProcessorMediator(IServiceProvider serviceProvider,
             ILogger logger,
             IMachineProvider machineProvider,
             IComPortFactory comPortFactory,
@@ -101,10 +103,7 @@ namespace GSendCommon
                     string request = Encoding.UTF8.GetString(receiveBuffer);
                     byte[] sendBuffer;
 
-                    //using (TimedLock tl = TimedLock.Lock(_lockObject))
-                    //{
-                        sendBuffer = ProcessRequest(request[..receiveResult.Count]);
-                    //}
+                    sendBuffer = ProcessRequest(request[..receiveResult.Count]);
 
                     await webSocket.SendAsync(
                         new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length),
@@ -174,11 +173,10 @@ namespace GSendCommon
 
                     break;
 
-                    case Constants.NotificationMachineUpdated:
-                        UpdateMachine(machineId);
-                    //    AddMachine(machineId);
+                case Constants.NotificationMachineUpdated:
+                    UpdateMachine(machineId);
 
-                        break;
+                    break;
             }
 
         }
@@ -199,7 +197,7 @@ namespace GSendCommon
 
         private void RemoveMachine(long machineId)
         {
-            IGCodeProcessor machineToDelete = _machines.Where(m => m.Id.Equals(machineId)).FirstOrDefault();
+            IGCodeProcessor machineToDelete = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
 
             if (machineToDelete != null)
             {
@@ -258,6 +256,7 @@ namespace GSendCommon
             processor.OnResume += Processor_OnResume;
             processor.OnCommandSent += Processor_OnCommandSent;
             processor.OnBufferSizeChanged += Processor_OnBufferSizeChanged;
+            processor.OnQueueSizeChanged += Processor_OnQueueSizeChanged;
             processor.OnSerialError += Processor_OnSerialError;
             processor.OnSerialPinChanged += Processor_OnSerialPinChanged;
             processor.OnGrblError += Processor_OnGrblError;
@@ -279,6 +278,7 @@ namespace GSendCommon
             processor.OnResume -= Processor_OnResume;
             processor.OnCommandSent -= Processor_OnCommandSent;
             processor.OnBufferSizeChanged -= Processor_OnBufferSizeChanged;
+            processor.OnQueueSizeChanged -= Processor_OnQueueSizeChanged;
             processor.OnSerialError -= Processor_OnSerialError;
             processor.OnSerialPinChanged -= Processor_OnSerialPinChanged;
             processor.OnGrblError -= Processor_OnGrblError;
@@ -375,6 +375,11 @@ namespace GSendCommon
             SendMessage(new ClientBaseMessage("BufferSize", size));
         }
 
+        private void Processor_OnQueueSizeChanged(IGCodeProcessor sender, int size)
+        {
+            SendMessage(new ClientBaseMessage("QueueSize", size));
+        }
+
 
         #endregion Processor Events
 
@@ -420,10 +425,12 @@ namespace GSendCommon
                 case Constants.MessageMachineJogStartServer:
                     if (foundMachine && proc != null && parts.Length == 5)
                     {
-                        if (Enum.TryParse(parts[2], true, out JogDirection jogDirection))
-                            if (Double.TryParse(parts[3], out double stepSize))
-                                if (Double.TryParse(parts[4], out double feedRate))
-                                    proc.JogStart(jogDirection, stepSize, feedRate);
+                        if (Enum.TryParse(parts[2], true, out JogDirection jogDirection) &&
+                            Double.TryParse(parts[3], out double stepSize) &&
+                            Double.TryParse(parts[4], out double feedRate))
+                        {
+                            proc.JogStart(jogDirection, stepSize, feedRate);
+                        }
                     }
                     else
                     {
@@ -467,6 +474,10 @@ namespace GSendCommon
                     {
                         if (proc.StateModel.MachineState == MachineState.Alarm)
                             proc.Unlock();
+                    }
+                    else
+                    {
+                        response.success = false;
                     }
 
                     break;
@@ -646,8 +657,8 @@ namespace GSendCommon
                             }
                         }
                         else
-                        { 
-                            response.success = false; 
+                        {
+                            response.success = false;
                         }
                     }
                     else
@@ -746,6 +757,58 @@ namespace GSendCommon
 
                     response.message = machineStates;
                     response.success = true;
+                    break;
+
+                case Constants.MessageLoadGCodeAdmin:
+
+                    response.request = Constants.MessageLoadGCodeAdmin;
+
+                    string fileName = Encoding.UTF8.GetString(Convert.FromBase64String(parts[2]));
+
+                    if (foundMachine && proc != null && File.Exists(fileName))
+                    {
+                        GCodeParser gCodeParser = new GCodeParser();
+                        IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(File.ReadAllText(fileName));
+                        response.message = proc.LoadGCode(gCodeAnalyses);
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageUnloadGCodeAdmin:
+
+                    response.request = Constants.MessageUnloadGCodeAdmin;
+
+                    if (foundMachine && proc != null)
+                    {
+                        proc.Clear();
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
+                case Constants.MessageRunGCodeAdmin:
+
+                    response.request = Constants.MessageRunGCodeAdmin;
+
+                    if (foundMachine && proc != null)
+                    {
+                        proc.Start();
+                        response.success = true;
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
                     break;
 
                 default:

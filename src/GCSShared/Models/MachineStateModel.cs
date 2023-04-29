@@ -18,6 +18,7 @@
         private int _bufferAvailableBlocks;
         private int _availableRXbytes;
         private int _lineNumber;
+        private int _totalLines;
         private byte _overrideRapids;
         private byte _overrideFeeds;
         private byte _overrideSpindleSpeed;
@@ -29,11 +30,14 @@
         private bool _isPaused;
         private CoordinateSystem _coordinateSystem;
         private RapidsOverride _rapidSpeed = RapidsOverride.High;
+        private MachineStateOptions _machineStateOptions;
 
         public MachineStateModel()
         {
-
+            _machineStateOptions = MachineStateOptions.None;
         }
+
+        public MachineStateOptions MachineStateOptions {  get => _machineStateOptions; set => _machineStateOptions = value; }
 
         public MachineState MachineState
         {
@@ -293,6 +297,20 @@
             }
         }
 
+        public int TotalLines
+        {
+            get => _totalLines;
+
+            set
+            {
+                if (_totalLines.Equals(value))
+                    return;
+
+                _totalLines = value;
+                Updated = true;
+            }
+        }
+
         public byte OverrideRapids
         {
             get => _overrideRapids;
@@ -362,6 +380,7 @@
                 Updated = true;
             }
         }
+
 
         public bool SpindleClockWise
         {
@@ -436,6 +455,18 @@
         public void ResetUpdated()
         {
             Updated = false;
+        }
+
+        public void OptionAdd(MachineStateOptions machineStateOptions)
+        {
+            _machineStateOptions |= machineStateOptions;
+            Updated = true;
+        }
+
+        public void OptionRemove(MachineStateOptions machineStateOptions)
+        {
+            _machineStateOptions &= ~machineStateOptions;
+            Updated = true;
         }
     }
 }

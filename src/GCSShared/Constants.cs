@@ -2,7 +2,7 @@
 
 namespace GSendShared
 {
-    public sealed class Constants
+    public static class Constants
     {
         public const int MinConnectionWait = 500;
 
@@ -100,8 +100,19 @@ namespace GSendShared
 
         public const string MessageMachineUpdateRapidOverrides = "mRapidOverride:{0}:{1}";
 
+        public const string MessageLoadGCodeAdmin = "mLoad";
+
+        public const string MessageLoadGCode = "mLoad:{0}:{1}";
+
+        public const string MessageUnloadGCodeAdmin = "mUnload";
+
+        public const string MessageUnloadGCode = "mUnload:{0}";
 
         public const string StateUndefined = "Undefined";
+
+        public const string MessageRunGCodeAdmin = "mStart";
+
+        public const string MessageRunGCode = "mStart:{0}";
 
         public const string StateSleep = "Sleep";
 

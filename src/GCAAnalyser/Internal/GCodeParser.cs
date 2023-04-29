@@ -127,7 +127,7 @@ namespace GSendAnalyser.Internal
 
             char currentCommand = CharNull;
             bool isComment = false;
-            string comment = String.Empty;
+            StringBuilder comment = new(256);
 
             GCodeCommand UpdateGCodeValue()
             {
@@ -206,7 +206,7 @@ namespace GSendAnalyser.Internal
                     currentValues.Attributes &= ~CommandAttributes.StartProgram;
 
                 CurrentCommandValues newValues = currentValues.Clone();
-                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment, newValues, lineNumber);
+                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), newValues, lineNumber);
 
                 if (lastCommand != null)
                     lastCommand.NextCommand = result;
@@ -216,7 +216,7 @@ namespace GSendAnalyser.Internal
                 analysis.Add(result);
                 lineValues.Clear();
                 return result;
-            };
+            }
 
             for (int i = 0; i < line.Length; i++)
             {
@@ -224,7 +224,7 @@ namespace GSendAnalyser.Internal
 
                 if (isComment && c != CharNull && c != CharClosingBracket)
                 {
-                    comment += c;
+                    comment.Append(c);
                     continue;
                 }
 
@@ -289,7 +289,7 @@ namespace GSendAnalyser.Internal
                         }
                         else
                         {
-                            comment += c;
+                            comment.Append(c);
                             isComment = true;
                         }
 
@@ -297,7 +297,7 @@ namespace GSendAnalyser.Internal
 
                     case CharClosingBracket:
                         //comment end
-                        comment += c;
+                        comment.Append(c);
                         isComment = false;
 
                         continue;

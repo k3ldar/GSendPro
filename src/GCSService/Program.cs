@@ -18,7 +18,7 @@ using LogLevel = PluginManager.LogLevel;
 
 namespace GSendService
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -31,10 +31,12 @@ namespace GSendService
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
             System.Net.ServicePointManager.MaxServicePoints = 5;
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (message, cert, chain, sslPolicyErrors) =>
             {
                 return true;
             };
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
 
             Logger logger = new Logger();
 
@@ -42,11 +44,11 @@ namespace GSendService
             {
                 if (eventArgs.Exception.Message.Equals("Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request"))
                 {
-
+                    //ignore
                 }
                 else if (eventArgs.Exception.Message.StartsWith("The response ended prematurely."))
                 {
-
+                    //ignore
                 }
                 else
                 {
@@ -94,12 +96,12 @@ namespace GSendService
 
         private static void ThreadManager_ThreadStopped(object sender, Shared.ThreadManagerEventArgs e)
         {
-            //throw new NotImplementedException();
+            // not used in this context
         }
 
         private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
         {
-            //throw new NotImplementedException();
+            // not used in this context
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -107,7 +109,7 @@ namespace GSendService
                 .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<GCSWindowsService>();
+                    services.AddHostedService<GcsWindowsService>();
                     services.Configure<KestrelServerOptions>(
                         hostContext.Configuration.GetSection("Kestrel"));
                 })

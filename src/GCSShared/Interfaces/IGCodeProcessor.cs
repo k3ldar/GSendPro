@@ -109,6 +109,8 @@ namespace GSendShared
 
         event BufferSizeHandler OnBufferSizeChanged;
 
+        event BufferSizeHandler OnQueueSizeChanged;
+
         event GSendEventHandler OnSerialError;
 
         event GSendEventHandler OnSerialPinChanged;
