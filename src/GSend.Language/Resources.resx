@@ -156,6 +156,9 @@
   <data name="AnalyserValue" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="Attributes" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
   <data name="AutomaticallySelectedLaserMode" xml:space="preserve">
     <value>Laser mode was disabled, changed to enabled as machine is a laser</value>
   </data>
@@ -392,6 +395,9 @@
   </data>
   <data name="FloodCoolant" xml:space="preserve">
     <value>Supports flood coolant</value>
+  </data>
+  <data name="GCode" xml:space="preserve">
+    <value>GCode</value>
   </data>
   <data name="GCodeAutomaticToolChanges" xml:space="preserve">
     <value>Automatic Tool Changes</value>

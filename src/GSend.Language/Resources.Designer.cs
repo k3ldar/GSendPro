@@ -178,6 +178,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attributes.
+        /// </summary>
+        public static string Attributes {
+            get {
+                return ResourceManager.GetString("Attributes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Laser mode was disabled, changed to enabled as machine is a laser.
         /// </summary>
         public static string AutomaticallySelectedLaserMode {
@@ -885,6 +894,15 @@ namespace GSend.Language {
         public static string FloodCoolant {
             get {
                 return ResourceManager.GetString("FloodCoolant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode.
+        /// </summary>
+        public static string GCode {
+            get {
+                return ResourceManager.GetString("GCode", resourceCulture);
             }
         }
         

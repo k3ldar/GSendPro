@@ -175,9 +175,14 @@
             this.btnGrblCommandClear = new System.Windows.Forms.Button();
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
+            this.tabPageGCode = new System.Windows.Forms.TabPage();
+            this.dataGridGCode = new System.Windows.Forms.DataGridView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.lblBufferSize = new System.Windows.Forms.Label();
-            this.lblQueueSize = new System.Windows.Forms.Label();
+            this.colGCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFeedRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -200,6 +205,8 @@
             this.menuStrip1.SuspendLayout();
             this.tabControlSecondary.SuspendLayout();
             this.tabPageConsole.SuspendLayout();
+            this.tabPageGCode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).BeginInit();
             this.SuspendLayout();
             // 
             // selectionOverrideSpindle
@@ -610,8 +617,6 @@
             // tabPageMain
             // 
             this.tabPageMain.BackColor = System.Drawing.Color.White;
-            this.tabPageMain.Controls.Add(this.lblQueueSize);
-            this.tabPageMain.Controls.Add(this.lblBufferSize);
             this.tabPageMain.Controls.Add(this.gCodeAnalysesDetails);
             this.tabPageMain.Controls.Add(this.machinePositionGeneral);
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
@@ -623,8 +628,8 @@
             // 
             // gCodeAnalysesDetails
             // 
-            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gCodeAnalysesDetails.Location = new System.Drawing.Point(325, 6);
             this.gCodeAnalysesDetails.MinimumSize = new System.Drawing.Size(433, 218);
@@ -1659,7 +1664,7 @@
             // 
             // warningsAndErrors
             // 
-            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.warningsAndErrors.Location = new System.Drawing.Point(12, 86);
             this.warningsAndErrors.Margin = new System.Windows.Forms.Padding(0);
@@ -1679,6 +1684,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlSecondary.Controls.Add(this.tabPageConsole);
+            this.tabControlSecondary.Controls.Add(this.tabPageGCode);
             this.tabControlSecondary.Location = new System.Drawing.Point(12, 411);
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
@@ -1744,27 +1750,77 @@
             this.textBoxConsoleText.Size = new System.Drawing.Size(753, 102);
             this.textBoxConsoleText.TabIndex = 0;
             // 
+            // tabPageGCode
+            // 
+            this.tabPageGCode.Controls.Add(this.dataGridGCode);
+            this.tabPageGCode.Location = new System.Drawing.Point(4, 4);
+            this.tabPageGCode.Name = "tabPageGCode";
+            this.tabPageGCode.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageGCode.Size = new System.Drawing.Size(765, 143);
+            this.tabPageGCode.TabIndex = 1;
+            this.tabPageGCode.Text = "tabPageGCode";
+            this.tabPageGCode.UseVisualStyleBackColor = true;
+            // 
+            // dataGridGCode
+            // 
+            this.dataGridGCode.AllowUserToAddRows = false;
+            this.dataGridGCode.AllowUserToDeleteRows = false;
+            this.dataGridGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridGCode.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridGCode.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colGCode,
+            this.colComment,
+            this.colFeedRate,
+            this.colSpindleSpeed,
+            this.colAttributes});
+            this.dataGridGCode.Location = new System.Drawing.Point(6, 6);
+            this.dataGridGCode.MultiSelect = false;
+            this.dataGridGCode.Name = "dataGridGCode";
+            this.dataGridGCode.ReadOnly = true;
+            this.dataGridGCode.RowTemplate.Height = 25;
+            this.dataGridGCode.Size = new System.Drawing.Size(753, 131);
+            this.dataGridGCode.TabIndex = 1;
+            this.dataGridGCode.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridGCode_RowPostPaint);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
-            // lblBufferSize
+            // colGCode
             // 
-            this.lblBufferSize.AutoSize = true;
-            this.lblBufferSize.Location = new System.Drawing.Point(6, 121);
-            this.lblBufferSize.Name = "lblBufferSize";
-            this.lblBufferSize.Size = new System.Drawing.Size(38, 15);
-            this.lblBufferSize.TabIndex = 2;
-            this.lblBufferSize.Text = "label1";
+            this.colGCode.HeaderText = "GCode";
+            this.colGCode.MaxInputLength = 256;
+            this.colGCode.Name = "colGCode";
+            this.colGCode.ReadOnly = true;
+            this.colGCode.Width = 200;
             // 
-            // lblQueueSize
+            // colComment
             // 
-            this.lblQueueSize.AutoSize = true;
-            this.lblQueueSize.Location = new System.Drawing.Point(6, 146);
-            this.lblQueueSize.Name = "lblQueueSize";
-            this.lblQueueSize.Size = new System.Drawing.Size(38, 15);
-            this.lblQueueSize.TabIndex = 3;
-            this.lblQueueSize.Text = "label1";
+            this.colComment.HeaderText = "Comments";
+            this.colComment.MaxInputLength = 256;
+            this.colComment.Name = "colComment";
+            this.colComment.ReadOnly = true;
+            this.colComment.Width = 200;
+            // 
+            // colFeedRate
+            // 
+            this.colFeedRate.HeaderText = "Feed";
+            this.colFeedRate.Name = "colFeedRate";
+            this.colFeedRate.ReadOnly = true;
+            // 
+            // colSpindleSpeed
+            // 
+            this.colSpindleSpeed.HeaderText = "spindle";
+            this.colSpindleSpeed.Name = "colSpindleSpeed";
+            this.colSpindleSpeed.ReadOnly = true;
+            // 
+            // colAttributes
+            // 
+            this.colAttributes.HeaderText = "Attr";
+            this.colAttributes.Name = "colAttributes";
+            this.colAttributes.ReadOnly = true;
             // 
             // FrmMachine
             // 
@@ -1820,6 +1876,8 @@
             this.tabControlSecondary.ResumeLayout(false);
             this.tabPageConsole.ResumeLayout(false);
             this.tabPageConsole.PerformLayout();
+            this.tabPageGCode.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1973,7 +2031,12 @@
         private System.Windows.Forms.CheckBox cbLayerHeightWarning;
         private System.Windows.Forms.NumericUpDown numericLayerHeight;
         private System.Windows.Forms.Label lblLayerHeightMeasure;
-        private System.Windows.Forms.Label lblQueueSize;
-        private System.Windows.Forms.Label lblBufferSize;
+        private System.Windows.Forms.TabPage tabPageGCode;
+        private System.Windows.Forms.DataGridView dataGridGCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colGCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colComment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFeedRate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSpindleSpeed;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAttributes;
     }
 }

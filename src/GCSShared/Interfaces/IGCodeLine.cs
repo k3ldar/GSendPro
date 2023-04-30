@@ -8,5 +8,6 @@
 
         string GetGCode();
 
+        IGCodeLineInfo GetGCodeInfo();
     }
 }

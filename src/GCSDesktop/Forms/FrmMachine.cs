@@ -16,6 +16,7 @@ using GSendApi;
 using GSendCommon;
 
 using GSendDesktop.Controls;
+using GSendDesktop.Internal;
 
 using GSendShared;
 using GSendShared.Attributes;
@@ -119,6 +120,7 @@ namespace GSendDesktop.Forms
 
             LoadResources();
             WarningContainer_VisibleChanged(this, EventArgs.Empty);
+            tabControlSecondary.TabPages.Remove(tabPageGCode);
         }
 
         #endregion Constructors
@@ -294,13 +296,13 @@ namespace GSendDesktop.Forms
                     break;
 
                 case "BufferSize":
-                    string bufferResponse = clientMessage.message.ToString();
-                    lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, bufferResponse);
+                    //string bufferResponse = clientMessage.message.ToString();
+                    //lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, bufferResponse);
                     break;
 
                 case "QueueSize":
-                    string queueResponse = clientMessage.message.ToString();
-                    lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, queueResponse);
+                    //string queueResponse = clientMessage.message.ToString();
+                    //lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, queueResponse);
                     break;
             }
         }
@@ -1486,8 +1488,8 @@ namespace GSendDesktop.Forms
             selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
 
             //General tab
-            lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, 0);
-            lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, 0);
+            //lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, 0);
+            //lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, 0);
 
             //Spindle tab
             lblSpindleType.Text = GSend.Language.Resources.SpindleType;
@@ -1543,11 +1545,17 @@ namespace GSendDesktop.Forms
             cbOverrideLinkSpindle.Text = GSend.Language.Resources.Spindle;
             selectionOverrideRapids.LabelValue = GSend.Language.Resources.RapidRateHigh;
 
-            // Console
+            // Console tab
             tabPageConsole.Text = GSend.Language.Resources.Console;
             btnGrblCommandSend.Text = GSend.Language.Resources.Send;
             btnGrblCommandClear.Text = GSend.Language.Resources.Clear;
 
+            // gcode tab
+            tabPageGCode.Text = GSend.Language.Resources.GCode;
+            colAttributes.HeaderText = GSend.Language.Resources.Attributes;
+            colComment.HeaderText = GSend.Language.Resources.GCodeComments;
+            colFeedRate.HeaderText = GSend.Language.Resources.FeedRate;
+            colGCode.HeaderText = GSend.Language.Resources.GCode;
 
             // menu
             openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
@@ -1722,6 +1730,21 @@ namespace GSendDesktop.Forms
             warningsAndErrors.ResetLayoutWarningErrorSize();
         }
 
+        private void dataGridGCode_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            DataGridView grid = sender as DataGridView;
+            string rowIdx = (e.RowIndex + 1).ToString();
+
+            StringFormat centerFormat = new StringFormat()
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            Rectangle headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
+        }
+
         #endregion Form Methods
 
         #region Toolbar Buttons
@@ -1875,88 +1898,113 @@ namespace GSendDesktop.Forms
 
         private void LoadGCode(string fileName)
         {
-            UnloadGCode();
-
-            try
+            using (MouseControl mouseControl = MouseControl.ShowWaitCursor(this))
             {
-                GCodeParser gCodeParser = new GCodeParser();
+                UnloadGCode();
 
-                _gCodeAnalyses = gCodeParser.Parse(File.ReadAllText(fileName));
-                _gCodeAnalyses.Analyse(fileName);
-
-                if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
+                try
                 {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning,
-                        String.Format(GSend.Language.Resources.UpdatingUnitOfMeasureFromGCode,
-                        _gCodeAnalyses.UnitOfMeasurement,
-                        _machine.FeedbackUnit));
+                    GCodeParser gCodeParser = new GCodeParser();
+                    string fileContents = File.ReadAllText(fileName);
+                    _gCodeAnalyses = gCodeParser.Parse(fileContents);
+                    _gCodeAnalyses.Analyse(fileName);
 
-                    _machine.FeedbackUnit = (FeedbackUnit)(int)_gCodeAnalyses.UnitOfMeasurement;
+                    tabControlSecondary.TabPages.Insert(1, tabPageGCode);
 
-                    _machine.DisplayUnits = _gCodeAnalyses.UnitOfMeasurement == UnitOfMeasurement.Mm ? FeedRateDisplayUnits.MmPerMinute : FeedRateDisplayUnits.InchPerMinute;
+                    dataGridGCode.Rows.Clear();
 
-                    UpdateDisplay();
-                }
-
-                switch (_gCodeAnalyses.UnitOfMeasurement)
-                {
-                    case UnitOfMeasurement.None:
-                    case UnitOfMeasurement.Error:
-                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
-                        break;
-                }
-
-                if ((_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) || _gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant)) && 
-                    !_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
-                {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
-                }
-
-                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
-                {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsMistCoolantOption);
-                }
-
-                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant) && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
-                {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsFloodCoolantOption);
-                }
-
-                if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsToolChanges) && !_machine.Options.HasFlag(MachineOptions.ToolChanger))
-                {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsToolChangeOption);
-                }
-
-                if (_gCodeAnalyses.MaxLayerDepth > _machine.LayerHeightWarning && _machine.Options.HasFlag(MachineOptions.LayerHeightWarning))
-                {
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.WarningLayerHeightTooMuch,
-                        _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
-                }
-
-                if (_gCodeAnalyses.SubProgramCount > 0)
-                {
-                    foreach (IGCodeCommand item in _gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')))
+                    foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
                     {
-                        string subProgram = $"{item}";
-
-                        if (!String.IsNullOrEmpty(item.Comment))
-                            subProgram += $" {item.Comment}";
-
-                        warningsAndErrors.AddWarningPanel(InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
-                            subProgram, item.LineNumber));
+                        IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
+                        dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
+                            FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
+                            FixEmptyValue(gCodeLineInfo.Attributes));
                     }
+
+                    if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning,
+                            String.Format(GSend.Language.Resources.UpdatingUnitOfMeasureFromGCode,
+                            _gCodeAnalyses.UnitOfMeasurement,
+                            _machine.FeedbackUnit));
+
+                        _machine.FeedbackUnit = (FeedbackUnit)(int)_gCodeAnalyses.UnitOfMeasurement;
+
+                        _machine.DisplayUnits = _gCodeAnalyses.UnitOfMeasurement == UnitOfMeasurement.Mm ? FeedRateDisplayUnits.MmPerMinute : FeedRateDisplayUnits.InchPerMinute;
+
+                        UpdateDisplay();
+                    }
+
+                    switch (_gCodeAnalyses.UnitOfMeasurement)
+                    {
+                        case UnitOfMeasurement.None:
+                        case UnitOfMeasurement.Error:
+                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
+                            break;
+                    }
+
+                    if ((_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) || _gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant)) &&
+                        !_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsMistCoolantOption);
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant) && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsFloodCoolantOption);
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsToolChanges) && !_machine.Options.HasFlag(MachineOptions.ToolChanger))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsToolChangeOption);
+                    }
+
+                    if (_gCodeAnalyses.MaxLayerDepth > _machine.LayerHeightWarning && _machine.Options.HasFlag(MachineOptions.LayerHeightWarning))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.WarningLayerHeightTooMuch,
+                            _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
+                    }
+
+                    if (_gCodeAnalyses.SubProgramCount > 0)
+                    {
+                        foreach (IGCodeCommand item in _gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')))
+                        {
+                            string subProgram = $"{item}";
+
+                            if (!String.IsNullOrEmpty(item.Comment))
+                                subProgram += $" {item.Comment}";
+
+                            warningsAndErrors.AddWarningPanel(InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
+                                subProgram, item.LineNumber));
+                        }
+                    }
+
+                    gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
+                    string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
+                    SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
+                }
+                catch (Exception ex)
+                {
+                    warningsAndErrors.AddWarningPanel(InformationType.Error, ex.Message);
                 }
 
-                gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
-                string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
-                SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
+                UpdateEnabledState();
             }
-            catch (Exception ex)
-            {
-                warningsAndErrors.AddWarningPanel(InformationType.Error, ex.Message);
-            }
+        }
 
-            UpdateEnabledState();
+        private string FixEmptyValue(decimal value)
+        {
+            return value == 0 ? String.Empty : value.ToString();
+        }
+
+        private string FixEmptyValue(CommandAttributes value)
+        {
+            return value == CommandAttributes.None ? String.Empty : value.ToString();
         }
 
         private void UnloadGCode()
@@ -1967,6 +2015,7 @@ namespace GSendDesktop.Forms
 
             gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
             SendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
+            tabControlSecondary.TabPages.Remove(tabPageGCode);
             UpdateEnabledState();
         }
 
