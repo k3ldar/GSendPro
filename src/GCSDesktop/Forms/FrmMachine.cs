@@ -297,12 +297,18 @@ namespace GSendDesktop.Forms
 
                 case "BufferSize":
                     //string bufferResponse = clientMessage.message.ToString();
-                    //lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, bufferResponse);
+
+                    //if (Int32.TryParse(bufferResponse, out int bufferSize))
+                    //    heartbeatPanel1.AddPoint(bufferSize);
+
                     break;
 
                 case "QueueSize":
                     //string queueResponse = clientMessage.message.ToString();
-                    //lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, queueResponse);
+
+                    //if (Int32.TryParse(queueResponse, out int queueSize))
+                    //    heartbeatPanel2.AddPoint(queueSize);
+
                     break;
             }
         }
@@ -387,6 +393,7 @@ namespace GSendDesktop.Forms
 
                 if (status.IsConnected)
                 {
+                    //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
                     toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
 
                     if (!_appliedSettingsChanged)
@@ -426,6 +433,9 @@ namespace GSendDesktop.Forms
                     _isRunning = status.IsRunning || status.MachineState == MachineState.Run;
                     _isJogging = status.MachineState == MachineState.Jog;
                     _isAlarm = status.IsLocked;
+
+                    UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, TimeSpanToTime(status.JobTime)));
+
 
                     if (!toolStripStatusLabelStatus.Text.Equals(HelperMethods.TranslateState(status.MachineState)))
                     {
@@ -481,6 +491,7 @@ namespace GSendDesktop.Forms
                 {
                     toolStripStatusLabelBuffer.Text = String.Empty;
                     toolStripStatusLabelStatus.Text = String.Empty;
+                    UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, "-"));
                     UpdateMachineStatusLabel(SystemColors.Control, SystemColors.ControlText, String.Empty);
                     machinePositionGeneral.ResetPositions();
                     machinePositionJog.ResetPositions();
@@ -504,6 +515,23 @@ namespace GSendDesktop.Forms
 
             if (toolStripStatusLabelStatus.ForeColor != foreColor)
                 toolStripStatusLabelStatus.ForeColor = foreColor;
+        }
+
+        private void UpdateLabelText(Label label, string text)
+        {
+            if (label.Text != text)
+                label.Text = text;
+        }
+
+        private string TimeSpanToTime(TimeSpan time)
+        {
+            return time.ToString("c");
+            //string Result = String.Empty;
+
+            //if (time.TotalDays > 0)
+            //    Result = $"{time.TotalDays}";
+
+            //return Result;
         }
 
         #endregion Client Web Socket
@@ -1987,6 +2015,7 @@ namespace GSendDesktop.Forms
                     gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
                     string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
                     SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
+                    tabControlSecondary.SelectedTab = tabPageGCode;
                 }
                 catch (Exception ex)
                 {
@@ -2004,7 +2033,11 @@ namespace GSendDesktop.Forms
 
         private string FixEmptyValue(CommandAttributes value)
         {
-            return value == CommandAttributes.None ? String.Empty : value.ToString();
+            CommandAttributes copy = value;
+
+            copy &= ~CommandAttributes.AllowSpeedOverride;
+
+            return copy == CommandAttributes.None ? String.Empty : Shared.Utilities.SplitCamelCase(copy.ToString().Replace("Movement", ""));
         }
 
         private void UnloadGCode()

@@ -76,6 +76,7 @@ namespace GSendCommon
         private RapidsOverride _rapidsSpeed = RapidsOverride.High;
         private int _lineCount = 0;
         private bool _initialising = true;
+        private readonly Stopwatch _jobTime = new();
 
 
         #region Constructors
@@ -110,6 +111,8 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
+                _machineStateModel.JobTime = new TimeSpan(_jobTime.ElapsedTicks);
+
                 if (NextCommand < CommandCount && _machineStateModel.AvailableRXbytes > 100)
                 {
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
@@ -214,6 +217,9 @@ namespace GSendCommon
                 return true;
 
             NextCommand = FirstCommand;
+            _jobTime.Reset();
+            _jobTime.Start();
+
             _isRunning = true;
             _isPaused = false;
 
@@ -227,7 +233,7 @@ namespace GSendCommon
         {
             _isPaused = true;
             OnPause?.Invoke(this, EventArgs.Empty);
-
+            _jobTime.Stop();
             Trace.WriteLine("Pause");
             _port.WriteLine(CommandPause);
             return true;
@@ -237,7 +243,7 @@ namespace GSendCommon
         {
             _isPaused = false;
             OnResume?.Invoke(this, EventArgs.Empty);
-
+            _jobTime.Start();
             Trace.WriteLine($"Resume");
             _port.WriteLine(CommandStartResume);
             return true;
@@ -248,6 +254,8 @@ namespace GSendCommon
             Trace.WriteLine("Stop");
             InternalWriteByte(new byte[] { 0x85 });
             _overrideContext.Cancel();
+
+            _jobTime.Stop();
 
             _isRunning = false;
             _isPaused = false;
@@ -1037,6 +1045,7 @@ namespace GSendCommon
 
         private void ProcessErrorResponse(string response)
         {
+            _jobTime.Stop();
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
                OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
@@ -1069,6 +1078,7 @@ namespace GSendCommon
         {
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
+                _jobTime.Stop();
                 OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {

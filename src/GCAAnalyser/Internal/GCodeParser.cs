@@ -138,10 +138,28 @@ namespace GSendAnalyser.Internal
                 switch (currentCommand)
                 {
                     case CharG:
-                        if (commandValueConvert && commandCode == 1)
-                            currentValues.Attributes |= CommandAttributes.SpeedOverride;
-                        else
-                            currentValues.Attributes &= ~CommandAttributes.SpeedOverride;
+                        switch (commandCode)
+                        {
+                            case 0:
+                                currentValues.Attributes |= CommandAttributes.UseRapidRate;
+                                currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
+
+                                break;
+
+                            case 1:
+                            case 2: 
+                            case 3:
+                                currentValues.Attributes |= CommandAttributes.AllowSpeedOverride;
+                                currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
+
+                                break;
+
+                            default:
+                                currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
+                                currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
+
+                                break;
+                        }
 
                         break;
 
@@ -187,7 +205,9 @@ namespace GSendAnalyser.Internal
 
                     case CharM:
                         if (commandValueConvert && (commandValue == 2 || commandValue == 30))
+                        {
                             currentValues.Attributes |= CommandAttributes.EndProgram;
+                        }
                         else if (commandValueConvert && commandValue == 5)
                         {
                             currentValues.SpindleSpeed = 0;

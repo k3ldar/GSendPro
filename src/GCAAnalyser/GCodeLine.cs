@@ -51,6 +51,9 @@ namespace GSendAnalyser
                     Result.SpindleSpeed = command.SpindleSpeed;
             }
 
+            if (Result.Attributes.HasFlag(CommandAttributes.HomeZ) && Result.Attributes.HasFlag(CommandAttributes.SafeZ))
+                Result.Attributes &= ~CommandAttributes.HomeZ;
+
             Result.GCode = sb.ToString();
 
             return Result;

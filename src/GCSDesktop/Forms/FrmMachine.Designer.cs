@@ -177,12 +177,13 @@
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.tabPageGCode = new System.Windows.Forms.TabPage();
             this.dataGridGCode = new System.Windows.Forms.DataGridView();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.colGCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFeedRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblJobTime = new System.Windows.Forms.Label();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -617,6 +618,7 @@
             // tabPageMain
             // 
             this.tabPageMain.BackColor = System.Drawing.Color.White;
+            this.tabPageMain.Controls.Add(this.lblJobTime);
             this.tabPageMain.Controls.Add(this.gCodeAnalysesDetails);
             this.tabPageMain.Controls.Add(this.machinePositionGeneral);
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
@@ -628,8 +630,8 @@
             // 
             // gCodeAnalysesDetails
             // 
-            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.gCodeAnalysesDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gCodeAnalysesDetails.Location = new System.Drawing.Point(325, 6);
             this.gCodeAnalysesDetails.MinimumSize = new System.Drawing.Size(433, 218);
@@ -1664,7 +1666,7 @@
             // 
             // warningsAndErrors
             // 
-            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.warningsAndErrors.Location = new System.Drawing.Point(12, 86);
             this.warningsAndErrors.Margin = new System.Windows.Forms.Padding(0);
@@ -1784,43 +1786,65 @@
             this.dataGridGCode.TabIndex = 1;
             this.dataGridGCode.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridGCode_RowPostPaint);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
-            // 
             // colGCode
             // 
+            this.colGCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colGCode.HeaderText = "GCode";
             this.colGCode.MaxInputLength = 256;
             this.colGCode.Name = "colGCode";
             this.colGCode.ReadOnly = true;
-            this.colGCode.Width = 200;
+            this.colGCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colGCode.Width = 49;
             // 
             // colComment
             // 
+            this.colComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colComment.HeaderText = "Comments";
             this.colComment.MaxInputLength = 256;
             this.colComment.Name = "colComment";
             this.colComment.ReadOnly = true;
-            this.colComment.Width = 200;
+            this.colComment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colComment.Width = 72;
             // 
             // colFeedRate
             // 
+            this.colFeedRate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colFeedRate.HeaderText = "Feed";
             this.colFeedRate.Name = "colFeedRate";
             this.colFeedRate.ReadOnly = true;
+            this.colFeedRate.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colFeedRate.Width = 38;
             // 
             // colSpindleSpeed
             // 
+            this.colSpindleSpeed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colSpindleSpeed.HeaderText = "spindle";
             this.colSpindleSpeed.Name = "colSpindleSpeed";
             this.colSpindleSpeed.ReadOnly = true;
+            this.colSpindleSpeed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colSpindleSpeed.Width = 51;
             // 
             // colAttributes
             // 
+            this.colAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.colAttributes.HeaderText = "Attr";
             this.colAttributes.Name = "colAttributes";
             this.colAttributes.ReadOnly = true;
+            this.colAttributes.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAttributes.Width = 33;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            // 
+            // lblJobTime
+            // 
+            this.lblJobTime.AutoSize = true;
+            this.lblJobTime.Location = new System.Drawing.Point(8, 121);
+            this.lblJobTime.Name = "lblJobTime";
+            this.lblJobTime.Size = new System.Drawing.Size(67, 15);
+            this.lblJobTime.TabIndex = 2;
+            this.lblJobTime.Text = "Total Time: ";
             // 
             // FrmMachine
             // 
@@ -2038,5 +2062,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colFeedRate;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSpindleSpeed;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAttributes;
+        private System.Windows.Forms.Label lblJobTime;
     }
 }

@@ -24,6 +24,7 @@ namespace GSendAnalyser.Analysers
                 {
                     GCodeCommand gCodeCommand = c as GCodeCommand;
                     gCodeCommand.Attributes |= CommandAttributes.SafeZ;
+                    gCodeCommand.Attributes &= ~CommandAttributes.HomeZ;
                 }
             });
 

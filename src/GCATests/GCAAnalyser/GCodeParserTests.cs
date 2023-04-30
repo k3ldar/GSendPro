@@ -56,7 +56,7 @@ namespace GSendTests.GSendAnalyser
             GCodeParser sut = new();
             IGCodeAnalyses analyses = sut.Parse(finish);
 
-            Assert.AreEqual(16, analyses.Commands.Count);
+            Assert.AreEqual(13, analyses.Commands.Count);
             Assert.IsFalse(string.IsNullOrEmpty(analyses.Commands[10].Comment));
         }
 
@@ -68,7 +68,7 @@ namespace GSendTests.GSendAnalyser
             GCodeParser sut = new();
             IGCodeAnalyses analyses = sut.Parse(finish);
             analyses.Analyse();
-            Assert.AreEqual(17, analyses.Commands.Count);
+            Assert.AreEqual(14, analyses.Commands.Count);
             Assert.IsTrue(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
         }
 
@@ -119,5 +119,18 @@ namespace GSendTests.GSendAnalyser
             Assert.AreEqual(18305, analyses.Commands.Count);
 
         }
+
+        //[TestMethod]
+        //[TestCategory(TestCategoryAnalyser)]
+        //public void ParseLocalFile_EnsureDuplicateHomeAndSafeZNotPresent()
+        //{
+        //    string finish = "G17\r\nG21\r\nG0Z51.800\r\nG0X0.000Y0.000S10000M3\r\nG0X102.092Y39.417Z20.000\r\nG1Z17.500F240.0\r\nG1X103.553F420.0\r\nG2X102.648Y39.904I0.439J1.900\r\nG1X102.092Y39.904\r\nX102.092Y40.391\r\nX102.275Y40.391\r\nG2X102.096Y40.858I1.716J0.926\r\nG1X102.092Y40.858\r\nX102.092Y39.417\r\nX103.553\r\nG2X102.092Y40.878I0.439J1.900\r\nG1X102.092Y40.858";
+        //    GCodeParser sut = new();
+        //    IGCodeAnalyses analyses = sut.Parse(finish);
+        //    analyses.Analyse();
+
+        //    Assert.AreEqual(13, analyses.Commands.Count);
+
+        //}
     }
 }

@@ -31,6 +31,7 @@
         private CoordinateSystem _coordinateSystem;
         private RapidsOverride _rapidSpeed = RapidsOverride.High;
         private MachineStateOptions _machineStateOptions;
+        private TimeSpan _totalJobTime;
 
         public MachineStateModel()
         {
@@ -444,6 +445,20 @@
                     return;
 
                 _isRunning = value;
+                Updated = true;
+            }
+        }
+
+        public TimeSpan JobTime
+        {
+            get => _totalJobTime;
+
+            set
+            {
+                if (_totalJobTime.Ticks.Equals(value.Ticks) || !IsRunning)
+                    return;
+
+                _totalJobTime = value;
                 Updated = true;
             }
         }

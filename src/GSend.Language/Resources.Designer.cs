@@ -1240,6 +1240,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobTimeDays {
+            get {
+                return ResourceManager.GetString("JobTimeDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jog.
         /// </summary>
         public static string Jog {
@@ -2487,6 +2496,15 @@ namespace GSend.Language {
         public static string SubPrograms {
             get {
                 return ResourceManager.GetString("SubPrograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Running: {0}.
+        /// </summary>
+        public static string TotalJobTime {
+            get {
+                return ResourceManager.GetString("TotalJobTime", resourceCulture);
             }
         }
         

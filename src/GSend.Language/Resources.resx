@@ -927,6 +927,9 @@
   <data name="SubPrograms" xml:space="preserve">
     <value>Sub Programs</value>
   </data>
+  <data name="TotalJobTime" xml:space="preserve">
+    <value>Time Running: {0}</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>

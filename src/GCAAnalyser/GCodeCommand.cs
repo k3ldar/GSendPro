@@ -26,7 +26,8 @@ namespace GSendAnalyser
 
         #region Constructors
 
-        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, string comment, CurrentCommandValues currentValues, int lineNumber)
+        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, 
+            string comment, CurrentCommandValues currentValues, int lineNumber)
         {
             if ((currentCommand < 'A' || currentCommand > 'Z') && currentCommand != '%')
                 throw new ArgumentOutOfRangeException(nameof(currentCommand));
@@ -150,7 +151,6 @@ namespace GSendAnalyser
                 if (Command == 'G' && CommandValue == 1 && _nextCommand != null && _nextCommand is GCodeCommand nextCommand)
                 {
                     nextCommand.SendG1 = true;
-                    Attributes |= CommandAttributes.DoNotProcess;
                 }
             }
         }

@@ -295,9 +295,12 @@
 
         MovementYPlus = 8192,
 
-        SpeedOverride = 16384,
+        AllowSpeedOverride = 16384,
 
-        DoNotProcess = 32768,
+        /// <summary>
+        /// Use rapid rate, should not be overridden for speeds
+        /// </summary>
+        UseRapidRate = 32768,
 
         EndProgram = 65536,
 
