@@ -119,7 +119,7 @@ namespace GSendCommon
 
                     string commandText = commandToSend.GetGCode();
 
-                    if (String.IsNullOrEmpty(commandText) || commandText.Equals("%0"))
+                    if (String.IsNullOrEmpty(commandText) || commandText.StartsWith("%"))
                     {
                         NextCommand++;
                         return;

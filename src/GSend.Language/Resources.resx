@@ -510,6 +510,9 @@
   <data name="Hours" xml:space="preserve">
     <value>Hours</value>
   </data>
+  <data name="JobTimeDays" xml:space="preserve">
+    <value />
+  </data>
   <data name="Jog" xml:space="preserve">
     <value>Jog</value>
   </data>

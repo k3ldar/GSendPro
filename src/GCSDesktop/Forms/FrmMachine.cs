@@ -525,7 +525,7 @@ namespace GSendDesktop.Forms
 
         private string TimeSpanToTime(TimeSpan time)
         {
-            return time.ToString("c");
+            return time.ToString(@"d\d\ hh\hmm\mss\s").TrimStart(' ', 'd', 'h', 'm', 's', '0'); 
             //string Result = String.Empty;
 
             //if (time.TotalDays > 0)
