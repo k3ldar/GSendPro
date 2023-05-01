@@ -930,6 +930,18 @@
   <data name="SubPrograms" xml:space="preserve">
     <value>Sub Programs</value>
   </data>
+  <data name="TimeFormatDay" xml:space="preserve">
+    <value>{0}d {1}h {2}m {3}s</value>
+  </data>
+  <data name="TimeFormatHour" xml:space="preserve">
+    <value>{0}h {1}m {2}s</value>
+  </data>
+  <data name="TimeFormatMinute" xml:space="preserve">
+    <value>{0}m {1}s</value>
+  </data>
+  <data name="TimeFormatSecond" xml:space="preserve">
+    <value>{0}s</value>
+  </data>
   <data name="TotalJobTime" xml:space="preserve">
     <value>Time Running: {0}</value>
   </data>
@@ -944,6 +956,9 @@
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="View2D" xml:space="preserve">
+    <value>2D View</value>
   </data>
   <data name="WarningContainsFloodCoolantOption" xml:space="preserve">
     <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>

@@ -2500,6 +2500,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}d {1}h {2}m {3}s.
+        /// </summary>
+        public static string TimeFormatDay {
+            get {
+                return ResourceManager.GetString("TimeFormatDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}h {1}m {2}s.
+        /// </summary>
+        public static string TimeFormatHour {
+            get {
+                return ResourceManager.GetString("TimeFormatHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}m {1}s.
+        /// </summary>
+        public static string TimeFormatMinute {
+            get {
+                return ResourceManager.GetString("TimeFormatMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}s.
+        /// </summary>
+        public static string TimeFormatSecond {
+            get {
+                return ResourceManager.GetString("TimeFormatSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Running: {0}.
         /// </summary>
         public static string TotalJobTime {
@@ -2541,6 +2577,15 @@ namespace GSend.Language {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2D View.
+        /// </summary>
+        public static string View2D {
+            get {
+                return ResourceManager.GetString("View2D", resourceCulture);
             }
         }
         

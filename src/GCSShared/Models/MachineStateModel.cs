@@ -455,7 +455,7 @@
 
             set
             {
-                if (_totalJobTime.Ticks.Equals(value.Ticks) || !IsRunning)
+                if (_totalJobTime.Ticks.Equals(value.Ticks))
                     return;
 
                 _totalJobTime = value;

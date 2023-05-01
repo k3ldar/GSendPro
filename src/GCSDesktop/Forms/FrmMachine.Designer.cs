@@ -67,6 +67,7 @@
             this.toolStripStatusLabelDisplayUnit = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
+            this.lblJobTime = new System.Windows.Forms.Label();
             this.gCodeAnalysesDetails = new GSendDesktop.Controls.GCodeAnalysesDetails();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
@@ -182,8 +183,9 @@
             this.colFeedRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage2DView = new System.Windows.Forms.TabPage();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.lblJobTime = new System.Windows.Forms.Label();
+            this.machine2dView1 = new GSendDesktop.Controls.Machine2DView();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -208,6 +210,7 @@
             this.tabPageConsole.SuspendLayout();
             this.tabPageGCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).BeginInit();
+            this.tabPage2DView.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectionOverrideSpindle
@@ -627,6 +630,15 @@
             this.tabPageMain.Size = new System.Drawing.Size(765, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
+            // 
+            // lblJobTime
+            // 
+            this.lblJobTime.AutoSize = true;
+            this.lblJobTime.Location = new System.Drawing.Point(8, 121);
+            this.lblJobTime.Name = "lblJobTime";
+            this.lblJobTime.Size = new System.Drawing.Size(67, 15);
+            this.lblJobTime.TabIndex = 2;
+            this.lblJobTime.Text = "Total Time: ";
             // 
             // gCodeAnalysesDetails
             // 
@@ -1687,6 +1699,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlSecondary.Controls.Add(this.tabPageConsole);
             this.tabControlSecondary.Controls.Add(this.tabPageGCode);
+            this.tabControlSecondary.Controls.Add(this.tabPage2DView);
             this.tabControlSecondary.Location = new System.Drawing.Point(12, 411);
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
@@ -1833,18 +1846,35 @@
             this.colAttributes.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colAttributes.Width = 33;
             // 
+            // tabPage2DView
+            // 
+            this.tabPage2DView.Controls.Add(this.machine2dView1);
+            this.tabPage2DView.Location = new System.Drawing.Point(4, 4);
+            this.tabPage2DView.Name = "tabPage2DView";
+            this.tabPage2DView.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2DView.Size = new System.Drawing.Size(765, 143);
+            this.tabPage2DView.TabIndex = 2;
+            this.tabPage2DView.Text = "tabPage1";
+            this.tabPage2DView.UseVisualStyleBackColor = true;
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
-            // lblJobTime
+            // machine2dView1
             // 
-            this.lblJobTime.AutoSize = true;
-            this.lblJobTime.Location = new System.Drawing.Point(8, 121);
-            this.lblJobTime.Name = "lblJobTime";
-            this.lblJobTime.Size = new System.Drawing.Size(67, 15);
-            this.lblJobTime.TabIndex = 2;
-            this.lblJobTime.Text = "Total Time: ";
+            this.machine2dView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.machine2dView1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("machine2dView1.BackgroundImage")));
+            this.machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
+            this.machine2dView1.Location = new System.Drawing.Point(6, 6);
+            this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.machine2dView1.Name = "machine2dView1";
+            this.machine2dView1.Size = new System.Drawing.Size(753, 131);
+            this.machine2dView1.TabIndex = 0;
+            this.machine2dView1.XPosition = 0F;
+            this.machine2dView1.YPosition = 0F;
             // 
             // FrmMachine
             // 
@@ -1902,6 +1932,7 @@
             this.tabPageConsole.PerformLayout();
             this.tabPageGCode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).EndInit();
+            this.tabPage2DView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2063,5 +2094,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colSpindleSpeed;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAttributes;
         private System.Windows.Forms.Label lblJobTime;
+        private System.Windows.Forms.TabPage tabPage2DView;
+        private Controls.Machine2DView machine2dView1;
     }
 }

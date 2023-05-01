@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendAnalyser.Internal;
@@ -393,6 +394,9 @@ namespace GSendDesktop.Forms
 
                 if (status.IsConnected)
                 {
+                    machine2dView1.XPosition = (float)status.MachineX;
+                    machine2dView1.YPosition = (float)status.MachineY;
+
                     //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
                     toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
 
@@ -525,13 +529,21 @@ namespace GSendDesktop.Forms
 
         private string TimeSpanToTime(TimeSpan time)
         {
-            return time.ToString(@"d\d\ hh\hmm\mss\s").TrimStart(' ', 'd', 'h', 'm', 's', '0'); 
-            //string Result = String.Empty;
+            const int HoursInDay = 24;
+            const int MinutesInHour = 60;
+            const int SecondsInHour = 60;
+            const string NoTime = "-";
 
-            //if (time.TotalDays > 0)
-            //    Result = $"{time.TotalDays}";
+            if (time.TotalHours >= HoursInDay)
+                return String.Format(GSend.Language.Resources.TimeFormatDay, time.Days, time.Hours, time.Minutes, time.Seconds);
+            else if (time.TotalMinutes >= MinutesInHour)
+                return String.Format(GSend.Language.Resources.TimeFormatHour, time.Hours, time.Minutes, time.Seconds);
+            else if (time.TotalSeconds >= SecondsInHour)
+                return String.Format(GSend.Language.Resources.TimeFormatMinute, time.Minutes, time.Seconds);
+            else if (time.TotalMilliseconds <= TimeSpan.Zero.TotalMilliseconds)
+                return NoTime;
 
-            //return Result;
+            return String.Format(GSend.Language.Resources.TimeFormatSecond, time.Seconds);
         }
 
         #endregion Client Web Socket
@@ -1416,6 +1428,10 @@ namespace GSendDesktop.Forms
             lblSpindleHoursRemaining.Enabled = cbMaintainServiceSchedule.Checked;
             btnServiceRefresh.Enabled = cbMaintainServiceSchedule.Checked;
             btnServiceReset.Enabled = cbMaintainServiceSchedule.Checked;
+
+            // 2d view
+            machine2dView1.MachineSize = new Rectangle(0, 0, (int)_machine.Settings.MaxTravelX, (int)_machine.Settings.MaxTravelY);
+            machine2dView1.Configuration = _machine.Settings.HomingCycleDirection;
         }
 
         private void HookUpEvents()
@@ -1584,6 +1600,10 @@ namespace GSendDesktop.Forms
             colComment.HeaderText = GSend.Language.Resources.GCodeComments;
             colFeedRate.HeaderText = GSend.Language.Resources.FeedRate;
             colGCode.HeaderText = GSend.Language.Resources.GCode;
+
+            // 2d view
+            tabPage2DView.Text = GSend.Language.Resources.View2D;
+
 
             // menu
             openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
@@ -1939,15 +1959,30 @@ namespace GSendDesktop.Forms
 
                     tabControlSecondary.TabPages.Insert(1, tabPageGCode);
 
-                    dataGridGCode.Rows.Clear();
+                    Parallel.Invoke(
+                        new Action(() => {
+                            dataGridGCode.Rows.Clear();
 
-                    foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
-                    {
-                        IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
-                        dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
-                            FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
-                            FixEmptyValue(gCodeLineInfo.Attributes));
-                    }
+                            foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+                            {
+                                IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
+                                dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
+                                    FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
+                                    FixEmptyValue(gCodeLineInfo.Attributes));
+                            }
+                        }),
+                        new Action(() => { machine2dView1.LoadGCode(_gCodeAnalyses); }));
+                    //dataGridGCode.Rows.Clear();
+
+                    //foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+                    //{
+                    //    IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
+                    //    dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
+                    //        FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
+                    //        FixEmptyValue(gCodeLineInfo.Attributes));
+                    //}
+
+                    machine2dView1.LoadGCode(_gCodeAnalyses);
 
                     if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
                     {
@@ -2015,7 +2050,6 @@ namespace GSendDesktop.Forms
                     gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
                     string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
                     SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
-                    tabControlSecondary.SelectedTab = tabPageGCode;
                 }
                 catch (Exception ex)
                 {
@@ -2045,7 +2079,7 @@ namespace GSendDesktop.Forms
             if (_gCodeAnalyses != null)
                 _gCodeAnalyses = null;
 
-
+            machine2dView1.UnloadGCode();
             gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
             SendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
             tabControlSecondary.TabPages.Remove(tabPageGCode);
