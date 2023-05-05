@@ -28,6 +28,8 @@
         private bool _spindleCounterClockWise;
         private bool _isRunning;
         private bool _isPaused;
+        private int _bufferSize;
+        private int _queueSize;
         private CoordinateSystem _coordinateSystem;
         private RapidsOverride _rapidSpeed = RapidsOverride.High;
         private MachineStateOptions _machineStateOptions;
@@ -135,6 +137,7 @@
 
                 _machineX = value;
                 Updated = true;
+                _workX = _machineX - _offsetX;
             }
         }
 
@@ -149,6 +152,7 @@
 
                 _machineY = value;
                 Updated = true;
+                _workY = _machineY - _offsetY;
             }
         }
 
@@ -163,6 +167,7 @@
 
                 _machineZ = value;
                 Updated = true;
+                _workZ = _machineZ - _offsetZ;
             }
         }
 
@@ -464,6 +469,34 @@
         }
 
         public bool IsConnected { get; set; }
+
+        public int BufferSize
+        {
+            get => _bufferSize;
+
+            set
+            {
+                if (_bufferSize == value)
+                    return;
+
+                _bufferSize = value;
+                Updated = true;
+            }
+        }
+
+        public int QueueSize
+        {
+            get => _queueSize;
+
+            set
+            {
+                if (_queueSize == value)
+                    return;
+
+                _queueSize = value;
+                Updated = true;
+            }
+        }
 
         public List<ChangedGrblSettings> UpdatedGrblConfiguration { get; set; } = new List<ChangedGrblSettings>();
 

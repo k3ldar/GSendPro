@@ -18,6 +18,8 @@ namespace GSendCommon
     {
         private static readonly List<IGCodeProcessor> _machines = new();
         private const int BufferSize = 8192;
+        private const int DelayBetweenUpdatesSent = 100;
+        private DateTime _lastSendStatus = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly ILogger _logger;
         private readonly IMachineProvider _machineProvider;
@@ -255,8 +257,6 @@ namespace GSendCommon
             processor.OnPause += Processor_OnPause;
             processor.OnResume += Processor_OnResume;
             processor.OnCommandSent += Processor_OnCommandSent;
-            processor.OnBufferSizeChanged += Processor_OnBufferSizeChanged;
-            processor.OnQueueSizeChanged += Processor_OnQueueSizeChanged;
             processor.OnSerialError += Processor_OnSerialError;
             processor.OnSerialPinChanged += Processor_OnSerialPinChanged;
             processor.OnGrblError += Processor_OnGrblError;
@@ -277,8 +277,6 @@ namespace GSendCommon
             processor.OnPause -= Processor_OnPause;
             processor.OnResume -= Processor_OnResume;
             processor.OnCommandSent -= Processor_OnCommandSent;
-            processor.OnBufferSizeChanged -= Processor_OnBufferSizeChanged;
-            processor.OnQueueSizeChanged -= Processor_OnQueueSizeChanged;
             processor.OnSerialError -= Processor_OnSerialError;
             processor.OnSerialPinChanged -= Processor_OnSerialPinChanged;
             processor.OnGrblError -= Processor_OnGrblError;
@@ -307,7 +305,13 @@ namespace GSendCommon
 
         private void Processor_OnMachineStateChanged(IGCodeProcessor sender, GSendShared.Models.MachineStateModel machineState)
         {
-            SendMessage(new ClientBaseMessage("StateChanged", machineState));
+            TimeSpan span = DateTime.UtcNow - _lastSendStatus;
+
+            if (span.TotalMilliseconds > DelayBetweenUpdatesSent)
+            {
+                SendMessage(new ClientBaseMessage("StateChanged", machineState));
+                _lastSendStatus = DateTime.UtcNow;
+            }
         }
 
         private void Processor_OnInvalidComPort(IGCodeProcessor sender, EventArgs e)
@@ -368,16 +372,6 @@ namespace GSendCommon
         private void Processor_OnCommandSent(IGCodeProcessor sender, CommandSent e)
         {
             SendMessage(new ClientBaseMessage("CommandSent"));
-        }
-
-        private void Processor_OnBufferSizeChanged(IGCodeProcessor sender, int size)
-        {
-            SendMessage(new ClientBaseMessage("BufferSize", size));
-        }
-
-        private void Processor_OnQueueSizeChanged(IGCodeProcessor sender, int size)
-        {
-            SendMessage(new ClientBaseMessage("QueueSize", size));
         }
 
 

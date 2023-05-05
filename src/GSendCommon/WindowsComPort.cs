@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO.Ports;
+using System.Text;
 
 using GSendShared;
 
@@ -53,6 +54,11 @@ namespace GSendCommon
             }
         }
 
+        public bool CanReadLine()
+        {
+            return IsOpen() && _serialPort.BytesToRead > 0;
+        }
+
         public string ReadLine()
         {
             if (IsOpen() && _serialPort.BytesToRead > 0)
@@ -67,7 +73,7 @@ namespace GSendCommon
         {
             if (IsOpen() && !String.IsNullOrEmpty(line))
             {
-                Trace.WriteLine(line);
+                //Trace.WriteLine($"Sending To COM Port {line}");
                 _serialPort.WriteLine(line);
             }
         }
@@ -77,6 +83,7 @@ namespace GSendCommon
             if (IsOpen() && buffer.Length > 0)
             {
                 _serialPort.Write(buffer, offset, count);
+                //Trace.WriteLine($"Sending bytes To COM Port {Encoding.UTF8.GetString(buffer)}");
             }
         }
 

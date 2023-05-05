@@ -305,6 +305,16 @@
         EndProgram = 65536,
 
         StartProgram = 131072,
+
+        ToolChange = 262144,
+
+        UnconditionalStop = 524288,
+
+        Arc = 1048576,
+
+        Dwell = 2097152,
+
+        SubProgram = 4194304,
     }
 
     public enum UnitOfMeasurement

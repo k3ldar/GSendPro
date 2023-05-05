@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
 using GSendAnalyser.Internal;
 
@@ -6,6 +7,7 @@ using GSendShared;
 
 namespace GSendAnalyser
 {
+    [DebuggerDisplay("{GetGCodeInfo()}")]
     public sealed class GCodeLine : IGCodeLine
     {
         public LineStatus Status { get; set; }

@@ -184,8 +184,8 @@
             this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2DView = new System.Windows.Forms.TabPage();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.machine2dView1 = new GSendDesktop.Controls.Machine2DView();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -1857,10 +1857,6 @@
             this.tabPage2DView.Text = "tabPage1";
             this.tabPage2DView.UseVisualStyleBackColor = true;
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
-            // 
             // machine2dView1
             // 
             this.machine2dView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1875,6 +1871,10 @@
             this.machine2dView1.TabIndex = 0;
             this.machine2dView1.XPosition = 0F;
             this.machine2dView1.YPosition = 0F;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
             // FrmMachine
             // 

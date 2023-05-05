@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -161,6 +162,8 @@ namespace GSendDesktop.Forms
 
             if (String.IsNullOrWhiteSpace(message))
                 return;
+
+            //Trace.WriteLine($"Client: {message}");
 
             ClientBaseMessage clientMessage = null;
             try
@@ -394,8 +397,8 @@ namespace GSendDesktop.Forms
 
                 if (status.IsConnected)
                 {
-                    machine2dView1.XPosition = (float)status.MachineX;
-                    machine2dView1.YPosition = (float)status.MachineY;
+                    machine2dView1.XPosition = (float)status.WorkX;
+                    machine2dView1.YPosition = (float)status.WorkY;
 
                     //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
                     toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";

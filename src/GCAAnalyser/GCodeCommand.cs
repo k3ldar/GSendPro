@@ -40,6 +40,7 @@ namespace GSendAnalyser
             _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
             Attributes = currentValues.Attributes;
             LineNumber = lineNumber;
+            UpdateAttributes();
         }
 
         #endregion Constructors
@@ -215,6 +216,45 @@ namespace GSendAnalyser
 
         #region Private Methods
 
+        private void UpdateAttributes()
+        {
+            switch (Command)
+            {
+                case 'T':
+                    Attributes |= CommandAttributes.ToolChange;
+
+                    break;
+
+                case 'M':
+                    switch (CommandValue)
+                    {
+                        case 0:
+                            Attributes |= CommandAttributes.UnconditionalStop;
+                            break;
+                    }
+
+                    break;
+
+                case 'G':
+                    switch(CommandValue)
+                    {
+                        case 2:
+                        case 3:
+                            Attributes |= CommandAttributes.Arc;
+                            break;
+
+                        case 4:
+                            Attributes |= CommandAttributes.Dwell;
+                            break;
+                    }
+
+                    break;
+
+                case 'O':
+                    Attributes |= CommandAttributes.SubProgram;
+                    break;
+            }
+        }
 
         #endregion Private Methods
     }

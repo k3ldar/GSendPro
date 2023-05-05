@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace GSendCommon
     public class GCodeProcessor : ThreadManager, IGCodeProcessor
     {
         private const int QueueProcessMilliseconds = 20;
-        private const int MaxBufferSize = 60;
+        private const int MaxBufferSize = 120;
         private const int FirstCommand = 0;
 
         private const string ResultOk = "ok";
@@ -39,7 +40,7 @@ namespace GSendCommon
         private const string StatusMistEnabled = "M";
         private const string CommandPause = "!";
         private const char SeparatorEquals = '=';
-        private const string CommandRequestStatus = "?";
+        private const char CommandRequestStatus = '?';
         private const string SeparatorPipe = "|";
         private const string SeparatorColon = ":";
         private const string SeparatorComma = ",";
@@ -53,10 +54,11 @@ namespace GSendCommon
         private const string OptionOverrides = "ov";
         private const string OptionAccessoryState = "a";
         private const string JogNumberFormat = "F4";
+        private const int DelayBetweenUpdateRequestsMilliseconds = 150;
         private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
         private List<IGCodeLine> _commandsToSend = null;
-        private readonly Queue<IGCodeLine> _sendQueue = new();
+        private readonly ConcurrentQueue<IGCodeLine> _sendQueue = new();
 
         private readonly IMachineProvider _machineProvider;
         private readonly IMachine _machine;
@@ -66,7 +68,6 @@ namespace GSendCommon
         private volatile bool _isPaused;
         private volatile bool _isAlarm;
         private volatile bool _waitingForResponse;
-        private int _currentBufferSize = 0;
         private DateTime _lastInformationCheck = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly MachineStateModel _machineStateModel = new();
@@ -77,6 +78,8 @@ namespace GSendCommon
         private int _lineCount = 0;
         private bool _initialising = true;
         private readonly Stopwatch _jobTime = new();
+        private bool _updateStatusSent = false;
+        private int _currentBufferSize = 0;
 
 
         #region Constructors
@@ -113,35 +116,30 @@ namespace GSendCommon
             {
                 _machineStateModel.JobTime = new TimeSpan(_jobTime.ElapsedTicks);
 
-                if (NextCommand < CommandCount && _machineStateModel.AvailableRXbytes > 100)
+                while (BufferSize < MaxBufferSize && NextCommand < _commandsToSend.Count)
                 {
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
-
                     string commandText = commandToSend.GetGCode();
 
-                    if (String.IsNullOrEmpty(commandText) || commandText.StartsWith("%"))
+                    if ((BufferSize + 1) < MaxBufferSize)
                     {
-                        NextCommand++;
-                        return;
+                        if (!String.IsNullOrEmpty(commandText) || !commandText.StartsWith("%"))
+                        {
+                            _sendQueue.Enqueue(commandToSend);
+                            BufferSize += commandText.Length + 1;
+                            _machineStateModel.QueueSize = _sendQueue.Count;
+                            Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
+                            commandToSend.Status = LineStatus.Sent;
+
+                            InternalWriteLine(commandToSend);
+
+                            NextCommand++;
+                        }
                     }
-
-                    if (BufferSize + commandText.Length > MaxBufferSize)
-                        return;
-
-                    _sendQueue.Enqueue(commandToSend);
-                    OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
-                    Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
-                    commandToSend.Status = LineStatus.Sent;
-
-                    BufferSize += commandText.Length;
-
-                    InternalWriteLine(commandToSend);
-
-                    NextCommand++;
-                }
-                else if (!IsPaused && _sendQueue.Count == 0 && _machineStateModel.MachineState.Equals(StatusIdle))
-                {
-                    Stop();
+                    else
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -161,6 +159,7 @@ namespace GSendCommon
             {
                 _isAlarm = false;
                 _port.Open();
+                _updateStatusSent = false;
                 OnConnect?.Invoke(this, EventArgs.Empty);
                 SendAndProcessMessage(CommandGetStatus);
                 SendAndProcessMessage(CommonadGetConfiguration);
@@ -261,8 +260,17 @@ namespace GSendCommon
             _isPaused = false;
             OnStop?.Invoke(this, EventArgs.Empty);
             NextCommand = FirstCommand;
-            _sendQueue.Clear();
-            OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                if (_updateStatusSent)
+                    BufferSize = 2;
+                else
+                    BufferSize = 0;
+
+                _sendQueue.Clear();
+                _machineStateModel.QueueSize = _sendQueue.Count;
+            }
 
             return true;
         }
@@ -721,11 +729,8 @@ namespace GSendCommon
 
             private set
             {
-                if (value > MaxBufferSize)
-                    throw new InvalidOperationException("Buffer size too large");
-                Trace.WriteLine($"Buffer Size: {value}");
                 _currentBufferSize = value;
-                OnBufferSizeChanged?.Invoke(this, _currentBufferSize);
+                _machineStateModel.BufferSize = value;
             }
         }
 
@@ -802,10 +807,6 @@ namespace GSendCommon
 
         public event CommandSentHandler OnCommandSent;
 
-        public event BufferSizeHandler OnBufferSizeChanged;
-
-        public event BufferSizeHandler OnQueueSizeChanged;
-
         public event GSendEventHandler OnSerialError;
 
         public event GSendEventHandler OnSerialPinChanged;
@@ -835,74 +836,93 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
-
-                if (span.TotalMilliseconds > 150)
-                {
-                    _lastInformationCheck = DateTime.UtcNow;
-
-                    //bypass internal send commands
-                    _port.WriteLine(CommandRequestStatus);
-                }
+                SendStatusUpdateIfPossible();
 
                 if (_isRunning && !IsPaused)
                 {
                     ProcessNextCommand();
                 }
-
-                return !HasCancelled();
             }
+
+            return !HasCancelled();
         }
 
         #endregion ThreadManager
 
         #region Com Port Events
 
-        private void ProcessGrblResponse(string response)
+        private void ProcessGrblResponse()
         {
-            //Trace.WriteLine($"Response: {response}");
-            if (String.IsNullOrWhiteSpace(response))
-                return;
-
-            OnResponseReceived?.Invoke(this, response);
-
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            while (_port.CanReadLine())
             {
+                string response = _port.ReadLine().Trim();
 
-                if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
+                if (String.IsNullOrWhiteSpace(response))
+                    continue;
+
+                Trace.WriteLine($"Response: {response}; Queue Size: {_sendQueue.Count}; Buffer: {BufferSize}; Line: {NextCommand}");
+
+                if (!IsRunning)
+                    OnResponseReceived?.Invoke(this, response);
+
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
-                    if (_isRunning && _sendQueue.TryDequeue(out IGCodeLine activeCommand))
+
+                    if (response.StartsWith('<'))
                     {
-                        activeCommand.Status = LineStatus.Processed;
-                        BufferSize -= activeCommand.GetGCode().Length;
-                        OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+                        BufferSize -= 2;
+                        _updateStatusSent = false;
+                        ProcessInformationResponse(response[1..^1]);
+                    }
+                    else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Trace.WriteLine($"Response: {response}");
+                        ProcessAlarmResponse(response);
+                    }
+                    else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Trace.WriteLine($"Response: {response}");
+                        ProcessErrorResponse(response);
+                    }
+                    else if (response.StartsWith('['))
+                    {
+                        ProcessMessageResponse(response.Trim()[1..^1]);
+                    }
+                    else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (_isRunning && _sendQueue.TryDequeue(out IGCodeLine activeCommand))
+                        {
+                            BufferSize -= activeCommand.GetGCode().Length + 1;
+                            activeCommand.Status = LineStatus.Processed;
+                            _machineStateModel.QueueSize = _sendQueue.Count;
+                        }
+
+                        _waitingForResponse = false;
                     }
 
-                    _waitingForResponse = false;
                 }
-                else if (response.StartsWith('['))
-                {
-                    ProcessMessageResponse(response.Trim()[1..^1]);
-                }
-                else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Trace.WriteLine($"Response: {response}");
-                    ProcessErrorResponse(response);
-                }
-                else if (response.StartsWith('<'))
-                {
-                    ProcessInformationResponse(response[1..^1]);
-                }
-                else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Trace.WriteLine($"Response: {response}");
-                    ProcessAlarmResponse(response);
-                }
-            }
+
 
 #if DEBUG
-            //Trace.WriteLine($"Junk Data: {response}");
+                //Trace.WriteLine($"Junk Data: {response}");
 #endif
+            }
+        }
+
+        private void SendStatusUpdateIfPossible()
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
+
+                if (span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent)
+                {
+                    _port.Write(new byte[] { (byte)CommandRequestStatus }, 0, 1);
+                    BufferSize += 2;
+                    _updateStatusSent = true;
+                    _lastInformationCheck = DateTime.UtcNow;
+                }
+            }
         }
 
         private void ProcessMessageResponse(string response)
@@ -1048,11 +1068,10 @@ namespace GSendCommon
             _jobTime.Stop();
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
-               OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
-               using (TimedLock tl = TimedLock.Lock(_lockObject))
+                _machineStateModel.QueueSize = _sendQueue.Count;
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
                     activeCommand.Status = LineStatus.Failed;
-                    BufferSize -= activeCommand.GetGCode().Length;
                 }
             }
 
@@ -1079,11 +1098,10 @@ namespace GSendCommon
             if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
             {
                 _jobTime.Stop();
-                OnQueueSizeChanged?.Invoke(this, _sendQueue.Count);
+                _machineStateModel.QueueSize = _sendQueue.Count;
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
                     activeCommand.Status = LineStatus.Failed;
-                    BufferSize -= activeCommand.GetGCode().Length;
                 }
             }
 
@@ -1121,7 +1139,7 @@ namespace GSendCommon
         {
             try
             {
-                ProcessGrblResponse(_port.ReadLine().Trim());
+                ProcessGrblResponse();
             }
             catch (TimeoutException)
             {
@@ -1270,8 +1288,17 @@ namespace GSendCommon
                 {
                     newPropertyValue = newPropertyValue.Equals(true) ? 1 : 0;
                 }
+                else if (newPropertyValue.GetType().Equals(typeof(decimal)))
+                {
+                    newPropertyValue = (decimal)newPropertyValue;
 
-                if (!newPropertyValue.ToString().Equals(settings[key].ToString()))
+                    if (!newPropertyValue.Equals(Convert.ToDecimal(settings[key])))
+                    {
+                        _machineStateModel.UpdatedGrblConfiguration.Add(
+                            new ChangedGrblSettings(propertyInfo.Name, key, newPropertyValue.ToString(), settings[key].ToString()));
+                    }
+                }
+                else if (!newPropertyValue.ToString().Equals(settings[key].ToString()))
                 {
                     // property has changed
                     _machineStateModel.UpdatedGrblConfiguration.Add(

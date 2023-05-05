@@ -8,6 +8,8 @@ namespace GSendShared
 
         void Close();
 
+        bool CanReadLine();
+
         string ReadLine();
 
         void WriteLine(string line);

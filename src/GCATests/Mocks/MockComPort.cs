@@ -207,5 +207,10 @@ namespace GSendTests.Mocks
         {
             _commands.Add(Encoding.Latin1.GetString(buffer));
         }
+
+        public bool CanReadLine()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
