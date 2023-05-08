@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
+using GSendAnalyser;
 using GSendAnalyser.Internal;
 
 using GSendShared;
@@ -10,14 +11,14 @@ using GSendShared.Attributes;
 using GSendShared.Interfaces;
 using GSendShared.Models;
 
+using Newtonsoft.Json.Linq;
+
 using Shared.Classes;
 
 namespace GSendCommon
 {
     public class GCodeProcessor : ThreadManager, IGCodeProcessor
     {
-        private const int QueueProcessMilliseconds = 20;
-        private const int MaxBufferSize = 120;
         private const int FirstCommand = 0;
 
         private const string ResultOk = "ok";
@@ -59,6 +60,7 @@ namespace GSendCommon
 
         private List<IGCodeLine> _commandsToSend = null;
         private readonly ConcurrentQueue<IGCodeLine> _sendQueue = new();
+        private readonly ConcurrentQueue<IGCodeLine> _commandQueue = new();
 
         private readonly IMachineProvider _machineProvider;
         private readonly IMachine _machine;
@@ -79,14 +81,14 @@ namespace GSendCommon
         private bool _initialising = true;
         private readonly Stopwatch _jobTime = new();
         private bool _updateStatusSent = false;
-        private int _currentBufferSize = 0;
+        private readonly ProcessGCodeJob _processJobThread;
 
 
         #region Constructors
 
         public GCodeProcessor(IMachineProvider machineProvider, IMachine machine,
             IComPortFactory comPortFactory, IServiceProvider serviceProvider)
-            : base(machine, TimeSpan.FromMilliseconds(QueueProcessMilliseconds))
+            : base(machine, TimeSpan.FromMilliseconds(Constants.QueueProcessMilliseconds))
         {
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
 
@@ -99,8 +101,11 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this, _machine, _port);
-            ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort}", ThreadPriority.Normal);
+            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this, _machine, _machineStateModel);
+            ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
+
+            _processJobThread = new ProcessGCodeJob(this);
+            ThreadManager.ThreadStart(_processJobThread, $"{machine.Name} - {machine.ComPort} - Job Processor", ThreadPriority.Normal);
         }
 
         #endregion Constructors
@@ -112,28 +117,74 @@ namespace GSendCommon
             if (_waitingForResponse)
                 return;
 
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            if (_commandQueue.Count > 0)
+            {
+                while (BufferSize < Constants.MaxBufferSize)
+                {
+                    if (_commandQueue.TryPeek(out IGCodeLine peekCommand))
+                    {
+                        if ((BufferSize + peekCommand.GetGCode().Length + 1) < Constants.MaxBufferSize)
+                        {
+                            _machineStateModel.CommandQueueSize = _commandQueue.Count;
+                            _commandQueue.TryDequeue(out peekCommand);
+
+                            if (!_overrideContext.ProcessMCodeOverrides(peekCommand))
+                            {
+                                string commandText = peekCommand.GetGCode();
+                                _sendQueue.Enqueue(peekCommand);
+                                _machineStateModel.BufferSize = InternalGetBufferSize();
+                                Trace.WriteLine($"From Command Queue: {commandText}");
+                                _port.WriteLine(commandText);
+                            }
+
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                return;
+            }
+                            
+            _machineStateModel.QueueSize = _sendQueue.Count;
+            _machineStateModel.CommandQueueSize = _commandQueue.Count;
+
+            if (IsRunning && !IsPaused)
             {
                 _machineStateModel.JobTime = new TimeSpan(_jobTime.ElapsedTicks);
 
-                while (BufferSize < MaxBufferSize && NextCommand < _commandsToSend.Count)
+                while (BufferSize < Constants.MaxBufferSize && NextCommand < _commandsToSend.Count)
                 {
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
+
+                    if (commandToSend.IsCommentOnly)
+                        continue;
+
                     string commandText = commandToSend.GetGCode();
 
-                    if ((BufferSize + 1) < MaxBufferSize)
+                    if ((BufferSize + commandText.Length + 1) < Constants.MaxBufferSize && IsRunning)
                     {
-                        if (!String.IsNullOrEmpty(commandText) || !commandText.StartsWith("%"))
+                        if (!String.IsNullOrEmpty(commandText) ||
+                            !commandText.StartsWith("%"))
                         {
                             _sendQueue.Enqueue(commandToSend);
-                            BufferSize += commandText.Length + 1;
+                            _machineStateModel.BufferSize = InternalGetBufferSize();
                             _machineStateModel.QueueSize = _sendQueue.Count;
                             Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
 
-                            InternalWriteLine(commandToSend);
+                            bool overriddenGCode = InternalWriteLine(commandToSend);
 
                             NextCommand++;
+
+                            if (overriddenGCode)
+                                return;
                         }
                     }
                     else
@@ -252,7 +303,6 @@ namespace GSendCommon
         {
             Trace.WriteLine("Stop");
             InternalWriteByte(new byte[] { 0x85 });
-            _overrideContext.Cancel();
 
             _jobTime.Stop();
 
@@ -263,14 +313,16 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (_updateStatusSent)
-                    BufferSize = 2;
-                else
-                    BufferSize = 0;
-
                 _sendQueue.Clear();
                 _machineStateModel.QueueSize = _sendQueue.Count;
+                _commandQueue.Clear();
+                _machineStateModel.CommandQueueSize = _commandQueue.Count;
             }
+
+            _overrideContext.Cancel();
+
+            if (_machineStateModel.SpindleSpeed > 0)
+                QueueCommand(CommandStopSpindle);
 
             return true;
         }
@@ -725,12 +777,21 @@ namespace GSendCommon
 
         public int BufferSize
         {
-            get => _currentBufferSize;
+            get => InternalGetBufferSize();
+        }
 
-            private set
+        private int InternalGetBufferSize()
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                _currentBufferSize = value;
-                _machineStateModel.BufferSize = value;
+                int Result = 0;
+
+                foreach (IGCodeLine item in _sendQueue.ToArray())
+                {
+                    Result += item.GetGCode().Length + 1;
+                }
+
+                return Result;
             }
         }
 
@@ -834,15 +895,7 @@ namespace GSendCommon
             if (!_port.IsOpen() || _initialising)
                 return !HasCancelled();
 
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
-            {
-                SendStatusUpdateIfPossible();
-
-                if (_isRunning && !IsPaused)
-                {
-                    ProcessNextCommand();
-                }
-            }
+            SendStatusUpdateIfPossible();
 
             return !HasCancelled();
         }
@@ -860,7 +913,7 @@ namespace GSendCommon
                 if (String.IsNullOrWhiteSpace(response))
                     continue;
 
-                Trace.WriteLine($"Response: {response}; Queue Size: {_sendQueue.Count}; Buffer: {BufferSize}; Line: {NextCommand}");
+                //Trace.WriteLine($"Response: {response}; Queue Size: {_sendQueue.Count}; Buffer: {BufferSize}; Line: {NextCommand}");
 
                 if (!IsRunning)
                     OnResponseReceived?.Invoke(this, response);
@@ -870,7 +923,6 @@ namespace GSendCommon
 
                     if (response.StartsWith('<'))
                     {
-                        BufferSize -= 2;
                         _updateStatusSent = false;
                         ProcessInformationResponse(response[1..^1]);
                     }
@@ -890,9 +942,9 @@ namespace GSendCommon
                     }
                     else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (_isRunning && _sendQueue.TryDequeue(out IGCodeLine activeCommand))
+                        if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
                         {
-                            BufferSize -= activeCommand.GetGCode().Length + 1;
+                            _machineStateModel.BufferSize = InternalGetBufferSize();
                             activeCommand.Status = LineStatus.Processed;
                             _machineStateModel.QueueSize = _sendQueue.Count;
                         }
@@ -911,17 +963,13 @@ namespace GSendCommon
 
         private void SendStatusUpdateIfPossible()
         {
-            using (TimedLock tl = TimedLock.Lock(_lockObject))
-            {
-                TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
+            TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
 
-                if (span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent)
-                {
-                    _port.Write(new byte[] { (byte)CommandRequestStatus }, 0, 1);
-                    BufferSize += 2;
-                    _updateStatusSent = true;
-                    _lastInformationCheck = DateTime.UtcNow;
-                }
+            if (span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent)
+            {
+                _port.Write(new byte[] { (byte)CommandRequestStatus }, 0, 1);
+                _updateStatusSent = true;
+                _lastInformationCheck = DateTime.UtcNow;
             }
         }
 
@@ -1217,6 +1265,20 @@ namespace GSendCommon
             return Result.ToString();
         }
 
+        public void QueueCommand(string commandText)
+        {
+            GCodeParser gCodeParser = new GCodeParser();
+            IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(commandText);
+
+            foreach (IGCodeLine line in gCodeAnalyses.Lines(out int _))
+            {
+                _commandQueue.Enqueue(line);
+                Trace.WriteLine($"Add to command queue: {line.GetGCode()}");
+            }
+
+            _machineStateModel.CommandQueueSize = _commandQueue.Count;
+        }
+
         private void SendCommandWaitForResponse(string commandText, TimeSpan timeout)
         {
             _waitingForResponse = true;
@@ -1232,11 +1294,17 @@ namespace GSendCommon
             }
         }
 
-        private void InternalWriteLine(string commandText)
+        /// <summary>
+        /// Returns true if override processor was used, otherwise false
+        /// </summary>
+        /// <param name="commandText"></param>
+        /// <returns></returns>
+        private bool InternalWriteLine(string commandText)
         {
             if (!String.IsNullOrEmpty(commandText) && commandText.Length > 0 && commandText[0] == '$')
             {
                 _port.WriteLine(commandText);
+                return false;
             }
             else
             {
@@ -1245,21 +1313,28 @@ namespace GSendCommon
                 IList<IGCodeLine> lines = gCode.Lines(out int lineNumber);
 
                 Debug.Assert(lineNumber == 1);
-                InternalWriteLine(lines[0]);
+                return InternalWriteLine(lines[0]);
             }
         }
 
-        private void InternalWriteLine(IGCodeLine commandLine)
+        /// <summary>
+        /// Returns true if override processor was used, otherwise false
+        /// </summary>
+        private bool InternalWriteLine(IGCodeLine commandLine)
         {
-            _overrideContext.ProcessGCodeLine(commandLine);
+            bool overriddenGCode = _overrideContext.ProcessGCodeOverrides(commandLine);
+
+            if (!overriddenGCode)
+                overriddenGCode = _overrideContext.ProcessMCodeOverrides(commandLine);
 
             if (_overrideContext.SendCommand)
             {
                 string gcodeLine = commandLine.GetGCode();
-                File.AppendAllLines("C:\\Users\\user\\Documents\\Carveco\\Projects\\Candle Files\\testsend.txt", new string[] { gcodeLine });
 
                 _port.WriteLine(gcodeLine);
             }
+
+            return overriddenGCode;
         }
 
         private void InternalWriteByte(byte[] buffer)

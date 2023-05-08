@@ -46,9 +46,13 @@ namespace GSendAnalyser.Internal
             StringBuilder lineValues = new(MaxLineSize);
             CurrentCommandValues currentValues = new();
             _index = 0;
+            bool invalidGCode = false;
 
             for (int i = 0; i < gCodeCommands.Length; i++)
             {
+                if (invalidGCode)
+                    break;
+
                 char c = (char)gCodeCommands[i];
 
                 switch (c)
@@ -90,7 +94,17 @@ namespace GSendAnalyser.Internal
                         continue;
 
                     default:
-                        line[position++] = c;
+                        if (position + 1 > MaxLineSize)
+                        {
+                            currentValues.Attributes |= CommandAttributes.InvalidLineTooLong;
+                            invalidGCode = true;
+                            break;
+                        }
+                        else
+                        {
+                            currentValues.Attributes &= ~CommandAttributes.InvalidLineTooLong;
+                            line[position++] = c;
+                        }
 
                         continue;
                 }
@@ -135,8 +149,25 @@ namespace GSendAnalyser.Internal
                 Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
                 decimal mantissa = Math.Round(100 * (commandValue - commandCode));
 
+                currentValues.Attributes &= ~CommandAttributes.Extrude;
+                currentValues.Attributes &= ~CommandAttributes.FeedRateError;
+                currentValues.Attributes &= ~CommandAttributes.MovementError;
+                currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
+
                 switch (currentCommand)
                 {
+                    case CharE:
+                        currentValues.Attributes |= CommandAttributes.Extrude;
+                        break;
+
+                    case CharF:
+                        if (commandValueConvert)
+                            currentValues.FeedRate = commandValue;
+                        else
+                            currentValues.Attributes |= CommandAttributes.FeedRateError;
+
+                        break;
+
                     case CharG:
                         switch (commandCode)
                         {
@@ -160,14 +191,6 @@ namespace GSendAnalyser.Internal
 
                                 break;
                         }
-
-                        break;
-
-                    case CharF:
-                        if (commandValueConvert)
-                            currentValues.FeedRate = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.FeedRateError;
 
                         break;
 
@@ -254,6 +277,7 @@ namespace GSendAnalyser.Internal
                     case CharB:
                     case CharC:
                     case CharD:
+                    case CharE:
                     case CharF:
                     case CharG:
                     case CharH:
@@ -283,10 +307,6 @@ namespace GSendAnalyser.Internal
                         currentCommand = c;
 
                         continue;
-
-                    case CharE:
-                        // not currently supported
-                        break;
 
                     case CharNull:
                         lastCommand = UpdateGCodeValue();

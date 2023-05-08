@@ -88,6 +88,7 @@ namespace GSendDesktop.Forms
                 _machine, this);
             ThreadManager.ThreadStart(_machineUpdateThread, $"{machine.Name} Update Status", ThreadPriority.Normal);
 
+
             propertyGridGrblSettings.SelectedObject = machine.Settings;
 
             cbOverridesDisable.Checked = true;
@@ -298,22 +299,6 @@ namespace GSendDesktop.Forms
                 case Constants.MessageLoadGCodeAdmin:
 
                     break;
-
-                case "BufferSize":
-                    //string bufferResponse = clientMessage.message.ToString();
-
-                    //if (Int32.TryParse(bufferResponse, out int bufferSize))
-                    //    heartbeatPanel1.AddPoint(bufferSize);
-
-                    break;
-
-                case "QueueSize":
-                    //string queueResponse = clientMessage.message.ToString();
-
-                    //if (Int32.TryParse(queueResponse, out int queueSize))
-                    //    heartbeatPanel2.AddPoint(queueSize);
-
-                    break;
             }
         }
 
@@ -325,10 +310,10 @@ namespace GSendDesktop.Forms
             toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
             toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
-            toolStripButtonResume.Enabled = _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
-            toolStripButtonPause.Enabled = _machineConnected && (_isPaused || _isRunning);
+            toolStripButtonResume.Enabled = _isPaused || !_isRunning && _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
+            toolStripButtonPause.Enabled = !_isPaused && _machineConnected && (_isPaused || _isRunning);
             toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
-            toolStripDropDownButtonCoordinateSystem.Enabled = _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
+            toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
 
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
@@ -343,8 +328,8 @@ namespace GSendDesktop.Forms
             tabPageConsole.Enabled = _machineConnected && !_isRunning && !_isPaused && !_isProbing && !_isAlarm;
             grpBoxSpindleSpeed.Enabled = _machineConnected;
 
-            loadToolStripMenuItem.Enabled = _gCodeAnalyses == null;
-            clearToolStripMenuItem.Enabled = _gCodeAnalyses != null;
+            loadToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false;
+            clearToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false &&_gCodeAnalyses != null;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -401,7 +386,7 @@ namespace GSendDesktop.Forms
                     machine2dView1.YPosition = (float)status.WorkY;
 
                     //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
-                    toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}";
+                    toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}/{status.BufferSize}/{status.QueueSize}/{status.CommandQueueSize}";
 
                     if (!_appliedSettingsChanged)
                     {
@@ -971,6 +956,7 @@ namespace GSendDesktop.Forms
         private void LoadAllStatusChangeWarnings(MachineStateModel status)
         {
             ValidateLaserSpindleMode(status);
+            txtGrblUpdates.Text = String.Empty;
 
             foreach (ChangedGrblSettings changedGrblSetting in status.UpdatedGrblConfiguration)
             {
@@ -980,10 +966,15 @@ namespace GSendDesktop.Forms
                     changedGrblSetting.NewValue,
                     changedGrblSetting.PropertyName);
 
+                PropertyInfo propertyInfo = _machine.Settings.GetType().GetProperty(changedGrblSetting.PropertyName);
+                propertyInfo.SetValue(_machine.Settings, Convert.ChangeType(changedGrblSetting.NewValue, propertyInfo.PropertyType));
+                txtGrblUpdates.Text += $"${changedGrblSetting.DollarValue}={changedGrblSetting.OldValue}\r\n";
                 warningsAndErrors.AddWarningPanel(InformationType.Warning, setting);
             }
 
             _appliedSettingsChanged = true;
+            SaveChanges(true); 
+            ConfigureMachine();
         }
 
         private void ValidateLaserSpindleMode(MachineStateModel status)
@@ -1224,6 +1215,9 @@ namespace GSendDesktop.Forms
         private void trackBarSpindleSpeed_ValueChanged(object sender, EventArgs e)
         {
             lblSpindleSpeed.Text = String.Format(GSend.Language.Resources.SpeedRpm, trackBarSpindleSpeed.Value);
+
+            if (_machineStatusModel?.SpindleSpeed > 0)
+                btnSpindleStart_Click(sender, e);
         }
 
         private void btnSpindleStart_Click(object sender, EventArgs e)
@@ -1962,29 +1956,24 @@ namespace GSendDesktop.Forms
 
                     tabControlSecondary.TabPages.Insert(1, tabPageGCode);
 
-                    Parallel.Invoke(
-                        new Action(() => {
-                            dataGridGCode.Rows.Clear();
+                    machine2dView1.LoadGCode(_gCodeAnalyses);
+                    dataGridGCode.Rows.Clear();
+                    List<DataGridViewRow> gridRows = new List<DataGridViewRow>();
 
-                            foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
-                            {
-                                IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
-                                dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
-                                    FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
-                                    FixEmptyValue(gCodeLineInfo.Attributes));
-                            }
-                        }),
-                        new Action(() => { machine2dView1.LoadGCode(_gCodeAnalyses); }));
-                    //dataGridGCode.Rows.Clear();
+                    foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+                    {
+                        IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.GCode });
+                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.Comments });
+                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.FeedRate) });
+                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.SpindleSpeed) });
+                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.Attributes) });
 
-                    //foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
-                    //{
-                    //    IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
-                    //    dataGridGCode.Rows.Add(gCodeLineInfo.GCode, gCodeLineInfo.Comments,
-                    //        FixEmptyValue(gCodeLineInfo.FeedRate), FixEmptyValue(gCodeLineInfo.SpindleSpeed),
-                    //        FixEmptyValue(gCodeLineInfo.Attributes));
-                    //}
+                        gridRows.Add(row);
+                    }
 
+                    dataGridGCode.Rows.AddRange(gridRows.ToArray());
                     machine2dView1.LoadGCode(_gCodeAnalyses);
 
                     if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
@@ -2013,6 +2002,11 @@ namespace GSendDesktop.Forms
                         !_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
                     {
                         warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.WarningContainsInvalidGCode);
                     }
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

@@ -30,7 +30,8 @@ namespace GSendAnalyser
             string comment, CurrentCommandValues currentValues, int lineNumber)
         {
             if ((currentCommand < 'A' || currentCommand > 'Z') && currentCommand != '%')
-                throw new ArgumentOutOfRangeException(nameof(currentCommand));
+                if (currentCommand.Equals('\0') && String.IsNullOrEmpty(comment))
+                    throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;
             Command = currentCommand;
@@ -183,7 +184,8 @@ namespace GSendAnalyser
                 return false;
 
             return Command.Equals(command.Command) &&
-                CommandValueString.Equals(command.CommandValueString);
+                CommandValueString.Equals(command.CommandValueString) &&
+                Comment.Equals(command.Comment);
         }
 
         public override int GetHashCode()

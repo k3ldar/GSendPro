@@ -184,6 +184,7 @@
             this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2DView = new System.Windows.Forms.TabPage();
+            this.panelZoom = new System.Windows.Forms.Panel();
             this.machine2dView1 = new GSendDesktop.Controls.Machine2DView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolStripMain.SuspendLayout();
@@ -1848,6 +1849,7 @@
             // 
             // tabPage2DView
             // 
+            this.tabPage2DView.Controls.Add(this.panelZoom);
             this.tabPage2DView.Controls.Add(this.machine2dView1);
             this.tabPage2DView.Location = new System.Drawing.Point(4, 4);
             this.tabPage2DView.Name = "tabPage2DView";
@@ -1857,20 +1859,33 @@
             this.tabPage2DView.Text = "tabPage1";
             this.tabPage2DView.UseVisualStyleBackColor = true;
             // 
-            // machine2dView1
+            // panelZoom
             // 
-            this.machine2dView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelZoom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelZoom.Location = new System.Drawing.Point(512, 6);
+            this.panelZoom.MaximumSize = new System.Drawing.Size(200, 200);
+            this.panelZoom.MinimumSize = new System.Drawing.Size(130, 130);
+            this.panelZoom.Name = "panelZoom";
+            this.panelZoom.Size = new System.Drawing.Size(130, 130);
+            this.panelZoom.TabIndex = 1;
+            // 
+            // machine2dView1
+            // 
+            this.machine2dView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.machine2dView1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("machine2dView1.BackgroundImage")));
+            this.machine2dView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
             this.machine2dView1.Location = new System.Drawing.Point(6, 6);
             this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.machine2dView1.Name = "machine2dView1";
-            this.machine2dView1.Size = new System.Drawing.Size(753, 131);
+            this.machine2dView1.Size = new System.Drawing.Size(485, 131);
             this.machine2dView1.TabIndex = 0;
             this.machine2dView1.XPosition = 0F;
             this.machine2dView1.YPosition = 0F;
+            this.machine2dView1.ZoomPanel = this.panelZoom;
             // 
             // openFileDialog1
             // 
@@ -1880,6 +1895,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(796, 615);
             this.Controls.Add(this.tabControlSecondary);
             this.Controls.Add(this.warningsAndErrors);
@@ -2096,5 +2112,6 @@
         private System.Windows.Forms.Label lblJobTime;
         private System.Windows.Forms.TabPage tabPage2DView;
         private Controls.Machine2DView machine2dView1;
+        private System.Windows.Forms.Panel panelZoom;
     }
 }

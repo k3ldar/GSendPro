@@ -9,5 +9,7 @@
         string GetGCode();
 
         IGCodeLineInfo GetGCodeInfo();
+
+        bool IsCommentOnly { get; }
     }
 }

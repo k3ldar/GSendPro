@@ -12,45 +12,50 @@ namespace GSendCommon.OverrideClasses
 
         public int SortOrder => 0;
 
-        public void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
+        public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
             if (overrideContext.Machine.MachineType != MachineType.CNC)
-                return;
+                return false;
 
             if (!overrideContext.Machine.Options.HasFlag(MachineOptions.SoftStart))
-                return;
+                return false;
 
             if (overrideContext.Machine.SpindleType != SpindleType.Integrated)
-                return;
+                return false;
+
+            if (overrideContext.MachineStateModel.SpindleSpeed > 0)
+                return false;
 
             IGCodeCommand startSpindle = overrideContext.GCode.Commands.FirstOrDefault(c =>
                 c.Command.Equals('M') && (c.CommandValue.Equals(3) || c.CommandValue.Equals(4)));
 
-            if (startSpindle != null)
+            if (startSpindle == null)
+                return false;
+
+            IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
+
+            if (spindleSpeed == null)
+                return false;
+
+            overrideContext.SendCommand = false;
+            int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
+            int currentRpm = (int)overrideContext.MachineStateModel.SpindleSpeed;
+            int rpmPerStep = Convert.ToInt32(spindleSpeed.CommandValue / stepDelay);
+
+            for (int i = 1; i <= stepDelay; i++)
             {
-                IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
-                overrideContext.SendCommand = false;
+                if (cancellationToken.IsCancellationRequested)
+                    return false;
 
-                if (spindleSpeed == null)
-                    return;
-
-                int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
-                int rpmPerStep = Convert.ToInt32(spindleSpeed.CommandValue / stepDelay);
-                int currentRpm = 0;
-
-                for (int i = 1; i <= stepDelay; i++)
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
-
-                    currentRpm = i * rpmPerStep;
-                    overrideContext.ComPort.WriteLine($"S{currentRpm}M{startSpindle.CommandValue}");
-                    overrideContext.StaticMethods.Sleep(200);
-                }
-
-                if (currentRpm < spindleSpeed.CommandValue)
-                    overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
+                currentRpm = i * rpmPerStep;
+                overrideContext.Processor.QueueCommand($"S{currentRpm}M{startSpindle.CommandValue}");
+                overrideContext.Processor.QueueCommand("M600P0.200");
             }
+
+            if (currentRpm < spindleSpeed.CommandValue)
+                overrideContext.Processor.QueueCommand(overrideContext.GCode.GetGCode());
+
+            return true;
         }
 
         public void Process(GrblAlarm alarm)

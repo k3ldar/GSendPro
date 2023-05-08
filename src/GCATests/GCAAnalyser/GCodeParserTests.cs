@@ -52,12 +52,14 @@ namespace GSendTests.GSendAnalyser
         [TestCategory(TestCategoryAnalyser)]
         public void ParseLocalWithComments()
         {
-            string finish = "G17\nG21;second\nG0Z40.000\nG0X0.000Y0.000S8000M3(fourth; with colon)\nG0X139.948Y37.136Z40.000\n";
+            string finish = "G17\nG21;second\nG0Z40.000\nG0X0.000Y0.000S8000M3(fourth; with colon)\n;a comment on it;s own\nG0X139.948Y37.136Z40.000\n";
             GCodeParser sut = new();
             IGCodeAnalyses analyses = sut.Parse(finish);
 
-            Assert.AreEqual(13, analyses.Commands.Count);
-            Assert.IsFalse(string.IsNullOrEmpty(analyses.Commands[10].Comment));
+            Assert.AreEqual(14, analyses.Commands.Count);
+            Assert.IsFalse(string.IsNullOrEmpty(analyses.Commands[8].Comment));
+            Assert.IsFalse(string.IsNullOrEmpty(analyses.Commands[9].Comment));
+            Assert.AreEqual(";a comment on it;s own", analyses.Commands[9].Comment);
         }
 
         [TestMethod]
@@ -84,7 +86,7 @@ namespace GSendTests.GSendAnalyser
             Assert.IsFalse(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
             List<IGCodeCommand> movesToSafeZ = analyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.HomeZ)).ToList();
-            Assert.AreEqual(2, movesToSafeZ.Count);
+            Assert.AreEqual(14, movesToSafeZ.Count);
             Assert.AreEqual(9765310005, analyses.TotalTime.Ticks);
             Assert.AreEqual(14758.7094m, analyses.TotalDistance);
         }
@@ -103,7 +105,7 @@ namespace GSendTests.GSendAnalyser
             Assert.IsFalse(analyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsDuplicates));
 
             List<IGCodeCommand> movesToSafeZ = analyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.HomeZ)).ToList();
-            Assert.AreEqual(2, movesToSafeZ.Count);
+            Assert.AreEqual(16, movesToSafeZ.Count);
             Assert.AreEqual(148530164, analyses.TotalTime.Ticks);
             Assert.AreEqual(703.494m, analyses.TotalDistance);
         }

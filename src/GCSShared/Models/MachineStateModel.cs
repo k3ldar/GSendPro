@@ -30,6 +30,7 @@
         private bool _isPaused;
         private int _bufferSize;
         private int _queueSize;
+        private int _commandQueueSize;
         private CoordinateSystem _coordinateSystem;
         private RapidsOverride _rapidSpeed = RapidsOverride.High;
         private MachineStateOptions _machineStateOptions;
@@ -494,6 +495,20 @@
                     return;
 
                 _queueSize = value;
+                Updated = true;
+            }
+        }
+
+        public int CommandQueueSize
+        {
+            get => _commandQueueSize;
+
+            set
+            {
+                if (_commandQueueSize == value)
+                    return;
+
+                _commandQueueSize = value;
                 Updated = true;
             }
         }

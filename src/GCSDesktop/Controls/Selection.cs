@@ -50,7 +50,7 @@ namespace GSendDesktop.Controls
         public int Value
         {
             get => trackBarValue.Value;
-            set => trackBarValue.Value = value; 
+            set => trackBarValue.Value = Math.Min(value, trackBarValue.Maximum); 
         }
 
         public string LabelValue { get; set; }

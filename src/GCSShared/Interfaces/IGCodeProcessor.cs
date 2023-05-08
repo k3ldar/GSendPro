@@ -43,6 +43,8 @@ namespace GSendShared
 
         string SendCommandWaitForOKCommand(string commandText);
 
+        void QueueCommand(string commandText);
+
         Dictionary<int, object> Settings();
 
         bool UpdateSpindleSpeed(int speed, bool clockWise);

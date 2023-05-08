@@ -165,6 +165,7 @@ namespace GSendTests.Mocks
 
 
             _lastCommandId = -1;
+            _activeRequest = "";
             return "ok";
         }
 
@@ -210,7 +211,7 @@ namespace GSendTests.Mocks
 
         public bool CanReadLine()
         {
-            throw new NotImplementedException();
+            return _lastCommandId != -1 || !String.IsNullOrEmpty(_activeRequest);
         }
     }
 }

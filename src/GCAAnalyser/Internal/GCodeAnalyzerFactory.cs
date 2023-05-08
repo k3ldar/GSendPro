@@ -24,6 +24,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeComments(),
                 new AnalyzeSubPrograms(),
                 new AnalyzeCoordinateSystemsUsed(),
+                new AnalyzeInvalidGCode(),
             }
             .OrderBy(o => o.Order)
             .ToList();

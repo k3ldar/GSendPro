@@ -32,18 +32,17 @@ namespace GSendShared.Interfaces
         /// </summary>
         IGCodeProcessor Processor { get; }
 
-        /// <summary>
-        /// Com port used by processor
-        /// </summary>
-        IComPort ComPort { get; }
-
         IMachine Machine { get; }
 
         IStaticMethods StaticMethods { get; }
 
         OverrideModel Overrides { get; }
 
-        void ProcessGCodeLine(IGCodeLine line);
+        MachineStateModel MachineStateModel { get; }
+
+        bool ProcessGCodeOverrides(IGCodeLine line);
+
+        bool ProcessMCodeOverrides(IGCodeLine line);
 
         void ProcessAlarm(GrblAlarm alarm);
 

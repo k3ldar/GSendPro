@@ -26,8 +26,15 @@ namespace GSendCommon
 
             _serialPort = new SerialPort(machine.ComPort, settings.BaudRate,
                 parity, settings.DataBits, stopBits);
+
+#if DEBUG
+            _serialPort.ReadTimeout = settings.ReadTimeout * 5;
+            _serialPort.WriteTimeout = settings.WriteTimeout * 5;
+#else
             _serialPort.ReadTimeout = settings.ReadTimeout;
             _serialPort.WriteTimeout = settings.WriteTimeout;
+#endif
+
             _serialPort.DataReceived += SerialPort_DataReceived;
             _serialPort.ErrorReceived += SerialPort_ErrorReceived;
             _serialPort.PinChanged += SerialPort_PinChanged;

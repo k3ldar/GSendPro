@@ -66,6 +66,8 @@
         ContainsCRLF = 256,
 
         ContainsCoordinateCommands = 512,
+
+        InvalidGCode = 1024,
     }
 
     public enum ServiceType
@@ -315,6 +317,10 @@
         Dwell = 2097152,
 
         SubProgram = 4194304,
+
+        InvalidLineTooLong = 8388608,
+
+        Extrude = 16777216,
     }
 
     public enum UnitOfMeasurement

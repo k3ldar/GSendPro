@@ -4,6 +4,10 @@ namespace GSendShared
 {
     public static class Constants
     {
+        public const int QueueProcessMilliseconds = 20;
+
+        public const int MaxBufferSize = 120;
+
         public const int MinConnectionWait = 500;
 
         public const int SocketKeepAliveMinutes = 5;

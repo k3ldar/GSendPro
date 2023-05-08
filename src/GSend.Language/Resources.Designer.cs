@@ -2599,6 +2599,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file contains invalid G Code, check maximum line length.
+        /// </summary>
+        public static string WarningContainsInvalidGCode {
+            get {
+                return ResourceManager.GetString("WarningContainsInvalidGCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored..
         /// </summary>
         public static string WarningContainsMistCoolantOption {

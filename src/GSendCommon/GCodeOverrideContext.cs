@@ -1,4 +1,5 @@
-﻿using GSendCommon.OverrideClasses;
+﻿using GSendCommon.MCodeOverrides;
+using GSendCommon.OverrideClasses;
 
 using GSendDB.Tables;
 
@@ -19,19 +20,21 @@ namespace GSendCommon
         private readonly object _lockObj = new();
         private IGCodeLine _gCodeLine = null;
         private readonly List<IGCodeOverride> _overrideClasses;
+        private readonly List<IMCodeOverride> _mCodeOverrides;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _serviceProvider;
 
         public GCodeOverrideContext(IServiceProvider serviceProvider, IStaticMethods staticMethods, IGCodeProcessor processor,
-            IMachine machine, IComPort comPort)
+            IMachine machine, MachineStateModel machineStateModel)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             StaticMethods = staticMethods ?? throw new ArgumentNullException(nameof(staticMethods));
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
-            ComPort = comPort ?? throw new ArgumentNullException(nameof(comPort));
+            MachineStateModel = machineStateModel ?? throw new ArgumentNullException(nameof(machineStateModel));
             Overrides = new OverrideModel();
             _overrideClasses = GetOverrides();
+            _mCodeOverrides = GetMCodeOverrides();
         }
 
         public IStaticMethods StaticMethods { get; }
@@ -55,33 +58,68 @@ namespace GSendCommon
 
         public IGCodeProcessor Processor { get; }
 
-        public IComPort ComPort { get; }
-
         public IMachine Machine { get; }
 
         public bool SendCommand { get; set; } = true;
 
         public OverrideModel Overrides { get; }
 
-        public void ProcessGCodeLine(IGCodeLine line)
+        public MachineStateModel MachineStateModel { get; }
+
+        public bool ProcessGCodeOverrides(IGCodeLine line)
         {
             using (TimedLock tl = TimedLock.Lock(_lockObj))
             {
                 _cancellationTokenSource = new CancellationTokenSource();
                 CancellationToken cancellationToken = _cancellationTokenSource.Token;
-
-                SendCommand = true;
-
-                GCode = line ?? throw new ArgumentNullException(nameof(line));
-
-                foreach (IGCodeOverride item in _overrideClasses)
+                try
                 {
-                    item.Process(this, cancellationToken);
-                }
+                    SendCommand = true;
 
-                _cancellationTokenSource?.Cancel();
-                _cancellationTokenSource = null;
+                    GCode = line ?? throw new ArgumentNullException(nameof(line));
+
+                    foreach (IGCodeOverride overrideItem in _overrideClasses)
+                    {
+                        if (overrideItem.Process(this, cancellationToken))
+                            return true;
+                    }
+                }
+                finally
+                {
+                    _cancellationTokenSource?.Cancel();
+                    _cancellationTokenSource = null;
+                }
             }
+
+            return false;
+        }
+
+        public bool ProcessMCodeOverrides(IGCodeLine line)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObj))
+            {
+                _cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken cancellationToken = _cancellationTokenSource.Token;
+                try
+                {
+                    SendCommand = true;
+
+                    GCode = line ?? throw new ArgumentNullException(nameof(line));
+
+                    foreach (IMCodeOverride overrideItem in _mCodeOverrides)
+                    {
+                        if (overrideItem.Process(this, cancellationToken))
+                            return true;
+                    }
+                }
+                finally
+                {
+                    _cancellationTokenSource?.Cancel();
+                    _cancellationTokenSource = null;
+                }
+            }
+
+            return false;
         }
 
         public void ProcessAlarm(GrblAlarm alarm)
@@ -116,6 +154,14 @@ namespace GSendCommon
             };
 
             return Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();
+        }
+
+        private List<IMCodeOverride> GetMCodeOverrides()
+        {
+            return new()
+            {
+                new M600Override(),
+            };
         }
     }
 }

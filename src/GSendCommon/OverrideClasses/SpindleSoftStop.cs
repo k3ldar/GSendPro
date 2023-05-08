@@ -12,42 +12,51 @@ namespace GSendCommon.OverrideClasses
 
         public int SortOrder => 0;
 
-        public void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
+        public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
             if (overrideContext.Machine.MachineType != MachineType.CNC)
-                return;
+                return false;
 
             if (!overrideContext.Machine.Options.HasFlag(MachineOptions.SoftStart))
-                return;
+                return false;
 
             if (overrideContext.Machine.SpindleType != SpindleType.Integrated)
-                return;
+                return false;
+
+            if (overrideContext.MachineStateModel.SpindleSpeed == 0)
+                return false;
 
             IGCodeCommand startSpindle = overrideContext.GCode.Commands.FirstOrDefault(c =>
                 c.Command.Equals('M') && c.CommandValue.Equals(5));
 
-            if (startSpindle != null)
+            if (startSpindle == null)
+                return false;
+
+            overrideContext.SendCommand = false;
+            int spindleSpeed = (int)overrideContext.Processor.StateModel.SpindleSpeed;
+
+            int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
+            int rpmPerStep = Convert.ToInt32(spindleSpeed / stepDelay);
+            int currentRpm = 0;
+            int spindleStartValue = overrideContext.Processor.StateModel.SpindleClockWise ? 3 : 4;
+
+            for (int i = stepDelay; i > 0; i--)
             {
-                int spindleSpeed = (int)overrideContext.Processor.StateModel.SpindleSpeed;
+                if (cancellationToken.IsCancellationRequested || overrideContext.Processor.StateModel.SpindleSpeed == 0)
+                    return false;
 
-                int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
-                int rpmPerStep = Convert.ToInt32(spindleSpeed / stepDelay);
-                int currentRpm = 0;
-                int spindleStartValue = overrideContext.Processor.StateModel.SpindleClockWise ? 3 : 4;
+                currentRpm = i * rpmPerStep;
 
-                for (int i = stepDelay; i > 0; i--)
-                {
-                    if (cancellationToken.IsCancellationRequested || overrideContext.Processor.StateModel.SpindleSpeed == 0)
-                        return;
+                if (overrideContext.Machine.SpindleType == SpindleType.Integrated)
+                    overrideContext.Processor.QueueCommand($"S{currentRpm}");
 
-                    currentRpm = i * rpmPerStep;
-                    overrideContext.ComPort.WriteLine($"S{currentRpm}M{spindleStartValue}");
-                    overrideContext.StaticMethods.Sleep(200);
-                }
-
-                overrideContext.ComPort.WriteLine("S0");
-                overrideContext.ComPort.WriteLine(overrideContext.GCode.GetGCode());
+                overrideContext.Processor.QueueCommand("M600P0.200");
             }
+
+            if (overrideContext.Machine.SpindleType == SpindleType.Integrated)
+                overrideContext.Processor.QueueCommand($"S{0}M5");
+
+            return true;
         }
 
         public void Process(GrblAlarm alarm)

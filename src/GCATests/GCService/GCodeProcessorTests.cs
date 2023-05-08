@@ -157,7 +157,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        public void Pause_IsNotRunning_Returns_False()
+        public void Pause_IsNotRunning_Returns_True()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -169,7 +169,7 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             Assert.IsFalse(sut.IsConnected);
-            Assert.IsFalse(sut.Pause());
+            Assert.IsTrue(sut.Pause());
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        public void Resume_IsNotPaused_Returns_False()
+        public void Resume_IsNotPaused_Returns_True()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -212,7 +212,7 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             Assert.IsFalse(sut.IsConnected);
-            Assert.IsFalse(sut.Resume());
+            Assert.IsTrue(sut.Resume());
         }
 
         [TestMethod]
@@ -247,7 +247,7 @@ namespace GSendTests.GCService
         }
 
         [TestMethod]
-        public void Stop_IsNotRunning_Returns_False()
+        public void Stop_IsNotRunning_Returns_True()
         {
             MachineModel machineModel = new MachineModel()
             {
@@ -259,7 +259,7 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             Assert.IsFalse(sut.IsConnected);
-            Assert.IsFalse(sut.Stop());
+            Assert.IsTrue(sut.Stop());
         }
 
         [TestMethod]
@@ -968,10 +968,10 @@ namespace GSendTests.GCService
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XPlusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X76.8320Y6.1450F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X200.0000Y80.0000F2000"));
 
             sut.JogStart(JogDirection.XMinusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-76.8320Y-6.1450F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-200.0000Y-80.0000F2000"));
         }
 
         [TestMethod]
@@ -998,10 +998,10 @@ namespace GSendTests.GCService
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XMinusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-76.8320Y6.1450F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-200.0000Y80.0000F2000"));
 
             sut.JogStart(JogDirection.XPlusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X76.8320Y-6.1450F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X200.0000Y-80.0000F2000"));
         }
     }
 }

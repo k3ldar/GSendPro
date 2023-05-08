@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="overrideContext"></param>
         /// <returns>bool</returns>
-        void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken);
+        bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken);
 
         /// <summary>
         /// Process a grbl alarm

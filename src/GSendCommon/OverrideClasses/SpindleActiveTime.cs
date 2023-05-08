@@ -29,7 +29,7 @@ namespace GSendCommon.OverrideClasses
 
         public int SortOrder => int.MinValue;
 
-        public void Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
+        public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
             IGCodeCommand startStopCommand = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('M') && 
                 (
@@ -58,7 +58,11 @@ namespace GSendCommon.OverrideClasses
                 {
                     StopSpindleTimer();
                 }
+
+                return false;
             }
+
+            return false;
         }
 
         public void Process(GrblAlarm alarm)

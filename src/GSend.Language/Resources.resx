@@ -963,6 +963,9 @@
   <data name="WarningContainsFloodCoolantOption" xml:space="preserve">
     <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>
   </data>
+  <data name="WarningContainsInvalidGCode" xml:space="preserve">
+    <value>The file contains invalid G Code, check maximum line length</value>
+  </data>
   <data name="WarningContainsMistCoolantOption" xml:space="preserve">
     <value>GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored.</value>
   </data>

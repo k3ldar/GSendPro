@@ -29,6 +29,8 @@ namespace GSendAnalyser
             return Result.ToString();
         }
 
+        public bool IsCommentOnly => (Commands.Count == 1 && Commands[0].Command.Equals('\0') && !String.IsNullOrEmpty(Commands[0].Comment));
+
         public IGCodeLineInfo GetGCodeInfo()
         {
             GCodeLineInformation Result = new();

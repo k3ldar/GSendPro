@@ -14,6 +14,7 @@ using GSendCommon.OverrideClasses;
 
 using GSendShared;
 using GSendShared.Interfaces;
+using GSendShared.Models;
 
 using GSendTests.Mocks;
 
@@ -53,8 +54,8 @@ namespace GSendTests.OverrideTests
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
-            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
-            context.ProcessGCodeLine(gCodeLine);
+            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel());
+            context.ProcessGCodeOverrides(gCodeLine);
             using (SpindleActiveTime sut = new SpindleActiveTime(mockMachineProvider))
                 sut.Process(context, CancellationToken.None);
 
@@ -80,8 +81,8 @@ namespace GSendTests.OverrideTests
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
-            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, mockComport);
-            context.ProcessGCodeLine(analyses.Lines(out int lineCount)[0]);
+            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel());
+            context.ProcessGCodeOverrides(analyses.Lines(out int lineCount)[0]);
 
             Assert.AreEqual(150, mockComport.Commands.Count);
             Assert.AreEqual("S3000M3", mockComport.Commands[149]);
