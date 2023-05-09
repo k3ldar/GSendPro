@@ -1866,9 +1866,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelZoom.Location = new System.Drawing.Point(512, 6);
             this.panelZoom.MaximumSize = new System.Drawing.Size(200, 200);
-            this.panelZoom.MinimumSize = new System.Drawing.Size(130, 130);
+            this.panelZoom.MinimumSize = new System.Drawing.Size(200, 200);
             this.panelZoom.Name = "panelZoom";
-            this.panelZoom.Size = new System.Drawing.Size(130, 130);
+            this.panelZoom.Size = new System.Drawing.Size(200, 200);
             this.panelZoom.TabIndex = 1;
             // 
             // machine2dView1

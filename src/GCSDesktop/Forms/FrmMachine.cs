@@ -548,7 +548,6 @@ namespace GSendDesktop.Forms
             }
 
             _machineUpdateThread.ThreadSendCommandQueue.Enqueue(message);
-
         }
 
         #endregion Thread Send
@@ -1941,6 +1940,17 @@ namespace GSendDesktop.Forms
 
         #region G Code
 
+        private void AddRowToGrid(List<DataGridViewRow> rows)
+        {
+            if (dataGridGCode.InvokeRequired)
+            {
+                Invoke(AddRowToGrid, rows);
+                return;
+            }
+
+            dataGridGCode.Rows.AddRange(rows.ToArray());
+        }
+
         private void LoadGCode(string fileName)
         {
             using (MouseControl mouseControl = MouseControl.ShowWaitCursor(this))
@@ -1954,26 +1964,29 @@ namespace GSendDesktop.Forms
                     _gCodeAnalyses = gCodeParser.Parse(fileContents);
                     _gCodeAnalyses.Analyse(fileName);
 
-                    tabControlSecondary.TabPages.Insert(1, tabPageGCode);
-
                     machine2dView1.LoadGCode(_gCodeAnalyses);
-                    dataGridGCode.Rows.Clear();
-                    List<DataGridViewRow> gridRows = new List<DataGridViewRow>();
 
-                    foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+                    Task.Run(() =>
                     {
-                        IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
-                        DataGridViewRow row = new DataGridViewRow();
-                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.GCode });
-                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.Comments });
-                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.FeedRate) });
-                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.SpindleSpeed) });
-                        row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.Attributes) });
+                        dataGridGCode.Rows.Clear();
+                        List<DataGridViewRow> gridRows = new List<DataGridViewRow>();
 
-                        gridRows.Add(row);
-                    }
+                        foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+                        {
+                            IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
+                            DataGridViewRow row = new DataGridViewRow();
+                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.GCode });
+                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.Comments });
+                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.FeedRate) });
+                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.SpindleSpeed) });
+                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.Attributes) });
 
-                    dataGridGCode.Rows.AddRange(gridRows.ToArray());
+                            gridRows.Add(row);
+                        }
+
+                        AddRowToGrid(gridRows);
+                    });
+
                     machine2dView1.LoadGCode(_gCodeAnalyses);
 
                     if (cbAutoSelectFeedbackUnit.Checked && (int)_gCodeAnalyses.UnitOfMeasurement != (int)_machine.FeedbackUnit)
@@ -2054,6 +2067,7 @@ namespace GSendDesktop.Forms
                 }
 
                 UpdateEnabledState();
+                tabControlSecondary.TabPages.Insert(1, tabPageGCode);
             }
         }
 
