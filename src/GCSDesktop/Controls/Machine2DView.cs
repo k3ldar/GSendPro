@@ -60,65 +60,29 @@ namespace GSendDesktop.Controls
                 if (yCommand != null)
                     newLocation.Y = YDirectionWithInversion((float)yCommand.CurrentY);
 
-                //bool radiusDrawn = false;
+                bool radiusDrawn = false;
 
-                //if (gCommand != null)
-                //{
-                //    switch (gCommand.CommandValue)
-                //    {
-                //        case 2:
-                //        case 3:
-                //            float radius = CalculateRadius(latestPos, newLocation, iCommand, jCommand, rCommand);
-                //            DrawArcBetweenTwoPoints(g, layerPen, latestPos, newLocation, radius, gCommand.CommandValue.Equals(3));
-                //            radiusDrawn = true;
-                //            break;
-                //    }
-                //}
+                if (gCommand != null)
+                {
+                    switch (gCommand.CommandValue)
+                    {
+                        case 2:
+                        case 3:
+                            float radius = CalculateRadius((double)iCommand.CommandValue, (double)jCommand.CommandValue, rCommand);
+                            DrawArcBetweenTwoPoints(g, layerPen, latestPos, newLocation, radius, gCommand.CommandValue.Equals(2));
+                            radiusDrawn = true;
+                            break;
+                    }
+                }
 
-                //if (!radiusDrawn)
+                if (!radiusDrawn)
                     g.DrawLine(layerPen, latestPos, newLocation);
-
-                //if (iCommand != null && jCommand != null)
-                //{
-                //    //g.DrawArc(new Pen(Color.Red, 1f), (float)latestPos.X, (float)latestPos.Y, (float)newLocation.X, (float)newLocation.Y, (float)iCommand.CommandValue, (float)jCommand.CommandValue);
-                //}
-                //else
-                //{ 
-                //if (gCommand == null || gCommand.CommandValue.Equals(1))
-                //{
-
-                //}
-                //else if (gCommand.CommandValue == 2 || gCommand.CommandValue == 3)
-                //{
-
-                //    if (iCommand != null && jCommand != null)
-                //    {
-                //        //Arc2d arc = new g3.Arc2d(new g3.Vector2d(iparam, jparam), new g3.Vector2d(xstartpos, ystartpos), new g3.Vector2d(x, y));
-
-                //        g.DrawArc(new Pen(Color.Red, 1f), (float)newLocation.X, (float)newLocation.Y, (float)latestPos.X, (float)latestPos.Y, (float)iCommand.CommandValue, (float)jCommand.CommandValue);
-                //    }
-                //}
 
                 latestPos = newLocation;
             }
 
             UpdateImage();
         }
-
-        //private float CalculateRadius(PointF startPos, PointF endPos, IGCodeCommand iCommand, IGCodeCommand jCommand, IGCodeCommand rCommand)
-        //{
-        //    if (rCommand != null)
-        //    {
-        //        return (float)rCommand.CommandValue;
-        //    }
-
-        //    //PointF centerCircle = new PointF(startPos.X / 2, startPos.Y / 2);
-        //    double dx = (double)startPos.X - (double)iCommand.CommandValue;
-        //    double dy = (double)startPos.Y - (double)jCommand.CommandValue;
-
-        //    //double circleRadius = Math.Sqrt((dx * dx) + (dy * dy));
-        //    return (float)(dx + dy);//circleRadius;
-        //}
 
         public void UnloadGCode()
         {
@@ -233,45 +197,52 @@ namespace GSendDesktop.Controls
 
         public event EventHandler ImageUpdated;
 
-        //private void DrawArcBetweenTwoPoints(Graphics g, Pen pen, PointF a, PointF b, float radius, bool flip = false)
-        //{
-        //    if (flip)
-        //    {
-        //        PointF temp = b;
-        //        b = a;
-        //        a = temp;
-        //    }
+        private float CalculateRadius(double offsetX, double offsetY, IGCodeCommand rCommand)
+        {
+            if (rCommand != null)
+                return (float)rCommand.CommandValue;
 
-        //    // get distance components
-        //    double x = b.X - a.X, y = b.Y - a.Y;
-        //    // get orientation angle
-        //    double θ = Math.Atan2(y, x);
-        //    // length between A and B
-        //    double l = Math.Sqrt((x * x) + (y * y));
+            return (float)Math.Sqrt((offsetX * offsetX) + (offsetY * offsetY));
+        }
+        private void DrawArcBetweenTwoPoints(Graphics g, Pen pen, PointF a, PointF b, float radius, bool flip = false)
+        {
+            if (flip)
+            {
+                PointF temp = b;
+                b = a;
+                a = temp;
+            }
 
-        //    if (2 * radius >= l)
-        //    {
-        //        // find the sweep angle (actually half the sweep angle)
-        //        double sweepAngle = Math.Asin(l / (2 * radius));
-        //        // triangle height from the chord to the center
-        //        double h = radius * Math.Cos(sweepAngle);
-        //        // get center point. 
-        //        // Use sin(θ)=y/l and cos(θ)=x/l
-        //        PointF C = new PointF(
-        //            (float)(a.X + (x / 2) - (h * (y / l))),
-        //            (float)(a.Y + (y / 2) + (h * (x / l))));
+            // get distance components
+            double x = b.X - a.X, y = b.Y - a.Y;
+            // get orientation angle
+            double θ = Math.Atan2(y, x);
+            // length between A and B
+            double l = Math.Sqrt((x * x) + (y * y));
 
-        //        g.DrawLine(Pens.DarkGray, C, a);
-        //        g.DrawLine(Pens.DarkGray, C, b);
+            if (2 * radius >= l)
+            {
+                // find the sweep angle (actually half the sweep angle)
+                double sweepAngle = Math.Asin(l / (2 * radius));
+                // triangle height from the chord to the center
+                double h = radius * Math.Cos(sweepAngle);
+                // get center point. 
+                // Use sin(θ)=y/l and cos(θ)=x/l
+                PointF C = new PointF(
+                    (float)(a.X + (x / 2) - (h * (y / l))),
+                    (float)(a.Y + (y / 2) + (h * (x / l))));
 
-        //        // Conversion factor between radians and degrees
-        //        const double to_deg = 180 / Math.PI;
+                //g.DrawLine(Pens.DarkGray, C, a);
+                //g.DrawLine(Pens.DarkGray, C, b);
 
-        //        // Draw arc based on square around center and start/sweep angles
-        //        g.DrawArc(pen, C.X - radius, C.Y - radius, 2 * radius, 2 * radius,
-        //            (float)((θ - sweepAngle) * to_deg) - 90, (float)(2 * sweepAngle * to_deg));
-        //    }
-        //}
+                // Conversion factor between radians and degrees
+                const double to_deg = 180 / Math.PI;
+
+                // Draw arc based on square around center and start/sweep angles
+                g.DrawArc(pen, C.X - radius, C.Y - radius, 2 * radius, 2 * radius,
+                    (float)((θ - sweepAngle) * to_deg) - 90, (float)(2 * sweepAngle * to_deg));
+            }
+        }
 
         private void UpdateImage() 
         { 
