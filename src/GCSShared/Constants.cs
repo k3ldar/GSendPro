@@ -112,6 +112,10 @@ namespace GSendShared
 
         public const string MessageUnloadGCode = "mUnload:{0}";
 
+        public const string MessageToggleSimulationServer = "mToggleSimulation";
+
+        public const string MessageToggleSimulation = "mToggleSimulation:{0}";
+
         public const string StateUndefined = "Undefined";
 
         public const string MessageRunGCodeAdmin = "mStart";

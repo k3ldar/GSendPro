@@ -40,6 +40,8 @@
         G59ZeroXSet = 65536,
 
         G59ZeroYSet = 131072,
+
+        SimulationMode = 262144,
     }
 
     [Flags]

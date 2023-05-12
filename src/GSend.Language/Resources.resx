@@ -192,6 +192,9 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="CommandQueueSize" xml:space="preserve">
+    <value>Command Queue Size: {0}</value>
+  </data>
   <data name="Configuration" xml:space="preserve">
     <value>Configuration</value>
   </data>
@@ -519,6 +522,9 @@
   <data name="LargeIcons" xml:space="preserve">
     <value>Large Icons</value>
   </data>
+  <data name="Line" xml:space="preserve">
+    <value>Line</value>
+  </data>
   <data name="LoadFileForDetails" xml:space="preserve">
     <value>Please load a G Code file.</value>
   </data>
@@ -807,6 +813,9 @@
   <data name="SettingsChanged" xml:space="preserve">
     <value>Setting have changed or been updated</value>
   </data>
+  <data name="SimulateRun" xml:space="preserve">
+    <value>Simulate run to check/validate GCode</value>
+  </data>
   <data name="SpeedPercent" xml:space="preserve">
     <value>{0}% of Maximum Feed Rate</value>
   </data>
@@ -944,6 +953,9 @@
   </data>
   <data name="TotalJobTime" xml:space="preserve">
     <value>Time Running: {0}</value>
+  </data>
+  <data name="TotalLines" xml:space="preserve">
+    <value>Total Lines: {0}</value>
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>

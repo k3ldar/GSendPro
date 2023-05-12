@@ -61,12 +61,16 @@
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelCpu = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpindle = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFeedRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelDisplayUnit = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBarJob = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
+            this.lblTotalLines = new System.Windows.Forms.Label();
+            this.lblCommandQueueSize = new System.Windows.Forms.Label();
+            this.lblQueueSize = new System.Windows.Forms.Label();
+            this.lblBufferSize = new System.Windows.Forms.Label();
             this.lblJobTime = new System.Windows.Forms.Label();
             this.gCodeAnalysesDetails = new GSendDesktop.Controls.GCodeAnalysesDetails();
             this.machinePositionGeneral = new GSendDesktop.Controls.MachinePosition();
@@ -177,12 +181,13 @@
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.tabPageGCode = new System.Windows.Forms.TabPage();
-            this.dataGridGCode = new System.Windows.Forms.DataGridView();
-            this.colGCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFeedRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSpindleSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAttributes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.listViewGCode = new System.Windows.Forms.ListView();
+            this.columnHeaderLine = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderGCode = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderComments = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderFeed = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderSpindleSpeed = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderAttributes = new System.Windows.Forms.ColumnHeader();
             this.tabPage2DView = new System.Windows.Forms.TabPage();
             this.panelZoom = new System.Windows.Forms.Panel();
             this.machine2dView1 = new GSendDesktop.Controls.Machine2DView();
@@ -210,7 +215,6 @@
             this.tabControlSecondary.SuspendLayout();
             this.tabPageConsole.SuspendLayout();
             this.tabPageGCode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).BeginInit();
             this.tabPage2DView.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -532,10 +536,10 @@
             this.toolStripStatusLabelStatus,
             this.toolStripStatusLabelCpu,
             this.toolStripStatusLabelWarnings,
-            this.toolStripStatusLabelBuffer,
             this.toolStripStatusLabelSpindle,
             this.toolStripStatusLabelFeedRate,
-            this.toolStripStatusLabelDisplayUnit});
+            this.toolStripStatusLabelDisplayUnit,
+            this.toolStripProgressBarJob});
             this.statusStrip.Location = new System.Drawing.Point(0, 591);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.ShowItemToolTips = true;
@@ -573,13 +577,6 @@
             this.toolStripStatusLabelWarnings.Text = "0";
             this.toolStripStatusLabelWarnings.Paint += new System.Windows.Forms.PaintEventHandler(this.toolStripStatusLabelWarnings_Paint);
             // 
-            // toolStripStatusLabelBuffer
-            // 
-            this.toolStripStatusLabelBuffer.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-            this.toolStripStatusLabelBuffer.Name = "toolStripStatusLabelBuffer";
-            this.toolStripStatusLabelBuffer.Size = new System.Drawing.Size(43, 19);
-            this.toolStripStatusLabelBuffer.Text = "Buffer";
-            // 
             // toolStripStatusLabelSpindle
             // 
             this.toolStripStatusLabelSpindle.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
@@ -600,6 +597,11 @@
             this.toolStripStatusLabelDisplayUnit.Size = new System.Drawing.Size(59, 19);
             this.toolStripStatusLabelDisplayUnit.Text = "mm/min";
             // 
+            // toolStripProgressBarJob
+            // 
+            this.toolStripProgressBarJob.Name = "toolStripProgressBarJob";
+            this.toolStripProgressBarJob.Size = new System.Drawing.Size(100, 18);
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -618,10 +620,15 @@
             this.tabControlMain.SelectedIndex = 0;
             this.tabControlMain.Size = new System.Drawing.Size(773, 270);
             this.tabControlMain.TabIndex = 2;
+            this.tabControlMain.Resize += new System.EventHandler(this.tabControlMain_Resize);
             // 
             // tabPageMain
             // 
             this.tabPageMain.BackColor = System.Drawing.Color.White;
+            this.tabPageMain.Controls.Add(this.lblTotalLines);
+            this.tabPageMain.Controls.Add(this.lblCommandQueueSize);
+            this.tabPageMain.Controls.Add(this.lblQueueSize);
+            this.tabPageMain.Controls.Add(this.lblBufferSize);
             this.tabPageMain.Controls.Add(this.lblJobTime);
             this.tabPageMain.Controls.Add(this.gCodeAnalysesDetails);
             this.tabPageMain.Controls.Add(this.machinePositionGeneral);
@@ -631,6 +638,42 @@
             this.tabPageMain.Size = new System.Drawing.Size(765, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
+            // 
+            // lblTotalLines
+            // 
+            this.lblTotalLines.AutoSize = true;
+            this.lblTotalLines.Location = new System.Drawing.Point(8, 193);
+            this.lblTotalLines.Name = "lblTotalLines";
+            this.lblTotalLines.Size = new System.Drawing.Size(38, 15);
+            this.lblTotalLines.TabIndex = 6;
+            this.lblTotalLines.Text = "label3";
+            // 
+            // lblCommandQueueSize
+            // 
+            this.lblCommandQueueSize.AutoSize = true;
+            this.lblCommandQueueSize.Location = new System.Drawing.Point(8, 175);
+            this.lblCommandQueueSize.Name = "lblCommandQueueSize";
+            this.lblCommandQueueSize.Size = new System.Drawing.Size(38, 15);
+            this.lblCommandQueueSize.TabIndex = 5;
+            this.lblCommandQueueSize.Text = "label3";
+            // 
+            // lblQueueSize
+            // 
+            this.lblQueueSize.AutoSize = true;
+            this.lblQueueSize.Location = new System.Drawing.Point(8, 157);
+            this.lblQueueSize.Name = "lblQueueSize";
+            this.lblQueueSize.Size = new System.Drawing.Size(38, 15);
+            this.lblQueueSize.TabIndex = 4;
+            this.lblQueueSize.Text = "label2";
+            // 
+            // lblBufferSize
+            // 
+            this.lblBufferSize.AutoSize = true;
+            this.lblBufferSize.Location = new System.Drawing.Point(8, 139);
+            this.lblBufferSize.Name = "lblBufferSize";
+            this.lblBufferSize.Size = new System.Drawing.Size(38, 15);
+            this.lblBufferSize.TabIndex = 3;
+            this.lblBufferSize.Text = "label1";
             // 
             // lblJobTime
             // 
@@ -1768,7 +1811,7 @@
             // 
             // tabPageGCode
             // 
-            this.tabPageGCode.Controls.Add(this.dataGridGCode);
+            this.tabPageGCode.Controls.Add(this.listViewGCode);
             this.tabPageGCode.Location = new System.Drawing.Point(4, 4);
             this.tabPageGCode.Name = "tabPageGCode";
             this.tabPageGCode.Padding = new System.Windows.Forms.Padding(3);
@@ -1777,75 +1820,59 @@
             this.tabPageGCode.Text = "tabPageGCode";
             this.tabPageGCode.UseVisualStyleBackColor = true;
             // 
-            // dataGridGCode
+            // listViewGCode
             // 
-            this.dataGridGCode.AllowUserToAddRows = false;
-            this.dataGridGCode.AllowUserToDeleteRows = false;
-            this.dataGridGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridGCode.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridGCode.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colGCode,
-            this.colComment,
-            this.colFeedRate,
-            this.colSpindleSpeed,
-            this.colAttributes});
-            this.dataGridGCode.Location = new System.Drawing.Point(6, 6);
-            this.dataGridGCode.MultiSelect = false;
-            this.dataGridGCode.Name = "dataGridGCode";
-            this.dataGridGCode.ReadOnly = true;
-            this.dataGridGCode.RowTemplate.Height = 25;
-            this.dataGridGCode.Size = new System.Drawing.Size(753, 131);
-            this.dataGridGCode.TabIndex = 1;
-            this.dataGridGCode.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridGCode_RowPostPaint);
+            this.listViewGCode.AutoArrange = false;
+            this.listViewGCode.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderLine,
+            this.columnHeaderGCode,
+            this.columnHeaderComments,
+            this.columnHeaderFeed,
+            this.columnHeaderSpindleSpeed,
+            this.columnHeaderAttributes});
+            this.listViewGCode.FullRowSelect = true;
+            this.listViewGCode.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewGCode.Location = new System.Drawing.Point(6, 6);
+            this.listViewGCode.MultiSelect = false;
+            this.listViewGCode.Name = "listViewGCode";
+            this.listViewGCode.Size = new System.Drawing.Size(753, 131);
+            this.listViewGCode.TabIndex = 2;
+            this.listViewGCode.UseCompatibleStateImageBehavior = false;
+            this.listViewGCode.View = System.Windows.Forms.View.Details;
+            this.listViewGCode.VirtualMode = true;
+            this.listViewGCode.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.ListViewGCode_RetrieveVirtualItem);
             // 
-            // colGCode
+            // columnHeaderLine
             // 
-            this.colGCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colGCode.HeaderText = "GCode";
-            this.colGCode.MaxInputLength = 256;
-            this.colGCode.Name = "colGCode";
-            this.colGCode.ReadOnly = true;
-            this.colGCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colGCode.Width = 49;
+            this.columnHeaderLine.Text = "Line";
             // 
-            // colComment
+            // columnHeaderGCode
             // 
-            this.colComment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colComment.HeaderText = "Comments";
-            this.colComment.MaxInputLength = 256;
-            this.colComment.Name = "colComment";
-            this.colComment.ReadOnly = true;
-            this.colComment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colComment.Width = 72;
+            this.columnHeaderGCode.Text = "gcode";
+            this.columnHeaderGCode.Width = 250;
             // 
-            // colFeedRate
+            // columnHeaderComments
             // 
-            this.colFeedRate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colFeedRate.HeaderText = "Feed";
-            this.colFeedRate.Name = "colFeedRate";
-            this.colFeedRate.ReadOnly = true;
-            this.colFeedRate.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colFeedRate.Width = 38;
+            this.columnHeaderComments.Text = "comments";
+            this.columnHeaderComments.Width = 150;
             // 
-            // colSpindleSpeed
+            // columnHeaderFeed
             // 
-            this.colSpindleSpeed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colSpindleSpeed.HeaderText = "spindle";
-            this.colSpindleSpeed.Name = "colSpindleSpeed";
-            this.colSpindleSpeed.ReadOnly = true;
-            this.colSpindleSpeed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colSpindleSpeed.Width = 51;
+            this.columnHeaderFeed.Text = "Feed";
+            this.columnHeaderFeed.Width = 70;
             // 
-            // colAttributes
+            // columnHeaderSpindleSpeed
             // 
-            this.colAttributes.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colAttributes.HeaderText = "Attr";
-            this.colAttributes.Name = "colAttributes";
-            this.colAttributes.ReadOnly = true;
-            this.colAttributes.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAttributes.Width = 33;
+            this.columnHeaderSpindleSpeed.Text = "spindle";
+            this.columnHeaderSpindleSpeed.Width = 70;
+            // 
+            // columnHeaderAttributes
+            // 
+            this.columnHeaderAttributes.Text = "Attributes";
+            this.columnHeaderAttributes.Width = 200;
             // 
             // tabPage2DView
             // 
@@ -1947,7 +1974,6 @@
             this.tabPageConsole.ResumeLayout(false);
             this.tabPageConsole.PerformLayout();
             this.tabPageGCode.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridGCode)).EndInit();
             this.tabPage2DView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -2001,7 +2027,6 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelWarnings;
         private Controls.WarningContainer warningsAndErrors;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBuffer;
         private Controls.ProbingCommand probingCommand1;
         private System.Windows.Forms.ToolStripButton toolStripButtonSave;
         private System.Windows.Forms.Label lblSpindleType;
@@ -2103,15 +2128,21 @@
         private System.Windows.Forms.NumericUpDown numericLayerHeight;
         private System.Windows.Forms.Label lblLayerHeightMeasure;
         private System.Windows.Forms.TabPage tabPageGCode;
-        private System.Windows.Forms.DataGridView dataGridGCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colComment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFeedRate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSpindleSpeed;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAttributes;
         private System.Windows.Forms.Label lblJobTime;
         private System.Windows.Forms.TabPage tabPage2DView;
         private Controls.Machine2DView machine2dView1;
         private System.Windows.Forms.Panel panelZoom;
+        private System.Windows.Forms.Label lblCommandQueueSize;
+        private System.Windows.Forms.Label lblQueueSize;
+        private System.Windows.Forms.Label lblBufferSize;
+        private System.Windows.Forms.Label lblTotalLines;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBarJob;
+        private System.Windows.Forms.ListView listViewGCode;
+        private System.Windows.Forms.ColumnHeader columnHeaderGCode;
+        private System.Windows.Forms.ColumnHeader columnHeaderComments;
+        private System.Windows.Forms.ColumnHeader columnHeaderFeed;
+        private System.Windows.Forms.ColumnHeader columnHeaderSpindleSpeed;
+        private System.Windows.Forms.ColumnHeader columnHeaderAttributes;
+        private System.Windows.Forms.ColumnHeader columnHeaderLine;
     }
 }

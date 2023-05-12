@@ -176,12 +176,13 @@ namespace GSendCommon
                             _sendQueue.Enqueue(commandToSend);
                             _machineStateModel.BufferSize = InternalGetBufferSize();
                             _machineStateModel.QueueSize = _sendQueue.Count;
-                            Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
+                            //Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
 
                             bool overriddenGCode = InternalWriteLine(commandToSend);
 
                             NextCommand++;
+                            _machineStateModel.LineNumber = NextCommand;
 
                             if (overriddenGCode)
                                 return;
@@ -323,6 +324,9 @@ namespace GSendCommon
 
             if (_machineStateModel.SpindleSpeed > 0)
                 QueueCommand(CommandStopSpindle);
+
+            if (_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
+                ToggleSimulation();
 
             return true;
         }
@@ -749,6 +753,21 @@ namespace GSendCommon
             InternalWriteLine(CommandCoolantOff);
             OnCommandSent?.Invoke(this, CommandSent.CoolantOff);
             return true;
+        }
+
+        public bool ToggleSimulation()
+        {
+            string simulationValue = SendCommandWaitForOKCommand("$C");
+
+            if (simulationValue.Contains("Enabled"))
+            {
+                _machineStateModel.OptionAdd(MachineStateOptions.SimulationMode);
+                return true;
+            }
+
+            _machineStateModel.OptionRemove(MachineStateOptions.SimulationMode);
+
+            return false;
         }
 
         #endregion IGCodeProcessor Methods

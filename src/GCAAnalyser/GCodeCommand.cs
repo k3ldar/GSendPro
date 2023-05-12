@@ -13,6 +13,7 @@ namespace GSendAnalyser
     {
         #region Private Members
 
+        private const string ValidChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ%\0";
         private const int DefaultAccelorationXY = 300;
         private const int DefaultAccelerationZ = 30;
         private const int DefaultRapidsXY = 2000;
@@ -29,9 +30,9 @@ namespace GSendAnalyser
         public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, 
             string comment, CurrentCommandValues currentValues, int lineNumber)
         {
-            if ((currentCommand < 'A' || currentCommand > 'Z') && currentCommand != '%')
-                if (currentCommand.Equals('\0') && String.IsNullOrEmpty(comment))
-                    throw new ArgumentOutOfRangeException(nameof(currentCommand));
+
+            if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
+                throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;
             Command = currentCommand;

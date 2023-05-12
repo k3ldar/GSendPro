@@ -55,6 +55,8 @@ namespace GSendShared
 
         bool CoolantOff();
 
+        bool ToggleSimulation();
+
         OverrideModel MachineOverrides { get; set; }
 
         long Id { get; }

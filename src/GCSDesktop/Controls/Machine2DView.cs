@@ -162,7 +162,7 @@ namespace GSendDesktop.Controls
 
             if (ZoomPanel != null)
             {
-                ZoomPanel.BackgroundImage.Dispose();
+                ZoomPanel.BackgroundImage?.Dispose();
                 ZoomPanel.BackgroundImage = null;
                 _zoomImage?.Dispose();
                 _zoomImage = null;
@@ -277,10 +277,10 @@ namespace GSendDesktop.Controls
                 case AxisConfiguration.ReverseXandY: 
                 case AxisConfiguration.ReverseXandZ: 
                 case AxisConfiguration.ReversAll: 
-                    return MachineSize.Width - position; 
+                    return position;
 
                 default: 
-                    return position; 
+                    return MachineSize.Width - position;
             } 
         }
         

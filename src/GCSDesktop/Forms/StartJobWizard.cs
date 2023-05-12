@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 using GSendShared;
 using GSendShared.Models;
@@ -25,6 +18,8 @@ namespace GSendDesktop.Forms
 
             LoadResources();
         }
+
+        public bool IsSimulation => cbSimulate.Checked;
 
         public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses)
             : this()
@@ -63,6 +58,7 @@ namespace GSendDesktop.Forms
             Text = GSend.Language.Resources.StartJobWizard;
             btnCancel.Text = GSend.Language.Resources.Cancel;
             btnStart.Text = GSend.Language.Resources.Start;
+            cbSimulate.Text = GSend.Language.Resources.SimulateRun;
         }
 
         private void lstCoordinates_DrawItem(object sender, DrawItemEventArgs e)

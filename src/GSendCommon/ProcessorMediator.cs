@@ -701,6 +701,20 @@ namespace GSendCommon
 
                     break;
 
+                case Constants.MessageToggleSimulationServer:
+                    response.request = Constants.MessageToggleSimulation;
+
+                    if (foundMachine && proc != null)
+                    {
+                        response.success = proc.ToggleSimulation();
+                    }
+                    else
+                    {
+                        response.success = false;
+                    }
+
+                    break;
+
 
                 case Constants.MessageMachineUpdateSettingServer:
 

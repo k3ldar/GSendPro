@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using GSendAnalyser;
 using GSendAnalyser.Internal;
 
 using GSendApi;
@@ -57,6 +58,8 @@ namespace GSendDesktop.Forms
         private bool _configurationChanges = false;
         private bool _lastMessageWasHiddenCommand = false;
         private bool _updatingRapidOverride = false;
+        private int _totalLines;
+        private List<IGCodeLine> _gcodeLines;
 
         #endregion Private Fields
 
@@ -95,6 +98,8 @@ namespace GSendDesktop.Forms
 
             lblPropertyHeader.Text = String.Empty;
             lblPropertyDesc.Text = String.Empty;
+            lblTotalLines.Text = String.Empty;
+            toolStripProgressBarJob.Visible = false;
 
             btnZeroX.Tag = ZeroAxis.X;
             btnZeroY.Tag = ZeroAxis.Y;
@@ -114,7 +119,6 @@ namespace GSendDesktop.Forms
             ConfigureMachine();
             toolStripStatusLabelSpindle.Visible = false;
             toolStripStatusLabelFeedRate.Visible = false;
-            toolStripStatusLabelBuffer.Visible = false;
             toolStripStatusLabelStatus.Visible = false;
             warningsAndErrors_OnUpdate(this, EventArgs.Empty);
             _configurationChanges = false;
@@ -229,7 +233,6 @@ namespace GSendDesktop.Forms
                     _configurationChanges = false;
                     toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
                     toolStripStatusLabelFeedRate.Visible = true;
-                    toolStripStatusLabelBuffer.Visible = true;
                     toolStripStatusLabelStatus.Visible = true;
 
                     break;
@@ -242,7 +245,6 @@ namespace GSendDesktop.Forms
                     warningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
                     toolStripStatusLabelSpindle.Visible = false;
                     toolStripStatusLabelFeedRate.Visible = false;
-                    toolStripStatusLabelBuffer.Visible = false;
                     toolStripStatusLabelStatus.Visible = false;
                     _isPaused = false;
                     UpdateEnabledState();
@@ -385,8 +387,11 @@ namespace GSendDesktop.Forms
                     machine2dView1.XPosition = (float)status.WorkX;
                     machine2dView1.YPosition = (float)status.WorkY;
 
+                    UpdateLabelText(lblBufferSize, String.Format(GSend.Language.Resources.BufferSize, status.BufferSize));
+                    UpdateLabelText(lblQueueSize, String.Format(GSend.Language.Resources.QueueSize, status.QueueSize));
+                    UpdateLabelText(lblCommandQueueSize, String.Format(GSend.Language.Resources.CommandQueueSize, status.CommandQueueSize));
                     //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
-                    toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}/{status.BufferSize}/{status.QueueSize}/{status.CommandQueueSize}";
+                    //toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}/{status.BufferSize}/{status.QueueSize}/{status.CommandQueueSize}";
 
                     if (!_appliedSettingsChanged)
                     {
@@ -425,6 +430,9 @@ namespace GSendDesktop.Forms
                     _isRunning = status.IsRunning || status.MachineState == MachineState.Run;
                     _isJogging = status.MachineState == MachineState.Jog;
                     _isAlarm = status.IsLocked;
+                    toolStripProgressBarJob.Visible = status == null ? false :status.IsConnected && status.IsRunning;
+
+                    toolStripProgressBarJob.Value = status.LineNumber;
 
                     UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, TimeSpanToTime(status.JobTime)));
 
@@ -481,7 +489,6 @@ namespace GSendDesktop.Forms
                 }
                 else
                 {
-                    toolStripStatusLabelBuffer.Text = String.Empty;
                     toolStripStatusLabelStatus.Text = String.Empty;
                     UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, "-"));
                     UpdateMachineStatusLabel(SystemColors.Control, SystemColors.ControlText, String.Empty);
@@ -493,6 +500,10 @@ namespace GSendDesktop.Forms
                     _isJogging = false;
                     _isPaused = false;
                     _isAlarm = false;
+                    toolStripProgressBarJob.Visible = false;
+                    UpdateLabelText(lblBufferSize, String.Format(GSend.Language.Resources.BufferSize, 0));
+                    UpdateLabelText(lblQueueSize, String.Format(GSend.Language.Resources.QueueSize, 0));
+                    UpdateLabelText(lblCommandQueueSize, String.Format(GSend.Language.Resources.CommandQueueSize, 0));
                 }
             }
         }
@@ -1512,9 +1523,9 @@ namespace GSendDesktop.Forms
             toolStripStatusLabelSpindle.ToolTipText = GSend.Language.Resources.SpindleHint;
             toolStripStatusLabelFeedRate.ToolTipText = GSend.Language.Resources.CurrentFeedRate;
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
-            toolStripStatusLabelBuffer.ToolTipText = GSend.Language.Resources.AvailableBytesBlocks;
             toolStripStatusLabelWarnings.ToolTipText = GSend.Language.Resources.WarningsAndInformation;
             toolStripStatusLabelStatus.ToolTipText = GSend.Language.Resources.MachineStatus;
+            
 
 
             //tab pages
@@ -1528,8 +1539,7 @@ namespace GSendDesktop.Forms
             selectionOverrideSpindle.LabelFormat = GSend.Language.Resources.OverrideRpm;
 
             //General tab
-            //lblQueueSize.Text = String.Format(GSend.Language.Resources.QueueSize, 0);
-            //lblBufferSize.Text = String.Format(GSend.Language.Resources.BufferSize, 0);
+
 
             //Spindle tab
             lblSpindleType.Text = GSend.Language.Resources.SpindleType;
@@ -1592,10 +1602,12 @@ namespace GSendDesktop.Forms
 
             // gcode tab
             tabPageGCode.Text = GSend.Language.Resources.GCode;
-            colAttributes.HeaderText = GSend.Language.Resources.Attributes;
-            colComment.HeaderText = GSend.Language.Resources.GCodeComments;
-            colFeedRate.HeaderText = GSend.Language.Resources.FeedRate;
-            colGCode.HeaderText = GSend.Language.Resources.GCode;
+            columnHeaderLine.Text = GSend.Language.Resources.Line;
+            columnHeaderAttributes.Text = GSend.Language.Resources.Attributes;
+            columnHeaderComments.Text = GSend.Language.Resources.GCodeComments;
+            columnHeaderFeed.Text = GSend.Language.Resources.FeedRate;
+            columnHeaderGCode.Text = GSend.Language.Resources.GCode;
+            columnHeaderSpindleSpeed.Text = GSend.Language.Resources.Spindle;
 
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
@@ -1852,6 +1864,9 @@ namespace GSendDesktop.Forms
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
+                            if (startJobWizard.IsSimulation)
+                                SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+
                             SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id));
                         }
                     }
@@ -1940,17 +1955,6 @@ namespace GSendDesktop.Forms
 
         #region G Code
 
-        private void AddRowToGrid(List<DataGridViewRow> rows)
-        {
-            if (dataGridGCode.InvokeRequired)
-            {
-                Invoke(AddRowToGrid, rows);
-                return;
-            }
-
-            dataGridGCode.Rows.AddRange(rows.ToArray());
-        }
-
         private void LoadGCode(string fileName)
         {
             using (MouseControl mouseControl = MouseControl.ShowWaitCursor(this))
@@ -1965,27 +1969,8 @@ namespace GSendDesktop.Forms
                     _gCodeAnalyses.Analyse(fileName);
 
                     machine2dView1.LoadGCode(_gCodeAnalyses);
-
-                    Task.Run(() =>
-                    {
-                        dataGridGCode.Rows.Clear();
-                        List<DataGridViewRow> gridRows = new List<DataGridViewRow>();
-
-                        foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
-                        {
-                            IGCodeLineInfo gCodeLineInfo = line.GetGCodeInfo();
-                            DataGridViewRow row = new DataGridViewRow();
-                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.GCode });
-                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = gCodeLineInfo.Comments });
-                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.FeedRate) });
-                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.SpindleSpeed) });
-                            row.Cells.Add(new DataGridViewTextBoxCell() { Value = FixEmptyValue(gCodeLineInfo.Attributes) });
-
-                            gridRows.Add(row);
-                        }
-
-                        AddRowToGrid(gridRows);
-                    });
+                    _gcodeLines = _gCodeAnalyses.Lines(out _totalLines);
+                    listViewGCode.VirtualListSize = _totalLines;
 
                     machine2dView1.LoadGCode(_gCodeAnalyses);
 
@@ -2057,6 +2042,11 @@ namespace GSendDesktop.Forms
                         }
                     }
 
+
+                    UpdateLabelText(lblTotalLines, String.Format(GSend.Language.Resources.TotalLines, _totalLines));
+                    lblTotalLines.Visible = true;
+                    toolStripProgressBarJob.Maximum = _totalLines;
+
                     gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
                     string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
                     SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
@@ -2087,16 +2077,46 @@ namespace GSendDesktop.Forms
 
         private void UnloadGCode()
         {
+            listViewGCode.VirtualListSize = 0;
+
             if (_gCodeAnalyses != null)
                 _gCodeAnalyses = null;
+
+            if (_gcodeLines != null)
+                _gcodeLines = null;
 
             machine2dView1.UnloadGCode();
             gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
             SendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
             tabControlSecondary.TabPages.Remove(tabPageGCode);
+            lblTotalLines.Visible = false;
             UpdateEnabledState();
         }
 
+        private void ListViewGCode_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if (_gcodeLines == null || _gcodeLines.Count < e.ItemIndex)
+                return;
+
+            IGCodeLine gcodeLine = _gcodeLines[e.ItemIndex];
+            IGCodeLineInfo gCodeLineInfo = gcodeLine.GetGCodeInfo();
+
+            int line = e.ItemIndex + 1;
+            ListViewItem item = new(line.ToString());
+            item.SubItems.Add(gCodeLineInfo.GCode);
+            item.SubItems.Add(gCodeLineInfo.Comments);
+            item.SubItems.Add(FixEmptyValue(gCodeLineInfo.FeedRate));
+            item.SubItems.Add(FixEmptyValue(gCodeLineInfo.SpindleSpeed));
+            item.SubItems.Add(FixEmptyValue(gCodeLineInfo.Attributes));
+            item.Tag = gcodeLine;
+            e.Item = item;
+        }
+
         #endregion G Code
+
+        private void tabControlMain_Resize(object sender, EventArgs e)
+        {
+            tabControlSecondary.Width = tabControlMain.Width;
+        }
     }
 }

@@ -39,6 +39,7 @@
             this.lblWarnings = new System.Windows.Forms.Label();
             this.lstCoordinates = new System.Windows.Forms.ListBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.cbSimulate = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnStart
@@ -127,11 +128,22 @@
             this.imageList1.Images.SetKeyName(0, "Error_red_16x16.png");
             this.imageList1.Images.SetKeyName(1, "tick16x16.png");
             // 
+            // cbSimulate
+            // 
+            this.cbSimulate.AutoSize = true;
+            this.cbSimulate.Location = new System.Drawing.Point(12, 240);
+            this.cbSimulate.Name = "cbSimulate";
+            this.cbSimulate.Size = new System.Drawing.Size(71, 19);
+            this.cbSimulate.TabIndex = 8;
+            this.cbSimulate.Text = "simulate";
+            this.cbSimulate.UseVisualStyleBackColor = true;
+            // 
             // StartJobWizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 272);
+            this.Controls.Add(this.cbSimulate);
             this.Controls.Add(this.lstCoordinates);
             this.Controls.Add(this.lblWarnings);
             this.Controls.Add(this.cmbTool);
@@ -140,7 +152,12 @@
             this.Controls.Add(this.lblWorkItem);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnStart);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "StartJobWizard";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "StartJobWizard";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -158,5 +175,6 @@
         private System.Windows.Forms.Label lblWarnings;
         private System.Windows.Forms.ListBox lstCoordinates;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.CheckBox cbSimulate;
     }
 }

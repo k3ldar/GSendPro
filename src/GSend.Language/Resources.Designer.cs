@@ -286,6 +286,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command Queue Size: {0}.
+        /// </summary>
+        public static string CommandQueueSize {
+            get {
+                return ResourceManager.GetString("CommandQueueSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Configuration {
@@ -1267,6 +1276,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line.
+        /// </summary>
+        public static string Line {
+            get {
+                return ResourceManager.GetString("Line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please load a G Code file..
         /// </summary>
         public static string LoadFileForDetails {
@@ -2131,6 +2149,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulate run to check/validate GCode.
+        /// </summary>
+        public static string SimulateRun {
+            get {
+                return ResourceManager.GetString("SimulateRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}% of Maximum Feed Rate.
         /// </summary>
         public static string SpeedPercent {
@@ -2541,6 +2568,15 @@ namespace GSend.Language {
         public static string TotalJobTime {
             get {
                 return ResourceManager.GetString("TotalJobTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Lines: {0}.
+        /// </summary>
+        public static string TotalLines {
+            get {
+                return ResourceManager.GetString("TotalLines", resourceCulture);
             }
         }
         
