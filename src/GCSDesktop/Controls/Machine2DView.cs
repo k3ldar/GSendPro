@@ -262,7 +262,6 @@ namespace GSendDesktop.Controls
             if (_gCodeImage != null)
                 g.DrawImage(_gCodeImage, 0, 0);
 
-            //g.DrawRectangle(_outerPen, MachineSize); 
             g.DrawRectangle(_locationPen, XDirectionWithInversion(XPosition) - 3, YDirectionWithInversion(YPosition) - 3, 6, 6); 
             g.FillRectangle(new SolidBrush(Color.Black), XDirectionWithInversion(XPosition) - 2, YDirectionWithInversion(YPosition) - 2, 4, 4); 
 
