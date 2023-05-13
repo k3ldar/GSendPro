@@ -497,9 +497,9 @@ namespace GSendCommon
 
             if (stepSize < 0.01)
             {
-                maxZTravel = _machine.Settings.MaxTravelX;// - Convert.ToDecimal(StateModel.MachineZ);
-                maxXTravel = _machine.Settings.MaxTravelY;// - Convert.ToDecimal(StateModel.MachineX);
-                maxYTravel = _machine.Settings.MaxTravelZ;// - Convert.ToDecimal(StateModel.MachineY);
+                maxZTravel = _machine.Settings.MaxTravelZ;// - Convert.ToDecimal(StateModel.MachineZ);
+                maxXTravel = _machine.Settings.MaxTravelX;// - Convert.ToDecimal(StateModel.MachineX);
+                maxYTravel = _machine.Settings.MaxTravelY;// - Convert.ToDecimal(StateModel.MachineY);
             }
 
             switch (jogDirection)

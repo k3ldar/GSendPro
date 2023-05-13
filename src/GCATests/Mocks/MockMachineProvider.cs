@@ -87,6 +87,31 @@ namespace GSendTests.Mocks
             SpindleTimeFinishCalled = spindleTimeId == 10;
         }
 
+        public IJobProfile JobProfileGet(long jobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyList<IJobProfile> JobProfilesGet()
+        {
+            throw new NotImplementedException();
+        }
+
+        public long JobProfileAdd(string name, string description)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void JobProfileUpdate(IJobProfile jobProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
         public bool SpindleTimeFinishCalled { get; private set; }
     }

@@ -2022,7 +2022,7 @@
             // 
             // heartbeatPanelAvailableBlocks
             // 
-            this.heartbeatPanelAvailableBlocks.AutoPoints = false;
+            this.heartbeatPanelAvailableBlocks.AutoPoints = true;
             this.heartbeatPanelAvailableBlocks.BackGround = System.Drawing.Color.LightCyan;
             this.heartbeatPanelAvailableBlocks.GraphName = null;
             this.heartbeatPanelAvailableBlocks.Location = new System.Drawing.Point(415, 109);
@@ -2035,7 +2035,7 @@
             // 
             // heartbeatPanelAvailableRXBytes
             // 
-            this.heartbeatPanelAvailableRXBytes.AutoPoints = false;
+            this.heartbeatPanelAvailableRXBytes.AutoPoints = true;
             this.heartbeatPanelAvailableRXBytes.BackGround = System.Drawing.Color.LightCyan;
             this.heartbeatPanelAvailableRXBytes.GraphName = null;
             this.heartbeatPanelAvailableRXBytes.Location = new System.Drawing.Point(3, 215);

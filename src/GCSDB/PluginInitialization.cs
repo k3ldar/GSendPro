@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-using GSendDB.Providers;
+﻿using GSendDB.Providers;
 using GSendDB.Tables;
 
 using GSendShared;
