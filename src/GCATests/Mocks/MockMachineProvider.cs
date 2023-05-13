@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
-    internal class MockMachineProvider : IMachineProvider
+    internal class MockMachineProvider : IGSendDataProvider
     {
         private readonly List<IMachine> _machines;
 

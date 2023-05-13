@@ -10,9 +10,9 @@ namespace GSendService.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IMachineProvider _machineProvider;
+        private readonly IGSendDataProvider _machineProvider;
 
-        public HomeController(IMachineProvider machineProvider)
+        public HomeController(IGSendDataProvider machineProvider)
         {
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }

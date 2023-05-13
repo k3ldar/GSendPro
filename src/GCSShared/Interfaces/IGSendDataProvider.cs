@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GSendShared.Models;
-
-namespace GSendShared
+﻿namespace GSendShared
 {
-    public interface IMachineProvider
+    public interface IGSendDataProvider
     {
         bool MachineAdd(IMachine machine);
 
@@ -23,5 +15,15 @@ namespace GSendShared
         long SpindleTimeCreate(long machineId, int maxSpindleSpeed);
 
         void SpindleTimeFinish(long spindleTimeId);
+
+        IJobProfile JobProfileGet(long jobId);
+
+        IReadOnlyList<IJobProfile> JobProfilesGet();
+
+        long JobProfileAdd(string name, string description);
+
+        void JobProfileUpdate(IJobProfile jobProfile);
+
+        ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile);
     }
 }

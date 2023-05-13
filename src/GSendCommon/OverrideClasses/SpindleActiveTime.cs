@@ -12,10 +12,10 @@ namespace GSendCommon.OverrideClasses
     /// </summary>
     public sealed class SpindleActiveTime : IGCodeOverride, IDisposable
     {
-        private readonly IMachineProvider _machineProvider;
+        private readonly IGSendDataProvider _machineProvider;
         private long _spindleTimeId = -1;
 
-        public SpindleActiveTime(IMachineProvider machineProvider)
+        public SpindleActiveTime(IGSendDataProvider machineProvider)
         {
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }

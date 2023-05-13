@@ -3,21 +3,28 @@
 using GSendShared;
 using GSendShared.Models;
 
+using Shared.Classes;
+
 using SimpleDB;
 
 namespace GSendDB.Providers
 {
-    internal class MachineProvider : IMachineProvider
+    internal class GSendDataProvider : IGSendDataProvider
     {
         private readonly ISimpleDBOperations<MachineDataRow> _machineDataRow;
         private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
+        private readonly ISimpleDBOperations<JobProfileDataRow> _jobProfileTable;
 
-        public MachineProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
-            ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable)
+        public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
+            ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable,
+            ISimpleDBOperations<JobProfileDataRow> jobProfileTable)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
+            _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
         }
+
+        #region Machines
 
         public bool MachineAdd(IMachine machine)
         {
@@ -66,6 +73,10 @@ namespace GSendDB.Providers
             return ConvertFromMachineDataRow(_machineDataRow.Select(machineId));
         }
 
+        #endregion Machines
+
+        #region Spindle Time
+
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)
         {
             MachineSpindleTimeDataRow Result = new MachineSpindleTimeDataRow()
@@ -91,6 +102,64 @@ namespace GSendDB.Providers
                 _spindleTimeTable.Update(spindleTime);
             }
         }
+
+        #endregion SpindleTime
+
+        #region Job Profiles
+
+
+        public IJobProfile JobProfileGet(long jobId)
+        {
+
+        }
+
+        public IReadOnlyList<IJobProfile> JobProfilesGet()
+        {
+
+        }
+
+        public long JobProfileAdd(string name, string description)
+        {
+            JobProfileDataRow newJobProfile = new JobProfileDataRow()
+            {
+                JobName = name,
+                JobDescription = description,
+            };
+
+            _jobProfileTable.Insert(newJobProfile);
+
+            return newJobProfile.Id;
+        }
+
+        public void JobProfileUpdate(IJobProfile jobProfile)
+        {
+            JobProfileDataRow jobProfileDataRow = _jobProfileTable.Select(jobProfile.Id);
+
+            if (jobProfileDataRow != null)
+            {
+                jobProfileDataRow.JobName = jobProfile.Name;
+                jobProfileDataRow.JobDescription = jobProfile.Description;
+
+                _jobProfileTable.Update(jobProfileDataRow);
+            }
+        }
+
+        public ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile)
+        {
+            using (TimedLock tl = TimedLock.Lock(_jobProfileTable))
+            {
+                JobProfileDataRow jobProfileDataRow = _jobProfileTable.Select(jobProfile.Id);
+
+                if (jobProfileDataRow == null)
+                    throw new InvalidOperationException();
+
+                jobProfileDataRow.SerialNumber++;
+                _jobProfileTable.Update(jobProfileDataRow);
+                return jobProfileDataRow.SerialNumber;
+            }
+        }
+
+        #endregion Job Profiles
 
 
         #region Private Methods

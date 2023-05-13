@@ -150,7 +150,7 @@ namespace GSendCommon
             {
                 new SpindleSoftStart(),
                 new SpindleSoftStop(),
-                new SpindleActiveTime(_serviceProvider.GetRequiredService<IMachineProvider>()),
+                new SpindleActiveTime(_serviceProvider.GetRequiredService<IGSendDataProvider>()),
             };
 
             return Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();

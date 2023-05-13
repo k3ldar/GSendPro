@@ -24,7 +24,7 @@ namespace GSendDB
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMachineProvider, MachineProvider>();
+            services.AddSingleton<IGSendDataProvider, GSendDataProvider>();
         }
 
         public void Finalise()
@@ -57,6 +57,7 @@ namespace GSendDB
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineSpindleTimeDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineServiceDataRow>>();
+            _ = app.ApplicationServices.GetService<ISimpleDBOperations<JobProfileDataRow>>();
         }
 
         public void Configure(in IApplicationBuilder app)
@@ -70,6 +71,7 @@ namespace GSendDB
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineSpindleTimeDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineServiceDataRow));
+            services.AddSingleton(typeof(TableRowDefinition), typeof(JobProfileDataRow));
         }
 
         public void AfterConfigureServices(in IServiceCollection services)

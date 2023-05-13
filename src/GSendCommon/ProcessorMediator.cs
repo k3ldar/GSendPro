@@ -22,7 +22,7 @@ namespace GSendCommon
         private DateTime _lastSendStatus = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly ILogger _logger;
-        private readonly IMachineProvider _machineProvider;
+        private readonly IGSendDataProvider _machineProvider;
         private readonly IComPortFactory _comPortFactory;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly GSendSettings _settings;
@@ -34,7 +34,7 @@ namespace GSendCommon
 
         public ProcessorMediator(IServiceProvider serviceProvider,
             ILogger logger,
-            IMachineProvider machineProvider,
+            IGSendDataProvider machineProvider,
             IComPortFactory comPortFactory,
             INotificationService notificationService,
             ISettingsProvider settingsProvider)

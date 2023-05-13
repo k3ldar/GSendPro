@@ -17,12 +17,12 @@ namespace GSendService.Api
 {
     public class MachineApi : BaseController
     {
-        private readonly IMachineProvider _machineProvider;
+        private readonly IGSendDataProvider _machineProvider;
         private readonly IComPortProvider _comPortProvider;
         private readonly INotificationService _notificationService;
         private readonly GSendSettings _settings;
 
-        public MachineApi(IMachineProvider machineProvider, IComPortProvider comPortProvider, ISettingsProvider settingsProvider, INotificationService notificationService)
+        public MachineApi(IGSendDataProvider machineProvider, IComPortProvider comPortProvider, ISettingsProvider settingsProvider, INotificationService notificationService)
         {
             _settings = settingsProvider.GetSettings<GSendSettings>(GSendShared.Constants.SettingsName);
             _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));

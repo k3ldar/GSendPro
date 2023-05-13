@@ -62,7 +62,7 @@ namespace GSendCommon
         private readonly ConcurrentQueue<IGCodeLine> _sendQueue = new();
         private readonly ConcurrentQueue<IGCodeLine> _commandQueue = new();
 
-        private readonly IMachineProvider _machineProvider;
+        private readonly IGSendDataProvider _machineProvider;
         private readonly IMachine _machine;
         private readonly IComPort _port;
         private readonly IGCodeParser _gcodeParser = new GCodeParser();
@@ -86,7 +86,7 @@ namespace GSendCommon
 
         #region Constructors
 
-        public GCodeProcessor(IMachineProvider machineProvider, IMachine machine,
+        public GCodeProcessor(IGSendDataProvider machineProvider, IMachine machine,
             IComPortFactory comPortFactory, IServiceProvider serviceProvider)
             : base(machine, TimeSpan.FromMilliseconds(Constants.QueueProcessMilliseconds))
         {
