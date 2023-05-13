@@ -48,7 +48,7 @@ namespace GSendShared
 #endif
 
 #if !DEBUG
-            Shared.EventLog.Add(exception, $"{module} {data}");
+            Shared.EventLog.Add(exception, $"{moduleName} {data}");
 #endif
         }
 
