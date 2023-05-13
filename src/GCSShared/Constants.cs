@@ -6,7 +6,7 @@ namespace GSendShared
     {
         public const int QueueProcessMilliseconds = 20;
 
-        public const int MaxBufferSize = 120;
+        public const int MaxBufferSize = 135;
 
         public const int MinConnectionWait = 500;
 

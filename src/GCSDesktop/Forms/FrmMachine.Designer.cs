@@ -191,6 +191,15 @@
             this.tabPage2DView = new System.Windows.Forms.TabPage();
             this.panelZoom = new System.Windows.Forms.Panel();
             this.machine2dView1 = new GSendDesktop.Controls.Machine2DView();
+            this.tabPageHeartbeat = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanelHeartbeat = new System.Windows.Forms.FlowLayoutPanel();
+            this.heartbeatPanelCommandQueue = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelBufferSize = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelQueueSize = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelFeed = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelSpindle = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelAvailableBlocks = new ServiceManager.Core.Controls.HeartbeatPanel();
+            this.heartbeatPanelAvailableRXBytes = new ServiceManager.Core.Controls.HeartbeatPanel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -216,6 +225,8 @@
             this.tabPageConsole.SuspendLayout();
             this.tabPageGCode.SuspendLayout();
             this.tabPage2DView.SuspendLayout();
+            this.tabPageHeartbeat.SuspendLayout();
+            this.flowLayoutPanelHeartbeat.SuspendLayout();
             this.SuspendLayout();
             // 
             // selectionOverrideSpindle
@@ -1729,7 +1740,7 @@
             this.warningsAndErrors.MaximumSize = new System.Drawing.Size(2048, 48);
             this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
             this.warningsAndErrors.Name = "warningsAndErrors";
-            this.warningsAndErrors.Size = new System.Drawing.Size(772, 27);
+            this.warningsAndErrors.Size = new System.Drawing.Size(772, 28);
             this.warningsAndErrors.TabIndex = 2;
             this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningsAndErrors_OnUpdate);
             this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
@@ -1744,6 +1755,7 @@
             this.tabControlSecondary.Controls.Add(this.tabPageConsole);
             this.tabControlSecondary.Controls.Add(this.tabPageGCode);
             this.tabControlSecondary.Controls.Add(this.tabPage2DView);
+            this.tabControlSecondary.Controls.Add(this.tabPageHeartbeat);
             this.tabControlSecondary.Location = new System.Drawing.Point(12, 411);
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
@@ -1914,6 +1926,126 @@
             this.machine2dView1.YPosition = 0F;
             this.machine2dView1.ZoomPanel = this.panelZoom;
             // 
+            // tabPageHeartbeat
+            // 
+            this.tabPageHeartbeat.Controls.Add(this.flowLayoutPanelHeartbeat);
+            this.tabPageHeartbeat.Location = new System.Drawing.Point(4, 4);
+            this.tabPageHeartbeat.Name = "tabPageHeartbeat";
+            this.tabPageHeartbeat.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageHeartbeat.Size = new System.Drawing.Size(765, 143);
+            this.tabPageHeartbeat.TabIndex = 3;
+            this.tabPageHeartbeat.Text = "graphs";
+            this.tabPageHeartbeat.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanelHeartbeat
+            // 
+            this.flowLayoutPanelHeartbeat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanelHeartbeat.AutoScroll = true;
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelCommandQueue);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelBufferSize);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelQueueSize);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelFeed);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelSpindle);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelAvailableBlocks);
+            this.flowLayoutPanelHeartbeat.Controls.Add(this.heartbeatPanelAvailableRXBytes);
+            this.flowLayoutPanelHeartbeat.Location = new System.Drawing.Point(6, 6);
+            this.flowLayoutPanelHeartbeat.Name = "flowLayoutPanelHeartbeat";
+            this.flowLayoutPanelHeartbeat.Size = new System.Drawing.Size(753, 131);
+            this.flowLayoutPanelHeartbeat.TabIndex = 0;
+            // 
+            // heartbeatPanelCommandQueue
+            // 
+            this.heartbeatPanelCommandQueue.AutoPoints = true;
+            this.heartbeatPanelCommandQueue.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelCommandQueue.GraphName = null;
+            this.heartbeatPanelCommandQueue.Location = new System.Drawing.Point(3, 3);
+            this.heartbeatPanelCommandQueue.MaximumPoints = 60;
+            this.heartbeatPanelCommandQueue.Name = "heartbeatPanelCommandQueue";
+            this.heartbeatPanelCommandQueue.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelCommandQueue.SecondaryColor = System.Drawing.Color.BlueViolet;
+            this.heartbeatPanelCommandQueue.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelCommandQueue.TabIndex = 2;
+            // 
+            // heartbeatPanelBufferSize
+            // 
+            this.heartbeatPanelBufferSize.AutoPoints = true;
+            this.heartbeatPanelBufferSize.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelBufferSize.GraphName = null;
+            this.heartbeatPanelBufferSize.Location = new System.Drawing.Point(209, 3);
+            this.heartbeatPanelBufferSize.MaximumPoints = 60;
+            this.heartbeatPanelBufferSize.Name = "heartbeatPanelBufferSize";
+            this.heartbeatPanelBufferSize.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelBufferSize.SecondaryColor = System.Drawing.Color.BlueViolet;
+            this.heartbeatPanelBufferSize.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelBufferSize.TabIndex = 0;
+            // 
+            // heartbeatPanelQueueSize
+            // 
+            this.heartbeatPanelQueueSize.AutoPoints = true;
+            this.heartbeatPanelQueueSize.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelQueueSize.GraphName = null;
+            this.heartbeatPanelQueueSize.Location = new System.Drawing.Point(415, 3);
+            this.heartbeatPanelQueueSize.MaximumPoints = 60;
+            this.heartbeatPanelQueueSize.Name = "heartbeatPanelQueueSize";
+            this.heartbeatPanelQueueSize.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelQueueSize.SecondaryColor = System.Drawing.Color.BlueViolet;
+            this.heartbeatPanelQueueSize.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelQueueSize.TabIndex = 1;
+            // 
+            // heartbeatPanelFeed
+            // 
+            this.heartbeatPanelFeed.AutoPoints = true;
+            this.heartbeatPanelFeed.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelFeed.GraphName = null;
+            this.heartbeatPanelFeed.Location = new System.Drawing.Point(3, 109);
+            this.heartbeatPanelFeed.MaximumPoints = 60;
+            this.heartbeatPanelFeed.Name = "heartbeatPanelFeed";
+            this.heartbeatPanelFeed.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelFeed.SecondaryColor = System.Drawing.Color.BlueViolet;
+            this.heartbeatPanelFeed.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelFeed.TabIndex = 3;
+            // 
+            // heartbeatPanelSpindle
+            // 
+            this.heartbeatPanelSpindle.AutoPoints = true;
+            this.heartbeatPanelSpindle.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelSpindle.GraphName = null;
+            this.heartbeatPanelSpindle.Location = new System.Drawing.Point(209, 109);
+            this.heartbeatPanelSpindle.MaximumPoints = 60;
+            this.heartbeatPanelSpindle.Name = "heartbeatPanelSpindle";
+            this.heartbeatPanelSpindle.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelSpindle.SecondaryColor = System.Drawing.Color.BlueViolet;
+            this.heartbeatPanelSpindle.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelSpindle.TabIndex = 4;
+            // 
+            // heartbeatPanelAvailableBlocks
+            // 
+            this.heartbeatPanelAvailableBlocks.AutoPoints = false;
+            this.heartbeatPanelAvailableBlocks.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelAvailableBlocks.GraphName = null;
+            this.heartbeatPanelAvailableBlocks.Location = new System.Drawing.Point(415, 109);
+            this.heartbeatPanelAvailableBlocks.MaximumPoints = 34;
+            this.heartbeatPanelAvailableBlocks.Name = "heartbeatPanelAvailableBlocks";
+            this.heartbeatPanelAvailableBlocks.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelAvailableBlocks.SecondaryColor = System.Drawing.Color.DarkSeaGreen;
+            this.heartbeatPanelAvailableBlocks.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelAvailableBlocks.TabIndex = 5;
+            // 
+            // heartbeatPanelAvailableRXBytes
+            // 
+            this.heartbeatPanelAvailableRXBytes.AutoPoints = false;
+            this.heartbeatPanelAvailableRXBytes.BackGround = System.Drawing.Color.LightCyan;
+            this.heartbeatPanelAvailableRXBytes.GraphName = null;
+            this.heartbeatPanelAvailableRXBytes.Location = new System.Drawing.Point(3, 215);
+            this.heartbeatPanelAvailableRXBytes.MaximumPoints = 255;
+            this.heartbeatPanelAvailableRXBytes.Name = "heartbeatPanelAvailableRXBytes";
+            this.heartbeatPanelAvailableRXBytes.PrimaryColor = System.Drawing.Color.SlateGray;
+            this.heartbeatPanelAvailableRXBytes.SecondaryColor = System.Drawing.Color.DarkSeaGreen;
+            this.heartbeatPanelAvailableRXBytes.Size = new System.Drawing.Size(200, 100);
+            this.heartbeatPanelAvailableRXBytes.TabIndex = 6;
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
@@ -1975,6 +2107,8 @@
             this.tabPageConsole.PerformLayout();
             this.tabPageGCode.ResumeLayout(false);
             this.tabPage2DView.ResumeLayout(false);
+            this.tabPageHeartbeat.ResumeLayout(false);
+            this.flowLayoutPanelHeartbeat.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2144,5 +2278,14 @@
         private System.Windows.Forms.ColumnHeader columnHeaderSpindleSpeed;
         private System.Windows.Forms.ColumnHeader columnHeaderAttributes;
         private System.Windows.Forms.ColumnHeader columnHeaderLine;
+        private System.Windows.Forms.TabPage tabPageHeartbeat;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelHeartbeat;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelBufferSize;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelQueueSize;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelCommandQueue;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelFeed;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelSpindle;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableBlocks;
+        private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableRXBytes;
     }
 }

@@ -161,13 +161,21 @@ namespace GSendDesktop.Controls
         public void ResetLayoutWarningErrorSize()
         {
             if (flowLayoutWarningErrors.Controls.Count < 2)
-                Height = 27;
+            {
+                Height = 28;
+                flowLayoutWarningErrors.AutoScroll = false;
+                flowLayoutWarningErrors.VerticalScroll.Visible = false;
+            }
             else
+            {
                 Height = 48;
+                flowLayoutWarningErrors.AutoScroll = true;
+                flowLayoutWarningErrors.VerticalScroll.Visible = false;
+            }
 
             foreach (Control control in flowLayoutWarningErrors.Controls)
             {
-                control.Width = flowLayoutWarningErrors.ClientSize.Width;
+                control.Width = flowLayoutWarningErrors.ClientSize.Width -1;
             }
         }
 

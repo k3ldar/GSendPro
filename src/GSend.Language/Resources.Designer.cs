@@ -1186,6 +1186,78 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available Blocks.
+        /// </summary>
+        public static string GraphAvailableBlocks {
+            get {
+                return ResourceManager.GetString("GraphAvailableBlocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available RX Bytes.
+        /// </summary>
+        public static string GraphAvailableRXBytes {
+            get {
+                return ResourceManager.GetString("GraphAvailableRXBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buffer Size.
+        /// </summary>
+        public static string GraphBufferSize {
+            get {
+                return ResourceManager.GetString("GraphBufferSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command Queue.
+        /// </summary>
+        public static string GraphCommandQueue {
+            get {
+                return ResourceManager.GetString("GraphCommandQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed Rate.
+        /// </summary>
+        public static string GraphFeedRate {
+            get {
+                return ResourceManager.GetString("GraphFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue Size.
+        /// </summary>
+        public static string GraphQueueSize {
+            get {
+                return ResourceManager.GetString("GraphQueueSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graphs.
+        /// </summary>
+        public static string Graphs {
+            get {
+                return ResourceManager.GetString("Graphs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spindle Speed.
+        /// </summary>
+        public static string GraphSpindleSpeed {
+            get {
+                return ResourceManager.GetString("GraphSpindleSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grbl Settings.
         /// </summary>
         public static string GrblSettings {

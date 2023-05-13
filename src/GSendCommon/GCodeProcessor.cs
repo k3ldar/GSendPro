@@ -323,7 +323,7 @@ namespace GSendCommon
             _overrideContext.Cancel();
 
             if (_machineStateModel.SpindleSpeed > 0)
-                QueueCommand(CommandStopSpindle);
+                UpdateSpindleSpeed(0, _machineStateModel.SpindleClockWise);
 
             if (_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                 ToggleSimulation();

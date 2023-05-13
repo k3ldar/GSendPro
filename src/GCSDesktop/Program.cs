@@ -40,6 +40,7 @@ namespace GSendDesktop
             }
             finally
             {
+                ThreadManager.CancelAll();
                 gSendContext.CloseContext();
             }
         }

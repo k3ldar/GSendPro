@@ -42,8 +42,10 @@ namespace ServiceManager.Core.Controls
         private Brush _backGroundBrush;
         private Brush _primaryBrush;
         private Brush _secondaryBrush;
+        private Brush _textBrush;
         private Queue<int> _points;
         private float _highestPoint;
+        private static StringFormat _format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
         #endregion Private Members
 
@@ -53,7 +55,7 @@ namespace ServiceManager.Core.Controls
         {
             BackGround = Color.LightCyan;
             PrimaryColor = Color.SlateGray;
-            SecondaryColor = Color.BlueViolet;
+            SecondaryColor = Color.DarkSeaGreen;
             MaximumPoints = 60;
             _points = new Queue<int>(MaximumPoints);
 
@@ -62,6 +64,7 @@ namespace ServiceManager.Core.Controls
             _backGroundBrush = new SolidBrush(BackGround);
             _primaryPen = new Pen(_primaryBrush);
             _secondaryPen = new Pen(_secondaryBrush);
+            _textBrush = new SolidBrush(ForeColor);
             DoubleBuffered = true;
         }
 
@@ -78,6 +81,7 @@ namespace ServiceManager.Core.Controls
             _backGroundBrush = new SolidBrush(BackGround);
             _primaryPen = new Pen(_primaryBrush);
             _secondaryPen = new Pen(_secondaryBrush);
+            _textBrush = new SolidBrush(ForeColor);
             DoubleBuffered = true;
         }
 
@@ -94,6 +98,7 @@ namespace ServiceManager.Core.Controls
             _backGroundBrush = new SolidBrush(BackGround);
             _primaryPen = new Pen(_primaryBrush);
             _secondaryPen = new Pen(_secondaryBrush);
+            _textBrush = new SolidBrush(ForeColor);
             DoubleBuffered = true;
             AutoPoints = false;
         }
@@ -112,17 +117,19 @@ namespace ServiceManager.Core.Controls
 
         public bool AutoPoints { get; set; }
 
+        public string GraphName { get; set; }
+
         #endregion Properties
 
         #region Public Methods
 
         public void AddPoint(int point)
         {
-            if (!AutoPoints && (point < 0 || point > 100))
+            if (!AutoPoints && (point < 0 || point > MaximumPoints))
                 throw new ArgumentOutOfRangeException(nameof(point));
 
-            if (_points.Count >= MaximumPoints)
-                _points.Dequeue();
+            if (_points.Count > 0 && _points.Count >= MaximumPoints)
+                _points.TryDequeue(out int _);
 
             _points.Enqueue(point);
 
@@ -157,27 +164,18 @@ namespace ServiceManager.Core.Controls
 
             if (disposing)
             {
-                if (_primaryPen != null)
-                    _primaryPen.Dispose();
-
-                if (_primaryBrush != null)
-                    _primaryBrush.Dispose();
-
-                if (_secondaryBrush != null)
-                    _secondaryBrush.Dispose();
-
-                if (_backGroundBrush != null)
-                    _backGroundBrush.Dispose();
-
-                if (_secondaryPen != null)
-                    _secondaryPen.Dispose();
+                _primaryPen?.Dispose();
+                _primaryBrush?.Dispose();
+                _secondaryBrush?.Dispose();
+                _backGroundBrush?.Dispose();
+                _secondaryPen?.Dispose();
+                _textBrush?.Dispose();
             }
         }
 
         #endregion Overridden Methods
 
         #region Private Methods
-
 
         private void DrawHeartBeat(in Graphics graphics, in Rectangle rectangle)
         {
@@ -192,7 +190,6 @@ namespace ServiceManager.Core.Controls
             float pointHeight = (float)fullArea.Height / (AutoPoints ? _highestPoint == 0 ? 100 : _highestPoint : 100);
 
             graphics.FillRectangle(_backGroundBrush, rectangle);
-            graphics.DrawRectangle(_primaryPen, fullArea);
 
             if (points.Length == 0)
                 return;
@@ -222,6 +219,10 @@ namespace ServiceManager.Core.Controls
                     lastPosition = currentPosition;
                     leftPos += pointWidth;
                 }
+
+                graphics.DrawString(GraphName, Font, _textBrush, rectangle, _format);
+
+                graphics.DrawRectangle(_primaryPen, fullArea);
             }
             finally
             {

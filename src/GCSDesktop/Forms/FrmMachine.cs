@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,10 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using GSendAnalyser;
 using GSendAnalyser.Internal;
 
 using GSendApi;
@@ -331,7 +328,7 @@ namespace GSendDesktop.Forms
             grpBoxSpindleSpeed.Enabled = _machineConnected;
 
             loadToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false;
-            clearToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false &&_gCodeAnalyses != null;
+            clearToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -390,8 +387,25 @@ namespace GSendDesktop.Forms
                     UpdateLabelText(lblBufferSize, String.Format(GSend.Language.Resources.BufferSize, status.BufferSize));
                     UpdateLabelText(lblQueueSize, String.Format(GSend.Language.Resources.QueueSize, status.QueueSize));
                     UpdateLabelText(lblCommandQueueSize, String.Format(GSend.Language.Resources.CommandQueueSize, status.CommandQueueSize));
-                    //heartbeatPanel1.AddPoint(status.AvailableRXbytes);
-                    //toolStripStatusLabelBuffer.Text = $"{status.AvailableRXbytes}/{status.BufferAvailableBlocks}/{status.BufferSize}/{status.QueueSize}/{status.CommandQueueSize}";
+
+                    heartbeatPanelBufferSize.AddPoint(status.BufferSize);
+                    heartbeatPanelCommandQueue.AddPoint(status.CommandQueueSize);
+                    heartbeatPanelFeed.AddPoint((int)status.FeedRate);
+                    heartbeatPanelQueueSize.AddPoint(status.QueueSize);
+                    heartbeatPanelSpindle.AddPoint((int)status.SpindleSpeed);
+
+                    if (heartbeatPanelAvailableRXBytes.MaximumPoints == 0 && status.AvailableRXbytes > 0)
+                    {
+                        heartbeatPanelAvailableRXBytes.MaximumPoints = status.AvailableRXbytes;
+                    }
+
+                    if (heartbeatPanelAvailableBlocks.MaximumPoints == 0 && status.BufferAvailableBlocks > 0)
+                    {   
+                        heartbeatPanelAvailableBlocks.MaximumPoints = status.BufferAvailableBlocks;
+                    }
+
+                    heartbeatPanelAvailableRXBytes.AddPoint(status.AvailableRXbytes);
+                    heartbeatPanelAvailableBlocks.AddPoint(status.BufferAvailableBlocks);
 
                     if (!_appliedSettingsChanged)
                     {
@@ -430,7 +444,7 @@ namespace GSendDesktop.Forms
                     _isRunning = status.IsRunning || status.MachineState == MachineState.Run;
                     _isJogging = status.MachineState == MachineState.Jog;
                     _isAlarm = status.IsLocked;
-                    toolStripProgressBarJob.Visible = status == null ? false :status.IsConnected && status.IsRunning;
+                    toolStripProgressBarJob.Visible = status == null ? false : status.IsConnected && status.IsRunning;
 
                     toolStripProgressBarJob.Value = status.LineNumber;
 
@@ -983,7 +997,7 @@ namespace GSendDesktop.Forms
             }
 
             _appliedSettingsChanged = true;
-            SaveChanges(true); 
+            SaveChanges(true);
             ConfigureMachine();
         }
 
@@ -1045,7 +1059,7 @@ namespace GSendDesktop.Forms
 
             if (warningsAndErrors.ErrorCount() > 0)
                 width += WarningStatusWidth;
-            
+
             if (warningsAndErrors.InformationCount() > 0)
                 width += WarningStatusWidth;
 
@@ -1525,7 +1539,7 @@ namespace GSendDesktop.Forms
             toolStripDropDownButtonCoordinateSystem.ToolTipText = GSend.Language.Resources.CoordinateSystem;
             toolStripStatusLabelWarnings.ToolTipText = GSend.Language.Resources.WarningsAndInformation;
             toolStripStatusLabelStatus.ToolTipText = GSend.Language.Resources.MachineStatus;
-            
+
 
 
             //tab pages
@@ -1611,6 +1625,17 @@ namespace GSendDesktop.Forms
 
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
+
+            // heartbeat tab
+            tabPageHeartbeat.Text = GSend.Language.Resources.Graphs;
+            heartbeatPanelBufferSize.GraphName = GSend.Language.Resources.GraphBufferSize;
+            heartbeatPanelCommandQueue.GraphName = GSend.Language.Resources.GraphCommandQueue;
+            heartbeatPanelFeed.GraphName = GSend.Language.Resources.GraphFeedRate;
+            heartbeatPanelQueueSize.GraphName = GSend.Language.Resources.GraphQueueSize;
+            heartbeatPanelSpindle.GraphName = GSend.Language.Resources.GraphSpindleSpeed;
+            heartbeatPanelAvailableBlocks.GraphName = GSend.Language.Resources.GraphAvailableBlocks;
+            heartbeatPanelAvailableRXBytes.GraphName = GSend.Language.Resources.GraphAvailableRXBytes;
+
 
 
             // menu
@@ -1776,7 +1801,7 @@ namespace GSendDesktop.Forms
                         new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
                 }
 
-                e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right -1, e.ClipRectangle.Top, e.ClipRectangle.Right -1, e.ClipRectangle.Bottom - 2);
+                e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right - 1, e.ClipRectangle.Top, e.ClipRectangle.Right - 1, e.ClipRectangle.Bottom - 2);
             }
 
         }
