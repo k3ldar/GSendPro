@@ -110,12 +110,21 @@ namespace GSendDB.Providers
 
         public IJobProfile JobProfileGet(long jobId)
         {
+            JobProfileDataRow jobProfile = _jobProfileTable.Select(jobId);
 
+            return CreateJobProfileModelFromJobProfileDataRow(jobProfile);
         }
 
         public IReadOnlyList<IJobProfile> JobProfilesGet()
         {
+            List<IJobProfile> Result = new();
 
+            foreach (JobProfileDataRow profile in _jobProfileTable.Select())
+            {
+                Result.Add(CreateJobProfileModelFromJobProfileDataRow(profile));
+            }
+
+            return Result;
         }
 
         public long JobProfileAdd(string name, string description)
@@ -228,6 +237,19 @@ namespace GSendDB.Providers
                 machineDataRow.JogFeedRate, machineDataRow.JogUnits,
                 machineDataRow.SpindleType, machineDataRow.SoftStartSeconds,
                 machineDataRow.ServiceWeeks, machineDataRow.ServiceSpindleHours);
+        }
+
+        private static JobProfileModel CreateJobProfileModelFromJobProfileDataRow(JobProfileDataRow profile)
+        {
+            if (profile == null)
+                return null;
+
+            return new JobProfileModel(profile.Id)
+            {
+                Name = profile.JobName,
+                Description = profile.JobDescription,
+                SerialNumber = profile.SerialNumber,
+            };
         }
 
         #endregion Private Methods

@@ -10,11 +10,11 @@ namespace GSendService.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IGSendDataProvider _machineProvider;
+        private readonly IGSendDataProvider _gSendDataProvider;
 
-        public HomeController(IGSendDataProvider machineProvider)
+        public HomeController(IGSendDataProvider gSendDataProvider)
         {
-            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
         }
 
         [HttpGet]
@@ -27,7 +27,7 @@ namespace GSendService.Controllers
         [Route("/ViewMachine/{machineId}/")]
         public IActionResult ViewMachine(long machineId)
         {
-            IMachine machine = _machineProvider.MachineGet(machineId);
+            IMachine machine = _gSendDataProvider.MachineGet(machineId);
 
             if (machine == null)
                 RedirectToAction(nameof(Index));
@@ -37,7 +37,7 @@ namespace GSendService.Controllers
 
         private IndexViewModel CreateIndexModel()
         {
-            return new IndexViewModel(GetModelData(), _machineProvider.MachinesGet());
+            return new IndexViewModel(GetModelData(), _gSendDataProvider.MachinesGet());
         }
 
         private MachineViewModel CreateMachineModel(IMachine machine)

@@ -10,7 +10,7 @@ namespace GSendTests.Mocks
         {
             if (serviceType != null && serviceType.Equals(typeof(IGSendDataProvider)))
             {
-                return new MockMachineProvider();
+                return new MockGSendDataProvider();
             }
                 
             return null;

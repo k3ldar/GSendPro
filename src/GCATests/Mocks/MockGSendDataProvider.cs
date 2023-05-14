@@ -10,16 +10,16 @@ using System.Diagnostics.CodeAnalysis;
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
-    internal class MockMachineProvider : IGSendDataProvider
+    internal class MockGSendDataProvider : IGSendDataProvider
     {
         private readonly List<IMachine> _machines;
 
-        public MockMachineProvider()
+        public MockGSendDataProvider()
         {
             _machines = new List<IMachine>();
         }
 
-        public MockMachineProvider(string[] names)
+        public MockGSendDataProvider(string[] names)
             : this()
         {
             for (int i = 0; i < names.Length; i++)
@@ -94,12 +94,18 @@ namespace GSendTests.Mocks
 
         public IReadOnlyList<IJobProfile> JobProfilesGet()
         {
-            throw new NotImplementedException();
+            return JobProfiles;
         }
 
         public long JobProfileAdd(string name, string description)
         {
-            throw new NotImplementedException();
+            JobProfiles.Add(new JobProfileModel(JobProfiles.Count + 1)
+            {
+                Name = name,
+                Description = description
+            });
+
+            return JobProfiles.Count;
         }
 
         public void JobProfileUpdate(IJobProfile jobProfile)
@@ -113,6 +119,9 @@ namespace GSendTests.Mocks
         }
 
         public bool SpindleTimeCreateCalled { get; private set; }
+
         public bool SpindleTimeFinishCalled { get; private set; }
+
+        public List<IJobProfile> JobProfiles { get; private set; } = new();
     }
 }

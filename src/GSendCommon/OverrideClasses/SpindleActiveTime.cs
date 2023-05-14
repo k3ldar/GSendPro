@@ -12,12 +12,12 @@ namespace GSendCommon.OverrideClasses
     /// </summary>
     public sealed class SpindleActiveTime : IGCodeOverride, IDisposable
     {
-        private readonly IGSendDataProvider _machineProvider;
+        private readonly IGSendDataProvider _gSendDataProvider;
         private long _spindleTimeId = -1;
 
-        public SpindleActiveTime(IGSendDataProvider machineProvider)
+        public SpindleActiveTime(IGSendDataProvider gSendDataProvider)
         {
-            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
         }
 
         ~SpindleActiveTime()
@@ -48,10 +48,10 @@ namespace GSendCommon.OverrideClasses
 
                     if (_spindleTimeId > -1)
                     {
-                        _machineProvider.SpindleTimeFinish(_spindleTimeId);
+                        _gSendDataProvider.SpindleTimeFinish(_spindleTimeId);
                     }
 
-                    _spindleTimeId = _machineProvider.SpindleTimeCreate(overrideContext.Machine.Id,
+                    _spindleTimeId = _gSendDataProvider.SpindleTimeCreate(overrideContext.Machine.Id,
                         spindleSpeed == null ? 0 : (int)spindleSpeed.CommandValue);
                 }
                 else
@@ -79,7 +79,7 @@ namespace GSendCommon.OverrideClasses
         {
             if (_spindleTimeId > -1)
             {
-                _machineProvider.SpindleTimeFinish(_spindleTimeId);
+                _gSendDataProvider.SpindleTimeFinish(_spindleTimeId);
                 _spindleTimeId = -1;
             }
         }

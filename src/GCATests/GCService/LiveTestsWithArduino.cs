@@ -35,7 +35,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
             sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
@@ -57,7 +57,7 @@ namespace GSendTests.GCService
             ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
 
 
-            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             sut.TimeOut = TimeSpan.FromSeconds(1000);
 
@@ -113,7 +113,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
             bool eventFired = false;
             sut.OnInvalidComPort += (sender, e) => { eventFired = true; };
             sut.TimeOut = TimeSpan.FromSeconds(5);
@@ -155,7 +155,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockMachineProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             sut.TimeOut = TimeSpan.FromSeconds(1000);
 

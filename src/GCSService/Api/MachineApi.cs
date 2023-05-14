@@ -17,15 +17,15 @@ namespace GSendService.Api
 {
     public class MachineApi : BaseController
     {
-        private readonly IGSendDataProvider _machineProvider;
+        private readonly IGSendDataProvider _gSendDataProvider;
         private readonly IComPortProvider _comPortProvider;
         private readonly INotificationService _notificationService;
         private readonly GSendSettings _settings;
 
-        public MachineApi(IGSendDataProvider machineProvider, IComPortProvider comPortProvider, ISettingsProvider settingsProvider, INotificationService notificationService)
+        public MachineApi(IGSendDataProvider gSendDataProvider, IComPortProvider comPortProvider, ISettingsProvider settingsProvider, INotificationService notificationService)
         {
             _settings = settingsProvider.GetSettings<GSendSettings>(GSendShared.Constants.SettingsName);
-            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _comPortProvider = comPortProvider ?? throw new ArgumentNullException(nameof(comPortProvider));
             _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
@@ -33,7 +33,7 @@ namespace GSendService.Api
         [HttpGet]
         public IActionResult MachinesGet()
         {
-            return GenerateJsonSuccessResponse(_machineProvider.MachinesGet());
+            return GenerateJsonSuccessResponse(_gSendDataProvider.MachinesGet());
         }
 
         [HttpPost]
@@ -42,9 +42,9 @@ namespace GSendService.Api
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
-            _machineProvider.MachineAdd(model);
+            _gSendDataProvider.MachineAdd(model);
 
-            if (_machineProvider.MachinesGet().FirstOrDefault(m => m.Name.Equals(model.Name)) == null)
+            if (_gSendDataProvider.MachinesGet().FirstOrDefault(m => m.Name.Equals(model.Name)) == null)
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error adding machine");
 
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineAdd, model.Id);
@@ -55,14 +55,14 @@ namespace GSendService.Api
         [HttpDelete]
         public IActionResult MachineDelete(long machineId)
         {
-            IMachine deleteMachine = _machineProvider.MachineGet(machineId);
+            IMachine deleteMachine = _gSendDataProvider.MachineGet(machineId);
 
             if (deleteMachine == null)
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Machine not found");
 
-            _machineProvider.MachineRemove(deleteMachine.Id);
+            _gSendDataProvider.MachineRemove(deleteMachine.Id);
 
-            if (_machineProvider.MachinesGet().FirstOrDefault(m => m.Id.Equals(machineId)) != null)
+            if (_gSendDataProvider.MachinesGet().FirstOrDefault(m => m.Id.Equals(machineId)) != null)
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error removing machine");
 
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineRemove, deleteMachine.Id);
@@ -76,7 +76,7 @@ namespace GSendService.Api
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
-            _machineProvider.MachineUpdate(model);
+            _gSendDataProvider.MachineUpdate(model);
 
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineUpdated, model.Id);
 
@@ -109,7 +109,7 @@ namespace GSendService.Api
                 return false;
             }
 
-            IReadOnlyList<IMachine> machines = _machineProvider.MachinesGet();
+            IReadOnlyList<IMachine> machines = _gSendDataProvider.MachinesGet();
 
             if (machines.Any(m => !m.Id.Equals(model.Id) && m.Name.Equals(model.Name)))
             {

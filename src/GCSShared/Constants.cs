@@ -26,6 +26,10 @@ namespace GSendShared
 
         public const string NotificationMachineUpdated = "MachineUpdate";
 
+        public const string NotificationJobProfileAdd = "JobProfileAdd";
+
+        public const string NotificationJobProfileRemove = "JobProfileRemove";
+
         public const string MessageMachineStatusAll = "mStatusAll";
 
         public const string MessageMachinePauseAll = "mPauseAll";

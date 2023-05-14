@@ -33,7 +33,7 @@ namespace GSendDB.Tables
         private decimal _layerHeightWarning;
 
 
-        // Update ConvertFromIMachineToMachineDataRow in machineprovider
+        // Update ConvertFromIMachineToMachineDataRow in gSendDataProvider
 
         public MachineDataRow()
         {

@@ -48,20 +48,20 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockMachineProvider mockMachineProvider = new MockMachineProvider(new string[] { "Machine 1" });
-            IMachine mockMachine = mockMachineProvider.MachineGet(0);
+            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1" });
+            IMachine mockMachine = gSendDataProvider.MachineGet(0);
             MockComPort mockComport = new MockComPort(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
-            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
+            IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider());
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel());
             context.ProcessGCodeOverrides(gCodeLine);
-            using (SpindleActiveTime sut = new SpindleActiveTime(mockMachineProvider))
+            using (SpindleActiveTime sut = new SpindleActiveTime(gSendDataProvider))
                 sut.Process(context, CancellationToken.None);
 
 
-            Assert.IsTrue(mockMachineProvider.SpindleTimeCreateCalled);
-            Assert.IsTrue(mockMachineProvider.SpindleTimeFinishCalled);
+            Assert.IsTrue(gSendDataProvider.SpindleTimeCreateCalled);
+            Assert.IsTrue(gSendDataProvider.SpindleTimeFinishCalled);
         }
 
         [TestMethod]
@@ -72,15 +72,15 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockMachineProvider mockMachineProvider = new MockMachineProvider(new string[] { "Machine 1" });
-            IMachine mockMachine = mockMachineProvider.MachineGet(0);
+            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1" });
+            IMachine mockMachine = gSendDataProvider.MachineGet(0);
             mockMachine.AddOptions(MachineOptions.SoftStart);
             mockMachine.SoftStartSeconds = 30;
 
             MockComPort mockComport = new MockComPort(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
-            IGCodeProcessor processor = new GCodeProcessor(mockMachineProvider, mockMachine, comPortFactory, new MockServiceProvider());
+            IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider());
             IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel());
 
             Assert.AreEqual(0, processor.StateModel.CommandQueueSize);

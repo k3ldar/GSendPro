@@ -22,7 +22,7 @@ namespace GSendCommon
         private DateTime _lastSendStatus = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly ILogger _logger;
-        private readonly IGSendDataProvider _machineProvider;
+        private readonly IGSendDataProvider _gSendDataProvider;
         private readonly IComPortFactory _comPortFactory;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly GSendSettings _settings;
@@ -34,7 +34,7 @@ namespace GSendCommon
 
         public ProcessorMediator(IServiceProvider serviceProvider,
             ILogger logger,
-            IGSendDataProvider machineProvider,
+            IGSendDataProvider gSendDataProvider,
             IComPortFactory comPortFactory,
             INotificationService notificationService,
             ISettingsProvider settingsProvider)
@@ -45,7 +45,7 @@ namespace GSendCommon
                 throw new ArgumentNullException(nameof(notificationService));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _comPortFactory = comPortFactory ?? throw new ArgumentNullException(nameof(comPortFactory));
             _settings = settingsProvider.GetSettings<GSendSettings>(Constants.SettingsName);
             notificationService.RegisterListener(this);
@@ -60,11 +60,11 @@ namespace GSendCommon
             {
                 _machines.Clear();
                 _logger.AddToLog(PluginManager.LogLevel.Information, nameof(OpenProcessors));
-                IReadOnlyList<IMachine> machines = _machineProvider.MachinesGet();
+                IReadOnlyList<IMachine> machines = _gSendDataProvider.MachinesGet();
 
                 foreach (IMachine machine in machines)
                 {
-                    IGCodeProcessor processor = new GCodeProcessor(_machineProvider, machine, _comPortFactory, _serviceProvider);
+                    IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, machine, _comPortFactory, _serviceProvider);
                     _machines.Add(processor);
                     processor.TimeOut = TimeSpan.FromMilliseconds(_settings.ConnectTimeOut);
                 }
@@ -188,11 +188,11 @@ namespace GSendCommon
             if (_machines.Any(m => m.Id == id))
                 return;
 
-            IMachine newMachine = _machineProvider.MachineGet(id);
+            IMachine newMachine = _gSendDataProvider.MachineGet(id);
 
             if (newMachine != null)
             {
-                IGCodeProcessor processor = new GCodeProcessor(_machineProvider, newMachine, _comPortFactory, _serviceProvider);
+                IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, newMachine, _comPortFactory, _serviceProvider);
                 _machines.Add(processor);
             }
         }
@@ -217,7 +217,7 @@ namespace GSendCommon
             if (processor == null)
                 return;
 
-            IMachine updateMachine = _machineProvider.MachineGet(machineId);
+            IMachine updateMachine = _gSendDataProvider.MachineGet(machineId);
 
             if (updateMachine == null)
                 return;
