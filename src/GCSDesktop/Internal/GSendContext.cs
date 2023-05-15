@@ -17,10 +17,9 @@ namespace GSendDesktop
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<IMachine, FrmMachine> _machines = new();
 
-        public GSendContext(IServiceCollection serviceCollection)
+        public GSendContext(IServiceProvider serviceProvider)
         {
-            serviceCollection.AddSingleton<IGSendContext>(this);
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         public void ShowMachine(IMachine machine)
@@ -29,7 +28,10 @@ namespace GSendDesktop
                 throw new ArgumentNullException(nameof(machine));
 
             if (!_machines.ContainsKey(machine))
-                _machines.Add(machine, new FrmMachine(this, machine));
+            {
+                _machines.Add(machine, new FrmMachine(this, machine,
+                    _serviceProvider.GetRequiredService<IGSendDataProvider>()));
+            }
 
             _machines[machine].Show();
             _machines[machine].BringToFront();

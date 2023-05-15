@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -19,16 +20,24 @@ namespace GSendDesktop.Forms
             LoadResources();
         }
 
-        public bool IsSimulation => cbSimulate.Checked;
-
-        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses)
+        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, IGSendDataProvider gSendDataProvider)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
             _gCodeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
 
+            if (gSendDataProvider == null)
+                throw new ArgumentNullException(nameof(gSendDataProvider));
+
+            foreach (IJobProfile jobProfile in gSendDataProvider.JobProfilesGet())
+            {
+                cmbJobProfiles.Items.Add(jobProfile.Name);
+            }
+
             ValidateCoordinateSystem();
         }
+
+        public bool IsSimulation => cbSimulate.Checked;
 
         private void ValidateCoordinateSystem()
         {
@@ -59,6 +68,7 @@ namespace GSendDesktop.Forms
             btnCancel.Text = GSend.Language.Resources.Cancel;
             btnStart.Text = GSend.Language.Resources.Start;
             cbSimulate.Text = GSend.Language.Resources.SimulateRun;
+            lblJobProfile.Text = GSend.Language.Resources.JobProfile;
         }
 
         private void lstCoordinates_DrawItem(object sender, DrawItemEventArgs e)

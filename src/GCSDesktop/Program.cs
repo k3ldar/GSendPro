@@ -19,6 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
 
+using PluginManager;
+
 namespace GSendDesktop
 {
     internal static class Program
@@ -30,9 +32,17 @@ namespace GSendDesktop
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
 
-            IServiceCollection serviceCollection = new ServiceCollection();
-            RegisterServices(serviceCollection);
-            IGSendContext gSendContext = new GSendContext(serviceCollection);
+            ApplicationPluginManager applicationPluginManager = new ApplicationPluginManager(
+                new PluginManagerConfiguration(),
+                new PluginSettings());
+
+            applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);
+
+
+            applicationPluginManager.ConfigureServices();
+
+            IGSendContext gSendContext = applicationPluginManager.GetServiceProvider.GetService<IGSendContext>();
             try
             {
                 ApplicationConfiguration.Initialize();
@@ -43,19 +53,6 @@ namespace GSendDesktop
                 ThreadManager.CancelAll();
                 gSendContext.CloseContext();
             }
-        }
-
-        private static void RegisterServices(IServiceCollection serviceCollection)
-        {
-
-            serviceCollection.AddSingleton(new GSendSettings());
-            serviceCollection.AddSingleton(new ApiSettings(new Uri("https://localhost:7154/")));
-            serviceCollection.AddSingleton<MachineApiWrapper>();
-            serviceCollection.AddTransient<IMessageNotifier, MessageNotifier>();
-            serviceCollection.AddTransient<IComPortProvider, ComPortProvider>();
-            serviceCollection.AddTransient<ICommandProcessor, CommandProcessor>();
-            serviceCollection.AddTransient<FormMain>();
-            serviceCollection.AddTransient<FrmAddMachine>();
         }
     }
 }

@@ -24,6 +24,8 @@
 
         void JobProfileUpdate(IJobProfile jobProfile);
 
+        void JobProfileRemove(long jobId);
+
         ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile);
     }
 }

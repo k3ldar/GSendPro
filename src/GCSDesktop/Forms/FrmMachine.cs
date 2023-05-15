@@ -39,6 +39,7 @@ namespace GSendDesktop.Forms
         private readonly GSendWebSocket _clientWebSocket;
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
+        private readonly IGSendDataProvider _gSendDataProvider;
         private MachineStateModel _machineStatusModel = null;
         private MachineUpdateThread _machineUpdateThread;
         private IGCodeAnalyses _gCodeAnalyses = null;
@@ -67,12 +68,12 @@ namespace GSendDesktop.Forms
             InitializeComponent();
         }
 
-        public FrmMachine(IGSendContext gSendContext, IMachine machine)
+        public FrmMachine(IGSendContext gSendContext, IMachine machine, IGSendDataProvider gSendDataProvider)
             : this()
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
-
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             Text = String.Format(GSend.Language.Resources.MachineTitle, machine.MachineType, machine.Name);
 
             if (machine.MachineType == MachineType.Printer)
@@ -1885,7 +1886,7 @@ namespace GSendDesktop.Forms
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
-                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses))
+                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, _gSendDataProvider))
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {

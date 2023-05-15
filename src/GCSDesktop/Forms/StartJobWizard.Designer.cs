@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartJobWizard));
             this.btnStart = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.lblWorkItem = new System.Windows.Forms.Label();
-            this.cmbWorkItem = new System.Windows.Forms.ComboBox();
+            this.lblJobProfile = new System.Windows.Forms.Label();
+            this.cmbJobProfiles = new System.Windows.Forms.ComboBox();
             this.cmbTool = new System.Windows.Forms.ComboBox();
             this.lblTool = new System.Windows.Forms.Label();
             this.lblWarnings = new System.Windows.Forms.Label();
@@ -64,23 +64,23 @@
             this.btnCancel.Text = "button2";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // lblWorkItem
+            // lblJobProfile
             // 
-            this.lblWorkItem.AutoSize = true;
-            this.lblWorkItem.Location = new System.Drawing.Point(12, 9);
-            this.lblWorkItem.Name = "lblWorkItem";
-            this.lblWorkItem.Size = new System.Drawing.Size(38, 15);
-            this.lblWorkItem.TabIndex = 2;
-            this.lblWorkItem.Text = "label1";
+            this.lblJobProfile.AutoSize = true;
+            this.lblJobProfile.Location = new System.Drawing.Point(12, 9);
+            this.lblJobProfile.Name = "lblJobProfile";
+            this.lblJobProfile.Size = new System.Drawing.Size(38, 15);
+            this.lblJobProfile.TabIndex = 2;
+            this.lblJobProfile.Text = "label1";
             // 
-            // cmbWorkItem
+            // cmbJobProfiles
             // 
-            this.cmbWorkItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbWorkItem.FormattingEnabled = true;
-            this.cmbWorkItem.Location = new System.Drawing.Point(12, 27);
-            this.cmbWorkItem.Name = "cmbWorkItem";
-            this.cmbWorkItem.Size = new System.Drawing.Size(269, 23);
-            this.cmbWorkItem.TabIndex = 3;
+            this.cmbJobProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbJobProfiles.FormattingEnabled = true;
+            this.cmbJobProfiles.Location = new System.Drawing.Point(12, 27);
+            this.cmbJobProfiles.Name = "cmbJobProfiles";
+            this.cmbJobProfiles.Size = new System.Drawing.Size(269, 23);
+            this.cmbJobProfiles.TabIndex = 3;
             // 
             // cmbTool
             // 
@@ -148,12 +148,12 @@
             this.Controls.Add(this.lblWarnings);
             this.Controls.Add(this.cmbTool);
             this.Controls.Add(this.lblTool);
-            this.Controls.Add(this.cmbWorkItem);
-            this.Controls.Add(this.lblWorkItem);
+            this.Controls.Add(this.cmbJobProfiles);
+            this.Controls.Add(this.lblJobProfile);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnStart);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StartJobWizard";
@@ -168,8 +168,8 @@
 
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label lblWorkItem;
-        private System.Windows.Forms.ComboBox cmbWorkItem;
+        private System.Windows.Forms.Label lblJobProfile;
+        private System.Windows.Forms.ComboBox cmbJobProfiles;
         private System.Windows.Forms.ComboBox cmbTool;
         private System.Windows.Forms.Label lblTool;
         private System.Windows.Forms.Label lblWarnings;

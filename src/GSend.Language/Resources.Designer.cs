@@ -1321,6 +1321,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Profile.
+        /// </summary>
+        public static string JobProfile {
+            get {
+                return ResourceManager.GetString("JobProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string JobTimeDays {

@@ -9,6 +9,7 @@ namespace GSendDB.Tables
         private string _jobDescription;
         private ulong _serialNumber;
 
+        [UniqueIndex]
         public string JobName
         {
             get => _jobName;

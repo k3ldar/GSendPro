@@ -89,7 +89,7 @@ namespace GSendTests.Mocks
 
         public IJobProfile JobProfileGet(long jobId)
         {
-            throw new NotImplementedException();
+            return JobProfiles.FirstOrDefault(jp => jp.Id == jobId);
         }
 
         public IReadOnlyList<IJobProfile> JobProfilesGet()
@@ -110,12 +110,23 @@ namespace GSendTests.Mocks
 
         public void JobProfileUpdate(IJobProfile jobProfile)
         {
-            throw new NotImplementedException();
+            IJobProfile storedProfile = JobProfiles.FirstOrDefault(jp => jp.Id.Equals(jobProfile.Id));
+
+            if (storedProfile == null)
+                return;
+
+            storedProfile.Name = jobProfile.Name;
+            storedProfile.Description = jobProfile.Description;
         }
 
         public ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile)
         {
             throw new NotImplementedException();
+        }
+
+        public void JobProfileRemove(long jobId)
+        {
+            JobProfiles.Remove(JobProfileGet(jobId));
         }
 
         public bool SpindleTimeCreateCalled { get; private set; }

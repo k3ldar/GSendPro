@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
 
@@ -42,11 +43,6 @@ namespace GSendApi
             CallPostApi("MachineApi/MachineAdd", machine);
         }
 
-        //public void MachineRemove(IMachine machine)
-        //{
-
-        //}
-
         public void MachineUpdate(IMachine machine)
         {
             CallPutApi("MachineApi/MachineUpdate", machine);
@@ -84,6 +80,15 @@ namespace GSendApi
         }
 
         #endregion Spindle Time
+
+        #region Job Profiles
+
+        public List<IJobProfile> JobProfilesGet()
+        {
+            return CallGetApi<List<IJobProfile>>($"JobProfileApi/JobProfilesGet/");
+        }
+
+        #endregion Job Profiles
 
         #region Private Methods
 

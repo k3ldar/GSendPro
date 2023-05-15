@@ -153,9 +153,22 @@ namespace GSendDB.Providers
             }
         }
 
+        public void JobProfileRemove(long id)
+        {
+            if (_jobProfileTable.RecordCount < 2)
+                return;
+
+            JobProfileDataRow rowToRemove = _jobProfileTable.Select(id);
+
+            if (rowToRemove == null)
+                return;
+
+            _jobProfileTable.Delete(rowToRemove);
+        }
+
         public ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile)
         {
-            using (TimedLock tl = TimedLock.Lock(_jobProfileTable))
+            using (TimedLock tl = TimedLock.Lock(_jobProfileTable.TableLock))
             {
                 JobProfileDataRow jobProfileDataRow = _jobProfileTable.Select(jobProfile.Id);
 

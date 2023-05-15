@@ -537,6 +537,9 @@
   <data name="Hours" xml:space="preserve">
     <value>Hours</value>
   </data>
+  <data name="JobProfile" xml:space="preserve">
+    <value>Job Profile</value>
+  </data>
   <data name="JobTimeDays" xml:space="preserve">
     <value />
   </data>
