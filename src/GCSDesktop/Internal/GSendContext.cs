@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using GSendApi;
+
 using GSendCommon;
 
 using GSendDesktop.Forms;
@@ -30,7 +32,7 @@ namespace GSendDesktop
             if (!_machines.ContainsKey(machine))
             {
                 _machines.Add(machine, new FrmMachine(this, machine,
-                    _serviceProvider.GetRequiredService<IGSendDataProvider>()));
+                    _serviceProvider.GetRequiredService<MachineApiWrapper>()));
             }
 
             _machines[machine].Show();

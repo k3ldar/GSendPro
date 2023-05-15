@@ -85,7 +85,12 @@ namespace GSendApi
 
         public List<IJobProfile> JobProfilesGet()
         {
-            return CallGetApi<List<IJobProfile>>($"JobProfileApi/JobProfilesGet/");
+            List<IJobProfile> Result = new();
+
+            foreach (JobProfileModel model in CallGetApi<List<JobProfileModel>>($"JobProfileApi/JobProfilesGet/"))
+                Result.Add(model);
+
+            return Result;
         }
 
         #endregion Job Profiles

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
+using GSendApi;
+
 using GSendShared;
 using GSendShared.Models;
 
@@ -20,16 +22,16 @@ namespace GSendDesktop.Forms
             LoadResources();
         }
 
-        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, IGSendDataProvider gSendDataProvider)
+        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, MachineApiWrapper machineApiWrapper)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
             _gCodeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            if (gSendDataProvider == null)
-                throw new ArgumentNullException(nameof(gSendDataProvider));
+            if (machineApiWrapper == null)
+                throw new ArgumentNullException(nameof(machineApiWrapper));
 
-            foreach (IJobProfile jobProfile in gSendDataProvider.JobProfilesGet())
+            foreach (IJobProfile jobProfile in machineApiWrapper.JobProfilesGet())
             {
                 cmbJobProfiles.Items.Add(jobProfile.Name);
             }

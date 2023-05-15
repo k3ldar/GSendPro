@@ -39,7 +39,8 @@ namespace GSendDesktop.Forms
         private readonly GSendWebSocket _clientWebSocket;
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
-        private readonly IGSendDataProvider _gSendDataProvider;
+        //private readonly IGSendDataProvider _gSendDataProvider;
+        private readonly MachineApiWrapper _machineApiWrapper;
         private MachineStateModel _machineStatusModel = null;
         private MachineUpdateThread _machineUpdateThread;
         private IGCodeAnalyses _gCodeAnalyses = null;
@@ -68,12 +69,13 @@ namespace GSendDesktop.Forms
             InitializeComponent();
         }
 
-        public FrmMachine(IGSendContext gSendContext, IMachine machine, IGSendDataProvider gSendDataProvider)
+        public FrmMachine(IGSendContext gSendContext, IMachine machine, /*IGSendDataProvider gSendDataProvider*/ MachineApiWrapper machineApiWrapper)
             : this()
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
-            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
+            //_gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
+            _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
             Text = String.Format(GSend.Language.Resources.MachineTitle, machine.MachineType, machine.Name);
 
             if (machine.MachineType == MachineType.Printer)
@@ -1886,7 +1888,7 @@ namespace GSendDesktop.Forms
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
-                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, _gSendDataProvider))
+                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, _machineApiWrapper))
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
