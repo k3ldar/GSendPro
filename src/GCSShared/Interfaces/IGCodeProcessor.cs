@@ -1,7 +1,4 @@
-﻿using GSendShared.Interfaces;
-using GSendShared.Models;
-
-using Shared.Communication;
+﻿using GSendShared.Models;
 
 namespace GSendShared
 {

@@ -1,25 +1,15 @@
 using System;
-using System.Configuration;
-using System.Runtime;
 using System.Windows.Forms;
 
-using GSendApi;
-
-using GSendCommon;
-
-using GSendDesktop.Abstractions;
-using GSendDesktop.Forms;
 using GSendDesktop.Internal;
 
 using GSendShared;
-using GSendShared.Interfaces;
-using GSendShared.Providers;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Shared.Classes;
-
 using PluginManager;
+
+using Shared.Classes;
 
 namespace GSendDesktop
 {

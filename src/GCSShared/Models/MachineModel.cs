@@ -1,16 +1,14 @@
-﻿using System.Reflection.PortableExecutable;
-
-namespace GSendShared.Models
+﻿namespace GSendShared.Models
 {
     public sealed class MachineModel : IMachine
     {
         public MachineModel()
         {
-            
+
         }
 
-        public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount, 
-            GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle, 
+        public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount,
+            GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle,
             int overrideZDown, int overrideZUp, DateTime configurationLastVerified, decimal layerHeightWarning,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
             int softStartSeconds, int serviceWeeks, int serviceSpindleHours)

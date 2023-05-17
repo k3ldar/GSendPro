@@ -1,5 +1,8 @@
-﻿namespace GSendShared
+﻿using System.Text.Json.Serialization;
+
+namespace GSendShared
 {
+    [JsonConverter(typeof(Converters.JsonConverterJobProfile))]
     public interface IJobProfile
     {
         long Id { get; }

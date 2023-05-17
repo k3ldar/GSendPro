@@ -1,8 +1,6 @@
 ﻿using GSendCommon.MCodeOverrides;
 using GSendCommon.OverrideClasses;
 
-using GSendDB.Tables;
-
 using GSendShared;
 using GSendShared.Interfaces;
 using GSendShared.Models;
@@ -10,8 +8,6 @@ using GSendShared.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
-
-using SimpleDB;
 
 namespace GSendCommon
 {

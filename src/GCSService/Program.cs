@@ -1,19 +1,15 @@
-using System;
-
 using AspNetCore.PluginManager;
 
-using Microsoft.AspNetCore.Hosting;
+using GSendService.Internal;
+
+using GSendShared;
+
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 using PluginManager;
 
 using Shared.Classes;
 
-using GSendService.Internal;
-
-using GSendShared;
 using LogLevel = PluginManager.LogLevel;
 
 namespace GSendService
@@ -27,6 +23,11 @@ namespace GSendService
             ThreadManager.MaximumPoolSize = 5000;
             ThreadManager.ThreadExceptionRaised += ThreadManager_ThreadExceptionRaised;
             ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
+
+            Environment.SetEnvironmentVariable("GSendProRootPath", 
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro"));
+
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "db"));
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
@@ -72,7 +73,8 @@ namespace GSendService
 
             PluginManagerConfiguration configuration = new PluginManagerConfiguration(logger)
             {
-                ServiceConfigurator = new ServiceConfigurator()
+                ServiceConfigurator = new ServiceConfigurator(),
+                ConfigFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json")
             };
 
             PluginManagerService.Initialise(configuration);
@@ -81,7 +83,10 @@ namespace GSendService
             PluginManagerService.UsePlugin(typeof(LoginPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(SystemAdmin.Plugin.PluginInitialisation));
 
+
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
+
+
 
             try
             {

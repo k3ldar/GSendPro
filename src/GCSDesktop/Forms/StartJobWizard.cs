@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -22,7 +21,7 @@ namespace GSendDesktop.Forms
             LoadResources();
         }
 
-        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, MachineApiWrapper machineApiWrapper)
+        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, GSendApiWrapper machineApiWrapper)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
@@ -35,6 +34,8 @@ namespace GSendDesktop.Forms
             {
                 cmbJobProfiles.Items.Add(jobProfile.Name);
             }
+
+            cmbJobProfiles.SelectedIndex = 0;
 
             ValidateCoordinateSystem();
         }

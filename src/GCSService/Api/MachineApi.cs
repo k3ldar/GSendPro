@@ -37,7 +37,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
-        public IActionResult MachineAdd([FromBody] MachineModel model)
+        public IActionResult MachineAdd([FromBody] IMachine model)
         {
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -71,7 +71,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
-        public IActionResult MachineUpdate([FromBody] MachineModel model)
+        public IActionResult MachineUpdate([FromBody] IMachine model)
         {
             if (!ValidateMachineModel(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);

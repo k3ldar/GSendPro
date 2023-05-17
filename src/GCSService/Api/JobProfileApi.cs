@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-
-using GSendShared;
-using GSendShared.Models;
+﻿using GSendShared;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +28,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
-        public IActionResult JobProfileAdd([FromBody] JobProfileModel model)
+        public IActionResult JobProfileAdd([FromBody] IJobProfile model)
         {
             if (!ValidateJobProfile(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -71,7 +68,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
-        public IActionResult JobProfileUpdate([FromBody] JobProfileModel model)
+        public IActionResult JobProfileUpdate([FromBody] IJobProfile model)
         {
             if (!ValidateJobProfile(model, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
@@ -91,7 +88,7 @@ namespace GSendService.Api
             return GenerateJsonSuccessResponse();
         }
 
-        private bool ValidateJobProfile(JobProfileModel jobProfileModel, out string errorData)
+        private bool ValidateJobProfile(IJobProfile jobProfileModel, out string errorData)
         {
             if (jobProfileModel == null)
             {

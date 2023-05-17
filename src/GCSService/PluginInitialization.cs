@@ -1,4 +1,6 @@
-﻿using GSendCommon;
+﻿using AppSettings;
+
+using GSendCommon;
 
 using GSendService.Internal;
 
@@ -33,6 +35,10 @@ namespace GSendService
 
         public void BeforeConfigureServices(in IServiceCollection services)
         {
+            services.AddTransient<ISettingOverride, SettingOverride>();
+            services.AddTransient<IApplicationOverride, ApplicationOverride>();
+            services.AddTransient<ISettingError, SettingsError>();
+            services.AddSingleton<ISettingsProvider, DefaultSettingProvider>();
             services.AddSingleton<IErrorManager, ErrorManagerProvider>();
             services.AddSingleton<IComPortProvider, ComPortProvider>();
             services.AddSingleton<IComPortFactory, ComPortFactory>();

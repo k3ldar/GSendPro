@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using GSendShared;
 
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]

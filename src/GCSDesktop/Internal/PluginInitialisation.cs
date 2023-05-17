@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Text.Json;
 
 using GSendApi;
+
 using GSendCommon;
+
 using GSendDesktop.Abstractions;
 using GSendDesktop.Forms;
 
@@ -15,9 +16,8 @@ using GSendShared.Providers;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using PluginManager;
 using PluginManager.Abstractions;
-
-using SimpleDB;
 
 namespace GSendDesktop.Internal
 {
@@ -25,10 +25,17 @@ namespace GSendDesktop.Internal
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
+
+            Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+            dynamic apiSettings = jsonData["ApiSettings"];
+            ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.RootAddress as string);
+
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());
-            services.AddSingleton(new ApiSettings(new Uri("https://localhost:7154/")));
-            services.AddSingleton<MachineApiWrapper>();
+            services.AddSingleton(settings);
+            services.AddSingleton<GSendApiWrapper>();
             services.AddTransient<IMessageNotifier, MessageNotifier>();
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<ICommandProcessor, CommandProcessor>();
@@ -38,7 +45,7 @@ namespace GSendDesktop.Internal
 
         public void Finalise()
         {
-            
+
         }
 
         public ushort GetVersion()
@@ -48,7 +55,7 @@ namespace GSendDesktop.Internal
 
         public void Initialise(ILogger logger)
         {
-            
+
         }
     }
 }

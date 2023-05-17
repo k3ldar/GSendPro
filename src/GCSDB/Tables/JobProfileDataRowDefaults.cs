@@ -12,6 +12,9 @@ namespace GSendDB.Tables
 
         public List<JobProfileDataRow> InitialData(ushort version)
         {
+            if (version > 1)
+                return null;
+
             return new List<JobProfileDataRow>()
             {
                 new JobProfileDataRow() { JobName = "(Default)", JobDescription = "Default job" },

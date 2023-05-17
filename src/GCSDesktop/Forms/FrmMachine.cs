@@ -40,7 +40,7 @@ namespace GSendDesktop.Forms
         private readonly IGSendContext _gSendContext;
         private readonly IMachine _machine;
         //private readonly IGSendDataProvider _gSendDataProvider;
-        private readonly MachineApiWrapper _machineApiWrapper;
+        private readonly GSendApiWrapper _machineApiWrapper;
         private MachineStateModel _machineStatusModel = null;
         private MachineUpdateThread _machineUpdateThread;
         private IGCodeAnalyses _gCodeAnalyses = null;
@@ -69,7 +69,7 @@ namespace GSendDesktop.Forms
             InitializeComponent();
         }
 
-        public FrmMachine(IGSendContext gSendContext, IMachine machine, /*IGSendDataProvider gSendDataProvider*/ MachineApiWrapper machineApiWrapper)
+        public FrmMachine(IGSendContext gSendContext, IMachine machine, /*IGSendDataProvider gSendDataProvider*/ GSendApiWrapper machineApiWrapper)
             : this()
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
@@ -1263,7 +1263,7 @@ namespace GSendDesktop.Forms
 
         private void btnServiceReset_Click(object sender, EventArgs e)
         {
-            MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+            GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
             using (FrmRegisterService frmRegisterService = new FrmRegisterService(_machine.Id, machineApiWrapper))
             {
@@ -1292,7 +1292,7 @@ namespace GSendDesktop.Forms
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+                GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
                 List<MachineServiceModel> services = machineApiWrapper.MachineServices(_machine.Id);
 
@@ -1842,7 +1842,7 @@ namespace GSendDesktop.Forms
         {
             if (_configurationChanges || forceOverride)
             {
-                MachineApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<MachineApiWrapper>();
+                GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
                 machineApiWrapper.MachineUpdate(_machine);
 

@@ -29,7 +29,7 @@ namespace GSendDesktop
     {
         private readonly IGSendContext _context;
 
-        private readonly MachineApiWrapper _machineApiWrapper;
+        private readonly GSendApiWrapper _machineApiWrapper;
         private readonly IMessageNotifier _messageNotifier;
         private readonly ICommandProcessor _processCommand;
         private readonly GSendWebSocket _clientWebSocket;
@@ -39,7 +39,7 @@ namespace GSendDesktop
         private readonly ConcurrentDictionary<long, bool> _machineStateModel = new();
         private IMachine _selectedMachine = null;
 
-        public FormMain(IGSendContext context, MachineApiWrapper machineApiWrapper,
+        public FormMain(IGSendContext context, GSendApiWrapper machineApiWrapper,
             IMessageNotifier messageNotifier, ICommandProcessor processCommand, GSendSettings settings)
         {
             InitializeComponent();

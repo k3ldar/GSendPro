@@ -8,8 +8,6 @@ using GSendAnalyser.Internal;
 
 using GSendCommon;
 
-using GSendService.Internal;
-
 using GSendShared;
 using GSendShared.Models;
 
@@ -937,7 +935,7 @@ namespace GSendTests.GCService
 
             GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
             sut.StateModel.MachineZ = 23.85;
-            
+
             sut.JogStart(JogDirection.ZPlus, 0, 2000);
             mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z56.150F2000");
 

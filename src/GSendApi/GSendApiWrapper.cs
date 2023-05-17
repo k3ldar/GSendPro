@@ -8,7 +8,7 @@ using GSendShared.Models;
 
 namespace GSendApi
 {
-    public sealed class MachineApiWrapper
+    public sealed class GSendApiWrapper
     {
         #region Private Members
 
@@ -24,7 +24,7 @@ namespace GSendApi
 
         #region Constructors
 
-        public MachineApiWrapper(ApiSettings apiSettings)
+        public GSendApiWrapper(ApiSettings apiSettings)
         {
             _apiSettings = apiSettings;
         }
@@ -85,12 +85,12 @@ namespace GSendApi
 
         public List<IJobProfile> JobProfilesGet()
         {
-            List<IJobProfile> Result = new();
+            //List<IJobProfile> Result = new();
 
-            foreach (JobProfileModel model in CallGetApi<List<JobProfileModel>>($"JobProfileApi/JobProfilesGet/"))
-                Result.Add(model);
-
-            return Result;
+            //foreach (JobProfileModel model in CallGetApi<List<JobProfileModel>>($"JobProfileApi/JobProfilesGet/"))
+            //    Result.Add(model);
+            return CallGetApi<List<IJobProfile>>($"JobProfileApi/JobProfilesGet/");
+            //return Result;
         }
 
         #endregion Job Profiles

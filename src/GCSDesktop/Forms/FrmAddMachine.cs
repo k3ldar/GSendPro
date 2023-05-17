@@ -21,11 +21,11 @@ namespace GSendDesktop.Forms
 {
     public partial class FrmAddMachine : Form
     {
-        private readonly MachineApiWrapper _machineApiWrapper;
+        private readonly GSendApiWrapper _machineApiWrapper;
         private readonly IComPortProvider _portProvider;
         private readonly IMessageNotifier _messageNotifier;
 
-        public FrmAddMachine(IComPortProvider comPortProvider, MachineApiWrapper machineApiWrapper, IMessageNotifier messageNotifier)
+        public FrmAddMachine(IComPortProvider comPortProvider, GSendApiWrapper machineApiWrapper, IMessageNotifier messageNotifier)
         {
             InitializeComponent();
             _portProvider = comPortProvider ?? throw new ArgumentNullException(nameof(comPortProvider));

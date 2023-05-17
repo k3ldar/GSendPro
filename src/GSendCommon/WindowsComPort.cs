@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO.Ports;
-using System.Text;
+﻿using System.IO.Ports;
 
 using GSendShared;
 
