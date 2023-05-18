@@ -70,6 +70,10 @@
         ContainsCoordinateCommands = 512,
 
         InvalidGCode = 1024,
+
+        MultipleJobNames = 2048,
+
+        InvalidJobName = 4096,
     }
 
     public enum ServiceType

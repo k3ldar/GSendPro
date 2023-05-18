@@ -3,6 +3,9 @@ using GSendShared.Interfaces;
 
 namespace GSendCommon.MCodeOverrides
 {
+    /// <summary>
+    /// Override allowing a pause between 1 and 2000 ms
+    /// </summary>
     internal class M600Override : IMCodeOverride
     {
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)

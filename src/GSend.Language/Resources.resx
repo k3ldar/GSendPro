@@ -558,6 +558,12 @@
   <data name="LoadGCode" xml:space="preserve">
     <value>Load GCode</value>
   </data>
+  <data name="M650InvalidJobNameSpecified" xml:space="preserve">
+    <value>M650 must specify the job name as a comment, i.e. M50 (Job Name)</value>
+  </data>
+  <data name="M650MultipleJobNamesSpecified" xml:space="preserve">
+    <value>M650 can only be included once within a GCode file</value>
+  </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
   </data>

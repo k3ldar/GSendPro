@@ -30,6 +30,8 @@
 
         string CoordinateSystems { get; set; }
 
+        string JobName { get; set; }
+
         FileInfo FileInformation { get; set; }
 
         string FileCRC { get; set; }

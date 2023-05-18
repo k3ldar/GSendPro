@@ -1889,8 +1889,7 @@ namespace GSendDesktop.Forms
                 {
                     GSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<GSendApiWrapper>();
 
-                    // job name can go instead of string empty
-                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, apiWrapper, String.Empty))
+                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, apiWrapper))
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
@@ -2056,6 +2055,16 @@ namespace GSendDesktop.Forms
                     {
                         warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.WarningLayerHeightTooMuch,
                             _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.M650MultipleJobNamesSpecified);
+                    }
+
+                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName))
+                    {
+                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.M650InvalidJobNameSpecified);
                     }
 
                     if (_gCodeAnalyses.SubProgramCount > 0)

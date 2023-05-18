@@ -1384,6 +1384,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M650 must specify the job name as a comment, i.e. M50 (Job Name).
+        /// </summary>
+        public static string M650InvalidJobNameSpecified {
+            get {
+                return ResourceManager.GetString("M650InvalidJobNameSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M650 can only be included once within a GCode file.
+        /// </summary>
+        public static string M650MultipleJobNamesSpecified {
+            get {
+                return ResourceManager.GetString("M650MultipleJobNamesSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {

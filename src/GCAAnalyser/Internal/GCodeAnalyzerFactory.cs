@@ -1,6 +1,6 @@
-﻿using GSendShared.Interfaces;
-using GSendAnalyser.Analysers;
-using Microsoft.Extensions.DependencyInjection;
+﻿using GSendAnalyser.Analysers;
+
+using GSendShared.Interfaces;
 
 namespace GSendAnalyser.Internal
 {
@@ -25,6 +25,7 @@ namespace GSendAnalyser.Internal
                 new AnalyzeSubPrograms(),
                 new AnalyzeCoordinateSystemsUsed(),
                 new AnalyzeInvalidGCode(),
+                new AnalyzeM650JobName(),
             }
             .OrderBy(o => o.Order)
             .ToList();

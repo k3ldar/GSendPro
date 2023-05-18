@@ -73,6 +73,8 @@ namespace GSendAnalyser
 
         public string CoordinateSystems { get; set; }
 
+        public string JobName { get; set; }
+
         public FileInfo FileInformation { get; set; }
 
         public string FileCRC { get; set; }

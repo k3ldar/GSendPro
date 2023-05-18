@@ -23,7 +23,7 @@ namespace GSendDesktop.Forms
         }
 
         public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, 
-            GSendApiWrapper machineApiWrapper, string jobName)
+            GSendApiWrapper machineApiWrapper)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
@@ -37,8 +37,8 @@ namespace GSendDesktop.Forms
                 cmbJobProfiles.Items.Add(jobProfile.Name);
             }
 
-            if (!String.IsNullOrEmpty(jobName) && cmbJobProfiles.Items.IndexOf(jobName) > -1)
-                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(jobName);
+            if (!String.IsNullOrEmpty(gCodeAnalyses.JobName) && cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName) > -1)
+                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName);
             else
                 cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard), 
                     Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[0]));
