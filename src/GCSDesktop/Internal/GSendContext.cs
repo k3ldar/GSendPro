@@ -31,8 +31,7 @@ namespace GSendDesktop
 
             if (!_machines.ContainsKey(machine))
             {
-                _machines.Add(machine, new FrmMachine(this, machine,
-                    _serviceProvider.GetRequiredService<GSendApiWrapper>()));
+                _machines.Add(machine, new FrmMachine(this, machine, _serviceProvider));
             }
 
             _machines[machine].Show();

@@ -85,12 +85,7 @@ namespace GSendApi
 
         public List<IJobProfile> JobProfilesGet()
         {
-            //List<IJobProfile> Result = new();
-
-            //foreach (JobProfileModel model in CallGetApi<List<JobProfileModel>>($"JobProfileApi/JobProfilesGet/"))
-            //    Result.Add(model);
             return CallGetApi<List<IJobProfile>>($"JobProfileApi/JobProfilesGet/");
-            //return Result;
         }
 
         #endregion Job Profiles
@@ -98,89 +93,89 @@ namespace GSendApi
         #region Private Methods
 
         private HttpClient CreateApiClient()
-        {
-            HttpClient httpClient = new();
-            //httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.UserAgent.Clear();
-            httpClient.DefaultRequestHeaders.UserAgent.Add(
-                new ProductInfoHeaderValue("GSend", _apiSettings.ApiVersion));
+            {
+                HttpClient httpClient = new();
+                //httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                httpClient.DefaultRequestHeaders.UserAgent.Clear();
+                httpClient.DefaultRequestHeaders.UserAgent.Add(
+                    new ProductInfoHeaderValue("GSend", _apiSettings.ApiVersion));
 
-#if DEBUG
-            httpClient.Timeout = TimeSpan.FromMinutes(5);
-#else
+    #if DEBUG
+                httpClient.Timeout = TimeSpan.FromMinutes(5);
+    #else
      
-            httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
-#endif
-            return httpClient;
-        }
-
-        private HttpContent CreateContent<T>(T data)
-        {
-            byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data));
-            HttpContent Result = new ByteArrayContent(content);
-            Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            return Result;
-        }
-
-        private void CallPostApi<T>(string endPoint, T data)
-        {
-            using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-            HttpContent content = CreateContent(data);
-            using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
-
-            string jsonData = response.Content.ReadAsStringAsync().Result;
-            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-            if (responseModel.success)
-            {
-                return;
+                httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
+    #endif
+                return httpClient;
             }
 
-            throw new GSendApiException(responseModel.responseData);
-        }
-
-        private T CallGetApi<T>(string endPoint)
-        {
-            using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-            using HttpResponseMessage response = httpClient.GetAsync(address).Result;
-
-            string jsonData = response.Content.ReadAsStringAsync().Result;
-            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-            if (responseModel.success)
+            private HttpContent CreateContent<T>(T data)
             {
-                return JsonSerializer.Deserialize<T>(responseModel.responseData);
+                byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data));
+                HttpContent Result = new ByteArrayContent(content);
+                Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                return Result;
             }
 
-            throw new GSendApiException(responseModel.responseData);
-        }
-
-        private void CallPutApi<T>(string endPoint, T data)
-        {
-            using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
-
-            HttpContent content = CreateContent(data);
-            using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
-
-            string jsonData = response.Content.ReadAsStringAsync().Result;
-            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
-
-            if (responseModel.success)
+            private void CallPostApi<T>(string endPoint, T data)
             {
-                return;
+                using HttpClient httpClient = CreateApiClient();
+                string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+                HttpContent content = CreateContent(data);
+                using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return;
+                }
+
+                throw new GSendApiException(responseModel.responseData);
             }
 
-            throw new GSendApiException(responseModel.responseData);
-        }
+            private T CallGetApi<T>(string endPoint)
+            {
+                using HttpClient httpClient = CreateApiClient();
+                string address = $"{_apiSettings.RootAddress}{endPoint}";
 
-        #endregion Private Methods
+                using HttpResponseMessage response = httpClient.GetAsync(address).Result;
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return JsonSerializer.Deserialize<T>(responseModel.responseData);
+                }
+
+                throw new GSendApiException(responseModel.responseData);
+            }
+
+            private void CallPutApi<T>(string endPoint, T data)
+            {
+                using HttpClient httpClient = CreateApiClient();
+                string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+                HttpContent content = CreateContent(data);
+                using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return;
+                }
+
+                throw new GSendApiException(responseModel.responseData);
+            }
+
+            #endregion Private Methods
     }
 }

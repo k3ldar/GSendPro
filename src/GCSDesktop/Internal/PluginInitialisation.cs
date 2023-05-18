@@ -26,11 +26,9 @@ namespace GSendDesktop.Internal
         public void ConfigureServices(IServiceCollection services)
         {
             string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
-
             Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
-
             dynamic apiSettings = jsonData["ApiSettings"];
-            ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.RootAddress as string);
+            ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString());
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());

@@ -157,5 +157,8 @@ namespace GSendShared
 
         public const string ProbeCommand = "G91 G21\r\nG38.2 Z-50 F{0}\r\nG92 Z{1}\r\nG0 Z28\r\nM30";
 
+
+        public const string StartWizardSelectedJob = "StartJobSelectedProfileName";
+
     }
 }

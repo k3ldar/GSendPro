@@ -6,6 +6,7 @@ using GSendApi;
 
 using GSendShared;
 using GSendShared.Models;
+using GSendDesktop.Internal;
 
 namespace GSendDesktop.Forms
 {
@@ -21,7 +22,8 @@ namespace GSendDesktop.Forms
             LoadResources();
         }
 
-        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, GSendApiWrapper machineApiWrapper)
+        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, 
+            GSendApiWrapper machineApiWrapper, string jobName)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
@@ -35,7 +37,11 @@ namespace GSendDesktop.Forms
                 cmbJobProfiles.Items.Add(jobProfile.Name);
             }
 
-            cmbJobProfiles.SelectedIndex = 0;
+            if (!String.IsNullOrEmpty(jobName) && cmbJobProfiles.Items.IndexOf(jobName) > -1)
+                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(jobName);
+            else
+                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard), 
+                    Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[0]));
 
             ValidateCoordinateSystem();
         }
@@ -99,6 +105,12 @@ namespace GSendDesktop.Forms
             }
 
             e.DrawFocusRectangle();
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            DesktopSettings.WriteValue(nameof(StartJobWizard), Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[cmbJobProfiles.SelectedIndex]);
+            DialogResult = DialogResult.OK;
         }
     }
 }
