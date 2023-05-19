@@ -7,6 +7,8 @@ using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using PluginManager.Abstractions;
+
 using Shared.Classes;
 
 namespace GSendCommon
@@ -15,8 +17,8 @@ namespace GSendCommon
     {
         private readonly object _lockObj = new();
         private IGCodeLine _gCodeLine = null;
-        private readonly List<IGCodeOverride> _overrideClasses;
-        private readonly List<IMCodeOverride> _mCodeOverrides;
+        private List<IMCodeOverride> _mCodeOverrides;
+        private List<IGCodeOverride> _gCodeOverrides;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _serviceProvider;
 
@@ -29,8 +31,6 @@ namespace GSendCommon
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
             MachineStateModel = machineStateModel ?? throw new ArgumentNullException(nameof(machineStateModel));
             Overrides = new OverrideModel();
-            _overrideClasses = GetOverrides();
-            _mCodeOverrides = GetMCodeOverrides();
         }
 
         public IStaticMethods StaticMethods { get; }
@@ -74,7 +74,7 @@ namespace GSendCommon
 
                     GCode = line ?? throw new ArgumentNullException(nameof(line));
 
-                    foreach (IGCodeOverride overrideItem in _overrideClasses)
+                    foreach (IGCodeOverride overrideItem in CreateGCodeOverrides())
                     {
                         if (overrideItem.Process(this, cancellationToken))
                             return true;
@@ -102,7 +102,7 @@ namespace GSendCommon
 
                     GCode = line ?? throw new ArgumentNullException(nameof(line));
 
-                    foreach (IMCodeOverride overrideItem in _mCodeOverrides)
+                    foreach (IMCodeOverride overrideItem in GetMCodeOverrides())
                     {
                         if (overrideItem.Process(this, cancellationToken))
                             return true;
@@ -120,7 +120,7 @@ namespace GSendCommon
 
         public void ProcessAlarm(GrblAlarm alarm)
         {
-            foreach (IGCodeOverride item in _overrideClasses)
+            foreach (IGCodeOverride item in CreateGCodeOverrides())
             {
                 item.Process(alarm);
             }
@@ -128,7 +128,7 @@ namespace GSendCommon
 
         public void ProcessError(GrblError error)
         {
-            foreach (IGCodeOverride item in _overrideClasses)
+            foreach (IGCodeOverride item in CreateGCodeOverrides())
             {
                 item.Process(error);
             }
@@ -140,24 +140,29 @@ namespace GSendCommon
                 _cancellationTokenSource.Cancel();
         }
 
-        private List<IGCodeOverride> GetOverrides()
+        private List<IGCodeOverride> CreateGCodeOverrides()
         {
-            List<IGCodeOverride> Result = new()
+            if (_gCodeOverrides == null)
             {
-                new SpindleSoftStart(),
-                new SpindleSoftStop(),
-                new SpindleActiveTime(_serviceProvider.GetRequiredService<IGSendDataProvider>()),
-            };
+                IPluginClassesService pluginClassesService = _serviceProvider.GetRequiredService<IPluginClassesService>();
+                List<IGCodeOverride> Result = pluginClassesService.GetPluginClasses<IGCodeOverride>();
 
-            return Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();
+                _gCodeOverrides = Result.Where(o => o.MachineType.Equals(Machine.MachineType)).OrderBy(o => o.SortOrder).ToList();
+            }
+
+            return _gCodeOverrides;
         }
 
         private List<IMCodeOverride> GetMCodeOverrides()
         {
-            return new()
+            if (_mCodeOverrides == null)
             {
-                new M600Override(),
-            };
+                IPluginClassesService pluginClassesService = _serviceProvider.GetRequiredService<IPluginClassesService>();
+                _mCodeOverrides = pluginClassesService.GetPluginClasses<IMCodeOverride>();
+                //new M600Override(),
+            }
+
+            return _mCodeOverrides;
         }
     }
 }
