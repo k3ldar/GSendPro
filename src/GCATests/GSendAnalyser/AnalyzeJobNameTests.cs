@@ -12,7 +12,7 @@ using GSendShared;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GSendTests.GCAAnalyser
+namespace GSendTests.GSendAnalyser
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
