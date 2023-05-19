@@ -19,31 +19,58 @@ namespace GSendTests.Mocks
 
         public List<T> GetPluginClasses<T>()
         {
-            if (typeof(T) == typeof(IGCodeAnalyzerFactory))
+            List<T> Result = new();
+
+            if (typeof(T) == typeof(IGCodeOverride))
             {
+                GetCommonOfType(Result, typeof(IGCodeOverride));
+            }
+            else if (typeof(T) == typeof(IMCodeOverride))
+            {
+                GetCommonOfType(Result, typeof(IMCodeOverride));
+            }
+            else if (typeof(T) == typeof(IGCodeAnalyzer))
+            {
+                GetAnalysersOfType(Result, typeof(IGCodeAnalyzer));
             }
 
-            if (typeof(T) == typeof(IGCodeAnalyzer))
-            {
-                List<T> analyzerList = new List<T>();
+            return Result;
+        }
 
-                foreach (Type type in typeof(GSendAnalyser.GCodeAnalyses).Assembly.GetTypes())
+        private static void GetAnalysersOfType<T>(List<T> analyzerList, Type typeRequired)
+        {
+            foreach (Type type in typeof(GSendAnalyser.GCodeAnalyses).Assembly.GetTypes())
+            {
+                if (type.IsClass && type.GetInterface(typeRequired.Name) != null)
                 {
-                    if (type.IsClass && type.GetInterface(nameof(IGCodeAnalyzer)) != null)
+                    analyzerList.Add((T)Activator.CreateInstance(type));
+                }
+            }
+        }
+
+        private static void GetCommonOfType<T>(List<T> analyzerList, Type typeRequired)
+        {
+            foreach (Type type in typeof(GSendCommon.PluginInitialisation).Assembly.GetTypes())
+            {
+                if (type.IsClass && type.GetInterface(typeRequired.Name) != null)
+                {
+                    try
                     {
                         analyzerList.Add((T)Activator.CreateInstance(type));
                     }
+                    catch
+                    {
+                        //ignore
+                    }
                 }
-
-                return analyzerList;
             }
-
-            return new List<T>();
         }
 
         public List<Type> GetPluginClassTypes<T>()
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

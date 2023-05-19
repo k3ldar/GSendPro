@@ -5,6 +5,8 @@ using GSendAnalyser.Internal;
 using GSendShared;
 using GSendShared.Abstractions;
 
+using PluginManager.Abstractions;
+
 namespace GSendTests.Mocks
 {
     internal class MockServiceProvider : IServiceProvider
@@ -20,6 +22,10 @@ namespace GSendTests.Mocks
                 else if (serviceType.Equals(typeof(IGCodeParserFactory)))
                 {
                     return new GCodeParserFactory(new MockPluginClassesService());
+                }
+                else if (serviceType.Equals(typeof(IPluginClassesService)))
+                {
+                    return new MockPluginClassesService();
                 }
             }
                 

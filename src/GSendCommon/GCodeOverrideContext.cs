@@ -159,7 +159,6 @@ namespace GSendCommon
             {
                 IPluginClassesService pluginClassesService = _serviceProvider.GetRequiredService<IPluginClassesService>();
                 _mCodeOverrides = pluginClassesService.GetPluginClasses<IMCodeOverride>();
-                //new M600Override(),
             }
 
             return _mCodeOverrides;
