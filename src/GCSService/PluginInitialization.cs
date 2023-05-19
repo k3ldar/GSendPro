@@ -5,7 +5,7 @@ using GSendCommon;
 using GSendService.Internal;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 using GSendShared.Providers;
 
 using PluginManager.Abstractions;

@@ -82,6 +82,7 @@ namespace GSendService
             PluginManagerService.UsePlugin(typeof(UserAccount.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(LoginPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(SystemAdmin.Plugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(GSendAnalyser.PluginInitialisation));
 
 
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));

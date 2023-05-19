@@ -6,6 +6,7 @@ using System.Text.Json;
 using GSendAnalyser.Internal;
 
 using GSendShared;
+using GSendShared.Abstractions;
 using GSendShared.Models;
 
 using PluginManager.Abstractions;
@@ -27,6 +28,7 @@ namespace GSendCommon
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly GSendSettings _settings;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IGCodeParserFactory _gCodeParserFactory;
         private System.Net.WebSockets.WebSocket _webSocket;
         private bool _processEvents = false;
         private ulong _messageId = 0;
@@ -37,7 +39,8 @@ namespace GSendCommon
             IGSendDataProvider gSendDataProvider,
             IComPortFactory comPortFactory,
             INotificationService notificationService,
-            ISettingsProvider settingsProvider)
+            ISettingsProvider settingsProvider,
+            IGCodeParserFactory gCodeParserFactory)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
@@ -48,6 +51,8 @@ namespace GSendCommon
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _comPortFactory = comPortFactory ?? throw new ArgumentNullException(nameof(comPortFactory));
             _settings = settingsProvider.GetSettings<GSendSettings>(Constants.SettingsName);
+            _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
+
             notificationService.RegisterListener(this);
             _cancellationTokenSource = new CancellationTokenSource();
         }
@@ -775,7 +780,7 @@ namespace GSendCommon
 
                     if (foundMachine && proc != null && File.Exists(fileName))
                     {
-                        GCodeParser gCodeParser = new GCodeParser();
+                        IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
                         IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(File.ReadAllText(fileName));
                         response.message = proc.LoadGCode(gCodeAnalyses);
                         response.success = true;

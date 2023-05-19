@@ -1,7 +1,7 @@
 ﻿using GSendCommon;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
 

@@ -8,7 +8,7 @@ using GSendCommon;
 using GSendDesktop.Forms;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection;
 

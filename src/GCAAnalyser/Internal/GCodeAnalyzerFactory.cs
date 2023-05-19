@@ -1,32 +1,23 @@
 ﻿using GSendAnalyser.Analysers;
 
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
+
+using PluginManager.Abstractions;
 
 namespace GSendAnalyser.Internal
 {
-    internal class GCodeAnalyzerFactory : IGCodeAnalyzerFactory
+    internal sealed class GCodeAnalyzerFactory : IGCodeAnalyzerFactory
     {
+        private readonly IPluginClassesService _pluginClassesService;
+
+        public GCodeAnalyzerFactory(IPluginClassesService pluginClassesService)
+        {
+            _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
+        }
+
         public IReadOnlyList<IGCodeAnalyzer> Create()
         {
-            List<IGCodeAnalyzer> result = new List<IGCodeAnalyzer>()
-            {
-                new AnalyzeHomeZ(),
-                new AnalyzeSafeZ(),
-                new AnalyzeDuplicates(),
-                new AnalyzeDistance(),
-                new AnalyzeUnitOfMeasure(),
-                new AnalyzeTime(),
-                new AnalyzeEndProgram(),
-                new AnalyzeFileDetails(),
-                new AnalyzeCoolantUsage(),
-                new AnalyzeToolChange(),
-                new AnalyzeFeedsAndSpeeds(),
-                new AnalyzeComments(),
-                new AnalyzeSubPrograms(),
-                new AnalyzeCoordinateSystemsUsed(),
-                new AnalyzeInvalidGCode(),
-                new AnalyzeM650JobName(),
-            }
+            List<IGCodeAnalyzer> result = _pluginClassesService.GetPluginClasses<IGCodeAnalyzer>()
             .OrderBy(o => o.Order)
             .ToList();
 

@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 namespace GSendShared.Providers
 {

@@ -1,6 +1,6 @@
 ﻿using GSendShared.Models;
 
-namespace GSendShared.Interfaces
+namespace GSendShared.Abstractions
 {
     /// <summary>
     /// GCode override context

@@ -1,21 +1,29 @@
 ﻿using System.Text;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
+
+using PluginManager.Abstractions;
 
 using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser.Internal
 {
-    public class GCodeParser : IGCodeParser
+    internal sealed class GCodeParser : IGCodeParser
     {
         #region Private Members
 
+        private readonly IPluginClassesService _pluginClassesService;
         private int _index;
 
         #endregion Private Members
 
         #region Constructors
+
+        public GCodeParser(IPluginClassesService pluginClassesService)
+        {
+            _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
+        }
 
         #endregion Constructors
 
@@ -35,7 +43,7 @@ namespace GSendAnalyser.Internal
 
         private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands)
         {
-            GCodeAnalyses Result = new();
+            GCodeAnalyses Result = new(_pluginClassesService);
 
             Span<char> line = new(new char[MaxLineSize]);
             int position = 0;

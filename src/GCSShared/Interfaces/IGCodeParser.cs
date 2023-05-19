@@ -1,7 +1,7 @@
 ﻿
 using GSendShared;
 
-namespace GSendShared.Interfaces
+namespace GSendShared.Abstractions
 {
     public interface IGCodeParser
     {

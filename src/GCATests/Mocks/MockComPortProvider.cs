@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 namespace GSendTests.Mocks
 {

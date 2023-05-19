@@ -1,4 +1,4 @@
-﻿using GSendShared.Interfaces;
+﻿using GSendShared.Abstractions;
 
 namespace GSendTests.Mocks
 {

@@ -11,7 +11,7 @@ using GSendDesktop.Abstractions;
 using GSendDesktop.Forms;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 using GSendShared.Providers;
 
 using Microsoft.Extensions.DependencyInjection;

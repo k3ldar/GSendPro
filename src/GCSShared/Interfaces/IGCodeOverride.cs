@@ -1,4 +1,4 @@
-﻿namespace GSendShared.Interfaces
+﻿namespace GSendShared.Abstractions
 {
     /// <summary>
     /// Interface used by different overrides

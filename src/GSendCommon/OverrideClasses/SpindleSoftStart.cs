@@ -1,5 +1,5 @@
 ﻿using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 namespace GSendCommon.OverrideClasses
 {

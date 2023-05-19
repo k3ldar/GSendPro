@@ -1,6 +1,6 @@
 ﻿namespace GSendShared.Abstractions
 {
-    public interface IParserFactory
+    public interface IGCodeParserFactory
     {
         IGCodeParser CreateParser();
     }

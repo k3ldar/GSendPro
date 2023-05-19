@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace GSendShared.Interfaces
+namespace GSendShared.Abstractions
 {
     public interface IGCodeAnalyzerFactory
     {

@@ -1,7 +1,7 @@
 ﻿using GSendDB.Tables;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 using SimpleDB;
 

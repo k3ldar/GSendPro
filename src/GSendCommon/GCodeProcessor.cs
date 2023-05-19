@@ -8,12 +8,13 @@ using GSendAnalyser.Internal;
 
 using GSendShared;
 using GSendShared.Attributes;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 using GSendShared.Models;
 
 using Newtonsoft.Json.Linq;
 
 using Shared.Classes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendCommon
 {
@@ -65,7 +66,8 @@ namespace GSendCommon
         private readonly IGSendDataProvider _gSendDataProvider;
         private readonly IMachine _machine;
         private readonly IComPort _port;
-        private readonly IGCodeParser _gcodeParser = new GCodeParser();
+        private readonly IGCodeParser _gcodeParser;
+        private readonly IGCodeParserFactory _gCodeParserFactory;
         private volatile bool _isRunning;
         private volatile bool _isPaused;
         private volatile bool _isAlarm;
@@ -94,6 +96,9 @@ namespace GSendCommon
 
             if (comPortFactory == null)
                 throw new ArgumentNullException(nameof(comPortFactory));
+
+            _gCodeParserFactory = serviceProvider.GetService<IGCodeParserFactory>();
+            _gcodeParser = _gCodeParserFactory.CreateParser();
 
             base.HangTimeout = int.MaxValue;
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
@@ -1286,7 +1291,7 @@ namespace GSendCommon
 
         public void QueueCommand(string commandText)
         {
-            GCodeParser gCodeParser = new GCodeParser();
+            IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
             IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(commandText);
 
             foreach (IGCodeLine line in gCodeAnalyses.Lines(out int _))

@@ -2,7 +2,7 @@
 using GSendCommon.OverrideClasses;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;

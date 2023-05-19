@@ -1,14 +1,21 @@
-﻿using GSendShared.Interfaces;
+﻿using GSendShared.Abstractions;
 using GSendAnalyser.Internal;
 
 using GSendShared;
 using Shared.Classes;
+using PluginManager.Abstractions;
 
 namespace GSendAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {
         private readonly List<IGCodeCommand> _commands = new();
+        private readonly IPluginClassesService _pluginClassesService;
+
+        public GCodeAnalyses(IPluginClassesService pluginClassesService)
+        {
+            _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
+        }
 
         internal void Add(GCodeCommand command)
         {
@@ -25,7 +32,7 @@ namespace GSendAnalyser
 
         public void Analyse(string fileName)
         {
-            IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory();
+            IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory(_pluginClassesService);
 
             IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
 

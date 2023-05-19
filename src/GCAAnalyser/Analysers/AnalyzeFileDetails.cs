@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers
 {

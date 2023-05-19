@@ -14,7 +14,7 @@ using GSendApi;
 using GSendDesktop.Abstractions;
 
 using GSendShared;
-using GSendShared.Interfaces;
+using GSendShared.Abstractions;
 using GSendShared.Models;
 
 namespace GSendDesktop.Forms

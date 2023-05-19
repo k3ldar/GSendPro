@@ -19,6 +19,7 @@ using GSendDesktop.Controls;
 using GSendDesktop.Internal;
 
 using GSendShared;
+using GSendShared.Abstractions;
 using GSendShared.Attributes;
 using GSendShared.Models;
 
@@ -1992,7 +1993,8 @@ namespace GSendDesktop.Forms
 
                 try
                 {
-                    GCodeParser gCodeParser = new GCodeParser();
+                    IGCodeParserFactory gCodeParserFactory = _serviceProvider.GetService<IGCodeParserFactory>();
+                    IGCodeParser gCodeParser = gCodeParserFactory.CreateParser();
                     string fileContents = File.ReadAllText(fileName);
                     _gCodeAnalyses = gCodeParser.Parse(fileContents);
                     _gCodeAnalyses.Analyse(fileName);

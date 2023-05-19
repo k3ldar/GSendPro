@@ -1,4 +1,4 @@
-﻿namespace GSendShared.Interfaces
+﻿namespace GSendShared.Abstractions
 {
     public interface IMCodeOverride
     {
