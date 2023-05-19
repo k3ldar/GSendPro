@@ -6,7 +6,7 @@ using GSendAnalyser.Internal;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GSendTests.GSendAnalyser
+namespace GSendTests.GSendAnalyserTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]

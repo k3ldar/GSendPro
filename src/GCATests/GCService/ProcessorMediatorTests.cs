@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using GSendAnalyser.Internal;
+
 using GSendCommon;
 
 using GSendService.Internal;
@@ -41,35 +43,40 @@ namespace GSendTests.GCService
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParam_Logger_Throws_ArgumentNullException()
         {
-            new ProcessorMediator(new MockServiceProvider(), null, new MockGSendDataProvider(), new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+            new ProcessorMediator(new MockServiceProvider(), null, new MockGSendDataProvider(), new MockComPortFactory(), 
+                new MockNotification(), new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService()));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParam_GSendDataProvider_Throws_ArgumentNullException()
         {
-            new ProcessorMediator(new MockServiceProvider(), new Logger(), null, new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+            new ProcessorMediator(new MockServiceProvider(), new Logger(), null, new MockComPortFactory(), 
+                new MockNotification(), new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService()));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParam_NotificationService_Throws_ArgumentNullException()
         {
-            new ProcessorMediator(new MockServiceProvider(), new Logger(), new MockGSendDataProvider(), new MockComPortFactory(), null, new MockSettingsProvider());
+            new ProcessorMediator(new MockServiceProvider(), new Logger(), new MockGSendDataProvider(), 
+                new MockComPortFactory(), null, new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService()));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParam_ComPortFactory_Throws_ArgumentNullException()
         {
-            new ProcessorMediator(new MockServiceProvider(), new Logger(), new MockGSendDataProvider(), null, new MockNotification(), new MockSettingsProvider());
+            new ProcessorMediator(new MockServiceProvider(), new Logger(), new MockGSendDataProvider(), 
+                null, new MockNotification(), new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService()));
         }
 
         [TestMethod]
         public void GetEvents_ReturnsAllRegisteredEventIds()
         {
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(), 
-                new MockGSendDataProvider(), new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                new MockGSendDataProvider(), new MockComPortFactory(), new MockNotification(), 
+                new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService()));
             Assert.IsNotNull(sut);
 
             List<string> events = sut.GetEvents();
@@ -100,7 +107,8 @@ namespace GSendTests.GCService
         {
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(), 
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }), 
-                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(), 
+                new GCodeParserFactory(new MockPluginClassesService()));
 
             sut.OpenProcessors();
 
@@ -117,7 +125,8 @@ namespace GSendTests.GCService
         {    
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }),
-                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(), 
+                new GCodeParserFactory(new MockPluginClassesService()));
 
             sut.OpenProcessors();
 
@@ -139,7 +148,8 @@ namespace GSendTests.GCService
         {
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }),
-                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
+                new GCodeParserFactory(new MockPluginClassesService()));
 
             sut.OpenProcessors();
 
@@ -171,7 +181,8 @@ namespace GSendTests.GCService
         {
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }), 
-                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
+                new GCodeParserFactory(new MockPluginClassesService()));
 
             sut.OpenProcessors();
 
@@ -193,7 +204,8 @@ namespace GSendTests.GCService
         {
             MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" });
             ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
-                gSendDataProvider, new MockComPortFactory(), new MockNotification(), new MockSettingsProvider());
+                gSendDataProvider, new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
+                new GCodeParserFactory(new MockPluginClassesService()));
 
             sut.OpenProcessors();
 

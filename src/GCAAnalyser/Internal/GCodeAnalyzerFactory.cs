@@ -17,11 +17,9 @@ namespace GSendAnalyser.Internal
 
         public IReadOnlyList<IGCodeAnalyzer> Create()
         {
-            List<IGCodeAnalyzer> result = _pluginClassesService.GetPluginClasses<IGCodeAnalyzer>()
-            .OrderBy(o => o.Order)
-            .ToList();
-
-            return result;
+            return _pluginClassesService.GetPluginClasses<IGCodeAnalyzer>()
+                .OrderBy(o => o.Order)
+                .ToList();
         }
     }
 }

@@ -342,7 +342,7 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             const string ZProbeCommand = "G17G21G0Z40.000 G0X0.000Y0.000S8000M3\tG0X139.948Y37.136Z40.000";
-            GCodeParser parser = new();
+            GCodeParser parser = new(new MockPluginClassesService());
             IGCodeAnalyses analyses = parser.Parse(ZProbeCommand);
 
 
@@ -354,7 +354,7 @@ namespace GSendTests.GCService
 
             Assert.AreEqual(1, sut.CommandCount);
 
-            sut.LoadGCode(new GCodeAnalyses());
+            sut.LoadGCode(new GCodeAnalyses(new MockPluginClassesService()));
 
             Assert.AreEqual(0, sut.CommandCount);
         }
@@ -370,7 +370,7 @@ namespace GSendTests.GCService
             MockComPortFactory mockComPortFactory = new MockComPortFactory();
 
             const string ZProbeCommand = "G17G21G0Z40.000 G0X0.000Y0.000\nS8000M3\nG0X139.948Y37.136Z40.000";
-            GCodeParser parser = new();
+            GCodeParser parser = new(new MockPluginClassesService());
             IGCodeAnalyses analyses = parser.Parse(ZProbeCommand);
 
 

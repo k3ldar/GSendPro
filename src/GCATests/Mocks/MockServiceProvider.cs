@@ -1,6 +1,9 @@
 ﻿using System;
 
+using GSendAnalyser.Internal;
+
 using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendTests.Mocks
 {
@@ -8,9 +11,16 @@ namespace GSendTests.Mocks
     {
         public object GetService(Type serviceType)
         {
-            if (serviceType != null && serviceType.Equals(typeof(IGSendDataProvider)))
+            if (serviceType != null)
             {
-                return new MockGSendDataProvider();
+                if (serviceType.Equals(typeof(IGSendDataProvider)))
+                {
+                    return new MockGSendDataProvider();
+                }
+                else if (serviceType.Equals(typeof(IGCodeParserFactory)))
+                {
+                    return new GCodeParserFactory(new MockPluginClassesService());
+                }
             }
                 
             return null;
