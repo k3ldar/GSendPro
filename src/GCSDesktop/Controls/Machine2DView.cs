@@ -69,7 +69,7 @@ namespace GSendDesktop.Controls
                         case 2:
                         case 3:
                             float radius = CalculateRadius((double)iCommand.CommandValue, (double)jCommand.CommandValue, rCommand);
-                            DrawArcBetweenTwoPoints(g, layerPen, latestPos, newLocation, radius, gCommand.CommandValue.Equals(2));
+                            DrawArcBetweenTwoPoints(g, layerPen, latestPos, newLocation, radius, gCommand.CommandValue.Equals(3));
                             radiusDrawn = true;
                             break;
                     }
