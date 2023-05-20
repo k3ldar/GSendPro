@@ -8,6 +8,8 @@
 
         string GetGCode();
 
+        IGCodeLine GetGCode(int feedRate);
+
         IGCodeLineInfo GetGCodeInfo();
 
         bool IsCommentOnly { get; }

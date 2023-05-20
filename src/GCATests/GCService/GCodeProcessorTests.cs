@@ -822,9 +822,9 @@ namespace GSendTests.GCService
             Assert.AreEqual(23, machineStateModel.OffsetX);
             Assert.AreEqual(39, machineStateModel.OffsetY);
             Assert.AreEqual(43, machineStateModel.OffsetZ);
-            Assert.AreEqual(90, machineStateModel.OverrideFeeds);
-            Assert.AreEqual(80, machineStateModel.OverrideRapids);
-            Assert.AreEqual(70, machineStateModel.OverrideSpindleSpeed);
+            Assert.AreEqual(90, machineStateModel.MachineOverrideFeeds);
+            Assert.AreEqual(80, machineStateModel.MachineOverrideRapids);
+            Assert.AreEqual(70, machineStateModel.MachineOverrideSpindle);
             Assert.IsFalse(machineStateModel.SpindleClockWise);
             Assert.IsTrue(machineStateModel.SpindleCounterClockWise);
             Assert.IsTrue(machineStateModel.FloodEnabled);
@@ -858,9 +858,9 @@ namespace GSendTests.GCService
             Assert.AreEqual(108, machineStateModel.AvailableRXbytes);
             Assert.AreEqual(234, machineStateModel.LineNumber);
             Assert.AreEqual(200, machineStateModel.FeedRate);
-            Assert.AreEqual(95, machineStateModel.OverrideFeeds);
-            Assert.AreEqual(85, machineStateModel.OverrideRapids);
-            Assert.AreEqual(75, machineStateModel.OverrideSpindleSpeed);
+            Assert.AreEqual(95, machineStateModel.MachineOverrideFeeds);
+            Assert.AreEqual(85, machineStateModel.MachineOverrideRapids);
+            Assert.AreEqual(75, machineStateModel.MachineOverrideSpindle);
 
 
             Assert.IsFalse(sut.IsRunning);

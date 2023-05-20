@@ -56,7 +56,6 @@ namespace GSendDesktop.Forms
         private bool _appliedSettingsChanged = false;
         private bool _configurationChanges = false;
         private bool _lastMessageWasHiddenCommand = false;
-        private bool _updatingRapidOverride = false;
         private int _totalLines;
         private List<IGCodeLine> _gcodeLines;
 
@@ -294,10 +293,6 @@ namespace GSendDesktop.Forms
                     textBoxConsoleText.AppendText(response);
                     break;
 
-                case Constants.MessageMachineUpdateRapidOverridesAdmin:
-                    _updatingRapidOverride = false;
-                    break;
-
                 case Constants.MessageLoadGCodeAdmin:
 
                     break;
@@ -374,13 +369,13 @@ namespace GSendDesktop.Forms
                     }
                 }
 
-                if (!_updatingRapidOverride && selectionOverrideRapids.Value != (int)status.RapidSpeed)
-                {
-                    selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
-                    selectionOverrideRapids.Value = (int)status.RapidSpeed;
-                    selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride(status.RapidSpeed);
-                    selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
-                }
+                //if (!_updatingRapidOverride && selectionOverrideRapids.Value != (int)status.RapidSpeed)
+                //{
+                //    selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
+                //    selectionOverrideRapids.Value = (int)status.RapidSpeed;
+                //    selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride(status.RapidSpeed);
+                //    selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
+                //}
 
                 if (status.IsConnected)
                 {
@@ -786,12 +781,17 @@ namespace GSendDesktop.Forms
 
         private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
         {
-            if (cbOverrideLinkRapids.Checked && !cbOverridesDisable.Checked)
+            if (cbOverrideLinkRapids.Checked)
             {
-                _updatingRapidOverride = true;
-                _machineUpdateThread.RapidsOverride = (RapidsOverride)selectionOverrideRapids.Value;
+                //_updatingRapidOverride = true;
+                _machineUpdateThread.Overrides.Rapids = (RapidsOverride)selectionOverrideRapids.Value;
+            }
+            else
+            {
+                _machineUpdateThread.Overrides.Rapids = RapidsOverride.High;
             }
 
+            _machineUpdateThread.Overrides.OverrideRapids = cbOverrideLinkRapids.Checked;
             selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride((RapidsOverride)selectionOverrideRapids.Value);
         }
 
@@ -807,7 +807,7 @@ namespace GSendDesktop.Forms
             _machineUpdateThread.Overrides.OverrideZUp = cbOverrideLinkZUp.Checked;
             _machineUpdateThread.Overrides.OverrideZDown = cbOverrideLinkZDown.Checked;
 
-            _machineUpdateThread.Overrides.OverridesEnabled = !cbOverridesDisable.Checked;
+            _machineUpdateThread.Overrides.OverridesDisabled = cbOverridesDisable.Checked;
 
             _machineUpdateThread.OverridesUpdated();
 
@@ -823,21 +823,6 @@ namespace GSendDesktop.Forms
             UpdateOverrides();
             _machine.OverrideSpeed = trackBarPercent.Value;
             UpdateConfigurationChanged();
-        }
-
-        private void cbOverridesDisable_CheckedChanged(object sender, EventArgs e)
-        {
-            trackBarPercent.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideSpindle.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideRapids.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideXY.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideZDown.Enabled = !cbOverridesDisable.Checked;
-            selectionOverrideZUp.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkRapids.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkXY.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkZDown.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkZUp.Enabled = !cbOverridesDisable.Checked;
-            cbOverrideLinkSpindle.Enabled = !cbOverridesDisable.Checked;
         }
 
         private void selectionOverrideSpindle_ValueChanged(object sender, EventArgs e)
@@ -2002,6 +1987,16 @@ namespace GSendDesktop.Forms
                     machine2dView1.LoadGCode(_gCodeAnalyses);
                     _gcodeLines = _gCodeAnalyses.Lines(out _totalLines);
                     listViewGCode.VirtualListSize = _totalLines;
+
+                    selectionOverrideXY.Value = (int)_gCodeAnalyses.FeedX;
+                    selectionOverrideZDown.Value = (int)_gCodeAnalyses.FeedZ;
+                    selectionOverrideZUp.Value = (int)_gCodeAnalyses.FeedZ;
+                    selectionOverrideSpindle.Value = (int)_gCodeAnalyses.Commands.Where(c => c.Command.Equals('S')).Max(c => c.CommandValue);
+
+                    trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
+                    trackBarPercent.Value = (int)_gCodeAnalyses.FeedX / (selectionOverrideXY.Maximum / 100);
+                    labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value); 
+                    trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
 
                     machine2dView1.LoadGCode(_gCodeAnalyses);
 

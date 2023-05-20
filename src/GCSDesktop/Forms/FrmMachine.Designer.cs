@@ -259,13 +259,13 @@
             this.selectionOverrideZDown.HasDisplayUnits = true;
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
-            this.selectionOverrideZDown.LargeTickChange = 5;
+            this.selectionOverrideZDown.LargeTickChange = 50;
             this.selectionOverrideZDown.Location = new System.Drawing.Point(584, 6);
             this.selectionOverrideZDown.Maximum = 10;
             this.selectionOverrideZDown.Minimum = 0;
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
             this.selectionOverrideZDown.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideZDown.SmallTickChange = 1;
+            this.selectionOverrideZDown.SmallTickChange = 5;
             this.selectionOverrideZDown.TabIndex = 11;
             this.selectionOverrideZDown.TickFrequency = 1;
             this.selectionOverrideZDown.Value = 0;
@@ -279,13 +279,13 @@
             this.selectionOverrideZUp.HasDisplayUnits = true;
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
-            this.selectionOverrideZUp.LargeTickChange = 5;
+            this.selectionOverrideZUp.LargeTickChange = 50;
             this.selectionOverrideZUp.Location = new System.Drawing.Point(496, 6);
             this.selectionOverrideZUp.Maximum = 10;
             this.selectionOverrideZUp.Minimum = 0;
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
             this.selectionOverrideZUp.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideZUp.SmallTickChange = 1;
+            this.selectionOverrideZUp.SmallTickChange = 5;
             this.selectionOverrideZUp.TabIndex = 10;
             this.selectionOverrideZUp.TickFrequency = 1;
             this.selectionOverrideZUp.Value = 0;
@@ -801,7 +801,7 @@
             this.cbOverridesDisable.TabIndex = 7;
             this.cbOverridesDisable.Text = "override disable";
             this.cbOverridesDisable.UseVisualStyleBackColor = true;
-            this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.cbOverridesDisable_CheckedChanged);
+            this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.SelectionOverride_ValueChanged);
             // 
             // labelSpeedPercent
             // 
@@ -841,13 +841,13 @@
             this.selectionOverrideXY.HasDisplayUnits = true;
             this.selectionOverrideXY.LabelFormat = "{0}";
             this.selectionOverrideXY.LabelValue = null;
-            this.selectionOverrideXY.LargeTickChange = 5;
+            this.selectionOverrideXY.LargeTickChange = 50;
             this.selectionOverrideXY.Location = new System.Drawing.Point(408, 6);
             this.selectionOverrideXY.Maximum = 10;
             this.selectionOverrideXY.Minimum = 0;
             this.selectionOverrideXY.Name = "selectionOverrideXY";
             this.selectionOverrideXY.Size = new System.Drawing.Size(82, 228);
-            this.selectionOverrideXY.SmallTickChange = 1;
+            this.selectionOverrideXY.SmallTickChange = 5;
             this.selectionOverrideXY.TabIndex = 9;
             this.selectionOverrideXY.TickFrequency = 1;
             this.selectionOverrideXY.Value = 0;

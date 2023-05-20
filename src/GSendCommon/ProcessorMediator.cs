@@ -614,20 +614,6 @@ namespace GSendCommon
 
                     break;
 
-                case Constants.MessageMachineUpdateRapidOverridesAdmin:
-                    response.request = Constants.MessageMachineUpdateOverridesAdmin;
-                    if (foundMachine && proc != null)
-                    {
-                        RapidsOverride rapidsOverride = (RapidsOverride)Convert.ToInt32(parts[2]);
-                        proc.RapidsSpeed = rapidsOverride;
-                        response.success = true;
-                    }
-                    else
-                    {
-                        response.success = false;
-                    }
-                    break;
-
                 case Constants.MessageMachineUpdateOverridesAdmin:
                     response.request = Constants.MessageMachineUpdateOverridesAdmin;
                     if (foundMachine && proc != null)
@@ -782,7 +768,9 @@ namespace GSendCommon
                     {
                         IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
                         IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(File.ReadAllText(fileName));
+                        gCodeAnalyses.Analyse();
                         response.message = proc.LoadGCode(gCodeAnalyses);
+
                         response.success = true;
                     }
                     else

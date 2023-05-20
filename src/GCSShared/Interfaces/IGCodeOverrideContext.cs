@@ -1,4 +1,6 @@
-﻿using GSendShared.Models;
+﻿using System.Collections.Concurrent;
+
+using GSendShared.Models;
 
 namespace GSendShared.Abstractions
 {
@@ -36,9 +38,9 @@ namespace GSendShared.Abstractions
 
         IStaticMethods StaticMethods { get; }
 
-        OverrideModel Overrides { get; }
-
         MachineStateModel MachineStateModel { get; }
+
+        ConcurrentQueue<IGCodeLine> CommandQueue { get; }
 
         bool ProcessGCodeOverrides(IGCodeLine line);
 

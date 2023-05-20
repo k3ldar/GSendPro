@@ -1,5 +1,4 @@
-﻿using GSendCommon.MCodeOverrides;
-using GSendCommon.OverrideClasses;
+﻿using System.Collections.Concurrent;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -23,19 +22,22 @@ namespace GSendCommon
         private readonly IServiceProvider _serviceProvider;
 
         public GCodeOverrideContext(IServiceProvider serviceProvider, IStaticMethods staticMethods, IGCodeProcessor processor,
-            IMachine machine, MachineStateModel machineStateModel)
+            IMachine machine, MachineStateModel machineStateModel, ConcurrentQueue<IGCodeLine> commandQueue)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             StaticMethods = staticMethods ?? throw new ArgumentNullException(nameof(staticMethods));
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
             MachineStateModel = machineStateModel ?? throw new ArgumentNullException(nameof(machineStateModel));
-            Overrides = new OverrideModel();
+            CommandQueue = commandQueue ?? throw new ArgumentNullException(nameof(commandQueue));
         }
 
         public IStaticMethods StaticMethods { get; }
 
         public IGCodeLine GCode { get; private set; }
+
+        public ConcurrentQueue<IGCodeLine> CommandQueue { get; }
+
 
         public IGCodeLine OverriddenGCode
         {
@@ -58,9 +60,8 @@ namespace GSendCommon
 
         public bool SendCommand { get; set; } = true;
 
-        public OverrideModel Overrides { get; }
-
         public MachineStateModel MachineStateModel { get; }
+
 
         public bool ProcessGCodeOverrides(IGCodeLine line)
         {

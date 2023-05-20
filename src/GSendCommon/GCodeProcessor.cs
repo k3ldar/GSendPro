@@ -3,18 +3,14 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
-using GSendAnalyser;
-using GSendAnalyser.Internal;
-
 using GSendShared;
-using GSendShared.Attributes;
 using GSendShared.Abstractions;
+using GSendShared.Attributes;
 using GSendShared.Models;
 
-using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendCommon
 {
@@ -77,7 +73,6 @@ namespace GSendCommon
         private readonly MachineStateModel _machineStateModel = new();
         private readonly IGCodeOverrideContext _overrideContext;
 
-        private OverrideModel _machineOverrides;
         private RapidsOverride _rapidsSpeed = RapidsOverride.High;
         private int _lineCount = 0;
         private bool _initialising = true;
@@ -106,7 +101,8 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this, _machine, _machineStateModel);
+            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this, 
+                _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 
             _processJobThread = new ProcessGCodeJob(this);
@@ -156,7 +152,7 @@ namespace GSendCommon
 
                 return;
             }
-                            
+
             _machineStateModel.QueueSize = _sendQueue.Count;
             _machineStateModel.CommandQueueSize = _commandQueue.Count;
 
@@ -709,9 +705,6 @@ namespace GSendCommon
 
             if (speed > 0)
             {
-                OverrideValue overrideValue = _overrideContext.Overrides.Spindle;
-                overrideValue.OriginalValue = speed;
-
                 if (clockWise)
                     InternalWriteLine(String.Format(CommandSpindleStartClockWise, speed));
                 else
@@ -823,12 +816,15 @@ namespace GSendCommon
 
         public TimeSpan HomingTimeout { get; set; } = TimeSpan.FromSeconds(180);
 
-        public RapidsOverride RapidsSpeed
+        private RapidsOverride RapidsSpeed
         {
             get => _rapidsSpeed;
 
             set
             {
+                if (_rapidsSpeed == value)
+                    return;
+
                 _rapidsSpeed = value;
 
                 switch (value)
@@ -843,8 +839,6 @@ namespace GSendCommon
                         InternalWriteByte(new byte[] { 0x95 });
                         break;
                 }
-
-                _machineStateModel.RapidSpeed = value;
             }
         }
 
@@ -860,17 +854,21 @@ namespace GSendCommon
 
         public OverrideModel MachineOverrides
         {
-            get => _machineOverrides;
+            get => _machineStateModel.Overrides;
 
             set
             {
-                bool updateDefaults = _machineOverrides == null;
-                _machineOverrides = value;
-
-                if (_machineOverrides == null)
+                if (value == null)
                     return;
 
+                _machineStateModel.Overrides = value;
 
+                if (_machineStateModel.Overrides.OverrideRapids)
+                    RapidsSpeed = _machineStateModel.Overrides.Rapids;
+                else
+                    RapidsSpeed = RapidsOverride.High;
+
+                OnMachineStateChanged?.Invoke(this, _machineStateModel);
             }
         }
 
@@ -1110,9 +1108,10 @@ namespace GSendCommon
                         break;
 
                     case OptionOverrides:
-                        _machineStateModel.OverrideFeeds = Convert.ToByte(values[0]);
-                        _machineStateModel.OverrideRapids = Convert.ToByte(values[1]);
-                        _machineStateModel.OverrideSpindleSpeed = Convert.ToByte(values[2]);
+
+                        _machineStateModel.MachineOverrideFeeds = Convert.ToByte(values[0]);
+                        _machineStateModel.MachineOverrideRapids = Convert.ToByte(values[1]);
+                        _machineStateModel.MachineOverrideSpindle = Convert.ToByte(values[2]);
                         break;
 
                     case OptionAccessoryState:

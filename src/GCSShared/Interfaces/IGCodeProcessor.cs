@@ -62,8 +62,6 @@ namespace GSendShared
 
         TimeSpan HomingTimeout { get; set; }
 
-        RapidsOverride RapidsSpeed { get; set; }
-
         string Cpu { get; }
 
         bool IsRunning { get; }

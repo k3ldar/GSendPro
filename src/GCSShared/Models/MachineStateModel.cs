@@ -19,9 +19,6 @@
         private int _availableRXbytes;
         private int _lineNumber;
         private int _totalLines;
-        private byte _overrideRapids;
-        private byte _overrideFeeds;
-        private byte _overrideSpindleSpeed;
         private bool _floodEnabled;
         private bool _mistEnabled;
         private bool _spindleClockWise;
@@ -32,16 +29,103 @@
         private int _queueSize;
         private int _commandQueueSize;
         private CoordinateSystem _coordinateSystem;
-        private RapidsOverride _rapidSpeed = RapidsOverride.High;
         private MachineStateOptions _machineStateOptions;
         private TimeSpan _totalJobTime;
+        private readonly OverrideModel _overrideModel;
 
         public MachineStateModel()
         {
+            _overrideModel = new OverrideModel();
+            _overrideModel.ValueUpdated += OverrideModel_ValueUpdated;
             _machineStateOptions = MachineStateOptions.None;
         }
 
         public MachineStateOptions MachineStateOptions {  get => _machineStateOptions; set => _machineStateOptions = value; }
+
+        public byte MachineOverrideFeeds { get; set; }
+
+        public byte MachineOverrideSpindle { get; set; }
+
+        public byte MachineOverrideRapids { get; set; }
+
+        public OverrideModel Overrides
+        {
+            get => _overrideModel;
+
+            set
+            {
+                bool hasUpdated = false;
+
+                if (value.Rapids != _overrideModel.Rapids)
+                {
+                    _overrideModel.Rapids = value.Rapids;
+                    hasUpdated = true;
+                }
+
+                if (value.AxisXY.NewValue != _overrideModel.AxisXY.NewValue)
+                {
+                    _overrideModel.AxisXY = value.AxisXY;
+                    hasUpdated = true;
+                }
+
+                if (value.AxisZUp.NewValue != _overrideModel.AxisZUp.NewValue)
+                {
+                    _overrideModel.AxisZUp = value.AxisZUp;
+                    hasUpdated = true;
+                }
+
+                if (value.AxisZDown.NewValue != _overrideModel.AxisZDown.NewValue)
+                {
+                    _overrideModel.AxisZDown = value.AxisZDown;
+                    hasUpdated = true;
+                }
+
+                if (value.Spindle.NewValue != _overrideModel.Spindle.NewValue)
+                {
+                    _overrideModel.Spindle = value.Spindle;
+                    hasUpdated = true;
+                }
+
+                if (value.OverrideRapids != _overrideModel.OverrideRapids)
+                {
+                    _overrideModel.OverrideRapids = value.OverrideRapids;
+                    hasUpdated = true;
+                }
+
+                if (value.OverrideXY != _overrideModel.OverrideXY)
+                {
+                    _overrideModel.OverrideXY = value.OverrideXY;
+                    hasUpdated = true;
+                }
+
+                if (value.OverrideZUp != _overrideModel.OverrideZUp)
+                {
+                    _overrideModel.OverrideZUp = value.OverrideZUp;
+                    hasUpdated = true;
+                }
+
+                if (value.OverrideZDown != _overrideModel.OverrideZDown)
+                {
+                    _overrideModel.OverrideZDown = value.OverrideZDown;
+                    hasUpdated = true;
+                }
+
+                if (value.OverrideSpindle != _overrideModel.OverrideSpindle)
+                {
+                    _overrideModel.OverrideSpindle = value.OverrideSpindle;
+                    hasUpdated = true;
+                }
+
+                if (value.OverridesDisabled != _overrideModel.OverridesDisabled)
+                {
+                    _overrideModel.OverridesDisabled = value.OverridesDisabled;
+                    hasUpdated = true;
+                }
+
+                if (hasUpdated)
+                    Updated = true;
+            }
+        }
 
         public MachineState MachineState
         {
@@ -81,20 +165,6 @@
                     return;
 
                 _coordinateSystem = value;
-                Updated = true;
-            }
-        }
-
-        public RapidsOverride RapidSpeed
-        {
-            get => _rapidSpeed;
-
-            set
-            {
-                if (_rapidSpeed.Equals(value))
-                    return;
-
-                _rapidSpeed = value;
                 Updated = true;
             }
         }
@@ -318,48 +388,6 @@
             }
         }
 
-        public byte OverrideRapids
-        {
-            get => _overrideRapids;
-
-            set
-            {
-                if (_overrideRapids.Equals(value))
-                    return;
-
-                _overrideRapids = value;
-                Updated = true;
-            }
-        }
-
-        public byte OverrideFeeds
-        {
-            get => _overrideFeeds;
-
-            set
-            {
-                if (_overrideFeeds.Equals(value))
-                    return;
-
-                _overrideFeeds = value;
-                Updated = true;
-            }
-        }
-
-        public byte OverrideSpindleSpeed
-        {
-            get => _overrideSpindleSpeed;
-
-            set
-            {
-                if (_overrideSpindleSpeed.Equals(value))
-                    return;
-
-                _overrideSpindleSpeed = value;
-                Updated = true;
-            }
-        }
-
         public bool FloodEnabled
         {
             get => _floodEnabled;
@@ -529,6 +557,11 @@
         public void OptionRemove(MachineStateOptions machineStateOptions)
         {
             _machineStateOptions &= ~machineStateOptions;
+            Updated = true;
+        }
+
+        private void OverrideModel_ValueUpdated(object sender, EventArgs e)
+        {
             Updated = true;
         }
     }

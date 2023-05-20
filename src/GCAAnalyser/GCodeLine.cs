@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Cryptography.Xml;
 using System.Text;
 
 using GSendAnalyser.Internal;
@@ -27,6 +28,41 @@ namespace GSendAnalyser
             }
 
             return Result.ToString();
+        }
+
+        public IGCodeLine GetGCode(int feedRate)
+        {
+            GCodeLine Result = new();
+
+            bool feedRateFound = false;
+            int index = 0;
+
+            foreach (IGCodeCommand command in Commands)
+            {
+                if (command.Command.Equals('%'))
+                {
+                    Result.Commands.Add(command);
+                }
+                else
+                {
+                    if (command.Command.Equals('F'))
+                    {
+                        feedRateFound = true;
+                        Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, new CurrentCommandValues(), -2));
+                    }
+                    else
+                    {
+                        Result.Commands.Add(command);
+                    }
+                }
+
+                index++;
+            }
+
+            if (!feedRateFound)
+                Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, new CurrentCommandValues(), -2));
+
+            return Result;
         }
 
         public bool IsCommentOnly => (Commands.Count == 1 && Commands[0].Command.Equals('\0') && !String.IsNullOrEmpty(Commands[0].Comment));

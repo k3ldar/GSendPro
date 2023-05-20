@@ -18,8 +18,6 @@ namespace GSendCommon
         private readonly IUiUpdate _uiUpdate;
         private DateTime _lastUiUpdate;
         private DateTime _lastOverrideUpdate;
-        private DateTime _lastRapidOverrideUpdate;
-        private RapidsOverride _rapidsOverride;
 
         public MachineUpdateThread(TimeSpan runInterval, GSendWebSocket gSendWebSocket, IMachine machine, IUiUpdate uiUpdate)
             : base(null, runInterval)
@@ -31,25 +29,19 @@ namespace GSendCommon
             _uiUpdate = uiUpdate ?? throw new ArgumentNullException(nameof(uiUpdate));
             _lastUiUpdate = DateTime.UtcNow;
             _lastOverrideUpdate = DateTime.MaxValue;
-            _lastRapidOverrideUpdate = DateTime.MaxValue;
             IsThreadRunning = false;
             Overrides = new();
+            Overrides.ValueUpdated += Overrides_ValueUpdated;
+        }
+
+        private void Overrides_ValueUpdated(object sender, EventArgs e)
+        {
+            OverridesUpdated();
         }
 
         public bool IsThreadRunning { get; set; }
 
         public OverrideModel Overrides { get; }
-
-        public RapidsOverride RapidsOverride
-        {
-            get => _rapidsOverride;
-
-            set
-            {
-                _rapidsOverride = value;
-                _lastRapidOverrideUpdate = DateTime.UtcNow;
-            }
-        }
 
         public void OverridesUpdated()
         {
@@ -78,15 +70,6 @@ namespace GSendCommon
                 string overrideAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(Overrides)));
                 _gSendWebSocket.SendAsync(String.Format(Constants.MessageMachineUpdateOverrides, _machine.Id, overrideAsBase64)).ConfigureAwait(false);
                 _lastOverrideUpdate = DateTime.MaxValue;
-            }
-
-            TimeSpan rapidOverrideUpdateSpan = DateTime.UtcNow - _lastRapidOverrideUpdate;
-
-            if (rapidOverrideUpdateSpan.TotalMilliseconds > OverrideUpdateTimeout)
-            {
-                Trace.WriteLine("rapid override send update");
-                _gSendWebSocket.SendAsync(String.Format(Constants.MessageMachineUpdateRapidOverrides, _machine.Id, (int)RapidsOverride)).ConfigureAwait(false);
-                _lastRapidOverrideUpdate = DateTime.MaxValue;
             }
 
             TimeSpan span = DateTime.UtcNow - _lastUiUpdate;

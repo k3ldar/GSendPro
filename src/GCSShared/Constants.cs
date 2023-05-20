@@ -106,10 +106,6 @@ namespace GSendShared
 
         public const string MessageMachineUpdateOverrides = "mOverrides:{0}:{1}";
 
-        public const string MessageMachineUpdateRapidOverridesAdmin = "mRapidOverride";
-
-        public const string MessageMachineUpdateRapidOverrides = "mRapidOverride:{0}:{1}";
-
         public const string MessageLoadGCodeAdmin = "mLoad";
 
         public const string MessageLoadGCode = "mLoad:{0}:{1}";

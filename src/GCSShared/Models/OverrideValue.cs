@@ -12,11 +12,18 @@
 
             set
             {
+                if (_newValue == value)
+                    return;
+
                 _newValue = value;
 
                 if (OriginalValue == 0)
                     OriginalValue = value;
+
+                ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        public event EventHandler ValueChanged;
     }
 }
