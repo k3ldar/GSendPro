@@ -24,7 +24,7 @@ namespace GSendTests.Mocks
 
         public IGCodeProcessor Processor => throw new NotImplementedException();
 
-        public IMachine Machine => throw new NotImplementedException();
+        public IMachine Machine { get; } = new MockMachine();
 
         public IStaticMethods StaticMethods => throw new NotImplementedException();
 

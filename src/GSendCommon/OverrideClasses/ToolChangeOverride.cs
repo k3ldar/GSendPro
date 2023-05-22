@@ -11,7 +11,12 @@ namespace GSendCommon.OverrideClasses
 
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            if (!overrideContext.Machine.Options.HasFlag(MachineOptions.ToolChanger) && overrideContext.GCode.Commands.Any(c => c.Command.Equals('T')))
+            if (!overrideContext.Machine.Options.HasFlag(MachineOptions.ToolChanger) && 
+                (
+                    overrideContext.GCode.Commands.Any(c => c.Command.Equals('T')) ||
+                    overrideContext.GCode.Commands.Any(c => c.Command.Equals('M') && c.CommandValue.Equals(6))
+                )
+               )
             {
                 overrideContext.SendCommand = false;
                 return true;
