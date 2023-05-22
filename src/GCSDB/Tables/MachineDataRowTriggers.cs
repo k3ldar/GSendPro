@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SimpleDB;
+﻿using SimpleDB;
 
 namespace GSendDB.Tables
 {
@@ -12,7 +6,7 @@ namespace GSendDB.Tables
     {
         public int Position => 0;
 
-        public TriggerType TriggerTypes => TriggerType.BeforeInsert | 
+        public TriggerType TriggerTypes => TriggerType.BeforeInsert |
             TriggerType.BeforeUpdate;
 
         public void AfterDelete(List<MachineDataRow> records)
