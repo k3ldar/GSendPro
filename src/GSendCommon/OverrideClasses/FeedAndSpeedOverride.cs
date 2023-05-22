@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GSendShared;
+﻿using GSendShared;
 using GSendShared.Abstractions;
-using GSendShared.Models;
 
 namespace GSendCommon.OverrideClasses
 {
@@ -49,7 +42,7 @@ namespace GSendCommon.OverrideClasses
             IGCodeCommand feedRate = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('F'));
 
             IsG1Command = !overrideContext.GCode.Commands.Any(c => c.Command.Equals('G') && c.CommandValue.Equals(0)) &&
-                (overrideContext.GCode.Commands.Any(c => c.Command.Equals('G') && c.CommandValue.Equals(1)) || 
+                (overrideContext.GCode.Commands.Any(c => c.Command.Equals('G') && c.CommandValue.Equals(1)) ||
                 IsG1Command);
 
             if (!IsG1Command)
@@ -149,12 +142,12 @@ namespace GSendCommon.OverrideClasses
 
         public void Process(GrblAlarm alarm)
         {
-            
+
         }
 
         public void Process(GrblError error)
         {
-            
+
         }
     }
 }

@@ -1611,7 +1611,6 @@ namespace GSendDesktop.Forms
             columnHeaderFeed.Text = GSend.Language.Resources.FeedRate;
             columnHeaderGCode.Text = GSend.Language.Resources.GCode;
             columnHeaderSpindleSpeed.Text = GSend.Language.Resources.Spindle;
-            columnHeaderSendStatus.Text = GSend.Language.Resources.Status;
 
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
@@ -2143,7 +2142,6 @@ namespace GSendDesktop.Forms
             int line = e.ItemIndex + 1;
             ListViewItem item = new(line.ToString());
             item.SubItems.Add(gCodeLineInfo.GCode);
-            item.SubItems.Add(gcodeLine.Status.ToString());
             item.SubItems.Add(gCodeLineInfo.Comments);
             item.SubItems.Add(FixEmptyValue(gCodeLineInfo.FeedRate));
             item.SubItems.Add(FixEmptyValue(gCodeLineInfo.SpindleSpeed));

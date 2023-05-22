@@ -201,7 +201,6 @@
             this.heartbeatPanelAvailableBlocks = new ServiceManager.Core.Controls.HeartbeatPanel();
             this.heartbeatPanelAvailableRXBytes = new ServiceManager.Core.Controls.HeartbeatPanel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.columnHeaderSendStatus = new System.Windows.Forms.ColumnHeader();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -1847,7 +1846,6 @@
             this.listViewGCode.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderLine,
             this.columnHeaderGCode,
-            this.columnHeaderSendStatus,
             this.columnHeaderComments,
             this.columnHeaderFeed,
             this.columnHeaderSpindleSpeed,
@@ -2294,6 +2292,5 @@
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelSpindle;
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableBlocks;
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableRXBytes;
-        private System.Windows.Forms.ColumnHeader columnHeaderSendStatus;
     }
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GSendDesktop": {
+      "commandName": "Project",
+      "commandLineArgs": "-e"
+    }
+  }
+}
