@@ -181,10 +181,7 @@ namespace GSendCommon
 
                             bool overriddenGCode = InternalWriteLine(commandToSend);
 
-                            if (!overriddenGCode)
-
-
-                                NextCommand++;
+                            NextCommand++;
                             _machineStateModel.LineNumber = NextCommand;
 
                             //if overridden then override is responsible for adding it to the queue

@@ -820,8 +820,8 @@ namespace GSendDesktop.Forms
 
         private void trackBarPercent_ValueChanged(object sender, EventArgs e)
         {
-            UpdateOverrides();
             _machine.OverrideSpeed = trackBarPercent.Value;
+            UpdateOverrides();
             UpdateConfigurationChanged();
         }
 
@@ -844,7 +844,8 @@ namespace GSendDesktop.Forms
 
         private void OverrideAxis_Checked(object sender, EventArgs e)
         {
-            trackBarPercent_ValueChanged(sender, e);
+            if (!_machineStatusModel.IsRunning)
+                trackBarPercent_ValueChanged(sender, e);
 
             if (cbOverrideLinkRapids.Checked)
                 _machine.AddOptions(MachineOptions.OverrideRapids);
