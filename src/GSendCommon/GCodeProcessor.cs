@@ -133,10 +133,12 @@ namespace GSendCommon
                             {
                                 string commandText = peekCommand.GetGCode();
                                 _sendQueue.Enqueue(peekCommand);
-                                _machineStateModel.BufferSize = InternalGetBufferSize();
-                                Trace.WriteLine($"From Command Queue: {commandText}");
+                                UpdateMachineStateBufferData();
+                                //Trace.WriteLine($"From Command Queue: {commandText}");
                                 _port.WriteLine(commandText);
                             }
+
+                            _machineStateModel.CommandQueueSize = _commandQueue.Count;
 
                         }
                         else
@@ -174,19 +176,22 @@ namespace GSendCommon
                         if (!String.IsNullOrEmpty(commandText) ||
                             !commandText.StartsWith("%"))
                         {
-                            _sendQueue.Enqueue(commandToSend);
-                            _machineStateModel.BufferSize = InternalGetBufferSize();
-                            _machineStateModel.QueueSize = _sendQueue.Count;
                             //Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
 
                             bool overriddenGCode = InternalWriteLine(commandToSend);
 
-                            NextCommand++;
+                            if (!overriddenGCode)
+
+
+                                NextCommand++;
                             _machineStateModel.LineNumber = NextCommand;
 
+                            //if overridden then override is responsible for adding it to the queue
                             if (overriddenGCode)
                                 return;
+                            else
+                                _sendQueue.Enqueue(commandToSend);
                         }
                     }
                     else
@@ -195,6 +200,8 @@ namespace GSendCommon
                     }
                 }
             }
+
+            UpdateMachineStateBufferData();
         }
 
         #endregion Public Methods
@@ -947,38 +954,43 @@ namespace GSendCommon
                     {
                         _updateStatusSent = false;
                         ProcessInformationResponse(response[1..^1]);
+                        continue;
                     }
                     else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Trace.WriteLine($"Response: {response}");
                         ProcessAlarmResponse(response);
+                        continue;
                     }
                     else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Trace.WriteLine($"Response: {response}");
                         ProcessErrorResponse(response);
+                        continue;
                     }
                     else if (response.StartsWith('['))
                     {
                         ProcessMessageResponse(response.Trim()[1..^1]);
+                        continue;
                     }
                     else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
                         {
-                            _machineStateModel.BufferSize = InternalGetBufferSize();
                             activeCommand.Status = LineStatus.Processed;
-                            _machineStateModel.QueueSize = _sendQueue.Count;
+                            UpdateMachineStateBufferData();
                         }
 
                         _waitingForResponse = false;
+                        continue;
                     }
+
 
                 }
 
 
 #if DEBUG
-                //Trace.WriteLine($"Junk Data: {response}");
+                Trace.WriteLine($"Junk Data: {response}");
 #endif
             }
         }
@@ -1420,6 +1432,12 @@ namespace GSendCommon
             }
 
             return null;
+        }
+
+        private void UpdateMachineStateBufferData()
+        {
+            _machineStateModel.QueueSize = _sendQueue.Count;
+            _machineStateModel.BufferSize = InternalGetBufferSize();
         }
 
         #endregion Private Methods

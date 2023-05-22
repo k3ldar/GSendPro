@@ -186,7 +186,7 @@ namespace GSendDesktop.Controls
             BackgroundImage.CopyRegionIntoImage(sourceLocation, ref _zoomImage, ZoomPanel.ClientRectangle);
             ZoomPanel.BackgroundImage = null;
             ZoomPanel.BackgroundImage = _zoomImage;
-            Trace.WriteLine($"Image Updated ({e.X},{e.Y} - {sourceLocation}");
+            //Trace.WriteLine($"Image Updated ({e.X},{e.Y} - {sourceLocation}");
         }
 
         public Panel ZoomPanel { get; set; }

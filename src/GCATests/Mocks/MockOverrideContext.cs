@@ -14,19 +14,13 @@ namespace GSendTests.Mocks
             MachineStateModel = machineStateModel ?? throw new ArgumentNullException(nameof(machineStateModel));
         }
 
-        public MockOverrideContext(MachineStateModel machineStateModel, IGCodeLine gcodeLine)
-            : this(machineStateModel)
-        {
-            GCode = gcodeLine;
-        }
-
         public IGCodeLine GCode { get; set; }
 
         public IGCodeLine OverriddenGCode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool Overridden => throw new NotImplementedException();
 
-        public bool SendCommand { get; set; }
+        public bool SendCommand { get; set; } = true;
 
         public IGCodeProcessor Processor => throw new NotImplementedException();
 

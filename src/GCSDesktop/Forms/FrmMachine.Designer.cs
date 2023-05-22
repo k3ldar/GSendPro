@@ -201,6 +201,7 @@
             this.heartbeatPanelAvailableBlocks = new ServiceManager.Core.Controls.HeartbeatPanel();
             this.heartbeatPanelAvailableRXBytes = new ServiceManager.Core.Controls.HeartbeatPanel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.columnHeaderSendStatus = new System.Windows.Forms.ColumnHeader();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -740,6 +741,7 @@
             // 
             // cbOverrideLinkSpindle
             // 
+            this.cbOverrideLinkSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbOverrideLinkSpindle.AutoSize = true;
             this.cbOverrideLinkSpindle.Location = new System.Drawing.Point(678, 9);
             this.cbOverrideLinkSpindle.Name = "cbOverrideLinkSpindle";
@@ -750,6 +752,7 @@
             // 
             // cbOverrideLinkZDown
             // 
+            this.cbOverrideLinkZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbOverrideLinkZDown.AutoSize = true;
             this.cbOverrideLinkZDown.Location = new System.Drawing.Point(592, 9);
             this.cbOverrideLinkZDown.Name = "cbOverrideLinkZDown";
@@ -761,6 +764,7 @@
             // 
             // cbOverrideLinkZUp
             // 
+            this.cbOverrideLinkZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbOverrideLinkZUp.AutoSize = true;
             this.cbOverrideLinkZUp.Location = new System.Drawing.Point(504, 9);
             this.cbOverrideLinkZUp.Name = "cbOverrideLinkZUp";
@@ -772,6 +776,7 @@
             // 
             // cbOverrideLinkXY
             // 
+            this.cbOverrideLinkXY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbOverrideLinkXY.AutoSize = true;
             this.cbOverrideLinkXY.Location = new System.Drawing.Point(416, 9);
             this.cbOverrideLinkXY.Name = "cbOverrideLinkXY";
@@ -783,6 +788,7 @@
             // 
             // cbOverrideLinkRapids
             // 
+            this.cbOverrideLinkRapids.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbOverrideLinkRapids.AutoSize = true;
             this.cbOverrideLinkRapids.Location = new System.Drawing.Point(328, 9);
             this.cbOverrideLinkRapids.Name = "cbOverrideLinkRapids";
@@ -1841,6 +1847,7 @@
             this.listViewGCode.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderLine,
             this.columnHeaderGCode,
+            this.columnHeaderSendStatus,
             this.columnHeaderComments,
             this.columnHeaderFeed,
             this.columnHeaderSpindleSpeed,
@@ -2287,5 +2294,6 @@
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelSpindle;
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableBlocks;
         private ServiceManager.Core.Controls.HeartbeatPanel heartbeatPanelAvailableRXBytes;
+        private System.Windows.Forms.ColumnHeader columnHeaderSendStatus;
     }
 }

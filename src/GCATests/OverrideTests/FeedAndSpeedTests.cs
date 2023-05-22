@@ -34,7 +34,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             bool result = sut.Process(context, CancellationToken.None);
@@ -53,7 +54,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             bool result = sut.Process(context, CancellationToken.None);
@@ -72,7 +74,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             bool result = sut.Process(context, CancellationToken.None);
@@ -91,7 +94,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             _ = sut.Process(context, CancellationToken.None);
@@ -112,7 +116,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             _ = sut.Process(context, CancellationToken.None);
@@ -124,7 +129,7 @@ namespace GSendTests.OverrideTests
         }
 
         [TestMethod]
-        public void Process_OverridingX_OriginalValueNotReset_ResetsToOriginalValue_Success()
+        public void Process_OverridingX_False_OriginalValueNotReset_ResetsToOriginalValue_Success()
         {
             IGCodeLine gCodeLine = new GCodeLine();
             CreateGCodeCommands(gCodeLine, "G1X15F1000");
@@ -132,7 +137,8 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new MachineStateModel();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            IGCodeOverrideContext context = new MockOverrideContext(machineStateModel, gCodeLine);
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            context.GCode = gCodeLine;
 
             FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
             bool result = sut.Process(context, CancellationToken.None);
@@ -142,23 +148,119 @@ namespace GSendTests.OverrideTests
             Assert.IsTrue(sut.IsG1Command);
 
             machineStateModel.Overrides.OverridesDisabled = false;
-            machineStateModel.Overrides.OverrideXY = true;
+            machineStateModel.Overrides.OverrideXY = false;
             machineStateModel.Overrides.AxisXY.NewValue = 2000;
 
             CreateGCodeCommands(gCodeLine, "X34Y100");
             result = sut.Process(context, CancellationToken.None);
-            Assert.IsTrue(result);
-            Assert.IsFalse(context.SendCommand);
-            Assert.AreEqual(1, context.CommandQueue.Count);
+            Assert.IsFalse(result);
+            Assert.IsTrue(context.SendCommand);
+            Assert.AreEqual(0, context.CommandQueue.Count);
+        }
 
-            if (context.CommandQueue.TryPeek(out IGCodeLine command))
+        [TestMethod]
+        public void Process_OverridingX_OriginalValueNotReset_ResetsToOriginalValue_Success()
+        {
+            MachineStateModel machineStateModel = new MachineStateModel();
+            machineStateModel.Overrides.OverridesDisabled = false;
+
+            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            FeedAndSpeedOverride sut = new FeedAndSpeedOverride();
+
+            // initial speed, no override
+            SendAndValidateXYCommand(sut, context, "G1X15F1000", "", false, true, 0, 1000, true);
+
+            // configure overrides
+            machineStateModel.Overrides.OverridesDisabled = false;
+            machineStateModel.Overrides.OverrideXY = true;
+            machineStateModel.Overrides.AxisXY.NewValue = 2000;
+
+            // send command with overrides
+            SendAndValidateXYCommand(sut, context, "X34Y100", "X34Y100F2000", true, false, 1, 2000, true);
+
+            //disable override
+            machineStateModel.Overrides.OverrideXY = false;
+
+            //send command, should use existing feed but still sent as previous was overridden
+            SendAndValidateXYCommand(sut, context, "X590Y630", "X590Y630F1000", true, false, 1, 1000, true);
+
+            // send command, will not be overridden at all
+            SendAndValidateXYCommand(sut, context, "X20.123", "", false, true, 0, 1000, true);
+
+            machineStateModel.Overrides.OverridesDisabled = false;
+            machineStateModel.Overrides.OverrideXY = true;
+
+            // send command with overrides
+            SendAndValidateXYCommand(sut, context, "X34Y100", "X34Y100F2000", true, false, 1, 2000, true);
+
+            // send command already overridden, should not include the F value
+            SendAndValidateXYCommand(sut, context, "X34Y100", "X34Y100", false, true, 0, 2000, true);
+
+            // change feed rate for x
+            machineStateModel.Overrides.AxisXY.NewValue = 5000;
+
+            SendAndValidateXYCommand(sut, context, "X1Y1", "X1Y1F5000", true, false, 1, 5000, true);
+
+            SendAndValidateXYCommand(sut, context, "X100Y100", "X100Y100", false, true, 0, 5000, true);
+
+            SendAndValidateXYCommand(sut, context, "G0X1Y1", "", false, true, 0, 5000, false);
+
+            SendAndValidateXYCommand(sut, context, "G1X100Y100F1000", "G1X100Y100F5000", true, false, 1, 5000, true);
+
+
+            // reset back to F2000
+            machineStateModel.Overrides.AxisXY.NewValue = 2000;
+
+
+
+            // disable all overrides
+            machineStateModel.Overrides.OverridesDisabled = true;
+
+            //send command, should use existing feed but still sent as previous was overridden
+            SendAndValidateXYCommand(sut, context, "X590Y630", "X590Y630F1000", true, false, 1, 1000, true);
+
+            // send command, will not be overridden at all
+            SendAndValidateXYCommand(sut, context, "X20.123", "", false, true, 0, 1000, true);
+
+            SendAndValidateXYCommand(sut, context, "G0X5Y5", "", false, true, 0, 1000, false);
+
+            // overrides enabled, override xy is still true
+            machineStateModel.Overrides.OverridesDisabled = false;
+            Assert.IsTrue(machineStateModel.Overrides.OverrideXY);
+            Assert.AreEqual(2000, machineStateModel.Overrides.AxisXY.NewValue);
+
+            // send g1 after previous g0, with speed which is overridden
+            SendAndValidateXYCommand(sut, context, "G1X50Y50F1000", "G1X50Y50F2000", true, false, 1, 2000, true);
+        }
+
+        private void SendAndValidateXYCommand(FeedAndSpeedOverride sut, MockOverrideContext context, 
+            string gCode, string expectedGCodeResponse, bool expectedProcessResult, 
+            bool expectedSendCommand, int expectedQueueCount, int expectedCurrentFeedRate, 
+            bool expectedG1Command)
+        {
+            context.SendCommand = true;
+            Assert.AreEqual(0, context.CommandQueue.Count);
+            IGCodeLine gCodeLine = new GCodeLine();
+            CreateGCodeCommands(gCodeLine, gCode);
+            context.GCode = gCodeLine;
+            bool result = sut.Process(context, CancellationToken.None);
+            Assert.AreEqual(expectedProcessResult, result);
+            Assert.AreEqual(expectedSendCommand, context.SendCommand);
+            Assert.AreEqual(expectedQueueCount, context.CommandQueue.Count);
+            Assert.AreEqual(expectedCurrentFeedRate, sut.CurrentXYFeedRate);
+            Assert.AreEqual(expectedG1Command, sut.IsG1Command);
+
+            if (expectedQueueCount > 0)
             {
-                string gCode = command.GetGCode();
-                Assert.AreEqual("X34Y100F2000", gCode);
-            }
-            else
-            {
-                Assert.IsFalse(true, "Command missing, where has it gone!");
+                if (context.CommandQueue.TryDequeue(out IGCodeLine command))
+                {
+                    string queuedGCode = command.GetGCode();
+                    Assert.AreEqual(expectedGCodeResponse, queuedGCode);
+                }
+                else
+                {
+                    Assert.IsFalse(true, "Command missing, where has it gone!");
+                }
             }
         }
 
