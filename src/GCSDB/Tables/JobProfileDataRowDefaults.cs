@@ -4,7 +4,7 @@ namespace GSendDB.Tables
 {
     internal class JobProfileDataRowDefaults : ITableDefaults<JobProfileDataRow>
     {
-        public long PrimarySequence => 0;
+        public long PrimarySequence => -1;
 
         public long SecondarySequence => 0;
 
