@@ -43,6 +43,18 @@ namespace GSendDesktop.Forms
                 cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard), 
                     Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[0]));
 
+            int selectedIndex = 0;
+
+            foreach (IToolProfile toolProfile in machineApiWrapper.ToolProfilesGet())
+            {
+                int idx = cmbTool.Items.Add(toolProfile.Name);
+
+                if (gCodeAnalyses.Tools.Contains(toolProfile.Id.ToString()))
+                    selectedIndex = idx;
+            }
+
+            cmbTool.SelectedIndex = selectedIndex;
+
             ValidateCoordinateSystem();
         }
 
@@ -78,6 +90,8 @@ namespace GSendDesktop.Forms
             btnStart.Text = GSend.Language.Resources.Start;
             cbSimulate.Text = GSend.Language.Resources.SimulateRun;
             lblJobProfile.Text = GSend.Language.Resources.JobProfile;
+            lblTool.Text = GSend.Language.Resources.ToolProfile;
+            lblWarnings.Text = GSend.Language.Resources.CheckList;
         }
 
         private void lstCoordinates_DrawItem(object sender, DrawItemEventArgs e)

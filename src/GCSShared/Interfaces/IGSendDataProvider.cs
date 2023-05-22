@@ -27,5 +27,9 @@
         void JobProfileRemove(long jobId);
 
         ulong JobProfileGetNextSerialNumber(IJobProfile jobProfile);
+
+        IReadOnlyList<IToolProfile> ToolsGet();
+
+
     }
 }

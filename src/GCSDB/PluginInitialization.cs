@@ -56,6 +56,7 @@ namespace GSendDB
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineSpindleTimeDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineServiceDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<JobProfileDataRow>>();
+            _ = app.ApplicationServices.GetService<ISimpleDBOperations<ToolDatabaseDataRow>>();
         }
 
         public void Configure(in IApplicationBuilder app)
@@ -70,6 +71,7 @@ namespace GSendDB
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineSpindleTimeDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineServiceDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(JobProfileDataRow));
+            services.AddSingleton(typeof(TableRowDefinition), typeof(ToolDatabaseDataRow));
         }
 
         public void AfterConfigureServices(in IServiceCollection services)

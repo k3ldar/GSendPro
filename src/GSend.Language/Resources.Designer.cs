@@ -250,6 +250,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check List.
+        /// </summary>
+        public static string CheckList {
+            get {
+                return ResourceManager.GetString("CheckList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
         public static string Clear {
@@ -2658,6 +2667,15 @@ namespace GSend.Language {
         public static string TimeFormatSecond {
             get {
                 return ResourceManager.GetString("TimeFormatSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool Profile.
+        /// </summary>
+        public static string ToolProfile {
+            get {
+                return ResourceManager.GetString("ToolProfile", resourceCulture);
             }
         }
         

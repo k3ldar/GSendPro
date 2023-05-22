@@ -90,6 +90,15 @@ namespace GSendApi
 
         #endregion Job Profiles
 
+        #region Tool Profiles
+
+        public List<IToolProfile> ToolProfilesGet()
+        {
+            return CallGetApi<List<IToolProfile>>($"ToolProfileApi/ToolsGet/");
+        }
+
+        #endregion Tool Profiles
+
         #region Private Methods
 
         private HttpClient CreateApiClient()

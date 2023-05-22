@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 using GSendService.Api;
 
@@ -20,6 +21,7 @@ namespace GSendTests.GCService
     public class JobProfileApiTests
     {
         [TestMethod]
+        [ExcludeFromCodeCoverage]
         public void JobProfilesGet_RetrievesAllJobProfiles_Success()
         {
             MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });

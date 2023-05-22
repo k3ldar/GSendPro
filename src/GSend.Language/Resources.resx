@@ -180,6 +180,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CheckList" xml:space="preserve">
+    <value>Check List</value>
+  </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
   </data>
@@ -983,6 +986,9 @@
   </data>
   <data name="TimeFormatSecond" xml:space="preserve">
     <value>{0}s</value>
+  </data>
+  <data name="ToolProfile" xml:space="preserve">
+    <value>Tool Profile</value>
   </data>
   <data name="TotalJobTime" xml:space="preserve">
     <value>Time Running: {0}</value>

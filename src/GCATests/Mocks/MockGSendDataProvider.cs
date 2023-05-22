@@ -19,12 +19,12 @@ namespace GSendTests.Mocks
             _machines = new List<IMachine>();
         }
 
-        public MockGSendDataProvider(string[] names)
+        public MockGSendDataProvider(string[] machineNames)
             : this()
         {
-            for (int i = 0; i < names.Length; i++)
+            for (int i = 0; i < machineNames.Length; i++)
             {
-                _machines.Add(new MachineModel(i, names[i],
+                _machines.Add(new MachineModel(i, machineNames[i],
                     i % 2 == 0 ? MachineType.CNC : MachineType.Laser, 
                     $"COM{i + 2}",
                     MachineOptions.None, 3, new GrblSettings(),
@@ -129,10 +129,17 @@ namespace GSendTests.Mocks
             JobProfiles.Remove(JobProfileGet(jobId));
         }
 
+        public IReadOnlyList<IToolProfile> ToolsGet()
+        {
+            return ToolProfiles;
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
 
         public bool SpindleTimeFinishCalled { get; private set; }
 
         public List<IJobProfile> JobProfiles { get; private set; } = new();
+
+        public List<IToolProfile> ToolProfiles { get; private set; } = new();
     }
 }

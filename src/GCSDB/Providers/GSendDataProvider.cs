@@ -14,14 +14,17 @@ namespace GSendDB.Providers
         private readonly ISimpleDBOperations<MachineDataRow> _machineDataRow;
         private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
         private readonly ISimpleDBOperations<JobProfileDataRow> _jobProfileTable;
+        private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
 
         public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
             ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable,
-            ISimpleDBOperations<JobProfileDataRow> jobProfileTable)
+            ISimpleDBOperations<JobProfileDataRow> jobProfileTable,
+            ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
             _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
+            _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
         }
 
         #region Machines
@@ -107,7 +110,6 @@ namespace GSendDB.Providers
 
         #region Job Profiles
 
-
         public IJobProfile JobProfileGet(long jobId)
         {
             JobProfileDataRow jobProfile = _jobProfileTable.Select(jobId);
@@ -183,8 +185,34 @@ namespace GSendDB.Providers
 
         #endregion Job Profiles
 
+        #region Tool Profiles
+
+        public IReadOnlyList<IToolProfile> ToolsGet()
+        {
+            List<IToolProfile> Result = new();
+
+            foreach (ToolDatabaseDataRow toolProfile in _toolDatabaseTable.Select())
+            {
+                Result.Add(CreateToolDatabaseModelFromToolDatabaseDataRow(toolProfile));
+            }
+
+            return Result;
+        }
+
+
+        #endregion Tool Profiles
 
         #region Private Methods
+
+        private static IToolProfile CreateToolDatabaseModelFromToolDatabaseDataRow(ToolDatabaseDataRow toolDatabaseDataRow)
+        {
+            return new ToolProfileModel()
+            {
+                Id = toolDatabaseDataRow.Id,
+                Name = toolDatabaseDataRow.ToolName,
+                Description = toolDatabaseDataRow.Description,
+            };
+        }
 
         private MachineDataRow ConvertFromIMachineToMachineDataRow(IMachine machine)
         {
