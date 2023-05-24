@@ -52,7 +52,8 @@ namespace GSendCommon.OverrideClasses
                     }
 
                     _spindleTimeId = _gSendDataProvider.SpindleTimeCreate(overrideContext.Machine.Id,
-                        spindleSpeed == null ? 0 : (int)spindleSpeed.CommandValue);
+                        spindleSpeed == null ? 0 : (int)spindleSpeed.CommandValue,
+                        overrideContext.ToolProfile.Id);
                 }
                 else
                 {

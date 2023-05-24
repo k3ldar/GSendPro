@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using GSendAnalyser;
-using GSendAnalyser.Analysers;
-
+using System.Linq;
+using System.Reflection;
 using GSendShared.Abstractions;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
@@ -14,7 +14,35 @@ namespace GSendTests.Mocks
     {
         public object[] GetParameterInstances(Type type)
         {
-            throw new NotImplementedException();
+            List<object> Result = new List<object>();
+
+            List<ConstructorInfo> constructors = type.GetConstructors()
+                .Where(c => c.IsPublic && !c.IsStatic && c.GetParameters().Length > 0)
+                .OrderByDescending(c => c.GetParameters().Length)
+                .ToList();
+
+            foreach (ConstructorInfo constructor in constructors)
+            {
+                foreach (ParameterInfo param in constructor.GetParameters())
+                {
+                    List<object> list = new List<object>();
+                    GetCommonOfType<object>(list, param.ParameterType);
+                    object paramClass = list.First();
+
+                    if (paramClass == null)
+                    {
+                        Result.Clear();
+                        break;
+                    }
+
+                    Result.Add(paramClass);
+                }
+
+                if (Result.Count > 0)
+                    return Result.ToArray();
+            }
+
+            return Result.ToArray();
         }
 
         public List<T> GetPluginClasses<T>()
@@ -37,18 +65,18 @@ namespace GSendTests.Mocks
             return Result;
         }
 
-        private static void GetAnalysersOfType<T>(List<T> analyzerList, Type typeRequired)
+        private void GetAnalysersOfType<T>(List<T> analyzerList, Type typeRequired)
         {
             foreach (Type type in typeof(GSendAnalyser.GCodeAnalyses).Assembly.GetTypes())
             {
                 if (type.IsClass && type.GetInterface(typeRequired.Name) != null)
                 {
-                    analyzerList.Add((T)Activator.CreateInstance(type));
+                    analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(typeRequired)));
                 }
             }
         }
 
-        private static void GetCommonOfType<T>(List<T> analyzerList, Type typeRequired)
+        private void GetCommonOfType<T>(List<T> analyzerList, Type typeRequired)
         {
             foreach (Type type in typeof(GSendCommon.PluginInitialisation).Assembly.GetTypes())
             {
@@ -56,7 +84,7 @@ namespace GSendTests.Mocks
                 {
                     try
                     {
-                        analyzerList.Add((T)Activator.CreateInstance(type));
+                        analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(typeRequired)));
                     }
                     catch
                     {

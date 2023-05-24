@@ -264,13 +264,25 @@ namespace GSendCommon
             return !_port.IsOpen();
         }
 
-        public bool Start()
+        public bool Start(IToolProfile toolProfile)
         {
+            if (toolProfile == null)
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            if (_overrideContext is GCodeOverrideContext overrideContext)
+                overrideContext.ToolProfile = toolProfile;
+
+            return Start();
+        }
+
+        private bool Start()
+        { 
             if (!IsConnected)
                 return false;
 
             if (_isRunning)
                 return true;
+
 
             NextCommand = FirstCommand;
             _jobTime.Reset();
@@ -332,6 +344,9 @@ namespace GSendCommon
 
             if (_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                 ToggleSimulation();
+
+            if (_overrideContext is GCodeOverrideContext overrideContext)
+                overrideContext.ToolProfile = null;
 
             return true;
         }

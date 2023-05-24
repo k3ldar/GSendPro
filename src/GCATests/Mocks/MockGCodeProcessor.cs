@@ -138,7 +138,7 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
-        public bool Start()
+        public bool Start(IToolProfile toolProfile)
         {
             throw new NotImplementedException();
         }

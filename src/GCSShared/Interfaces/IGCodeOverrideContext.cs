@@ -42,6 +42,8 @@ namespace GSendShared.Abstractions
 
         ConcurrentQueue<IGCodeLine> CommandQueue { get; }
 
+        IToolProfile ToolProfile { get; }
+
         bool ProcessGCodeOverrides(IGCodeLine line);
 
         bool ProcessMCodeOverrides(IGCodeLine line);

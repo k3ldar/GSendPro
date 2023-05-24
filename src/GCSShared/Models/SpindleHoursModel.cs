@@ -10,6 +10,8 @@
 
         public DateTime FinishDateTime { get; set; }
 
+        public long ToolProfile { get; set; }
+
         public TimeSpan TotalTime
         { 
             get

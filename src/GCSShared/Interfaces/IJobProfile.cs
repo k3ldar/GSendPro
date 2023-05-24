@@ -12,5 +12,7 @@ namespace GSendShared
         string Description { get; set; }
 
         ulong SerialNumber { get; }
+
+        long ToolProfileId { get; set; }
     }
 }

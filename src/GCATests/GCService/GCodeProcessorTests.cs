@@ -128,7 +128,7 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             Assert.IsFalse(sut.IsConnected);
-            Assert.IsFalse(sut.Start());
+            Assert.IsFalse(sut.Start(new ToolProfileModel()));
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start());
+            Assert.IsTrue(sut.Start(new ToolProfileModel()));
             Assert.IsTrue(sut.IsConnected);
             Assert.IsTrue(startCalled);
         }
@@ -188,7 +188,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start());
+            Assert.IsTrue(sut.Start(new ToolProfileModel()));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -231,7 +231,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start());
+            Assert.IsTrue(sut.Start(new ToolProfileModel()));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -276,7 +276,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start());
+            Assert.IsTrue(sut.Start(new ToolProfileModel()));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -305,7 +305,7 @@ namespace GSendTests.GCService
             sut.OnStop += (sender, e) => { stopCalled = true; };
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start());
+            Assert.IsTrue(sut.Start(new ToolProfileModel()));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.IsRunning);
             Assert.IsTrue(sut.IsConnected);
@@ -727,7 +727,7 @@ namespace GSendTests.GCService
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
-            sut.Start();
+            sut.Start(new ToolProfileModel());
             Assert.IsTrue(sut.IsRunning);
 
             mockComPortFactory.MockComPort.RaisePinError();
@@ -754,7 +754,7 @@ namespace GSendTests.GCService
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
-            sut.Start();
+            sut.Start(new ToolProfileModel());
             Assert.IsTrue(sut.IsRunning);
 
             mockComPortFactory.MockComPort.RaiseSerialError();

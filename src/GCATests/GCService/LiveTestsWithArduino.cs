@@ -188,7 +188,7 @@ namespace GSendTests.GCService
 
             sut.LoadGCode(analyses);
 
-            sut.Start();
+            sut.Start(new ToolProfileModel());
 
             Thread.Sleep(500);
             sut.WriteLine("!");

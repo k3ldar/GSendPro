@@ -58,6 +58,7 @@ namespace GSendDesktop.Forms
         private bool _lastMessageWasHiddenCommand = false;
         private int _totalLines;
         private List<IGCodeLine> _gcodeLines;
+        private IToolProfile _toolProfile;
 
         #endregion Private Fields
 
@@ -1880,11 +1881,13 @@ namespace GSendDesktop.Forms
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
+                            _toolProfile = startJobWizard.ToolProfile;
                             _gcodeLines.ForEach(l => l.Status = LineStatus.Undefined);
+
                             if (startJobWizard.IsSimulation)
                                 SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
-                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id));
+                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id));
                         }
                     }
                 }

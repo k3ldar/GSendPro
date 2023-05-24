@@ -14,5 +14,7 @@
         public string Description { get; set; }
 
         public ulong SerialNumber { get; set; }
+
+        public long ToolProfileId { get; set; }
     }
 }

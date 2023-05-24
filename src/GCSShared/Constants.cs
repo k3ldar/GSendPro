@@ -122,7 +122,7 @@ namespace GSendShared
 
         public const string MessageRunGCodeAdmin = "mStart";
 
-        public const string MessageRunGCode = "mStart:{0}";
+        public const string MessageRunGCode = "mStart:{0}:{1}";
 
         public const string StateSleep = "Sleep";
 

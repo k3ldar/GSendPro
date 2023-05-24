@@ -76,7 +76,7 @@ namespace GSendTests.Mocks
             return _machines.FirstOrDefault(m => m.Id.Equals(machineId));
         }
 
-        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)
+        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId)
         {
             SpindleTimeCreateCalled = true;
             return 10;
@@ -132,6 +132,11 @@ namespace GSendTests.Mocks
         public IReadOnlyList<IToolProfile> ToolsGet()
         {
             return ToolProfiles;
+        }
+
+        public IToolProfile ToolGet(long toolid)
+        {
+            return ToolProfiles.FirstOrDefault(tp => tp.Id.Equals(toolid));
         }
 
         public bool SpindleTimeCreateCalled { get; private set; }

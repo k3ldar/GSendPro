@@ -12,7 +12,7 @@
 
         void MachineUpdate(IMachine machine);
 
-        long SpindleTimeCreate(long machineId, int maxSpindleSpeed);
+        long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId);
 
         void SpindleTimeFinish(long spindleTimeId);
 
@@ -30,6 +30,6 @@
 
         IReadOnlyList<IToolProfile> ToolsGet();
 
-
+        IToolProfile ToolGet(long toolProfileId);
     }
 }

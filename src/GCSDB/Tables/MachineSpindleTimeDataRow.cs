@@ -2,13 +2,14 @@
 
 namespace GSendDB.Tables
 {
-    [Table("MachineSpindleTime", CompressionType.None, CachingStrategy.Memory, WriteStrategy.Forced)]
+    [Table("MachineSpindleTime", CompressionType.Brotli, CachingStrategy.Memory, WriteStrategy.Forced)]
     public class MachineSpindleTimeDataRow : TableRowDefinition
     {
         private long _machineId;
         private int _maxRpm;
         private DateTime _startTime;
         private DateTime _finishTime;
+        private long _toolProfileId;
 
         [ForeignKey("Machines", ForeignKeyAttributes.DefaultValue)]
         public long MachineId
@@ -21,6 +22,21 @@ namespace GSendDB.Tables
                     return;
 
                 _machineId = value;
+                Update();
+            }
+        }
+
+        [ForeignKey("ToolDatabase", ForeignKeyAttributes.DefaultValue)]
+        public long ToolProfileId
+        {
+            get => _toolProfileId;
+
+            set
+            {
+                if (value == _toolProfileId)
+                    return;
+
+                _toolProfileId = value;
                 Update();
             }
         }

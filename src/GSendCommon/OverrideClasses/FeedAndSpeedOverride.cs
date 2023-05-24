@@ -35,9 +35,9 @@ namespace GSendCommon.OverrideClasses
 
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            // not overriding so get out
-            if (overrideContext.MachineStateModel.Overrides.OverridesDisabled)
-                return false;
+            //// not overriding so get out
+            //if (overrideContext.MachineStateModel.Overrides.OverridesDisabled)
+            //    return false;
 
             IGCodeCommand feedRate = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('F'));
 

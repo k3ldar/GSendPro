@@ -34,7 +34,7 @@ namespace GSendCommon
 
         public IStaticMethods StaticMethods { get; }
 
-        public IGCodeLine GCode { get; private set; }
+        public IGCodeLine GCode { get; internal set; }
 
         public ConcurrentQueue<IGCodeLine> CommandQueue { get; }
 
@@ -61,6 +61,8 @@ namespace GSendCommon
         public bool SendCommand { get; set; } = true;
 
         public MachineStateModel MachineStateModel { get; }
+
+        public IToolProfile ToolProfile { get; set; }
 
 
         public bool ProcessGCodeOverrides(IGCodeLine line)

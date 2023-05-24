@@ -1,7 +1,5 @@
 ﻿using GSendDB.Tables;
 
-using GSendService.Models;
-
 using GSendShared.Models;
 
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +13,13 @@ namespace GSendService.Api
     public class SpindleHoursApi : BaseController
     {
         private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
+        private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
 
-        public SpindleHoursApi(ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable)
+        public SpindleHoursApi(ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable,
+            ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable)
         {
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
+            _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
         }
 
         [HttpGet]
@@ -27,17 +28,18 @@ namespace GSendService.Api
         {
             DateTime fromDate = new DateTime(fromDateTimeTicks, DateTimeKind.Utc);
             List<SpindleHoursModel> Result = new();
-            IReadOnlyList<MachineSpindleTimeDataRow> allSpindleTime = _spindleTimeTable.Select(m => m.MachineId.Equals(machineId) && 
+            IReadOnlyList<MachineSpindleTimeDataRow> allSpindleTime = _spindleTimeTable.Select(m => m.MachineId.Equals(machineId) &&
                 m.StartTime >= fromDate && m.FinishTime > DateTime.MinValue);
 
             foreach (MachineSpindleTimeDataRow spindleTime in allSpindleTime)
             {
                 Result.Add(new SpindleHoursModel()
-                { 
+                {
                     MachineId = spindleTime.MachineId,
                     MaxRpm = spindleTime.MaxRpm,
                     StartDateTime = spindleTime.StartTime,
                     FinishDateTime = spindleTime.FinishTime,
+                    ToolProfile = spindleTime.ToolProfileId,
                 });
             }
 

@@ -47,7 +47,7 @@ namespace GSendDesktop.Forms
 
             foreach (IToolProfile toolProfile in machineApiWrapper.ToolProfilesGet())
             {
-                int idx = cmbTool.Items.Add(toolProfile.Name);
+                int idx = cmbTool.Items.Add(toolProfile);
 
                 if (gCodeAnalyses.Tools.Contains(toolProfile.Id.ToString()))
                     selectedIndex = idx;
@@ -58,7 +58,14 @@ namespace GSendDesktop.Forms
             ValidateCoordinateSystem();
         }
 
+        public IToolProfile ToolProfile => GetToolProfile();
+
         public bool IsSimulation => cbSimulate.Checked;
+
+        private IToolProfile GetToolProfile()
+        {
+            return cmbTool.SelectedItem as IToolProfile;
+        }
 
         private void ValidateCoordinateSystem()
         {
@@ -125,6 +132,21 @@ namespace GSendDesktop.Forms
         {
             DesktopSettings.WriteValue(nameof(StartJobWizard), Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[cmbJobProfiles.SelectedIndex]);
             DialogResult = DialogResult.OK;
+        }
+
+        private void cmbTool_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            IToolProfile toolProfile = cmbTool.Items[e.Index] as IToolProfile;
+
+            e.DrawBackground();
+
+
+            using SolidBrush brush = new SolidBrush(e.ForeColor);
+
+            e.Graphics.DrawString(toolProfile.Name, e.Font, brush, e.Bounds.Left + 1, e.Bounds.Top + 1);
+
+            if (!e.State.HasFlag(DrawItemState.NoFocusRect))
+                e.DrawFocusRectangle();
         }
     }
 }

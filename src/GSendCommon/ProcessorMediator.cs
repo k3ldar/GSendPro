@@ -9,6 +9,8 @@ using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using PluginManager.Abstractions;
 
 using Shared.Classes;
@@ -800,9 +802,14 @@ namespace GSendCommon
 
                     response.request = Constants.MessageRunGCodeAdmin;
 
-                    if (foundMachine && proc != null)
+                    if (foundMachine && proc != null && parts.Length == 3)
                     {
-                        proc.Start();
+                        long toolProfileId = Convert.ToInt64(parts[2]);
+
+                        IGSendDataProvider gSendDataProvider = _serviceProvider.GetRequiredService<IGSendDataProvider>();
+                        IToolProfile toolProfile = gSendDataProvider.ToolGet(toolProfileId);
+
+                        proc.Start(toolProfile);
                         response.success = true;
                     }
                     else

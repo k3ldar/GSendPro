@@ -80,14 +80,16 @@ namespace GSendDB.Providers
 
         #region Spindle Time
 
-        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed)
+        public long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId)
         {
+            
             MachineSpindleTimeDataRow Result = new MachineSpindleTimeDataRow()
             {
                 StartTime = DateTime.UtcNow,
                 FinishTime = DateTime.MinValue,
                 MachineId = machineId,
                 MaxRpm = maxSpindleSpeed,
+                ToolProfileId = toolProfileId,
             };
 
             _spindleTimeTable.Insert(Result);
@@ -199,6 +201,10 @@ namespace GSendDB.Providers
             return Result;
         }
 
+        public IToolProfile ToolGet(long toolProfileId)
+        {
+            return CreateToolDatabaseModelFromToolDatabaseDataRow(_toolDatabaseTable.Select(toolProfileId));
+        }
 
         #endregion Tool Profiles
 
@@ -206,6 +212,9 @@ namespace GSendDB.Providers
 
         private static IToolProfile CreateToolDatabaseModelFromToolDatabaseDataRow(ToolDatabaseDataRow toolDatabaseDataRow)
         {
+            if (toolDatabaseDataRow == null)
+                return null;
+
             return new ToolProfileModel()
             {
                 Id = toolDatabaseDataRow.Id,

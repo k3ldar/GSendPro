@@ -84,12 +84,14 @@
             // 
             // cmbTool
             // 
+            this.cmbTool.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTool.FormattingEnabled = true;
             this.cmbTool.Location = new System.Drawing.Point(12, 86);
             this.cmbTool.Name = "cmbTool";
-            this.cmbTool.Size = new System.Drawing.Size(269, 23);
+            this.cmbTool.Size = new System.Drawing.Size(269, 24);
             this.cmbTool.TabIndex = 5;
+            this.cmbTool.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTool_DrawItem);
             // 
             // lblTool
             // 
