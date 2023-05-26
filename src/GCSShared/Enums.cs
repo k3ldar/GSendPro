@@ -327,6 +327,8 @@
         InvalidLineTooLong = 8388608,
 
         Extrude = 16777216,
+
+        ContainsVariables = 33554432
     }
 
     public enum UnitOfMeasurement

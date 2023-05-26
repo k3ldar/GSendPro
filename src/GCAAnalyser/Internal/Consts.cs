@@ -43,5 +43,9 @@
         public const char CharY = 'Y';
         public const char CharZ = 'Z';
         public const char CharPercent = '%';
+        public const char CharVariable = '#';
+        public const char CharEquals = '=';
+        public const char CharVariableBlockStart = '[';
+        public const char CharVariableBlockEnd = ']';
     }
 }

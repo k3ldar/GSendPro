@@ -20,7 +20,7 @@ namespace GSendTests.GSendAnalyserTests
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Construct_InvalidInstance_CodeIsNotInRange_Throws()
         {
-            new GCodeCommand(2, '#', 0, "0", string.Empty, new CurrentCommandValues(), 1);
+            new GCodeCommand(2, '#', 0, "0", String.Empty, null, new CurrentCommandValues(), 1);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace GSendTests.GSendAnalyserTests
                 Z = 3.3m,
             };
 
-            GCodeCommand sut = new GCodeCommand(0, 'G', 0, "0", string.Empty, currentCommandValues, 5);
+            GCodeCommand sut = new GCodeCommand(0, 'G', 0, "0", String.Empty, null, currentCommandValues, 5);
 
             Assert.IsNotNull(sut);
             Assert.AreEqual("G0", sut.ToString());
@@ -48,7 +48,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void Construct_ValidInstance_MCode_Success()
         {
-            GCodeCommand sut = new GCodeCommand(1, 'M', 3, "3", string.Empty, new CurrentCommandValues(), 1);
+            GCodeCommand sut = new GCodeCommand(1, 'M', 3, "3", String.Empty, null, new CurrentCommandValues(), 1);
             Assert.IsNotNull(sut);
             Assert.AreEqual("M3", sut.ToString());
             Assert.AreEqual(0m, sut.CurrentX);

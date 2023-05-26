@@ -48,7 +48,7 @@ namespace GSendAnalyser
                     if (command.Command.Equals('F'))
                     {
                         feedRateFound = true;
-                        Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, new CurrentCommandValues(), -2));
+                        Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, command.VariableBlocks, new CurrentCommandValues(), -2));
                     }
                     else
                     {
@@ -60,7 +60,7 @@ namespace GSendAnalyser
             }
 
             if (!feedRateFound)
-                Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, new CurrentCommandValues(), -2));
+                Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, null, new CurrentCommandValues(), -2));
 
             return Result;
         }

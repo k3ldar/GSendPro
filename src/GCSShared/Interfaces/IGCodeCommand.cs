@@ -12,6 +12,8 @@
 
         string Comment { get; }
 
+        List<IGCodeVariable> VariableBlocks { get; }
+
         int Index { get; }
 
         decimal CurrentX { get; }

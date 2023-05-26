@@ -1,4 +1,6 @@
-﻿namespace GSendShared
+﻿using GSendShared.Models;
+
+namespace GSendShared
 {
     public interface IGCodeAnalyses
     {
@@ -37,6 +39,10 @@
         string FileCRC { get; set; }
 
         AnalysesOptions AnalysesOptions { get; }
+
+        IReadOnlyDictionary<ushort, VariableModel> Variables { get; }
+
+        IReadOnlyList<string> Errors { get; }
 
         void Analyse();
 

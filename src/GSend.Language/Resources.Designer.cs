@@ -2725,6 +2725,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, must contain a name and value, i.e. #101=value.
+        /// </summary>
+        public static string VariableInvalid1 {
+            get {
+                return ResourceManager.GetString("VariableInvalid1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, variable name must be a number between 100 and 65535..
+        /// </summary>
+        public static string VariableInvalid2 {
+            get {
+                return ResourceManager.GetString("VariableInvalid2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, duplicate variable {1} declard..
+        /// </summary>
+        public static string VariableInvalid3 {
+            get {
+                return ResourceManager.GetString("VariableInvalid3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable block on line {0}, variable block must start with [ and end with ].
+        /// </summary>
+        public static string VariableInvalid4 {
+            get {
+                return ResourceManager.GetString("VariableInvalid4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View {

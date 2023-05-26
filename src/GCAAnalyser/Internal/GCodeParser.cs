@@ -2,6 +2,7 @@
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Models;
 
 using PluginManager.Abstractions;
 
@@ -12,6 +13,8 @@ namespace GSendAnalyser.Internal
     internal sealed class GCodeParser : IGCodeParser
     {
         #region Private Members
+
+        private const int UserVariableStartingId = 100;
 
         private readonly IPluginClassesService _pluginClassesService;
         private int _index;
@@ -49,6 +52,8 @@ namespace GSendAnalyser.Internal
             int position = 0;
             int currentLine = 1;
             bool isComment = false;
+            bool isVariable = false;
+            bool isVariableBlock = false;
             ClearLineData(line);
             GCodeCommand lastCommand = null;
             StringBuilder lineValues = new(MaxLineSize);
@@ -65,8 +70,32 @@ namespace GSendAnalyser.Internal
 
                 switch (c)
                 {
+                    case CharVariableBlockStart:
+                        isVariableBlock = true;
+                        line[position++] = c;
+
+                        continue;
+
+                    case CharVariableBlockEnd:
+                        isVariableBlock = false;
+                        line[position++] = c;
+
+                        continue;
+
+                    case CharVariable:
+                        if (isVariableBlock)
+                        {
+                            line[position++] = c;
+                        }
+                        else
+                        {
+                            isVariable = true;
+                        }
+
+                        continue;
+
                     case CharG:
-                        if (!isComment)
+                        if (!isComment && !isVariable)
                         {
                             if (line[0] != CharNull)
                             {
@@ -82,10 +111,20 @@ namespace GSendAnalyser.Internal
                         continue;
 
                     case CharLineFeed:
-                        lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                        if (isVariable)
+                        {
+                            isVariable = false;
+                            InternalParseVariable(Result, currentLine, line);
+                        }
+                        else
+                        {
+                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                        }
+
                         ClearLineData(line);
                         currentLine++;
                         position = 0;
+
 
                         continue;
 
@@ -126,6 +165,28 @@ namespace GSendAnalyser.Internal
             return Result;
         }
 
+        private void InternalParseVariable(GCodeAnalyses Result, int lineNumber, Span<char> line)
+        {
+            string[] variableParts = line.ToString().Trim().Replace("\0", String.Empty).Split(CharEquals, 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (variableParts.Length != 2)
+            {
+                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid1, lineNumber));
+                return;
+            }
+
+            if (!ushort.TryParse(variableParts[0], out ushort variableId) || variableId < UserVariableStartingId)
+            {
+                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid2, lineNumber));
+                return;
+            }
+
+            if (!Result.AddVariable(new VariableModel(variableId, variableParts[1])))
+            {
+                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variableId));
+            }
+        }
+
         private static void ClearLineData(in Span<char> line)
         {
             for (int i = 0; i < line.Length; i++)
@@ -137,7 +198,8 @@ namespace GSendAnalyser.Internal
             }
         }
 
-        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber)
+        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, 
+            StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber)
         {
             GCodeCommand result = null;
 
@@ -150,17 +212,39 @@ namespace GSendAnalyser.Internal
             char currentCommand = CharNull;
             bool isComment = false;
             StringBuilder comment = new(256);
+            List<IGCodeVariable> variables = null;
 
             GCodeCommand UpdateGCodeValue()
             {
                 bool commandValueConvert = Decimal.TryParse(lineValues.ToString(), out decimal commandValue);
+
+                if (!commandValueConvert)
+                    commandValue = Decimal.MinValue;
+
+                if (!commandValueConvert)
+                {
+                    string variableBlock = lineValues.ToString();
+                    
+                    // does it contain variables
+                    int variableBlockStart = variableBlock.IndexOf('[');
+
+                    if (variableBlockStart > -1)
+                    {
+                        variables = ParseVariables(analysis, lineNumber, variableBlock, ref commandValueConvert, ref commandValue);
+
+                        if (variables.Count > 0)
+                            currentValues.Attributes |= CommandAttributes.ContainsVariables;
+                    }
+                }
+
                 Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
-                decimal mantissa = Math.Round(100 * (commandValue - commandCode));
+                //decimal mantissa = Math.Round(100 * (commandValue - commandCode));
 
                 currentValues.Attributes &= ~CommandAttributes.Extrude;
                 currentValues.Attributes &= ~CommandAttributes.FeedRateError;
                 currentValues.Attributes &= ~CommandAttributes.MovementError;
                 currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
+                currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
 
                 switch (currentCommand)
                 {
@@ -257,7 +341,7 @@ namespace GSendAnalyser.Internal
                     currentValues.Attributes &= ~CommandAttributes.StartProgram;
 
                 CurrentCommandValues newValues = currentValues.Clone();
-                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), newValues, lineNumber);
+                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), variables, newValues, lineNumber);
 
                 if (lastCommand != null)
                     lastCommand.NextCommand = result;
@@ -268,6 +352,8 @@ namespace GSendAnalyser.Internal
                 lineValues.Clear();
                 return result;
             }
+
+            bool isVariableBlock = false;
 
             for (int i = 0; i < line.Length; i++)
             {
@@ -350,9 +436,21 @@ namespace GSendAnalyser.Internal
 
                         continue;
 
+                    case CharVariableBlockStart:
+                        isVariableBlock = true;
+                        lineValues.Append(c);
+
+                        continue;
+
+                    case CharVariableBlockEnd:
+                        isVariableBlock = false;
+                        lineValues.Append(c);
+
+                        continue;
+
                     case CharTab:
                     case CharSpace:
-                        if (isComment)
+                        if (isComment || isVariableBlock)
                         {
                             lineValues.Append(c);
                         }
@@ -366,6 +464,41 @@ namespace GSendAnalyser.Internal
             }
 
             return UpdateGCodeValue();
+        }
+
+        private List<IGCodeVariable> ParseVariables(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
+        {
+            List<IGCodeVariable> Result = new();
+
+            int variableBlockStart = line.IndexOf('[', 0);
+            string newCommandValue = line.Substring(0, variableBlockStart);
+            commandValueConvert = Decimal.TryParse(newCommandValue, out commandValue);
+
+            if (!commandValueConvert)
+                commandValue = Decimal.MinValue;
+
+            while (variableBlockStart > -1)
+            {
+                int variableBlockEnd = line.IndexOf(']');
+
+                if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
+                {
+                    string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
+                    Result.Add(new GCodeVariable(variable));
+
+                }
+                else if (variableBlockStart > 0 && variableBlockEnd < variableBlockStart)
+                {
+                    analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid4, lineNumber));
+                }
+
+                if (variableBlockEnd > 0)
+                    variableBlockStart = line.IndexOf('[', variableBlockEnd);
+                else
+                    variableBlockStart = -1;
+            }
+
+            return Result;
         }
 
         #endregion Private Methods

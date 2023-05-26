@@ -4,6 +4,7 @@ using GSendAnalyser.Internal;
 using GSendShared;
 using Shared.Classes;
 using PluginManager.Abstractions;
+using GSendShared.Models;
 
 namespace GSendAnalyser
 {
@@ -11,6 +12,8 @@ namespace GSendAnalyser
     {
         private readonly List<IGCodeCommand> _commands = new();
         private readonly IPluginClassesService _pluginClassesService;
+        private readonly Dictionary<ushort, VariableModel> _variables = new();
+        private readonly List<string> _errors = new();
 
         public GCodeAnalyses(IPluginClassesService pluginClassesService)
         {
@@ -86,6 +89,10 @@ namespace GSendAnalyser
 
         public string FileCRC { get; set; }
 
+        public IReadOnlyDictionary<ushort, VariableModel> Variables => _variables;
+
+        public IReadOnlyList<string> Errors => _errors;
+
         public List<IGCodeLine> Lines(out int lineCount)
         {
             List<IGCodeLine> Result = new();
@@ -106,6 +113,23 @@ namespace GSendAnalyser
             }
 
             return Result;
+        }
+
+        internal void AddError(string message)
+        {
+            if (String.IsNullOrEmpty(message))
+                throw new ArgumentNullException(nameof(message));
+
+            _errors.Add(message);
+        }
+
+        internal bool AddVariable(VariableModel variableModel)
+        {
+            if (_variables.ContainsKey(variableModel.VariableId))
+                return false;
+
+            _variables.Add(variableModel.VariableId, variableModel);
+            return true;
         }
     }
 }

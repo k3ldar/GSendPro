@@ -1005,6 +1005,18 @@
   <data name="Usage" xml:space="preserve">
     <value>Usage</value>
   </data>
+  <data name="VariableInvalid1" xml:space="preserve">
+    <value>Invalid variable on line {0}, must contain a name and value, i.e. #101=value</value>
+  </data>
+  <data name="VariableInvalid2" xml:space="preserve">
+    <value>Invalid variable on line {0}, variable name must be a number between 100 and 65535.</value>
+  </data>
+  <data name="VariableInvalid3" xml:space="preserve">
+    <value>Invalid variable on line {0}, duplicate variable {1} declard.</value>
+  </data>
+  <data name="VariableInvalid4" xml:space="preserve">
+    <value>Invalid variable block on line {0}, variable block must start with [ and end with ]</value>
+  </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
   </data>

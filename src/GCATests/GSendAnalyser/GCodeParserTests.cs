@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -124,17 +125,125 @@ namespace GSendTests.GSendAnalyserTests
 
         }
 
-        //[TestMethod]
-        //[TestCategory(TestCategoryAnalyser)]
-        //public void ParseLocalFile_EnsureDuplicateHomeAndSafeZNotPresent()
-        //{
-        //    string finish = "G17\r\nG21\r\nG0Z51.800\r\nG0X0.000Y0.000S10000M3\r\nG0X102.092Y39.417Z20.000\r\nG1Z17.500F240.0\r\nG1X103.553F420.0\r\nG2X102.648Y39.904I0.439J1.900\r\nG1X102.092Y39.904\r\nX102.092Y40.391\r\nX102.275Y40.391\r\nG2X102.096Y40.858I1.716J0.926\r\nG1X102.092Y40.858\r\nX102.092Y39.417\r\nX103.553\r\nG2X102.092Y40.878I0.439J1.900\r\nG1X102.092Y40.858";
-        //    GCodeParser sut = new();
-        //    IGCodeAnalyses analyses = sut.Parse(finish);
-        //    analyses.Analyse();
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseVariablesFromGCodeFile_Success()
+        {
+            string gCodeWithVariables = "#100=15.2\n#101=This is a string value=multiple=equals=signs\n#12=123\n#15=\nG17\nG21;second\nG0Z40.000\nZ40.000\nG0X0.000Y0.000S8000M3(fourth; with colon)\nG0X139.948Y37.136Z40.000\n";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-        //    Assert.AreEqual(13, analyses.Commands.Count);
+            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.IsTrue(analyses.Variables.ContainsKey(100));
+            Assert.AreEqual(15.2m, analyses.Variables[100].Value);
+            Assert.IsTrue(analyses.Variables[100].IsDecimal);
 
-        //}
+            Assert.IsTrue(analyses.Variables.ContainsKey(101));
+            Assert.AreEqual("This is a string value=multiple=equals=signs", analyses.Variables[101].Value);
+
+            Assert.AreEqual(2, analyses.Errors.Count);
+            Assert.AreEqual("Invalid variable on line 3, variable name must be a number between 100 and 65535.", analyses.Errors[0]);
+            Assert.AreEqual("Invalid variable on line 4, must contain a name and value, i.e. #101=value", analyses.Errors[1]);
+            Assert.AreEqual(14, analyses.Commands.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseMCodeWithVariablesFromGCodeFile_Success()
+        {
+            string gCodeWithVariables = "#100=15.2\n#101=This is a string\nM600[ #100 #101] \n";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.IsTrue(analyses.Variables.ContainsKey(100));
+            Assert.AreEqual(15.2m, analyses.Variables[100].Value);
+            Assert.IsTrue(analyses.Variables[100].IsDecimal);
+
+            Assert.IsTrue(analyses.Variables.ContainsKey(101));
+            Assert.AreEqual("This is a string", analyses.Variables[101].Value);
+
+            Assert.AreEqual(0, analyses.Errors.Count);
+            Assert.AreEqual(1, analyses.Commands.Count);
+
+            Assert.AreEqual('M', analyses.Commands[0].Command);
+            Assert.AreEqual(600, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(1, analyses.Commands[0].VariableBlocks.Count);
+            Assert.AreEqual("[ #100 #101]", analyses.Commands[0].VariableBlocks[0].VariableBlock);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseMCodeWithVariables_NoEndingBrace_ReportsError()
+        {
+            string gCodeWithVariables = "#100=15.2\n#101=This is a string\nM600[ #100 #101 \n";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.IsTrue(analyses.Variables.ContainsKey(100));
+            Assert.AreEqual(15.2m, analyses.Variables[100].Value);
+            Assert.IsTrue(analyses.Variables[100].IsDecimal);
+
+            Assert.IsTrue(analyses.Variables.ContainsKey(101));
+            Assert.AreEqual("This is a string", analyses.Variables[101].Value);
+
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Invalid variable block on line 3, variable block must start with [ and end with ]", analyses.Errors[0]);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+
+            Assert.AreEqual('M', analyses.Commands[0].Command);
+            Assert.AreEqual(600, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(0, analyses.Commands[0].VariableBlocks.Count);
+
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseMCodeWithMultipleVariableBlocksFromGCodeFile_Success()
+        {
+            string gCodeWithVariables = "#100=15.2\n#101=This is a string\n#103=2000\nG1X[#100 + 1]Y[#101]Z[-200 + 1]F[#103]\n";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Variables.Count);
+            Assert.IsTrue(analyses.Variables.ContainsKey(100));
+            Assert.AreEqual(15.2m, analyses.Variables[100].Value);
+            Assert.IsTrue(analyses.Variables[100].IsDecimal);
+
+            Assert.IsTrue(analyses.Variables.ContainsKey(101));
+            Assert.AreEqual("This is a string", analyses.Variables[101].Value);
+
+            Assert.IsTrue(analyses.Variables.ContainsKey(103));
+            Assert.AreEqual(2000m, analyses.Variables[103].Value);
+
+            Assert.AreEqual(0, analyses.Errors.Count);
+            Assert.AreEqual(5, analyses.Commands.Count);
+
+            Assert.AreEqual('G', analyses.Commands[0].Command);
+            Assert.AreEqual(1, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(0, analyses.Commands[0].VariableBlocks.Count);
+
+            Assert.AreEqual('X', analyses.Commands[1].Command);
+            Assert.AreEqual(Decimal.MinValue, analyses.Commands[1].CommandValue);
+            Assert.AreEqual(1, analyses.Commands[1].VariableBlocks.Count);
+            Assert.AreEqual("[#100 + 1]", analyses.Commands[1].VariableBlocks[0].VariableBlock);
+
+            Assert.AreEqual('Y', analyses.Commands[2].Command);
+            Assert.AreEqual(Decimal.MinValue, analyses.Commands[2].CommandValue);
+            Assert.AreEqual(1, analyses.Commands[2].VariableBlocks.Count);
+            Assert.AreEqual("[#101]", analyses.Commands[2].VariableBlocks[0].VariableBlock);
+
+            Assert.AreEqual('Z', analyses.Commands[3].Command);
+            Assert.AreEqual(Decimal.MinValue, analyses.Commands[3].CommandValue);
+            Assert.AreEqual(1, analyses.Commands[3].VariableBlocks.Count);
+            Assert.AreEqual("[-200 + 1]", analyses.Commands[3].VariableBlocks[0].VariableBlock);
+
+            Assert.AreEqual('F', analyses.Commands[4].Command);
+            Assert.AreEqual(Decimal.MinValue, analyses.Commands[4].CommandValue);
+            Assert.AreEqual(1, analyses.Commands[4].VariableBlocks.Count);
+            Assert.AreEqual("[#103]", analyses.Commands[4].VariableBlocks[0].VariableBlock);
+        }
     }
 }
