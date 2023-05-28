@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSendCommon", "GSendCommon\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSend.Language", "GSend.Language\GSend.Language.csproj", "{0B5A3953-AE72-44CD-AF48-DE2C6E33780C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSendEditor", "GSendEditor\GSendEditor.csproj", "{9358A53D-6935-4325-BCDD-134F3CE3CCEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSendControls", "GSendControls\GSendControls.csproj", "{DE225549-B4AA-4A8B-BDEC-496C6B9628D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{0B5A3953-AE72-44CD-AF48-DE2C6E33780C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5A3953-AE72-44CD-AF48-DE2C6E33780C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5A3953-AE72-44CD-AF48-DE2C6E33780C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9358A53D-6935-4325-BCDD-134F3CE3CCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9358A53D-6935-4325-BCDD-134F3CE3CCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9358A53D-6935-4325-BCDD-134F3CE3CCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9358A53D-6935-4325-BCDD-134F3CE3CCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE225549-B4AA-4A8B-BDEC-496C6B9628D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE225549-B4AA-4A8B-BDEC-496C6B9628D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE225549-B4AA-4A8B-BDEC-496C6B9628D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE225549-B4AA-4A8B-BDEC-496C6B9628D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -156,6 +156,66 @@
   <data name="AnalyserValue" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="AppMenuEdit" xml:space="preserve">
+    <value>&amp;Edit</value>
+  </data>
+  <data name="AppMenuEditCopy" xml:space="preserve">
+    <value>&amp;Copy</value>
+  </data>
+  <data name="AppMenuEditCut" xml:space="preserve">
+    <value>Cu&amp;t</value>
+  </data>
+  <data name="AppMenuEditPaste" xml:space="preserve">
+    <value>&amp;Paste</value>
+  </data>
+  <data name="AppMenuEditRedo" xml:space="preserve">
+    <value>&amp;Redo</value>
+  </data>
+  <data name="AppMenuEditUndo" xml:space="preserve">
+    <value>&amp;Undo</value>
+  </data>
+  <data name="AppMenuFile" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="AppMenuFileClose" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
+  <data name="AppMenuFileExit" xml:space="preserve">
+    <value>&amp;Exit</value>
+  </data>
+  <data name="AppMenuFileNew" xml:space="preserve">
+    <value>&amp;New</value>
+  </data>
+  <data name="AppMenuFileSave" xml:space="preserve">
+    <value>&amp;Save</value>
+  </data>
+  <data name="AppMenuFileSaveAs" xml:space="preserve">
+    <value>Save &amp;As</value>
+  </data>
+  <data name="AppMenuHelp" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="AppMenuHelpAbout" xml:space="preserve">
+    <value>&amp;About</value>
+  </data>
+  <data name="AppMenuOpen" xml:space="preserve">
+    <value>&amp;Open</value>
+  </data>
+  <data name="AppMenuView" xml:space="preserve">
+    <value>&amp;View</value>
+  </data>
+  <data name="AppMenuViewPreview" xml:space="preserve">
+    <value>&amp;Preview</value>
+  </data>
+  <data name="AppMenuViewStatusBar" xml:space="preserve">
+    <value>&amp;Status Bar</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>GSend Pro</value>
+  </data>
+  <data name="AppNameEditor" xml:space="preserve">
+    <value>GCode Editor</value>
+  </data>
   <data name="Attributes" xml:space="preserve">
     <value>Attributes</value>
   </data>
@@ -986,6 +1046,12 @@
   </data>
   <data name="TimeFormatSecond" xml:space="preserve">
     <value>{0}s</value>
+  </data>
+  <data name="TitleOpen" xml:space="preserve">
+    <value>Open GCode File</value>
+  </data>
+  <data name="TitleSaveAs" xml:space="preserve">
+    <value>Save GCode</value>
   </data>
   <data name="ToolProfile" xml:space="preserve">
     <value>Tool Profile</value>

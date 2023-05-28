@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+
+using GSendShared;
 
 using static GSend.Language.Resources;
 
-using GSendShared;
-using System.Threading;
-using System.IO;
-
-namespace GSendDesktop.Controls
+namespace GSendControls
 {
     public partial class GCodeAnalysesDetails : UserControl
     {
@@ -57,7 +50,7 @@ namespace GSendDesktop.Controls
                 lblFileName.Visible = true;
                 _ = gCodeAnalyses.Lines(out lineCount);
             }
-            
+
 
             AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
             AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);

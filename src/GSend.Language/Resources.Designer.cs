@@ -178,6 +178,186 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &amp;Edit.
+        /// </summary>
+        public static string AppMenuEdit {
+            get {
+                return ResourceManager.GetString("AppMenuEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Copy.
+        /// </summary>
+        public static string AppMenuEditCopy {
+            get {
+                return ResourceManager.GetString("AppMenuEditCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cu&amp;t.
+        /// </summary>
+        public static string AppMenuEditCut {
+            get {
+                return ResourceManager.GetString("AppMenuEditCut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Paste.
+        /// </summary>
+        public static string AppMenuEditPaste {
+            get {
+                return ResourceManager.GetString("AppMenuEditPaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Redo.
+        /// </summary>
+        public static string AppMenuEditRedo {
+            get {
+                return ResourceManager.GetString("AppMenuEditRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Undo.
+        /// </summary>
+        public static string AppMenuEditUndo {
+            get {
+                return ResourceManager.GetString("AppMenuEditUndo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;File.
+        /// </summary>
+        public static string AppMenuFile {
+            get {
+                return ResourceManager.GetString("AppMenuFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Close.
+        /// </summary>
+        public static string AppMenuFileClose {
+            get {
+                return ResourceManager.GetString("AppMenuFileClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Exit.
+        /// </summary>
+        public static string AppMenuFileExit {
+            get {
+                return ResourceManager.GetString("AppMenuFileExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;New.
+        /// </summary>
+        public static string AppMenuFileNew {
+            get {
+                return ResourceManager.GetString("AppMenuFileNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Save.
+        /// </summary>
+        public static string AppMenuFileSave {
+            get {
+                return ResourceManager.GetString("AppMenuFileSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save &amp;As.
+        /// </summary>
+        public static string AppMenuFileSaveAs {
+            get {
+                return ResourceManager.GetString("AppMenuFileSaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Help.
+        /// </summary>
+        public static string AppMenuHelp {
+            get {
+                return ResourceManager.GetString("AppMenuHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;About.
+        /// </summary>
+        public static string AppMenuHelpAbout {
+            get {
+                return ResourceManager.GetString("AppMenuHelpAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Open.
+        /// </summary>
+        public static string AppMenuOpen {
+            get {
+                return ResourceManager.GetString("AppMenuOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;View.
+        /// </summary>
+        public static string AppMenuView {
+            get {
+                return ResourceManager.GetString("AppMenuView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Preview.
+        /// </summary>
+        public static string AppMenuViewPreview {
+            get {
+                return ResourceManager.GetString("AppMenuViewPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Status Bar.
+        /// </summary>
+        public static string AppMenuViewStatusBar {
+            get {
+                return ResourceManager.GetString("AppMenuViewStatusBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GSend Pro.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode Editor.
+        /// </summary>
+        public static string AppNameEditor {
+            get {
+                return ResourceManager.GetString("AppNameEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attributes.
         /// </summary>
         public static string Attributes {
@@ -2667,6 +2847,24 @@ namespace GSend.Language {
         public static string TimeFormatSecond {
             get {
                 return ResourceManager.GetString("TimeFormatSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open GCode File.
+        /// </summary>
+        public static string TitleOpen {
+            get {
+                return ResourceManager.GetString("TitleOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save GCode.
+        /// </summary>
+        public static string TitleSaveAs {
+            get {
+                return ResourceManager.GetString("TitleSaveAs", resourceCulture);
             }
         }
         

@@ -31,7 +31,7 @@ using System.Drawing.Drawing2D;
 
 #pragma warning disable IDE0044
 
-namespace ServiceManager.Core.Controls
+namespace GSendControls
 {
     public class HeartbeatPanel : Panel
     {

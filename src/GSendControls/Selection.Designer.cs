@@ -1,4 +1,4 @@
-﻿namespace GSendDesktop.Controls
+﻿namespace GSendControls
 {
     partial class Selection
     {

@@ -1,9 +1,4 @@
-using System;
-using System.Windows.Forms;
-
 using GSendControls;
-
-using GSendShared;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,10 +6,13 @@ using PluginManager;
 
 using Shared.Classes;
 
-namespace GSendDesktop
+namespace GSendEditor
 {
     internal static class Program
     {
+        /// <summary>
+        ///  The main entry point for the application.
+        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -26,6 +24,7 @@ namespace GSendDesktop
                 new PluginManagerConfiguration(),
                 new PluginSettings());
 
+            applicationPluginManager.RegisterPlugin(typeof(GSendEditor.Internal.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendAnalyser.PluginInitialisation).Assembly.Location);
@@ -35,16 +34,14 @@ namespace GSendDesktop
 
             applicationPluginManager.ConfigureServices();
 
-            IGSendContext gSendContext = applicationPluginManager.ServiceProvider.GetService<IGSendContext>();
             try
             {
                 ApplicationConfiguration.Initialize();
-                Application.Run(gSendContext.ServiceProvider.GetRequiredService<FormMain>());
+                Application.Run(applicationPluginManager.ServiceProvider.GetRequiredService<FrmMain>());
             }
             finally
             {
                 ThreadManager.CancelAll();
-                gSendContext.CloseContext();
             }
         }
     }

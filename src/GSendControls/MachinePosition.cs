@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 using GSendShared;
 
-namespace GSendDesktop.Controls
+namespace GSendControls
 {
     public partial class MachinePosition : UserControl
     {

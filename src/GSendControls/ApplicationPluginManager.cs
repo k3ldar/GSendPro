@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using PluginManager;
 using PluginManager.Abstractions;
 
-namespace GSendDesktop.Internal
+namespace GSendControls
 {
-    internal sealed class ApplicationPluginManager : BasePluginManager
+    public sealed class ApplicationPluginManager : BasePluginManager
     {
         public ApplicationPluginManager(
             PluginManagerConfiguration configuration, 
@@ -18,7 +18,7 @@ namespace GSendDesktop.Internal
             
         }
 
-        public IServiceProvider GetServiceProvider => base.ServiceProvider;
+        new public IServiceProvider ServiceProvider => base.ServiceProvider;
 
         public void RegisterPlugin(string pluginName)
         {

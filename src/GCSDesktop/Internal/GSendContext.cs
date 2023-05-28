@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using GSendApi;
-
 using GSendCommon;
 
 using GSendDesktop.Forms;
 
 using GSendShared;
 using GSendShared.Abstractions;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendDesktop
 {

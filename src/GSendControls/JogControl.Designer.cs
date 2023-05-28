@@ -1,4 +1,4 @@
-﻿namespace GSendDesktop.Controls
+﻿namespace GSendControls
 {
     partial class JogControl
     {
@@ -39,8 +39,8 @@
             this.btnYMinus = new System.Windows.Forms.Button();
             this.btnZMinus = new System.Windows.Forms.Button();
             this.btnZPlus = new System.Windows.Forms.Button();
-            this.selectionSteps = new GSendDesktop.Controls.Selection();
-            this.selectionFeed = new GSendDesktop.Controls.Selection();
+            this.selectionSteps = new GSendControls.Selection();
+            this.selectionFeed = new GSendControls.Selection();
             this.SuspendLayout();
             // 
             // btnXMinusYPlus

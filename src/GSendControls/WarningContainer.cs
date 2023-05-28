@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using GSendShared;
 
-namespace GSendDesktop.Controls
+namespace GSendControls
 {
     public partial class WarningContainer : UserControl
     {
@@ -15,6 +15,12 @@ namespace GSendDesktop.Controls
 
         public void AddWarningPanel(InformationType informationType, string message)
         {
+            if (InvokeRequired)
+            {
+                Invoke(AddWarningPanel, informationType, message);
+                return;
+            }
+
             WarningPanel warningPanel = new WarningPanel(informationType, message);
             warningPanel.Width = flowLayoutWarningErrors.ClientSize.Width - 10;
             warningPanel.WarningClose += WarningPanel_WarningClose;
@@ -179,7 +185,7 @@ namespace GSendDesktop.Controls
             }
         }
 
-        internal void ClearAlarm()
+        public void ClearAlarm()
         {
             for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
             {

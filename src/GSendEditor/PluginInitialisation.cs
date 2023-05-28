@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using GSendApi;
 
 using GSendCommon;
 
-using GSendDesktop.Abstractions;
-using GSendDesktop.Forms;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -18,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
-namespace GSendDesktop.Internal
+namespace GSendEditor.Internal
 {
     public sealed class PluginInitialisation : IPlugin
     {
@@ -33,11 +28,8 @@ namespace GSendDesktop.Internal
             services.AddSingleton(new GSendSettings());
             services.AddSingleton(settings);
             services.AddSingleton<GSendApiWrapper>();
-            services.AddTransient<IMessageNotifier, MessageNotifier>();
             services.AddTransient<IComPortProvider, ComPortProvider>();
-            services.AddTransient<ICommandProcessor, CommandProcessor>();
-            services.AddTransient<FormMain>();
-            services.AddTransient<FrmAddMachine>();
+            services.AddTransient<FrmMain>();
         }
 
         public void Finalise()

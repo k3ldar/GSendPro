@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -9,25 +7,25 @@ using System.Windows.Forms;
 
 using GSendShared;
 
-namespace GSendDesktop.Controls
+namespace GSendControls
 {
-    internal class Machine2DView : Panel
+    public sealed class Machine2DView : Panel
     {
-        private readonly Pen _outerPen = new Pen(Color.Black, 1); 
-        private readonly Pen _locationPen = new Pen(Color.Red, 1); 
+        private readonly Pen _outerPen = new Pen(Color.Black, 1);
+        private readonly Pen _locationPen = new Pen(Color.Red, 1);
         private readonly Brush _fillBrush = new SolidBrush(Color.White);
 
         private Image _gCodeImage = null;
         private Image _zoomImage = null;
-        private AxisConfiguration _configuration; 
-        private float _xPosition; 
+        private AxisConfiguration _configuration;
+        private float _xPosition;
         private float _yPosition;
 
         private bool _mouseOverControl = false;
 
-        public Machine2DView() 
-        { 
-            DoubleBuffered = true; 
+        public Machine2DView()
+        {
+            DoubleBuffered = true;
         }
 
         public void LoadGCode(IGCodeAnalyses _gCodeAnalyses)
@@ -91,45 +89,45 @@ namespace GSendDesktop.Controls
             UpdateImage();
         }
 
-        public AxisConfiguration Configuration 
-        { 
-            get => _configuration; 
+        public AxisConfiguration Configuration
+        {
+            get => _configuration;
 
-            set 
-            { 
-                if (_configuration == value) 
-                    return; 
+            set
+            {
+                if (_configuration == value)
+                    return;
 
-                _configuration = value; 
-                UpdateImage(); 
-            } 
+                _configuration = value;
+                UpdateImage();
+            }
         }
 
-        public float XPosition 
-        { 
-            get => _xPosition; 
+        public float XPosition
+        {
+            get => _xPosition;
 
-            set 
-            { 
-                if (_xPosition == value) 
-                    return; 
+            set
+            {
+                if (_xPosition == value)
+                    return;
 
-                _xPosition = value; 
-                UpdateImage(); 
-            } 
+                _xPosition = value;
+                UpdateImage();
+            }
         }
-        public float YPosition 
-        { 
-            get => _yPosition; 
-            
-            set 
-            { 
-                if (_yPosition == value) 
-                    return; 
+        public float YPosition
+        {
+            get => _yPosition;
 
-                _yPosition = value; 
-                UpdateImage(); 
-            } 
+            set
+            {
+                if (_yPosition == value)
+                    return;
+
+                _yPosition = value;
+                UpdateImage();
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -144,9 +142,9 @@ namespace GSendDesktop.Controls
         }
 
         protected override void OnResize(EventArgs eventargs)
-        { 
-            base.OnResize(eventargs); 
-            UpdateImage(); 
+        {
+            base.OnResize(eventargs);
+            UpdateImage();
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -244,61 +242,61 @@ namespace GSendDesktop.Controls
             }
         }
 
-        private void UpdateImage() 
-        { 
-            MachineImage = DrawMachine(); 
-            BackgroundImage = MachineImage.ResizeImage(Width, Height, true, false); 
-            ImageUpdated?.Invoke(this, EventArgs.Empty); 
+        private void UpdateImage()
+        {
+            MachineImage = DrawMachine();
+            BackgroundImage = MachineImage.ResizeImage(Width, Height, true, false);
+            ImageUpdated?.Invoke(this, EventArgs.Empty);
         }
-        
-        private Image DrawMachine() 
-        { 
-            Image machineImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1); 
+
+        private Image DrawMachine()
+        {
+            Image machineImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1);
             using Graphics g = Graphics.FromImage(machineImage);
 
-            g.SmoothingMode = SmoothingMode.AntiAlias; 
-            g.FillRectangle(_fillBrush, MachineSize); 
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.FillRectangle(_fillBrush, MachineSize);
 
             if (_gCodeImage != null)
                 g.DrawImage(_gCodeImage, 0, 0);
 
-            g.DrawRectangle(_locationPen, XDirectionWithInversion(XPosition) - 3, YDirectionWithInversion(YPosition) - 3, 6, 6); 
-            g.FillRectangle(new SolidBrush(Color.Black), XDirectionWithInversion(XPosition) - 2, YDirectionWithInversion(YPosition) - 2, 4, 4); 
+            g.DrawRectangle(_locationPen, XDirectionWithInversion(XPosition) - 3, YDirectionWithInversion(YPosition) - 3, 6, 6);
+            g.FillRectangle(new SolidBrush(Color.Black), XDirectionWithInversion(XPosition) - 2, YDirectionWithInversion(YPosition) - 2, 4, 4);
 
-            return machineImage; 
+            return machineImage;
         }
-        
-        private float XDirectionWithInversion(float position) 
-        { 
-            switch (Configuration) 
-            { 
-                case AxisConfiguration.ReverseX: 
-                case AxisConfiguration.ReverseXandY: 
-                case AxisConfiguration.ReverseXandZ: 
-                case AxisConfiguration.ReversAll: 
+
+        private float XDirectionWithInversion(float position)
+        {
+            switch (Configuration)
+            {
+                case AxisConfiguration.ReverseX:
+                case AxisConfiguration.ReverseXandY:
+                case AxisConfiguration.ReverseXandZ:
+                case AxisConfiguration.ReversAll:
                     return position;
 
-                default: 
+                default:
                     return MachineSize.Width - position;
-            } 
+            }
         }
-        
-        private float YDirectionWithInversion(float position)
-        { 
-            switch (Configuration) 
-            { 
-                case AxisConfiguration.ReverseY: 
-                case AxisConfiguration.ReverseXandY: 
-                case AxisConfiguration.ReverseYandZ: 
-                case AxisConfiguration.ReversAll: 
-                    return MachineSize.Height - position; 
 
-                default: 
-                    return position; 
-            } 
+        private float YDirectionWithInversion(float position)
+        {
+            switch (Configuration)
+            {
+                case AxisConfiguration.ReverseY:
+                case AxisConfiguration.ReverseXandY:
+                case AxisConfiguration.ReverseYandZ:
+                case AxisConfiguration.ReversAll:
+                    return MachineSize.Height - position;
+
+                default:
+                    return position;
+            }
         }
     }
-    public static class ImageExtensions 
+    public static class ImageExtensions
     {
         public static void CopyRegionIntoImage(this Image srcBitmap, Rectangle srcRegion, ref Image destBitmap, Rectangle destRegion)
         {
@@ -311,49 +309,49 @@ namespace GSendDesktop.Controls
 
         public static Image ResizeImage(this Image image, int maximumWidth, int maximumHeight, bool enforceRatio, bool addPadding)
         {
-            ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders(); EncoderParameters encoderParameters = new EncoderParameters(1); 
+            ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders(); EncoderParameters encoderParameters = new EncoderParameters(1);
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             int canvasWidth = maximumWidth;
             int canvasHeight = maximumHeight;
             int newImageWidth = maximumWidth;
             int newImageHeight = maximumHeight;
             int xPosition = 0;
-            int yPosition = 0; 
-            
-            if (enforceRatio) 
+            int yPosition = 0;
+
+            if (enforceRatio)
             {
                 double ratioX = maximumWidth / (double)image.Width;
                 double ratioY = maximumHeight / (double)image.Height;
                 double ratio = ratioX < ratioY ? ratioX : ratioY;
                 newImageHeight = (int)(image.Height * ratio);
-                newImageWidth = (int)(image.Width * ratio); 
-                
-                if (addPadding) 
-                { 
-                    xPosition = (int)((maximumWidth - (image.Width * ratio)) / 2); 
-                    yPosition = (int)((maximumHeight - (image.Height * ratio)) / 2); 
-                } 
-                else 
-                { 
-                    canvasWidth = newImageWidth; canvasHeight = newImageHeight; 
-                } 
+                newImageWidth = (int)(image.Width * ratio);
+
+                if (addPadding)
+                {
+                    xPosition = (int)((maximumWidth - (image.Width * ratio)) / 2);
+                    yPosition = (int)((maximumHeight - (image.Height * ratio)) / 2);
+                }
+                else
+                {
+                    canvasWidth = newImageWidth; canvasHeight = newImageHeight;
+                }
             }
 
             Bitmap thumbnail = new Bitmap(canvasWidth, canvasHeight);
-            Graphics graphic = Graphics.FromImage(thumbnail); 
-            
-            if (enforceRatio && addPadding) 
-            { 
-                graphic.Clear(Color.White); 
-            } 
-            
-            graphic.InterpolationMode = InterpolationMode.HighQualityBicubic; 
-            graphic.SmoothingMode = SmoothingMode.HighQuality; 
-            graphic.PixelOffsetMode = PixelOffsetMode.HighQuality; 
-            graphic.CompositingQuality = CompositingQuality.HighQuality; 
+            Graphics graphic = Graphics.FromImage(thumbnail);
+
+            if (enforceRatio && addPadding)
+            {
+                graphic.Clear(Color.White);
+            }
+
+            graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphic.SmoothingMode = SmoothingMode.HighQuality;
+            graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            graphic.CompositingQuality = CompositingQuality.HighQuality;
             graphic.DrawImage(image, xPosition, yPosition, newImageWidth, newImageHeight);
-            
-            return thumbnail; 
-        } 
+
+            return thumbnail;
+        }
     }
 }

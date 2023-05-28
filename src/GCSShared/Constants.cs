@@ -4,6 +4,8 @@ namespace GSendShared
 {
     public static class Constants
     {
+        public const int WarningStatusWidth = 40;
+
         public const int QueueProcessMilliseconds = 20;
 
         public const int MaxBufferSize = 135;

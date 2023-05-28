@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GCodeAnalysesDetails.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="HeartbeatPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="JogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Machine2DView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="MachinePosition.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ProbingCommand.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Selection.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WarningContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WarningPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

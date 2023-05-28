@@ -9,13 +9,12 @@ using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
 
-using GSendAnalyser.Internal;
-
 using GSendApi;
 
 using GSendCommon;
 
-using GSendDesktop.Controls;
+using GSendControls;
+
 using GSendDesktop.Internal;
 
 using GSendShared;
@@ -35,7 +34,6 @@ namespace GSendDesktop.Forms
     {
         #region Private Fields
 
-        private const int WarningStatusWidth = 40;
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly GSendWebSocket _clientWebSocket;
         private readonly IGSendContext _gSendContext;
@@ -399,7 +397,7 @@ namespace GSendDesktop.Forms
                     }
 
                     if (heartbeatPanelAvailableBlocks.MaximumPoints == 0 && status.BufferAvailableBlocks > 0)
-                    {   
+                    {
                         heartbeatPanelAvailableBlocks.MaximumPoints = status.BufferAvailableBlocks;
                     }
 
@@ -1045,13 +1043,13 @@ namespace GSendDesktop.Forms
             int width = 0;
 
             if (warningsAndErrors.WarningCount() > 0)
-                width += WarningStatusWidth;
+                width += GSendShared.Constants.WarningStatusWidth;
 
             if (warningsAndErrors.ErrorCount() > 0)
-                width += WarningStatusWidth;
+                width += GSendShared.Constants.WarningStatusWidth;
 
             if (warningsAndErrors.InformationCount() > 0)
-                width += WarningStatusWidth;
+                width += GSendShared.Constants.WarningStatusWidth;
 
             toolStripStatusLabelWarnings.Visible = warningsAndErrors.TotalCount() > 0;
             toolStripStatusLabelWarnings.Width = width;
@@ -1769,7 +1767,7 @@ namespace GSendDesktop.Forms
                     e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
                     e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
                         new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += WarningStatusWidth;
+                    leftPos += GSendShared.Constants.WarningStatusWidth;
                 }
 
                 count = warningsAndErrors.WarningCount();
@@ -1779,7 +1777,7 @@ namespace GSendDesktop.Forms
                     e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
                     e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
                         new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += WarningStatusWidth;
+                    leftPos += GSendShared.Constants.WarningStatusWidth;
                 }
 
                 count = warningsAndErrors.InformationCount();
@@ -2000,7 +1998,7 @@ namespace GSendDesktop.Forms
 
                     trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
                     trackBarPercent.Value = (int)_gCodeAnalyses.FeedX / (selectionOverrideXY.Maximum / 100);
-                    labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value); 
+                    labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
                     trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
 
                     machine2dView1.LoadGCode(_gCodeAnalyses);
@@ -2019,24 +2017,8 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    switch (_gCodeAnalyses.UnitOfMeasurement)
-                    {
-                        case UnitOfMeasurement.None:
-                        case UnitOfMeasurement.Error:
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
-                            break;
-                    }
-
-                    if ((_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) || _gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant)) &&
-                        !_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
-                    {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
-                    }
-
-                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))
-                    {
-                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.WarningContainsInvalidGCode);
-                    }
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
+                    analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
                     {
@@ -2059,31 +2041,6 @@ namespace GSendDesktop.Forms
                             _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
                     }
 
-                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames))
-                    {
-                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.M650MultipleJobNamesSpecified);
-                    }
-
-                    if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName))
-                    {
-                        warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.M650InvalidJobNameSpecified);
-                    }
-
-                    if (_gCodeAnalyses.SubProgramCount > 0)
-                    {
-                        foreach (IGCodeCommand item in _gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')))
-                        {
-                            string subProgram = $"{item}";
-
-                            if (!String.IsNullOrEmpty(item.Comment))
-                                subProgram += $" {item.Comment}";
-
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
-                                subProgram, item.LineNumber));
-                        }
-                    }
-
-
                     UpdateLabelText(lblTotalLines, String.Format(GSend.Language.Resources.TotalLines, _totalLines));
                     lblTotalLines.Visible = true;
                     toolStripProgressBarJob.Maximum = _totalLines;
@@ -2101,6 +2058,7 @@ namespace GSendDesktop.Forms
                 tabControlSecondary.TabPages.Insert(1, tabPageGCode);
             }
         }
+
 
         private string FixEmptyValue(decimal value)
         {
