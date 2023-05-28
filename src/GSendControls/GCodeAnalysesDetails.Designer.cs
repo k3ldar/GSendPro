@@ -55,6 +55,9 @@
             // 
             // listViewAnalyses
             // 
+            this.listViewAnalyses.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewAnalyses.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderProperty,
             this.columnHeaderValue});
@@ -80,7 +83,6 @@
             this.Controls.Add(this.listViewAnalyses);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.lblFileNameDesc);
-            this.MinimumSize = new System.Drawing.Size(433, 218);
             this.Name = "GCodeAnalysesDetails";
             this.Size = new System.Drawing.Size(433, 218);
             this.ResumeLayout(false);

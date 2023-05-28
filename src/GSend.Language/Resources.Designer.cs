@@ -331,11 +331,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to P&amp;roperties.
+        /// </summary>
+        public static string AppMenuViewProperties {
+            get {
+                return ResourceManager.GetString("AppMenuViewProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Status Bar.
         /// </summary>
         public static string AppMenuViewStatusBar {
             get {
                 return ResourceManager.GetString("AppMenuViewStatusBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Sub Programs.
+        /// </summary>
+        public static string AppMenuViewSubPrograms {
+            get {
+                return ResourceManager.GetString("AppMenuViewSubPrograms", resourceCulture);
             }
         }
         
@@ -1267,11 +1285,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max X Value.
+        /// </summary>
+        public static string GCodeMaxXValue {
+            get {
+                return ResourceManager.GetString("GCodeMaxXValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max X/Y Feed Rate.
         /// </summary>
         public static string GCodeMaxXYFeed {
             get {
                 return ResourceManager.GetString("GCodeMaxXYFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Y Value.
+        /// </summary>
+        public static string GCodeMaxYValue {
+            get {
+                return ResourceManager.GetString("GCodeMaxYValue", resourceCulture);
             }
         }
         
@@ -1825,6 +1861,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Probe.
         /// </summary>
         public static string Probe {
@@ -1866,6 +1911,15 @@ namespace GSend.Language {
         public static string ProbingFailed {
             get {
                 return ResourceManager.GetString("ProbingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Properties.
+        /// </summary>
+        public static string Properties {
+            get {
+                return ResourceManager.GetString("Properties", resourceCulture);
             }
         }
         

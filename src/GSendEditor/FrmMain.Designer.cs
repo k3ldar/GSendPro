@@ -51,16 +51,21 @@
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewStatusBar = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewPreview = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSubPrograms = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabControlMain = new System.Windows.Forms.TabControl();
+            this.tabPagePreview = new System.Windows.Forms.TabPage();
+            this.machine2dView1 = new GSendControls.Machine2DView();
+            this.tabPageProperties = new System.Windows.Forms.TabPage();
+            this.tabPageSubPrograms = new System.Windows.Forms.TabPage();
             this.warningsAndErrors = new GSendControls.WarningContainer();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -68,7 +73,9 @@
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
             this.splitContainerMain.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.tabControlMain.SuspendLayout();
+            this.tabPagePreview.SuspendLayout();
+            this.tabPageProperties.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtGCode
@@ -112,8 +119,6 @@
             this.txtGCode.TabIndex = 0;
             this.txtGCode.Zoom = 100;
             this.txtGCode.SelectionChangedDelayed += new System.EventHandler(this.txtGCode_SelectionChangedDelayed);
-            this.txtGCode.AutoSizeChanged += new System.EventHandler(this.txtGCode_AutoSizeChanged);
-            this.txtGCode.SizeChanged += new System.EventHandler(this.txtGCode_SizeChanged);
             // 
             // statusStrip1
             // 
@@ -262,7 +267,9 @@
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuViewStatusBar,
-            this.mnuViewPreview});
+            this.mnuViewPreview,
+            this.mnuViewProperties,
+            this.mnuViewSubPrograms});
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "&View";
@@ -270,7 +277,7 @@
             // mnuViewStatusBar
             // 
             this.mnuViewStatusBar.Name = "mnuViewStatusBar";
-            this.mnuViewStatusBar.Size = new System.Drawing.Size(126, 22);
+            this.mnuViewStatusBar.Size = new System.Drawing.Size(184, 22);
             this.mnuViewStatusBar.Text = "&Status Bar";
             this.mnuViewStatusBar.Visible = false;
             this.mnuViewStatusBar.Click += new System.EventHandler(this.mnuViewStatusBar_Click);
@@ -278,9 +285,26 @@
             // mnuViewPreview
             // 
             this.mnuViewPreview.Name = "mnuViewPreview";
-            this.mnuViewPreview.Size = new System.Drawing.Size(126, 22);
+            this.mnuViewPreview.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
+            this.mnuViewPreview.Size = new System.Drawing.Size(184, 22);
             this.mnuViewPreview.Text = "&Preview";
             this.mnuViewPreview.Click += new System.EventHandler(this.mnuViewPreview_Click);
+            // 
+            // mnuViewProperties
+            // 
+            this.mnuViewProperties.Name = "mnuViewProperties";
+            this.mnuViewProperties.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.R)));
+            this.mnuViewProperties.Size = new System.Drawing.Size(184, 22);
+            this.mnuViewProperties.Text = "Properties";
+            this.mnuViewProperties.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            // 
+            // mnuViewSubPrograms
+            // 
+            this.mnuViewSubPrograms.Name = "mnuViewSubPrograms";
+            this.mnuViewSubPrograms.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.mnuViewSubPrograms.Size = new System.Drawing.Size(184, 22);
+            this.mnuViewSubPrograms.Text = "Sub Programs";
+            this.mnuViewSubPrograms.Click += new System.EventHandler(this.subProgramsToolStripMenuItem_Click);
             // 
             // mnuHelp
             // 
@@ -316,43 +340,74 @@
             // 
             // splitContainerMain.Panel2
             // 
-            this.splitContainerMain.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainerMain.Panel2.Controls.Add(this.tabControlMain);
             this.splitContainerMain.Size = new System.Drawing.Size(776, 236);
             this.splitContainerMain.SplitterDistance = 466;
             this.splitContainerMain.TabIndex = 4;
             // 
-            // tabControl1
+            // tabControlMain
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(300, 230);
-            this.tabControl1.TabIndex = 0;
+            this.tabControlMain.Controls.Add(this.tabPagePreview);
+            this.tabControlMain.Controls.Add(this.tabPageProperties);
+            this.tabControlMain.Controls.Add(this.tabPageSubPrograms);
+            this.tabControlMain.Location = new System.Drawing.Point(3, 3);
+            this.tabControlMain.Name = "tabControlMain";
+            this.tabControlMain.SelectedIndex = 0;
+            this.tabControlMain.Size = new System.Drawing.Size(300, 230);
+            this.tabControlMain.TabIndex = 0;
+            this.tabControlMain.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControlMain_Selected);
             // 
-            // tabPage1
+            // tabPagePreview
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(292, 202);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPagePreview.Controls.Add(this.machine2dView1);
+            this.tabPagePreview.Location = new System.Drawing.Point(4, 24);
+            this.tabPagePreview.Name = "tabPagePreview";
+            this.tabPagePreview.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePreview.Size = new System.Drawing.Size(292, 202);
+            this.tabPagePreview.TabIndex = 0;
+            this.tabPagePreview.Text = "tabPagePreview";
+            this.tabPagePreview.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // machine2dView1
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(292, 202);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.machine2dView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.machine2dView1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("machine2dView1.BackgroundImage")));
+            this.machine2dView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
+            this.machine2dView1.Location = new System.Drawing.Point(6, 6);
+            this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.machine2dView1.Name = "machine2dView1";
+            this.machine2dView1.Size = new System.Drawing.Size(280, 190);
+            this.machine2dView1.TabIndex = 0;
+            this.machine2dView1.XPosition = 0F;
+            this.machine2dView1.YPosition = 0F;
+            this.machine2dView1.ZoomPanel = null;
+            // 
+            // tabPageProperties
+            // 
+            this.tabPageProperties.Controls.Add(this.gCodeAnalysesDetails1);
+            this.tabPageProperties.Location = new System.Drawing.Point(4, 24);
+            this.tabPageProperties.Name = "tabPageProperties";
+            this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageProperties.Size = new System.Drawing.Size(292, 202);
+            this.tabPageProperties.TabIndex = 1;
+            this.tabPageProperties.Text = "Properties";
+            this.tabPageProperties.UseVisualStyleBackColor = true;
+            // 
+            // tabPageSubPrograms
+            // 
+            this.tabPageSubPrograms.Location = new System.Drawing.Point(4, 24);
+            this.tabPageSubPrograms.Name = "tabPageSubPrograms";
+            this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSubPrograms.Size = new System.Drawing.Size(292, 202);
+            this.tabPageSubPrograms.TabIndex = 2;
+            this.tabPageSubPrograms.Text = "Sub Programs";
+            this.tabPageSubPrograms.UseVisualStyleBackColor = true;
             // 
             // warningsAndErrors
             // 
@@ -372,6 +427,16 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            // 
+            // gCodeAnalysesDetails1
+            // 
+            this.gCodeAnalysesDetails1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(6, 6);
+            this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
+            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(280, 190);
+            this.gCodeAnalysesDetails1.TabIndex = 0;
             // 
             // FrmMain
             // 
@@ -396,7 +461,9 @@
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
             this.splitContainerMain.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.tabControlMain.ResumeLayout(false);
+            this.tabPagePreview.ResumeLayout(false);
+            this.tabPageProperties.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -429,11 +496,16 @@
         private GSendControls.WarningContainer warningsAndErrors;
         private ToolStripStatusLabel toolStripStatusLabelWarnings;
         private OpenFileDialog openFileDialog1;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private TabControl tabControlMain;
+        private TabPage tabPagePreview;
+        private TabPage tabPageProperties;
         private ToolStripMenuItem mnuEditUndo;
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem mnuEditRedo;
+        private GSendControls.Machine2DView machine2dView1;
+        private TabPage tabPageSubPrograms;
+        private ToolStripMenuItem mnuViewProperties;
+        private ToolStripMenuItem mnuViewSubPrograms;
+        private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
     }
 }

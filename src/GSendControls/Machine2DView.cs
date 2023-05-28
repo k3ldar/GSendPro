@@ -26,6 +26,7 @@ namespace GSendControls
         public Machine2DView()
         {
             DoubleBuffered = true;
+            BackgroundImageLayout = ImageLayout.None;
         }
 
         public void LoadGCode(IGCodeAnalyses _gCodeAnalyses)
@@ -184,7 +185,6 @@ namespace GSendControls
             BackgroundImage.CopyRegionIntoImage(sourceLocation, ref _zoomImage, ZoomPanel.ClientRectangle);
             ZoomPanel.BackgroundImage = null;
             ZoomPanel.BackgroundImage = _zoomImage;
-            //Trace.WriteLine($"Image Updated ({e.X},{e.Y} - {sourceLocation}");
         }
 
         public Panel ZoomPanel { get; set; }
@@ -253,7 +253,6 @@ namespace GSendControls
         {
             Image machineImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1);
             using Graphics g = Graphics.FromImage(machineImage);
-
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.FillRectangle(_fillBrush, MachineSize);
 
@@ -333,7 +332,8 @@ namespace GSendControls
                 }
                 else
                 {
-                    canvasWidth = newImageWidth; canvasHeight = newImageHeight;
+                    canvasWidth = newImageWidth; 
+                    canvasHeight = newImageHeight;
                 }
             }
 

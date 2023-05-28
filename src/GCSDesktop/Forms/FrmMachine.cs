@@ -1987,7 +1987,6 @@ namespace GSendDesktop.Forms
                     _gCodeAnalyses = gCodeParser.Parse(fileContents);
                     _gCodeAnalyses.Analyse(fileName);
 
-                    machine2dView1.LoadGCode(_gCodeAnalyses);
                     _gcodeLines = _gCodeAnalyses.Lines(out _totalLines);
                     listViewGCode.VirtualListSize = _totalLines;
 

@@ -11,7 +11,8 @@ namespace GSendEditor
 {
     public partial class FrmMain : Form
     {
-        private readonly AnalyzerThread _analyzerThread;
+        private readonly AnalyzerThread _analyzerThread = null;
+        private string _fileName;
 
         public FrmMain(IGSendContext gSendContext)
         {
@@ -24,10 +25,21 @@ namespace GSendEditor
             UpdateEnabledState();
             LoadResources();
 
-            ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
-            _analyzerThread.WarningContainer = warningsAndErrors;
+            machine2dView1.UnloadGCode();
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
+            gCodeAnalysesDetails1.HideFileName();
+        }
+
+        private void CreateAndRunAnalyzerThread()
+        {
+            if (!ThreadManager.Exists(nameof(AnalyzerThread)))
+            {
+                ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
+                _analyzerThread.WarningContainer = warningsAndErrors;
+                _analyzerThread.Machine2DView = machine2dView1;
+                _analyzerThread.AnalysesDetails = gCodeAnalysesDetails1;
+            }
         }
 
         private void UpdateTitleBar()
@@ -59,11 +71,18 @@ namespace GSendEditor
             // view menu
             mnuView.Text = GSend.Language.Resources.AppMenuView;
             mnuViewPreview.Text = GSend.Language.Resources.AppMenuViewPreview;
+            mnuViewProperties.Text = GSend.Language.Resources.AppMenuViewProperties;
+            mnuViewSubPrograms.Text = GSend.Language.Resources.AppMenuViewSubPrograms;
             mnuViewStatusBar.Text = GSend.Language.Resources.AppMenuViewStatusBar;
 
             // help menu
             mnuHelp.Text = GSend.Language.Resources.AppMenuHelp;
             mnuHelpAbout.Text = GSend.Language.Resources.AppMenuHelpAbout;
+
+            // tabs
+            tabPagePreview.Text = GSend.Language.Resources.Preview;
+            tabPageProperties.Text = GSend.Language.Resources.Properties;
+            tabPageSubPrograms.Text = GSend.Language.Resources.SubPrograms;
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -74,7 +93,19 @@ namespace GSendEditor
 
         private bool HasChanged { get; set; }
 
-        private string FileName { get; set; }
+        private string FileName
+        {
+            get => _fileName;
+
+            set
+            {
+                if (_fileName == value)
+                    return;
+
+                _fileName = value;
+                _analyzerThread.FileName = value;
+            }
+        }
 
         private void UpdateEnabledState()
         {
@@ -149,6 +180,12 @@ namespace GSendEditor
         {
             HasChanged = true;
             UpdateEnabledState();
+            RefreshAnalyzerThread();
+        }
+
+        private void RefreshAnalyzerThread()
+        {
+            CreateAndRunAnalyzerThread();
             _analyzerThread?.AnalyzerUpdated();
         }
 
@@ -193,12 +230,14 @@ namespace GSendEditor
             if (SaveIfRequired())
                 return;
 
+            machine2dView1.UnloadGCode();
             FileName = String.Empty;
             txtGCode.Text = String.Empty;
             HasChanged = false;
             UpdateEnabledState();
             txtGCode.ClearUndo();
             warningsAndErrors.Clear(true);
+            gCodeAnalysesDetails1.ClearAnalyser();
         }
 
         private void mnuFileOpen_Click(object sender, EventArgs e)
@@ -289,7 +328,17 @@ namespace GSendEditor
 
         private void mnuViewPreview_Click(object sender, EventArgs e)
         {
+            tabControlMain.SelectedTab = tabPagePreview;
+        }
 
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControlMain.SelectedTab = tabPageProperties;
+        }
+
+        private void subProgramsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControlMain.SelectedTab = tabPageSubPrograms;
         }
 
         private void mnuHelpAbout_Click(object sender, EventArgs e)
@@ -299,14 +348,9 @@ namespace GSendEditor
 
         #endregion Menu's
 
-        private void txtGCode_AutoSizeChanged(object sender, EventArgs e)
+        private void tabControlMain_Selected(object sender, TabControlEventArgs e)
         {
-
-        }
-
-        private void txtGCode_SizeChanged(object sender, EventArgs e)
-        {
-
+            txtGCode.Select();
         }
     }
 }

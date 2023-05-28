@@ -11,6 +11,8 @@ namespace GSendControls
 {
     public partial class GCodeAnalysesDetails : UserControl
     {
+        private bool _showFileName = true;
+
         public GCodeAnalysesDetails()
         {
             InitializeComponent();
@@ -24,39 +26,70 @@ namespace GSendControls
             columnHeaderValue.Text = GSend.Language.Resources.AnalyserValue;
         }
 
+        public void HideFileName()
+        {
+            listViewAnalyses.Top = 7;
+            listViewAnalyses.Height = Height - 14;
+            _showFileName = false;
+        }
+
+        public void ShowFileName()
+        {
+            listViewAnalyses.Top = 38;
+            listViewAnalyses.Height = Height - 45;
+            _showFileName = true;
+        }
+
         public void LoadAnalyser(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
             LoadAnalyser(gCodeAnalyses);
 
-            if (!String.IsNullOrEmpty(fileName))
+            if (_showFileName && !String.IsNullOrEmpty(fileName))
             {
                 lblFileName.Text = Path.GetFileName(fileName);
             }
         }
 
+        public void ClearAnalyser()
+        {
+            LoadAnalyser(null);
+        }
+
         public void LoadAnalyser(IGCodeAnalyses gCodeAnalyses)
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => LoadAnalyser(gCodeAnalyses)));
+                return;
+            }
+
             listViewAnalyses.Items.Clear();
+
+            if (_showFileName)
+            {
+                if (gCodeAnalyses == null)
+                {
+                    lblFileNameDesc.Text = GSend.Language.Resources.LoadFileForDetails;
+                    lblFileName.Visible = false;
+                }
+                else
+                {
+                    lblFileNameDesc.Text = GSend.Language.Resources.FileName;
+                    lblFileName.Visible = true;
+                }
+            }
+
             int lineCount = 0;
 
-            if (gCodeAnalyses == null)
-            {
-                lblFileNameDesc.Text = GSend.Language.Resources.LoadFileForDetails;
-                lblFileName.Visible = false;
-            }
-            else
-            {
-                lblFileNameDesc.Text = GSend.Language.Resources.FileName;
-                lblFileName.Visible = true;
-                _ = gCodeAnalyses.Lines(out lineCount);
-            }
-
+            _ = gCodeAnalyses?.Lines(out lineCount);
 
             AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
             AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
             AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
             AddAnalyserProperty(GCodeMaxLayerHeight, gCodeAnalyses?.MaxLayerDepth);
             AddAnalyserProperty(GCodeLayerCount, gCodeAnalyses?.Layers);
+            AddAnalyserProperty(GCodeMaxXValue, gCodeAnalyses?.MaxX);
+            AddAnalyserProperty(GCodeMaxYValue, gCodeAnalyses?.MaxY);
             AddAnalyserProperty(GCodeMaxXYFeed, gCodeAnalyses?.FeedX);
             AddAnalyserProperty(GCodeMaxZFeed, gCodeAnalyses?.FeedZ);
             AddAnalyserProperty(GCodeTotalDistance, gCodeAnalyses?.TotalDistance);

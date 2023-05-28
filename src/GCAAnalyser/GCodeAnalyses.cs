@@ -77,6 +77,10 @@ namespace GSendAnalyser
 
         public decimal MaxLayerDepth { get; set; }
 
+        public decimal MaxX { get; set; }
+
+        public decimal MaxY { get; set; }
+
         public int CommentCount { get; set; }
 
         public int SubProgramCount { get; set; }

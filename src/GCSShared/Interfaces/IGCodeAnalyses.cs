@@ -44,6 +44,10 @@ namespace GSendShared
 
         IReadOnlyList<string> Errors { get; }
 
+        decimal MaxX { get; set; }
+
+        decimal MaxY { get; set; }
+
         void Analyse();
 
         void Analyse(string fileName);

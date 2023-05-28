@@ -23,6 +23,11 @@ namespace GSendEditor
 
         public WarningContainer WarningContainer { get; set; }
 
+        public Machine2DView Machine2DView { get; set; }
+
+        public GCodeAnalysesDetails AnalysesDetails { get; set; }
+        public string FileName { get; set; }
+
         public void AnalyzerUpdated()
         {
             _lastValidateWarningsAndErrors = DateTime.UtcNow;
@@ -38,10 +43,22 @@ namespace GSendEditor
                 {
                     IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
                     IGCodeAnalyses _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
-                    _gCodeAnalyses.Analyse();
+                    _gCodeAnalyses.Analyse(FileName);
 
                     AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(WarningContainer, _gCodeAnalyses);
+
+                    if (String.IsNullOrEmpty(FileName))
+                        AnalysesDetails?.LoadAnalyser(_gCodeAnalyses);
+                    else
+                        AnalysesDetails?.LoadAnalyser(FileName, _gCodeAnalyses);
+
+                    if (Machine2DView != null)
+                    {
+                        Rectangle machineSize = new Rectangle(0, 0, (int)(_gCodeAnalyses.MaxX + 50), (int)(_gCodeAnalyses.MaxY + 50));
+                        Machine2DView.MachineSize = machineSize;
+                        Machine2DView.LoadGCode(_gCodeAnalyses);
+                    }
 
                     _lastValidateWarningsAndErrors = DateTime.MaxValue;
                 }

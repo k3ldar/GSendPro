@@ -207,8 +207,14 @@
   <data name="AppMenuViewPreview" xml:space="preserve">
     <value>&amp;Preview</value>
   </data>
+  <data name="AppMenuViewProperties" xml:space="preserve">
+    <value>P&amp;roperties</value>
+  </data>
   <data name="AppMenuViewStatusBar" xml:space="preserve">
     <value>&amp;Status Bar</value>
+  </data>
+  <data name="AppMenuViewSubPrograms" xml:space="preserve">
+    <value>&amp;Sub Programs</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>GSend Pro</value>
@@ -519,8 +525,14 @@
   <data name="GCodeMaxLayerHeight" xml:space="preserve">
     <value>Max Layer Height</value>
   </data>
+  <data name="GCodeMaxXValue" xml:space="preserve">
+    <value>Max X Value</value>
+  </data>
   <data name="GCodeMaxXYFeed" xml:space="preserve">
     <value>Max X/Y Feed Rate</value>
+  </data>
+  <data name="GCodeMaxYValue" xml:space="preserve">
+    <value>Max Y Value</value>
   </data>
   <data name="GCodeMaxZFeed" xml:space="preserve">
     <value>Max Z Feed Rate</value>
@@ -705,6 +717,9 @@
   <data name="Port" xml:space="preserve">
     <value>Port</value>
   </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+  </data>
   <data name="Probe" xml:space="preserve">
     <value>Probe</value>
   </data>
@@ -719,6 +734,9 @@
   </data>
   <data name="ProbingFailed" xml:space="preserve">
     <value>Probing failed, ensure you have a valid probing command setup.</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>Properties</value>
   </data>
   <data name="QueueSize" xml:space="preserve">
     <value>Queue Size: {0}</value>
