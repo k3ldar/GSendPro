@@ -4,8 +4,8 @@
     {
         string VariableBlock { get; }
 
-        string Variable { get; }
+        List<string> Variables { get; }
 
-        ushort VariableId { get; }
+        List<ushort> VariableIds { get; }
     }
 }

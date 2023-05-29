@@ -151,7 +151,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void ParseMCodeWithVariablesFromGCodeFile_Success()
         {
-            string gCodeWithVariables = "#100=15.2\n#101=This is a string\nM600[ #100 #101] \n";
+            string gCodeWithVariables = "#100=15.2\n#101=This is a string\nM600 [ #100 #101] \n";
             GCodeParser sut = new(new MockPluginClassesService());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
@@ -170,6 +170,9 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(600, analyses.Commands[0].CommandValue);
             Assert.AreEqual(1, analyses.Commands[0].VariableBlocks.Count);
             Assert.AreEqual("[ #100 #101]", analyses.Commands[0].VariableBlocks[0].VariableBlock);
+            Assert.AreEqual(2, analyses.Commands[0].VariableBlocks[0].Variables.Count);
+            Assert.AreEqual("#100", analyses.Commands[0].VariableBlocks[0].Variables[0]);
+            Assert.AreEqual("#101", analyses.Commands[0].VariableBlocks[0].Variables[1]);
         }
 
         [TestMethod]
@@ -248,7 +251,7 @@ namespace GSendTests.GSendAnalyserTests
 
         [TestMethod]
         [TestCategory(TestCategoryAnalyser)]
-        public void ParseCodeWithVariableNotSurroundedBySquareBrackets_Success()
+        public void ParseCodeWithVariableNotSurroundedBySquareBrackets_CreatesError()
         {
             string gCodeWithVariables = "S#100M3";
             GCodeParser sut = new(new MockPluginClassesService());
@@ -258,6 +261,20 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Errors.Count);
             Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
             Assert.AreEqual("Invalid variable on line 1, variable must be enclosed by square brackets (i.e. [#234])", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseCodeWithVariable_VariableNotFound_CreatesError()
+        {
+            string gCodeWithVariables = "S[#100]M3";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(0, analyses.Variables.Count);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
+            Assert.AreEqual("Variable #100 is referenced on line 1 but has not been declared.", analyses.Errors[0]);
         }
     }
 }

@@ -492,10 +492,14 @@ namespace GSendAnalyser.Internal
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
                     GCodeVariable gCodeVariable = new GCodeVariable(variable);
+                    
                     Result.Add(gCodeVariable);
 
-                    if (!analyses.Variables.ContainsKey(gCodeVariable.VariableId))
-                        analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, gCodeVariable.Variable, lineNumber));
+                    foreach (ushort varId in gCodeVariable.VariableIds)
+                    {
+                        if (!analyses.Variables.ContainsKey(varId))
+                            analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, varId, lineNumber));
+                    }
                 }
                 else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)
                 {
