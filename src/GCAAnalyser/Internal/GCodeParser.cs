@@ -162,7 +162,12 @@ namespace GSendAnalyser.Internal
 
             if (line[0] != CharNull)
             {
-                InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                // if a variable and the line starts with a number then
+                // parse as variable, otherwise parse as gcode
+                if (isVariable && line[0] > 47 && line[0] < 58)
+                    InternalParseVariable(Result, currentLine, line);
+                else
+                    InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
             }
 
             return Result;
@@ -184,7 +189,7 @@ namespace GSendAnalyser.Internal
                 return;
             }
 
-            if (!Result.AddVariable(new VariableModel(variableId, variableParts[1])))
+            if (!Result.AddVariable(new VariableModel(variableId, variableParts[1], lineNumber)))
             {
                 Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variableId));
             }
@@ -491,15 +496,9 @@ namespace GSendAnalyser.Internal
                 if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
-                    GCodeVariable gCodeVariable = new GCodeVariable(variable);
+                    GCodeVariable gCodeVariable = new GCodeVariable(variable, lineNumber);
                     
                     Result.Add(gCodeVariable);
-
-                    foreach (ushort varId in gCodeVariable.VariableIds)
-                    {
-                        if (!analyses.Variables.ContainsKey(varId))
-                            analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, varId, lineNumber));
-                    }
                 }
                 else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)
                 {

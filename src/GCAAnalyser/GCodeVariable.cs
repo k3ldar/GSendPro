@@ -4,16 +4,19 @@ namespace GSendAnalyser
 {
     internal class GCodeVariable : IGCodeVariable
     {
-        public GCodeVariable(string block)
+        public GCodeVariable(string block, int lineNumber)
         {
             VariableBlock = block;
             Variables = new();
             VariableIds = new();
 
             ParseVariables();
+            LineNumber = lineNumber;
         }
 
         public string VariableBlock { get; }
+
+        public int LineNumber { get; }
 
         public List<string> Variables { get; }
 

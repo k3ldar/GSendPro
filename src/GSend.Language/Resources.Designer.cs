@@ -3103,6 +3103,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variable {0} is used on line {1} but not declared until line {2}, variable must be declared before use..
+        /// </summary>
+        public static string VariableInvalid7 {
+            get {
+                return ResourceManager.GetString("VariableInvalid7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View {

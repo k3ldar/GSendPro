@@ -5,7 +5,7 @@
     /// </summary>
     public sealed class VariableModel
     {
-        public VariableModel(ushort variableId, string value)
+        public VariableModel(ushort variableId, string value, int lineNumber)
         {
             VariableId = variableId;
 
@@ -23,6 +23,8 @@
             {
                 Value = value;
             }
+
+            LineNumber = lineNumber;
         }
 
         public ushort VariableId { get; }
@@ -32,5 +34,7 @@
         public bool IsBoolean { get; }
 
         public bool IsDecimal { get; }
+
+        public int LineNumber { get; }
     }
 }

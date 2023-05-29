@@ -7,5 +7,7 @@
         List<string> Variables { get; }
 
         List<ushort> VariableIds { get; }
+
+        int LineNumber { get; }
     }
 }

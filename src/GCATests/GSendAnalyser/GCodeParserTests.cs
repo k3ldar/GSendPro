@@ -263,6 +263,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("Invalid variable on line 1, variable must be enclosed by square brackets (i.e. [#234])", analyses.Errors[0]);
         }
 
+        [Ignore("Code to analyze this has moved to AnalyzeVariables analyzer")]
         [TestMethod]
         [TestCategory(TestCategoryAnalyser)]
         public void ParseCodeWithVariable_VariableNotFound_CreatesError()
