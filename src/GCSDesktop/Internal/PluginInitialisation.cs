@@ -7,6 +7,8 @@ using GSendApi;
 
 using GSendCommon;
 
+using GSendControls;
+
 using GSendDesktop.Abstractions;
 using GSendDesktop.Forms;
 
@@ -24,14 +26,16 @@ namespace GSendDesktop.Internal
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
+            string json = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
             Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
             dynamic apiSettings = jsonData["ApiSettings"];
             ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString());
+            GSendSettings gSendSettings = JsonSerializer.Deserialize<GSendSettings>(jsonData["GSend"].ToString());
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());
             services.AddSingleton(settings);
+            services.AddSingleton<IGsendSettings>(gSendSettings);
             services.AddSingleton<GSendApiWrapper>();
             services.AddTransient<IMessageNotifier, MessageNotifier>();
             services.AddTransient<IComPortProvider, ComPortProvider>();

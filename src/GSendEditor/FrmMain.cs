@@ -1,4 +1,7 @@
 using System.Drawing.Drawing2D;
+using System.Xml.Linq;
+
+using GSendControls;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -12,10 +15,16 @@ namespace GSendEditor
     public partial class FrmMain : Form
     {
         private readonly AnalyzerThread _analyzerThread = null;
+        private readonly IGSendContext _gSendContext;
+        private readonly ISubPrograms _subPrograms;
+        private ISubProgram _subProgram;
+
         private string _fileName;
 
         public FrmMain(IGSendContext gSendContext)
         {
+            _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
+            _subPrograms = _gSendContext.ServiceProvider.GetRequiredService<ISubPrograms>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(), txtGCode);
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
@@ -29,11 +38,35 @@ namespace GSendEditor
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
+            LoadSubprograms();
+        }
+
+        private void LoadSubprograms()
+        {
+            lvSubprograms.BeginUpdate();
+            try
+            {
+                lvSubprograms.Items.Clear();
+                List<ISubProgram> subPrograms = _subPrograms.GetAll();
+
+                foreach (ISubProgram subProgram in subPrograms)
+                {
+                    ListViewItem listViewItem = new ListViewItem();
+                    listViewItem.Text = subProgram.Name;
+                    listViewItem.SubItems.Add(subProgram.Description);
+                    listViewItem.Tag = subProgram;
+                    lvSubprograms.Items.Add(listViewItem);
+                }
+            }
+            finally
+            { 
+                lvSubprograms.EndUpdate(); 
+            }
         }
 
         private void CreateAndRunAnalyzerThread()
         {
-            if (!ThreadManager.Exists(nameof(AnalyzerThread)))
+           if (!ThreadManager.Exists(nameof(AnalyzerThread)))
             {
                 ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
                 _analyzerThread.WarningContainer = warningsAndErrors;
@@ -83,6 +116,9 @@ namespace GSendEditor
             tabPagePreview.Text = GSend.Language.Resources.Preview;
             tabPageProperties.Text = GSend.Language.Resources.Properties;
             tabPageSubPrograms.Text = GSend.Language.Resources.SubPrograms;
+
+            columnHeaderDescription.Text = GSend.Language.Resources.Description;
+            columnHeaderName.Text = GSend.Language.Resources.Subprogram;
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -106,6 +142,8 @@ namespace GSendEditor
                 _analyzerThread.FileName = value;
             }
         }
+
+        private bool IsSubprogram { get; set; } = false;
 
         private void UpdateEnabledState()
         {
@@ -197,19 +235,28 @@ namespace GSendEditor
 
                 if (saveResult == DialogResult.Yes)
                 {
-                    if (String.IsNullOrEmpty(FileName))
+                    if (IsSubprogram)
                     {
-                        saveResult = saveFileDialog1.ShowDialog(this);
-
-                        if (saveResult == DialogResult.Cancel)
-                            return true;
-
-
-                        FileName = saveFileDialog1.FileName;
+                        _subPrograms.Update(_subProgram.Name, _subProgram.Description, txtGCode.Text);
+                        LoadSubprograms();
                     }
-                    
-                    File.WriteAllText(FileName, txtGCode.Text);
-                    warningsAndErrors.Clear(true);
+                    else
+                    {
+                        if (String.IsNullOrEmpty(FileName))
+                        {
+                            saveResult = saveFileDialog1.ShowDialog(this);
+
+                            if (saveResult == DialogResult.Cancel)
+                                return true;
+
+
+                            FileName = saveFileDialog1.FileName;
+                        }
+
+                        File.WriteAllText(FileName, txtGCode.Text);
+                        warningsAndErrors.Clear(true);
+                    }
+
                     return false;
                     
                 }
@@ -238,6 +285,8 @@ namespace GSendEditor
             txtGCode.ClearUndo();
             warningsAndErrors.Clear(true);
             gCodeAnalysesDetails1.ClearAnalyser();
+            IsSubprogram = false;
+            _subProgram = null;
         }
 
         private void mnuFileOpen_Click(object sender, EventArgs e)
@@ -256,6 +305,8 @@ namespace GSendEditor
 
             UpdateTitleBar();
             UpdateEnabledState();
+            IsSubprogram = false;
+            _subProgram = null;
         }
 
         private void mnuFileSave_Click(object sender, EventArgs e)
@@ -263,10 +314,16 @@ namespace GSendEditor
             if (!HasChanged)
                 return;
 
-            if (SaveIfRequired())
-                return;
+            if (IsSubprogram)
+            {
+                _subPrograms.Update(_subProgram.Name, _subProgram.Description, txtGCode.Text);
+                LoadSubprograms();
+            }
+            else
+            {
+                File.WriteAllText(FileName, txtGCode.Text);
+            }
 
-            File.WriteAllText(FileName, txtGCode.Text);
             HasChanged = false;
             UpdateEnabledState();
             UpdateTitleBar();
@@ -284,6 +341,28 @@ namespace GSendEditor
             File.WriteAllText(FileName, txtGCode.Text);
             HasChanged = false;
             UpdateTitleBar();
+        }
+
+        private void mnufileSaveAsSubprogram_Click(object sender, EventArgs e)
+        {
+            SubProgramForm subProgramForm = _gSendContext.ServiceProvider.GetRequiredService<SubProgramForm>();
+            DialogResult saveResult = subProgramForm.ShowDialog(this);
+
+            if (saveResult == DialogResult.Cancel)
+                return;
+
+            string name = subProgramForm.SubprogramName;
+            string description = subProgramForm.Description;
+
+            _subPrograms.Update(name, description, txtGCode.Text);
+
+            FileName = name;
+            HasChanged = false;
+
+            UpdateTitleBar();
+
+            LoadSubprograms();
+            IsSubprogram = true;
         }
 
         private void mnuFileExit_Click(object sender, EventArgs e)
@@ -351,6 +430,45 @@ namespace GSendEditor
         private void tabControlMain_Selected(object sender, TabControlEventArgs e)
         {
             txtGCode.Select();
+        }
+
+        private void lvSubprograms_DoubleClick(object sender, EventArgs e)
+        {
+            ISubProgram subProgram = null;
+
+            if (sender is ListView lv)
+            {
+                if (lv.SelectedItems.Count == 0)
+                    return;
+
+                subProgram = lv.SelectedItems[0].Tag as ISubProgram;
+            }
+
+            if (subProgram == null)
+                return;
+
+            if (SaveIfRequired())
+                return;
+
+
+            LoadSubprogram(subProgram);
+        }
+
+        private void LoadSubprogram(ISubProgram subProgram)
+        {
+            if (subProgram == null)
+                return;
+
+            _subProgram = subProgram;
+
+            FileName = $"{subProgram.Name} - {subProgram.Description}";
+            txtGCode.Text = subProgram.Contents;
+
+            HasChanged = false;
+
+            UpdateTitleBar();
+
+            IsSubprogram = true;
         }
     }
 }

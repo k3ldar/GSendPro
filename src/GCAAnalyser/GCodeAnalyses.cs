@@ -95,6 +95,8 @@ namespace GSendAnalyser
 
         public IReadOnlyDictionary<ushort, VariableModel> Variables => _variables;
 
+        public string VariablesUsed { get; private set; } = String.Empty;
+
         public IReadOnlyList<string> Errors => _errors;
 
         public List<IGCodeLine> Lines(out int lineCount)
@@ -133,6 +135,11 @@ namespace GSendAnalyser
                 return false;
 
             _variables.Add(variableModel.VariableId, variableModel);
+
+            if (VariablesUsed.Length > 0)
+                VariablesUsed += $", #{variableModel.VariableId}";
+            else
+                VariablesUsed = $"#{variableModel.VariableId}";
             return true;
         }
     }

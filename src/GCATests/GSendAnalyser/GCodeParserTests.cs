@@ -245,5 +245,19 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands[4].VariableBlocks.Count);
             Assert.AreEqual("[#103]", analyses.Commands[4].VariableBlocks[0].VariableBlock);
         }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseCodeWithVariableNotSurroundedBySquareBrackets_Success()
+        {
+            string gCodeWithVariables = "S#100M3";
+            GCodeParser sut = new(new MockPluginClassesService());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(0, analyses.Variables.Count);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
+            Assert.AreEqual("Invalid variable on line 1, variable must be enclosed by square brackets (i.e. [#234])", analyses.Errors[0]);
+        }
     }
 }

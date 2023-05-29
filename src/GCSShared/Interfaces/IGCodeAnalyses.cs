@@ -42,6 +42,8 @@ namespace GSendShared
 
         IReadOnlyDictionary<ushort, VariableModel> Variables { get; }
 
+        string VariablesUsed { get; }
+
         IReadOnlyList<string> Errors { get; }
 
         decimal MaxX { get; set; }

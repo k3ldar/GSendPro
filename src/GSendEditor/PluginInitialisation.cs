@@ -4,6 +4,7 @@ using GSendApi;
 
 using GSendCommon;
 
+using GSendControls;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -23,13 +24,16 @@ namespace GSendEditor.Internal
             Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
             dynamic apiSettings = jsonData["ApiSettings"];
             ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString());
+            GSendSettings gSendSettings = JsonSerializer.Deserialize<GSendSettings>(jsonData["GSend"].ToString());
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());
             services.AddSingleton(settings);
+            services.AddSingleton<IGsendSettings>(gSendSettings);
             services.AddSingleton<GSendApiWrapper>();
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<FrmMain>();
+            services.AddTransient<SubProgramForm>();
         }
 
         public void Finalise()

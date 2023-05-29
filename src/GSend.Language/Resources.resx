@@ -291,6 +291,9 @@
   <data name="CurrentFeedRate" xml:space="preserve">
     <value>Current Feed Rate</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -561,6 +564,12 @@
   <data name="GCodeUnitOfMeasureError" xml:space="preserve">
     <value>Could not automatically detect unit of measure from GCode</value>
   </data>
+  <data name="GCodeVariableCount" xml:space="preserve">
+    <value>Variable Count</value>
+  </data>
+  <data name="GCodeVariablesUsed" xml:space="preserve">
+    <value>Variables Used</value>
+  </data>
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
@@ -773,6 +782,9 @@
   </data>
   <data name="SaveConfiguration" xml:space="preserve">
     <value>Save Configuration</value>
+  </data>
+  <data name="SaveSubProgram" xml:space="preserve">
+    <value>Save Subprogram</value>
   </data>
   <data name="Send" xml:space="preserve">
     <value>Send</value>
@@ -1050,6 +1062,18 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="Subprogram" xml:space="preserve">
+    <value>Subprogram</value>
+  </data>
+  <data name="SubprogramDescription" xml:space="preserve">
+    <value>Please enter a valid description at least 10 characters long</value>
+  </data>
+  <data name="SubprogramExistsOverwrite" xml:space="preserve">
+    <value>Subprogram {0} exists, do you want to override?</value>
+  </data>
+  <data name="SubProgramId" xml:space="preserve">
+    <value>Subprogram Id</value>
+  </data>
   <data name="SubPrograms" xml:space="preserve">
     <value>Sub Programs</value>
   </data>
@@ -1100,6 +1124,12 @@
   </data>
   <data name="VariableInvalid4" xml:space="preserve">
     <value>Invalid variable block on line {0}, variable block must start with [ and end with ]</value>
+  </data>
+  <data name="VariableInvalid5" xml:space="preserve">
+    <value>Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234])</value>
+  </data>
+  <data name="VariableInvalid6" xml:space="preserve">
+    <value>Variable {0} is referenced on line {1} but has not been declared.</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>View</value>

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GSendShared;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
@@ -8,7 +10,7 @@ namespace GSendCommon
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            // required by interface, not used in this context
+            services.AddSingleton<ISubPrograms, SubPrograms>();
         }
 
         public void Finalise()

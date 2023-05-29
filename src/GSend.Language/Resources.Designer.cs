@@ -583,6 +583,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
@@ -1393,6 +1402,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variable Count.
+        /// </summary>
+        public static string GCodeVariableCount {
+            get {
+                return ResourceManager.GetString("GCodeVariableCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variables Used.
+        /// </summary>
+        public static string GCodeVariablesUsed {
+            get {
+                return ResourceManager.GetString("GCodeVariablesUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -2028,6 +2055,15 @@ namespace GSend.Language {
         public static string SaveConfiguration {
             get {
                 return ResourceManager.GetString("SaveConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Subprogram.
+        /// </summary>
+        public static string SaveSubProgram {
+            get {
+                return ResourceManager.GetString("SaveSubProgram", resourceCulture);
             }
         }
         
@@ -2860,6 +2896,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subprogram.
+        /// </summary>
+        public static string Subprogram {
+            get {
+                return ResourceManager.GetString("Subprogram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid description at least 10 characters long.
+        /// </summary>
+        public static string SubprogramDescription {
+            get {
+                return ResourceManager.GetString("SubprogramDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subprogram {0} exists, do you want to override?.
+        /// </summary>
+        public static string SubprogramExistsOverwrite {
+            get {
+                return ResourceManager.GetString("SubprogramExistsOverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subprogram Id.
+        /// </summary>
+        public static string SubProgramId {
+            get {
+                return ResourceManager.GetString("SubProgramId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sub Programs.
         /// </summary>
         public static string SubPrograms {
@@ -3009,6 +3081,24 @@ namespace GSend.Language {
         public static string VariableInvalid4 {
             get {
                 return ResourceManager.GetString("VariableInvalid4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234]).
+        /// </summary>
+        public static string VariableInvalid5 {
+            get {
+                return ResourceManager.GetString("VariableInvalid5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable {0} is referenced on line {1} but has not been declared..
+        /// </summary>
+        public static string VariableInvalid6 {
+            get {
+                return ResourceManager.GetString("VariableInvalid6", resourceCulture);
             }
         }
         

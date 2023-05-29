@@ -9,6 +9,8 @@ namespace GSendControls
     {
         public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, IGCodeAnalyses gCodeAnalyses)
         {
+            warningsAndErrors.Clear(true);
+
             switch (gCodeAnalyses.UnitOfMeasurement)
             {
                 case UnitOfMeasurement.None:

@@ -90,6 +90,9 @@ namespace GSendAnalyser.Internal
                         else
                         {
                             isVariable = true;
+
+                            if (position > 0)
+                                line[position++] = c;
                         }
 
                         continue;
@@ -113,8 +116,8 @@ namespace GSendAnalyser.Internal
                     case CharLineFeed:
                         if (isVariable)
                         {
-                            isVariable = false;
                             InternalParseVariable(Result, currentLine, line);
+                            isVariable = false;
                         }
                         else
                         {
@@ -234,6 +237,10 @@ namespace GSendAnalyser.Internal
 
                         if (variables.Count > 0)
                             currentValues.Attributes |= CommandAttributes.ContainsVariables;
+                    }
+                    else if (variableBlockStart == -1 && variableBlock.IndexOf('#') > -1)
+                    {
+                        analysis.AddError(String.Format(GSend.Language.Resources.VariableInvalid5, lineNumber));
                     }
                 }
 
@@ -484,10 +491,13 @@ namespace GSendAnalyser.Internal
                 if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
-                    Result.Add(new GCodeVariable(variable));
+                    GCodeVariable gCodeVariable = new GCodeVariable(variable);
+                    Result.Add(gCodeVariable);
 
+                    if (!analyses.Variables.ContainsKey(gCodeVariable.VariableId))
+                        analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, gCodeVariable.Variable, lineNumber));
                 }
-                else if (variableBlockStart > 0 && variableBlockEnd < variableBlockStart)
+                else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)
                 {
                     analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid4, lineNumber));
                 }

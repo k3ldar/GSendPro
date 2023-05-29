@@ -17,6 +17,10 @@ namespace GSendEditor
         public AnalyzerThread(IGCodeParserFactory gCodeParserFactory, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             : base(txtGCode, TimeSpan.FromMilliseconds(10))
         {
+#if DEBUG
+            base.HangTimeout = 30000;
+#endif
+
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
             _lastValidateWarningsAndErrors = DateTime.MaxValue;
         }

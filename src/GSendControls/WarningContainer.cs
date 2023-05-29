@@ -33,6 +33,12 @@ namespace GSendControls
 
         public void Clear(bool forceAll)
         {
+            if (InvokeRequired)
+            {
+                Invoke(Clear, forceAll);
+                return;
+            }
+
             if (forceAll)
             {
                 flowLayoutWarningErrors.Controls.Clear();
@@ -49,6 +55,8 @@ namespace GSendControls
                     }
                 }
             }
+
+            ResetAfterRemove();
         }
 
         public int WarningCount()

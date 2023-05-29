@@ -39,6 +39,8 @@
             this.mnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnufileSaveAsSubprogram = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,10 +64,13 @@
             this.tabPagePreview = new System.Windows.Forms.TabPage();
             this.machine2dView1 = new GSendControls.Machine2DView();
             this.tabPageProperties = new System.Windows.Forms.TabPage();
+            this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             this.tabPageSubPrograms = new System.Windows.Forms.TabPage();
+            this.lvSubprograms = new System.Windows.Forms.ListView();
+            this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.warningsAndErrors = new GSendControls.WarningContainer();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -76,6 +81,7 @@
             this.tabControlMain.SuspendLayout();
             this.tabPagePreview.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
+            this.tabPageSubPrograms.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtGCode
@@ -98,7 +104,7 @@
             this.txtGCode.AutoIndent = false;
             this.txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
     "(?<range>:)\\s*(?<range>[^;]+);";
-            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(2, 14);
             this.txtGCode.BackBrush = null;
             this.txtGCode.CharHeight = 14;
             this.txtGCode.CharWidth = 8;
@@ -159,6 +165,8 @@
             this.mnuFileOpen,
             this.mnuFileSave,
             this.mnuFileSaveAs,
+            this.toolStripMenuItem3,
+            this.mnufileSaveAsSubprogram,
             this.toolStripMenuItem1,
             this.mnuFileExit});
             this.mnuFile.Name = "mnuFile";
@@ -168,40 +176,52 @@
             // mnuFileNew
             // 
             this.mnuFileNew.Name = "mnuFileNew";
-            this.mnuFileNew.Size = new System.Drawing.Size(114, 22);
+            this.mnuFileNew.Size = new System.Drawing.Size(183, 22);
             this.mnuFileNew.Text = "&New";
             this.mnuFileNew.Click += new System.EventHandler(this.mnuFileNew_Click);
             // 
             // mnuFileOpen
             // 
             this.mnuFileOpen.Name = "mnuFileOpen";
-            this.mnuFileOpen.Size = new System.Drawing.Size(114, 22);
+            this.mnuFileOpen.Size = new System.Drawing.Size(183, 22);
             this.mnuFileOpen.Text = "&Open";
             this.mnuFileOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
             // 
             // mnuFileSave
             // 
             this.mnuFileSave.Name = "mnuFileSave";
-            this.mnuFileSave.Size = new System.Drawing.Size(114, 22);
+            this.mnuFileSave.Size = new System.Drawing.Size(183, 22);
             this.mnuFileSave.Text = "&Save";
             this.mnuFileSave.Click += new System.EventHandler(this.mnuFileSave_Click);
             // 
             // mnuFileSaveAs
             // 
             this.mnuFileSaveAs.Name = "mnuFileSaveAs";
-            this.mnuFileSaveAs.Size = new System.Drawing.Size(114, 22);
+            this.mnuFileSaveAs.Size = new System.Drawing.Size(183, 22);
             this.mnuFileSaveAs.Text = "Save &As";
             this.mnuFileSaveAs.Click += new System.EventHandler(this.mnuFileSaveAs_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 6);
+            // 
+            // mnufileSaveAsSubprogram
+            // 
+            this.mnufileSaveAsSubprogram.Name = "mnufileSaveAsSubprogram";
+            this.mnufileSaveAsSubprogram.Size = new System.Drawing.Size(183, 22);
+            this.mnufileSaveAsSubprogram.Text = "Save As Sub&program";
+            this.mnufileSaveAsSubprogram.Click += new System.EventHandler(this.mnufileSaveAsSubprogram_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(111, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 6);
             // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
-            this.mnuFileExit.Size = new System.Drawing.Size(114, 22);
+            this.mnuFileExit.Size = new System.Drawing.Size(183, 22);
             this.mnuFileExit.Text = "&Exit";
             this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
             // 
@@ -380,7 +400,7 @@
             this.machine2dView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
             this.machine2dView1.Location = new System.Drawing.Point(6, 6);
-            this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 5000, 5000);
             this.machine2dView1.Name = "machine2dView1";
             this.machine2dView1.Size = new System.Drawing.Size(280, 190);
             this.machine2dView1.TabIndex = 0;
@@ -399,8 +419,19 @@
             this.tabPageProperties.Text = "Properties";
             this.tabPageProperties.UseVisualStyleBackColor = true;
             // 
+            // gCodeAnalysesDetails1
+            // 
+            this.gCodeAnalysesDetails1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(6, 6);
+            this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
+            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(280, 190);
+            this.gCodeAnalysesDetails1.TabIndex = 0;
+            // 
             // tabPageSubPrograms
             // 
+            this.tabPageSubPrograms.Controls.Add(this.lvSubprograms);
             this.tabPageSubPrograms.Location = new System.Drawing.Point(4, 24);
             this.tabPageSubPrograms.Name = "tabPageSubPrograms";
             this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
@@ -408,6 +439,30 @@
             this.tabPageSubPrograms.TabIndex = 2;
             this.tabPageSubPrograms.Text = "Sub Programs";
             this.tabPageSubPrograms.UseVisualStyleBackColor = true;
+            // 
+            // lvSubprograms
+            // 
+            this.lvSubprograms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvSubprograms.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderName,
+            this.columnHeaderDescription});
+            this.lvSubprograms.Location = new System.Drawing.Point(6, 6);
+            this.lvSubprograms.Name = "lvSubprograms";
+            this.lvSubprograms.Size = new System.Drawing.Size(280, 193);
+            this.lvSubprograms.TabIndex = 0;
+            this.lvSubprograms.UseCompatibleStateImageBehavior = false;
+            this.lvSubprograms.View = System.Windows.Forms.View.Details;
+            this.lvSubprograms.DoubleClick += new System.EventHandler(this.lvSubprograms_DoubleClick);
+            // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Width = 90;
+            // 
+            // columnHeaderDescription
+            // 
+            this.columnHeaderDescription.Width = 200;
             // 
             // warningsAndErrors
             // 
@@ -427,16 +482,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
-            // 
-            // gCodeAnalysesDetails1
-            // 
-            this.gCodeAnalysesDetails1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(6, 6);
-            this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
-            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(280, 190);
-            this.gCodeAnalysesDetails1.TabIndex = 0;
             // 
             // FrmMain
             // 
@@ -464,6 +509,7 @@
             this.tabControlMain.ResumeLayout(false);
             this.tabPagePreview.ResumeLayout(false);
             this.tabPageProperties.ResumeLayout(false);
+            this.tabPageSubPrograms.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -507,5 +553,10 @@
         private ToolStripMenuItem mnuViewProperties;
         private ToolStripMenuItem mnuViewSubPrograms;
         private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem mnufileSaveAsSubprogram;
+        private ListView lvSubprograms;
+        private ColumnHeader columnHeaderName;
+        private ColumnHeader columnHeaderDescription;
     }
 }
