@@ -58,6 +58,11 @@ namespace GSendControls
             {
                 AddMessage(warningsAndErrors, InformationType.Error, error);
             }
+
+            foreach (string warning in gCodeAnalyses.Warnings)
+            {
+                AddMessage(warningsAndErrors, InformationType.Warning, warning);
+            }
         }
 
         private void AddMessage(WarningContainer warningsAndErrors, InformationType informationType, string message)

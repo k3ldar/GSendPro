@@ -1,4 +1,4 @@
-﻿using GSendShared.Models;
+﻿using GSendShared.Abstractions;
 
 namespace GSendShared
 {
@@ -40,11 +40,13 @@ namespace GSendShared
 
         AnalysesOptions AnalysesOptions { get; }
 
-        IReadOnlyDictionary<ushort, VariableModel> Variables { get; }
+        IReadOnlyDictionary<ushort, IGCodeVariable> Variables { get; }
 
         string VariablesUsed { get; }
 
         IReadOnlyList<string> Errors { get; }
+
+        IReadOnlyList<string> Warnings { get; }
 
         decimal MaxX { get; set; }
 

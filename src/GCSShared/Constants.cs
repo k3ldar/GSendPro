@@ -157,6 +157,6 @@ namespace GSendShared
 
         public const string StartWizardSelectedJob = "StartJobSelectedProfileName";
 
-        public const string DefaultSubProgramFileExtension = ".gcode";
+        public const string DefaultSubProgramFileExtension = ".sub";
     }
 }

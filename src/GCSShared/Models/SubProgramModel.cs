@@ -1,15 +1,16 @@
 ﻿using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendCommon
 {
-    internal sealed class SubProgram : ISubProgram
+    public sealed class SubProgramModel : ISubProgram
     {
-        public SubProgram()
+        public SubProgramModel()
         {
 
         }
 
-        public SubProgram(string name, string description, string contents)
+        public SubProgramModel(string name, string description, string contents)
         {
             Name = name;
             Description = description;
@@ -21,5 +22,7 @@ namespace GSendCommon
         public string Description { get; set; }
 
         public string Contents { get; set; }
+
+        public List<IGCodeVariable> Variables { get; set; }
     }
 }

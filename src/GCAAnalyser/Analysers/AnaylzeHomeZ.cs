@@ -13,7 +13,8 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.HomeZ = gCodeAnalyses.Commands.Max(c => c.CurrentZ);
+            List<IGCodeCommand> allCommands = gCodeAnalyses.Commands.ToList();
+            gCodeAnalyses.HomeZ = allCommands.Count > 0 ? allCommands.Max(c => c.CurrentZ) : 0;
 
             Parallel.ForEach(gCodeAnalyses.Commands, c =>
             {

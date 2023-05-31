@@ -1993,7 +1993,9 @@ namespace GSendDesktop.Forms
                     selectionOverrideXY.Value = (int)_gCodeAnalyses.FeedX;
                     selectionOverrideZDown.Value = (int)_gCodeAnalyses.FeedZ;
                     selectionOverrideZUp.Value = (int)_gCodeAnalyses.FeedZ;
-                    selectionOverrideSpindle.Value = (int)_gCodeAnalyses.Commands.Where(c => c.Command.Equals('S')).Max(c => c.CommandValue);
+
+                    List<IGCodeCommand> sCommands = _gCodeAnalyses.Commands.Where(c => c.Command.Equals('S')).ToList();
+                    selectionOverrideSpindle.Value = sCommands.Count > 0 ? (int)sCommands.Max(c => c.CommandValue) : 0;
 
                     trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
                     trackBarPercent.Value = (int)_gCodeAnalyses.FeedX / (selectionOverrideXY.Maximum / 100);

@@ -12,7 +12,7 @@
 
         string Comment { get; }
 
-        List<IGCodeVariable> VariableBlocks { get; }
+        List<IGCodeVariableBlock> VariableBlocks { get; }
 
         int Index { get; }
 

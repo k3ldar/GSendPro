@@ -1,11 +1,18 @@
-﻿namespace GSendShared.Models
+﻿using GSendShared.Abstractions;
+
+namespace GSendShared.Models
 {
     /// <summary>
     /// Model for variables
     /// </summary>
-    public sealed class VariableModel
+    public sealed class GCodeVariableModel : IGCodeVariable
     {
-        public VariableModel(ushort variableId, string value, int lineNumber)
+        public GCodeVariableModel()
+        {
+
+        }
+
+        public GCodeVariableModel(ushort variableId, string value, int lineNumber)
         {
             VariableId = variableId;
 

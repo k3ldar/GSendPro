@@ -8,7 +8,7 @@
 
         ISubProgram Get(string name);
 
-        bool Update(string name, string description, string content);
+        bool Update(ISubProgram subProgram);
 
         List<ISubProgram> GetAll();
     }

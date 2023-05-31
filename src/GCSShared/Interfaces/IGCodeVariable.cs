@@ -1,13 +1,18 @@
-﻿namespace GSendShared
+﻿using System.Text.Json.Serialization;
+
+namespace GSendShared.Abstractions
 {
+    [JsonConverter(typeof(Converters.JsonConverterGCodeVariable))]
     public interface IGCodeVariable
     {
-        string VariableBlock { get; }
+        bool IsBoolean { get; }
 
-        List<string> Variables { get; }
-
-        List<ushort> VariableIds { get; }
+        bool IsDecimal { get; }
 
         int LineNumber { get; }
+
+        object Value { get; }
+
+        ushort VariableId { get; }
     }
 }

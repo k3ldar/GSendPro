@@ -1,17 +1,19 @@
 ﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Text.Json;
 
 using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendCommon
 {
     public sealed class SubPrograms : ISubPrograms
     {
         private readonly string _path;
+        private readonly IGCodeParserFactory _gCodeParserFactory;
 
-        public SubPrograms()
+        public SubPrograms(IGCodeParserFactory gCodeParserFactory)
         {
+            _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
             _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "Sub Programs");
 
             if (!Directory.Exists(_path))
@@ -65,23 +67,33 @@ namespace GSendCommon
             return Result;
         }
 
-        public bool Update(string name, string description, string content)
+        public bool Update(ISubProgram subProgram)
         {
-            ValidateFileName(name);
-            string fileName = Path.Combine(_path, name + Constants.DefaultSubProgramFileExtension);
-            File.WriteAllText(fileName, content);
+            ValidateFileName(subProgram.Name);
+            string fileName = Path.Combine(_path, subProgram.Name + Constants.DefaultSubProgramFileExtension);
 
-            WriteValue("Descriptions", name, description);
+            IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
+            IGCodeAnalyses _gCodeAnalyses = gCodeParser.Parse(subProgram.Contents);
+            _gCodeAnalyses.Analyse(fileName);
+
+            subProgram.Variables = new();
+            
+            foreach (ushort variable in _gCodeAnalyses.Variables.Keys)
+            {
+                subProgram.Variables.Add(_gCodeAnalyses.Variables[variable]);
+            }
+
+            _gCodeAnalyses.Variables.Values.ToList();
+
+            string json = JsonSerializer.Serialize(subProgram);
+            File.WriteAllText(fileName, json);
 
             return File.Exists(fileName);
         }
 
         private ISubProgram CreateSubProgramFromFileName(string fileName)
         {
-            string name = Path.GetFileNameWithoutExtension(fileName);
-            string description = ReadValue<string>("Descriptions", name, String.Empty);
-
-            return new SubProgram(name, description, File.ReadAllText(fileName));
+            return JsonSerializer.Deserialize<ISubProgram>(File.ReadAllText(fileName));
         }
 
         [DebuggerStepThrough]
@@ -100,34 +112,6 @@ namespace GSendCommon
 
             if (value < 1000 || value > 50000)
                 throw new ArgumentException("Value must be between 1000 and 50000");
-        }
-
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
-
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
-        public void WriteValue(string Section, string Key, string Value)
-        {
-            WritePrivateProfileString(Section, Key, Value, GetSettingsFile());
-        }
-
-        public T ReadValue<T>(string Section, string Key, T defaultValue)
-        {
-            StringBuilder temp = new StringBuilder(255);
-            _ = GetPrivateProfileString(Section, Key, "", temp, temp.Capacity, GetSettingsFile());
-
-            if (temp.Length == 0)
-                return defaultValue;
-
-            return (T)(object)temp.ToString();
-        }
-
-        [DebuggerStepThrough]
-        private string GetSettingsFile()
-        {
-            return Path.Combine(_path, "Descriptions.dat");
         }
     }
 }

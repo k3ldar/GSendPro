@@ -189,7 +189,7 @@ namespace GSendAnalyser.Internal
                 return;
             }
 
-            if (!Result.AddVariable(new VariableModel(variableId, variableParts[1], lineNumber)))
+            if (!Result.AddVariable(new GCodeVariableModel(variableId, variableParts[1], lineNumber)))
             {
                 Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variableId));
             }
@@ -220,7 +220,7 @@ namespace GSendAnalyser.Internal
             char currentCommand = CharNull;
             bool isComment = false;
             StringBuilder comment = new(256);
-            List<IGCodeVariable> variables = null;
+            List<IGCodeVariableBlock> variables = null;
 
             GCodeCommand UpdateGCodeValue()
             {
@@ -478,9 +478,9 @@ namespace GSendAnalyser.Internal
             return UpdateGCodeValue();
         }
 
-        private List<IGCodeVariable> ParseVariables(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
+        private List<IGCodeVariableBlock> ParseVariables(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
         {
-            List<IGCodeVariable> Result = new();
+            List<IGCodeVariableBlock> Result = new();
 
             int variableBlockStart = line.IndexOf('[', 0);
             string newCommandValue = line.Substring(0, variableBlockStart);
@@ -496,7 +496,7 @@ namespace GSendAnalyser.Internal
                 if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
-                    GCodeVariable gCodeVariable = new GCodeVariable(variable, lineNumber);
+                    GCodeVariableBlockModel gCodeVariable = new GCodeVariableBlockModel(variable, lineNumber);
                     
                     Result.Add(gCodeVariable);
                 }

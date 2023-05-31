@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using GSendShared;
 using GSendShared.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -26,16 +28,24 @@ namespace GSendTests.Mocks
                 foreach (ParameterInfo param in constructor.GetParameters())
                 {
                     List<object> list = new List<object>();
-                    GetCommonOfType<object>(list, param.ParameterType);
-                    object paramClass = list.First();
 
-                    if (paramClass == null)
+                    if (type.Equals(typeof(GSendAnalyser.Analysers.AnalyzeVariables)))
                     {
-                        Result.Clear();
-                        break;
+                        Result.Add(new MockSubPrograms());
                     }
+                    else
+                    {
+                        GetCommonOfType<object>(list, param.ParameterType);
+                        object paramClass = list.First();
 
-                    Result.Add(paramClass);
+                        if (paramClass == null)
+                        {
+                            Result.Clear();
+                            break;
+                        }
+
+                        Result.Add(paramClass);
+                    }
                 }
 
                 if (Result.Count > 0)
@@ -71,7 +81,7 @@ namespace GSendTests.Mocks
             {
                 if (type.IsClass && type.GetInterface(typeRequired.Name) != null)
                 {
-                    analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(typeRequired)));
+                    analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(type)));
                 }
             }
         }
@@ -84,7 +94,7 @@ namespace GSendTests.Mocks
                 {
                     try
                     {
-                        analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(typeRequired)));
+                        analyzerList.Add((T)Activator.CreateInstance(type, GetParameterInstances(type)));
                     }
                     catch
                     {

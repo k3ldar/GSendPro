@@ -1,5 +1,6 @@
 using System.Drawing.Drawing2D;
-using System.Xml.Linq;
+
+using GSendCommon;
 
 using GSendControls;
 
@@ -41,32 +42,9 @@ namespace GSendEditor
             LoadSubprograms();
         }
 
-        private void LoadSubprograms()
-        {
-            lvSubprograms.BeginUpdate();
-            try
-            {
-                lvSubprograms.Items.Clear();
-                List<ISubProgram> subPrograms = _subPrograms.GetAll();
-
-                foreach (ISubProgram subProgram in subPrograms)
-                {
-                    ListViewItem listViewItem = new ListViewItem();
-                    listViewItem.Text = subProgram.Name;
-                    listViewItem.SubItems.Add(subProgram.Description);
-                    listViewItem.Tag = subProgram;
-                    lvSubprograms.Items.Add(listViewItem);
-                }
-            }
-            finally
-            { 
-                lvSubprograms.EndUpdate(); 
-            }
-        }
-
         private void CreateAndRunAnalyzerThread()
         {
-           if (!ThreadManager.Exists(nameof(AnalyzerThread)))
+            if (!ThreadManager.Exists(nameof(AnalyzerThread)))
             {
                 ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
                 _analyzerThread.WarningContainer = warningsAndErrors;
@@ -195,7 +173,7 @@ namespace GSendEditor
             {
                 splitContainerMain.Top = 37;
             }
-                
+
             splitContainerMain.Height = statusStrip1.Top - splitContainerMain.Top - 8;
         }
 
@@ -237,8 +215,7 @@ namespace GSendEditor
                 {
                     if (IsSubprogram)
                     {
-                        _subPrograms.Update(_subProgram.Name, _subProgram.Description, txtGCode.Text);
-                        LoadSubprograms();
+                        SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
                     }
                     else
                     {
@@ -258,7 +235,7 @@ namespace GSendEditor
                     }
 
                     return false;
-                    
+
                 }
                 else if (saveResult == DialogResult.Cancel)
                 {
@@ -287,6 +264,7 @@ namespace GSendEditor
             gCodeAnalysesDetails1.ClearAnalyser();
             IsSubprogram = false;
             _subProgram = null;
+            UpdateTitleBar();
         }
 
         private void mnuFileOpen_Click(object sender, EventArgs e)
@@ -316,8 +294,7 @@ namespace GSendEditor
 
             if (IsSubprogram)
             {
-                _subPrograms.Update(_subProgram.Name, _subProgram.Description, txtGCode.Text);
-                LoadSubprograms();
+                SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
             }
             else
             {
@@ -351,18 +328,51 @@ namespace GSendEditor
             if (saveResult == DialogResult.Cancel)
                 return;
 
+            _subProgram = null;
             string name = subProgramForm.SubprogramName;
             string description = subProgramForm.Description;
 
-            _subPrograms.Update(name, description, txtGCode.Text);
+            SaveAsSubProgram(name, description);
 
-            FileName = name;
+            FileName = $"{name} - {description}";
             HasChanged = false;
 
-            UpdateTitleBar();
-
-            LoadSubprograms();
             IsSubprogram = true;
+
+            UpdateTitleBar();
+        }
+
+        private void SaveAsSubProgram(string name, string description)
+        {
+            if (_subProgram == null)
+                _subProgram = new SubProgramModel(name, description, String.Empty);
+
+            _subProgram.Contents = txtGCode.Text;
+            _subPrograms.Update(_subProgram);
+            LoadSubprograms();
+        }
+
+        private void LoadSubprograms()
+        {
+            lvSubprograms.BeginUpdate();
+            try
+            {
+                lvSubprograms.Items.Clear();
+                List<ISubProgram> subPrograms = _subPrograms.GetAll();
+
+                foreach (ISubProgram subProgram in subPrograms)
+                {
+                    ListViewItem listViewItem = new ListViewItem();
+                    listViewItem.Text = subProgram.Name;
+                    listViewItem.SubItems.Add(subProgram.Description);
+                    listViewItem.Tag = subProgram;
+                    lvSubprograms.Items.Add(listViewItem);
+                }
+            }
+            finally
+            {
+                lvSubprograms.EndUpdate();
+            }
         }
 
         private void mnuFileExit_Click(object sender, EventArgs e)

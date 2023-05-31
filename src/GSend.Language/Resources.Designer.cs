@@ -3112,6 +3112,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variable {0} is declared on line {1} but not used..
+        /// </summary>
+        public static string VariableWarning1 {
+            get {
+                return ResourceManager.GetString("VariableWarning1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable {0} is declared in subprogram but not used in the current gcode..
+        /// </summary>
+        public static string VariableWarning2 {
+            get {
+                return ResourceManager.GetString("VariableWarning2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View {

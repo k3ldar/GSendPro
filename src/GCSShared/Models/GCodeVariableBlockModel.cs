@@ -1,10 +1,10 @@
 ﻿using GSendShared;
 
-namespace GSendAnalyser
+namespace GSendShared.Models
 {
-    internal class GCodeVariable : IGCodeVariable
+    public sealed class GCodeVariableBlockModel : IGCodeVariableBlock
     {
-        public GCodeVariable(string block, int lineNumber)
+        public GCodeVariableBlockModel(string block, int lineNumber)
         {
             VariableBlock = block;
             Variables = new();

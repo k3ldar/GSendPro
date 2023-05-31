@@ -9,8 +9,11 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            gCodeAnalyses.FeedX = gCodeAnalyses.Commands.Where(c => c.Command.Equals('X')).Max(c => c.FeedRate);
-            gCodeAnalyses.FeedZ = gCodeAnalyses.Commands.Where(c => c.Command.Equals('Z')).Max(c => c.FeedRate);
+            List<IGCodeCommand> xCommands = gCodeAnalyses.Commands.Where(c => c.Command.Equals('X')).ToList();
+            gCodeAnalyses.FeedX = xCommands.Count > 0 ? xCommands.Max(c => c.FeedRate) : 0;
+
+            List<IGCodeCommand> zCommands = gCodeAnalyses.Commands.Where(c => c.Command.Equals('Z')).ToList();
+            gCodeAnalyses.FeedZ = zCommands.Count > 0 ? zCommands.Max(c => c.FeedRate) : 0;
         }
     }
 }

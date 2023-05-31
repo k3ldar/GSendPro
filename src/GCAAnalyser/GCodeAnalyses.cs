@@ -12,8 +12,9 @@ namespace GSendAnalyser
     {
         private readonly List<IGCodeCommand> _commands = new();
         private readonly IPluginClassesService _pluginClassesService;
-        private readonly Dictionary<ushort, VariableModel> _variables = new();
+        private readonly Dictionary<ushort, IGCodeVariable> _variables = new();
         private readonly List<string> _errors = new();
+        private readonly List<string> _warnings = new();
 
         public GCodeAnalyses(IPluginClassesService pluginClassesService)
         {
@@ -93,11 +94,13 @@ namespace GSendAnalyser
 
         public string FileCRC { get; set; }
 
-        public IReadOnlyDictionary<ushort, VariableModel> Variables => _variables;
+        public IReadOnlyDictionary<ushort, IGCodeVariable> Variables => _variables;
 
         public string VariablesUsed { get; private set; } = String.Empty;
 
         public IReadOnlyList<string> Errors => _errors;
+
+        public IReadOnlyList<string> Warnings => _warnings;
 
         public List<IGCodeLine> Lines(out int lineCount)
         {
@@ -129,7 +132,15 @@ namespace GSendAnalyser
             _errors.Add(message);
         }
 
-        internal bool AddVariable(VariableModel variableModel)
+        internal void AddWarning(string message)
+        {
+            if (String.IsNullOrEmpty(message))
+                throw new ArgumentNullException(nameof(message));
+
+            _warnings.Add(message);
+        }
+
+        internal bool AddVariable(GCodeVariableModel variableModel)
         {
             if (_variables.ContainsKey(variableModel.VariableId))
                 return false;

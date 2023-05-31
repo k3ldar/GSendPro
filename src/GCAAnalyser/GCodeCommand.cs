@@ -28,7 +28,7 @@ namespace GSendAnalyser
         #region Constructors
 
         public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, 
-            string comment, List<IGCodeVariable> variables, CurrentCommandValues currentValues, int lineNumber)
+            string comment, List<IGCodeVariableBlock> variables, CurrentCommandValues currentValues, int lineNumber)
         {
 
             if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
@@ -60,7 +60,7 @@ namespace GSendAnalyser
 
         public string Comment { get; }
 
-        public List<IGCodeVariable> VariableBlocks { get; }
+        public List<IGCodeVariableBlock> VariableBlocks { get; }
 
         public int Index { get; }
 
