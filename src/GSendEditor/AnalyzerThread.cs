@@ -27,7 +27,7 @@ namespace GSendEditor
             _lastValidateWarningsAndErrors = DateTime.MaxValue;
         }
 
-        public WarningContainer WarningContainer { get; set; }
+        public ListBox WarningContainer { get; set; }
 
         public Machine2DView Machine2DView { get; set; }
 
@@ -46,13 +46,32 @@ namespace GSendEditor
             _lastValidateWarningsAndErrors = DateTime.UtcNow;
         }
 
+        public event EventHandler OnAddItem;
+        public event EventHandler OnRemoveItem;
+
         protected override bool Run(object parameters)
         {
             if (parameters is FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             {
                 TimeSpan overrideUpdateSpan = DateTime.UtcNow - _lastValidateWarningsAndErrors;
 
-                if (overrideUpdateSpan.TotalMilliseconds > ValidateWarningAndErrorsTimeout && WarningContainer != null && !String.IsNullOrEmpty(txtGCode.Text))
+                if (String.IsNullOrEmpty(txtGCode.Text))
+                {
+                    List<WarningErrorList> issues = new();
+
+                    foreach (WarningErrorList item in WarningContainer.Items)
+                    {
+                        item.MarkedForRemoval = true;
+                        item.IsNew = false;
+                        issues.Add(item);
+                    }
+
+                    foreach (WarningErrorList item in issues)
+                    {
+                        OnRemoveItem?.Invoke(item, EventArgs.Empty);
+                    }
+                }
+                else if (overrideUpdateSpan.TotalMilliseconds > ValidateWarningAndErrorsTimeout && WarningContainer != null && !String.IsNullOrEmpty(txtGCode.Text))
                 {
                     IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
                     _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
@@ -60,8 +79,25 @@ namespace GSendEditor
                     Lines = _gCodeAnalyses.Lines(out int lineCount);
                     LineCount = lineCount;
 
+                    List<WarningErrorList> issues = new();
+
+                    foreach (WarningErrorList item in WarningContainer.Items)
+                    {
+                        item.MarkedForRemoval = true;
+                        item.IsNew = false;
+                        issues.Add(item);
+                    }
+
                     AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
-                    analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(WarningContainer, _gCodeAnalyses);
+                    analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(null, issues, _gCodeAnalyses);
+
+                    foreach (WarningErrorList item in issues)
+                    {
+                        if (item.MarkedForRemoval)
+                            OnRemoveItem?.Invoke(item, EventArgs.Empty);
+                        else
+                            OnAddItem?.Invoke(item, EventArgs.Empty);
+                    }
 
                     if (String.IsNullOrEmpty(FileName))
                         AnalysesDetails?.LoadAnalyser(_gCodeAnalyses);
@@ -70,7 +106,7 @@ namespace GSendEditor
 
                     if (Machine2DView != null)
                     {
-                        Rectangle machineSize = new Rectangle(0, 0, (int)(_gCodeAnalyses.MaxX + 50), (int)(_gCodeAnalyses.MaxY + 50));
+                        Rectangle machineSize = new Rectangle(0, 0, (int)(_gCodeAnalyses.MaxX + 500), (int)(_gCodeAnalyses.MaxY + 500));
                         Machine2DView.MachineSize = machineSize;
                         Machine2DView.LoadGCode(_gCodeAnalyses);
                     }

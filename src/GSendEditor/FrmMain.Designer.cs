@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            this.txtGCode = new FastColoredTextBoxNS.FastColoredTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelWarnings = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -59,7 +58,10 @@
             this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
+            this.txtGCode = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPagePreview = new System.Windows.Forms.TabPage();
             this.machine2dView1 = new GSendControls.Machine2DView();
@@ -69,71 +71,32 @@
             this.lvSubprograms = new System.Windows.Forms.ListView();
             this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
-            this.warningsAndErrors = new GSendControls.WarningContainer();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
+            this.lstWarningsErrors = new System.Windows.Forms.ListBox();
+            this.ImageList = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
             this.splitContainerMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPagePreview.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageSubPrograms.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtGCode
-            // 
-            this.txtGCode.AllowMacroRecording = false;
-            this.txtGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGCode.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.txtGCode.AutoIndent = false;
-            this.txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
-    "(?<range>:)\\s*(?<range>[^;]+);";
-            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            this.txtGCode.BackBrush = null;
-            this.txtGCode.CharHeight = 14;
-            this.txtGCode.CharWidth = 8;
-            this.txtGCode.DefaultMarkerSize = 8;
-            this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtGCode.IsReplaceMode = false;
-            this.txtGCode.LeftBracket = '[';
-            this.txtGCode.LeftBracket2 = '(';
-            this.txtGCode.Location = new System.Drawing.Point(3, 3);
-            this.txtGCode.Name = "txtGCode";
-            this.txtGCode.Paddings = new System.Windows.Forms.Padding(0);
-            this.txtGCode.RightBracket = ']';
-            this.txtGCode.RightBracket2 = ')';
-            this.txtGCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.txtGCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtGCode.ServiceColors")));
-            this.txtGCode.Size = new System.Drawing.Size(460, 230);
-            this.txtGCode.TabIndex = 0;
-            this.txtGCode.Zoom = 100;
-            this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
-            this.txtGCode.SelectionChangedDelayed += new System.EventHandler(this.txtGCode_SelectionChangedDelayed);
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelWarnings});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 327);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 409);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1083, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -155,7 +118,7 @@
             this.mnuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1083, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -347,12 +310,36 @@
             this.saveFileDialog1.DefaultExt = "gcode";
             this.saveFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(12, 40);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainerMain);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.lstWarningsErrors);
+            this.splitContainer1.Size = new System.Drawing.Size(1059, 356);
+            this.splitContainer1.SplitterDistance = 257;
+            this.splitContainer1.TabIndex = 5;
+            // 
             // splitContainerMain
             // 
             this.splitContainerMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainerMain.Location = new System.Drawing.Point(12, 76);
+            this.splitContainerMain.Location = new System.Drawing.Point(3, 3);
             this.splitContainerMain.Name = "splitContainerMain";
             // 
             // splitContainerMain.Panel1
@@ -362,9 +349,49 @@
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.tabControlMain);
-            this.splitContainerMain.Size = new System.Drawing.Size(776, 236);
-            this.splitContainerMain.SplitterDistance = 466;
-            this.splitContainerMain.TabIndex = 4;
+            this.splitContainerMain.Size = new System.Drawing.Size(1053, 251);
+            this.splitContainerMain.SplitterDistance = 631;
+            this.splitContainerMain.TabIndex = 5;
+            // 
+            // txtGCode
+            // 
+            this.txtGCode.AllowMacroRecording = false;
+            this.txtGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtGCode.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.txtGCode.AutoIndent = false;
+            this.txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
+    "(?<range>:)\\s*(?<range>[^;]+);";
+            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.txtGCode.BackBrush = null;
+            this.txtGCode.CharHeight = 14;
+            this.txtGCode.CharWidth = 8;
+            this.txtGCode.DefaultMarkerSize = 8;
+            this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtGCode.IsReplaceMode = false;
+            this.txtGCode.LeftBracket = '[';
+            this.txtGCode.LeftBracket2 = '(';
+            this.txtGCode.Location = new System.Drawing.Point(3, 3);
+            this.txtGCode.Name = "txtGCode";
+            this.txtGCode.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtGCode.RightBracket = ']';
+            this.txtGCode.RightBracket2 = ')';
+            this.txtGCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.txtGCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtGCode.ServiceColors")));
+            this.txtGCode.Size = new System.Drawing.Size(625, 245);
+            this.txtGCode.TabIndex = 0;
+            this.txtGCode.Zoom = 100;
             // 
             // tabControlMain
             // 
@@ -377,9 +404,8 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(300, 230);
+            this.tabControlMain.Size = new System.Drawing.Size(412, 245);
             this.tabControlMain.TabIndex = 0;
-            this.tabControlMain.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControlMain_Selected);
             // 
             // tabPagePreview
             // 
@@ -387,7 +413,7 @@
             this.tabPagePreview.Location = new System.Drawing.Point(4, 24);
             this.tabPagePreview.Name = "tabPagePreview";
             this.tabPagePreview.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePreview.Size = new System.Drawing.Size(292, 202);
+            this.tabPagePreview.Size = new System.Drawing.Size(404, 217);
             this.tabPagePreview.TabIndex = 0;
             this.tabPagePreview.Text = "tabPagePreview";
             this.tabPagePreview.UseVisualStyleBackColor = true;
@@ -400,10 +426,10 @@
             this.machine2dView1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("machine2dView1.BackgroundImage")));
             this.machine2dView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
-            this.machine2dView1.Location = new System.Drawing.Point(6, 6);
+            this.machine2dView1.Location = new System.Drawing.Point(9, 9);
             this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 5000, 5000);
             this.machine2dView1.Name = "machine2dView1";
-            this.machine2dView1.Size = new System.Drawing.Size(280, 190);
+            this.machine2dView1.Size = new System.Drawing.Size(389, 202);
             this.machine2dView1.TabIndex = 0;
             this.machine2dView1.XPosition = 0F;
             this.machine2dView1.YPosition = 0F;
@@ -415,7 +441,7 @@
             this.tabPageProperties.Location = new System.Drawing.Point(4, 24);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(292, 202);
+            this.tabPageProperties.Size = new System.Drawing.Size(404, 217);
             this.tabPageProperties.TabIndex = 1;
             this.tabPageProperties.Text = "Properties";
             this.tabPageProperties.UseVisualStyleBackColor = true;
@@ -425,9 +451,9 @@
             this.gCodeAnalysesDetails1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(6, 6);
+            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(9, 9);
             this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
-            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(280, 190);
+            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(389, 202);
             this.gCodeAnalysesDetails1.TabIndex = 0;
             // 
             // tabPageSubPrograms
@@ -436,7 +462,7 @@
             this.tabPageSubPrograms.Location = new System.Drawing.Point(4, 24);
             this.tabPageSubPrograms.Name = "tabPageSubPrograms";
             this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubPrograms.Size = new System.Drawing.Size(292, 202);
+            this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 217);
             this.tabPageSubPrograms.TabIndex = 2;
             this.tabPageSubPrograms.Text = "Sub Programs";
             this.tabPageSubPrograms.UseVisualStyleBackColor = true;
@@ -449,13 +475,12 @@
             this.lvSubprograms.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderName,
             this.columnHeaderDescription});
-            this.lvSubprograms.Location = new System.Drawing.Point(6, 6);
+            this.lvSubprograms.Location = new System.Drawing.Point(9, 9);
             this.lvSubprograms.Name = "lvSubprograms";
-            this.lvSubprograms.Size = new System.Drawing.Size(280, 193);
+            this.lvSubprograms.Size = new System.Drawing.Size(389, 202);
             this.lvSubprograms.TabIndex = 0;
             this.lvSubprograms.UseCompatibleStateImageBehavior = false;
             this.lvSubprograms.View = System.Windows.Forms.View.Details;
-            this.lvSubprograms.DoubleClick += new System.EventHandler(this.lvSubprograms_DoubleClick);
             // 
             // columnHeaderName
             // 
@@ -465,32 +490,37 @@
             // 
             this.columnHeaderDescription.Width = 200;
             // 
-            // warningsAndErrors
+            // lstWarningsErrors
             // 
-            this.warningsAndErrors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lstWarningsErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.warningsAndErrors.Location = new System.Drawing.Point(9, 37);
-            this.warningsAndErrors.Margin = new System.Windows.Forms.Padding(0);
-            this.warningsAndErrors.MaximumSize = new System.Drawing.Size(2048, 48);
-            this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
-            this.warningsAndErrors.Name = "warningsAndErrors";
-            this.warningsAndErrors.Size = new System.Drawing.Size(782, 28);
-            this.warningsAndErrors.TabIndex = 5;
-            this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningAndErrors_OnUpdate);
-            this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.warningAndErrors_VisibleChanged);
-            this.warningsAndErrors.Resize += new System.EventHandler(this.warningAndErrors_VisibleChanged);
+            this.lstWarningsErrors.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstWarningsErrors.FormattingEnabled = true;
+            this.lstWarningsErrors.ItemHeight = 20;
+            this.lstWarningsErrors.Location = new System.Drawing.Point(3, 0);
+            this.lstWarningsErrors.Name = "lstWarningsErrors";
+            this.lstWarningsErrors.Size = new System.Drawing.Size(1053, 84);
+            this.lstWarningsErrors.TabIndex = 0;
+            this.lstWarningsErrors.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstWarningsErrors_DrawItem);
             // 
-            // openFileDialog1
+            // ImageList
             // 
-            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            this.ImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList.ImageStream")));
+            this.ImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ImageList.Images.SetKeyName(0, "Error_red_16x16.png");
+            this.ImageList.Images.SetKeyName(1, "Error_red_16x16.png");
+            this.ImageList.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
+            this.ImageList.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
+            this.ImageList.Images.SetKeyName(4, "Error_red_16x16.png");
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 349);
-            this.Controls.Add(this.warningsAndErrors);
-            this.Controls.Add(this.splitContainerMain);
+            this.ClientSize = new System.Drawing.Size(1083, 431);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -498,15 +528,19 @@
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Shown += new System.EventHandler(this.FrmMain_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.splitContainerMain.Panel1.ResumeLayout(false);
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
             this.splitContainerMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).EndInit();
             this.tabControlMain.ResumeLayout(false);
             this.tabPagePreview.ResumeLayout(false);
             this.tabPageProperties.ResumeLayout(false);
@@ -517,8 +551,6 @@
         }
 
         #endregion
-
-        private FastColoredTextBoxNS.FastColoredTextBox txtGCode;
         private StatusStrip statusStrip1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem mnuFile;
@@ -539,25 +571,28 @@
         private ToolStripMenuItem mnuViewPreview;
         private ToolStripMenuItem mnuHelp;
         private ToolStripMenuItem mnuHelpAbout;
-        private SplitContainer splitContainerMain;
-        private GSendControls.WarningContainer warningsAndErrors;
         private ToolStripStatusLabel toolStripStatusLabelWarnings;
         private OpenFileDialog openFileDialog1;
-        private TabControl tabControlMain;
-        private TabPage tabPagePreview;
-        private TabPage tabPageProperties;
         private ToolStripMenuItem mnuEditUndo;
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem mnuEditRedo;
-        private GSendControls.Machine2DView machine2dView1;
-        private TabPage tabPageSubPrograms;
         private ToolStripMenuItem mnuViewProperties;
         private ToolStripMenuItem mnuViewSubPrograms;
-        private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
         private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem mnufileSaveAsSubprogram;
+        private SplitContainer splitContainer1;
+        private SplitContainer splitContainerMain;
+        private FastColoredTextBoxNS.FastColoredTextBox txtGCode;
+        private TabControl tabControlMain;
+        private TabPage tabPagePreview;
+        private GSendControls.Machine2DView machine2dView1;
+        private TabPage tabPageProperties;
+        private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
+        private TabPage tabPageSubPrograms;
         private ListView lvSubprograms;
         private ColumnHeader columnHeaderName;
         private ColumnHeader columnHeaderDescription;
+        private ListBox lstWarningsErrors;
+        private ImageList ImageList;
     }
 }

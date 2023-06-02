@@ -37,7 +37,15 @@ namespace GSendCommon
 
         public bool Exists(string name)
         {
-            ValidateFileName(name);
+            try
+            {
+                ValidateFileName(name);
+            }
+            catch
+            {
+                return false;
+            }
+
             string fileName = Path.Combine(_path, name + Constants.DefaultSubProgramFileExtension);
 
             return File.Exists(fileName);

@@ -28,10 +28,9 @@ namespace GSendEditor
             _subPrograms = _gSendContext.ServiceProvider.GetRequiredService<ISubPrograms>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(), txtGCode);
+            _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
+            _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
-            warningsAndErrors.Visible = warningsAndErrors.TotalCount() > 0;
-            warningAndErrors_VisibleChanged(this, EventArgs.Empty);
-            warningsAndErrors_OnUpdate(this, EventArgs.Empty);
             UpdateEnabledState();
             LoadResources();
 
@@ -47,7 +46,7 @@ namespace GSendEditor
             if (!ThreadManager.Exists(nameof(AnalyzerThread)))
             {
                 ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
-                _analyzerThread.WarningContainer = warningsAndErrors;
+                _analyzerThread.WarningContainer = lstWarningsErrors;
                 _analyzerThread.Machine2DView = machine2dView1;
                 _analyzerThread.AnalysesDetails = gCodeAnalysesDetails1;
             }
@@ -144,39 +143,6 @@ namespace GSendEditor
                 }
         }
 
-        private void warningAndErrors_OnUpdate(object sender, EventArgs e)
-        {
-            int width = 0;
-
-            if (warningsAndErrors.WarningCount() > 0)
-                width += GSendShared.Constants.WarningStatusWidth;
-
-            if (warningsAndErrors.ErrorCount() > 0)
-                width += GSendShared.Constants.WarningStatusWidth;
-
-            if (warningsAndErrors.InformationCount() > 0)
-                width += GSendShared.Constants.WarningStatusWidth;
-
-            toolStripStatusLabelWarnings.Visible = warningsAndErrors.TotalCount() > 0;
-            toolStripStatusLabelWarnings.Width = width;
-
-            warningAndErrors_VisibleChanged(sender, e);
-        }
-
-        private void warningAndErrors_VisibleChanged(object sender, EventArgs e)
-        {
-            if (warningsAndErrors.Visible)
-            {
-                splitContainerMain.Top = warningsAndErrors.Top + warningsAndErrors.Height + 8;
-            }
-            else
-            {
-                splitContainerMain.Top = 37;
-            }
-
-            splitContainerMain.Height = statusStrip1.Top - splitContainerMain.Top - 8;
-        }
-
         private void warningsAndErrors_OnUpdate(object sender, EventArgs e)
         {
             toolStripStatusLabelWarnings.Invalidate();
@@ -184,7 +150,7 @@ namespace GSendEditor
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
-            warningsAndErrors.ResetLayoutWarningErrorSize();
+
         }
 
         private void txtGCode_SelectionChangedDelayed(object sender, EventArgs e)
@@ -231,7 +197,7 @@ namespace GSendEditor
                         }
 
                         File.WriteAllText(FileName, txtGCode.Text);
-                        warningsAndErrors.Clear(true);
+                        lstWarningsErrors.Items.Clear();
                     }
 
                     return false;
@@ -243,7 +209,7 @@ namespace GSendEditor
                 }
             }
 
-            warningsAndErrors.Clear(true);
+            lstWarningsErrors.Items.Clear();
             return false;
         }
 
@@ -260,7 +226,7 @@ namespace GSendEditor
             HasChanged = false;
             UpdateEnabledState();
             txtGCode.ClearUndo();
-            warningsAndErrors.Clear(true);
+            lstWarningsErrors.Items.Clear();
             gCodeAnalysesDetails1.ClearAnalyser();
             IsSubprogram = false;
             _subProgram = null;
@@ -278,7 +244,7 @@ namespace GSendEditor
                 txtGCode.Text = File.ReadAllText(FileName);
                 HasChanged = false;
                 txtGCode.ClearUndo();
-                warningsAndErrors.Clear(true);
+                lstWarningsErrors.Items.Clear();
             }
 
             UpdateTitleBar();
@@ -507,8 +473,66 @@ namespace GSendEditor
             e.ToolTipText = tip;
             e.ToolTipTitle = "Variable Value";
             e.ToolTipText = tip;
-            
 
+
+        }
+
+        private void lstWarningsErrors_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            WarningErrorList item = lstWarningsErrors.Items[e.Index] as WarningErrorList;
+
+            if (item == null)
+                return;
+
+            using Brush brush = new SolidBrush(e.ForeColor);
+            e.Graphics.DrawString(item.Message, lstWarningsErrors.Font, brush, e.Bounds.Left + 22, e.Bounds.Top + 2);
+
+            int imageIndex = 0;
+
+            switch (item.InfoType)
+            {
+                case InformationType.Warning: // 2
+                    imageIndex = 2;
+                    break;
+
+                case InformationType.Information://3
+                    imageIndex = 3;
+                    break;
+            }
+
+            e.Graphics.DrawImage(ImageList.Images[imageIndex], e.Bounds.Left + 2, e.Bounds.Top + 1);
+        }
+
+        private void AnalyzerThread_OnRemoveItem(object sender, EventArgs e)
+        {
+            if (lstWarningsErrors.InvokeRequired)
+            {
+                Invoke(() =>  AnalyzerThread_OnRemoveItem(sender, e));
+                return;
+            }
+            
+            lstWarningsErrors.Items.Remove((WarningErrorList)sender);
+        }
+
+        private void AnalyzerThread_OnAddItem(object sender, EventArgs e)
+        {
+            if (lstWarningsErrors.InvokeRequired)
+            {
+                Invoke(() => AnalyzerThread_OnAddItem(sender, e));
+                return;
+            }
+
+            WarningErrorList item = (WarningErrorList)sender;
+
+            if (item.IsNew)
+            {
+                lstWarningsErrors.Items.Add((WarningErrorList)sender);
+            }
+
+            item.MarkedForRemoval = false;
+            item.IsNew = false;
         }
     }
 }

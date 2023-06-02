@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using GSendShared;
@@ -7,37 +8,37 @@ namespace GSendControls
 {
     public sealed class AnalyzeWarningAndErrors
     {
-        public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, IGCodeAnalyses gCodeAnalyses)
+        public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, List<WarningErrorList> issues, IGCodeAnalyses gCodeAnalyses)
         {
-            warningsAndErrors.Clear(true);
+            warningsAndErrors?.Clear(true);
 
             switch (gCodeAnalyses.UnitOfMeasurement)
             {
                 case UnitOfMeasurement.None:
                 case UnitOfMeasurement.Error:
-                    AddMessage(warningsAndErrors, InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
+                    AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.GCodeUnitOfMeasureError);
                     break;
             }
 
             if ((gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) || gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant)) &&
                 !gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant))
             {
-                AddMessage(warningsAndErrors, InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
+                AddMessage(warningsAndErrors, issues, InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))
             {
-                AddMessage(warningsAndErrors, InformationType.Error, GSend.Language.Resources.WarningContainsInvalidGCode);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.WarningContainsInvalidGCode);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames))
             {
-                AddMessage(warningsAndErrors, InformationType.Error, GSend.Language.Resources.M650MultipleJobNamesSpecified);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M650MultipleJobNamesSpecified);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName))
             {
-                AddMessage(warningsAndErrors, InformationType.Error, GSend.Language.Resources.M650InvalidJobNameSpecified);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M650InvalidJobNameSpecified);
             }
 
             if (gCodeAnalyses.SubProgramCount > 0)
@@ -49,26 +50,49 @@ namespace GSendControls
                     if (!String.IsNullOrEmpty(item.Comment))
                         subProgram += $" {item.Comment}";
 
-                    AddMessage(warningsAndErrors, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
+                    validate it properly here against sub programs
+                    AddMessage(warningsAndErrors, issues, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
                         subProgram, item.LineNumber));
                 }
             }
 
             foreach (string error in gCodeAnalyses.Errors)
             {
-                AddMessage(warningsAndErrors, InformationType.Error, error);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, error);
             }
 
             foreach (string warning in gCodeAnalyses.Warnings)
             {
-                AddMessage(warningsAndErrors, InformationType.Warning, warning);
+                AddMessage(warningsAndErrors, issues, InformationType.Warning, warning);
             }
         }
 
-        private void AddMessage(WarningContainer warningsAndErrors, InformationType informationType, string message)
+        private void AddMessage(WarningContainer warningsAndErrors, List<WarningErrorList> issues, InformationType informationType, string message)
         {
-            if (!warningsAndErrors.Contains(informationType, message))
-                warningsAndErrors.AddWarningPanel(informationType, message);
+            if (warningsAndErrors != null)
+            {
+                if (!warningsAndErrors.Contains(informationType, message))
+                    warningsAndErrors.AddWarningPanel(informationType, message);
+            }
+            else if (issues != null)
+            {
+                List<WarningErrorList> existingItems = issues.Where(i => i.Message.Equals(message) && i.InfoType.Equals(informationType)).ToList();
+
+                if (existingItems.Count > 0)
+                { 
+                    existingItems.ForEach(i => i.MarkedForRemoval = false);
+                }
+                else
+                {
+                    issues.Add(new WarningErrorList()
+                    {
+                        Message = message,
+                        InfoType = informationType,
+                        IsNew = true,
+                        MarkedForRemoval = false
+                    });
+                }
+            }
         }
     }
 }
