@@ -104,7 +104,7 @@
             this.txtGCode.AutoIndent = false;
             this.txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
     "(?<range>:)\\s*(?<range>[^;]+);";
-            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(2, 14);
+            this.txtGCode.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.txtGCode.BackBrush = null;
             this.txtGCode.CharHeight = 14;
             this.txtGCode.CharWidth = 8;
@@ -124,6 +124,7 @@
             this.txtGCode.Size = new System.Drawing.Size(460, 230);
             this.txtGCode.TabIndex = 0;
             this.txtGCode.Zoom = 100;
+            this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
             this.txtGCode.SelectionChangedDelayed += new System.EventHandler(this.txtGCode_SelectionChangedDelayed);
             // 
             // statusStrip1

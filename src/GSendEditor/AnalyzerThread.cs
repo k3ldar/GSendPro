@@ -14,6 +14,8 @@ namespace GSendEditor
 
         private readonly IGCodeParserFactory _gCodeParserFactory;
 
+        private IGCodeAnalyses _gCodeAnalyses;
+
         public AnalyzerThread(IGCodeParserFactory gCodeParserFactory, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             : base(txtGCode, TimeSpan.FromMilliseconds(10))
         {
@@ -30,7 +32,14 @@ namespace GSendEditor
         public Machine2DView Machine2DView { get; set; }
 
         public GCodeAnalysesDetails AnalysesDetails { get; set; }
+
         public string FileName { get; set; }
+
+        public int LineCount { get; private set; }
+
+        public List<IGCodeLine> Lines { get; private set; }
+
+        public IGCodeAnalyses Analyses => _gCodeAnalyses;
 
         public void AnalyzerUpdated()
         {
@@ -46,8 +55,10 @@ namespace GSendEditor
                 if (overrideUpdateSpan.TotalMilliseconds > ValidateWarningAndErrorsTimeout && WarningContainer != null && !String.IsNullOrEmpty(txtGCode.Text))
                 {
                     IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
-                    IGCodeAnalyses _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
+                    _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
                     _gCodeAnalyses.Analyse(FileName);
+                    Lines = _gCodeAnalyses.Lines(out int lineCount);
+                    LineCount = lineCount;
 
                     AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(WarningContainer, _gCodeAnalyses);

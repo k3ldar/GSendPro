@@ -118,6 +118,7 @@ namespace GSendAnalyser.Internal
                         {
                             InternalParseVariable(Result, currentLine, line);
                             isVariable = false;
+                            isComment = false;
                         }
                         else
                         {
@@ -138,7 +139,10 @@ namespace GSendAnalyser.Internal
 
                     case CharOpeningBracket:
                     case CharSemiColon:
-                        line[position++] = c;
+
+                        if (!isVariable)
+                            line[position++] = c;
+
                         isComment = true;
 
                         continue;
@@ -153,7 +157,15 @@ namespace GSendAnalyser.Internal
                         else
                         {
                             currentValues.Attributes &= ~CommandAttributes.InvalidLineTooLong;
-                            line[position++] = c;
+
+                            if (isVariable && isComment)
+                            {
+
+                            }
+                            else
+                            {
+                                line[position++] = c;
+                            }
                         }
 
                         continue;
@@ -238,7 +250,7 @@ namespace GSendAnalyser.Internal
 
                     if (variableBlockStart > -1)
                     {
-                        variables = ParseVariables(analysis, lineNumber, variableBlock, ref commandValueConvert, ref commandValue);
+                        variables = ParseVariableBlockss(analysis, lineNumber, variableBlock, ref commandValueConvert, ref commandValue);
 
                         if (variables.Count > 0)
                             currentValues.Attributes |= CommandAttributes.ContainsVariables;
@@ -479,7 +491,7 @@ namespace GSendAnalyser.Internal
             return UpdateGCodeValue();
         }
 
-        private List<IGCodeVariableBlock> ParseVariables(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
+        private List<IGCodeVariableBlock> ParseVariableBlockss(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
         {
             List<IGCodeVariableBlock> Result = new();
 
@@ -492,7 +504,7 @@ namespace GSendAnalyser.Internal
 
             while (variableBlockStart > -1)
             {
-                int variableBlockEnd = line.IndexOf(']');
+                int variableBlockEnd = line.IndexOf(']', variableBlockStart);
 
                 if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
                 {
@@ -507,7 +519,7 @@ namespace GSendAnalyser.Internal
                 }
 
                 if (variableBlockEnd > 0)
-                    variableBlockStart = line.IndexOf('[', variableBlockEnd);
+                    variableBlockStart = line.IndexOf('[', variableBlockStart + 1);
                 else
                     variableBlockStart = -1;
             }

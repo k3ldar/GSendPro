@@ -480,5 +480,35 @@ namespace GSendEditor
 
             IsSubprogram = true;
         }
+
+        private void txtGCode_ToolTipNeeded(object sender, FastColoredTextBoxNS.ToolTipNeededEventArgs e)
+        {
+            if (_analyzerThread == null || _analyzerThread.Analyses == null || _analyzerThread.Lines == null || _analyzerThread.Lines.Count < e.Place.iLine)
+                return;
+
+            string linea = _analyzerThread.Lines[e.Place.iLine].GetGCode();
+            IGCodeLine line = _analyzerThread.Lines[e.Place.iLine];
+
+            bool hasVariables = false;
+            string tip = linea;
+
+            foreach (IGCodeCommand item in line.Commands)
+            {
+                foreach (IGCodeVariableBlock varValue in item.VariableBlocks)
+                {
+                    hasVariables = true;
+                    tip = tip.Replace(varValue.VariableBlock, varValue.Value);
+                }
+            }
+
+            if (!hasVariables)
+                return;
+
+            e.ToolTipText = tip;
+            e.ToolTipTitle = "Variable Value";
+            e.ToolTipText = tip;
+            
+
+        }
     }
 }

@@ -24,7 +24,8 @@ namespace GSendAnalyser.Analysers
                         {
                             if (gCodeAnalyses.Variables.ContainsKey(id))
                             {
-                                value = value.Replace($"#{id}", gCodeAnalyses.Variables[id].Value.ToString());
+                                string variableValue = gCodeAnalyses.Variables[id].Value.ToString();
+                                value = value.Replace($"#{id}", variableValue.Trim());
                             }
                             else
                             {
