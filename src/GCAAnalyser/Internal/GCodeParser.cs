@@ -370,6 +370,7 @@ namespace GSendAnalyser.Internal
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
+                bool canPeekAhead = i < line.Length + 1;
 
                 if (isComment && c != CharNull && c != CharClosingBracket)
                 {
@@ -462,7 +463,7 @@ namespace GSendAnalyser.Internal
 
                     case CharTab:
                     case CharSpace:
-                        if (isComment || isVariableBlock)
+                        if (isComment || isVariableBlock || (canPeekAhead && line[i + 1] == '['))
                         {
                             lineValues.Append(c);
                         }

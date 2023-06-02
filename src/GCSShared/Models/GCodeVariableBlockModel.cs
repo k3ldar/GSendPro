@@ -22,6 +22,8 @@ namespace GSendShared.Models
 
         public List<ushort> VariableIds { get; }
 
+        public string Value { get; set; }
+
         private void ParseVariables()
         {
             string innerBlock = VariableBlock[1..^1];

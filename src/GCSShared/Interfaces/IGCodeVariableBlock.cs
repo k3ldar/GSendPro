@@ -12,5 +12,7 @@ namespace GSendShared
         List<ushort> VariableIds { get; }
 
         int LineNumber { get; }
+
+        string Value { get; }
     }
 }

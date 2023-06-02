@@ -23,8 +23,10 @@ namespace GSendAnalyser
             {
                 if (command.Command.Equals('%'))
                     Result.Append(command.Command);
-                else
+                else if (String.IsNullOrEmpty(command.CommandValueString))
                     Result.Append($"{command.Command}{command.CommandValue}");
+                else
+                    Result.Append($"{command.Command}{command.CommandValueString}");
             }
 
             return Result.ToString();

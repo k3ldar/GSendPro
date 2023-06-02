@@ -92,14 +92,6 @@ namespace GSendAnalyser.Analysers
                     }
                 }
             }
-
-            //move error checking of variables from parser to here
-
-            //foreach (ushort varId in gCodeVariable.VariableIds)
-            //{
-            //    if (!analyses.Variables.ContainsKey(varId))
-            //        analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, varId, lineNumber));
-            //}
         }
     }
 }

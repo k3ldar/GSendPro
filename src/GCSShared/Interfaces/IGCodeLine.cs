@@ -1,4 +1,6 @@
-﻿namespace GSendShared
+﻿using GSendShared.Abstractions;
+
+namespace GSendShared
 {
     public interface IGCodeLine
     {
