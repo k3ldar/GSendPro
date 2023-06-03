@@ -26,7 +26,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_OverridesAreDisabled_Returns_False()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -46,7 +46,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_NoCommandWithFeedRate_Returns_False()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -66,7 +66,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_ContiansXYZValues_Returns_False()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("G1X1Y1Z1F300");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -86,7 +86,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_SetsOfficialXYFeedRate_Success()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("G1X1F3000");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -108,7 +108,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_SetsOfficialZFeedRate_Success()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("G1Z15F400");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -131,7 +131,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void Process_OverridingX_False_OriginalValueNotReset_ResetsToOriginalValue_Success()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             CreateGCodeCommands(gCodeLine, "G1X15F1000");
 
             MachineStateModel machineStateModel = new MachineStateModel();
@@ -240,7 +240,7 @@ namespace GSendTests.OverrideTests
         {
             context.SendCommand = true;
             Assert.AreEqual(0, context.CommandQueue.Count);
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             CreateGCodeCommands(gCodeLine, gCode);
             context.GCode = gCodeLine;
             bool result = sut.Process(context, CancellationToken.None);

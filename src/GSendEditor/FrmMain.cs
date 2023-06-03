@@ -28,7 +28,7 @@ namespace GSendEditor
             _subPrograms = _gSendContext.ServiceProvider.GetRequiredService<ISubPrograms>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                gSendContext.ServiceProvider.GetService<ISubPrograms>(), txtGCode);
+                _subPrograms, txtGCode);
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
@@ -315,6 +315,22 @@ namespace GSendEditor
                 _subProgram = new SubProgramModel(name, description, String.Empty);
 
             _subProgram.Contents = txtGCode.Text;
+
+
+            IGCodeParserFactory parserFactory = _gSendContext.ServiceProvider.GetService<IGCodeParserFactory>();
+            IGCodeParser gCodeParser = parserFactory.CreateParser();
+            IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(_subProgram.Contents);
+            gCodeAnalyses.Analyse();
+
+            _subProgram.Variables = new();
+
+            foreach (ushort variable in gCodeAnalyses.Variables.Keys)
+            {
+                _subProgram.Variables.Add(gCodeAnalyses.Variables[variable]);
+            }
+
+            //gCodeAnalyses.Variables.Values.ToList();
+
             _subPrograms.Update(_subProgram);
             LoadSubprograms();
         }
@@ -450,7 +466,7 @@ namespace GSendEditor
 
         private void txtGCode_ToolTipNeeded(object sender, FastColoredTextBoxNS.ToolTipNeededEventArgs e)
         {
-            if (_analyzerThread == null || _analyzerThread.Analyses == null || _analyzerThread.Lines == null || _analyzerThread.Lines.Count < e.Place.iLine)
+            if (_analyzerThread == null || _analyzerThread.Analyses == null || _analyzerThread.Lines == null || _analyzerThread.Lines.Count > e.Place.iLine -1)
                 return;
 
             string linea = _analyzerThread.Lines[e.Place.iLine].GetGCode();

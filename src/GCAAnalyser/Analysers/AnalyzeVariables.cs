@@ -16,31 +16,45 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            Dictionary<ushort, int> declaredVariables = new();
-            List<IGCodeCommand> subPrograms = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).ToList();
-            List<ushort> subProgramVariables = new();
-
-            foreach (IGCodeCommand subProgram in subPrograms)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                string subProgramName = $"O{subProgram.CommandValue}";
+                Dictionary<ushort, IGCodeCommand> subProgramVariableDeclarations = new();
+                Dictionary<ushort, int> declaredVariables = new();
+                List<IGCodeCommand> subPrograms = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).ToList();
+                List<ushort> subProgramVariables = new();
 
-                if (_subPrograms.Exists(subProgramName))
+                foreach (IGCodeCommand subProgram in subPrograms)
                 {
-                    ISubProgram sub = _subPrograms.Get(subProgramName);
+                    string subProgramName = $"O{subProgram.CommandValue}";
 
-                    if (sub != null)
+                    if (_subPrograms.Exists(subProgramName))
                     {
-                        foreach (IGCodeVariable variable in sub.Variables)
+                        ISubProgram sub = _subPrograms.Get(subProgramName);
+
+                        if (sub != null)
                         {
-                            declaredVariables.Add(variable.VariableId, 0);
-                            subProgramVariables.Add(variable.VariableId);
+                            foreach (IGCodeVariable variable in sub.Variables)
+                            {
+                                if (subProgramVariableDeclarations.ContainsKey(variable.VariableId))
+                                {
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid8,
+                                        variable.VariableId,
+                                        $"O{subProgramVariableDeclarations[variable.VariableId].CommandValue}",
+                                        subProgramVariableDeclarations[variable.VariableId].LineNumber,
+                                        sub.Name,
+                                        subProgram.LineNumber));
+
+                                    continue;
+                                }
+
+                                subProgramVariableDeclarations.Add(variable.VariableId, subProgram);
+                                declaredVariables.Add(variable.VariableId, 0);
+                                subProgramVariables.Add(variable.VariableId);
+                            }
                         }
                     }
                 }
-            }
 
-            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
-            {
                 List<IGCodeCommand> commandsWithVariables = gCodeAnalyses.Commands.Where(c => c.VariableBlocks.Count > 0).ToList();
 
                 foreach (IGCodeCommand command in commandsWithVariables)
@@ -63,12 +77,12 @@ namespace GSendAnalyser.Analysers
                                 if (!gCodeAnalyses.Variables.ContainsKey(id))
                                 {
                                     codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6,
-                                        $"#{id}", command.LineNumber));
+                                        id, command.LineNumber));
                                 }
                                 else if (command.LineNumber < gCodeAnalyses.Variables[id].LineNumber)
                                 {
                                     codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid7,
-                                        $"#{id}", command.LineNumber, gCodeAnalyses.Variables[id].LineNumber));
+                                        id, command.LineNumber, gCodeAnalyses.Variables[id].LineNumber));
                                 }
                             }
                         }
@@ -76,19 +90,19 @@ namespace GSendAnalyser.Analysers
                 }
 
                 List<ushort> unusedVariables = gCodeAnalyses.Variables.Keys
-                    .Where(k => !declaredVariables.ContainsKey(k)).ToList();
+                    .Where(k => !declaredVariables.ContainsKey(k) || (declaredVariables.ContainsKey(k) && declaredVariables[k].Equals(0))).ToList();
 
                 foreach (ushort id in unusedVariables)
                 {
                     if (subProgramVariables.Contains(id))
                     {
                         codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.VariableWarning2,
-                            $"#{id}", gCodeAnalyses.Variables[id].LineNumber));
+                            id, gCodeAnalyses.Variables[id].LineNumber));
                     }
                     else
                     {
                         codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.VariableWarning1,
-                            $"#{id}", gCodeAnalyses.Variables[id].LineNumber));
+                            id, gCodeAnalyses.Variables[id].LineNumber));
                     }
                 }
             }

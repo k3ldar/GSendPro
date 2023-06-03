@@ -34,14 +34,14 @@ namespace GSendShared.Models
             LineNumber = lineNumber;
         }
 
-        public ushort VariableId { get; }
+        public ushort VariableId { get; set; }
 
-        public object Value { get; }
+        public object Value { get; set; }
 
-        public bool IsBoolean { get; }
+        public bool IsBoolean { get; set; }
 
-        public bool IsDecimal { get; }
+        public bool IsDecimal { get; set; }
 
-        public int LineNumber { get; }
+        public int LineNumber { get; set; }
     }
 }

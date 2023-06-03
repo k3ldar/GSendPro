@@ -1994,11 +1994,12 @@ namespace GSendDesktop.Forms
                     selectionOverrideZDown.Value = (int)_gCodeAnalyses.FeedZ;
                     selectionOverrideZUp.Value = (int)_gCodeAnalyses.FeedZ;
 
+                    // set current spindle speed
                     List<IGCodeCommand> sCommands = _gCodeAnalyses.Commands.Where(c => c.Command.Equals('S')).ToList();
                     selectionOverrideSpindle.Value = sCommands.Count > 0 ? (int)sCommands.Max(c => c.CommandValue) : 0;
 
                     trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
-                    trackBarPercent.Value = (int)_gCodeAnalyses.FeedX / (selectionOverrideXY.Maximum / 100);
+                    trackBarPercent.Value = Shared.Utilities.CheckMinMax((int)_gCodeAnalyses.FeedX / (selectionOverrideXY.Maximum / 100), 1, 100);
                     labelSpeedPercent.Text = String.Format(GSend.Language.Resources.SpeedPercent, trackBarPercent.Value);
                     trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
 

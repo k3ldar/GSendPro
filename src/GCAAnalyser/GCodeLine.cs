@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Security.Cryptography.Xml;
 using System.Text;
 
 using GSendAnalyser.Internal;
@@ -11,6 +10,13 @@ namespace GSendAnalyser
     [DebuggerDisplay("{GetGCodeInfo()}")]
     public sealed class GCodeLine : IGCodeLine
     {
+        private readonly IGCodeAnalyses _codeAnalyses;
+
+        public GCodeLine(IGCodeAnalyses gCodeAnalyses)
+        {
+            _codeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
+        }
+
         public LineStatus Status { get; set; }
 
         public List<IGCodeCommand> Commands { get; } = new();
@@ -34,7 +40,7 @@ namespace GSendAnalyser
 
         public IGCodeLine GetGCode(int feedRate)
         {
-            GCodeLine Result = new();
+            GCodeLine Result = new(_codeAnalyses);
 
             bool feedRateFound = false;
             int index = 0;
@@ -50,7 +56,7 @@ namespace GSendAnalyser
                     if (command.Command.Equals('F'))
                     {
                         feedRateFound = true;
-                        Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, command.VariableBlocks, new CurrentCommandValues(), -2));
+                        Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, command.VariableBlocks, new CurrentCommandValues(), -2, _codeAnalyses));
                     }
                     else
                     {
@@ -62,7 +68,7 @@ namespace GSendAnalyser
             }
 
             if (!feedRateFound)
-                Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, null, new CurrentCommandValues(), -2));
+                Result.Commands.Add(new GCodeCommand(index, 'F', feedRate, feedRate.ToString(), String.Empty, null, new CurrentCommandValues(), -2, _codeAnalyses));
 
             return Result;
         }
@@ -88,7 +94,7 @@ namespace GSendAnalyser
 
                 Result.Attributes |= command.Attributes;
                 Result.SpindleActive = command.SpindleOn;
-                
+
                 if (Result.SpindleSpeed == 0 && command.SpindleSpeed > 0)
                     Result.SpindleSpeed = command.SpindleSpeed;
             }

@@ -4,7 +4,7 @@ using GSendShared;
 
 namespace GSendAnalyser.Analysers
 {
-    internal class AnalyzeUnitOfMeasure : IGCodeAnalyzer
+    internal class AnalyzeUnitOfMeasure : BaseAnalyzer, IGCodeAnalyzer
     {
         public int Order => int.MinValue;
 

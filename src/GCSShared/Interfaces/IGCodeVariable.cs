@@ -5,14 +5,14 @@ namespace GSendShared.Abstractions
     [JsonConverter(typeof(Converters.JsonConverterGCodeVariable))]
     public interface IGCodeVariable
     {
-        bool IsBoolean { get; }
+        bool IsBoolean { get; set; }
 
-        bool IsDecimal { get; }
+        bool IsDecimal { get; set; }
 
-        int LineNumber { get; }
+        int LineNumber { get; set; }
 
-        object Value { get; }
+        object Value { get; set; }
 
-        ushort VariableId { get; }
+        ushort VariableId { get; set; }
     }
 }

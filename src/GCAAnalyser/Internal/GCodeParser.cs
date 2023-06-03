@@ -60,7 +60,7 @@ namespace GSendAnalyser.Internal
             bool isComment = false;
             bool isVariable = false;
             bool isVariableBlock = false;
-            ClearLineData(line);
+            ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
             GCodeCommand lastCommand = null;
             StringBuilder lineValues = new(MaxLineSize);
             CurrentCommandValues currentValues = new();
@@ -109,7 +109,7 @@ namespace GSendAnalyser.Internal
                             if (line[0] != CharNull)
                             {
                                 lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
-                                ClearLineData(line);
+                                ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
                             }
 
                             position = 0;
@@ -123,15 +123,13 @@ namespace GSendAnalyser.Internal
                         if (isVariable)
                         {
                             InternalParseVariable(Result, currentLine, line);
-                            isVariable = false;
-                            isComment = false;
                         }
                         else
                         {
                             lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
                         }
 
-                        ClearLineData(line);
+                        ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
                         currentLine++;
                         position = 0;
 
@@ -213,8 +211,12 @@ namespace GSendAnalyser.Internal
             }
         }
 
-        private static void ClearLineData(in Span<char> line)
+        private static void ClearLineData(in Span<char> line, ref bool isComment, ref bool isVariable, ref bool isVariableBlock)
         {
+            isComment = false;
+            isVariable = false;
+            isVariableBlock = false;
+
             for (int i = 0; i < line.Length; i++)
             {
                 if (line[i] == CharNull)
@@ -275,9 +277,38 @@ namespace GSendAnalyser.Internal
                 currentValues.Attributes &= ~CommandAttributes.MovementError;
                 currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
                 currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
+                GCodeAnalyses subProgramAnalyses = null;
 
                 switch (currentCommand)
                 {
+                    case CharO:
+
+                        string subProgram = $"{currentCommand}{commandValue}";
+
+                        if (_subPrograms.Exists(subProgram))
+                        {
+                            ISubProgram sub = _subPrograms.Get(subProgram);
+                            
+                            if (sub != null)
+                            {
+                                subProgramAnalyses = new GCodeAnalyses(_pluginClassesService);
+                                InternalParseGCode(subProgramAnalyses, UTF8Encoding.UTF8.GetBytes(sub.Contents));
+
+                                foreach (KeyValuePair<ushort, IGCodeVariable> variable in subProgramAnalyses.Variables)
+                                {
+                                    if (analysis.Variables.ContainsKey(variable.Key))
+                                    {
+                                        analysis.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variable.Key));
+                                        continue;
+                                    }
+
+                                    analysis.AddVariable(new GCodeVariableModel(variable.Value.VariableId, variable.Value.Value.ToString(), lineNumber));
+                                }
+                            }
+                        }
+
+                        break;
+
                     case CharE:
                         currentValues.Attributes |= CommandAttributes.Extrude;
                         break;
@@ -371,7 +402,7 @@ namespace GSendAnalyser.Internal
                     currentValues.Attributes &= ~CommandAttributes.StartProgram;
 
                 CurrentCommandValues newValues = currentValues.Clone();
-                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), variables, newValues, lineNumber);
+                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), variables, newValues, lineNumber, subProgramAnalyses);
 
                 if (lastCommand != null)
                     lastCommand.NextCommand = result;

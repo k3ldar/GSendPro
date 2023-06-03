@@ -2914,6 +2914,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains 2 or more subprograms, subprograms must be on a unique line..
+        /// </summary>
+        public static string SubprogramError1 {
+            get {
+                return ResourceManager.GetString("SubprogramError1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subprogram {0} exists, do you want to override?.
         /// </summary>
         public static string SubprogramExistsOverwrite {
@@ -3067,7 +3076,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid variable on line {0}, duplicate variable {1} declard..
+        ///   Looks up a localized string similar to Invalid variable on line {0}, duplicate variable #{1} declared..
         /// </summary>
         public static string VariableInvalid3 {
             get {
@@ -3094,7 +3103,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable {0} is referenced on line {1} but has not been declared..
+        ///   Looks up a localized string similar to Variable #{0} is referenced on line {1} but has not been declared..
         /// </summary>
         public static string VariableInvalid6 {
             get {
@@ -3103,7 +3112,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable {0} is used on line {1} but not declared until line {2}, variable must be declared before use..
+        ///   Looks up a localized string similar to Variable #{0} is used on line {1} but not declared until line {2}, variable must be declared before use..
         /// </summary>
         public static string VariableInvalid7 {
             get {
@@ -3112,7 +3121,16 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable {0} is declared on line {1} but not used..
+        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram {1} on line {2} and redeclared in subprogram {3} on line {4}.
+        /// </summary>
+        public static string VariableInvalid8 {
+            get {
+                return ResourceManager.GetString("VariableInvalid8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is declared on line {1} but not used..
         /// </summary>
         public static string VariableWarning1 {
             get {
@@ -3121,7 +3139,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable {0} is declared in subprogram but not used in the current gcode..
+        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram but not used in the current gcode..
         /// </summary>
         public static string VariableWarning2 {
             get {

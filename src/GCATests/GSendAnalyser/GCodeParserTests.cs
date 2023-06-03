@@ -6,6 +6,8 @@ using System.Text;
 
 using GSendAnalyser.Internal;
 
+using GSendCommon;
+
 using GSendShared;
 
 using GSendTests.Mocks;
@@ -261,6 +263,61 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Errors.Count);
             Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
             Assert.AreEqual("Invalid variable on line 1, variable must be enclosed by square brackets (i.e. [#234])", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseCodeWithTwoVariables_Success()
+        {
+            string gCodeWithVariables = "G0;comment\n#101=123\n#102=45";
+            GCodeParser sut = new(new MockPluginClassesService(), new MockSubPrograms());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.AreEqual(0, analyses.Errors.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseCodeWithSubProgram_SubProgramVariablesAndValuesRecognised_Success()
+        {
+            string subProgramContents = "#100=8000 ;Spindle Speed\nT1\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\n";
+            SubProgramModel subProgram = new SubProgramModel("O1001", "mock", subProgramContents);
+
+            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            mockSubPrograms.SubPrograms.Add(subProgram);
+
+            string gCodeWithVariables = "O1001 ;sub start\n";
+            GCodeParser sut = new(new MockPluginClassesService(), mockSubPrograms);
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+            Assert.AreEqual(CommandAttributes.SpindleSpeedError | CommandAttributes.MovementZUp | CommandAttributes.UseRapidRate | CommandAttributes.ToolChange | CommandAttributes.SubProgram, analyses.Commands[0].Attributes);
+            Assert.IsNotNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Variables.Count);
+            Assert.AreEqual(0, analyses.Errors.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void ParseCodeWithSubProgram_VariableCreatedByGCode_RedeclaredInSubProgram_CreatesError()
+        {
+            string subProgramContents = "#100=8000 ;Spindle Speed\nT1\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\n";
+            SubProgramModel subProgram = new SubProgramModel("O1001", "mock", subProgramContents);
+
+            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            mockSubPrograms.SubPrograms.Add(subProgram);
+
+            string gCodeWithVariables = "#100=23\nO1001 ;sub start\n";
+            GCodeParser sut = new(new MockPluginClassesService(), mockSubPrograms);
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+            Assert.AreEqual(CommandAttributes.SpindleSpeedError | CommandAttributes.MovementZUp | CommandAttributes.UseRapidRate | CommandAttributes.ToolChange | CommandAttributes.SubProgram, analyses.Commands[0].Attributes);
+            Assert.IsNotNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Variables.Count);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Invalid variable on line 2, duplicate variable #100 declared.", analyses.Errors[0]);
         }
 
         [Ignore("Code to analyze this has moved to AnalyzeVariables analyzer")]

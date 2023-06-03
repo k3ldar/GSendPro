@@ -24,7 +24,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void ToolChangerNotAvailable_RemovesCodeFromSending_True()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("T1M6");
             gCodeLine.Commands.AddRange(analyses.Commands);
@@ -45,7 +45,7 @@ namespace GSendTests.OverrideTests
         [TestMethod]
         public void ToolChangerAvailable_M6_AllowsSending_True()
         {
-            IGCodeLine gCodeLine = new GCodeLine();
+            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M6");
             gCodeLine.Commands.AddRange(analyses.Commands);

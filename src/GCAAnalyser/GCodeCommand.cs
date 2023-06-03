@@ -22,13 +22,15 @@ namespace GSendAnalyser
         private IGCodeCommand _previousCommand;
         private IGCodeCommand _nextCommand;
         private readonly CurrentCommandValues _currentCodeValues;
+        private IGCodeAnalyses _subAnalyses;
 
         #endregion Private Members
 
         #region Constructors
 
         public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, 
-            string comment, List<IGCodeVariableBlock> variables, CurrentCommandValues currentValues, int lineNumber)
+            string comment, List<IGCodeVariableBlock> variables, CurrentCommandValues currentValues, 
+            int lineNumber, IGCodeAnalyses subAnalyses)
         {
 
             if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
@@ -43,6 +45,7 @@ namespace GSendAnalyser
             _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
             Attributes = currentValues.Attributes;
             LineNumber = lineNumber;
+            SubAnalyses = subAnalyses;
             UpdateAttributes();
         }
 
@@ -85,6 +88,32 @@ namespace GSendAnalyser
         public bool CoolantEnabled => _currentCodeValues.Coolant;
 
         public CommandAttributes Attributes { get; internal set; }
+
+        public IGCodeAnalyses SubAnalyses
+        {
+            get => _subAnalyses;
+
+            private set
+            {
+                _subAnalyses = value;
+
+                if (_subAnalyses == null)
+                    return;
+
+                // bring in parent variables
+
+
+                // bring in parent attributes
+                foreach (IGCodeCommand command in _subAnalyses.Commands)
+                {
+                    foreach (CommandAttributes attr in Enum.GetValues(typeof(CommandAttributes)))
+                    {
+                        if (attr != CommandAttributes.None && command.Attributes.HasFlag(attr))
+                            Attributes |= attr;
+                    }
+                }
+            }
+        }
 
         public IGCodeCommand PreviousCommand
         {

@@ -58,6 +58,14 @@ namespace GSendAnalyser
 
         public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
 
+        IReadOnlyList<IGCodeCommand> AllCommands
+        { 
+            get
+            {
+
+            }
+        }
+
         public decimal HomeZ { get; set; }
 
         public decimal SafeZ { get; set; }
@@ -113,7 +121,7 @@ namespace GSendAnalyser
             {
                 if (command.LineNumber > lineCount)
                 {
-                    currentLine = new();
+                    currentLine = new(this);
                     lineCount++;
                     Result.Add(currentLine);
                 }
@@ -151,6 +159,7 @@ namespace GSendAnalyser
                 VariablesUsed += $", #{variableModel.VariableId}";
             else
                 VariablesUsed = $"#{variableModel.VariableId}";
+
             return true;
         }
     }

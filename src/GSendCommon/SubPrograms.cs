@@ -9,11 +9,9 @@ namespace GSendCommon
     public sealed class SubPrograms : ISubPrograms
     {
         private readonly string _path;
-        private readonly IGCodeParserFactory _gCodeParserFactory;
 
-        public SubPrograms(IGCodeParserFactory gCodeParserFactory)
+        public SubPrograms()
         {
-            _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
             _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "Sub Programs");
 
             if (!Directory.Exists(_path))
@@ -80,19 +78,6 @@ namespace GSendCommon
         {
             ValidateFileName(subProgram.Name);
             string fileName = Path.Combine(_path, subProgram.Name + Constants.DefaultSubProgramFileExtension);
-
-            IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
-            IGCodeAnalyses _gCodeAnalyses = gCodeParser.Parse(subProgram.Contents);
-            _gCodeAnalyses.Analyse(fileName);
-
-            subProgram.Variables = new();
-            
-            foreach (ushort variable in _gCodeAnalyses.Variables.Keys)
-            {
-                subProgram.Variables.Add(_gCodeAnalyses.Variables[variable]);
-            }
-
-            _gCodeAnalyses.Variables.Values.ToList();
 
             string json = JsonSerializer.Serialize(subProgram);
             File.WriteAllText(fileName, json);
