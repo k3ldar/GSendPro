@@ -27,7 +27,8 @@ namespace GSendEditor
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _subPrograms = _gSendContext.ServiceProvider.GetRequiredService<ISubPrograms>();
             InitializeComponent();
-            _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(), txtGCode);
+            _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                gSendContext.ServiceProvider.GetService<ISubPrograms>(), txtGCode);
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);

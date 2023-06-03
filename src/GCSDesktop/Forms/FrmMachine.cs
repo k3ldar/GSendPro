@@ -2018,7 +2018,7 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors(_serviceProvider.GetRequiredService<ISubPrograms>());
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, null, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

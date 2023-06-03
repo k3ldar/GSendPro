@@ -27,7 +27,7 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableNotDeclared_AddsError_Success()
         {
             string gCodeWithM650NoComment = "M650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
@@ -43,7 +43,7 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableDeclaredAfterFirstUsage_AddsError_Success()
         {
             string gCodeWithM650NoComment = "M650 [#321]\n#321=a value";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
@@ -59,7 +59,7 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableDeclaredButNotUsed_AddsWarnings_Success()
         {
             string gCodeWithM650NoComment = "#200=a\n#201=b\n\n#321=a value\nM650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
@@ -78,7 +78,7 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableDeclaredObtainedFromSubProgram_AddsWarnings_Success()
         {
             string gCodeWithM650NoComment = "O1000\n#200=a\n#201=b\n\nM650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(2, analyses.Commands.Count);

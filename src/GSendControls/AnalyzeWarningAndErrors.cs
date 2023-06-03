@@ -8,6 +8,13 @@ namespace GSendControls
 {
     public sealed class AnalyzeWarningAndErrors
     {
+        private readonly ISubPrograms _subPrograms;
+
+        public AnalyzeWarningAndErrors(ISubPrograms subPrograms)
+        {
+            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+        }
+
         public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, List<WarningErrorList> issues, IGCodeAnalyses gCodeAnalyses)
         {
             warningsAndErrors?.Clear(true);
@@ -50,9 +57,11 @@ namespace GSendControls
                     if (!String.IsNullOrEmpty(item.Comment))
                         subProgram += $" {item.Comment}";
 
-                    validate it properly here against sub programs
-                    AddMessage(warningsAndErrors, issues, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
-                        subProgram, item.LineNumber));
+                    if (!_subPrograms.Exists($"{item.Command}{item.CommandValue}"))
+                    {
+                        AddMessage(warningsAndErrors, issues, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
+                            subProgram, item.LineNumber));
+                    }
                 }
             }
 

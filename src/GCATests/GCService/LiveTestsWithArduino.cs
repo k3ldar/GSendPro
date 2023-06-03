@@ -129,7 +129,7 @@ namespace GSendTests.GCService
         {
             ThreadManager.Initialise();
             const string gCode = "G17G21\nG0Z20.000\nG0X0.000Y0.000S8000M3\nG1 Z40.000 F500.0\nX139.948 F500.0\nY37.136\nG0X0Y0Z0\nM30";
-            GCodeParser parser = new(new MockPluginClassesService());
+            GCodeParser parser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = parser.Parse(gCode);
 
             Assert.AreEqual(1, analyses.Commands[0].LineNumber);

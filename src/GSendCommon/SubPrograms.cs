@@ -54,6 +54,7 @@ namespace GSendCommon
         public ISubProgram Get(string name)
         {
             ValidateFileName(name);
+
             if (!Exists(name))
                 return null;
 

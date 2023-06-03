@@ -379,6 +379,7 @@
             this.txtGCode.CharWidth = 8;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -392,6 +393,8 @@
             this.txtGCode.Size = new System.Drawing.Size(625, 245);
             this.txtGCode.TabIndex = 0;
             this.txtGCode.Zoom = 100;
+            this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
+            this.txtGCode.SelectionChangedDelayed += new System.EventHandler(this.txtGCode_SelectionChangedDelayed);
             // 
             // tabControlMain
             // 
@@ -481,6 +484,7 @@
             this.lvSubprograms.TabIndex = 0;
             this.lvSubprograms.UseCompatibleStateImageBehavior = false;
             this.lvSubprograms.View = System.Windows.Forms.View.Details;
+            this.lvSubprograms.DoubleClick += new System.EventHandler(this.lvSubprograms_DoubleClick);
             // 
             // columnHeaderName
             // 

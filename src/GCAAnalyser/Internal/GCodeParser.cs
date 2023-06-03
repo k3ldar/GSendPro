@@ -17,15 +17,17 @@ namespace GSendAnalyser.Internal
         private const int UserVariableStartingId = 100;
 
         private readonly IPluginClassesService _pluginClassesService;
+        private readonly ISubPrograms _subPrograms;
         private int _index;
 
         #endregion Private Members
 
         #region Constructors
 
-        public GCodeParser(IPluginClassesService pluginClassesService)
+        public GCodeParser(IPluginClassesService pluginClassesService, ISubPrograms subPrograms)
         {
             _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
+            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
         }
 
         #endregion Constructors
@@ -47,7 +49,11 @@ namespace GSendAnalyser.Internal
         private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands)
         {
             GCodeAnalyses Result = new(_pluginClassesService);
+            return InternalParseGCode(Result, gCodeCommands);
+        }
 
+        private IGCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands)
+        {
             Span<char> line = new(new char[MaxLineSize]);
             int position = 0;
             int currentLine = 1;

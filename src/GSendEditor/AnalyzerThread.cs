@@ -13,10 +13,11 @@ namespace GSendEditor
         private const int ValidateWarningAndErrorsTimeout = 250;
 
         private readonly IGCodeParserFactory _gCodeParserFactory;
-
+        private readonly ISubPrograms _subPrograms;
         private IGCodeAnalyses _gCodeAnalyses;
 
-        public AnalyzerThread(IGCodeParserFactory gCodeParserFactory, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
+        public AnalyzerThread(IGCodeParserFactory gCodeParserFactory,
+            ISubPrograms subPrograms, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             : base(txtGCode, TimeSpan.FromMilliseconds(10))
         {
 #if DEBUG
@@ -24,6 +25,7 @@ namespace GSendEditor
 #endif
 
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
+            _subPrograms = subPrograms ?? throw new ArgumentNullException();
             _lastValidateWarningsAndErrors = DateTime.MaxValue;
         }
 
@@ -88,7 +90,7 @@ namespace GSendEditor
                         issues.Add(item);
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors();
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors(_subPrograms);
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(null, issues, _gCodeAnalyses);
 
                     foreach (WarningErrorList item in issues)

@@ -24,7 +24,7 @@ namespace GSendTests.GSendAnalyserTests
         public void AnalyzeJobName_NoComment_AddsOptionForInvalidJobName()
         {
             string gCodeWithM650NoComment = "G17\nG21\nM650\nG0Z40.000\n";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(5, analyses.Commands.Count);
@@ -39,7 +39,7 @@ namespace GSendTests.GSendAnalyserTests
         public void AnalyzeJobName_JobNameSpecified_CorrectlySetsAnalysesJobName()
         {
             string gCodeWithM650NoComment = "G17\nG21\nM650 ;(Invalid Job)\nG0Z40.000\n";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(5, analyses.Commands.Count);
@@ -56,7 +56,7 @@ namespace GSendTests.GSendAnalyserTests
         public void AnalyzeJobName_MultipleJobNameSpecified_AddsOptionForMultipleJobNames()
         {
             string gCodeWithM650NoComment = "M650M650\nG17\nG21\nM650 ;(Invalid Job)\nG0Z40.000\n";
-            GCodeParser gCodeParser = new(new MockPluginClassesService());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(7, analyses.Commands.Count);

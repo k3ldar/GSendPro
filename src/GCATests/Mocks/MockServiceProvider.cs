@@ -21,7 +21,7 @@ namespace GSendTests.Mocks
                 }
                 else if (serviceType.Equals(typeof(IGCodeParserFactory)))
                 {
-                    return new GCodeParserFactory(new MockPluginClassesService());
+                    return new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms());
                 }
                 else if (serviceType.Equals(typeof(IPluginClassesService)))
                 {
