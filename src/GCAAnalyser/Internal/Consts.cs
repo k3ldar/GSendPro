@@ -2,6 +2,7 @@
 {
     public static class Consts
     {
+        public const int MaxSubCommandRecursionDepth = 15;
         public const int MinSpindleSpeed = 0;
         public const int MaxSpindleSpeed = 35000;
 

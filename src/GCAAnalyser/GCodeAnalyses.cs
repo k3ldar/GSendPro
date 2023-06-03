@@ -10,7 +10,9 @@ namespace GSendAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {
+        private readonly object _lockObject = new object();
         private readonly List<IGCodeCommand> _commands = new();
+        private List<IGCodeCommand> _allCommands;
         private readonly IPluginClassesService _pluginClassesService;
         private readonly Dictionary<ushort, IGCodeVariable> _variables = new();
         private readonly List<string> _errors = new();
@@ -58,11 +60,45 @@ namespace GSendAnalyser
 
         public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
 
-        IReadOnlyList<IGCodeCommand> AllCommands
+        public IReadOnlyList<IGCodeCommand> AllCommands
         { 
             get
             {
+                using (TimedLock tl = TimedLock.Lock(_lockObject))
+                {
+                    if (_allCommands == null)
+                    {
+                        List<IGCodeCommand> Result = new();
 
+                         sort line number so it is sequential, even for sub programs
+                        RecursivelyRetrieveAllCommands(Result, _commands, 0);
+
+                        _allCommands = Result;
+                    }
+
+                    return _allCommands;
+                }
+            }
+        }
+
+        private void RecursivelyRetrieveAllCommands(List<IGCodeCommand> Result, IReadOnlyList<IGCodeCommand> commands, int recursionDepth)
+        {
+            if (recursionDepth > Consts.MaxSubCommandRecursionDepth)
+            {
+                AddError(GSend.Language.Resources.SubProgramError2);
+                return;
+            }
+
+            foreach (IGCodeCommand command in commands)
+            {
+                if (command.Command.Equals('O') && command.SubAnalyses != null && command.SubAnalyses.Commands.Count > 0)
+                {
+                    RecursivelyRetrieveAllCommands(Result, command.SubAnalyses.Commands, recursionDepth + 1);
+                }
+                else
+                {
+                    Result.Add(command);
+                }
             }
         }
 

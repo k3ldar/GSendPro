@@ -1071,6 +1071,9 @@
   <data name="SubprogramError1" xml:space="preserve">
     <value>Line {0} contains 2 or more subprograms, subprograms must be on a unique line.</value>
   </data>
+  <data name="SubProgramError2" xml:space="preserve">
+    <value>Maximum recursion depth has been reached when retrieving subprograms.</value>
+  </data>
   <data name="SubprogramExistsOverwrite" xml:space="preserve">
     <value>Subprogram {0} exists, do you want to override?</value>
   </data>

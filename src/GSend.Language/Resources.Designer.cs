@@ -2923,6 +2923,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum recursion depth has been reached when retrieving subprograms..
+        /// </summary>
+        public static string SubProgramError2 {
+            get {
+                return ResourceManager.GetString("SubProgramError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Subprogram {0} exists, do you want to override?.
         /// </summary>
         public static string SubprogramExistsOverwrite {

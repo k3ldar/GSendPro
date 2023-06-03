@@ -4,6 +4,8 @@ using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
 
+using Microsoft.AspNetCore.Mvc;
+
 using PluginManager.Abstractions;
 
 using static GSendAnalyser.Internal.Consts;
@@ -39,21 +41,27 @@ namespace GSendAnalyser.Internal
             if (String.IsNullOrEmpty(gCodeCommands))
                 throw new ArgumentNullException(nameof(gCodeCommands));
 
-            return InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands.Trim()));
+            return InternalParseGCode(UTF8Encoding.UTF8.GetBytes(gCodeCommands.Trim()), 0);
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands)
+        private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands, int recursionDepth)
         {
             GCodeAnalyses Result = new(_pluginClassesService);
-            return InternalParseGCode(Result, gCodeCommands);
+            return InternalParseGCode(Result, gCodeCommands, recursionDepth);
         }
 
-        private IGCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands)
+        private IGCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands, int recursionDepth)
         {
+            if (recursionDepth > Consts.MaxSubCommandRecursionDepth)
+            {
+                Result.AddError(GSend.Language.Resources.SubProgramError2);
+                return Result;
+            }
+
             Span<char> line = new(new char[MaxLineSize]);
             int position = 0;
             int currentLine = 1;
@@ -108,7 +116,7 @@ namespace GSendAnalyser.Internal
                         {
                             if (line[0] != CharNull)
                             {
-                                lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                                lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine, recursionDepth + 1);
                                 ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
                             }
 
@@ -126,7 +134,7 @@ namespace GSendAnalyser.Internal
                         }
                         else
                         {
-                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                            lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine, recursionDepth + 1);
                         }
 
                         ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
@@ -183,7 +191,7 @@ namespace GSendAnalyser.Internal
                 if (isVariable && line[0] > 47 && line[0] < 58)
                     InternalParseVariable(Result, currentLine, line);
                 else
-                    InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine);
+                    InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine, recursionDepth + 1);
             }
 
             return Result;
@@ -227,7 +235,7 @@ namespace GSendAnalyser.Internal
         }
 
         private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, 
-            StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber)
+            StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber, int recursionDepth)
         {
             GCodeCommand result = null;
 
@@ -292,7 +300,13 @@ namespace GSendAnalyser.Internal
                             if (sub != null)
                             {
                                 subProgramAnalyses = new GCodeAnalyses(_pluginClassesService);
-                                InternalParseGCode(subProgramAnalyses, UTF8Encoding.UTF8.GetBytes(sub.Contents));
+                                IGCodeAnalyses subprogramAnalyses = InternalParseGCode(subProgramAnalyses, UTF8Encoding.UTF8.GetBytes(sub.Contents), recursionDepth + 1);
+
+                                foreach (string error in subprogramAnalyses.Errors)
+                                    analysis.AddError(error);
+
+                                foreach (string warning in subprogramAnalyses.Warnings)
+                                    analysis.AddError(warning);
 
                                 foreach (KeyValuePair<ushort, IGCodeVariable> variable in subProgramAnalyses.Variables)
                                 {

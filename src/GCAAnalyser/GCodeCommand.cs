@@ -8,7 +8,7 @@ using static GSendAnalyser.Internal.Consts;
 
 namespace GSendAnalyser
 {
-    [DebuggerDisplay("{Command}{CommandValue}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}")]
+    [DebuggerDisplay("{Command}{CommandValue}; Line: {LineNumber}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}")]
     public class GCodeCommand : IGCodeCommand
     {
         #region Private Members
@@ -101,7 +101,7 @@ namespace GSendAnalyser
                     return;
 
                 // bring in parent variables
-
+                 finish this
 
                 // bring in parent attributes
                 foreach (IGCodeCommand command in _subAnalyses.Commands)
