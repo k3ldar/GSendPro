@@ -70,8 +70,9 @@ namespace GSendAnalyser
                     {
                         List<IGCodeCommand> Result = new();
 
-                         sort line number so it is sequential, even for sub programs
-                        RecursivelyRetrieveAllCommands(Result, _commands, 0);
+                        int lineNumber = 0;
+                        // sort line number so it is sequential, even for sub programs
+                        RecursivelyRetrieveAllCommands(Result, _commands, ref lineNumber, 0);
 
                         _allCommands = Result;
                     }
@@ -81,7 +82,7 @@ namespace GSendAnalyser
             }
         }
 
-        private void RecursivelyRetrieveAllCommands(List<IGCodeCommand> Result, IReadOnlyList<IGCodeCommand> commands, int recursionDepth)
+        private void RecursivelyRetrieveAllCommands(List<IGCodeCommand> Result, IReadOnlyList<IGCodeCommand> commands, ref int lineNumber, int recursionDepth)
         {
             if (recursionDepth > Consts.MaxSubCommandRecursionDepth)
             {
@@ -93,10 +94,16 @@ namespace GSendAnalyser
             {
                 if (command.Command.Equals('O') && command.SubAnalyses != null && command.SubAnalyses.Commands.Count > 0)
                 {
-                    RecursivelyRetrieveAllCommands(Result, command.SubAnalyses.Commands, recursionDepth + 1);
+                    RecursivelyRetrieveAllCommands(Result, command.SubAnalyses.Commands, ref lineNumber, recursionDepth + 1);
                 }
                 else
                 {
+                    if (Result.Count == 0 || command.LineNumber != Result[Result.Count -1].LineNumber)
+                        lineNumber++;
+
+                    if (command is GCodeCommand gCommand)
+                        gCommand.MasterLineNumber = lineNumber;
+
                     Result.Add(command);
                 }
             }

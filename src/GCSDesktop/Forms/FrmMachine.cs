@@ -171,7 +171,7 @@ namespace GSendDesktop.Forms
             ClientBaseMessage clientMessage = null;
             try
             {
-                clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message);
+                clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message, Constants.DefaultJsonSerializerOptions);
             }
             catch (JsonException)
             {
@@ -206,7 +206,7 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageMachineStatusServer:
-                    _machineStatusModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString());
+                    _machineStatusModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
                     if (_machineStatusModel.IsConnected != clientMessage.IsConnected)
                         _machineStatusModel.IsConnected = clientMessage.IsConnected;

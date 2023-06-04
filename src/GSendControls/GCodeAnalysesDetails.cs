@@ -104,6 +104,8 @@ namespace GSendControls
                 AddAnalyserProperty(GCodeTotalTime, gCodeAnalyses?.TotalTime.ToString("hh\\:mm\\:ss"));
                 AddAnalyserProperty(GCodeLineCount, lineCount);
                 AddAnalyserProperty(GCodeCommandCount, gCodeAnalyses?.Commands.Count);
+                AddAnalyserProperty(GCodeTotalLineCount, gCodeAnalyses?.AllCommands[gCodeAnalyses.]);
+                AddAnalyserProperty(GCodeTotalCommandCount, gCodeAnalyses?.AllCommands.Count);
                 AddAnalyserProperty(GCodeMistCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant));
                 AddAnalyserProperty(GCodeFloodCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant));
                 AddAnalyserProperty(GCodeTurnOffCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.TurnsOffCoolant));

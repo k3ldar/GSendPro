@@ -4,8 +4,6 @@ using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
 
-using Microsoft.AspNetCore.Mvc;
-
 using PluginManager.Abstractions;
 
 using static GSendAnalyser.Internal.Consts;
@@ -234,7 +232,7 @@ namespace GSendAnalyser.Internal
             }
         }
 
-        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand, 
+        private GCodeCommand InternalParseLine(GCodeAnalyses analysis, in Span<char> line, GCodeCommand lastCommand,
             StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber, int recursionDepth)
         {
             GCodeCommand result = null;
@@ -260,7 +258,7 @@ namespace GSendAnalyser.Internal
                 if (!commandValueConvert)
                 {
                     string variableBlock = lineValues.ToString();
-                    
+
                     // does it contain variables
                     int variableBlockStart = variableBlock.IndexOf('[');
 
@@ -296,7 +294,7 @@ namespace GSendAnalyser.Internal
                         if (_subPrograms.Exists(subProgram))
                         {
                             ISubProgram sub = _subPrograms.Get(subProgram);
-                            
+
                             if (sub != null)
                             {
                                 subProgramAnalyses = new GCodeAnalyses(_pluginClassesService);
@@ -308,6 +306,7 @@ namespace GSendAnalyser.Internal
                                 foreach (string warning in subprogramAnalyses.Warnings)
                                     analysis.AddError(warning);
 
+                                // add subanalyses variables to parent
                                 foreach (KeyValuePair<ushort, IGCodeVariable> variable in subProgramAnalyses.Variables)
                                 {
                                     if (analysis.Variables.ContainsKey(variable.Key))
@@ -345,7 +344,7 @@ namespace GSendAnalyser.Internal
                                 break;
 
                             case 1:
-                            case 2: 
+                            case 2:
                             case 3:
                                 currentValues.Attributes |= CommandAttributes.AllowSpeedOverride;
                                 currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
@@ -561,7 +560,7 @@ namespace GSendAnalyser.Internal
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
                     GCodeVariableBlockModel gCodeVariable = new GCodeVariableBlockModel(variable, lineNumber);
-                    
+
                     Result.Add(gCodeVariable);
                 }
                 else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)

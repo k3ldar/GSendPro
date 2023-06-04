@@ -16,7 +16,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            IGCodeCommand command = gCodeAnalyses.Commands.FirstOrDefault(c => c.Attributes.HasFlag(CommandAttributes.EndProgram));
+            IGCodeCommand command = gCodeAnalyses.AllCommands.FirstOrDefault(c => c.Attributes.HasFlag(CommandAttributes.EndProgram));
 
             if (command != null)
                 gCodeAnalyses.AddOptions(AnalysesOptions.HasEndProgram);

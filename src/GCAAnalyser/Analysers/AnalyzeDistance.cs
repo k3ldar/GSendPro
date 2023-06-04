@@ -13,7 +13,7 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            gCodeAnalyses.TotalDistance = gCodeAnalyses.Commands.Sum(c => c.Distance);
+            gCodeAnalyses.TotalDistance = gCodeAnalyses.AllCommands.Sum(c => c.Distance);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            gCodeAnalyses.CommentCount = gCodeAnalyses.Commands.Count(c => !String.IsNullOrEmpty(c.Comment));
+            gCodeAnalyses.CommentCount = gCodeAnalyses.AllCommands.Count(c => !String.IsNullOrEmpty(c.Comment));
         }
     }
 }

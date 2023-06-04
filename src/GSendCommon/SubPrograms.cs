@@ -79,7 +79,7 @@ namespace GSendCommon
             ValidateFileName(subProgram.Name);
             string fileName = Path.Combine(_path, subProgram.Name + Constants.DefaultSubProgramFileExtension);
 
-            string json = JsonSerializer.Serialize(subProgram);
+            string json = JsonSerializer.Serialize(subProgram, Constants.DefaultJsonSerializerOptions);
             File.WriteAllText(fileName, json);
 
             return File.Exists(fileName);
@@ -87,7 +87,7 @@ namespace GSendCommon
 
         private ISubProgram CreateSubProgramFromFileName(string fileName)
         {
-            return JsonSerializer.Deserialize<ISubProgram>(File.ReadAllText(fileName));
+            return JsonSerializer.Deserialize<ISubProgram>(File.ReadAllText(fileName), Constants.DefaultJsonSerializerOptions);
         }
 
         [DebuggerStepThrough]

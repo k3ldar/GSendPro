@@ -67,7 +67,7 @@ namespace GSendCommon
             if (overrideUpdateSpan.TotalMilliseconds > OverrideUpdateTimeout)
             {
                 Trace.WriteLine("override send update");
-                string overrideAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(Overrides)));
+                string overrideAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(Overrides, Constants.DefaultJsonSerializerOptions)));
                 _gSendWebSocket.SendAsync(String.Format(Constants.MessageMachineUpdateOverrides, _machine.Id, overrideAsBase64)).ConfigureAwait(false);
                 _lastOverrideUpdate = DateTime.MaxValue;
             }

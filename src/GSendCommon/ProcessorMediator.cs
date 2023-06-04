@@ -393,7 +393,7 @@ namespace GSendCommon
 
             clientBaseMessage.ServerCpuStatus = ThreadManager.CpuUsage;
 
-            byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(clientBaseMessage));
+            byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(clientBaseMessage, Constants.DefaultJsonSerializerOptions));
 
             _webSocket.SendAsync(new ArraySegment<byte>(json, 0, json.Length), WebSocketMessageType.Binary, true, CancellationToken).ConfigureAwait(false);
         }
@@ -620,7 +620,7 @@ namespace GSendCommon
                     response.request = Constants.MessageMachineUpdateOverridesAdmin;
                     if (foundMachine && proc != null)
                     {
-                        proc.MachineOverrides = JsonSerializer.Deserialize<OverrideModel>(Encoding.UTF8.GetString(Convert.FromBase64String(parts[2])));
+                        proc.MachineOverrides = JsonSerializer.Deserialize<OverrideModel>(Encoding.UTF8.GetString(Convert.FromBase64String(parts[2])), Constants.DefaultJsonSerializerOptions);
                         response.success = true;
                     }
                     else
@@ -825,7 +825,7 @@ namespace GSendCommon
 
             }
 
-            byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response));
+            byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response, Constants.DefaultJsonSerializerOptions));
 
             if (json.Length > BufferSize)
                 throw new InvalidOperationException();

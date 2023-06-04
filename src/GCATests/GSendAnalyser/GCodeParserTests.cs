@@ -320,19 +320,67 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("Invalid variable on line 2, duplicate variable #100 declared.", analyses.Errors[0]);
         }
 
-        [Ignore("Code to analyze this has moved to AnalyzeVariables analyzer")]
         [TestMethod]
         [TestCategory(TestCategoryAnalyser)]
-        public void ParseCodeWithVariable_VariableNotFound_CreatesError()
+        public void ParseCodeWithSubProgram_MaximumRecursionLimitReached_CreatesError()
         {
-            string gCodeWithVariables = "S[#100]M3";
-            GCodeParser sut = new(new MockPluginClassesService(), new MockSubPrograms());
+            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+
+            string subProgramContents = "G17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\nO1001\n";
+            mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1001", "mock", subProgramContents));
+
+
+            string gCodeWithVariables = "O1001 ;recursion test\n";
+            GCodeParser sut = new(new MockPluginClassesService(), mockSubPrograms);
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(0, analyses.Variables.Count);
+            Assert.AreEqual(1, analyses.Commands.Count);
+            Assert.IsNotNull(analyses.Commands[0].SubAnalyses);
             Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
-            Assert.AreEqual("Variable #100 is referenced on line 1 but has not been declared.", analyses.Errors[0]);
+            Assert.AreEqual("Maximum recursion depth has been reached when retrieving subprograms.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void AllCommands_SetsCorrectLineNumber_Success()
+        {
+            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+
+            string subProgramContents = "G17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS200M3\n";
+            mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1001", "mock", subProgramContents));
+            subProgramContents = "X34.2Y15\nX56\nX15";
+            mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1002", "mock", subProgramContents));
+            subProgramContents = "X34.2Y15\nX56\nX15Y10";
+            mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1003", "mock", subProgramContents));
+
+
+            string gCodeWithVariables = "O1001\nO1002\nO1003";
+            GCodeParser sut = new(new MockPluginClassesService(), mockSubPrograms);
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            IReadOnlyList<IGCodeCommand> allCommands = analyses.AllCommands;
+            Assert.AreEqual(19, allCommands.Count);
+
+            int lineNumber = 0;
+            Assert.AreEqual(++lineNumber, allCommands[0].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[1].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[2].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[3].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[4].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[5].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[6].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[7].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[8].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[9].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[10].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[11].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[12].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[13].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[14].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[15].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[16].MasterLineNumber);
+            Assert.AreEqual(++lineNumber, allCommands[17].MasterLineNumber);
+            Assert.AreEqual(lineNumber, allCommands[18].MasterLineNumber);
         }
     }
 }

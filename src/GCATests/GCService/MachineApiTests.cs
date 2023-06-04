@@ -292,7 +292,8 @@ namespace GSendTests.GCService
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
             MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(new byte[] { 3 }), new MockSettingsProvider(), notification);
 
-            MachineModel machineToUpdate = JsonSerializer.Deserialize<MachineModel>(JsonSerializer.Serialize(gSendDataProvider.MachineGet(1)));
+            MachineModel machineToUpdate = JsonSerializer.Deserialize<MachineModel>(JsonSerializer.Serialize(gSendDataProvider.MachineGet(1)), 
+                GSendShared.Constants.DefaultJsonSerializerOptions);
             machineToUpdate.Name = "Updated";
             machineToUpdate.MachineType = MachineType.Printer;
             ActionResult Result = sut.MachineUpdate(machineToUpdate) as ActionResult;

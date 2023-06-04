@@ -10,7 +10,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> commandsWithVariables = gCodeAnalyses.Commands.Where(c => c.VariableBlocks.Count > 0).ToList();
+            List<IGCodeCommand> commandsWithVariables = gCodeAnalyses.AllCommands.Where(c => c.VariableBlocks.Count > 0).ToList();
 
             foreach (IGCodeCommand command in commandsWithVariables)
             {

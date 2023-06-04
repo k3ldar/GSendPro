@@ -13,13 +13,13 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            Parallel.ForEach(gCodeAnalyses.Commands, c =>
+            Parallel.ForEach(gCodeAnalyses.AllCommands, c =>
             {
                 GCodeCommand gCodeCommand = c as GCodeCommand;
                 gCodeCommand.CalculateTime();
             });
 
-            gCodeAnalyses.TotalTime = TimeSpan.FromSeconds(gCodeAnalyses.Commands.Sum(c => c.Time.TotalSeconds));
+            gCodeAnalyses.TotalTime = TimeSpan.FromSeconds(gCodeAnalyses.AllCommands.Sum(c => c.Time.TotalSeconds));
         }
     }
 }

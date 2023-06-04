@@ -9,7 +9,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            bool longLine = gCodeAnalyses.Commands.Where(c => c.Attributes.HasFlag(CommandAttributes.InvalidLineTooLong)).Any();
+            bool longLine = gCodeAnalyses.AllCommands.Where(c => c.Attributes.HasFlag(CommandAttributes.InvalidLineTooLong)).Any();
 
             if (longLine)
             {

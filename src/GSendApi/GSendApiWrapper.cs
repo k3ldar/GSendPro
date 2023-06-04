@@ -122,7 +122,7 @@ namespace GSendApi
 
             private HttpContent CreateContent<T>(T data)
             {
-                byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data));
+                byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, Constants.DefaultJsonSerializerOptions));
                 HttpContent Result = new ByteArrayContent(content);
                 Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
@@ -160,7 +160,7 @@ namespace GSendApi
 
                 if (responseModel.success)
                 {
-                    return JsonSerializer.Deserialize<T>(responseModel.responseData);
+                    return JsonSerializer.Deserialize<T>(responseModel.responseData, Constants.DefaultJsonSerializerOptions);
                 }
 
                 throw new GSendApiException(responseModel.responseData);

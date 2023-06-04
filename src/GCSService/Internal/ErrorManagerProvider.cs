@@ -12,7 +12,7 @@ namespace GSendService.Internal
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            string errText = JsonSerializer.Serialize<ErrorInformation>(errorInformation, new JsonSerializerOptions());
+            string errText = JsonSerializer.Serialize<ErrorInformation>(errorInformation, GSendShared.Constants.DefaultJsonSerializerOptions);
 
             string file = Path.Combine(path, $"{DateTime.UtcNow.Ticks}.error.txt");
             File.WriteAllText(file, errText);

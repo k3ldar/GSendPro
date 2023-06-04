@@ -4,6 +4,8 @@
     {
         int LineNumber { get; }
 
+        int MasterLineNumber { get; }
+
         char Command { get; }
 
         string CommandValueString { get; }

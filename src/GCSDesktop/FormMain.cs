@@ -74,7 +74,7 @@ namespace GSendDesktop
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            ClientBaseMessage clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message);
+            ClientBaseMessage clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message, Constants.DefaultJsonSerializerOptions);
 
             if (clientMessage.request.Equals(Constants.MessageMachineConnectServer))
             {
@@ -100,7 +100,7 @@ namespace GSendDesktop
 
             if (clientMessage.request.Equals(MessageMachineStatusAll))
             {
-                List<StatusResponseMessage> statuses = JsonSerializer.Deserialize<List<StatusResponseMessage>>(clientMessage.message.ToString());
+                List<StatusResponseMessage> statuses = JsonSerializer.Deserialize<List<StatusResponseMessage>>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
                 UpdateMachineStatus(statuses);
             }

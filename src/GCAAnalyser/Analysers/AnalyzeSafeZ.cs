@@ -13,12 +13,12 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            decimal homeZ = gCodeAnalyses.Commands.Count > 0 ? gCodeAnalyses.Commands.Max(c => c.CurrentZ) : 0;
+            decimal homeZ = gCodeAnalyses.AllCommands.Count > 0 ? gCodeAnalyses.AllCommands.Max(c => c.CurrentZ) : 0;
 
-            List<IGCodeCommand> homeZCommands = gCodeAnalyses.Commands.Where(c => c.CurrentZ < homeZ).ToList();
+            List<IGCodeCommand> homeZCommands = gCodeAnalyses.AllCommands.Where(c => c.CurrentZ < homeZ).ToList();
             gCodeAnalyses.SafeZ = homeZCommands.Count > 0 ? homeZCommands.Max(c => c.CurrentZ) : 0;
 
-            Parallel.ForEach(gCodeAnalyses.Commands, c =>
+            Parallel.ForEach(gCodeAnalyses.AllCommands, c =>
             {
                 if (c.CurrentZ == gCodeAnalyses.SafeZ &&
                     (c.Attributes.HasFlag(CommandAttributes.MovementZDown) || c.Attributes.HasFlag(CommandAttributes.MovementZUp)))
@@ -30,7 +30,7 @@ namespace GSendAnalyser.Analysers
             });
 
 
-            List<IGCodeCommand> layerCommands = gCodeAnalyses.Commands.Where(c =>
+            List<IGCodeCommand> layerCommands = gCodeAnalyses.AllCommands.Where(c =>
                 c.Command.Equals('Z') &&
                 c.CommandValue < gCodeAnalyses.SafeZ &&
                 (

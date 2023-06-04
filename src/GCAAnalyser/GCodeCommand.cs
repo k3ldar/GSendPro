@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
 
 using GSendAnalyser.Internal;
 
@@ -55,6 +56,8 @@ namespace GSendAnalyser
 
         public int LineNumber { get; }
 
+        public int MasterLineNumber { get; internal set; }
+
         public char Command { get; }
 
         public string CommandValueString { get; }
@@ -99,9 +102,6 @@ namespace GSendAnalyser
 
                 if (_subAnalyses == null)
                     return;
-
-                // bring in parent variables
-                 finish this
 
                 // bring in parent attributes
                 foreach (IGCodeCommand command in _subAnalyses.Commands)

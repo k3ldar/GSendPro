@@ -21,10 +21,10 @@ namespace GSendEditor.Internal
         public void ConfigureServices(IServiceCollection services)
         {
             string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
-            Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+            Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json, Constants.DefaultJsonSerializerOptions);
             dynamic apiSettings = jsonData["ApiSettings"];
-            ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString());
-            GSendSettings gSendSettings = JsonSerializer.Deserialize<GSendSettings>(jsonData["GSend"].ToString());
+            ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString(), Constants.DefaultJsonSerializerOptions);
+            GSendSettings gSendSettings = JsonSerializer.Deserialize<GSendSettings>(jsonData["GSend"].ToString(), Constants.DefaultJsonSerializerOptions);
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());
