@@ -73,6 +73,7 @@
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.ImageList = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuStripEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -206,7 +207,7 @@
             // 
             this.mnuEditUndo.Name = "mnuEditUndo";
             this.mnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.mnuEditUndo.Size = new System.Drawing.Size(144, 22);
+            this.mnuEditUndo.Size = new System.Drawing.Size(180, 22);
             this.mnuEditUndo.Text = "Undo";
             this.mnuEditUndo.Click += new System.EventHandler(this.mnuEditUndo_Click);
             // 
@@ -214,20 +215,20 @@
             // 
             this.mnuEditRedo.Name = "mnuEditRedo";
             this.mnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.mnuEditRedo.Size = new System.Drawing.Size(144, 22);
+            this.mnuEditRedo.Size = new System.Drawing.Size(180, 22);
             this.mnuEditRedo.Text = "Redo";
             this.mnuEditRedo.Click += new System.EventHandler(this.mnuEditRedo_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(141, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuEditCut
             // 
             this.mnuEditCut.Name = "mnuEditCut";
             this.mnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.mnuEditCut.Size = new System.Drawing.Size(144, 22);
+            this.mnuEditCut.Size = new System.Drawing.Size(180, 22);
             this.mnuEditCut.Text = "Cu&t";
             this.mnuEditCut.Click += new System.EventHandler(this.mnuEditCut_Click);
             // 
@@ -235,7 +236,7 @@
             // 
             this.mnuEditCopy.Name = "mnuEditCopy";
             this.mnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.mnuEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.mnuEditCopy.Size = new System.Drawing.Size(180, 22);
             this.mnuEditCopy.Text = "&Copy";
             this.mnuEditCopy.Click += new System.EventHandler(this.mnuEditCopy_Click);
             // 
@@ -243,7 +244,7 @@
             // 
             this.mnuEditPaste.Name = "mnuEditPaste";
             this.mnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.mnuEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.mnuEditPaste.Size = new System.Drawing.Size(180, 22);
             this.mnuEditPaste.Text = "&Paste";
             this.mnuEditPaste.Click += new System.EventHandler(this.mnuEditPaste_Click);
             // 
@@ -377,9 +378,9 @@
             this.txtGCode.BackBrush = null;
             this.txtGCode.CharHeight = 14;
             this.txtGCode.CharWidth = 8;
+            this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -519,6 +520,11 @@
             this.ImageList.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
             this.ImageList.Images.SetKeyName(4, "Error_red_16x16.png");
             // 
+            // contextMenuStripEditor
+            // 
+            this.contextMenuStripEditor.Name = "contextMenuStripEditor";
+            this.contextMenuStripEditor.Size = new System.Drawing.Size(61, 4);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -598,5 +604,6 @@
         private ColumnHeader columnHeaderDescription;
         private ListBox lstWarningsErrors;
         private ImageList ImageList;
+        private ContextMenuStrip contextMenuStripEditor;
     }
 }

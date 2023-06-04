@@ -39,6 +39,7 @@ namespace GSendEditor
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
+            CreateContextMenu();
             LoadSubprograms();
         }
 
@@ -130,6 +131,22 @@ namespace GSendEditor
             mnuEditCut.Enabled = txtGCode.SelectedText.Length > 0;
             mnuEditUndo.Enabled = txtGCode.UndoEnabled;
             mnuEditRedo.Enabled = txtGCode.RedoEnabled;
+
+            contextMenuStripEditor.Items[0].Enabled = mnuEditUndo.Enabled;
+            contextMenuStripEditor.Items[1].Enabled = mnuEditRedo.Enabled;
+            contextMenuStripEditor.Items[3].Enabled = mnuEditCut.Enabled;
+            contextMenuStripEditor.Items[4].Enabled = mnuEditCopy.Enabled;
+            contextMenuStripEditor.Items[5].Enabled = mnuEditPaste.Enabled;
+        }
+
+        private void CreateContextMenu()
+        {
+            contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditUndo, null, mnuEditUndo_Click);
+            contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditRedo, null, mnuEditRedo_Click);
+            contextMenuStripEditor.Items.Add("-");
+            contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditCut, null, mnuEditCut_Click);
+            contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditCopy, null, mnuEditCopy_Click);
+            contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditPaste, null, mnuEditPaste_Click);
         }
 
         private void TxtGCode_PaintLine(object sender, FastColoredTextBoxNS.PaintLineEventArgs e)
