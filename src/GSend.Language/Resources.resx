@@ -549,8 +549,14 @@
   <data name="GCodeToolsUsed" xml:space="preserve">
     <value>Tools Used</value>
   </data>
+  <data name="GCodeTotalCommandCount" xml:space="preserve">
+    <value>Total Command Count</value>
+  </data>
   <data name="GCodeTotalDistance" xml:space="preserve">
     <value>Total Distance</value>
+  </data>
+  <data name="GCodeTotalLineCount" xml:space="preserve">
+    <value>Total Line Count</value>
   </data>
   <data name="GCodeTotalTime" xml:space="preserve">
     <value>Total Time</value>

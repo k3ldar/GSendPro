@@ -91,6 +91,13 @@ namespace GSendControls
                 if (gCodeAnalyses?.Variables.Count > 0)
                     AddAnalyserProperty(GCodeVariablesUsed, gCodeAnalyses?.VariablesUsed);
 
+                int totalLineCount = 0;
+
+                if (gCodeAnalyses != null && gCodeAnalyses.AllCommands.Count > 1)
+                {
+                    totalLineCount = gCodeAnalyses.AllCommands[gCodeAnalyses.AllCommands.Count - 1].MasterLineNumber;
+                }
+
                 AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
                 AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
                 AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
@@ -104,7 +111,7 @@ namespace GSendControls
                 AddAnalyserProperty(GCodeTotalTime, gCodeAnalyses?.TotalTime.ToString("hh\\:mm\\:ss"));
                 AddAnalyserProperty(GCodeLineCount, lineCount);
                 AddAnalyserProperty(GCodeCommandCount, gCodeAnalyses?.Commands.Count);
-                AddAnalyserProperty(GCodeTotalLineCount, gCodeAnalyses?.AllCommands[gCodeAnalyses.]);
+                AddAnalyserProperty(GCodeTotalLineCount, totalLineCount);
                 AddAnalyserProperty(GCodeTotalCommandCount, gCodeAnalyses?.AllCommands.Count);
                 AddAnalyserProperty(GCodeMistCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant));
                 AddAnalyserProperty(GCodeFloodCoolant, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant));

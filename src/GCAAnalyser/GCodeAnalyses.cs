@@ -71,7 +71,6 @@ namespace GSendAnalyser
                         List<IGCodeCommand> Result = new();
 
                         int lineNumber = 0;
-                        // sort line number so it is sequential, even for sub programs
                         RecursivelyRetrieveAllCommands(Result, _commands, ref lineNumber, 0);
 
                         _allCommands = Result;

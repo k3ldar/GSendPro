@@ -1357,11 +1357,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Command Count.
+        /// </summary>
+        public static string GCodeTotalCommandCount {
+            get {
+                return ResourceManager.GetString("GCodeTotalCommandCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Distance.
         /// </summary>
         public static string GCodeTotalDistance {
             get {
                 return ResourceManager.GetString("GCodeTotalDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Line Count.
+        /// </summary>
+        public static string GCodeTotalLineCount {
+            get {
+                return ResourceManager.GetString("GCodeTotalLineCount", resourceCulture);
             }
         }
         
