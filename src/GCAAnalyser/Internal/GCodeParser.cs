@@ -109,22 +109,6 @@ namespace GSendAnalyser.Internal
 
                         continue;
 
-                    case CharG:
-                        if (!isComment && !isVariable)
-                        {
-                            if (line[0] != CharNull)
-                            {
-                                lastCommand = InternalParseLine(Result, line, lastCommand, lineValues, currentValues, currentLine, recursionDepth + 1);
-                                ClearLineData(line, ref isComment, ref isVariable, ref isVariableBlock);
-                            }
-
-                            position = 0;
-                        }
-
-                        line[position++] = c;
-
-                        continue;
-
                     case CharLineFeed:
                         if (isVariable)
                         {

@@ -1176,6 +1176,9 @@
   <data name="WarningLayerHeightTooMuch" xml:space="preserve">
     <value>Maximum layer height is {0} which exceeds warning level of {1}</value>
   </data>
+  <data name="WarningLongComment" xml:space="preserve">
+    <value>Comment on line {0} is too long and will be ignored.</value>
+  </data>
   <data name="WarningsAndInformation" xml:space="preserve">
     <value>Errors, warnings and information count</value>
   </data>

@@ -3238,6 +3238,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment on line {0} is too long and will be ignored..
+        /// </summary>
+        public static string WarningLongComment {
+            get {
+                return ResourceManager.GetString("WarningLongComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors, warnings and information count.
         /// </summary>
         public static string WarningsAndInformation {

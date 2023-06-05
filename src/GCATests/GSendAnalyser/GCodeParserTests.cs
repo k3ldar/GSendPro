@@ -382,5 +382,28 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(++lineNumber, allCommands[17].MasterLineNumber);
             Assert.AreEqual(lineNumber, allCommands[18].MasterLineNumber);
         }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void Parse_CommentLineTooLong_CreatesWarning()
+        {
+            string gCodeWithVariables = ";This will be a very long comment that the parser will pick up and add an enum to, the enum that it will add will be CommandAttribute.InvalidCommentTooLong after which a warning will be added to indicate that this line will be ignored in it's entirety. OfGcoure to get the warning we need to make sure the string is longer than the permitted of two hundred and fifty six characters\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000";
+
+            GCodeParser sut = new(new MockPluginClassesService(), new MockSubPrograms());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(9, analyses.Commands.Count);
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual('\0', analyses.Commands[0].Command);
+            Assert.AreEqual(decimal.MinValue, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(";This will be a very long comment that the parser will pick up and add an enum to, the enum that it will add will be CommandAttribute.InvalidCommentTooLong after which a warning will be added to indicate that this line will be ignored in it's entirety. OfG", analyses.Commands[0].Comment);
+            Assert.AreEqual("", analyses.Commands[0].CommandValueString);
+            Assert.AreEqual(1, analyses.Commands[0].LineNumber);
+            Assert.AreEqual(CommandAttributes.InvalidCommentTooLong, analyses.Commands[0].Attributes);
+            Assert.IsFalse(analyses.Commands[1].Attributes.HasFlag(CommandAttributes.InvalidCommentTooLong));
+            Assert.AreEqual(2, analyses.Commands[1].LineNumber);
+            Assert.AreEqual('G', analyses.Commands[1].Command);
+            Assert.AreEqual("17", analyses.Commands[1].CommandValueString);
+        }
     }
 }
