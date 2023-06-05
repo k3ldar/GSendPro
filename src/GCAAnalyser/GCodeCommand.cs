@@ -35,7 +35,7 @@ namespace GSendAnalyser
         {
 
             if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
-                throw new ArgumentOutOfRangeException(nameof(currentCommand));
+               throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;
             Command = currentCommand;

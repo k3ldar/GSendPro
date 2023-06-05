@@ -40,7 +40,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(0, analyses.Warnings.Count);
 
             string line = analyses.Lines(out int _)[0].GetGCode();
-            Assert.AreEqual("M650 [#321]", line);
+            Assert.AreEqual("M650 a value", line);
             Assert.AreEqual("a value", analyses.Commands[0].VariableBlocks[0].Value);
         }
 
@@ -85,11 +85,11 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(0, analyses.Warnings.Count);
 
             string line = analyses.Lines(out int _)[0].GetGCode();
-            Assert.AreEqual("M650 [#321][#322] [#345 + #350]", line);
             Assert.AreEqual(3, analyses.Commands[0].VariableBlocks.Count);
             Assert.AreEqual("a value", analyses.Commands[0].VariableBlocks[0].Value);
             Assert.AreEqual("45.6", analyses.Commands[0].VariableBlocks[1].Value);
             Assert.AreEqual("test + pass", analyses.Commands[0].VariableBlocks[2].Value);
+            Assert.AreEqual("M650 a value45.6 test + pass", line);
         }
     }
 }

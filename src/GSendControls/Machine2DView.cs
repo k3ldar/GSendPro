@@ -39,7 +39,7 @@ namespace GSendControls
 
             PointF latestPos = new PointF(XDirectionWithInversion(0f), YDirectionWithInversion(0f));
 
-            foreach (IGCodeLine line in _gCodeAnalyses.Lines(out int _))
+            foreach (IGCodeLine line in _gCodeAnalyses.AllLines(out int _))
             {
                 IGCodeCommand gCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('G'));
                 IGCodeCommand xCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('X'));

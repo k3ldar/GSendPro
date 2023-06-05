@@ -1,5 +1,7 @@
 using System.Drawing.Drawing2D;
 
+using FastColoredTextBoxNS;
+
 using GSendCommon;
 
 using GSendControls;
@@ -296,13 +298,20 @@ namespace GSendEditor
             if (!HasChanged)
                 return;
 
-            if (IsSubprogram)
+            try
             {
-                SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
+                if (IsSubprogram)
+                {
+                    SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
+                }
+                else
+                {
+                    File.WriteAllText(FileName, txtGCode.Text);
+                }
             }
-            else
+            catch (IOException ioException)
             {
-                File.WriteAllText(FileName, txtGCode.Text);
+                MessageBox.Show(ioException.Message);
             }
 
             HasChanged = false;
@@ -503,32 +512,41 @@ namespace GSendEditor
 
         private void txtGCode_ToolTipNeeded(object sender, FastColoredTextBoxNS.ToolTipNeededEventArgs e)
         {
-            if (_analyzerThread == null || _analyzerThread.Analyses == null || _analyzerThread.Lines == null || _analyzerThread.Lines.Count > e.Place.iLine -1)
-                return;
+            string hoverWord = e.HoveredWord;
 
-            string linea = _analyzerThread.Lines[e.Place.iLine].GetGCode();
-            IGCodeLine line = _analyzerThread.Lines[e.Place.iLine];
-
-            bool hasVariables = false;
-            string tip = linea;
-
-            foreach (IGCodeCommand item in line.Commands)
+            if (String.IsNullOrEmpty(hoverWord))
             {
-                foreach (IGCodeVariableBlock varValue in item.VariableBlocks)
-                {
-                    hasVariables = true;
-                    tip = tip.Replace(varValue.VariableBlock, varValue.Value);
-                }
+                FastColoredTextBoxNS.Range r = new FastColoredTextBoxNS.Range(txtGCode, e.Place, e.Place);
+                hoverWord = r.GetFragment("[A-Z\\[\\]#0-9]").Text;
             }
 
-            if (!hasVariables)
+            if (_analyzerThread == null || _analyzerThread.Analyses == null || String.IsNullOrEmpty(hoverWord))
                 return;
 
-            e.ToolTipText = tip;
-            e.ToolTipTitle = "Variable Value";
-            e.ToolTipText = tip;
+            //bool hasVariables = false;
+            //string tip = String.Empty;
 
+            //if (hoverWord.StartsWith('#'))
+            //{
+            //    //ushort var
+            //    //_analyzerThread.Analyses.Variables.TryGetValue()
+            //}
 
+            //foreach (IGCodeCommand item in line.Commands)
+            //{
+            //    foreach (IGCodeVariableBlock varValue in item.VariableBlocks)
+            //    {
+            //        hasVariables = true;
+            //        tip = tip.Replace(varValue.VariableBlock, varValue.Value);
+            //    }
+            //}
+
+            //if (!hasVariables)
+            //    return;
+
+            //e.ToolTipText = tip;
+            //e.ToolTipTitle = "Variable Value";
+            //e.ToolTipText = tip;
         }
 
         private void lstWarningsErrors_DrawItem(object sender, DrawItemEventArgs e)

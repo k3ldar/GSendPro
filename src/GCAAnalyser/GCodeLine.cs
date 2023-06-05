@@ -33,6 +33,9 @@ namespace GSendAnalyser
                     Result.Append($"{command.Command}{command.CommandValue}");
                 else
                     Result.Append($"{command.Command}{command.CommandValueString}");
+
+                foreach (IGCodeVariableBlock varBlock in command.VariableBlocks)
+                    Result.Replace(varBlock.VariableBlock, varBlock.Value);
             }
 
             return Result.ToString();

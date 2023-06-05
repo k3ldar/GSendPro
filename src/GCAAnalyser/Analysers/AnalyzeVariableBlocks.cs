@@ -10,30 +10,33 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> commandsWithVariables = gCodeAnalyses.AllCommands.Where(c => c.VariableBlocks.Count > 0).ToList();
-
-            foreach (IGCodeCommand command in commandsWithVariables)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                foreach (IGCodeVariableBlock gCodeVariableBlock in command.VariableBlocks)
+                List<IGCodeCommand> commandsWithVariables = gCodeAnalyses.AllCommands.Where(c => c.VariableBlocks.Count > 0).ToList();
+
+                foreach (IGCodeCommand command in commandsWithVariables)
                 {
-                    if (gCodeVariableBlock is GCodeVariableBlockModel variableBlock)
+                    foreach (IGCodeVariableBlock gCodeVariableBlock in command.VariableBlocks)
                     {
-                        string value = gCodeVariableBlock.VariableBlock;
-
-                        foreach (ushort id in gCodeVariableBlock.VariableIds)
+                        if (gCodeVariableBlock is GCodeVariableBlockModel variableBlock)
                         {
-                            if (gCodeAnalyses.Variables.ContainsKey(id))
-                            {
-                                string variableValue = gCodeAnalyses.Variables[id].Value.ToString();
-                                value = value.Replace($"#{id}", variableValue.Trim());
-                            }
-                            else
-                            {
+                            string value = gCodeVariableBlock.VariableBlock;
 
+                            foreach (ushort id in gCodeVariableBlock.VariableIds)
+                            {
+                                if (gCodeAnalyses.Variables.ContainsKey(id))
+                                {
+                                    string variableValue = gCodeAnalyses.Variables[id].Value.ToString();
+                                    value = value.Replace($"#{id}", variableValue.Trim());
+                                }
+                                else
+                                {
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, id, command.LineNumber));
+                                }
                             }
+
+                            variableBlock.Value = value[1..^1];
                         }
-
-                        variableBlock.Value = value[1..^1];
                     }
                 }
             }

@@ -60,6 +60,18 @@ namespace GSendShared
 
         void AddOptions(AnalysesOptions options);
 
+        /// <summary>
+        /// Retrieves all lines for current gcode
+        /// </summary>
+        /// <param name="lineCount"></param>
+        /// <returns></returns>
         List<IGCodeLine> Lines(out int lineCount);
+
+        /// <summary>
+        /// Retrieves all lines for current gcode and subprograms
+        /// </summary>
+        /// <param name="lineCount"></param>
+        /// <returns></returns>
+        List<IGCodeLine> AllLines(out int lineCount);
     }
 }

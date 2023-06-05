@@ -124,26 +124,35 @@ namespace GSendCommon
                 {
                     if (_commandQueue.TryPeek(out IGCodeLine peekCommand))
                     {
-                        if ((BufferSize + peekCommand.GetGCode().Length + 1) < Constants.MaxBufferSize)
+                        // if we process custom M commands, remove the item from the command queue,
+                        // to indicate it is processed, otherwise continue processing as normal
+                        if (_overrideContext.ProcessMCodeOverrides(peekCommand))
                         {
-                            _machineStateModel.CommandQueueSize = _commandQueue.Count;
-                            _commandQueue.TryDequeue(out peekCommand);
-
-                            if (!_overrideContext.ProcessMCodeOverrides(peekCommand))
+                            if (!_commandQueue.TryDequeue(out _))
                             {
+                                throw new InvalidOperationException("Failed to dequeue command");
+                            }
+                        }
+                        else
+                        {
+                            if ((BufferSize + peekCommand.GetGCode().Length + 1) < Constants.MaxBufferSize)
+                            {
+                                _machineStateModel.CommandQueueSize = _commandQueue.Count;
+                                _commandQueue.TryDequeue(out peekCommand);
+
                                 string commandText = peekCommand.GetGCode();
                                 _sendQueue.Enqueue(peekCommand);
                                 UpdateMachineStateBufferData();
                                 //Trace.WriteLine($"From Command Queue: {commandText}");
                                 _port.WriteLine(commandText);
+
+                                _machineStateModel.CommandQueueSize = _commandQueue.Count;
+
                             }
-
-                            _machineStateModel.CommandQueueSize = _commandQueue.Count;
-
-                        }
-                        else
-                        {
-                            return;
+                            else
+                            {
+                                return;
+                            }
                         }
                     }
                     else
@@ -369,7 +378,7 @@ namespace GSendCommon
 
             Clear();
 
-            _commandsToSend = gCodeAnalyses.Lines(out _lineCount);
+            _commandsToSend = gCodeAnalyses.AllLines(out _lineCount);
             _machineStateModel.TotalLines = _lineCount;
             return true;
         }

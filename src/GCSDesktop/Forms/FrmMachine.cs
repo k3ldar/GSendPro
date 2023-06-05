@@ -2063,9 +2063,12 @@ namespace GSendDesktop.Forms
                             _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
                     }
 
+                    _ = _gCodeAnalyses.AllLines(out int _totalAllLines);
                     UpdateLabelText(lblTotalLines, String.Format(GSend.Language.Resources.TotalLines, _totalLines));
                     lblTotalLines.Visible = true;
-                    toolStripProgressBarJob.Maximum = _totalLines;
+
+
+                    toolStripProgressBarJob.Maximum = _totalAllLines;
 
                     gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
                     string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));

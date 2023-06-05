@@ -174,6 +174,28 @@ namespace GSendAnalyser
             return Result;
         }
 
+        public List<IGCodeLine> AllLines(out int lineCount)
+        {
+            List<IGCodeLine> Result = new();
+
+            lineCount = 0;
+            GCodeLine currentLine = null;
+
+            foreach (IGCodeCommand command in AllCommands)
+            {
+                if (command.LineNumber > lineCount)
+                {
+                    currentLine = new(this);
+                    lineCount++;
+                    Result.Add(currentLine);
+                }
+
+                currentLine.Commands.Add(command);
+            }
+
+            return Result;
+        }
+
         internal void AddError(string message)
         {
             if (String.IsNullOrEmpty(message))

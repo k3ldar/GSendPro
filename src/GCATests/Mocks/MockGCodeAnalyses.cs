@@ -48,6 +48,11 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
+        public List<IGCodeLine> AllLines(out int lineCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Analyse()
         {
             throw new NotImplementedException();
