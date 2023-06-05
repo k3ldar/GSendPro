@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendShared;
 
 namespace GSendControls
 {
-    public partial class SubProgramForm : Form
+    public partial class SubProgramForm : BaseForm
     {
         private readonly ISubPrograms _subPrograms;
 
@@ -20,15 +13,15 @@ namespace GSendControls
         {
             _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
             InitializeComponent();
-
-            LoadResources();
         }
+
+        protected override string SectionName => nameof(SubProgramForm);
 
         public string SubprogramName { get; private set; }
 
         public string Description { get; private set; }
 
-        private void LoadResources()
+        protected override void LoadResources()
         {
             Text = GSend.Language.Resources.SaveSubProgram;
             lblDescription.Text = GSend.Language.Resources.Description;
@@ -43,8 +36,8 @@ namespace GSendControls
 
             if (_subPrograms.Exists(name))
             {
-                DialogResult overWrite = MessageBox.Show(this, 
-                    String.Format(GSend.Language.Resources.SubprogramExistsOverwrite, name), 
+                DialogResult overWrite = MessageBox.Show(this,
+                    String.Format(GSend.Language.Resources.SubprogramExistsOverwrite, name),
                     GSend.Language.Resources.Subprogram, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (overWrite == DialogResult.No)
@@ -53,7 +46,7 @@ namespace GSendControls
 
             if (txtDescription.Text.Length < 10)
             {
-                MessageBox.Show(this, 
+                MessageBox.Show(this,
                     GSend.Language.Resources.SubprogramDescription,
                     GSend.Language.Resources.Subprogram,
                     MessageBoxButtons.OK, MessageBoxIcon.Stop);

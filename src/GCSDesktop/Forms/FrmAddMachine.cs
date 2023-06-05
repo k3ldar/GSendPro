@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 using GSendApi;
 
@@ -17,9 +9,11 @@ using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
 
+using GSendControls;
+
 namespace GSendDesktop.Forms
 {
-    public partial class FrmAddMachine : Form
+    public partial class FrmAddMachine : BaseForm
     {
         private readonly GSendApiWrapper _machineApiWrapper;
         private readonly IComPortProvider _portProvider;
@@ -34,6 +28,8 @@ namespace GSendDesktop.Forms
 
             UpdateAvailableComports();
         }
+
+        protected override string SectionName => nameof(FrmAddMachine);
 
         private void UpdateAvailableComports()
         {

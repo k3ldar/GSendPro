@@ -94,8 +94,8 @@
 
         private System.Windows.Forms.Label lblFileNameDesc;
         private System.Windows.Forms.Label lblFileName;
-        private System.Windows.Forms.ListView listViewAnalyses;
         private System.Windows.Forms.ColumnHeader columnHeaderProperty;
         private System.Windows.Forms.ColumnHeader columnHeaderValue;
+        public System.Windows.Forms.ListView listViewAnalyses;
     }
 }

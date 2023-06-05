@@ -328,7 +328,9 @@
 
         Extrude = 16777216,
 
-        ContainsVariables = 33554432
+        ContainsVariables = 33554432,
+
+        InvalidCommentTooLong = 67108864,
     }
 
     public enum UnitOfMeasurement

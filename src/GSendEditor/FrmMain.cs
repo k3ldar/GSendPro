@@ -13,7 +13,7 @@ using Shared.Classes;
 
 namespace GSendEditor
 {
-    public partial class FrmMain : Form
+    public partial class FrmMain : BaseForm
     {
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
@@ -32,34 +32,37 @@ namespace GSendEditor
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
-            UpdateEnabledState();
-            LoadResources();
 
             machine2dView1.UnloadGCode();
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
-            CreateContextMenu();
             LoadSubprograms();
         }
 
-        private void CreateAndRunAnalyzerThread()
+        protected override string SectionName => nameof(GSendEditor);
+
+        protected override void SaveSettings()
         {
-            if (!ThreadManager.Exists(nameof(AnalyzerThread)))
-            {
-                ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
-                _analyzerThread.WarningContainer = lstWarningsErrors;
-                _analyzerThread.Machine2DView = machine2dView1;
-                _analyzerThread.AnalysesDetails = gCodeAnalysesDetails1;
-            }
+            base.SaveSettings();
+            SaveSettings(splitContainerMain);
+            SaveSettings(splitContainerPrimary);
+            SaveSettings(lvSubprograms);
+            SaveSettings(gCodeAnalysesDetails1.listViewAnalyses);
+            SaveSettings(tabControlMain);
         }
 
-        private void UpdateTitleBar()
+        protected override void LoadSettings()
         {
-            Text = $"{GSend.Language.Resources.AppName} - {GSend.Language.Resources.AppNameEditor} {FileName}";
+            base.LoadSettings();
+            LoadSettings(splitContainerMain);
+            LoadSettings(splitContainerPrimary);
+            LoadSettings(lvSubprograms);
+            LoadSettings(gCodeAnalysesDetails1.listViewAnalyses);
+            LoadSettings(tabControlMain);
         }
 
-        private void LoadResources()
+        protected override void LoadResources()
         {
             saveFileDialog1.Title = GSend.Language.Resources.TitleSaveAs;
             openFileDialog1.Title = GSend.Language.Resources.TitleOpen;
@@ -100,6 +103,22 @@ namespace GSendEditor
             columnHeaderName.Text = GSend.Language.Resources.Subprogram;
         }
 
+        private void CreateAndRunAnalyzerThread()
+        {
+            if (!ThreadManager.Exists(nameof(AnalyzerThread)))
+            {
+                ThreadManager.ThreadStart(_analyzerThread, nameof(AnalyzerThread), ThreadPriority.AboveNormal);
+                _analyzerThread.WarningContainer = lstWarningsErrors;
+                _analyzerThread.Machine2DView = machine2dView1;
+                _analyzerThread.AnalysesDetails = gCodeAnalysesDetails1;
+            }
+        }
+
+        private void UpdateTitleBar()
+        {
+            Text = $"{GSend.Language.Resources.AppName} - {GSend.Language.Resources.AppNameEditor} {FileName}";
+        }
+
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (SaveIfRequired())
@@ -124,7 +143,7 @@ namespace GSendEditor
 
         private bool IsSubprogram { get; set; } = false;
 
-        private void UpdateEnabledState()
+        protected override void UpdateEnabledState() 
         {
             mnuFileSave.Enabled = HasChanged && !String.IsNullOrEmpty(FileName);
             mnuEditCopy.Enabled = txtGCode.SelectedText.Length > 0;
@@ -139,8 +158,9 @@ namespace GSendEditor
             contextMenuStripEditor.Items[5].Enabled = mnuEditPaste.Enabled;
         }
 
-        private void CreateContextMenu()
+        protected override void CreateContextMenu()
         {
+            contextMenuStripEditor.Items.Clear();
             contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditUndo, null, mnuEditUndo_Click);
             contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditRedo, null, mnuEditRedo_Click);
             contextMenuStripEditor.Items.Add("-");

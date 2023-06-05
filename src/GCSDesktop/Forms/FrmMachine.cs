@@ -30,7 +30,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
-    public partial class FrmMachine : Form, IUiUpdate
+    public partial class FrmMachine : BaseForm, IUiUpdate
     {
         #region Private Fields
 
@@ -66,6 +66,8 @@ namespace GSendDesktop.Forms
         {
             InitializeComponent();
         }
+
+        protected override string SectionName => $"{nameof(FrmMachine)}{_machine.Name}";
 
         public FrmMachine(IGSendContext gSendContext, IMachine machine, IServiceProvider serviceProvider)
             : this()
@@ -111,7 +113,6 @@ namespace GSendDesktop.Forms
             cmbSpindleType.Items.Add(SpindleType.External);
 
             UpdateDisplay();
-            UpdateEnabledState();
             probingCommand1.InitializeProbingCommand(_machine.ProbeCommand, _machine.ProbeSpeed, _machine.ProbeThickness);
 
             ConfigureMachine();
@@ -123,7 +124,6 @@ namespace GSendDesktop.Forms
             HookUpEvents();
             UpdateMachineStatus(new MachineStateModel());
 
-            LoadResources();
             WarningContainer_VisibleChanged(this, EventArgs.Empty);
             tabControlSecondary.TabPages.Remove(tabPageGCode);
         }
@@ -298,7 +298,7 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void UpdateEnabledState()
+        protected override void UpdateEnabledState()
         {
             toolStripButtonSave.Enabled = _configurationChanges;
             toolStripButtonConnect.Enabled = !_machineConnected;
@@ -777,6 +777,26 @@ namespace GSendDesktop.Forms
         #endregion Jog
 
         #region Overrides
+
+        protected override void SaveSettings()
+        {
+            base.SaveSettings();
+            SaveSettings(tabControlMain);
+            SaveSettings(tabControlSecondary);
+            SaveSettings(lvServices);
+            SaveSettings(gCodeAnalysesDetails.listViewAnalyses);
+            SaveSettings(listViewGCode);
+        }
+
+        protected override void LoadSettings()
+        {
+            base.LoadSettings();
+            LoadSettings(tabControlMain);
+            LoadSettings(tabControlSecondary);
+            LoadSettings(lvServices);
+            LoadSettings(gCodeAnalysesDetails.listViewAnalyses);
+            LoadSettings(listViewGCode);
+        }
 
         private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
         {
@@ -1503,7 +1523,7 @@ namespace GSendDesktop.Forms
             settingsToolStripMenuItem.Click += SelectTabControlMainTab;
         }
 
-        private void LoadResources()
+        protected override void LoadResources()
         {
             //toolbar
             toolStripButtonConnect.Text = GSend.Language.Resources.Connect;

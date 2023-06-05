@@ -59,9 +59,10 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainerPrimary = new System.Windows.Forms.SplitContainer();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.txtGCode = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.contextMenuStripEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPagePreview = new System.Windows.Forms.TabPage();
             this.machine2dView1 = new GSendControls.Machine2DView();
@@ -73,13 +74,12 @@
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.ImageList = new System.Windows.Forms.ImageList(this.components);
-            this.contextMenuStripEditor = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
+            this.splitContainerPrimary.Panel1.SuspendLayout();
+            this.splitContainerPrimary.Panel2.SuspendLayout();
+            this.splitContainerPrimary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
@@ -207,7 +207,7 @@
             // 
             this.mnuEditUndo.Name = "mnuEditUndo";
             this.mnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.mnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.mnuEditUndo.Size = new System.Drawing.Size(144, 22);
             this.mnuEditUndo.Text = "Undo";
             this.mnuEditUndo.Click += new System.EventHandler(this.mnuEditUndo_Click);
             // 
@@ -215,20 +215,20 @@
             // 
             this.mnuEditRedo.Name = "mnuEditRedo";
             this.mnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.mnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.mnuEditRedo.Size = new System.Drawing.Size(144, 22);
             this.mnuEditRedo.Text = "Redo";
             this.mnuEditRedo.Click += new System.EventHandler(this.mnuEditRedo_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(141, 6);
             // 
             // mnuEditCut
             // 
             this.mnuEditCut.Name = "mnuEditCut";
             this.mnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.mnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.mnuEditCut.Size = new System.Drawing.Size(144, 22);
             this.mnuEditCut.Text = "Cu&t";
             this.mnuEditCut.Click += new System.EventHandler(this.mnuEditCut_Click);
             // 
@@ -236,7 +236,7 @@
             // 
             this.mnuEditCopy.Name = "mnuEditCopy";
             this.mnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.mnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.mnuEditCopy.Size = new System.Drawing.Size(144, 22);
             this.mnuEditCopy.Text = "&Copy";
             this.mnuEditCopy.Click += new System.EventHandler(this.mnuEditCopy_Click);
             // 
@@ -244,7 +244,7 @@
             // 
             this.mnuEditPaste.Name = "mnuEditPaste";
             this.mnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.mnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.mnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.mnuEditPaste.Text = "&Paste";
             this.mnuEditPaste.Click += new System.EventHandler(this.mnuEditPaste_Click);
             // 
@@ -315,25 +315,25 @@
             // 
             this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
-            // splitContainer1
+            // splitContainerPrimary
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.splitContainerPrimary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(12, 40);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitContainerPrimary.Location = new System.Drawing.Point(12, 40);
+            this.splitContainerPrimary.Name = "splitContainerPrimary";
+            this.splitContainerPrimary.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // splitContainerPrimary.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainerMain);
+            this.splitContainerPrimary.Panel1.Controls.Add(this.splitContainerMain);
             // 
-            // splitContainer1.Panel2
+            // splitContainerPrimary.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.lstWarningsErrors);
-            this.splitContainer1.Size = new System.Drawing.Size(1059, 356);
-            this.splitContainer1.SplitterDistance = 257;
-            this.splitContainer1.TabIndex = 5;
+            this.splitContainerPrimary.Panel2.Controls.Add(this.lstWarningsErrors);
+            this.splitContainerPrimary.Size = new System.Drawing.Size(1059, 356);
+            this.splitContainerPrimary.SplitterDistance = 257;
+            this.splitContainerPrimary.TabIndex = 5;
             // 
             // splitContainerMain
             // 
@@ -381,6 +381,7 @@
             this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -396,6 +397,11 @@
             this.txtGCode.Zoom = 100;
             this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
             this.txtGCode.SelectionChangedDelayed += new System.EventHandler(this.txtGCode_SelectionChangedDelayed);
+            // 
+            // contextMenuStripEditor
+            // 
+            this.contextMenuStripEditor.Name = "contextMenuStripEditor";
+            this.contextMenuStripEditor.Size = new System.Drawing.Size(61, 4);
             // 
             // tabControlMain
             // 
@@ -520,17 +526,12 @@
             this.ImageList.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
             this.ImageList.Images.SetKeyName(4, "Error_red_16x16.png");
             // 
-            // contextMenuStripEditor
-            // 
-            this.contextMenuStripEditor.Name = "contextMenuStripEditor";
-            this.contextMenuStripEditor.Size = new System.Drawing.Size(61, 4);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1083, 431);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.splitContainerPrimary);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -542,10 +543,10 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitContainerPrimary.Panel1.ResumeLayout(false);
+            this.splitContainerPrimary.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).EndInit();
+            this.splitContainerPrimary.ResumeLayout(false);
             this.splitContainerMain.Panel1.ResumeLayout(false);
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
@@ -590,7 +591,7 @@
         private ToolStripMenuItem mnuViewSubPrograms;
         private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem mnufileSaveAsSubprogram;
-        private SplitContainer splitContainer1;
+        private SplitContainer splitContainerPrimary;
         private SplitContainer splitContainerMain;
         private FastColoredTextBoxNS.FastColoredTextBox txtGCode;
         private TabControl tabControlMain;

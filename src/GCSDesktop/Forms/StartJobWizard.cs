@@ -6,11 +6,11 @@ using GSendApi;
 
 using GSendShared;
 using GSendShared.Models;
-using GSendDesktop.Internal;
+using GSendControls;
 
 namespace GSendDesktop.Forms
 {
-    public partial class StartJobWizard : Form
+    public partial class StartJobWizard : BaseForm
     {
         private readonly MachineStateModel _machineStatusModel;
         private readonly IGCodeAnalyses _gCodeAnalyses;
@@ -18,9 +18,9 @@ namespace GSendDesktop.Forms
         public StartJobWizard()
         {
             InitializeComponent();
-
-            LoadResources();
         }
+
+        protected override string SectionName => nameof(StartJobWizard);
 
         public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, 
             GSendApiWrapper machineApiWrapper)
@@ -90,7 +90,7 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void LoadResources()
+        protected override void LoadResources()
         {
             Text = GSend.Language.Resources.StartJobWizard;
             btnCancel.Text = GSend.Language.Resources.Cancel;

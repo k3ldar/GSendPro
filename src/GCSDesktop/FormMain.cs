@@ -11,6 +11,8 @@ using GSendApi;
 
 using GSendCommon;
 
+using GSendControls;
+
 using GSendDesktop.Abstractions;
 using GSendDesktop.Forms;
 using GSendDesktop.Internal;
@@ -25,7 +27,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop
 {
-    public partial class FormMain : Form
+    public partial class FormMain : BaseForm
     {
         private readonly IGSendContext _context;
 
@@ -56,6 +58,8 @@ namespace GSendDesktop
             _clientWebSocket.Connected += ClientWebSocket_Connected;
             timerUpdateStatus.Interval = settings.UpdateMilliseconds;
         }
+
+        protected override string SectionName => nameof(GSendDesktop);
 
         #region Client Web Socket
 
@@ -387,7 +391,8 @@ namespace GSendDesktop
             UpdateEnabledState();
         }
 
-        private void UpdateEnabledState()
+        
+        protected override void UpdateEnabledState()
         {
             if (InvokeRequired)
             {
@@ -418,14 +423,19 @@ namespace GSendDesktop
             return listViewMachines.SelectedItems.Count == 0 ? null : listViewMachines.SelectedItems[0];
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected override void LoadSettings()
         {
-            base.OnLoad(e);
-            UpdateResources();
-            UpdateEnabledState();
+            base.LoadSettings();
+            LoadSettings(listViewMachines);
         }
 
-        private void UpdateResources()
+        protected override void SaveSettings()
+        {
+            base.SaveSettings();
+            SaveSettings(listViewMachines);
+        }
+
+        protected override void LoadResources()
         {
             // list view headers
             columnHeaderComPort.Text = GSend.Language.Resources.Port;

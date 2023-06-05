@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GSendApi;
 
+using GSendControls;
+
 using GSendShared;
 using GSendShared.Models;
 
 namespace GSendDesktop.Forms
 {
-    public partial class FrmRegisterService : Form
+    public partial class FrmRegisterService : BaseForm
     {
         private readonly GSendApiWrapper _machineApiWrapper;
         private readonly long _machineId;
@@ -27,8 +29,9 @@ namespace GSendDesktop.Forms
 
             dateTimeServiceDate.Value = DateTime.UtcNow;
             dateTimeServiceDate.CustomFormat = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
-            LoadResources();
         }
+
+        protected override string SectionName => nameof(FrmRegisterService);
 
         public FrmRegisterService(long machineId, GSendApiWrapper machineApiWrapper)
             : this()
@@ -37,7 +40,7 @@ namespace GSendDesktop.Forms
             _machineId = machineId;
         }
 
-        public void LoadResources()
+        protected override void LoadResources()
         {
             Text = GSend.Language.Resources.RegisterService;
 

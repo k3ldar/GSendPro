@@ -160,13 +160,22 @@ namespace GSendAnalyser.Internal
                     default:
                         if (position + 1 > MaxLineSize)
                         {
-                            currentValues.Attributes |= CommandAttributes.InvalidLineTooLong;
-                            invalidGCode = true;
+                            if (isComment)
+                            {
+                                currentValues.Attributes |= CommandAttributes.InvalidCommentTooLong;
+                            }
+                            else
+                            {
+                                currentValues.Attributes |= CommandAttributes.InvalidLineTooLong;
+                                invalidGCode = true;
+                            }
+
                             break;
                         }
                         else
                         {
                             currentValues.Attributes &= ~CommandAttributes.InvalidLineTooLong;
+                            currentValues.Attributes &= ~CommandAttributes.InvalidCommentTooLong;
 
                             if (isVariable && isComment)
                             {
