@@ -45,6 +45,27 @@ namespace GSendTests.GSendAnalyserTests
         }
 
         [TestMethod]
+        public void VariableBlock_NumericValueReplaced_Success()
+        {
+            string gCodeWithM650NoComment = "#321=57\nM[#321]";
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
+            IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+
+            AnalyzeVariableBlocks sut = new AnalyzeVariableBlocks();
+            sut.Analyze("", analyses);
+
+            Assert.AreEqual(0, analyses.Errors.Count);
+
+            Assert.AreEqual(0, analyses.Warnings.Count);
+
+            string line = analyses.Lines(out int _)[0].GetGCode();
+            Assert.AreEqual("M57", line);
+            Assert.AreEqual("57", analyses.Commands[0].VariableBlocks[0].Value);
+        }
+
+        [TestMethod]
         public void VariableDeclaredObtainedFromSubProgram_AddsWarnings_Success()
         {
             string gCodeWithM650NoComment = "O1000\n#200=a\n#201=b\n\nM650 [#321]";
