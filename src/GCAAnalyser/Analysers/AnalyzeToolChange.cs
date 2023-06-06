@@ -29,6 +29,13 @@ namespace GSendAnalyser.Analysers
 
                 tools.ForEach(t => gCodeAnalyses.Tools += $"{t.CommandValueString},");
             }
+            else if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges))
+            {
+                if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
+                {
+                    codeAnalyses.AddError(GSend.Language.Resources.AnalysesError1);
+                }
+            }
 
             if (gCodeAnalyses.Tools.EndsWith(","))
                 gCodeAnalyses.Tools = gCodeAnalyses.Tools[..^1];

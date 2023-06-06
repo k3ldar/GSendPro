@@ -156,6 +156,57 @@
   <data name="AnalyserValue" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="AnalysesError1" xml:space="preserve">
+    <value>M6 Automatic tool change found, but no tool specified.</value>
+  </data>
+  <data name="AnalysesVariableInvalid1" xml:space="preserve">
+    <value>Invalid variable on line {0}, must contain a name and value, i.e. #101=value</value>
+  </data>
+  <data name="AnalysesVariableInvalid2" xml:space="preserve">
+    <value>Invalid variable on line {0}, variable name must be a number between 100 and 65535.</value>
+  </data>
+  <data name="AnalysesVariableInvalid3" xml:space="preserve">
+    <value>Invalid variable on line {0}, duplicate variable #{1} declared.</value>
+  </data>
+  <data name="AnalysesVariableInvalid4" xml:space="preserve">
+    <value>Invalid variable block on line {0}, variable block must start with [ and end with ]</value>
+  </data>
+  <data name="AnalysesVariableInvalid5" xml:space="preserve">
+    <value>Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234])</value>
+  </data>
+  <data name="AnalysesVariableInvalid6" xml:space="preserve">
+    <value>Variable #{0} is referenced on line {1} but has not been declared.</value>
+  </data>
+  <data name="AnalysesVariableInvalid7" xml:space="preserve">
+    <value>Variable #{0} is used on line {1} but not declared until line {2}, variable must be declared before use.</value>
+  </data>
+  <data name="AnalysesVariableInvalid8" xml:space="preserve">
+    <value>Variable #{0} is declared in subprogram {1} on line {2} and redeclared in subprogram {3} on line {4}</value>
+  </data>
+  <data name="AnalysesVariableWarning1" xml:space="preserve">
+    <value>Variable #{0} is declared on line {1} but not used.</value>
+  </data>
+  <data name="AnalysesVariableWarning2" xml:space="preserve">
+    <value>Variable #{0} is declared in subprogram but not used in the current gcode.</value>
+  </data>
+  <data name="AnalysesWarningContainsFloodCoolantOption" xml:space="preserve">
+    <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>
+  </data>
+  <data name="AnalysesWarningContainsInvalidGCode" xml:space="preserve">
+    <value>The file contains invalid G Code, check maximum line length</value>
+  </data>
+  <data name="AnalysesWarningContainsMistCoolantOption" xml:space="preserve">
+    <value>GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored.</value>
+  </data>
+  <data name="AnalysesWarningContainsToolChangeOption" xml:space="preserve">
+    <value>GCode file contains option to change tools but is not supported.  This command will be ignored.</value>
+  </data>
+  <data name="AnalysesWarningLayerHeightTooMuch" xml:space="preserve">
+    <value>Maximum layer height is {0} which exceeds warning level of {1}</value>
+  </data>
+  <data name="AnalysesWarningLongComment" xml:space="preserve">
+    <value>Comment on line {0} is too long and will be ignored.</value>
+  </data>
   <data name="AppMenuEdit" xml:space="preserve">
     <value>&amp;Edit</value>
   </data>
@@ -1125,59 +1176,11 @@
   <data name="Usage" xml:space="preserve">
     <value>Usage</value>
   </data>
-  <data name="VariableInvalid1" xml:space="preserve">
-    <value>Invalid variable on line {0}, must contain a name and value, i.e. #101=value</value>
-  </data>
-  <data name="VariableInvalid2" xml:space="preserve">
-    <value>Invalid variable on line {0}, variable name must be a number between 100 and 65535.</value>
-  </data>
-  <data name="VariableInvalid3" xml:space="preserve">
-    <value>Invalid variable on line {0}, duplicate variable #{1} declared.</value>
-  </data>
-  <data name="VariableInvalid4" xml:space="preserve">
-    <value>Invalid variable block on line {0}, variable block must start with [ and end with ]</value>
-  </data>
-  <data name="VariableInvalid5" xml:space="preserve">
-    <value>Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234])</value>
-  </data>
-  <data name="VariableInvalid6" xml:space="preserve">
-    <value>Variable #{0} is referenced on line {1} but has not been declared.</value>
-  </data>
-  <data name="VariableInvalid7" xml:space="preserve">
-    <value>Variable #{0} is used on line {1} but not declared until line {2}, variable must be declared before use.</value>
-  </data>
-  <data name="VariableInvalid8" xml:space="preserve">
-    <value>Variable #{0} is declared in subprogram {1} on line {2} and redeclared in subprogram {3} on line {4}</value>
-  </data>
-  <data name="VariableWarning1" xml:space="preserve">
-    <value>Variable #{0} is declared on line {1} but not used.</value>
-  </data>
-  <data name="VariableWarning2" xml:space="preserve">
-    <value>Variable #{0} is declared in subprogram but not used in the current gcode.</value>
-  </data>
   <data name="View" xml:space="preserve">
     <value>View</value>
   </data>
   <data name="View2D" xml:space="preserve">
     <value>2D View</value>
-  </data>
-  <data name="WarningContainsFloodCoolantOption" xml:space="preserve">
-    <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>
-  </data>
-  <data name="WarningContainsInvalidGCode" xml:space="preserve">
-    <value>The file contains invalid G Code, check maximum line length</value>
-  </data>
-  <data name="WarningContainsMistCoolantOption" xml:space="preserve">
-    <value>GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored.</value>
-  </data>
-  <data name="WarningContainsToolChangeOption" xml:space="preserve">
-    <value>GCode file contains option to change tools but is not supported.  This command will be ignored.</value>
-  </data>
-  <data name="WarningLayerHeightTooMuch" xml:space="preserve">
-    <value>Maximum layer height is {0} which exceeds warning level of {1}</value>
-  </data>
-  <data name="WarningLongComment" xml:space="preserve">
-    <value>Comment on line {0} is too long and will be ignored.</value>
   </data>
   <data name="WarningsAndInformation" xml:space="preserve">
     <value>Errors, warnings and information count</value>

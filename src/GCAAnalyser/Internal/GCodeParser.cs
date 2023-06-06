@@ -194,19 +194,19 @@ namespace GSendAnalyser.Internal
 
             if (variableParts.Length != 2)
             {
-                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid1, lineNumber));
+                Result.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid1, lineNumber));
                 return;
             }
 
             if (!ushort.TryParse(variableParts[0], out ushort variableId) || variableId < UserVariableStartingId)
             {
-                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid2, lineNumber));
+                Result.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid2, lineNumber));
                 return;
             }
 
             if (!Result.AddVariable(new GCodeVariableModel(variableId, variableParts[1], lineNumber)))
             {
-                Result.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variableId));
+                Result.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid3, lineNumber, variableId));
             }
         }
 
@@ -264,7 +264,7 @@ namespace GSendAnalyser.Internal
                     }
                     else if (variableBlockStart == -1 && variableBlock.IndexOf('#') > -1)
                     {
-                        analysis.AddError(String.Format(GSend.Language.Resources.VariableInvalid5, lineNumber));
+                        analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid5, lineNumber));
                     }
                 }
 
@@ -304,7 +304,7 @@ namespace GSendAnalyser.Internal
                                 {
                                     if (analysis.Variables.ContainsKey(variable.Key))
                                     {
-                                        analysis.AddError(String.Format(GSend.Language.Resources.VariableInvalid3, lineNumber, variable.Key));
+                                        analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid3, lineNumber, variable.Key));
                                         continue;
                                     }
 
@@ -558,7 +558,7 @@ namespace GSendAnalyser.Internal
                 }
                 else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)
                 {
-                    analyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid4, lineNumber));
+                    analyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid4, lineNumber));
                 }
 
                 if (variableBlockEnd > 0)

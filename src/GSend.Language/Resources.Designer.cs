@@ -178,6 +178,159 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M6 Automatic tool change found, but no tool specified..
+        /// </summary>
+        public static string AnalysesError1 {
+            get {
+                return ResourceManager.GetString("AnalysesError1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, must contain a name and value, i.e. #101=value.
+        /// </summary>
+        public static string AnalysesVariableInvalid1 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, variable name must be a number between 100 and 65535..
+        /// </summary>
+        public static string AnalysesVariableInvalid2 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, duplicate variable #{1} declared..
+        /// </summary>
+        public static string AnalysesVariableInvalid3 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable block on line {0}, variable block must start with [ and end with ].
+        /// </summary>
+        public static string AnalysesVariableInvalid4 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234]).
+        /// </summary>
+        public static string AnalysesVariableInvalid5 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is referenced on line {1} but has not been declared..
+        /// </summary>
+        public static string AnalysesVariableInvalid6 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is used on line {1} but not declared until line {2}, variable must be declared before use..
+        /// </summary>
+        public static string AnalysesVariableInvalid7 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram {1} on line {2} and redeclared in subprogram {3} on line {4}.
+        /// </summary>
+        public static string AnalysesVariableInvalid8 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableInvalid8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is declared on line {1} but not used..
+        /// </summary>
+        public static string AnalysesVariableWarning1 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableWarning1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram but not used in the current gcode..
+        /// </summary>
+        public static string AnalysesVariableWarning2 {
+            get {
+                return ResourceManager.GetString("AnalysesVariableWarning2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string AnalysesWarningContainsFloodCoolantOption {
+            get {
+                return ResourceManager.GetString("AnalysesWarningContainsFloodCoolantOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file contains invalid G Code, check maximum line length.
+        /// </summary>
+        public static string AnalysesWarningContainsInvalidGCode {
+            get {
+                return ResourceManager.GetString("AnalysesWarningContainsInvalidGCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string AnalysesWarningContainsMistCoolantOption {
+            get {
+                return ResourceManager.GetString("AnalysesWarningContainsMistCoolantOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode file contains option to change tools but is not supported.  This command will be ignored..
+        /// </summary>
+        public static string AnalysesWarningContainsToolChangeOption {
+            get {
+                return ResourceManager.GetString("AnalysesWarningContainsToolChangeOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum layer height is {0} which exceeds warning level of {1}.
+        /// </summary>
+        public static string AnalysesWarningLayerHeightTooMuch {
+            get {
+                return ResourceManager.GetString("AnalysesWarningLayerHeightTooMuch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comment on line {0} is too long and will be ignored..
+        /// </summary>
+        public static string AnalysesWarningLongComment {
+            get {
+                return ResourceManager.GetString("AnalysesWarningLongComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Edit.
         /// </summary>
         public static string AppMenuEdit {
@@ -3085,96 +3238,6 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid variable on line {0}, must contain a name and value, i.e. #101=value.
-        /// </summary>
-        public static string VariableInvalid1 {
-            get {
-                return ResourceManager.GetString("VariableInvalid1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid variable on line {0}, variable name must be a number between 100 and 65535..
-        /// </summary>
-        public static string VariableInvalid2 {
-            get {
-                return ResourceManager.GetString("VariableInvalid2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid variable on line {0}, duplicate variable #{1} declared..
-        /// </summary>
-        public static string VariableInvalid3 {
-            get {
-                return ResourceManager.GetString("VariableInvalid3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid variable block on line {0}, variable block must start with [ and end with ].
-        /// </summary>
-        public static string VariableInvalid4 {
-            get {
-                return ResourceManager.GetString("VariableInvalid4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid variable on line {0}, variable must be enclosed by square brackets (i.e. [#234]).
-        /// </summary>
-        public static string VariableInvalid5 {
-            get {
-                return ResourceManager.GetString("VariableInvalid5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable #{0} is referenced on line {1} but has not been declared..
-        /// </summary>
-        public static string VariableInvalid6 {
-            get {
-                return ResourceManager.GetString("VariableInvalid6", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable #{0} is used on line {1} but not declared until line {2}, variable must be declared before use..
-        /// </summary>
-        public static string VariableInvalid7 {
-            get {
-                return ResourceManager.GetString("VariableInvalid7", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram {1} on line {2} and redeclared in subprogram {3} on line {4}.
-        /// </summary>
-        public static string VariableInvalid8 {
-            get {
-                return ResourceManager.GetString("VariableInvalid8", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable #{0} is declared on line {1} but not used..
-        /// </summary>
-        public static string VariableWarning1 {
-            get {
-                return ResourceManager.GetString("VariableWarning1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable #{0} is declared in subprogram but not used in the current gcode..
-        /// </summary>
-        public static string VariableWarning2 {
-            get {
-                return ResourceManager.GetString("VariableWarning2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
         public static string View {
@@ -3189,60 +3252,6 @@ namespace GSend.Language {
         public static string View2D {
             get {
                 return ResourceManager.GetString("View2D", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored..
-        /// </summary>
-        public static string WarningContainsFloodCoolantOption {
-            get {
-                return ResourceManager.GetString("WarningContainsFloodCoolantOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The file contains invalid G Code, check maximum line length.
-        /// </summary>
-        public static string WarningContainsInvalidGCode {
-            get {
-                return ResourceManager.GetString("WarningContainsInvalidGCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored..
-        /// </summary>
-        public static string WarningContainsMistCoolantOption {
-            get {
-                return ResourceManager.GetString("WarningContainsMistCoolantOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GCode file contains option to change tools but is not supported.  This command will be ignored..
-        /// </summary>
-        public static string WarningContainsToolChangeOption {
-            get {
-                return ResourceManager.GetString("WarningContainsToolChangeOption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Maximum layer height is {0} which exceeds warning level of {1}.
-        /// </summary>
-        public static string WarningLayerHeightTooMuch {
-            get {
-                return ResourceManager.GetString("WarningLayerHeightTooMuch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Comment on line {0} is too long and will be ignored..
-        /// </summary>
-        public static string WarningLongComment {
-            get {
-                return ResourceManager.GetString("WarningLongComment", resourceCulture);
             }
         }
         

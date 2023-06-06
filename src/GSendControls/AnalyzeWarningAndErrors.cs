@@ -35,7 +35,7 @@ namespace GSendControls
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))
             {
-                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.WarningContainsInvalidGCode);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.AnalysesWarningContainsInvalidGCode);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames))

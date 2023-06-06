@@ -2044,22 +2044,22 @@ namespace GSendDesktop.Forms
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))
                     {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsMistCoolantOption);
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.AnalysesWarningContainsMistCoolantOption);
                     }
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesFloodCoolant) && !_machine.Options.HasFlag(MachineOptions.FloodCoolant))
                     {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsFloodCoolantOption);
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.AnalysesWarningContainsFloodCoolantOption);
                     }
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsToolChanges) && !_machine.Options.HasFlag(MachineOptions.ToolChanger))
                     {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.WarningContainsToolChangeOption);
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.AnalysesWarningContainsToolChangeOption);
                     }
 
                     if (_gCodeAnalyses.MaxLayerDepth > _machine.LayerHeightWarning && _machine.Options.HasFlag(MachineOptions.LayerHeightWarning))
                     {
-                        warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.WarningLayerHeightTooMuch,
+                        warningsAndErrors.AddWarningPanel(InformationType.Warning, String.Format(GSend.Language.Resources.AnalysesWarningLayerHeightTooMuch,
                             _gCodeAnalyses.MaxLayerDepth, _machine.LayerHeightWarning));
                     }
 

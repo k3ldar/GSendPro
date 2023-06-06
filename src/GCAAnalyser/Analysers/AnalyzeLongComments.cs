@@ -15,7 +15,7 @@ namespace GSendAnalyser.Analysers
 
                 foreach (IGCodeCommand longComment in longComments)
                 {
-                    codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.WarningLongComment, longComment.LineNumber));
+                    codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.AnalysesWarningLongComment, longComment.LineNumber));
                 }
             }
         }

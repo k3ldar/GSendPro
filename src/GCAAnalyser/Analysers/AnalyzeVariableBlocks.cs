@@ -31,7 +31,7 @@ namespace GSendAnalyser.Analysers
                                 }
                                 else
                                 {
-                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6, id, command.LineNumber));
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid6, id, command.LineNumber));
                                 }
                             }
 

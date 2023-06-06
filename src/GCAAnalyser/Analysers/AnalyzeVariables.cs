@@ -37,7 +37,7 @@ namespace GSendAnalyser.Analysers
                             {
                                 if (subProgramVariableDeclarations.ContainsKey(variable.VariableId))
                                 {
-                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid8,
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid8,
                                         variable.VariableId,
                                         $"O{subProgramVariableDeclarations[variable.VariableId].CommandValue}",
                                         subProgramVariableDeclarations[variable.VariableId].LineNumber,
@@ -76,12 +76,12 @@ namespace GSendAnalyser.Analysers
                             {
                                 if (!gCodeAnalyses.Variables.ContainsKey(id))
                                 {
-                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid6,
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid6,
                                         id, command.LineNumber));
                                 }
                                 else if (command.LineNumber < gCodeAnalyses.Variables[id].LineNumber)
                                 {
-                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.VariableInvalid7,
+                                    codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid7,
                                         id, command.LineNumber, gCodeAnalyses.Variables[id].LineNumber));
                                 }
                             }
@@ -96,12 +96,12 @@ namespace GSendAnalyser.Analysers
                 {
                     if (subProgramVariables.Contains(id))
                     {
-                        codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.VariableWarning2,
+                        codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.AnalysesVariableWarning2,
                             id, gCodeAnalyses.Variables[id].LineNumber));
                     }
                     else
                     {
-                        codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.VariableWarning1,
+                        codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.AnalysesVariableWarning1,
                             id, gCodeAnalyses.Variables[id].LineNumber));
                     }
                 }
