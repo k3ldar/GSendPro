@@ -20,7 +20,7 @@ namespace GSendCommon.MCodeOverrides
             if (pCode == null)
                 return false;
 
-            if (pCode.CommandValue > 0 && pCode.CommandValue < 2000)
+            if (pCode.CommandValue > 0 && pCode.CommandValue <= 2000)
             {
                 TimeSpan sleepTime = TimeSpan.FromSeconds((double)pCode.CommandValue);
                 Thread.Sleep(sleepTime.Milliseconds);
