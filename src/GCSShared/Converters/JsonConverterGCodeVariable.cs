@@ -30,7 +30,7 @@ namespace GSendShared.Converters
 
             using JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
 
-            return JsonSerializer.Deserialize(jsonDocument.RootElement.ToString(), typeToConvert, options) as GCodeVariableModel;
+            return JsonSerializer.Deserialize<GCodeVariableModel>(jsonDocument.RootElement.ToString());
         }
     }
 }

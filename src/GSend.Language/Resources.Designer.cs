@@ -1807,6 +1807,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was a problem loading subprograms: {0}.
+        /// </summary>
+        public static string LoadSubProgramsError {
+            get {
+                return ResourceManager.GetString("LoadSubProgramsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M650 must specify the job name as a comment, i.e. M50 (Job Name).
         /// </summary>
         public static string M650InvalidJobNameSpecified {

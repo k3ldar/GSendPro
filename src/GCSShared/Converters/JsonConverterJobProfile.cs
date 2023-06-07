@@ -29,7 +29,7 @@ namespace GSendShared.Converters
 
             using JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
 
-            return JsonSerializer.Deserialize(jsonDocument.RootElement.ToString(), typeToConvert, options) as JobProfileModel;
+            return JsonSerializer.Deserialize<JobProfileModel>(jsonDocument.RootElement.ToString());
         }
     }
 }

@@ -32,7 +32,7 @@ namespace GSendShared.Converters
 
             using JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
 
-            return JsonSerializer.Deserialize(jsonDocument.RootElement.ToString(), typeToConvert, options) as SubProgramModel;
+            return JsonSerializer.Deserialize<SubProgramModel>(jsonDocument.RootElement.ToString());
         }
     }
 }

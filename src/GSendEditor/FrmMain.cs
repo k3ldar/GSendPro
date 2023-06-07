@@ -39,7 +39,6 @@ namespace GSendEditor
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
-            LoadSubprograms();
         }
 
         protected override string SectionName => nameof(GSendEditor);
@@ -190,7 +189,22 @@ namespace GSendEditor
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
+            string[] args = Environment.GetCommandLineArgs();
+            
+            if (args.Length > 0 && File.Exists(args[1]))
+            {
+                FileName = args[1];
+                LoadGCodeData();
+            }
 
+            try
+            {
+                LoadSubprograms();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, String.Format(GSend.Language.Resources.LoadSubProgramsError, ex.Message), Languages.LanguageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtGCode_SelectionChangedDelayed(object sender, EventArgs e)
@@ -281,12 +295,23 @@ namespace GSendEditor
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
                 FileName = openFileDialog1.FileName;
-                txtGCode.Text = File.ReadAllText(FileName);
-                HasChanged = false;
-                txtGCode.ClearUndo();
-                lstWarningsErrors.Items.Clear();
+                LoadGCodeData();
             }
+            //else
+            //{
+            //    UpdateTitleBar();
+            //    UpdateEnabledState();
+            //    IsSubprogram = false;
+            //    _subProgram = null;
+            //}
+        }
 
+        private void LoadGCodeData()
+        {
+            txtGCode.Text = File.ReadAllText(FileName);
+            HasChanged = false;
+            txtGCode.ClearUndo();
+            lstWarningsErrors.Items.Clear();
             UpdateTitleBar();
             UpdateEnabledState();
             IsSubprogram = false;

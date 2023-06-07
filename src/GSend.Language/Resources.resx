@@ -699,6 +699,9 @@
   <data name="LoadGCode" xml:space="preserve">
     <value>Load GCode</value>
   </data>
+  <data name="LoadSubProgramsError" xml:space="preserve">
+    <value>There was a problem loading subprograms: {0}</value>
+  </data>
   <data name="M650InvalidJobNameSpecified" xml:space="preserve">
     <value>M650 must specify the job name as a comment, i.e. M50 (Job Name)</value>
   </data>
