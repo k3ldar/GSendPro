@@ -191,7 +191,7 @@ namespace GSendEditor
         {
             string[] args = Environment.GetCommandLineArgs();
             
-            if (args.Length > 0 && File.Exists(args[1]))
+            if (args.Length > 1 && File.Exists(args[1]))
             {
                 FileName = args[1];
                 LoadGCodeData();

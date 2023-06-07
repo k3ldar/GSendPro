@@ -381,7 +381,6 @@
             this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -534,6 +533,7 @@
             this.Controls.Add(this.splitContainerPrimary);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMain";
             this.Text = "Form1";

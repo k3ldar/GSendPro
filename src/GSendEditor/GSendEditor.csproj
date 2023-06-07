@@ -6,7 +6,12 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>EditorIcon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="EditorIcon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FastColoredTextBox-net7" Version="2.16.27" />
