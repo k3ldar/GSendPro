@@ -599,7 +599,7 @@ namespace GSendEditor
                     break;
             }
 
-            e.Graphics.DrawImage(ImageList.Images[imageIndex], e.Bounds.Left + 2, e.Bounds.Top + 1);
+            e.Graphics.DrawImage(toolbarImageListSmall.Images[imageIndex], e.Bounds.Left + 2, e.Bounds.Top + 1);
         }
 
         private void AnalyzerThread_OnRemoveItem(object sender, EventArgs e)

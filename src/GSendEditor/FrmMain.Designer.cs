@@ -67,13 +67,13 @@
             this.tabPagePreview = new System.Windows.Forms.TabPage();
             this.machine2dView1 = new GSendControls.Machine2DView();
             this.tabPageProperties = new System.Windows.Forms.TabPage();
-            this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             this.tabPageSubPrograms = new System.Windows.Forms.TabPage();
             this.lvSubprograms = new System.Windows.Forms.ListView();
             this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.lstWarningsErrors = new System.Windows.Forms.ListBox();
-            this.ImageList = new System.Windows.Forms.ImageList(this.components);
+            this.toolbarImageListSmall = new System.Windows.Forms.ImageList(this.components);
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
@@ -87,7 +87,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPagePreview.SuspendLayout();
-            this.tabPageProperties.SuspendLayout();
             this.tabPageSubPrograms.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,7 +94,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelWarnings});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 409);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 511);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1083, 22);
             this.statusStrip1.TabIndex = 2;
@@ -320,7 +319,7 @@
             this.splitContainerPrimary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainerPrimary.Location = new System.Drawing.Point(12, 40);
+            this.splitContainerPrimary.Location = new System.Drawing.Point(12, 52);
             this.splitContainerPrimary.Name = "splitContainerPrimary";
             this.splitContainerPrimary.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -331,8 +330,8 @@
             // splitContainerPrimary.Panel2
             // 
             this.splitContainerPrimary.Panel2.Controls.Add(this.lstWarningsErrors);
-            this.splitContainerPrimary.Size = new System.Drawing.Size(1059, 356);
-            this.splitContainerPrimary.SplitterDistance = 257;
+            this.splitContainerPrimary.Size = new System.Drawing.Size(1059, 446);
+            this.splitContainerPrimary.SplitterDistance = 321;
             this.splitContainerPrimary.TabIndex = 5;
             // 
             // splitContainerMain
@@ -350,7 +349,7 @@
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.tabControlMain);
-            this.splitContainerMain.Size = new System.Drawing.Size(1053, 251);
+            this.splitContainerMain.Size = new System.Drawing.Size(1053, 315);
             this.splitContainerMain.SplitterDistance = 631;
             this.splitContainerMain.TabIndex = 5;
             // 
@@ -391,7 +390,7 @@
             this.txtGCode.RightBracket2 = ')';
             this.txtGCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.txtGCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtGCode.ServiceColors")));
-            this.txtGCode.Size = new System.Drawing.Size(625, 245);
+            this.txtGCode.Size = new System.Drawing.Size(625, 394);
             this.txtGCode.TabIndex = 0;
             this.txtGCode.Zoom = 100;
             this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
@@ -413,7 +412,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(412, 245);
+            this.tabControlMain.Size = new System.Drawing.Size(412, 394);
             this.tabControlMain.TabIndex = 0;
             // 
             // tabPagePreview
@@ -422,7 +421,7 @@
             this.tabPagePreview.Location = new System.Drawing.Point(4, 24);
             this.tabPagePreview.Name = "tabPagePreview";
             this.tabPagePreview.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePreview.Size = new System.Drawing.Size(404, 217);
+            this.tabPagePreview.Size = new System.Drawing.Size(404, 366);
             this.tabPagePreview.TabIndex = 0;
             this.tabPagePreview.Text = "tabPagePreview";
             this.tabPagePreview.UseVisualStyleBackColor = true;
@@ -438,7 +437,7 @@
             this.machine2dView1.Location = new System.Drawing.Point(9, 9);
             this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 5000, 5000);
             this.machine2dView1.Name = "machine2dView1";
-            this.machine2dView1.Size = new System.Drawing.Size(389, 202);
+            this.machine2dView1.Size = new System.Drawing.Size(389, 436);
             this.machine2dView1.TabIndex = 0;
             this.machine2dView1.XPosition = 0F;
             this.machine2dView1.YPosition = 0F;
@@ -446,24 +445,13 @@
             // 
             // tabPageProperties
             // 
-            this.tabPageProperties.Controls.Add(this.gCodeAnalysesDetails1);
             this.tabPageProperties.Location = new System.Drawing.Point(4, 24);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(404, 217);
+            this.tabPageProperties.Size = new System.Drawing.Size(404, 366);
             this.tabPageProperties.TabIndex = 1;
             this.tabPageProperties.Text = "Properties";
             this.tabPageProperties.UseVisualStyleBackColor = true;
-            // 
-            // gCodeAnalysesDetails1
-            // 
-            this.gCodeAnalysesDetails1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(9, 9);
-            this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
-            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(389, 202);
-            this.gCodeAnalysesDetails1.TabIndex = 0;
             // 
             // tabPageSubPrograms
             // 
@@ -471,7 +459,7 @@
             this.tabPageSubPrograms.Location = new System.Drawing.Point(4, 24);
             this.tabPageSubPrograms.Name = "tabPageSubPrograms";
             this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 217);
+            this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 366);
             this.tabPageSubPrograms.TabIndex = 2;
             this.tabPageSubPrograms.Text = "Sub Programs";
             this.tabPageSubPrograms.UseVisualStyleBackColor = true;
@@ -486,7 +474,7 @@
             this.columnHeaderDescription});
             this.lvSubprograms.Location = new System.Drawing.Point(9, 9);
             this.lvSubprograms.Name = "lvSubprograms";
-            this.lvSubprograms.Size = new System.Drawing.Size(389, 202);
+            this.lvSubprograms.Size = new System.Drawing.Size(389, 351);
             this.lvSubprograms.TabIndex = 0;
             this.lvSubprograms.UseCompatibleStateImageBehavior = false;
             this.lvSubprograms.View = System.Windows.Forms.View.Details;
@@ -510,26 +498,35 @@
             this.lstWarningsErrors.ItemHeight = 20;
             this.lstWarningsErrors.Location = new System.Drawing.Point(3, 0);
             this.lstWarningsErrors.Name = "lstWarningsErrors";
-            this.lstWarningsErrors.Size = new System.Drawing.Size(1053, 84);
+            this.lstWarningsErrors.Size = new System.Drawing.Size(1053, 104);
             this.lstWarningsErrors.TabIndex = 0;
             this.lstWarningsErrors.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstWarningsErrors_DrawItem);
             // 
-            // ImageList
+            // toolbarImageListSmall
             // 
-            this.ImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ImageList.ImageStream")));
-            this.ImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.ImageList.Images.SetKeyName(0, "Error_red_16x16.png");
-            this.ImageList.Images.SetKeyName(1, "Error_red_16x16.png");
-            this.ImageList.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
-            this.ImageList.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
-            this.ImageList.Images.SetKeyName(4, "Error_red_16x16.png");
+            this.toolbarImageListSmall.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.toolbarImageListSmall.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("toolbarImageListSmall.ImageStream")));
+            this.toolbarImageListSmall.TransparentColor = System.Drawing.Color.Transparent;
+            this.toolbarImageListSmall.Images.SetKeyName(0, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(1, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(4, "Error_red_16x16.png");
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(1083, 25);
+            this.toolStrip1.TabIndex = 6;
+            this.toolStrip1.Text = "toolStrip1";
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1083, 431);
+            this.ClientSize = new System.Drawing.Size(1083, 533);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.splitContainerPrimary);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -554,7 +551,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).EndInit();
             this.tabControlMain.ResumeLayout(false);
             this.tabPagePreview.ResumeLayout(false);
-            this.tabPageProperties.ResumeLayout(false);
             this.tabPageSubPrograms.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -604,7 +600,8 @@
         private ColumnHeader columnHeaderName;
         private ColumnHeader columnHeaderDescription;
         private ListBox lstWarningsErrors;
-        private ImageList ImageList;
+        private ImageList toolbarImageListSmall;
         private ContextMenuStrip contextMenuStripEditor;
+        private ToolStrip toolStrip1;
     }
 }
