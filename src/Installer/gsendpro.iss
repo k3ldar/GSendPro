@@ -626,10 +626,7 @@ procedure DeinitializeSetup();
 var
   ResultCode: Integer;
 begin
-
-  MsgBox('deinitializesetup', mbInformation, MB_OK);
   Exec('sc.exe', 'start GSendPro', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-  MsgBox(IntToStr(ResultCode), mbInformation, MB_OK);
 end;
 
 <event('InitializeWizard')>
