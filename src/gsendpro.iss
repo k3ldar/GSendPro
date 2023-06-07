@@ -2,18 +2,26 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "GSend Pro"
-#define MyAppVersion "0.8"
-#define MyAppPublisher "GSend"
+#define MyAppVersion "0.6"
+#define MyAppPublisher "GSend Pro."
 #define MyAppURL "https://www.gsend.pro/"
-#define MyAppExeName "GSendDesktop.exe"
+#define MyAppExeName "GSendEditor.exe"
 #define MyAppAssocName MyAppName + " File"
-#define MyAppAssocExt ".gcode"
-#define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
+#define MyAppAssocExt1 ".gcode" 
+#define MyAppAssocKey1 StringChange(MyAppAssocName, " ", "") + MyAppAssocExt1
+#define MyAppAssocExt2 ".nc" 
+#define MyAppAssocKey2 StringChange(MyAppAssocName, " ", "") + MyAppAssocExt2
+#define MyAppAssocExt3 ".ncc" 
+#define MyAppAssocKey3 StringChange(MyAppAssocName, " ", "") + MyAppAssocExt3
+#define MyAppAssocExt4 ".ngc" 
+#define MyAppAssocKey4 StringChange(MyAppAssocName, " ", "") + MyAppAssocExt4
+#define MyAppAssocExt5 ".tap" 
+#define MyAppAssocKey5 StringChange(MyAppAssocName, " ", "") + MyAppAssocExt5
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{F23C5E2F-AD2E-4070-9356-A0F241FF6AB7}
+AppId={{884BB698-8D65-4895-9FC4-2137965AD28E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -21,17 +29,17 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={autopf64}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\GitProjects\GCA\Installer
-OutputBaseFilename=gsendpro
+OutputBaseFilename=GSendPro
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+ArchitecturesInstallIn64BitMode=x64
+MergeDuplicateFiles=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -39,22 +47,840 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+
+
+[Dirs]
+Name: "{app}"; Permissions: everyone-full
+Name: "{app}\Errors"; Permissions: everyone-full
+Name: "{app}\Logs"; Permissions: everyone-full
+Name: "{app}\Views"; Permissions: everyone-full
+Name: "{app}\wwwroot"; Permissions: everyone-full
+
 [Files]
-Source: "C:\GitProjects\GCA\Output\publish\Desktop\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\GitProjects\GCA\Output\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+;Source: "C:\GitProjects\GCA\Output\publish\Editor\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+
+; Configuration Files
+Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{commonappdata}\GSendPro"; Flags: onlyifdoesntexist
+
+
+; Server Files
+Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\web.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.pdb"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+
+
+; Desktop Files
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+
+; Editor Files
+Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.pdb"; DestDir: "{app}"; Flags: ignoreversion
+
+
+
+
+; Solution Files
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyser.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyser.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendControls.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendControls.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDB.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDB.pdb"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendShared.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendShared.pdb"; DestDir: "{app}"; Flags: ignoreversion
+
+;Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+
+
+; Shared Files
+
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\AppSettings.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\AspNetCore.PluginManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Breadcrumb.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\CacheControl.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\ErrorManager.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Languages.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Localization.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\LoginPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\MemoryCache.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Middleware.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PluginManager.DAL.TextFiles.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PluginManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\RestrictIp.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\SystemAdmin.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\SharedLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\SharedLib.Win.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\SharedPluginFeatures.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\SimpleDB.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\UserAccount.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\UserSessionMiddleware.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "C:\GitProjects\GCA\Output\publish\Server\Newtonsoft.Json.Bson.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "C:\GitProjects\GCA\Output\publish\Editor\FastColoredTextBox.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+
+; Other Files
+Source: "C:\GitProjects\GCA\Output\publish\Server\aspnetcorev2_inprocess.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Accessibility.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\clretwrc.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\clrgc.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\clrjit.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\coreclr.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\createdump.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\D3DCompiler_47_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\DirectWriteForwarder.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostfxr.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostpolicy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore_amd64_amd64_7.0.22.51805.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordbi.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorlib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorrc.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\msquic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\netstandard.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PenImc_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationCore.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.Aero.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.Aero2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.AeroLite.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.Classic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.Luna.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework.Royale.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework-SystemCore.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework-SystemData.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework-SystemDrawing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework-SystemXml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationFramework-SystemXmlLinq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationNative_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\PresentationUI.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\ReachFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\UIAutomationClient.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\UIAutomationClientSideProviders.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\UIAutomationProvider.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\UIAutomationTypes.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\vcruntime140_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\WindowsBase.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\WindowsFormsIntegration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\wpfgfx_cor3.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+
+
+
+; Microsoft DLLs
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Antiforgery.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authentication.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authentication.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authentication.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authorization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authorization.Policy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authentication.Cookies.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Authentication.OAuth.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Cors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Cryptography.Internal.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Components.Authorization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Components.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Components.Forms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Components.Server.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Components.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Connections.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.CookiePolicy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.DataProtection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.DataProtection.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Diagnostics.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.DataProtection.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Diagnostics.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Diagnostics.HealthChecks.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Hosting.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Html.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Features.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.HostFiltering.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Hosting.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Connections.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Connections.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Http.Results.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.HttpLogging.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.HttpOverrides.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.HttpsPolicy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.HostFiltering.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Identity.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.JsonPatch.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Localization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Localization.Routing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Metadata.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.ApiExplorer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Cors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.DataAnnotations.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Formatters.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Formatters.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Localization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Razor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.RazorPages.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.TagHelpers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Mvc.ViewFeatures.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Razor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Razor.Language.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Razor.Runtime.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Routing.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Routing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.OutputCaching.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.RateLimiting.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.RequestDecompression.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.ResponseCaching.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.ResponseCompression.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Rewrite.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.WebUtilities.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.HttpSys.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.IIS.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.IISIntegration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.Https.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.Transport.Quic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.Session.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.SignalR.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.SignalR.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.SignalR.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.SignalR.Protocols.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.StaticFiles.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.AspNetCore.WebSockets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.CodeAnalysis.CSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.CodeAnalysis.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.CodeAnalysis.Razor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.CSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.DiaSymReader.Native.amd64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Microsoft.DotNet.PlatformAbstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Caching.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Caching.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.Binder.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.Ini.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.FileExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.KeyPerFile.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.UserSecrets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Configuration.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.DependencyInjection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.DependencyModel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Diagnostics.HealthChecks.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.FileProviders.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.FileProviders.Composite.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.FileProviders.Physical.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.FileSystemGlobbing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Hosting.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Features.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.FileProviders.Embedded.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Localization.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Localization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.ObjectPool.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Options.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.WebEncoders.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Net.Http.Headers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.VisualBasic.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.VisualBasic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Microsoft.VisualBasic.Forms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Win32.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Microsoft.Win32.Registry.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\Microsoft.Win32.SystemEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Hosting.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Hosting.WindowsServices.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Http.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Identity.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Identity.Stores.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.Configuration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.Console.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.Debug.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.EventLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.EventSource.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Logging.TraceSource.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Options.ConfigurationExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Options.DataAnnotations.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.Extensions.Options.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.JSInterop.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+
+
+
+; System DLLs
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.AppContext.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.CodeDom.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Collections.Concurrent.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Collections.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Collections.Immutable.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Collections.NonGeneric.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Collections.Specialized.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.Annotations.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.DataAnnotations.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.EventBasedAsync.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ComponentModel.TypeConverter.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Configuration.ConfigurationManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Configuration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Console.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Data.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Data.DataSetExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Data.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Design.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.Contracts.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.Debug.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.DiagnosticSource.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.EventLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.EventLog.Messages.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.FileVersionInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Diagnostics.PerformanceCounter.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.Process.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.StackTrace.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.TextWriterTraceListener.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.Tools.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.TraceSource.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Diagnostics.Tracing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.DirectoryServices.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Drawing.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Drawing.Design.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Drawing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Drawing.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Dynamic.Runtime.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Formats.Asn1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Formats.Tar.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Globalization.Calendars.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Globalization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Globalization.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Compression.Brotli.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Compression.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Compression.FileSystem.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Compression.Native.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Compression.ZipFile.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.FileSystem.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.FileSystem.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.FileSystem.DriveInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.FileSystem.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.FileSystem.Watcher.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.IsolatedStorage.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.MemoryMappedFiles.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.IO.Packaging.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Pipelines.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Pipes.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Pipes.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.Ports.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.IO.UnmanagedMemoryStream.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Linq.Expressions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Linq.Parallel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Linq.Queryable.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Http.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Http.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.HttpListener.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Mail.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.NameResolution.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.NetworkInformation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Ping.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Quic.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Requests.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Security.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.ServicePoint.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.Sockets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.WebClient.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.WebHeaderCollection.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.WebProxy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.WebSockets.Client.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Net.WebSockets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Numerics.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ObjectModel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Printing.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Private.CoreLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Private.DataContractSerialization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Private.Uri.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Private.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Private.Xml.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.DispatchProxy.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Emit.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Emit.ILGeneration.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Emit.Lightweight.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Metadata.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Reflection.TypeExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Resources.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Resources.Reader.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Resources.ResourceManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Resources.Writer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.CompilerServices.VisualC.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Handles.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.InteropServices.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.InteropServices.JavaScript.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.InteropServices.RuntimeInformation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Intrinsics.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Loader.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Numerics.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Serialization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Serialization.Formatters.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Serialization.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Serialization.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Runtime.Serialization.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Claims.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Algorithms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Cng.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Csp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Encoding.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.OpenSsl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Pkcs.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Security.Cryptography.ProtectedData.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.X509Certificates.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Cryptography.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Permissions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Principal.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.Principal.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Security.SecureString.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ServiceModel.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ServiceProcess.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ServiceProcess.ServiceController.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.Encoding.CodePages.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.Encoding.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.Encoding.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.Encodings.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Text.RegularExpressions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Threading.AccessControl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Channels.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Overlapped.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.RateLimiting.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Tasks.Dataflow.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Tasks.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Tasks.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Tasks.Parallel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Thread.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.ThreadPool.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Threading.Timer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Transactions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Transactions.Local.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Web.HttpUtility.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Controls.Ribbon.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Forms.Design.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Forms.Design.Editors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Forms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Forms.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Input.Manipulations.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Windows.Presentation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xaml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.ReaderWriter.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.Serialization.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.XDocument.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.XmlDocument.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.XmlSerializer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.XPath.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.Xml.XPath.XDocument.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+
+; Runtime Files
+Source: "netcorecheck_x64.exe"; DestDir: "{app}"; Flags: ignoreversion; 
+Source: "netcorecheck.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+
 
 [Registry]
-Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey}"; ValueData: ""; Flags: uninsdeletevalue
-Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
-Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
-Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
-Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: ".myp"; ValueData: ""
+;.gcode extension 
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt1}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey1}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey1}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey1}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey1}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MyAppAssocExt1}"; ValueData: ""
+
+;.nc extension 
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt2}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey2}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey2}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey2}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey2}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MyAppAssocExt2}"; ValueData: ""
+
+;.ncc extension 
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt3}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey3}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey3}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey3}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey3}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MyAppAssocExt3}"; ValueData: ""
+
+;.ngc extension 
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt4}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey4}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey4}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey4}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey4}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MyAppAssocExt4}"; ValueData: ""
+
+;.tap extension 
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocExt5}\OpenWithProgids"; ValueType: string; ValueName: "{#MyAppAssocKey5}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey5}"; ValueType: string; ValueName: ""; ValueData: "{#MyAppAssocName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey5}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"
+Root: HKA; Subkey: "Software\Classes\{#MyAppAssocKey5}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}\SupportedTypes"; ValueType: string; ValueName: "{#MyAppAssocExt5}"; ValueData: ""
+
+
+
+; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName} GCode Editor"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName} GCode Editor"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\GSend Pro Desktop"; Filename: "{app}\GSendDesktop.exe"
+Name: "{autodesktop}\GSend Pro Desktop"; Filename: "{app}\GSendDesktop.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\GSendEditor.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend GCode Editor", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\GSendDesktop.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend Desktop", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+Filename: {sys}\sc.exe; Parameters: "create GSendPro start= auto binPath= ""{app}\GSendService.exe""" ; Flags: runhidden; StatusMsg: "Creating GSend Pro Server"
+
+[UninstallRun]
+Filename: {sys}\sc.exe; Parameters: "stop GSendPro" ; RunOnceId: "gsend_service"; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "delete GSendPro" ; RunOnceId: "gsend_service"; Flags: runhidden
+
+[Code]
+
+
+// Code for installing dependencies
+type
+  TDependency_Entry = record
+    Filename: String;
+    Parameters: String;
+    Title: String;
+    URL: String;
+    Checksum: String;
+    ForceSuccess: Boolean;
+    RestartAfter: Boolean;
+  end;
+
+var
+  Dependency_Memo: String;
+  Dependency_List: array of TDependency_Entry;
+  Dependency_NeedRestart, 
+  Dependency_ForceX86: Boolean;
+  Dependency_DownloadPage: TDownloadWizardPage;
+
+procedure DeinitializeSetup();
+var
+  ResultCode: Integer;
+begin
+
+  MsgBox('deinitializesetup', mbInformation, MB_OK);
+  Exec('sc.exe', 'start GSendPro', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  MsgBox(IntToStr(ResultCode), mbInformation, MB_OK);
+end;
+
+<event('InitializeWizard')>
+procedure Dependency_Internal1;
+begin
+  Dependency_DownloadPage := CreateDownloadPage(SetupMessage(msgWizardPreparing), SetupMessage(msgPreparingDesc), nil);
+end;
+
+<event('PrepareToInstall')>
+function Dependency_Internal2(var NeedsRestart: Boolean): String;
+var
+  DependencyCount, DependencyIndex, ResultCode: Integer;
+  Retry: Boolean;
+  TempValue: String;
+begin
+  DependencyCount := GetArrayLength(Dependency_List);
+
+  if DependencyCount > 0 then begin
+    Dependency_DownloadPage.Show;
+
+    for DependencyIndex := 0 to DependencyCount - 1 do begin
+      if Dependency_List[DependencyIndex].URL <> '' then begin
+        Dependency_DownloadPage.Clear;
+        Dependency_DownloadPage.Add(Dependency_List[DependencyIndex].URL, Dependency_List[DependencyIndex].Filename, Dependency_List[DependencyIndex].Checksum);
+
+        Retry := True;
+        while Retry do begin
+          Retry := False;
+
+          try
+            Dependency_DownloadPage.Download;
+          except
+            if Dependency_DownloadPage.AbortedByUser then begin
+              Result := Dependency_List[DependencyIndex].Title;
+              DependencyIndex := DependencyCount;
+            end else begin
+              case SuppressibleMsgBox(AddPeriod(GetExceptionMessage), mbError, MB_ABORTRETRYIGNORE, IDIGNORE) of
+                IDABORT: begin
+                  Result := Dependency_List[DependencyIndex].Title;
+                  DependencyIndex := DependencyCount;
+                end;
+                IDRETRY: begin
+                  Retry := True;
+                end;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+
+    if Result = '' then begin
+      for DependencyIndex := 0 to DependencyCount - 1 do begin
+        Dependency_DownloadPage.SetText(Dependency_List[DependencyIndex].Title, '');
+        Dependency_DownloadPage.SetProgress(DependencyIndex + 1, DependencyCount + 1);
+
+        while True do begin
+          ResultCode := 0;
+          if ShellExec('', ExpandConstant('{tmp}{\}') + Dependency_List[DependencyIndex].Filename, Dependency_List[DependencyIndex].Parameters, '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode) then begin
+            if Dependency_List[DependencyIndex].RestartAfter then begin
+              if DependencyIndex = DependencyCount - 1 then begin
+                Dependency_NeedRestart := True;
+              end else begin
+                NeedsRestart := True;
+                Result := Dependency_List[DependencyIndex].Title;
+              end;
+              break;
+            end else if (ResultCode = 0) or Dependency_List[DependencyIndex].ForceSuccess then begin // ERROR_SUCCESS (0)
+              break;
+            end else if ResultCode = 1641 then begin // ERROR_SUCCESS_REBOOT_INITIATED (1641)
+              NeedsRestart := True;
+              Result := Dependency_List[DependencyIndex].Title;
+              break;
+            end else if ResultCode = 3010 then begin // ERROR_SUCCESS_REBOOT_REQUIRED (3010)
+              Dependency_NeedRestart := True;
+              break;
+            end;
+          end;
+
+          case SuppressibleMsgBox(FmtMessage(SetupMessage(msgErrorFunctionFailed), [Dependency_List[DependencyIndex].Title, IntToStr(ResultCode)]), mbError, MB_ABORTRETRYIGNORE, IDIGNORE) of
+            IDABORT: begin
+              Result := Dependency_List[DependencyIndex].Title;
+              break;
+            end;
+            IDIGNORE: begin
+              break;
+            end;
+          end;
+        end;
+
+        if Result <> '' then begin
+          break;
+        end;
+      end;
+
+      if NeedsRestart then begin
+        TempValue := '"' + ExpandConstant('{srcexe}') + '" /restart=1 /LANG="' + ExpandConstant('{language}') + '" /DIR="' + WizardDirValue + '" /GROUP="' + WizardGroupValue + '" /TYPE="' + WizardSetupType(False) + '" /COMPONENTS="' + WizardSelectedComponents(False) + '" /TASKS="' + WizardSelectedTasks(False) + '"';
+        if WizardNoIcons then begin
+          TempValue := TempValue + ' /NOICONS';
+        end;
+        RegWriteStringValue(HKA, 'SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce', '{#SetupSetting("AppName")}', TempValue);
+      end;
+    end;
+
+    Dependency_DownloadPage.Hide;
+  end;
+end;
+
+<event('UpdateReadyMemo')>
+function Dependency_Internal3(const Space, NewLine, MemoUserInfoInfo, MemoDirInfo, MemoTypeInfo, MemoComponentsInfo, MemoGroupInfo, MemoTasksInfo: String): String;
+begin
+  Result := '';
+  if MemoUserInfoInfo <> '' then begin
+    Result := Result + MemoUserInfoInfo + Newline + NewLine;
+  end;
+  if MemoDirInfo <> '' then begin
+    Result := Result + MemoDirInfo + Newline + NewLine;
+  end;
+  if MemoTypeInfo <> '' then begin
+    Result := Result + MemoTypeInfo + Newline + NewLine;
+  end;
+  if MemoComponentsInfo <> '' then begin
+    Result := Result + MemoComponentsInfo + Newline + NewLine;
+  end;
+  if MemoGroupInfo <> '' then begin
+    Result := Result + MemoGroupInfo + Newline + NewLine;
+  end;
+  if MemoTasksInfo <> '' then begin
+    Result := Result + MemoTasksInfo;
+  end;
+
+  if Dependency_Memo <> '' then begin
+    if MemoTasksInfo = '' then begin
+      Result := Result + SetupMessage(msgReadyMemoTasks);
+    end;
+    Result := Result + FmtMessage(Dependency_Memo, [Space]);
+  end;
+end;
+
+<event('NeedRestart')>
+function Dependency_Internal4: Boolean;
+begin
+  Result := Dependency_NeedRestart;
+end;
+
+
+procedure Dependency_Add(const Filename, Parameters, Title, URL, Checksum: String; const ForceSuccess, RestartAfter: Boolean);
+var
+  Dependency: TDependency_Entry;
+  DependencyCount: Integer;
+begin
+  Dependency_Memo := Dependency_Memo + #13#10 + '%1' + Title;
+
+  Dependency.Filename := Filename;
+  Dependency.Parameters := Parameters;
+  Dependency.Title := Title;
+
+  if FileExists(ExpandConstant('{tmp}{\}') + Filename) then begin
+    Dependency.URL := '';
+  end else begin
+    Dependency.URL := URL;
+  end;
+
+  Dependency.Checksum := Checksum;
+  Dependency.ForceSuccess := ForceSuccess;
+  Dependency.RestartAfter := RestartAfter;
+
+  DependencyCount := GetArrayLength(Dependency_List);
+  SetArrayLength(Dependency_List, DependencyCount + 1);
+  Dependency_List[DependencyCount] := Dependency;
+end;
+
+function Dependency_IsX64: Boolean;
+begin
+  Result := not Dependency_ForceX86 and Is64BitInstallMode;
+end;
+
+function Dependency_String(const x86, x64: String): String;
+begin
+  if Dependency_IsX64 then begin
+    Result := x64;
+  end else begin
+    Result := x86;
+  end;
+end;
+
+function Dependency_ArchTitle: String;
+begin
+  Result := Dependency_String(' (x86)', ' (x64)');
+end;
+
+function Dependency_ArchSuffix: String;
+begin
+  Result := Dependency_String('', '_x64');
+end;
+
+function Dependency_IsNetCoreInstalled(const Version: String): Boolean;
+var
+  ResultCode: Integer;
+begin
+  // source code: https://github.com/dotnet/deployment-tools/tree/master/src/clickonce/native/projects/NetCoreCheck
+  if not FileExists(ExpandConstant('{tmp}{\}') + 'netcorecheck' + Dependency_ArchSuffix + '.exe') then begin
+    ExtractTemporaryFile('netcorecheck' + Dependency_ArchSuffix + '.exe');
+  end;
+  Result := ShellExec('', ExpandConstant('{tmp}{\}') + 'netcorecheck' + Dependency_ArchSuffix + '.exe', Version, '', SW_HIDE, ewWaitUntilTerminated, ResultCode) and (ResultCode = 0);
+end;
+
+procedure Dependency_AddDotNet70;
+begin
+  // https://dotnet.microsoft.com/download/dotnet/7.0
+  if not Dependency_IsNetCoreInstalled('Microsoft.NETCore.App 7.0.5') then
+  begin
+    Dependency_Add('dotnet70' + Dependency_ArchSuffix + '.exe',
+      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
+      '.NET Runtime 7.0.5' + Dependency_ArchTitle,
+      Dependency_String('https://download.visualstudio.microsoft.com/download/pr/423272b5-615c-436b-a198-a10518b3e8a3/e7587e2c70e4db7f9c93d0e6dbbc21f5/aspnetcore-runtime-7.0.5-win-x86.exe', 'https://download.visualstudio.microsoft.com/download/pr/02d08d3a-c846-40a9-a75d-4dcfa12b2d8d/c9d48b7ce67ad4e1356d9f3630f51cf4/aspnetcore-runtime-7.0.5-win-x64.exe'),
+      '', False, False);
+  end;
+end;
+
+
+procedure Dependency_AddDotNet70Desktop;
+begin
+  // https://dotnet.microsoft.com/download/dotnet/7.0
+  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App 7.0.5') then
+  begin
+    Dependency_Add('dotnet70desktop' + Dependency_ArchSuffix + '.exe',
+      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
+      '.NET Desktop Runtime 7.0.5' + Dependency_ArchTitle,
+      Dependency_String('https://download.visualstudio.microsoft.com/download/pr/eb64dcd1-d277-4798-ada1-600805c9e2dc/fc73c843d66f3996e7ef22468f4902e6/windowsdesktop-runtime-7.0.5-win-x86.exe', 'https://download.visualstudio.microsoft.com/download/pr/dffb1939-cef1-4db3-a579-5475a3061cdd/578b208733c914c7b7357f6baa4ecfd6/windowsdesktop-runtime-7.0.5-win-x64.exe'),
+
+      '', False, False);
+  end;
+end;
+
+
+// standard code for installer
+
+function InitializeSetup: Boolean;
+begin
+  //Dependency_AddDotNet70;
+  //Dependency_AddDotNet70Desktop
+
+  Result := True;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if (CurStep = ssPostInstall) then
+  begin
+    DeleteFile(ExpandConstant('{app}\netcorecheck.exe'));
+    DeleteFile(ExpandConstant('{app}\netcorecheck_x64.exe'));
+  end;
+end;

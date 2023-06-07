@@ -22,6 +22,8 @@ namespace GSendEditor
         {
 #if DEBUG
             base.HangTimeout = 30000;
+#else
+            base.HangTimeout = 5000;
 #endif
 
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
