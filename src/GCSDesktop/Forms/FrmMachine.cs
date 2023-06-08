@@ -28,6 +28,8 @@ using Shared.Classes;
 
 using static GSendShared.Constants;
 
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+
 namespace GSendDesktop.Forms
 {
     public partial class FrmMachine : BaseForm, IUiUpdate

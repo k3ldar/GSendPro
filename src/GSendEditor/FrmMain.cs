@@ -24,7 +24,8 @@ namespace GSendEditor
         private readonly ISubPrograms _subPrograms;
         private ISubProgram _subProgram;
         private readonly RecentFiles _recentFiles;
-
+        private readonly Internal.Bookmarks _bookmarks;
+        private Internal.Bookmark _activeBookmark;
         private string _fileName;
 
         public FrmMain(IGSendContext gSendContext)
@@ -43,6 +44,8 @@ namespace GSendEditor
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
             _recentFiles = new();
+            _bookmarks = new();
+            txtGCode.BookmarkColor = Color.BurlyWood;
         }
 
         protected override string SectionName => nameof(GSendEditor);
@@ -88,6 +91,9 @@ namespace GSendEditor
             mnuEditCut.Text = GSend.Language.Resources.AppMenuEditCut;
             mnuEditPaste.Text = GSend.Language.Resources.AppMenuEditPaste;
 
+            // bookmark menu
+
+
             // view menu
             mnuView.Text = GSend.Language.Resources.AppMenuView;
             mnuViewPreview.Text = GSend.Language.Resources.AppMenuViewPreview;
@@ -98,6 +104,30 @@ namespace GSendEditor
             // help menu
             mnuHelp.Text = GSend.Language.Resources.AppMenuHelp;
             mnuHelpAbout.Text = GSend.Language.Resources.AppMenuHelpAbout;
+
+
+            // toolbar
+            toolStripBtnNew.Text = GSend.Language.Resources.New;
+            toolStripBtnOpen.Text = GSend.Language.Resources.Open;
+            toolStripBtnSave.Text = GSend.Language.Resources.Save;
+            toolStripBtnSaveAsSubProgram.Text = GSend.Language.Resources.SaveAsSubprogram;
+            toolStripBtnUndo.Text = GSend.Language.Resources.Undo;
+            toolStripBtnRedo.Text = GSend.Language.Resources.Redo;
+            toolStripBtnToggleBookmark.Text = GSend.Language.Resources.BookmarkToggle;
+            toolStripBtnPreviousBookmark.Text = GSend.Language.Resources.BookmarkPrevious;
+            toolStripBtnNextBookmark.Text = GSend.Language.Resources.BookmarkNext;
+            toolStripBtnClearBookmarks.Text = GSend.Language.Resources.BookmarkClearAll;
+            toolStripBtnNew.ToolTipText = GSend.Language.Resources.New;
+            toolStripBtnOpen.ToolTipText = GSend.Language.Resources.Open;
+            toolStripBtnSave.ToolTipText = GSend.Language.Resources.Save;
+            toolStripBtnSaveAsSubProgram.ToolTipText = GSend.Language.Resources.SaveAsSubprogram;
+            toolStripBtnUndo.ToolTipText = GSend.Language.Resources.Undo;
+            toolStripBtnRedo.ToolTipText = GSend.Language.Resources.Redo;
+            toolStripBtnToggleBookmark.ToolTipText = GSend.Language.Resources.BookmarkToggle;
+            toolStripBtnPreviousBookmark.ToolTipText = GSend.Language.Resources.BookmarkPrevious;
+            toolStripBtnNextBookmark.ToolTipText = GSend.Language.Resources.BookmarkNext;
+            toolStripBtnClearBookmarks.ToolTipText = GSend.Language.Resources.BookmarkClearAll;
+
 
             // tabs
             tabPagePreview.Text = GSend.Language.Resources.Preview;
@@ -156,11 +186,30 @@ namespace GSendEditor
             mnuEditUndo.Enabled = txtGCode.UndoEnabled;
             mnuEditRedo.Enabled = txtGCode.RedoEnabled;
 
+            mnuBookmarksToggle.Enabled = true;
+            mnuBookmarksPrevious.Enabled = txtGCode.Bookmarks.Count > 0;
+            mnuBookmarksNext.Enabled = mnuBookmarksPrevious.Enabled;
+            mnuBookmarksRemoveAll.Enabled = mnuBookmarksPrevious.Enabled;
+
+
             contextMenuStripEditor.Items[0].Enabled = mnuEditUndo.Enabled;
             contextMenuStripEditor.Items[1].Enabled = mnuEditRedo.Enabled;
             contextMenuStripEditor.Items[3].Enabled = mnuEditCut.Enabled;
             contextMenuStripEditor.Items[4].Enabled = mnuEditCopy.Enabled;
             contextMenuStripEditor.Items[5].Enabled = mnuEditPaste.Enabled;
+
+            toolStripBtnNew.Enabled = mnuFileNew.Enabled;
+            toolStripBtnOpen.Enabled = mnuFileOpen.Enabled;
+            toolStripBtnSave.Enabled = mnuFileSave.Enabled;
+            toolStripBtnSaveAsSubProgram.Enabled = mnufileSaveAsSubprogram.Enabled;
+
+            toolStripBtnUndo.Enabled = mnuEditUndo.Enabled;
+            toolStripBtnRedo.Enabled = mnuEditRedo.Enabled;
+
+            toolStripBtnToggleBookmark.Enabled = mnuBookmarksToggle.Enabled;
+            toolStripBtnPreviousBookmark.Enabled = mnuBookmarksPrevious.Enabled;
+            toolStripBtnNextBookmark.Enabled = mnuBookmarksNext.Enabled;
+            toolStripBtnClearBookmarks.Enabled = mnuBookmarksRemoveAll.Enabled;
         }
 
         protected override void CreateContextMenu()
@@ -174,18 +223,6 @@ namespace GSendEditor
             contextMenuStripEditor.Items.Add(GSend.Language.Resources.AppMenuEditPaste, null, mnuEditPaste_Click);
         }
 
-        private void TxtGCode_PaintLine(object sender, FastColoredTextBoxNS.PaintLineEventArgs e)
-        {
-            if (e.LineIndex == 5)
-                using (Brush brush = new LinearGradientBrush(new Rectangle(0, e.LineRect.Top, 15, 15), Color.LightPink, Color.Red, 45))
-                {
-                    e.Graphics.FillEllipse(brush, 0, e.LineRect.Top, 15, 15);
-
-                    using Brush backGroundBrush = new SolidBrush(Color.Red);
-                    e.Graphics.FillRectangle(backGroundBrush, e.LineRect);
-                }
-        }
-
         private void warningsAndErrors_OnUpdate(object sender, EventArgs e)
         {
             toolStripStatusLabelWarnings.Invalidate();
@@ -193,6 +230,8 @@ namespace GSendEditor
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
+            mnuFileNew_Click(sender, e);
+
             string[] args = Environment.GetCommandLineArgs();
             
             if (args.Length > 1 && File.Exists(args[1]))
@@ -272,59 +311,6 @@ namespace GSendEditor
 
         #region Menu's
 
-        private void mnuFileNew_Click(object sender, EventArgs e)
-        {
-            if (SaveIfRequired())
-                return;
-
-            machine2dView1.UnloadGCode();
-            FileName = String.Empty;
-            txtGCode.Text = String.Empty;
-            HasChanged = false;
-            UpdateEnabledState();
-            txtGCode.ClearUndo();
-            lstWarningsErrors.Items.Clear();
-            gCodeAnalysesDetails1.ClearAnalyser();
-            IsSubprogram = false;
-            _subProgram = null;
-            UpdateTitleBar();
-        }
-
-        private void mnuFileOpen_Click(object sender, EventArgs e)
-        {
-            if (SaveIfRequired())
-                return;
-
-            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                LoadGCodeData(openFileDialog1.FileName);
-            }
-            //else
-            //{
-            //    UpdateTitleBar();
-            //    UpdateEnabledState();
-            //    IsSubprogram = false;
-            //    _subProgram = null;
-            //}
-        }
-
-        private void LoadGCodeData(string fileName)
-        {
-            if (!File.Exists(fileName))
-                return;
-
-            txtGCode.Text = File.ReadAllText(fileName);
-            HasChanged = false;
-            FileName = fileName;
-            txtGCode.ClearUndo();
-            lstWarningsErrors.Items.Clear();
-            UpdateTitleBar();
-            UpdateEnabledState();
-            IsSubprogram = false;
-            _subProgram = null;
-            _recentFiles.AddRecentFile(fileName, false);
-        }
-
         private void mnuFile_DropDownOpening(object sender, EventArgs e)
         {
             mnuFileRecent.DropDownItems.Clear();
@@ -365,6 +351,37 @@ namespace GSendEditor
             }
         }
 
+        private void mnuFileNew_Click(object sender, EventArgs e)
+        {
+            if (SaveIfRequired())
+                return;
+
+            machine2dView1.UnloadGCode();
+            FileName = String.Empty;
+            txtGCode.Text = String.Empty;
+            HasChanged = false;
+            UpdateEnabledState();
+            txtGCode.ClearUndo();
+            lstWarningsErrors.Items.Clear();
+            gCodeAnalysesDetails1.ClearAnalyser();
+            IsSubprogram = false;
+            _subProgram = null;
+
+            RetrieveAndLoadBookmarks(FileName);
+            UpdateTitleBar();
+        }
+
+        private void mnuFileOpen_Click(object sender, EventArgs e)
+        {
+            if (SaveIfRequired())
+                return;
+
+            if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadGCodeData(openFileDialog1.FileName);
+            }
+        }
+
         private void mnuFileSave_Click(object sender, EventArgs e)
         {
             if (!HasChanged)
@@ -401,6 +418,8 @@ namespace GSendEditor
             FileName = saveFileDialog1.FileName;
 
             File.WriteAllText(FileName, txtGCode.Text);
+            _activeBookmark.FileName = FileName;
+            _bookmarks.UpdateBookmarks(_activeBookmark);
             HasChanged = false;
             UpdateTitleBar();
         }
@@ -423,6 +442,8 @@ namespace GSendEditor
             HasChanged = false;
 
             IsSubprogram = true;
+            _activeBookmark.FileName = name;
+            _bookmarks.UpdateBookmarks(_activeBookmark);
 
             UpdateTitleBar();
         }
@@ -467,6 +488,7 @@ namespace GSendEditor
                     listViewItem.Text = subProgram.Name;
                     listViewItem.SubItems.Add(subProgram.Description);
                     listViewItem.Tag = subProgram;
+                    listViewItem.ImageIndex = 5;
                     lvSubprograms.Items.Add(listViewItem);
                 }
             }
@@ -511,6 +533,42 @@ namespace GSendEditor
             txtGCode.Paste();
         }
 
+        private void mnuBookmarksToggle_Click(object sender, EventArgs e)
+        {
+            int line = txtGCode.Selection.FromLine;
+
+            if (txtGCode.Bookmarks.Any(bm => bm.LineIndex == line))
+            {
+                txtGCode.UnbookmarkLine(line);
+                _activeBookmark.Lines.Remove(line);
+            }
+            else
+            {
+                txtGCode.BookmarkLine(line);
+                _activeBookmark.Lines.Add(line);
+            }
+            _bookmarks.UpdateBookmarks(_activeBookmark);
+            UpdateEnabledState();
+        }
+
+        private void mnuBookmarksPrevious_Click(object sender, EventArgs e)
+        {
+            txtGCode.GotoPrevBookmark(txtGCode.Selection.FromLine);
+        }
+
+        private void mnuBookmarksNext_Click(object sender, EventArgs e)
+        {
+            txtGCode.GotoNextBookmark(txtGCode.Selection.FromLine);
+        }
+
+        private void mnuBookmarksRemoveAll_Click(object sender, EventArgs e)
+        {
+            txtGCode.Bookmarks.Clear();
+            _activeBookmark.Lines.Clear();
+            _bookmarks.UpdateBookmarks(_activeBookmark);
+            UpdateEnabledState();
+        }
+
         private void mnuViewStatusBar_Click(object sender, EventArgs e)
         {
 
@@ -533,10 +591,29 @@ namespace GSendEditor
 
         private void mnuHelpAbout_Click(object sender, EventArgs e)
         {
-
+            GSendControls.AboutBox.ShowAboutBox(GSend.Language.Resources.AppNameEditor, this.Icon);
         }
 
         #endregion Menu's
+
+
+        private void LoadGCodeData(string fileName)
+        {
+            if (!File.Exists(fileName))
+                return;
+
+            txtGCode.Text = File.ReadAllText(fileName);
+            HasChanged = false;
+            FileName = fileName;
+            txtGCode.ClearUndo();
+            lstWarningsErrors.Items.Clear();
+            UpdateTitleBar();
+            UpdateEnabledState();
+            IsSubprogram = false;
+            _subProgram = null;
+            _recentFiles.AddRecentFile(fileName, false);
+            RetrieveAndLoadBookmarks(fileName);
+        }
 
         private void tabControlMain_Selected(object sender, TabControlEventArgs e)
         {
@@ -578,7 +655,7 @@ namespace GSendEditor
             HasChanged = false;
             _recentFiles.AddRecentFile(subProgram.Name, true);
             UpdateTitleBar();
-
+            RetrieveAndLoadBookmarks(subProgram.Name);
             IsSubprogram = true;
         }
 
@@ -677,6 +754,18 @@ namespace GSendEditor
 
             item.MarkedForRemoval = false;
             item.IsNew = false;
+        }
+
+        private void RetrieveAndLoadBookmarks(string fileName)
+        {
+            txtGCode.Bookmarks.Clear();
+            _activeBookmark = _bookmarks.GetBookmarkForFile(fileName);
+
+            foreach (int bookmarkLine in _activeBookmark.Lines)
+            {
+                txtGCode.BookmarkLine(bookmarkLine);
+            }
+
         }
     }
 }

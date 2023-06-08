@@ -291,6 +291,18 @@
   <data name="AvailableBytesBlocks" xml:space="preserve">
     <value>Available bytes/blocks</value>
   </data>
+  <data name="BookmarkClearAll" xml:space="preserve">
+    <value>Clear all bookmarks</value>
+  </data>
+  <data name="BookmarkNext" xml:space="preserve">
+    <value>Next bookmark</value>
+  </data>
+  <data name="BookmarkPrevious" xml:space="preserve">
+    <value>Previous bookmark</value>
+  </data>
+  <data name="BookmarkToggle" xml:space="preserve">
+    <value>Toggle bookmark</value>
+  </data>
   <data name="BufferSize" xml:space="preserve">
     <value>Buffer Size: {0}</value>
   </data>
@@ -747,6 +759,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="New" xml:space="preserve">
+    <value>New GCode file</value>
+  </data>
   <data name="NextService" xml:space="preserve">
     <value>Next Service</value>
   </data>
@@ -755,6 +770,9 @@
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open GCode file</value>
   </data>
   <data name="OverrideRpm" xml:space="preserve">
     <value>{0} RPM</value>
@@ -822,6 +840,9 @@
   <data name="Rapids" xml:space="preserve">
     <value>Rapids</value>
   </data>
+  <data name="Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
@@ -839,6 +860,12 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Save GCode file into a new file</value>
+  </data>
+  <data name="SaveAsSubprogram" xml:space="preserve">
+    <value>Save GCode as a subprogram</value>
   </data>
   <data name="SaveConfiguration" xml:space="preserve">
     <value>Save Configuration</value>
@@ -1172,6 +1199,9 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Undo</value>
   </data>
   <data name="UpdatingUnitOfMeasureFromGCode" xml:space="preserve">
     <value>GCode file uses {0}, display set to {1}.  Updating display to {0}</value>

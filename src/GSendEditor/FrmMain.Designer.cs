@@ -41,6 +41,8 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnufileSaveAsSubprogram = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFileRecent = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditUndo = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,11 @@
             this.mnuEditCut = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBookmarks = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBookmarksToggle = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBookmarksPrevious = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBookmarksNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuBookmarksRemoveAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewStatusBar = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewPreview = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,9 +81,20 @@
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.toolbarImageListSmall = new System.Windows.Forms.ImageList(this.components);
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuFileRecent = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolbarMain = new System.Windows.Forms.ToolStrip();
+            this.toolStripBtnNew = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripBtnSaveAsSubProgram = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripBtnUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripBtnToggleBookmark = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnPreviousBookmark = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnNextBookmark = new System.Windows.Forms.ToolStripButton();
+            this.toolStripBtnClearBookmarks = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
@@ -92,6 +110,7 @@
             this.tabPagePreview.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageSubPrograms.SuspendLayout();
+            this.toolbarMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -118,6 +137,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuFile,
             this.mnuEdit,
+            this.mnuBookmarks,
             this.mnuView,
             this.mnuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -189,6 +209,17 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 6);
             // 
+            // mnuFileRecent
+            // 
+            this.mnuFileRecent.Name = "mnuFileRecent";
+            this.mnuFileRecent.Size = new System.Drawing.Size(183, 22);
+            this.mnuFileRecent.Text = "Recent";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 6);
+            // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
@@ -253,6 +284,45 @@
             this.mnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.mnuEditPaste.Text = "&Paste";
             this.mnuEditPaste.Click += new System.EventHandler(this.mnuEditPaste_Click);
+            // 
+            // mnuBookmarks
+            // 
+            this.mnuBookmarks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuBookmarksToggle,
+            this.mnuBookmarksPrevious,
+            this.mnuBookmarksNext,
+            this.mnuBookmarksRemoveAll});
+            this.mnuBookmarks.Name = "mnuBookmarks";
+            this.mnuBookmarks.Size = new System.Drawing.Size(78, 20);
+            this.mnuBookmarks.Text = "Bookmarks";
+            // 
+            // mnuBookmarksToggle
+            // 
+            this.mnuBookmarksToggle.Name = "mnuBookmarksToggle";
+            this.mnuBookmarksToggle.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksToggle.Text = "Toggle Bookmarks";
+            this.mnuBookmarksToggle.Click += new System.EventHandler(this.mnuBookmarksToggle_Click);
+            // 
+            // mnuBookmarksPrevious
+            // 
+            this.mnuBookmarksPrevious.Name = "mnuBookmarksPrevious";
+            this.mnuBookmarksPrevious.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksPrevious.Text = "Previous Bookmark";
+            this.mnuBookmarksPrevious.Click += new System.EventHandler(this.mnuBookmarksPrevious_Click);
+            // 
+            // mnuBookmarksNext
+            // 
+            this.mnuBookmarksNext.Name = "mnuBookmarksNext";
+            this.mnuBookmarksNext.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksNext.Text = "Next Bookmark";
+            this.mnuBookmarksNext.Click += new System.EventHandler(this.mnuBookmarksNext_Click);
+            // 
+            // mnuBookmarksRemoveAll
+            // 
+            this.mnuBookmarksRemoveAll.Name = "mnuBookmarksRemoveAll";
+            this.mnuBookmarksRemoveAll.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksRemoveAll.Text = "Remove All Bookmarks";
+            this.mnuBookmarksRemoveAll.Click += new System.EventHandler(this.mnuBookmarksRemoveAll_Click);
             // 
             // mnuView
             // 
@@ -387,13 +457,13 @@
             this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
             this.txtGCode.Location = new System.Drawing.Point(3, 3);
             this.txtGCode.Name = "txtGCode";
             this.txtGCode.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtGCode.PreferredLineWidth = 256;
             this.txtGCode.RightBracket = ']';
             this.txtGCode.RightBracket2 = ')';
             this.txtGCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
@@ -491,6 +561,7 @@
             this.lvSubprograms.Location = new System.Drawing.Point(9, 9);
             this.lvSubprograms.Name = "lvSubprograms";
             this.lvSubprograms.Size = new System.Drawing.Size(389, 266);
+            this.lvSubprograms.SmallImageList = this.toolbarImageListSmall;
             this.lvSubprograms.TabIndex = 0;
             this.lvSubprograms.UseCompatibleStateImageBehavior = false;
             this.lvSubprograms.View = System.Windows.Forms.View.Details;
@@ -528,32 +599,151 @@
             this.toolbarImageListSmall.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
             this.toolbarImageListSmall.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
             this.toolbarImageListSmall.Images.SetKeyName(4, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(5, "manifest_16xLG.png");
             // 
-            // toolStrip1
+            // toolbarMain
             // 
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1083, 25);
-            this.toolStrip1.TabIndex = 6;
-            this.toolStrip1.Text = "toolStrip1";
+            this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripBtnNew,
+            this.toolStripBtnOpen,
+            this.toolStripBtnSave,
+            this.toolStripSeparator1,
+            this.toolStripBtnSaveAsSubProgram,
+            this.toolStripSeparator2,
+            this.toolStripBtnUndo,
+            this.toolStripBtnRedo,
+            this.toolStripSeparator3,
+            this.toolStripBtnToggleBookmark,
+            this.toolStripBtnPreviousBookmark,
+            this.toolStripBtnNextBookmark,
+            this.toolStripBtnClearBookmarks});
+            this.toolbarMain.Location = new System.Drawing.Point(0, 24);
+            this.toolbarMain.Name = "toolbarMain";
+            this.toolbarMain.Size = new System.Drawing.Size(1083, 25);
+            this.toolbarMain.TabIndex = 6;
+            this.toolbarMain.Text = "toolbarMain";
             // 
-            // toolStripMenuItem4
+            // toolStripBtnNew
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 6);
+            this.toolStripBtnNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnNew.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnNew.Image")));
+            this.toolStripBtnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnNew.Name = "toolStripBtnNew";
+            this.toolStripBtnNew.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnNew.Text = "toolStripBtnNew";
+            this.toolStripBtnNew.Click += new System.EventHandler(this.mnuFileNew_Click);
             // 
-            // mnuFileRecent
+            // toolStripBtnOpen
             // 
-            this.mnuFileRecent.Name = "mnuFileRecent";
-            this.mnuFileRecent.Size = new System.Drawing.Size(183, 22);
-            this.mnuFileRecent.Text = "Recent";
+            this.toolStripBtnOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnOpen.Image")));
+            this.toolStripBtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnOpen.Name = "toolStripBtnOpen";
+            this.toolStripBtnOpen.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnOpen.Text = "toolStripBtnOpen";
+            this.toolStripBtnOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
+            // 
+            // toolStripBtnSave
+            // 
+            this.toolStripBtnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnSave.Image")));
+            this.toolStripBtnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnSave.Name = "toolStripBtnSave";
+            this.toolStripBtnSave.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnSave.Text = "toolStripBtn";
+            this.toolStripBtnSave.Click += new System.EventHandler(this.mnuFileSave_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripBtnSaveAsSubProgram
+            // 
+            this.toolStripBtnSaveAsSubProgram.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnSaveAsSubProgram.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnSaveAsSubProgram.Image")));
+            this.toolStripBtnSaveAsSubProgram.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnSaveAsSubProgram.Name = "toolStripBtnSaveAsSubProgram";
+            this.toolStripBtnSaveAsSubProgram.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnSaveAsSubProgram.Text = "toolStripButton5";
+            this.toolStripBtnSaveAsSubProgram.Click += new System.EventHandler(this.mnufileSaveAsSubprogram_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripBtnUndo
+            // 
+            this.toolStripBtnUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnUndo.Image")));
+            this.toolStripBtnUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnUndo.Name = "toolStripBtnUndo";
+            this.toolStripBtnUndo.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnUndo.Text = "toolStripButton2";
+            this.toolStripBtnUndo.Click += new System.EventHandler(this.mnuEditUndo_Click);
+            // 
+            // toolStripBtnRedo
+            // 
+            this.toolStripBtnRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnRedo.Image")));
+            this.toolStripBtnRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnRedo.Name = "toolStripBtnRedo";
+            this.toolStripBtnRedo.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnRedo.Text = "toolStripButton1";
+            this.toolStripBtnRedo.Click += new System.EventHandler(this.mnuEditRedo_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripBtnToggleBookmark
+            // 
+            this.toolStripBtnToggleBookmark.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnToggleBookmark.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnToggleBookmark.Image")));
+            this.toolStripBtnToggleBookmark.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnToggleBookmark.Name = "toolStripBtnToggleBookmark";
+            this.toolStripBtnToggleBookmark.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnToggleBookmark.Text = "toolStripButton6";
+            this.toolStripBtnToggleBookmark.Click += new System.EventHandler(this.mnuBookmarksToggle_Click);
+            // 
+            // toolStripBtnPreviousBookmark
+            // 
+            this.toolStripBtnPreviousBookmark.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnPreviousBookmark.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnPreviousBookmark.Image")));
+            this.toolStripBtnPreviousBookmark.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnPreviousBookmark.Name = "toolStripBtnPreviousBookmark";
+            this.toolStripBtnPreviousBookmark.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnPreviousBookmark.Text = "toolStripButton7";
+            this.toolStripBtnPreviousBookmark.Click += new System.EventHandler(this.mnuBookmarksPrevious_Click);
+            // 
+            // toolStripBtnNextBookmark
+            // 
+            this.toolStripBtnNextBookmark.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnNextBookmark.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnNextBookmark.Image")));
+            this.toolStripBtnNextBookmark.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnNextBookmark.Name = "toolStripBtnNextBookmark";
+            this.toolStripBtnNextBookmark.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnNextBookmark.Text = "toolStripButton8";
+            this.toolStripBtnNextBookmark.Click += new System.EventHandler(this.mnuBookmarksNext_Click);
+            // 
+            // toolStripBtnClearBookmarks
+            // 
+            this.toolStripBtnClearBookmarks.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripBtnClearBookmarks.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnClearBookmarks.Image")));
+            this.toolStripBtnClearBookmarks.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripBtnClearBookmarks.Name = "toolStripBtnClearBookmarks";
+            this.toolStripBtnClearBookmarks.Size = new System.Drawing.Size(23, 22);
+            this.toolStripBtnClearBookmarks.Text = "toolStripButton9";
+            this.toolStripBtnClearBookmarks.Click += new System.EventHandler(this.mnuBookmarksRemoveAll_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1083, 533);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.toolbarMain);
             this.Controls.Add(this.splitContainerPrimary);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -580,6 +770,8 @@
             this.tabPagePreview.ResumeLayout(false);
             this.tabPageProperties.ResumeLayout(false);
             this.tabPageSubPrograms.ResumeLayout(false);
+            this.toolbarMain.ResumeLayout(false);
+            this.toolbarMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,9 +821,27 @@
         private ListBox lstWarningsErrors;
         private ImageList toolbarImageListSmall;
         private ContextMenuStrip contextMenuStripEditor;
-        private ToolStrip toolStrip1;
+        private ToolStrip toolbarMain;
         private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
         private ToolStripMenuItem mnuFileRecent;
         private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripButton toolStripBtnNew;
+        private ToolStripButton toolStripBtnOpen;
+        private ToolStripButton toolStripBtnSave;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton toolStripBtnSaveAsSubProgram;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripButton toolStripBtnToggleBookmark;
+        private ToolStripButton toolStripBtnPreviousBookmark;
+        private ToolStripButton toolStripBtnNextBookmark;
+        private ToolStripButton toolStripBtnClearBookmarks;
+        private ToolStripMenuItem mnuBookmarks;
+        private ToolStripMenuItem mnuBookmarksToggle;
+        private ToolStripMenuItem mnuBookmarksPrevious;
+        private ToolStripMenuItem mnuBookmarksNext;
+        private ToolStripMenuItem mnuBookmarksRemoveAll;
+        private ToolStripButton toolStripBtnUndo;
+        private ToolStripButton toolStripBtnRedo;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }

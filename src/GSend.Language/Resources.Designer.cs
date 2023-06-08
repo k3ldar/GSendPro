@@ -583,6 +583,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear all bookmarks.
+        /// </summary>
+        public static string BookmarkClearAll {
+            get {
+                return ResourceManager.GetString("BookmarkClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next bookmark.
+        /// </summary>
+        public static string BookmarkNext {
+            get {
+                return ResourceManager.GetString("BookmarkNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous bookmark.
+        /// </summary>
+        public static string BookmarkPrevious {
+            get {
+                return ResourceManager.GetString("BookmarkPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle bookmark.
+        /// </summary>
+        public static string BookmarkToggle {
+            get {
+                return ResourceManager.GetString("BookmarkToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer Size: {0}.
         /// </summary>
         public static string BufferSize {
@@ -1951,6 +1987,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New GCode file.
+        /// </summary>
+        public static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next Service.
         /// </summary>
         public static string NextService {
@@ -1974,6 +2019,15 @@ namespace GSend.Language {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open GCode file.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         
@@ -2176,6 +2230,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redo.
+        /// </summary>
+        public static string Redo {
+            get {
+                return ResourceManager.GetString("Redo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Refresh {
@@ -2226,6 +2289,24 @@ namespace GSend.Language {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save GCode file into a new file.
+        /// </summary>
+        public static string SaveAs {
+            get {
+                return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save GCode as a subprogram.
+        /// </summary>
+        public static string SaveAsSubprogram {
+            get {
+                return ResourceManager.GetString("SaveAsSubprogram", resourceCulture);
             }
         }
         
@@ -3225,6 +3306,15 @@ namespace GSend.Language {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo.
+        /// </summary>
+        public static string Undo {
+            get {
+                return ResourceManager.GetString("Undo", resourceCulture);
             }
         }
         
