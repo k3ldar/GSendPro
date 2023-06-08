@@ -4,6 +4,8 @@ namespace GSendShared
 {
     public static class Constants
     {
+        public const int MaximumRecentFiles = 10;
+
         public const int WarningStatusWidth = 40;
 
         public const int QueueProcessMilliseconds = 20;

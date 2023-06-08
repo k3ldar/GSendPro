@@ -67,6 +67,7 @@
             this.tabPagePreview = new System.Windows.Forms.TabPage();
             this.machine2dView1 = new GSendControls.Machine2DView();
             this.tabPageProperties = new System.Windows.Forms.TabPage();
+            this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             this.tabPageSubPrograms = new System.Windows.Forms.TabPage();
             this.lvSubprograms = new System.Windows.Forms.ListView();
             this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
@@ -74,6 +75,8 @@
             this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.toolbarImageListSmall = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFileRecent = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
@@ -87,6 +90,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPagePreview.SuspendLayout();
+            this.tabPageProperties.SuspendLayout();
             this.tabPageSubPrograms.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,10 +136,13 @@
             this.toolStripMenuItem3,
             this.mnufileSaveAsSubprogram,
             this.toolStripMenuItem1,
+            this.mnuFileRecent,
+            this.toolStripMenuItem4,
             this.mnuFileExit});
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "&File";
+            this.mnuFile.DropDownOpening += new System.EventHandler(this.mnuFile_DropDownOpening);
             // 
             // mnuFileNew
             // 
@@ -380,6 +387,7 @@
             this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -390,7 +398,7 @@
             this.txtGCode.RightBracket2 = ')';
             this.txtGCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.txtGCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtGCode.ServiceColors")));
-            this.txtGCode.Size = new System.Drawing.Size(625, 394);
+            this.txtGCode.Size = new System.Drawing.Size(625, 313);
             this.txtGCode.TabIndex = 0;
             this.txtGCode.Zoom = 100;
             this.txtGCode.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.txtGCode_ToolTipNeeded);
@@ -412,7 +420,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(412, 394);
+            this.tabControlMain.Size = new System.Drawing.Size(412, 309);
             this.tabControlMain.TabIndex = 0;
             // 
             // tabPagePreview
@@ -421,7 +429,7 @@
             this.tabPagePreview.Location = new System.Drawing.Point(4, 24);
             this.tabPagePreview.Name = "tabPagePreview";
             this.tabPagePreview.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePreview.Size = new System.Drawing.Size(404, 366);
+            this.tabPagePreview.Size = new System.Drawing.Size(404, 281);
             this.tabPagePreview.TabIndex = 0;
             this.tabPagePreview.Text = "tabPagePreview";
             this.tabPagePreview.UseVisualStyleBackColor = true;
@@ -437,7 +445,7 @@
             this.machine2dView1.Location = new System.Drawing.Point(9, 9);
             this.machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 5000, 5000);
             this.machine2dView1.Name = "machine2dView1";
-            this.machine2dView1.Size = new System.Drawing.Size(389, 436);
+            this.machine2dView1.Size = new System.Drawing.Size(389, 266);
             this.machine2dView1.TabIndex = 0;
             this.machine2dView1.XPosition = 0F;
             this.machine2dView1.YPosition = 0F;
@@ -445,13 +453,21 @@
             // 
             // tabPageProperties
             // 
+            this.tabPageProperties.Controls.Add(this.gCodeAnalysesDetails1);
             this.tabPageProperties.Location = new System.Drawing.Point(4, 24);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(404, 366);
+            this.tabPageProperties.Size = new System.Drawing.Size(404, 281);
             this.tabPageProperties.TabIndex = 1;
             this.tabPageProperties.Text = "Properties";
             this.tabPageProperties.UseVisualStyleBackColor = true;
+            // 
+            // gCodeAnalysesDetails1
+            // 
+            this.gCodeAnalysesDetails1.Location = new System.Drawing.Point(6, 6);
+            this.gCodeAnalysesDetails1.Name = "gCodeAnalysesDetails1";
+            this.gCodeAnalysesDetails1.Size = new System.Drawing.Size(392, 269);
+            this.gCodeAnalysesDetails1.TabIndex = 0;
             // 
             // tabPageSubPrograms
             // 
@@ -459,7 +475,7 @@
             this.tabPageSubPrograms.Location = new System.Drawing.Point(4, 24);
             this.tabPageSubPrograms.Name = "tabPageSubPrograms";
             this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 366);
+            this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 281);
             this.tabPageSubPrograms.TabIndex = 2;
             this.tabPageSubPrograms.Text = "Sub Programs";
             this.tabPageSubPrograms.UseVisualStyleBackColor = true;
@@ -474,7 +490,7 @@
             this.columnHeaderDescription});
             this.lvSubprograms.Location = new System.Drawing.Point(9, 9);
             this.lvSubprograms.Name = "lvSubprograms";
-            this.lvSubprograms.Size = new System.Drawing.Size(389, 351);
+            this.lvSubprograms.Size = new System.Drawing.Size(389, 266);
             this.lvSubprograms.TabIndex = 0;
             this.lvSubprograms.UseCompatibleStateImageBehavior = false;
             this.lvSubprograms.View = System.Windows.Forms.View.Details;
@@ -521,6 +537,17 @@
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 6);
+            // 
+            // mnuFileRecent
+            // 
+            this.mnuFileRecent.Name = "mnuFileRecent";
+            this.mnuFileRecent.Size = new System.Drawing.Size(183, 22);
+            this.mnuFileRecent.Text = "Recent";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -551,6 +578,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtGCode)).EndInit();
             this.tabControlMain.ResumeLayout(false);
             this.tabPagePreview.ResumeLayout(false);
+            this.tabPageProperties.ResumeLayout(false);
             this.tabPageSubPrograms.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -594,7 +622,6 @@
         private TabPage tabPagePreview;
         private GSendControls.Machine2DView machine2dView1;
         private TabPage tabPageProperties;
-        private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
         private TabPage tabPageSubPrograms;
         private ListView lvSubprograms;
         private ColumnHeader columnHeaderName;
@@ -603,5 +630,8 @@
         private ImageList toolbarImageListSmall;
         private ContextMenuStrip contextMenuStripEditor;
         private ToolStrip toolStrip1;
+        private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails1;
+        private ToolStripMenuItem mnuFileRecent;
+        private ToolStripSeparator toolStripMenuItem4;
     }
 }

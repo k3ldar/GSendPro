@@ -34,6 +34,7 @@ namespace GSendEditor.Internal
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<FrmMain>();
             services.AddTransient<SubProgramForm>();
+            services.AddTransient<Bookmarks>();
         }
 
         public void Finalise()

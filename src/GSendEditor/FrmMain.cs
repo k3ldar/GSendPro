@@ -6,6 +6,8 @@ using GSendCommon;
 
 using GSendControls;
 
+using GSendEditor.Internal;
+
 using GSendShared;
 using GSendShared.Abstractions;
 
@@ -21,6 +23,7 @@ namespace GSendEditor
         private readonly IGSendContext _gSendContext;
         private readonly ISubPrograms _subPrograms;
         private ISubProgram _subProgram;
+        private readonly RecentFiles _recentFiles;
 
         private string _fileName;
 
@@ -39,6 +42,7 @@ namespace GSendEditor
             txtGCode.TextChanged += txtGCode_TextChanged;
             UpdateTitleBar();
             gCodeAnalysesDetails1.HideFileName();
+            _recentFiles = new();
         }
 
         protected override string SectionName => nameof(GSendEditor);
@@ -193,8 +197,7 @@ namespace GSendEditor
             
             if (args.Length > 1 && File.Exists(args[1]))
             {
-                FileName = args[1];
-                LoadGCodeData();
+                LoadGCodeData( args[1]);
             }
 
             try
@@ -294,8 +297,7 @@ namespace GSendEditor
 
             if (openFileDialog1.ShowDialog(this) == DialogResult.OK)
             {
-                FileName = openFileDialog1.FileName;
-                LoadGCodeData();
+                LoadGCodeData(openFileDialog1.FileName);
             }
             //else
             //{
@@ -306,16 +308,61 @@ namespace GSendEditor
             //}
         }
 
-        private void LoadGCodeData()
+        private void LoadGCodeData(string fileName)
         {
-            txtGCode.Text = File.ReadAllText(FileName);
+            if (!File.Exists(fileName))
+                return;
+
+            txtGCode.Text = File.ReadAllText(fileName);
             HasChanged = false;
+            FileName = fileName;
             txtGCode.ClearUndo();
             lstWarningsErrors.Items.Clear();
             UpdateTitleBar();
             UpdateEnabledState();
             IsSubprogram = false;
             _subProgram = null;
+            _recentFiles.AddRecentFile(fileName, false);
+        }
+
+        private void mnuFile_DropDownOpening(object sender, EventArgs e)
+        {
+            mnuFileRecent.DropDownItems.Clear();
+
+            List<RecentFile> recentFiles = _recentFiles.GetRecentFiles();
+
+            mnuFileRecent.Enabled = recentFiles.Count > 0;
+
+            // get recently opened files
+            foreach (RecentFile recentFile in recentFiles)
+            {
+                ToolStripMenuItem recent = new ToolStripMenuItem(recentFile.FileName);
+                recent.Tag = recentFile;
+
+                recent.Click += (sender, e) =>
+                {
+                    RecentFile recent = (RecentFile)(sender as ToolStripMenuItem).Tag;
+
+                    if (recent == null)
+                        return;
+
+                    if (recent.IsSubprogram)
+                    {
+                        ISubProgram sub = _subPrograms.Get(recent.FileName);
+
+                        if (sub == null)
+                            _recentFiles.RemoveRecent(recent);
+                        else
+                            LoadSubprogram(sub);
+                    }
+                    else
+                    {
+                        LoadGCodeData(recent.FileName);
+                    }
+                };
+
+                mnuFileRecent.DropDownItems.Add(recent);
+            }
         }
 
         private void mnuFileSave_Click(object sender, EventArgs e)
@@ -529,7 +576,7 @@ namespace GSendEditor
             txtGCode.Text = subProgram.Contents;
 
             HasChanged = false;
-
+            _recentFiles.AddRecentFile(subProgram.Name, true);
             UpdateTitleBar();
 
             IsSubprogram = true;
