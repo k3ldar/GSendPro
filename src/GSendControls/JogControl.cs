@@ -1,13 +1,15 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
 using GSendShared;
+using GSendShared.Interfaces;
+using GSendShared.Models;
 
 namespace GSendControls
 {
-    public partial class JogControl : UserControl, IFeedRateUnitUpdate
+    public partial class JogControl : UserControl, IFeedRateUnitUpdate, IShortcutImplementation
     {
         private readonly double[] _steps;
 
@@ -131,6 +133,29 @@ namespace GSendControls
         private void selectionFeed_ValueChanged(object sender, EventArgs e)
         {
             OnUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        public List<IShortcut> GetShortCutImplementations()
+        {
+            List<IShortcut> result = new()
+            {
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameIncreaseFeedRate, (bool isDown) => selectionFeed.Value += 100),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameDecreaseFeedRate, (bool isDown) => selectionFeed.Value -= 100),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameDecreaseStepSize, (bool isDown) => selectionSteps.Value--),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameIncreaseStepSize, (bool isDown) => selectionSteps.Value++),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYplusXMinus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYPlus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYPlusXPlus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameXPlus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYMinusXPlus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYMinus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameYMinusXMinus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameXMinus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameZPlus, (bool isDown) =>),
+                new ShortcutModel(GSend.Language.Resources.ShortcutNameZMinus, (bool isDown) =>),
+            };
+
+            return result;
         }
     }
 }

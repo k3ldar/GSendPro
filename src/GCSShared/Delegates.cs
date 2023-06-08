@@ -22,4 +22,6 @@ namespace GSendShared
     public delegate void ProcessMessageHandler(string message);
 
     public delegate void JogCommand(JogDirection jogDirection, double stepSize, double feedRate);
+
+    public delegate void ShortcutKeyDelegate(bool isDown);
 }

@@ -1026,6 +1026,48 @@
   <data name="SettingsChanged" xml:space="preserve">
     <value>Setting have changed or been updated</value>
   </data>
+  <data name="ShortcutNameDecreaseFeedRate" xml:space="preserve">
+    <value>Decrease Feed Rate</value>
+  </data>
+  <data name="ShortcutNameDecreaseStepSize" xml:space="preserve">
+    <value>Decrease Step Size</value>
+  </data>
+  <data name="ShortcutNameIncreaseFeedRate" xml:space="preserve">
+    <value>Increase Feed Rate</value>
+  </data>
+  <data name="ShortcutNameIncreaseStepSize" xml:space="preserve">
+    <value>Increase Step Size</value>
+  </data>
+  <data name="ShortcutNameXMinus" xml:space="preserve">
+    <value>Jog X-</value>
+  </data>
+  <data name="ShortcutNameXPlus" xml:space="preserve">
+    <value>Jog X+</value>
+  </data>
+  <data name="ShortcutNameYMinus" xml:space="preserve">
+    <value>Jog Y-</value>
+  </data>
+  <data name="ShortcutNameYMinusXMinus" xml:space="preserve">
+    <value>Jog Y- X-</value>
+  </data>
+  <data name="ShortcutNameYMinusXPlus" xml:space="preserve">
+    <value>Jog Y- X+</value>
+  </data>
+  <data name="ShortcutNameYPlus" xml:space="preserve">
+    <value>Jog Y+</value>
+  </data>
+  <data name="ShortcutNameYplusXMinus" xml:space="preserve">
+    <value>Jog Y+ X-</value>
+  </data>
+  <data name="ShortcutNameYPlusXPlus" xml:space="preserve">
+    <value>Jog Y+ X+</value>
+  </data>
+  <data name="ShortcutNameZMinus" xml:space="preserve">
+    <value>Jog Z-</value>
+  </data>
+  <data name="ShortcutNameZPlus" xml:space="preserve">
+    <value>Jog Z+</value>
+  </data>
   <data name="SimulateRun" xml:space="preserve">
     <value>Simulate run to check/validate GCode</value>
   </data>

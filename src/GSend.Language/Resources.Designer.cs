@@ -2788,6 +2788,132 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decrease Feed Rate.
+        /// </summary>
+        public static string ShortcutNameDecreaseFeedRate {
+            get {
+                return ResourceManager.GetString("ShortcutNameDecreaseFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease Step Size.
+        /// </summary>
+        public static string ShortcutNameDecreaseStepSize {
+            get {
+                return ResourceManager.GetString("ShortcutNameDecreaseStepSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Feed Rate.
+        /// </summary>
+        public static string ShortcutNameIncreaseFeedRate {
+            get {
+                return ResourceManager.GetString("ShortcutNameIncreaseFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Step Size.
+        /// </summary>
+        public static string ShortcutNameIncreaseStepSize {
+            get {
+                return ResourceManager.GetString("ShortcutNameIncreaseStepSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog X-.
+        /// </summary>
+        public static string ShortcutNameXMinus {
+            get {
+                return ResourceManager.GetString("ShortcutNameXMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog X+.
+        /// </summary>
+        public static string ShortcutNameXPlus {
+            get {
+                return ResourceManager.GetString("ShortcutNameXPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y-.
+        /// </summary>
+        public static string ShortcutNameYMinus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y- X-.
+        /// </summary>
+        public static string ShortcutNameYMinusXMinus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYMinusXMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y- X+.
+        /// </summary>
+        public static string ShortcutNameYMinusXPlus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYMinusXPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y+.
+        /// </summary>
+        public static string ShortcutNameYPlus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y+ X-.
+        /// </summary>
+        public static string ShortcutNameYplusXMinus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYplusXMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Y+ X+.
+        /// </summary>
+        public static string ShortcutNameYPlusXPlus {
+            get {
+                return ResourceManager.GetString("ShortcutNameYPlusXPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Z-.
+        /// </summary>
+        public static string ShortcutNameZMinus {
+            get {
+                return ResourceManager.GetString("ShortcutNameZMinus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog Z+.
+        /// </summary>
+        public static string ShortcutNameZPlus {
+            get {
+                return ResourceManager.GetString("ShortcutNameZPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulate run to check/validate GCode.
         /// </summary>
         public static string SimulateRun {
