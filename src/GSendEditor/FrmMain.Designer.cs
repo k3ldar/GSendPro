@@ -416,7 +416,7 @@
             this.splitContainerPrimary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainerPrimary.Location = new System.Drawing.Point(12, 52);
+            this.splitContainerPrimary.Location = new System.Drawing.Point(12, 56);
             this.splitContainerPrimary.Name = "splitContainerPrimary";
             this.splitContainerPrimary.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
