@@ -62,6 +62,8 @@
             this.mnuViewProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewSubPrograms = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHelpHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
@@ -79,8 +81,8 @@
             this.lvSubprograms = new System.Windows.Forms.ListView();
             this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
-            this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.toolbarImageListSmall = new System.Windows.Forms.ImageList(this.components);
+            this.lstWarningsErrors = new System.Windows.Forms.ListBox();
             this.toolbarMain = new System.Windows.Forms.ToolStrip();
             this.toolStripBtnNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripBtnOpen = new System.Windows.Forms.ToolStripButton();
@@ -299,28 +301,31 @@
             // mnuBookmarksToggle
             // 
             this.mnuBookmarksToggle.Name = "mnuBookmarksToggle";
-            this.mnuBookmarksToggle.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksToggle.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.B)));
+            this.mnuBookmarksToggle.Size = new System.Drawing.Size(213, 22);
             this.mnuBookmarksToggle.Text = "Toggle Bookmarks";
             this.mnuBookmarksToggle.Click += new System.EventHandler(this.mnuBookmarksToggle_Click);
             // 
             // mnuBookmarksPrevious
             // 
             this.mnuBookmarksPrevious.Name = "mnuBookmarksPrevious";
-            this.mnuBookmarksPrevious.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksPrevious.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
+            this.mnuBookmarksPrevious.Size = new System.Drawing.Size(213, 22);
             this.mnuBookmarksPrevious.Text = "Previous Bookmark";
             this.mnuBookmarksPrevious.Click += new System.EventHandler(this.mnuBookmarksPrevious_Click);
             // 
             // mnuBookmarksNext
             // 
             this.mnuBookmarksNext.Name = "mnuBookmarksNext";
-            this.mnuBookmarksNext.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksNext.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+            this.mnuBookmarksNext.Size = new System.Drawing.Size(213, 22);
             this.mnuBookmarksNext.Text = "Next Bookmark";
             this.mnuBookmarksNext.Click += new System.EventHandler(this.mnuBookmarksNext_Click);
             // 
             // mnuBookmarksRemoveAll
             // 
             this.mnuBookmarksRemoveAll.Name = "mnuBookmarksRemoveAll";
-            this.mnuBookmarksRemoveAll.Size = new System.Drawing.Size(196, 22);
+            this.mnuBookmarksRemoveAll.Size = new System.Drawing.Size(213, 22);
             this.mnuBookmarksRemoveAll.Text = "Remove All Bookmarks";
             this.mnuBookmarksRemoveAll.Click += new System.EventHandler(this.mnuBookmarksRemoveAll_Click);
             // 
@@ -370,15 +375,30 @@
             // mnuHelp
             // 
             this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuHelpHelp,
+            this.toolStripMenuItem5,
             this.mnuHelpAbout});
             this.mnuHelp.Name = "mnuHelp";
             this.mnuHelp.Size = new System.Drawing.Size(44, 20);
             this.mnuHelp.Text = "&Help";
             // 
+            // mnuHelpHelp
+            // 
+            this.mnuHelpHelp.Name = "mnuHelpHelp";
+            this.mnuHelpHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.mnuHelpHelp.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpHelp.Text = "Help";
+            this.mnuHelpHelp.Click += new System.EventHandler(this.mnuHelpHelp_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 6);
+            // 
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
             this.mnuHelpAbout.Text = "&About";
             this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
@@ -575,6 +595,18 @@
             // 
             this.columnHeaderDescription.Width = 200;
             // 
+            // toolbarImageListSmall
+            // 
+            this.toolbarImageListSmall.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.toolbarImageListSmall.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("toolbarImageListSmall.ImageStream")));
+            this.toolbarImageListSmall.TransparentColor = System.Drawing.Color.Transparent;
+            this.toolbarImageListSmall.Images.SetKeyName(0, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(1, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(4, "Error_red_16x16.png");
+            this.toolbarImageListSmall.Images.SetKeyName(5, "manifest_16xLG.png");
+            // 
             // lstWarningsErrors
             // 
             this.lstWarningsErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -588,18 +620,6 @@
             this.lstWarningsErrors.Size = new System.Drawing.Size(1053, 104);
             this.lstWarningsErrors.TabIndex = 0;
             this.lstWarningsErrors.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstWarningsErrors_DrawItem);
-            // 
-            // toolbarImageListSmall
-            // 
-            this.toolbarImageListSmall.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.toolbarImageListSmall.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("toolbarImageListSmall.ImageStream")));
-            this.toolbarImageListSmall.TransparentColor = System.Drawing.Color.Transparent;
-            this.toolbarImageListSmall.Images.SetKeyName(0, "Error_red_16x16.png");
-            this.toolbarImageListSmall.Images.SetKeyName(1, "Error_red_16x16.png");
-            this.toolbarImageListSmall.Images.SetKeyName(2, "Warning_yellow_7231_16x16.png");
-            this.toolbarImageListSmall.Images.SetKeyName(3, "Information_blue_6227_16x16.png");
-            this.toolbarImageListSmall.Images.SetKeyName(4, "Error_red_16x16.png");
-            this.toolbarImageListSmall.Images.SetKeyName(5, "manifest_16xLG.png");
             // 
             // toolbarMain
             // 
@@ -843,5 +863,7 @@
         private ToolStripButton toolStripBtnUndo;
         private ToolStripButton toolStripBtnRedo;
         private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem mnuHelpHelp;
+        private ToolStripSeparator toolStripMenuItem5;
     }
 }

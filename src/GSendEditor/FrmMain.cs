@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Security.Policy;
 
 using FastColoredTextBoxNS;
 
@@ -587,6 +589,17 @@ namespace GSendEditor
         private void subProgramsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControlMain.SelectedTab = tabPageSubPrograms;
+        }
+
+        private void mnuHelpHelp_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = Constants.HelpWebsite,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
 
         private void mnuHelpAbout_Click(object sender, EventArgs e)
