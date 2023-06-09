@@ -50,7 +50,13 @@ namespace GSendControls
         public int Value
         {
             get => trackBarValue.Value;
-            set => trackBarValue.Value = Math.Min(value, trackBarValue.Maximum); 
+            set
+            {
+                int newValue = Math.Min(value, trackBarValue.Maximum);
+
+                if (newValue >= trackBarValue.Minimum && newValue <= trackBarValue.Maximum)
+                    trackBarValue.Value = newValue;
+            }
         }
 
         public string LabelValue { get; set; }

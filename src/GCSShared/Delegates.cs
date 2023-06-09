@@ -23,5 +23,7 @@ namespace GSendShared
 
     public delegate void JogCommand(JogDirection jogDirection, double stepSize, double feedRate);
 
-    public delegate void ShortcutKeyDelegate(bool isDown);
+    public delegate void ShortcutKeyDelegate(bool isKeyDown);
+
+    public delegate void ShortcutKeyHandler(object sender, ShortcutArgs e);
 }

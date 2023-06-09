@@ -2076,6 +2076,8 @@
             this.Text = "FrmMachine";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMachine_FormClosing);
             this.Shown += new System.EventHandler(this.FrmMachine_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMachine_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FrmMachine_KeyUp);
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
             this.statusStrip.ResumeLayout(false);

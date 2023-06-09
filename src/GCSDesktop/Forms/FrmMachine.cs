@@ -20,6 +20,7 @@ using GSendDesktop.Internal;
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
+using GSendShared.Interfaces;
 using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
-    public partial class FrmMachine : BaseForm, IUiUpdate
+    public partial class FrmMachine : BaseForm, IUiUpdate, IShortcutImplementation
     {
         #region Private Fields
 
@@ -59,6 +60,8 @@ namespace GSendDesktop.Forms
         private int _totalLines;
         private List<IGCodeLine> _gcodeLines;
         private IToolProfile _toolProfile;
+        private readonly List<IShortcut> _shortcuts;
+        private readonly ShortcutHandler _shortcutHandler;
 
         #endregion Private Fields
 
@@ -67,9 +70,13 @@ namespace GSendDesktop.Forms
         public FrmMachine()
         {
             InitializeComponent();
-        }
+            KeyPreview = true;
 
-        protected override string SectionName => $"{nameof(FrmMachine)}{_machine.Name}";
+            _shortcutHandler = new();
+            _shortcutHandler.RegisterKeyCombo = false;
+            _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
+            _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
+        }
 
         public FrmMachine(IGSendContext gSendContext, IMachine machine, IServiceProvider serviceProvider)
             : this()
@@ -128,6 +135,8 @@ namespace GSendDesktop.Forms
 
             WarningContainer_VisibleChanged(this, EventArgs.Empty);
             tabControlSecondary.TabPages.Remove(tabPageGCode);
+
+            _shortcuts = RetrieveAvailableShortcuts();
         }
 
         #endregion Constructors
@@ -779,6 +788,8 @@ namespace GSendDesktop.Forms
         #endregion Jog
 
         #region Overrides
+
+        protected override string SectionName => $"{nameof(FrmMachine)}{_machine.Name}";
 
         protected override void SaveSettings()
         {
@@ -1836,6 +1847,21 @@ namespace GSendDesktop.Forms
             e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
 
+        private void tabControlMain_Resize(object sender, EventArgs e)
+        {
+            tabControlSecondary.Width = tabControlMain.Width;
+        }
+
+        private void FrmMachine_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = _shortcutHandler.KeyDown(e);
+        }
+
+        private void FrmMachine_KeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = _shortcutHandler.KeyUp(e);
+        }
+
         #endregion Form Methods
 
         #region Toolbar Buttons
@@ -2140,9 +2166,66 @@ namespace GSendDesktop.Forms
 
         #endregion G Code
 
-        private void tabControlMain_Resize(object sender, EventArgs e)
+        #region Shortcuts
+
+        private void ShortcutHandler_OnKeyComboDown(object sender, ShortcutArgs e)
         {
-            tabControlSecondary.Width = tabControlMain.Width;
+            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+
+            if (shortcut != null)
+            {
+                shortcut.Trigger(true);
+            }
         }
+            
+        private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
+        {
+            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+
+            if (shortcut != null)
+            {
+                shortcut.Trigger(false);
+            }
+        }
+
+        private List<IShortcut> RetrieveAvailableShortcuts()
+        {
+            List<IShortcut> Result = new();
+            RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
+
+            foreach (IShortcut shortcut in Result)
+            {
+                _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
+            }
+            return Result;
+        }
+
+        private void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
+        {
+            if (depth > 25)
+            {
+
+            }
+
+            if (control is IShortcutImplementation shortcutImpl)
+            {
+                shortcuts.AddRange(shortcutImpl.GetShortCutImplementations());
+            }
+
+            foreach (Control childControl in control.Controls)
+            {
+                RecursivelyRetrieveAllShortcutClasses(childControl, shortcuts, depth + 1);
+            }
+        }
+
+        public List<IShortcut> GetShortCutImplementations()
+        {
+            return new()
+            {
+                //new ShortcutModel(),
+            };
+        }
+
+        #endregion Shortcuts
     }
 }
