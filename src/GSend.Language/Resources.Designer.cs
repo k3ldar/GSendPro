@@ -2815,6 +2815,60 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coordinates.
+        /// </summary>
+        public static string ShortcutCoordinates {
+            get {
+                return ResourceManager.GetString("ShortcutCoordinates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease Rapid Override Speed.
+        /// </summary>
+        public static string ShortcutDecreaseRapidsSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutDecreaseRapidsSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease Spindle Override Speed.
+        /// </summary>
+        public static string ShortcutDecreaseSpindleSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutDecreaseSpindleSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease X/Y Override Speed.
+        /// </summary>
+        public static string ShortcutDecreaseXYSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutDecreaseXYSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease Z Down Override Speed.
+        /// </summary>
+        public static string ShortcutDecreaseZDownSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutDecreaseZDownSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease Z Up Override Speed.
+        /// </summary>
+        public static string ShortcutDecreaseZUpSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutDecreaseZUpSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnect.
         /// </summary>
         public static string ShortcutDisconnect {
@@ -2856,6 +2910,51 @@ namespace GSend.Language {
         public static string ShortcutHome {
             get {
                 return ResourceManager.GetString("ShortcutHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Rapid Override Speed.
+        /// </summary>
+        public static string ShortcutIncreaseRapidsSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutIncreaseRapidsSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Spindle Override Speed.
+        /// </summary>
+        public static string ShortcutIncreaseSpindleSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutIncreaseSpindleSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase X/Y Override Speed.
+        /// </summary>
+        public static string ShortcutIncreaseXYSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutIncreaseXYSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Z Down Override Speed.
+        /// </summary>
+        public static string ShortcutIncreaseZDownSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutIncreaseZDownSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase Z Up Override Speed.
+        /// </summary>
+        public static string ShortcutIncreaseZUpSpeed {
+            get {
+                return ResourceManager.GetString("ShortcutIncreaseZUpSpeed", resourceCulture);
             }
         }
         
@@ -3094,6 +3193,69 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G54.
+        /// </summary>
+        public static string ShortcutSelectG54 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG54", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G55.
+        /// </summary>
+        public static string ShortcutSelectG55 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG55", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G56.
+        /// </summary>
+        public static string ShortcutSelectG56 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG56", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G57.
+        /// </summary>
+        public static string ShortcutSelectG57 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG57", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G58.
+        /// </summary>
+        public static string ShortcutSelectG58 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG58", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Coordinate System G59.
+        /// </summary>
+        public static string ShortcutSelectG59 {
+            get {
+                return ResourceManager.GetString("ShortcutSelectG59", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string ShortcutSettings {
+            get {
+                return ResourceManager.GetString("ShortcutSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string ShortcutStop {
@@ -3171,6 +3333,69 @@ namespace GSend.Language {
         public static string ShortcutTabSpindle {
             get {
                 return ResourceManager.GetString("ShortcutTabSpindle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Between Mm and Inch.
+        /// </summary>
+        public static string ShortcutToggleMmInch {
+            get {
+                return ResourceManager.GetString("ShortcutToggleMmInch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Override.
+        /// </summary>
+        public static string ShortcutToggleOverrideEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleOverrideEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Overide Rapids.
+        /// </summary>
+        public static string ShortcutToggleRapidsOverrideEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleRapidsOverrideEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Spindle Override.
+        /// </summary>
+        public static string ShortcutToggleRapidsOverrideSpindleEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleRapidsOverrideSpindleEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle XY Override.
+        /// </summary>
+        public static string ShortcutToggleRapidsOverrideXYEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleRapidsOverrideXYEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Z Down Override.
+        /// </summary>
+        public static string ShortcutToggleRapidsOverrideZDownEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleRapidsOverrideZDownEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Z Up Override.
+        /// </summary>
+        public static string ShortcutToggleRapidsOverrideZUpEnabled {
+            get {
+                return ResourceManager.GetString("ShortcutToggleRapidsOverrideZUpEnabled", resourceCulture);
             }
         }
         

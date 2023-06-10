@@ -53,6 +53,7 @@
             this.lvShortcuts.MultiSelect = false;
             this.lvShortcuts.Name = "lvShortcuts";
             this.lvShortcuts.Size = new System.Drawing.Size(648, 297);
+            this.lvShortcuts.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvShortcuts.TabIndex = 0;
             this.lvShortcuts.UseCompatibleStateImageBehavior = false;
             this.lvShortcuts.View = System.Windows.Forms.View.Details;

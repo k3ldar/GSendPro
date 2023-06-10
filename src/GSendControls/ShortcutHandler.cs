@@ -49,6 +49,9 @@ namespace GSendControls
 
         public bool IsKeyComboRegistered(List<int> keys)
         {
+            if (keys.Count == 0)
+                return false;
+
             return FindMatchingCombination(keys) != null;
         }
 

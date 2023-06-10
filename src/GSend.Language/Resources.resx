@@ -1035,6 +1035,24 @@
   <data name="ShortcutConnect" xml:space="preserve">
     <value>Connect</value>
   </data>
+  <data name="ShortcutCoordinates" xml:space="preserve">
+    <value>Coordinates</value>
+  </data>
+  <data name="ShortcutDecreaseRapidsSpeed" xml:space="preserve">
+    <value>Decrease Rapid Override Speed</value>
+  </data>
+  <data name="ShortcutDecreaseSpindleSpeed" xml:space="preserve">
+    <value>Decrease Spindle Override Speed</value>
+  </data>
+  <data name="ShortcutDecreaseXYSpeed" xml:space="preserve">
+    <value>Decrease X/Y Override Speed</value>
+  </data>
+  <data name="ShortcutDecreaseZDownSpeed" xml:space="preserve">
+    <value>Decrease Z Down Override Speed</value>
+  </data>
+  <data name="ShortcutDecreaseZUpSpeed" xml:space="preserve">
+    <value>Decrease Z Up Override Speed</value>
+  </data>
   <data name="ShortcutDisconnect" xml:space="preserve">
     <value>Disconnect</value>
   </data>
@@ -1049,6 +1067,21 @@
   </data>
   <data name="ShortcutHome" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="ShortcutIncreaseRapidsSpeed" xml:space="preserve">
+    <value>Increase Rapid Override Speed</value>
+  </data>
+  <data name="ShortcutIncreaseSpindleSpeed" xml:space="preserve">
+    <value>Increase Spindle Override Speed</value>
+  </data>
+  <data name="ShortcutIncreaseXYSpeed" xml:space="preserve">
+    <value>Increase X/Y Override Speed</value>
+  </data>
+  <data name="ShortcutIncreaseZDownSpeed" xml:space="preserve">
+    <value>Increase Z Down Override Speed</value>
+  </data>
+  <data name="ShortcutIncreaseZUpSpeed" xml:space="preserve">
+    <value>Increase Z Up Override Speed</value>
   </data>
   <data name="ShortcutInUse" xml:space="preserve">
     <value>Shortcut is already being used!</value>
@@ -1128,6 +1161,27 @@
   <data name="ShortcutSaveConfig" xml:space="preserve">
     <value>Save Configuration</value>
   </data>
+  <data name="ShortcutSelectG54" xml:space="preserve">
+    <value>Select Coordinate System G54</value>
+  </data>
+  <data name="ShortcutSelectG55" xml:space="preserve">
+    <value>Select Coordinate System G55</value>
+  </data>
+  <data name="ShortcutSelectG56" xml:space="preserve">
+    <value>Select Coordinate System G56</value>
+  </data>
+  <data name="ShortcutSelectG57" xml:space="preserve">
+    <value>Select Coordinate System G57</value>
+  </data>
+  <data name="ShortcutSelectG58" xml:space="preserve">
+    <value>Select Coordinate System G58</value>
+  </data>
+  <data name="ShortcutSelectG59" xml:space="preserve">
+    <value>Select Coordinate System G59</value>
+  </data>
+  <data name="ShortcutSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="ShortcutStop" xml:space="preserve">
     <value>Stop</value>
   </data>
@@ -1154,6 +1208,27 @@
   </data>
   <data name="ShortcutTabSpindle" xml:space="preserve">
     <value>Spindle</value>
+  </data>
+  <data name="ShortcutToggleMmInch" xml:space="preserve">
+    <value>Toggle Between Mm and Inch</value>
+  </data>
+  <data name="ShortcutToggleOverrideEnabled" xml:space="preserve">
+    <value>Toggle Override</value>
+  </data>
+  <data name="ShortcutToggleRapidsOverrideEnabled" xml:space="preserve">
+    <value>Toggle Overide Rapids</value>
+  </data>
+  <data name="ShortcutToggleRapidsOverrideSpindleEnabled" xml:space="preserve">
+    <value>Toggle Spindle Override</value>
+  </data>
+  <data name="ShortcutToggleRapidsOverrideXYEnabled" xml:space="preserve">
+    <value>Toggle XY Override</value>
+  </data>
+  <data name="ShortcutToggleRapidsOverrideZDownEnabled" xml:space="preserve">
+    <value>Toggle Z Down Override</value>
+  </data>
+  <data name="ShortcutToggleRapidsOverrideZUpEnabled" xml:space="preserve">
+    <value>Toggle Z Up Override</value>
   </data>
   <data name="ShortcutUpdate" xml:space="preserve">
     <value>Update</value>

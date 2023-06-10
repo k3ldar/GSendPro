@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -2247,6 +2248,8 @@ namespace GSendDesktop.Forms
         {
             foreach (IShortcut shortcut in Result)
             {
+                Debug.Assert(!_shortcutHandler.IsKeyComboRegistered(shortcut.DefaultKeys));
+
                 _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
 
                 string keyArray = String.Join(';', shortcut.DefaultKeys);
@@ -2311,6 +2314,8 @@ namespace GSendDesktop.Forms
             string groupNameViewMenu = GSend.Language.Resources.ShortcutMenuView;
             string groupNameActionMenu = GSend.Language.Resources.ShortcutMenuAction;
             string groupNameOverrides = GSend.Language.Resources.ShortcutGroupOverrides;
+            string groupNameSettings = GSend.Language.Resources.ShortcutSettings;
+            string groupNameCoordinates = GSend.Language.Resources.ShortcutCoordinates;
 
             return new()
             {
@@ -2403,12 +2408,103 @@ namespace GSendDesktop.Forms
 
 
                 // overrides
-                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.Shortcut,
-                    new List<int>() { (int)Keys.F11 },
-                    (bool isKeyDown) => { if (isKeyDown && mnuActionStop.Enabled) toolStripButtonStop_Click(mnuActionStop, EventArgs.Empty); },
-                    (List<int> keys) => UpdateMenuShortCut(mnuActionStop, keys)),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleOverrideEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverridesDisable.Checked = !cbOverridesDisable.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkRapids.Checked = !cbOverrideLinkRapids.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideXYEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkXY.Checked = !cbOverrideLinkXY.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideZUpEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkZUp.Checked = !cbOverrideLinkZUp.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideZDownEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkZDown.Checked = !cbOverrideLinkZDown.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideSpindleEnabled,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkSpindle.Checked = !cbOverrideLinkSpindle.Checked; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseRapidsSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkRapids.Enabled) selectionOverrideRapids.Value++; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseRapidsSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkRapids.Enabled) selectionOverrideRapids.Value--; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseXYSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkXY.Enabled) selectionOverrideXY.Value += 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseXYSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkXY.Enabled) selectionOverrideXY.Value -= 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseZUpSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZUp.Enabled) selectionOverrideZUp.Value += 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseZUpSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZUp.Enabled) selectionOverrideZUp.Value -= 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseZDownSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZDown.Enabled) selectionOverrideZDown.Value += 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseZDownSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZDown.Enabled) selectionOverrideZDown.Value -= 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseSpindleSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkSpindle.Enabled) selectionOverrideSpindle.Value += 100; },
+                    null),
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseSpindleSpeed,
+                    new List<int>() {  },
+                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkSpindle.Enabled) selectionOverrideSpindle.Value -= 100; },
+                    null),
 
-           };
+                // settings
+                new ShortcutModel(groupNameSettings, GSend.Language.Resources.ShortcutToggleMmInch,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Home },
+                    (bool isKeyDown) => { if (isKeyDown && rbFeedbackInch.Checked) rbFeedbackMm.Checked = true; else rbFeedbackInch.Checked = true; },
+                    null),
+
+                // coordinates 
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG54,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D1 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g54ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG55,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D2 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g55ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG56,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D3 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g56ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG57,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D4 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g57ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG58,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D5 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g58ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+                new ShortcutModel(groupNameCoordinates, GSend.Language.Resources.ShortcutSelectG59,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D6 },
+                    (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g59ToolStripMenuItem, EventArgs.Empty); },
+                    null),
+            }; 
         }
 
         #endregion Shortcuts
