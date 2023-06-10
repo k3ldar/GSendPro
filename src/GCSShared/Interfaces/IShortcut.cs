@@ -18,6 +18,11 @@
         ShortcutKeyDelegate Trigger { get; }
 
         /// <summary>
+        /// Called when shortcut is updated
+        /// </summary>
+        ShortcutUpdatedDelegate KeysUpdated { get; }
+
+        /// <summary>
         /// Existing key combination (maps to System.Windows.Forms.Keys)
         /// </summary>
         List<int> DefaultKeys { get; }

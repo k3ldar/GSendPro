@@ -2,6 +2,6 @@
 {
     public interface IShortcutImplementation
     {
-        List<IShortcut> GetShortCutImplementations();
+        List<IShortcut> GetShortcuts();
     }
 }

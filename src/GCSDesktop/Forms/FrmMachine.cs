@@ -60,7 +60,7 @@ namespace GSendDesktop.Forms
         private int _totalLines;
         private List<IGCodeLine> _gcodeLines;
         private IToolProfile _toolProfile;
-        private readonly List<IShortcut> _shortcuts;
+        private List<IShortcut> _shortcuts;
         private readonly ShortcutHandler _shortcutHandler;
 
         #endregion Private Fields
@@ -312,16 +312,34 @@ namespace GSendDesktop.Forms
         protected override void UpdateEnabledState()
         {
             toolStripButtonSave.Enabled = _configurationChanges;
-            toolStripButtonConnect.Enabled = !_machineConnected;
-            toolStripButtonDisconnect.Enabled = _machineConnected && !_isJogging && !_isProbing;
-            toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
-            toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
-            toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
-            toolStripButtonResume.Enabled = _isPaused || !_isRunning && _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
-            toolStripButtonPause.Enabled = !_isPaused && _machineConnected && (_isPaused || _isRunning);
-            toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
-            toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
+            mnuActionSaveConfig.Enabled = _configurationChanges;
 
+            toolStripButtonConnect.Enabled = !_machineConnected;
+            mnuActionConnect.Enabled = toolStripButtonConnect.Enabled;
+
+            toolStripButtonDisconnect.Enabled = _machineConnected && !_isJogging && !_isProbing;
+            mnuActionDisconnect.Enabled = toolStripButtonDisconnect.Enabled;
+
+            toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
+            mnuActionClearAlarm.Enabled = toolStripButtonClearAlarm.Enabled;
+
+            toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
+            mnuActionHome.Enabled = toolStripButtonHome.Enabled;
+
+            toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
+            mnuActionProbe.Enabled = toolStripButtonProbe.Enabled;
+
+            toolStripButtonResume.Enabled = _isPaused || !_isRunning && _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
+            mnuActionRun.Enabled = toolStripButtonResume.Enabled;
+
+            toolStripButtonPause.Enabled = !_isPaused && _machineConnected && (_isPaused || _isRunning);
+            mnuActionPause.Enabled = toolStripButtonPause.Enabled;
+
+            toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
+            mnuActionStop.Enabled = toolStripButtonStop.Enabled;
+
+            toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
+            
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
             btnZeroX.Enabled = toolStripButtonProbe.Enabled;
@@ -335,8 +353,8 @@ namespace GSendDesktop.Forms
             tabPageConsole.Enabled = _machineConnected && !_isRunning && !_isPaused && !_isProbing && !_isAlarm;
             grpBoxSpindleSpeed.Enabled = _machineConnected;
 
-            loadToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false;
-            clearToolStripMenuItem.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
+            mnuMachineLoadGCode.Enabled = _machineStatusModel?.IsRunning == false;
+            mnuMachineClearGCode.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)
@@ -909,6 +927,18 @@ namespace GSendDesktop.Forms
             _machine.OverrideSpindle = selectionOverrideSpindle.Value;
 
             UpdateConfigurationChanged();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            //_shortcutHandler.WndProc(ref m);
+            
+            base.WndProc(ref m);
+        }
+
+        protected override void DefWndProc(ref Message m)
+        {
+            base.DefWndProc(ref m);
         }
 
         #endregion Overrides
@@ -1520,20 +1550,20 @@ namespace GSendDesktop.Forms
             btnGrblCommandSend.Click += btnGrblCommandSend_Click;
 
             //menu
-            generalToolStripMenuItem.Tag = tabPageMain;
-            generalToolStripMenuItem.Click += SelectTabControlMainTab;
-            overridesToolStripMenuItem.Tag = tabPageOverrides;
-            overridesToolStripMenuItem.Click += SelectTabControlMainTab;
-            jogToolStripMenuItem.Tag = tabPageJog;
-            jogToolStripMenuItem.Click += SelectTabControlMainTab;
-            spindleToolStripMenuItem.Tag = tabPageSpindle;
-            spindleToolStripMenuItem.Click += SelectTabControlMainTab;
-            serviceScheduleToolStripMenuItem.Tag = tabPageServiceSchedule;
-            serviceScheduleToolStripMenuItem.Click += SelectTabControlMainTab;
-            machineSettingsToolStripMenuItem.Tag = tabPageMachineSettings;
-            machineSettingsToolStripMenuItem.Click += SelectTabControlMainTab;
-            settingsToolStripMenuItem.Tag = tabPageSettings;
-            settingsToolStripMenuItem.Click += SelectTabControlMainTab;
+            mnuViewGeneral.Tag = tabPageMain;
+            mnuViewGeneral.Click += SelectTabControlMainTab;
+            mnuViewOverrides.Tag = tabPageOverrides;
+            mnuViewOverrides.Click += SelectTabControlMainTab;
+            mnuViewJog.Tag = tabPageJog;
+            mnuViewJog.Click += SelectTabControlMainTab;
+            mnuViewSpindle.Tag = tabPageSpindle;
+            mnuViewSpindle.Click += SelectTabControlMainTab;
+            mnuViewServiceSchedule.Tag = tabPageServiceSchedule;
+            mnuViewServiceSchedule.Click += SelectTabControlMainTab;
+            mnuViewMachineSettings.Tag = tabPageMachineSettings;
+            mnuViewMachineSettings.Click += SelectTabControlMainTab;
+            mnuViewSettings.Tag = tabPageSettings;
+            mnuViewSettings.Click += SelectTabControlMainTab;
         }
 
         protected override void LoadResources()
@@ -1616,8 +1646,8 @@ namespace GSendDesktop.Forms
             columnServiceHeaderSpindleHours.Text = GSend.Language.Resources.SpindleHours;
 
             // menu items
-            machineToolStripMenuItem.Text = GSend.Language.Resources.Machine;
-            viewToolStripMenuItem.Text = GSend.Language.Resources.View;
+            mnuMachine.Text = GSend.Language.Resources.Machine;
+            mnuView.Text = GSend.Language.Resources.View;
 
 
 
@@ -1663,30 +1693,30 @@ namespace GSendDesktop.Forms
             openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
 
             //Machine
-            loadToolStripMenuItem.Text = GSend.Language.Resources.LoadGCode;
-            clearToolStripMenuItem.Text = GSend.Language.Resources.ClearGCode;
-            closeToolStripMenuItem.Text = GSend.Language.Resources.Close;
+            mnuMachineLoadGCode.Text = GSend.Language.Resources.LoadGCode;
+            mnuMachineClearGCode.Text = GSend.Language.Resources.ClearGCode;
+            mnuMachineClose.Text = GSend.Language.Resources.Close;
 
             //view
-            generalToolStripMenuItem.Text = GSend.Language.Resources.General;
-            overridesToolStripMenuItem.Text = GSend.Language.Resources.Overrides;
-            jogToolStripMenuItem.Text = GSend.Language.Resources.Jog;
-            spindleToolStripMenuItem.Text = GSend.Language.Resources.Spindle;
-            serviceScheduleToolStripMenuItem.Text = GSend.Language.Resources.ServiceSchedule;
-            machineSettingsToolStripMenuItem.Text = GSend.Language.Resources.MachineSettings;
-            settingsToolStripMenuItem.Text = GSend.Language.Resources.Settings;
-            consoleToolStripMenuItem.Text = GSend.Language.Resources.Console;
+            mnuViewGeneral.Text = GSend.Language.Resources.General;
+            mnuViewOverrides.Text = GSend.Language.Resources.Overrides;
+            mnuViewJog.Text = GSend.Language.Resources.Jog;
+            mnuViewSpindle.Text = GSend.Language.Resources.Spindle;
+            mnuViewServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
+            mnuViewMachineSettings.Text = GSend.Language.Resources.MachineSettings;
+            mnuViewSettings.Text = GSend.Language.Resources.Settings;
+            mnuViewConsole.Text = GSend.Language.Resources.Console;
 
             // action
-            saveConfigurationToolStripMenuItem.Text = GSend.Language.Resources.SaveConfiguration;
-            connectToolStripMenuItem.Text = GSend.Language.Resources.Connect;
-            disconnectToolStripMenuItem.Text = GSend.Language.Resources.Disconnect;
-            clearAlarmToolStripMenuItem.Text = GSend.Language.Resources.ClearAlarm;
-            homeToolStripMenuItem.Text = GSend.Language.Resources.Home;
-            probeToolStripMenuItem.Text = GSend.Language.Resources.Probe;
-            runToolStripMenuItem.Text = GSend.Language.Resources.Resume;
-            pauseToolStripMenuItem.Text = GSend.Language.Resources.Pause;
-            stopToolStripMenuItem.Text = GSend.Language.Resources.Stop;
+            mnuActionSaveConfig.Text = GSend.Language.Resources.SaveConfiguration;
+            mnuActionConnect.Text = GSend.Language.Resources.Connect;
+            mnuActionDisconnect.Text = GSend.Language.Resources.Disconnect;
+            mnuActionClearAlarm.Text = GSend.Language.Resources.ClearAlarm;
+            mnuActionHome.Text = GSend.Language.Resources.Home;
+            mnuActionProbe.Text = GSend.Language.Resources.Probe;
+            mnuActionRun.Text = GSend.Language.Resources.Resume;
+            mnuActionPause.Text = GSend.Language.Resources.Pause;
+            mnuActionStop.Text = GSend.Language.Resources.Stop;
         }
 
         private void UpdateDisplay()
@@ -1855,6 +1885,7 @@ namespace GSendDesktop.Forms
         private void FrmMachine_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = _shortcutHandler.KeyDown(e);
+
         }
 
         private void FrmMachine_KeyUp(object sender, KeyEventArgs e)
@@ -1982,12 +2013,13 @@ namespace GSendDesktop.Forms
 
             tabControlMain.SelectedTab = tabPage;
         }
+
         private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControlSecondary.SelectedTab = tabPageConsole;
         }
 
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuMachineLoadGCode_Click(object sender, EventArgs e)
         {
             openFileDialog1.FileName = String.Empty;
 
@@ -1997,7 +2029,7 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuMachineClearGCode_Click(object sender, EventArgs e)
         {
             UnloadGCode();
         }
@@ -2016,6 +2048,20 @@ namespace GSendDesktop.Forms
             g58ToolStripMenuItem.Checked = false;
             g59ToolStripMenuItem.Checked = false;
         }
+
+        private void mnuOptionsShortcutKeys_Click(object sender, EventArgs e)
+        {
+            if (ShortcutEditor.ShowDialog(this, ref _shortcuts))
+            {
+                UpdateShortcutKeyValues(_shortcuts);
+
+                foreach (IShortcut shortcut in _shortcuts)
+                {
+                    DesktopSettings.WriteValue("Shortcut Keys", shortcut.Name, String.Join(';', shortcut.DefaultKeys));
+                }
+            }
+        }
+
 
         #endregion Menu
 
@@ -2193,11 +2239,37 @@ namespace GSendDesktop.Forms
             List<IShortcut> Result = new();
             RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
 
+            UpdateShortcutKeyValues(Result);
+            return Result;
+        }
+
+        private void UpdateShortcutKeyValues(List<IShortcut> Result)
+        {
             foreach (IShortcut shortcut in Result)
             {
                 _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
+
+                string keyArray = String.Join(';', shortcut.DefaultKeys);
+
+                // is it overridden?
+                string shortcutValue = DesktopSettings.ReadValue<string>("Shortcut Keys", shortcut.Name, keyArray);
+
+                if (!String.IsNullOrEmpty(shortcutValue) && keyArray != shortcutValue)
+                {
+                    shortcut.DefaultKeys.Clear();
+
+                    string[] keyItems = shortcutValue.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string item in keyItems)
+                    {
+                        if (Int32.TryParse(item, out int keyValue))
+                            shortcut.DefaultKeys.Add(keyValue);
+                    }    
+                }
+
+                if (shortcut != null && shortcut.KeysUpdated != null)
+                    shortcut.KeysUpdated(shortcut.DefaultKeys);
             }
-            return Result;
         }
 
         private void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
@@ -2209,7 +2281,7 @@ namespace GSendDesktop.Forms
 
             if (control is IShortcutImplementation shortcutImpl)
             {
-                shortcuts.AddRange(shortcutImpl.GetShortCutImplementations());
+                shortcuts.AddRange(shortcutImpl.GetShortcuts());
             }
 
             foreach (Control childControl in control.Controls)
@@ -2218,12 +2290,125 @@ namespace GSendDesktop.Forms
             }
         }
 
-        public List<IShortcut> GetShortCutImplementations()
+        private void UpdateMenuShortCut(ToolStripMenuItem menu, List<int> keys)
         {
+            if (menu == null || keys == null || keys.Count == 0)
+                return;
+
+            Keys key = Keys.None;
+
+            foreach (int intKeyValue in keys)
+            {
+                key |= (Keys)intKeyValue;
+            }
+
+            menu.ShortcutKeys = key;
+        }
+
+        public List<IShortcut> GetShortcuts()
+        {
+            string groupName = GSend.Language.Resources.ShortcutMenuMachine;
+            string groupNameViewMenu = GSend.Language.Resources.ShortcutMenuView;
+            string groupNameActionMenu = GSend.Language.Resources.ShortcutMenuAction;
+            string groupNameOverrides = GSend.Language.Resources.ShortcutGroupOverrides;
+
             return new()
             {
-                //new ShortcutModel(),
-            };
+                // machine menu
+                new ShortcutModel(groupName, GSend.Language.Resources.LoadGCode, 
+                    new List<int>() { (int)Keys.Control, (int)Keys.L},
+                    (bool isKeyDown) => { if (isKeyDown && mnuMachineLoadGCode.Enabled) mnuMachineLoadGCode_Click(this, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuMachineLoadGCode, keys)),
+                new ShortcutModel(groupName, GSend.Language.Resources.ClearGCode,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Delete},
+                    (bool isKeyDown) => { if (isKeyDown && mnuMachineClearGCode.Enabled) mnuMachineClearGCode_Click(this, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuMachineClearGCode, keys)),
+                new ShortcutModel(groupName, GSend.Language.Resources.Close,
+                    new List<int>(),
+                    (bool isKeyDown) => { if (isKeyDown && mnuMachineClose.Enabled) closeToolStripMenuItem_Click(this, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuMachineClose, keys)),
+
+                // view menu
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabGeneral,
+                    new List<int>() { (int)Keys.Control, (int)Keys.G },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewGeneral.Enabled) SelectTabControlMainTab(mnuViewGeneral, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewGeneral, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabOverrides,
+                    new List<int>() { (int)Keys.Control, (int)Keys.O },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewOverrides.Enabled) SelectTabControlMainTab(mnuViewOverrides, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewOverrides, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabJog,
+                    new List<int>() { (int)Keys.Control, (int)Keys.J },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewJog.Enabled) SelectTabControlMainTab(mnuViewJog, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewJog, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabSpindle,
+                    new List<int>() { (int)Keys.Control, (int)Keys.I },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewSpindle.Enabled) SelectTabControlMainTab(mnuViewSpindle, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewSpindle, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabServiceSchedule,
+                    new List<int>() { (int)Keys.Control, (int)Keys.E },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewServiceSchedule.Enabled) SelectTabControlMainTab(mnuViewServiceSchedule, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewServiceSchedule, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabMachineSettings,
+                    new List<int>() { (int)Keys.Control, (int)Keys.M },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewMachineSettings.Enabled) SelectTabControlMainTab(mnuViewMachineSettings, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewMachineSettings, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabSettings,
+                    new List<int>() { (int)Keys.Control, (int)Keys.T },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewSettings.Enabled) SelectTabControlMainTab(mnuViewSettings, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewSettings, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabConsole,
+                    new List<int>() { (int)Keys.F4 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewConsole.Enabled) SelectTabControlMainTab(mnuViewConsole, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewConsole, keys)),
+
+
+                // action menu
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutSaveConfig,
+                    new List<int>() { (int)Keys.Control, (int)Keys.S },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionSaveConfig.Enabled) toolStripButtonSave_Click(mnuActionSaveConfig, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionSaveConfig, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutConnect,
+                    new List<int>() { (int)Keys.F2 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionConnect.Enabled) toolStripButtonConnect_Click(mnuActionConnect, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionConnect, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutDisconnect,
+                    new List<int>() { (int)Keys.F3 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionDisconnect.Enabled) toolStripButtonDisconnect_Click(mnuActionDisconnect, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionDisconnect, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutClearAlarm,
+                    new List<int>() { (int)Keys.Control, (int)Keys.A },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionClearAlarm.Enabled) toolStripButtonClearAlarm_Click(mnuActionClearAlarm, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionClearAlarm, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutHome,
+                    new List<int>() { (int)Keys.Control, (int)Keys.H },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionHome.Enabled) toolStripButtonHome_Click(mnuActionHome, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionHome, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutProbe,
+                    new List<int>() { (int)Keys.Control, (int)Keys.B },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionProbe.Enabled) toolStripButtonProbe_Click(mnuActionProbe, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionProbe, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutRun,
+                    new List<int>() { (int)Keys.F9 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionRun.Enabled) toolStripButtonResume_Click(mnuActionRun, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionRun, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutPause,
+                    new List<int>() { (int)Keys.F10 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionPause.Enabled) toolStripButtonPause_Click(mnuActionPause, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionPause, keys)),
+                new ShortcutModel(groupNameActionMenu, GSend.Language.Resources.ShortcutStop,
+                    new List<int>() { (int)Keys.F11 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionStop.Enabled) toolStripButtonStop_Click(mnuActionStop, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionStop, keys)),
+
+
+                // overrides
+                new ShortcutModel(groupNameOverrides, GSend.Language.Resources.Shortcut,
+                    new List<int>() { (int)Keys.F11 },
+                    (bool isKeyDown) => { if (isKeyDown && mnuActionStop.Enabled) toolStripButtonStop_Click(mnuActionStop, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuActionStop, keys)),
+
+           };
         }
 
         #endregion Shortcuts

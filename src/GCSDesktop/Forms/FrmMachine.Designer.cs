@@ -144,35 +144,39 @@
             this.cbLimitSwitches = new System.Windows.Forms.CheckBox();
             this.probingCommand1 = new GSendControls.ProbingCommand();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.machineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMachine = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMachineLoadGCode = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMachineClearGCode = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.overridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.jogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.spindleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serviceScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.machineSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMachineClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewGeneral = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewOverrides = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewJog = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSpindle = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewServiceSchedule = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewMachineSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.actionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewConsole = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionSaveConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearAlarmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionClearAlarm = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.probeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionHome = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionProbe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionRun = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionPause = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuActionStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOptionsShortcutKeys = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.warningsAndErrors = new GSendControls.WarningContainer();
             this.tabControlSecondary = new System.Windows.Forms.TabControl();
             this.tabPageConsole = new System.Windows.Forms.TabPage();
@@ -625,7 +629,7 @@
             this.tabControlMain.Controls.Add(this.tabPageMachineSettings);
             this.tabControlMain.Controls.Add(this.tabPageSettings);
             this.tabControlMain.HotTrack = true;
-            this.tabControlMain.Location = new System.Drawing.Point(12, 135);
+            this.tabControlMain.Location = new System.Drawing.Point(9, 139);
             this.tabControlMain.MinimumSize = new System.Drawing.Size(773, 270);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -1498,243 +1502,255 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.machineToolStripMenuItem,
-            this.viewToolStripMenuItem,
-            this.actionToolStripMenuItem});
+            this.mnuMachine,
+            this.mnuView,
+            this.mnuAction,
+            this.mnuOptions,
+            this.mnuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(796, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // machineToolStripMenuItem
+            // mnuMachine
             // 
-            this.machineToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadToolStripMenuItem,
-            this.clearToolStripMenuItem,
+            this.mnuMachine.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuMachineLoadGCode,
+            this.mnuMachineClearGCode,
             this.toolStripMenuItem2,
-            this.closeToolStripMenuItem});
-            this.machineToolStripMenuItem.Name = "machineToolStripMenuItem";
-            this.machineToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.machineToolStripMenuItem.Text = "&Machine";
+            this.mnuMachineClose});
+            this.mnuMachine.Name = "mnuMachine";
+            this.mnuMachine.Size = new System.Drawing.Size(65, 20);
+            this.mnuMachine.Text = "&Machine";
             // 
-            // loadToolStripMenuItem
+            // mnuMachineLoadGCode
             // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.loadToolStripMenuItem.Text = "Load G Code";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.mnuMachineLoadGCode.Name = "mnuMachineLoadGCode";
+            this.mnuMachineLoadGCode.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineLoadGCode.Text = "Load G Code";
+            this.mnuMachineLoadGCode.Click += new System.EventHandler(this.mnuMachineLoadGCode_Click);
             // 
-            // clearToolStripMenuItem
+            // mnuMachineClearGCode
             // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.clearToolStripMenuItem.Text = "Clear G Code";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            this.mnuMachineClearGCode.Name = "mnuMachineClearGCode";
+            this.mnuMachineClearGCode.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineClearGCode.Text = "Clear G Code";
+            this.mnuMachineClearGCode.Click += new System.EventHandler(this.mnuMachineClearGCode_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(140, 6);
             // 
-            // closeToolStripMenuItem
+            // mnuMachineClose
             // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.mnuMachineClose.Name = "mnuMachineClose";
+            this.mnuMachineClose.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineClose.Text = "Close";
+            this.mnuMachineClose.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // viewToolStripMenuItem
+            // mnuView
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generalToolStripMenuItem,
-            this.overridesToolStripMenuItem,
-            this.jogToolStripMenuItem,
-            this.spindleToolStripMenuItem,
-            this.serviceScheduleToolStripMenuItem,
-            this.machineSettingsToolStripMenuItem,
-            this.settingsToolStripMenuItem,
+            this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuViewGeneral,
+            this.mnuViewOverrides,
+            this.mnuViewJog,
+            this.mnuViewSpindle,
+            this.mnuViewServiceSchedule,
+            this.mnuViewMachineSettings,
+            this.mnuViewSettings,
             this.toolStripMenuItem1,
-            this.consoleToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "&View";
+            this.mnuViewConsole});
+            this.mnuView.Name = "mnuView";
+            this.mnuView.Size = new System.Drawing.Size(44, 20);
+            this.mnuView.Text = "&View";
             // 
-            // generalToolStripMenuItem
+            // mnuViewGeneral
             // 
-            this.generalToolStripMenuItem.Name = "generalToolStripMenuItem";
-            this.generalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.generalToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.generalToolStripMenuItem.Text = "General";
+            this.mnuViewGeneral.Name = "mnuViewGeneral";
+            this.mnuViewGeneral.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewGeneral.Text = "General";
             // 
-            // overridesToolStripMenuItem
+            // mnuViewOverrides
             // 
-            this.overridesToolStripMenuItem.Name = "overridesToolStripMenuItem";
-            this.overridesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.overridesToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.overridesToolStripMenuItem.Text = "Overrides";
+            this.mnuViewOverrides.Name = "mnuViewOverrides";
+            this.mnuViewOverrides.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewOverrides.Text = "Overrides";
             // 
-            // jogToolStripMenuItem
+            // mnuViewJog
             // 
-            this.jogToolStripMenuItem.Name = "jogToolStripMenuItem";
-            this.jogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
-            this.jogToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.jogToolStripMenuItem.Text = "Jog";
+            this.mnuViewJog.Name = "mnuViewJog";
+            this.mnuViewJog.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewJog.Text = "Jog";
             // 
-            // spindleToolStripMenuItem
+            // mnuViewSpindle
             // 
-            this.spindleToolStripMenuItem.Name = "spindleToolStripMenuItem";
-            this.spindleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.spindleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.spindleToolStripMenuItem.Text = "Spindle";
+            this.mnuViewSpindle.Name = "mnuViewSpindle";
+            this.mnuViewSpindle.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewSpindle.Text = "Spindle";
             // 
-            // serviceScheduleToolStripMenuItem
+            // mnuViewServiceSchedule
             // 
-            this.serviceScheduleToolStripMenuItem.Name = "serviceScheduleToolStripMenuItem";
-            this.serviceScheduleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.serviceScheduleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.serviceScheduleToolStripMenuItem.Text = "Service Schedule";
+            this.mnuViewServiceSchedule.Name = "mnuViewServiceSchedule";
+            this.mnuViewServiceSchedule.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewServiceSchedule.Text = "Service Schedule";
             // 
-            // machineSettingsToolStripMenuItem
+            // mnuViewMachineSettings
             // 
-            this.machineSettingsToolStripMenuItem.Name = "machineSettingsToolStripMenuItem";
-            this.machineSettingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.machineSettingsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.machineSettingsToolStripMenuItem.Text = "Machine Settings";
+            this.mnuViewMachineSettings.Name = "mnuViewMachineSettings";
+            this.mnuViewMachineSettings.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewMachineSettings.Text = "Machine Settings";
             // 
-            // settingsToolStripMenuItem
+            // mnuViewSettings
             // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            this.mnuViewSettings.Name = "mnuViewSettings";
+            this.mnuViewSettings.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewSettings.Text = "Settings";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(162, 6);
             // 
-            // consoleToolStripMenuItem
+            // mnuViewConsole
             // 
-            this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.consoleToolStripMenuItem.Text = "Console";
-            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
+            this.mnuViewConsole.Name = "mnuViewConsole";
+            this.mnuViewConsole.Size = new System.Drawing.Size(165, 22);
+            this.mnuViewConsole.Text = "Console";
+            this.mnuViewConsole.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
             // 
-            // actionToolStripMenuItem
+            // mnuAction
             // 
-            this.actionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveConfigurationToolStripMenuItem,
+            this.mnuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuActionSaveConfig,
             this.toolStripMenuItem3,
-            this.connectToolStripMenuItem,
-            this.disconnectToolStripMenuItem,
+            this.mnuActionConnect,
+            this.mnuActionDisconnect,
             this.toolStripMenuItem6,
-            this.clearAlarmToolStripMenuItem,
+            this.mnuActionClearAlarm,
             this.toolStripMenuItem4,
-            this.homeToolStripMenuItem,
-            this.probeToolStripMenuItem,
+            this.mnuActionHome,
+            this.mnuActionProbe,
             this.toolStripMenuItem5,
-            this.runToolStripMenuItem,
-            this.pauseToolStripMenuItem,
-            this.stopToolStripMenuItem});
-            this.actionToolStripMenuItem.Name = "actionToolStripMenuItem";
-            this.actionToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.actionToolStripMenuItem.Text = "Action";
+            this.mnuActionRun,
+            this.mnuActionPause,
+            this.mnuActionStop});
+            this.mnuAction.Name = "mnuAction";
+            this.mnuAction.Size = new System.Drawing.Size(54, 20);
+            this.mnuAction.Text = "Action";
             // 
-            // saveConfigurationToolStripMenuItem
+            // mnuActionSaveConfig
             // 
-            this.saveConfigurationToolStripMenuItem.Name = "saveConfigurationToolStripMenuItem";
-            this.saveConfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveConfigurationToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.saveConfigurationToolStripMenuItem.Text = "Save Configuration";
-            this.saveConfigurationToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonSave_Click);
+            this.mnuActionSaveConfig.Name = "mnuActionSaveConfig";
+            this.mnuActionSaveConfig.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionSaveConfig.Text = "Save Configuration";
+            this.mnuActionSaveConfig.Click += new System.EventHandler(this.toolStripButtonSave_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(212, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(172, 6);
             // 
-            // connectToolStripMenuItem
+            // mnuActionConnect
             // 
-            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
+            this.mnuActionConnect.Name = "mnuActionConnect";
+            this.mnuActionConnect.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionConnect.Text = "Connect";
+            this.mnuActionConnect.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
             // 
-            // disconnectToolStripMenuItem
+            // mnuActionDisconnect
             // 
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.disconnectToolStripMenuItem.Text = "Disconnect";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonDisconnect_Click);
+            this.mnuActionDisconnect.Name = "mnuActionDisconnect";
+            this.mnuActionDisconnect.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionDisconnect.Text = "Disconnect";
+            this.mnuActionDisconnect.Click += new System.EventHandler(this.toolStripButtonDisconnect_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(212, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(172, 6);
             // 
-            // clearAlarmToolStripMenuItem
+            // mnuActionClearAlarm
             // 
-            this.clearAlarmToolStripMenuItem.Name = "clearAlarmToolStripMenuItem";
-            this.clearAlarmToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.clearAlarmToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.clearAlarmToolStripMenuItem.Text = "Clear Alarm";
-            this.clearAlarmToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonClearAlarm_Click);
+            this.mnuActionClearAlarm.Name = "mnuActionClearAlarm";
+            this.mnuActionClearAlarm.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionClearAlarm.Text = "Clear Alarm";
+            this.mnuActionClearAlarm.Click += new System.EventHandler(this.toolStripButtonClearAlarm_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(212, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(172, 6);
             // 
-            // homeToolStripMenuItem
+            // mnuActionHome
             // 
-            this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
-            this.homeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.homeToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.homeToolStripMenuItem.Text = "Home";
-            this.homeToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonHome_Click);
+            this.mnuActionHome.Name = "mnuActionHome";
+            this.mnuActionHome.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionHome.Text = "Home";
+            this.mnuActionHome.Click += new System.EventHandler(this.toolStripButtonHome_Click);
             // 
-            // probeToolStripMenuItem
+            // mnuActionProbe
             // 
-            this.probeToolStripMenuItem.Name = "probeToolStripMenuItem";
-            this.probeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.probeToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.probeToolStripMenuItem.Text = "Probe";
-            this.probeToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonProbe_Click);
+            this.mnuActionProbe.Name = "mnuActionProbe";
+            this.mnuActionProbe.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionProbe.Text = "Probe";
+            this.mnuActionProbe.Click += new System.EventHandler(this.toolStripButtonProbe_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(212, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 6);
             // 
-            // runToolStripMenuItem
+            // mnuActionRun
             // 
-            this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-            this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.runToolStripMenuItem.Text = "Run";
-            this.runToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonResume_Click);
+            this.mnuActionRun.Name = "mnuActionRun";
+            this.mnuActionRun.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionRun.Text = "Run";
+            this.mnuActionRun.Click += new System.EventHandler(this.toolStripButtonResume_Click);
             // 
-            // pauseToolStripMenuItem
+            // mnuActionPause
             // 
-            this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
-            this.pauseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.pauseToolStripMenuItem.Text = "Pause";
-            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonPause_Click);
+            this.mnuActionPause.Name = "mnuActionPause";
+            this.mnuActionPause.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionPause.Text = "Pause";
+            this.mnuActionPause.Click += new System.EventHandler(this.toolStripButtonPause_Click);
             // 
-            // stopToolStripMenuItem
+            // mnuActionStop
             // 
-            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.stopToolStripMenuItem.Text = "Stop";
-            this.stopToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonStop_Click);
+            this.mnuActionStop.Name = "mnuActionStop";
+            this.mnuActionStop.Size = new System.Drawing.Size(175, 22);
+            this.mnuActionStop.Text = "Stop";
+            this.mnuActionStop.Click += new System.EventHandler(this.toolStripButtonStop_Click);
+            // 
+            // mnuOptions
+            // 
+            this.mnuOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuOptionsShortcutKeys});
+            this.mnuOptions.Name = "mnuOptions";
+            this.mnuOptions.Size = new System.Drawing.Size(61, 20);
+            this.mnuOptions.Text = "Options";
+            // 
+            // mnuOptionsShortcutKeys
+            // 
+            this.mnuOptionsShortcutKeys.Name = "mnuOptionsShortcutKeys";
+            this.mnuOptionsShortcutKeys.Size = new System.Drawing.Size(180, 22);
+            this.mnuOptionsShortcutKeys.Text = "Shortcut Keys";
+            this.mnuOptionsShortcutKeys.Click += new System.EventHandler(this.mnuOptionsShortcutKeys_Click);
+            // 
+            // mnuHelp
+            // 
+            this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuHelpAbout});
+            this.mnuHelp.Name = "mnuHelp";
+            this.mnuHelp.Size = new System.Drawing.Size(44, 20);
+            this.mnuHelp.Text = "&Help";
+            // 
+            // mnuHelpAbout
+            // 
+            this.mnuHelpAbout.Name = "mnuHelpAbout";
+            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpAbout.Text = "About";
             // 
             // warningsAndErrors
             // 
@@ -2165,8 +2181,8 @@
         private System.Windows.Forms.TextBox txtGrblUpdates;
         private System.Windows.Forms.Button btnApplyGrblUpdates;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem machineToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuMachine;
+        private System.Windows.Forms.ToolStripMenuItem mnuView;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelWarnings;
         private GSendControls.WarningContainer warningsAndErrors;
         private GSendControls.ProbingCommand probingCommand1;
@@ -2205,32 +2221,32 @@
         private System.Windows.Forms.Label lblSpindleHoursRemaining;
         private System.Windows.Forms.Label lblServiceDate;
         private System.Windows.Forms.Button btnServiceRefresh;
-        private System.Windows.Forms.ToolStripMenuItem generalToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem overridesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem jogToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem spindleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem serviceScheduleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem machineSettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewGeneral;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewOverrides;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewJog;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewSpindle;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewServiceSchedule;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewMachineSettings;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewSettings;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewConsole;
+        private System.Windows.Forms.ToolStripMenuItem mnuMachineLoadGCode;
+        private System.Windows.Forms.ToolStripMenuItem mnuMachineClearGCode;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem actionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveConfigurationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuMachineClose;
+        private System.Windows.Forms.ToolStripMenuItem mnuAction;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionSaveConfig;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionConnect;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionDisconnect;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
-        private System.Windows.Forms.ToolStripMenuItem clearAlarmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionClearAlarm;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem homeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem probeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionHome;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionProbe;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionRun;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionPause;
+        private System.Windows.Forms.ToolStripMenuItem mnuActionStop;
         private System.Windows.Forms.ListView lvServices;
         private System.Windows.Forms.ColumnHeader columnServiceHeaderDateTime;
         private System.Windows.Forms.ColumnHeader columnServiceHeaderServiceType;
@@ -2295,5 +2311,9 @@
         private GSendControls.HeartbeatPanel heartbeatPanelSpindle;
         private GSendControls.HeartbeatPanel heartbeatPanelAvailableBlocks;
         private GSendControls.HeartbeatPanel heartbeatPanelAvailableRXBytes;
+        private System.Windows.Forms.ToolStripMenuItem mnuOptions;
+        private System.Windows.Forms.ToolStripMenuItem mnuOptionsShortcutKeys;
+        private System.Windows.Forms.ToolStripMenuItem mnuHelp;
+        private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
     }
 }

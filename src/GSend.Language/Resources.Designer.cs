@@ -2788,6 +2788,132 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Alarm.
+        /// </summary>
+        public static string ShortcutClearAlarm {
+            get {
+                return ResourceManager.GetString("ShortcutClearAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcut Combination.
+        /// </summary>
+        public static string ShortcutCombination {
+            get {
+                return ResourceManager.GetString("ShortcutCombination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string ShortcutConnect {
+            get {
+                return ResourceManager.GetString("ShortcutConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string ShortcutDisconnect {
+            get {
+                return ResourceManager.GetString("ShortcutDisconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcut Editor.
+        /// </summary>
+        public static string ShortcutEditor {
+            get {
+                return ResourceManager.GetString("ShortcutEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string ShortcutGroupName {
+            get {
+                return ResourceManager.GetString("ShortcutGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overrides.
+        /// </summary>
+        public static string ShortcutGroupOverrides {
+            get {
+                return ResourceManager.GetString("ShortcutGroupOverrides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string ShortcutHome {
+            get {
+                return ResourceManager.GetString("ShortcutHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcut is already being used!.
+        /// </summary>
+        public static string ShortcutInUse {
+            get {
+                return ResourceManager.GetString("ShortcutInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key Combination.
+        /// </summary>
+        public static string ShortcutKeyCombination {
+            get {
+                return ResourceManager.GetString("ShortcutKeyCombination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action Menu.
+        /// </summary>
+        public static string ShortcutMenuAction {
+            get {
+                return ResourceManager.GetString("ShortcutMenuAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Menu Items.
+        /// </summary>
+        public static string ShortcutMenuMachine {
+            get {
+                return ResourceManager.GetString("ShortcutMenuMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Menu.
+        /// </summary>
+        public static string ShortcutMenuView {
+            get {
+                return ResourceManager.GetString("ShortcutMenuView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string ShortcutName {
+            get {
+                return ResourceManager.GetString("ShortcutName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decrease Feed Rate.
         /// </summary>
         public static string ShortcutNameDecreaseFeedRate {
@@ -2910,6 +3036,150 @@ namespace GSend.Language {
         public static string ShortcutNameZPlus {
             get {
                 return ResourceManager.GetString("ShortcutNameZPlus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string ShortcutPause {
+            get {
+                return ResourceManager.GetString("ShortcutPause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press shortcut keys.
+        /// </summary>
+        public static string ShortcutPressCombination {
+            get {
+                return ResourceManager.GetString("ShortcutPressCombination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Probe.
+        /// </summary>
+        public static string ShortcutProbe {
+            get {
+                return ResourceManager.GetString("ShortcutProbe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string ShortcutRemove {
+            get {
+                return ResourceManager.GetString("ShortcutRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run/Resume.
+        /// </summary>
+        public static string ShortcutRun {
+            get {
+                return ResourceManager.GetString("ShortcutRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Configuration.
+        /// </summary>
+        public static string ShortcutSaveConfig {
+            get {
+                return ResourceManager.GetString("ShortcutSaveConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string ShortcutStop {
+            get {
+                return ResourceManager.GetString("ShortcutStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Console.
+        /// </summary>
+        public static string ShortcutTabConsole {
+            get {
+                return ResourceManager.GetString("ShortcutTabConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string ShortcutTabGeneral {
+            get {
+                return ResourceManager.GetString("ShortcutTabGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jog.
+        /// </summary>
+        public static string ShortcutTabJog {
+            get {
+                return ResourceManager.GetString("ShortcutTabJog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine Settings.
+        /// </summary>
+        public static string ShortcutTabMachineSettings {
+            get {
+                return ResourceManager.GetString("ShortcutTabMachineSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overrides.
+        /// </summary>
+        public static string ShortcutTabOverrides {
+            get {
+                return ResourceManager.GetString("ShortcutTabOverrides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Schedule.
+        /// </summary>
+        public static string ShortcutTabServiceSchedule {
+            get {
+                return ResourceManager.GetString("ShortcutTabServiceSchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tab Settings.
+        /// </summary>
+        public static string ShortcutTabSettings {
+            get {
+                return ResourceManager.GetString("ShortcutTabSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spindle.
+        /// </summary>
+        public static string ShortcutTabSpindle {
+            get {
+                return ResourceManager.GetString("ShortcutTabSpindle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string ShortcutUpdate {
+            get {
+                return ResourceManager.GetString("ShortcutUpdate", resourceCulture);
             }
         }
         

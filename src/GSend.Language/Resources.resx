@@ -1026,6 +1026,48 @@
   <data name="SettingsChanged" xml:space="preserve">
     <value>Setting have changed or been updated</value>
   </data>
+  <data name="ShortcutClearAlarm" xml:space="preserve">
+    <value>Clear Alarm</value>
+  </data>
+  <data name="ShortcutCombination" xml:space="preserve">
+    <value>Shortcut Combination</value>
+  </data>
+  <data name="ShortcutConnect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ShortcutDisconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="ShortcutEditor" xml:space="preserve">
+    <value>Shortcut Editor</value>
+  </data>
+  <data name="ShortcutGroupName" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="ShortcutGroupOverrides" xml:space="preserve">
+    <value>Overrides</value>
+  </data>
+  <data name="ShortcutHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ShortcutInUse" xml:space="preserve">
+    <value>Shortcut is already being used!</value>
+  </data>
+  <data name="ShortcutKeyCombination" xml:space="preserve">
+    <value>Key Combination</value>
+  </data>
+  <data name="ShortcutMenuAction" xml:space="preserve">
+    <value>Action Menu</value>
+  </data>
+  <data name="ShortcutMenuMachine" xml:space="preserve">
+    <value>Menu Items</value>
+  </data>
+  <data name="ShortcutMenuView" xml:space="preserve">
+    <value>View Menu</value>
+  </data>
+  <data name="ShortcutName" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="ShortcutNameDecreaseFeedRate" xml:space="preserve">
     <value>Decrease Feed Rate</value>
   </data>
@@ -1067,6 +1109,54 @@
   </data>
   <data name="ShortcutNameZPlus" xml:space="preserve">
     <value>Jog Z+</value>
+  </data>
+  <data name="ShortcutPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ShortcutPressCombination" xml:space="preserve">
+    <value>Press shortcut keys</value>
+  </data>
+  <data name="ShortcutProbe" xml:space="preserve">
+    <value>Probe</value>
+  </data>
+  <data name="ShortcutRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ShortcutRun" xml:space="preserve">
+    <value>Run/Resume</value>
+  </data>
+  <data name="ShortcutSaveConfig" xml:space="preserve">
+    <value>Save Configuration</value>
+  </data>
+  <data name="ShortcutStop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="ShortcutTabConsole" xml:space="preserve">
+    <value>Console</value>
+  </data>
+  <data name="ShortcutTabGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ShortcutTabJog" xml:space="preserve">
+    <value>Jog</value>
+  </data>
+  <data name="ShortcutTabMachineSettings" xml:space="preserve">
+    <value>Machine Settings</value>
+  </data>
+  <data name="ShortcutTabOverrides" xml:space="preserve">
+    <value>Overrides</value>
+  </data>
+  <data name="ShortcutTabServiceSchedule" xml:space="preserve">
+    <value>Service Schedule</value>
+  </data>
+  <data name="ShortcutTabSettings" xml:space="preserve">
+    <value>Tab Settings</value>
+  </data>
+  <data name="ShortcutTabSpindle" xml:space="preserve">
+    <value>Spindle</value>
+  </data>
+  <data name="ShortcutUpdate" xml:space="preserve">
+    <value>Update</value>
   </data>
   <data name="SimulateRun" xml:space="preserve">
     <value>Simulate run to check/validate GCode</value>

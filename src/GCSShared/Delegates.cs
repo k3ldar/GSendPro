@@ -25,5 +25,7 @@ namespace GSendShared
 
     public delegate void ShortcutKeyDelegate(bool isKeyDown);
 
+    public delegate void ShortcutUpdatedDelegate(List<int> keys);
+
     public delegate void ShortcutKeyHandler(object sender, ShortcutArgs e);
 }
