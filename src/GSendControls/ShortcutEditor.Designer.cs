@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lvShortcuts = new System.Windows.Forms.ListView();
+            this.lvShortcuts = new GSendControls.ListViewEx();
             this.columnHeaderGroupName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderShortcutName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderKeyCombo = new System.Windows.Forms.ColumnHeader();
@@ -156,7 +156,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView lvShortcuts;
+        private GSendControls.ListViewEx lvShortcuts;
         private System.Windows.Forms.ColumnHeader columnHeaderGroupName;
         private System.Windows.Forms.ColumnHeader columnHeaderShortcutName;
         private System.Windows.Forms.ColumnHeader columnHeaderKeyCombo;

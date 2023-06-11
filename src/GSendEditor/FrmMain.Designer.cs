@@ -78,7 +78,7 @@
             this.tabPageProperties = new System.Windows.Forms.TabPage();
             this.gCodeAnalysesDetails1 = new GSendControls.GCodeAnalysesDetails();
             this.tabPageSubPrograms = new System.Windows.Forms.TabPage();
-            this.lvSubprograms = new System.Windows.Forms.ListView();
+            this.lvSubprograms = new GSendControls.ListViewEx();
             this.columnHeaderName = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderDescription = new System.Windows.Forms.ColumnHeader();
             this.toolbarImageListSmall = new System.Windows.Forms.ImageList(this.components);

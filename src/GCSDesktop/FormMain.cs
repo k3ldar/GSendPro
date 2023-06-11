@@ -509,6 +509,11 @@ namespace GSendDesktop
 
         #region Menu Items
 
+        private void toolStripButtonRemoveMachine_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void mnuViewLargeIcons_Click(object sender, EventArgs e)
         {
             listViewMachines.View = View.LargeIcon;

@@ -104,7 +104,7 @@
             this.lblSpindleType = new System.Windows.Forms.Label();
             this.cmbSpindleType = new System.Windows.Forms.ComboBox();
             this.tabPageServiceSchedule = new System.Windows.Forms.TabPage();
-            this.lvServices = new System.Windows.Forms.ListView();
+            this.lvServices = new GSendControls.ListViewEx();
             this.columnServiceHeaderDateTime = new System.Windows.Forms.ColumnHeader();
             this.columnServiceHeaderServiceType = new System.Windows.Forms.ColumnHeader();
             this.columnServiceHeaderSpindleHours = new System.Windows.Forms.ColumnHeader();
@@ -187,7 +187,7 @@
             this.txtUserGrblCommand = new System.Windows.Forms.TextBox();
             this.textBoxConsoleText = new System.Windows.Forms.TextBox();
             this.tabPageGCode = new System.Windows.Forms.TabPage();
-            this.listViewGCode = new System.Windows.Forms.ListView();
+            this.listViewGCode = new GSendControls.ListViewEx();
             this.columnHeaderLine = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderGCode = new System.Windows.Forms.ColumnHeader();
             this.columnHeaderComments = new System.Windows.Forms.ColumnHeader();
@@ -2263,7 +2263,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuActionRun;
         private System.Windows.Forms.ToolStripMenuItem mnuActionPause;
         private System.Windows.Forms.ToolStripMenuItem mnuActionStop;
-        private System.Windows.Forms.ListView lvServices;
+        private GSendControls.ListViewEx lvServices;
         private System.Windows.Forms.ColumnHeader columnServiceHeaderDateTime;
         private System.Windows.Forms.ColumnHeader columnServiceHeaderServiceType;
         private System.Windows.Forms.ColumnHeader columnServiceHeaderSpindleHours;
@@ -2311,7 +2311,7 @@
         private System.Windows.Forms.Label lblBufferSize;
         private System.Windows.Forms.Label lblTotalLines;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBarJob;
-        private System.Windows.Forms.ListView listViewGCode;
+        private GSendControls.ListViewEx listViewGCode;
         private System.Windows.Forms.ColumnHeader columnHeaderGCode;
         private System.Windows.Forms.ColumnHeader columnHeaderComments;
         private System.Windows.Forms.ColumnHeader columnHeaderFeed;
