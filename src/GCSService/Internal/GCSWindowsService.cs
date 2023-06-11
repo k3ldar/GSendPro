@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO.Ports;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using GSendShared;
-
-using Microsoft.Extensions.Hosting;
-
-using PluginManager.Abstractions;
-
-using Shared.Classes;
 
 using ILogger = PluginManager.Abstractions.ILogger;
 

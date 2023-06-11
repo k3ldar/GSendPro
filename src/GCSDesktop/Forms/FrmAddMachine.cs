@@ -58,6 +58,12 @@ namespace GSendDesktop.Forms
 
             try
             {
+                if (_machineApiWrapper.MachineNameExists(txtName.Text))
+                {
+                    _messageNotifier.ShowMessage(GSend.Language.Resources.MachineNameAlreadyExists);
+                    return;
+                }
+
                 _machineApiWrapper.MachineAdd(machine);
                 DialogResult = DialogResult.OK;
             }

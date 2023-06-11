@@ -30,12 +30,13 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.7.0</Version>
     <LangVersion>latest</LangVersion>
     <Authors>Simon Carter (s1cart3r@gmail.com)</Authors>
     <Company>Simon Carter</Company>
     <Copyright>Copyright (c) 2022 - 2023.  Simon Carter.  All rights reserved.</Copyright>
     <Description>Advanced GCode Sender and Analyzer</Description>
+    <PluginVersion>5.2.0</PluginVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">

@@ -252,6 +252,12 @@
   <data name="AppMenuOpen" xml:space="preserve">
     <value>&amp;Open</value>
   </data>
+  <data name="AppMenuOptions" xml:space="preserve">
+    <value>&amp;Options</value>
+  </data>
+  <data name="AppMenuShortcuts" xml:space="preserve">
+    <value>&amp;Shortcut Keys</value>
+  </data>
   <data name="AppMenuView" xml:space="preserve">
     <value>&amp;View</value>
   </data>
@@ -513,6 +519,9 @@
   <data name="Error9" xml:space="preserve">
     <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
+  <data name="ErrorConnectingToMachine" xml:space="preserve">
+    <value>An error occurred whilst trying to connect to the machine.</value>
+  </data>
   <data name="ErrorCoolantNotTurnedOff" xml:space="preserve">
     <value>Coolant is used but not turned off</value>
   </data>
@@ -726,6 +735,12 @@
   <data name="MachineAdd" xml:space="preserve">
     <value>Add Machine</value>
   </data>
+  <data name="MachineNameAlreadyExists" xml:space="preserve">
+    <value>A machine with that name already exists.</value>
+  </data>
+  <data name="MachineNameEmpty" xml:space="preserve">
+    <value>The machine name can not be an empty string.</value>
+  </data>
   <data name="MachineOptionLimitSwitches" xml:space="preserve">
     <value>Limit Switches</value>
   </data>
@@ -761,6 +776,9 @@
   </data>
   <data name="New" xml:space="preserve">
     <value>New GCode file</value>
+  </data>
+  <data name="NewMachineNamePrompt" xml:space="preserve">
+    <value>Please enter the new name for the machine.</value>
   </data>
   <data name="NextService" xml:space="preserve">
     <value>Next Service</value>
@@ -848,6 +866,12 @@
   </data>
   <data name="RegisterService" xml:space="preserve">
     <value>Register Service</value>
+  </data>
+  <data name="RenameErrorTitle" xml:space="preserve">
+    <value>Rename Error</value>
+  </data>
+  <data name="RenameMachine" xml:space="preserve">
+    <value>Rename Machine</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
@@ -1388,6 +1412,9 @@
   </data>
   <data name="TimeFormatSecond" xml:space="preserve">
     <value>{0}s</value>
+  </data>
+  <data name="TimeoutConnectingToMachine" xml:space="preserve">
+    <value>An invalid, or no response was received when connecting to the machine.</value>
   </data>
   <data name="TitleOpen" xml:space="preserve">
     <value>Open GCode File</value>

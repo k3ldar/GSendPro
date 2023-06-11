@@ -36,15 +36,23 @@ namespace GSendService.Api
             return GenerateJsonSuccessResponse(_gSendDataProvider.MachinesGet());
         }
 
+        [HttpGet]
+        [Route("/MachineApi/MachineExists/{name}/")]
+        public IActionResult MachineExists(string name)
+        {
+            bool exists = _gSendDataProvider.MachinesGet().Any(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            return GenerateJsonSuccessResponse(exists);
+        }
+
         [HttpPost]
         public IActionResult MachineAdd([FromBody] IMachine model)
         {
-            if (!ValidateMachineModel(model, out string errorData))
+            if (!ValidateMachineModel(model, true, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
             _gSendDataProvider.MachineAdd(model);
 
-            if (_gSendDataProvider.MachinesGet().FirstOrDefault(m => m.Name.Equals(model.Name)) == null)
+            if (_gSendDataProvider.MachinesGet().FirstOrDefault(m => m.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)) == null)
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error adding machine");
 
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineAdd, model.Id);
@@ -73,7 +81,7 @@ namespace GSendService.Api
         [HttpPut]
         public IActionResult MachineUpdate([FromBody] IMachine model)
         {
-            if (!ValidateMachineModel(model, out string errorData))
+            if (!ValidateMachineModel(model, false, out string errorData))
                 return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
             _gSendDataProvider.MachineUpdate(model);
@@ -83,7 +91,7 @@ namespace GSendService.Api
             return GenerateJsonSuccessResponse();
         }
 
-        private bool ValidateMachineModel(IMachine model, out string errorMessage)
+        private bool ValidateMachineModel(IMachine model, bool validateComPort, out string errorMessage)
         {
             if (model == null)
             {
@@ -103,7 +111,7 @@ namespace GSendService.Api
                 return false;
             }
 
-            if (!_comPortProvider.AvailablePorts().Any(ap => ap.Equals(model.ComPort)))
+            if (validateComPort && !_comPortProvider.AvailablePorts().Any(ap => ap.Equals(model.ComPort)))
             {
                 errorMessage = "Invalid com port not found";
                 return false;

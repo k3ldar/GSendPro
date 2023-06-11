@@ -148,6 +148,8 @@
             this.mnuMachineLoadGCode = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMachineClearGCode = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuMachineRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuMachineClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewGeneral = new System.Windows.Forms.ToolStripMenuItem();
@@ -1519,6 +1521,8 @@
             this.mnuMachineLoadGCode,
             this.mnuMachineClearGCode,
             this.toolStripMenuItem2,
+            this.mnuMachineRename,
+            this.toolStripMenuItem7,
             this.mnuMachineClose});
             this.mnuMachine.Name = "mnuMachine";
             this.mnuMachine.Size = new System.Drawing.Size(65, 20);
@@ -1542,6 +1546,18 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(140, 6);
+            // 
+            // mnuMachineRename
+            // 
+            this.mnuMachineRename.Name = "mnuMachineRename";
+            this.mnuMachineRename.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineRename.Text = "Rename";
+            this.mnuMachineRename.Click += new System.EventHandler(this.mnuMachineRename_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(140, 6);
             // 
             // mnuMachineClose
             // 
@@ -1734,7 +1750,7 @@
             // mnuOptionsShortcutKeys
             // 
             this.mnuOptionsShortcutKeys.Name = "mnuOptionsShortcutKeys";
-            this.mnuOptionsShortcutKeys.Size = new System.Drawing.Size(180, 22);
+            this.mnuOptionsShortcutKeys.Size = new System.Drawing.Size(146, 22);
             this.mnuOptionsShortcutKeys.Text = "Shortcut Keys";
             this.mnuOptionsShortcutKeys.Click += new System.EventHandler(this.mnuOptionsShortcutKeys_Click);
             // 
@@ -1749,7 +1765,7 @@
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuHelpAbout.Text = "About";
             // 
             // warningsAndErrors
@@ -2315,5 +2331,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuOptionsShortcutKeys;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
+        private System.Windows.Forms.ToolStripMenuItem mnuMachineRename;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
     }
 }

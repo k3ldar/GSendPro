@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="FastColoredTextBox-net7" Version="2.16.27" />
-    <PackageReference Include="AspNetCore.PluginManager" Version="5.1.0" />
+    <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="SC.Shared.Library.Core" Version="3.8.0" />
     <PackageReference Include="SC.Shared.Library.Core.Windows" Version="1.0.1" />
   </ItemGroup>

@@ -137,6 +137,11 @@ namespace GSendDesktop.Forms
             WarningContainer_VisibleChanged(this, EventArgs.Empty);
             tabControlSecondary.TabPages.Remove(tabPageGCode);
 
+            if (_machine.MachineType != MachineType.CNC)
+            {
+                tabControlMain.TabPages.Remove(tabPageSpindle);
+            }
+
             _shortcuts = RetrieveAvailableShortcuts();
         }
 
@@ -241,7 +246,6 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     ConfigureMachine();
                     _configurationChanges = false;
-                    toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
                     toolStripStatusLabelFeedRate.Visible = true;
                     toolStripStatusLabelStatus.Visible = true;
 
@@ -307,6 +311,22 @@ namespace GSendDesktop.Forms
                 case Constants.MessageLoadGCodeAdmin:
 
                     break;
+
+                case Constants.MessageMachineConnectServer:
+                    ConnectResult connectResponse = (ConnectResult)JsonSerializer.Deserialize<int>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+
+                    switch (connectResponse)
+                    {
+                        case ConnectResult.TimeOut:
+                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.TimeoutConnectingToMachine);
+                            break;
+
+                        case ConnectResult.Error:
+                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.ErrorConnectingToMachine);
+                            break;
+                    }
+
+                    break;
             }
         }
 
@@ -332,6 +352,7 @@ namespace GSendDesktop.Forms
 
             toolStripButtonResume.Enabled = _isPaused || !_isRunning && _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
             mnuActionRun.Enabled = toolStripButtonResume.Enabled;
+            mnuMachineRename.Enabled = !_isRunning;
 
             toolStripButtonPause.Enabled = !_isPaused && _machineConnected && (_isPaused || _isRunning);
             mnuActionPause.Enabled = toolStripButtonPause.Enabled;
@@ -340,7 +361,7 @@ namespace GSendDesktop.Forms
             mnuActionStop.Enabled = toolStripButtonStop.Enabled;
 
             toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
-            
+
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
             btnZeroX.Enabled = toolStripButtonProbe.Enabled;
@@ -933,7 +954,7 @@ namespace GSendDesktop.Forms
         protected override void WndProc(ref Message m)
         {
             //_shortcutHandler.WndProc(ref m);
-            
+
             base.WndProc(ref m);
         }
 
@@ -1400,6 +1421,8 @@ namespace GSendDesktop.Forms
 
         private void ConfigureMachine()
         {
+            toolStripStatusLabelSpindle.Visible = _machine.MachineType == MachineType.CNC;
+
             selectionOverrideSpindle.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
             selectionOverrideSpindle.Minimum = (int)_machine.Settings.MinSpindleSpeed;
             selectionOverrideRapids.Maximum = 2;
@@ -1476,14 +1499,14 @@ namespace GSendDesktop.Forms
             cbCorrectMode.Enabled = _machine.MachineType.Equals(MachineType.CNC) || _machine.MachineType.Equals(MachineType.Laser);
             cbLayerHeightWarning.Checked = _machine.Options.HasFlag(MachineOptions.LayerHeightWarning);
             cbLayerHeightWarning.Enabled = true;
-            numericLayerHeight.Value = _machine.LayerHeightWarning;
+            numericLayerHeight.Value = Shared.Utilities.CheckMinMax(_machine.LayerHeightWarning, numericLayerHeight.Minimum, numericLayerHeight.Maximum);
             cbAutoSelectFeedbackUnit.Checked = _machine.Options.HasFlag(MachineOptions.AutoUpdateDisplayFromFile);
 
 
             // service schedule
             cbMaintainServiceSchedule.Checked = _machine.Options.HasFlag(MachineOptions.ServiceSchedule);
-            trackBarServiceWeeks.Value = _machine.ServiceWeeks;
-            trackBarServiceSpindleHours.Value = _machine.ServiceSpindleHours;
+            trackBarServiceWeeks.Value = Shared.Utilities.CheckMinMax(_machine.ServiceWeeks, trackBarServiceWeeks.Minimum, trackBarServiceWeeks.Maximum);
+            trackBarServiceSpindleHours.Value = Shared.Utilities.CheckMinMax(_machine.ServiceSpindleHours, trackBarServiceSpindleHours.Minimum, trackBarServiceSpindleHours.Maximum);
             lblServiceSchedule.Text = String.Format(GSend.Language.Resources.ServiceWeeks, trackBarServiceWeeks.Value);
             lblSpindleHours.Text = String.Format(GSend.Language.Resources.ServiceSpindleHours, trackBarServiceSpindleHours.Value);
             btnServiceReset.Text = GSend.Language.Resources.AddService;
@@ -1646,10 +1669,6 @@ namespace GSendDesktop.Forms
             columnServiceHeaderServiceType.Text = GSend.Language.Resources.ServiceType;
             columnServiceHeaderSpindleHours.Text = GSend.Language.Resources.SpindleHours;
 
-            // menu items
-            mnuMachine.Text = GSend.Language.Resources.Machine;
-            mnuView.Text = GSend.Language.Resources.View;
-
 
 
             // Override tab
@@ -1690,15 +1709,20 @@ namespace GSendDesktop.Forms
 
 
 
-            // menu
+
+            // menu items
+
             openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
 
             //Machine
+            mnuMachine.Text = GSend.Language.Resources.Machine;
             mnuMachineLoadGCode.Text = GSend.Language.Resources.LoadGCode;
             mnuMachineClearGCode.Text = GSend.Language.Resources.ClearGCode;
+            mnuMachineRename.Text = GSend.Language.Resources.RenameMachine;
             mnuMachineClose.Text = GSend.Language.Resources.Close;
 
             //view
+            mnuView.Text = GSend.Language.Resources.View;
             mnuViewGeneral.Text = GSend.Language.Resources.General;
             mnuViewOverrides.Text = GSend.Language.Resources.Overrides;
             mnuViewJog.Text = GSend.Language.Resources.Jog;
@@ -1718,6 +1742,10 @@ namespace GSendDesktop.Forms
             mnuActionRun.Text = GSend.Language.Resources.Resume;
             mnuActionPause.Text = GSend.Language.Resources.Pause;
             mnuActionStop.Text = GSend.Language.Resources.Stop;
+
+            // options
+            mnuOptions.Text = GSend.Language.Resources.AppMenuOptions;
+            mnuOptionsShortcutKeys.Text = GSend.Language.Resources.AppMenuShortcuts;
         }
 
         private void UpdateDisplay()
@@ -2035,6 +2063,35 @@ namespace GSendDesktop.Forms
             UnloadGCode();
         }
 
+        private string validation(string newName)
+        {
+            if (String.IsNullOrEmpty(newName))
+                return GSend.Language.Resources.MachineNameEmpty;
+
+            GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+
+            if (machineApiWrapper.MachineNameExists(newName))
+                return GSend.Language.Resources.MachineNameAlreadyExists;
+
+            return null;
+        }
+
+        private void mnuMachineRename_Click(object sender, EventArgs e)
+        {
+            string name = _machine.Name;
+
+
+            if (InputDialog.Show(this, GSend.Language.Resources.RenameMachine,
+                GSend.Language.Resources.NewMachineNamePrompt, ref name, validation,
+                GSend.Language.Resources.RenameErrorTitle))
+            {
+                _machine.Name = name;
+                UpdateConfigurationChanged();
+                Text = String.Format(GSend.Language.Resources.MachineTitle, _machine.MachineType, _machine.Name);
+                SaveChanges(true);
+            }
+        }
+
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -2224,7 +2281,7 @@ namespace GSendDesktop.Forms
                 shortcut.Trigger(true);
             }
         }
-            
+
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
             IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
@@ -2267,7 +2324,7 @@ namespace GSendDesktop.Forms
                     {
                         if (Int32.TryParse(item, out int keyValue))
                             shortcut.DefaultKeys.Add(keyValue);
-                    }    
+                    }
                 }
 
                 if (shortcut != null && shortcut.KeysUpdated != null)
@@ -2320,7 +2377,7 @@ namespace GSendDesktop.Forms
             return new()
             {
                 // machine menu
-                new ShortcutModel(groupName, GSend.Language.Resources.LoadGCode, 
+                new ShortcutModel(groupName, GSend.Language.Resources.LoadGCode,
                     new List<int>() { (int)Keys.Control, (int)Keys.L},
                     (bool isKeyDown) => { if (isKeyDown && mnuMachineLoadGCode.Enabled) mnuMachineLoadGCode_Click(this, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuMachineLoadGCode, keys)),
@@ -2504,7 +2561,7 @@ namespace GSendDesktop.Forms
                     new List<int>() { (int)Keys.Control, (int)Keys.Shift, (int)Keys.D6 },
                     (bool isKeyDown) => { if (isKeyDown && toolStripDropDownButtonCoordinateSystem.Enabled) ToolstripButtonCoordinates_Click(g59ToolStripMenuItem, EventArgs.Empty); },
                     null),
-            }; 
+            };
         }
 
         #endregion Shortcuts

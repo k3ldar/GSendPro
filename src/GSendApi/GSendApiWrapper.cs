@@ -48,6 +48,11 @@ namespace GSendApi
             CallPutApi("MachineApi/MachineUpdate", machine);
         }
 
+        public bool MachineNameExists(string name)
+        {
+            return CallGetApi<bool>($"MachineApi/MachineExists/{name}");
+        }
+
         #endregion Machines
 
         #region Services

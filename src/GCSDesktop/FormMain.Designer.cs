@@ -101,6 +101,7 @@ namespace GSendDesktop
             this.listViewMachines.Name = "listViewMachines";
             this.listViewMachines.Size = new System.Drawing.Size(681, 246);
             this.listViewMachines.SmallImageList = this.imageListSmall;
+            this.listViewMachines.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewMachines.TabIndex = 2;
             this.listViewMachines.UseCompatibleStateImageBehavior = false;
             this.listViewMachines.View = System.Windows.Forms.View.Details;

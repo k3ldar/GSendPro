@@ -466,6 +466,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &amp;Options.
+        /// </summary>
+        public static string AppMenuOptions {
+            get {
+                return ResourceManager.GetString("AppMenuOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Shortcut Keys.
+        /// </summary>
+        public static string AppMenuShortcuts {
+            get {
+                return ResourceManager.GetString("AppMenuShortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;View.
         /// </summary>
         public static string AppMenuView {
@@ -1249,6 +1267,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred whilst trying to connect to the machine..
+        /// </summary>
+        public static string ErrorConnectingToMachine {
+            get {
+                return ResourceManager.GetString("ErrorConnectingToMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coolant is used but not turned off.
         /// </summary>
         public static string ErrorCoolantNotTurnedOff {
@@ -1888,6 +1915,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A machine with that name already exists..
+        /// </summary>
+        public static string MachineNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("MachineNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The machine name can not be an empty string..
+        /// </summary>
+        public static string MachineNameEmpty {
+            get {
+                return ResourceManager.GetString("MachineNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Limit Switches.
         /// </summary>
         public static string MachineOptionLimitSwitches {
@@ -1992,6 +2037,15 @@ namespace GSend.Language {
         public static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter the new name for the machine..
+        /// </summary>
+        public static string NewMachineNamePrompt {
+            get {
+                return ResourceManager.GetString("NewMachineNamePrompt", resourceCulture);
             }
         }
         
@@ -2253,6 +2307,24 @@ namespace GSend.Language {
         public static string RegisterService {
             get {
                 return ResourceManager.GetString("RegisterService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Error.
+        /// </summary>
+        public static string RenameErrorTitle {
+            get {
+                return ResourceManager.GetString("RenameErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Machine.
+        /// </summary>
+        public static string RenameMachine {
+            get {
+                return ResourceManager.GetString("RenameMachine", resourceCulture);
             }
         }
         
@@ -3873,6 +3945,15 @@ namespace GSend.Language {
         public static string TimeFormatSecond {
             get {
                 return ResourceManager.GetString("TimeFormatSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An invalid, or no response was received when connecting to the machine..
+        /// </summary>
+        public static string TimeoutConnectingToMachine {
+            get {
+                return ResourceManager.GetString("TimeoutConnectingToMachine", resourceCulture);
             }
         }
         

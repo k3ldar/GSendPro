@@ -7,14 +7,14 @@
 
   <ItemGroup>
     <PackageReference Include="ApplicationSettings" Version="2.2.0" />
-    <PackageReference Include="AspNetCore.PluginManager" Version="5.1.0" />
+    <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Middleware" Version="5.1.0" />
-    <PackageReference Include="PluginManager" Version="5.1.0" />
+    <PackageReference Include="Middleware" Version="$(PluginVersion)" />
+    <PackageReference Include="PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="SC.Shared.Library.Core" Version="3.8.0" />
-    <PackageReference Include="SharedPluginFeatures" Version="5.1.0" />
-    <PackageReference Include="SimpleDB" Version="5.1.0" />
-    <PackageReference Include="PluginManager.DAL.TextFiles" Version="5.1.0" />
+    <PackageReference Include="SharedPluginFeatures" Version="$(PluginVersion)" />
+    <PackageReference Include="SimpleDB" Version="$(PluginVersion)" />
+    <PackageReference Include="PluginManager.DAL.TextFiles" Version="$(PluginVersion)" />
   </ItemGroup>
 
   <ItemGroup>
