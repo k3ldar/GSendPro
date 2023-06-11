@@ -83,6 +83,7 @@ namespace GSendDesktop
             // listViewMachines
             // 
             this.listViewMachines.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.listViewMachines.AllowColumnReorder = true;
             this.listViewMachines.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -99,6 +100,9 @@ namespace GSendDesktop
             this.listViewMachines.Location = new System.Drawing.Point(12, 84);
             this.listViewMachines.MultiSelect = false;
             this.listViewMachines.Name = "listViewMachines";
+            this.listViewMachines.OwnerDraw = true;
+            this.listViewMachines.SaveName = "";
+            this.listViewMachines.ShowToolTip = false;
             this.listViewMachines.Size = new System.Drawing.Size(681, 246);
             this.listViewMachines.SmallImageList = this.imageListSmall;
             this.listViewMachines.Sorting = System.Windows.Forms.SortOrder.Ascending;
@@ -207,38 +211,38 @@ namespace GSendDesktop
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonGetMachines_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(163, 6);
             // 
             // addMachineToolStripMenuItem
             // 
             this.addMachineToolStripMenuItem.Name = "addMachineToolStripMenuItem";
-            this.addMachineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addMachineToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.addMachineToolStripMenuItem.Text = "Add Machine";
             this.addMachineToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonAddMachine_Click);
             // 
             // removeMachineToolStripMenuItem
             // 
             this.removeMachineToolStripMenuItem.Name = "removeMachineToolStripMenuItem";
-            this.removeMachineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeMachineToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.removeMachineToolStripMenuItem.Text = "Remove Machine";
             this.removeMachineToolStripMenuItem.Click += new System.EventHandler(this.toolStripButtonRemoveMachine_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(163, 6);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
             // viewToolStripMenuItem
@@ -253,14 +257,14 @@ namespace GSendDesktop
             // mnuViewLargeIcons
             // 
             this.mnuViewLargeIcons.Name = "mnuViewLargeIcons";
-            this.mnuViewLargeIcons.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewLargeIcons.Size = new System.Drawing.Size(134, 22);
             this.mnuViewLargeIcons.Text = "&Large Icons";
             this.mnuViewLargeIcons.Click += new System.EventHandler(this.mnuViewLargeIcons_Click);
             // 
             // mnuViewDetails
             // 
             this.mnuViewDetails.Name = "mnuViewDetails";
-            this.mnuViewDetails.Size = new System.Drawing.Size(180, 22);
+            this.mnuViewDetails.Size = new System.Drawing.Size(134, 22);
             this.mnuViewDetails.Text = "&Details";
             this.mnuViewDetails.Click += new System.EventHandler(this.mnuViewSmallIcons_Click);
             // 
@@ -360,6 +364,7 @@ namespace GSendDesktop
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 57);
+            this.toolStripSeparator1.Visible = false;
             // 
             // toolStripButtonPauseAll
             // 
@@ -397,6 +402,7 @@ namespace GSendDesktop
             this.toolStripButtonConnect.Name = "toolStripButtonConnect";
             this.toolStripButtonConnect.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonConnect.Text = "toolStripButton1";
+            this.toolStripButtonConnect.Visible = false;
             this.toolStripButtonConnect.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
             // 
             // toolStripButtonDisconnect
@@ -407,6 +413,7 @@ namespace GSendDesktop
             this.toolStripButtonDisconnect.Name = "toolStripButtonDisconnect";
             this.toolStripButtonDisconnect.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonDisconnect.Text = "toolStripButton1";
+            this.toolStripButtonDisconnect.Visible = false;
             this.toolStripButtonDisconnect.Click += new System.EventHandler(this.toolStripButtonConnect_Click);
             // 
             // toolStripButtonClearAlarm
@@ -417,6 +424,7 @@ namespace GSendDesktop
             this.toolStripButtonClearAlarm.Name = "toolStripButtonClearAlarm";
             this.toolStripButtonClearAlarm.Size = new System.Drawing.Size(54, 54);
             this.toolStripButtonClearAlarm.Text = "toolStripButton1";
+            this.toolStripButtonClearAlarm.Visible = false;
             this.toolStripButtonClearAlarm.Click += new System.EventHandler(this.toolStripButtonClearAlarm_Click);
             // 
             // toolStripButtonResume
@@ -471,7 +479,6 @@ namespace GSendDesktop
         }
 
         #endregion
-        private ListView listViewMachines;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusConnected;
         private MenuStrip menuStrip1;
@@ -514,5 +521,6 @@ namespace GSendDesktop
         private ToolStripMenuItem viewHelpToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private GSendControls.ListViewEx listViewMachines;
     }
 }
