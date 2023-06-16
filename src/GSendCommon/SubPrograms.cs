@@ -12,7 +12,7 @@ namespace GSendCommon
 
         public SubPrograms()
         {
-            _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "Sub Programs");
+            _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProSubProgramFolder);
 
             if (!Directory.Exists(_path))
             {

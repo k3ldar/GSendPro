@@ -1,6 +1,6 @@
 ﻿using GSendShared.Abstractions;
 
-namespace GSendCommon
+namespace GSendCommon.Settings
 {
     public sealed class GSendSettings : IGsendSettings
     {

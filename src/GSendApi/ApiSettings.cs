@@ -13,10 +13,10 @@
             RootAddress = rootAddress;
         }
 
-        public Uri RootAddress { get; }
+        public Uri RootAddress { get; set; }
 
-        public string ApiVersion { get; } = "1.0.0";
+        public string ApiVersion { get; set; } = "1.0.0";
 
-        public int Timeout { get; } = 1000;
+        public int Timeout { get; set; } = 1000;
     }
 }

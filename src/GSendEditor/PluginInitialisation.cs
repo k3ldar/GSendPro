@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 
 using GSendApi;
-
-using GSendCommon;
-
+using GSendCommon.Settings;
 using GSendControls;
 
 using GSendShared;
@@ -20,7 +18,7 @@ namespace GSendEditor.Internal
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json"));
+            string json = System.IO.File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings));
             Dictionary<string, object> jsonData = JsonSerializer.Deserialize<Dictionary<string, object>>(json, Constants.DefaultJsonSerializerOptions);
             dynamic apiSettings = jsonData["ApiSettings"];
             ApiSettings settings = JsonSerializer.Deserialize<ApiSettings>(apiSettings.ToString(), Constants.DefaultJsonSerializerOptions);

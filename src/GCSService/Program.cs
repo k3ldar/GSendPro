@@ -1,3 +1,5 @@
+using System.Text;
+
 using AspNetCore.PluginManager;
 
 using GSendService.Internal;
@@ -25,9 +27,10 @@ namespace GSendService
             ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
             Environment.SetEnvironmentVariable("GSendProRootPath", 
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro"));
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
 
             Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "db"));
+            GenerateUniqueSerialNumber();
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
@@ -74,7 +77,7 @@ namespace GSendService
             PluginManagerConfiguration configuration = new PluginManagerConfiguration(logger)
             {
                 ServiceConfigurator = new ServiceConfigurator(),
-                ConfigFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "appsettings.json")
+                ConfigFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings)
             };
 
             PluginManagerService.Initialise(configuration);
@@ -111,9 +114,28 @@ namespace GSendService
             // not used in this context
         }
 
+        private static void GenerateUniqueSerialNumber()
+        {
+            string file = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "SerialNo.dat");
+
+            if (File.Exists(file))
+                return;
+
+            byte[] b = new byte[] { 71, 83, 101, 110, 100, 32, 80, 114, 111, 32, 83, 101, 114, 105, 97, 108, 32, 78, 111, 32, 45, 32, 100, 56, 57, 48, 51, 52, 50, 99, 32, 102, 110, 52, 51, 56, 53, 55, 102, 104, 110, 97, 101, 119, 115 };
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(Guid.NewGuid().ToString("N"));
+            stringBuilder.Append(DateTime.UtcNow.Ticks);
+            Shared.Utilities.FileEncryptedWrite(file, stringBuilder.ToString(), Encoding.UTF8.GetString(b));
+        }
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
+                .ConfigureAppConfiguration(configureDelegate => 
+                {
+                    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings);
+                    configureDelegate.AddJsonFile(path, false, true);
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<GcsWindowsService>();

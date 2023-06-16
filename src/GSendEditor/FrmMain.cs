@@ -4,9 +4,13 @@ using System.Security.Policy;
 
 using FastColoredTextBoxNS;
 
+using GSendApi;
+
 using GSendCommon;
 
 using GSendControls;
+
+using GSendDesktop.Internal;
 
 using GSendEditor.Internal;
 
@@ -249,6 +253,8 @@ namespace GSendEditor
             {
                 MessageBox.Show(this, String.Format(GSend.Language.Resources.LoadSubProgramsError, ex.Message), Languages.LanguageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            tmrServerValidation.Enabled = true;
         }
 
         private void txtGCode_SelectionChangedDelayed(object sender, EventArgs e)
@@ -779,6 +785,26 @@ namespace GSendEditor
                 txtGCode.BookmarkLine(bookmarkLine);
             }
 
+        }
+
+        private void tmrServerValidation_Tick(object sender, EventArgs e)
+        {
+            tmrServerValidation.Enabled = false;
+
+            GSendApiWrapper apiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+
+            //using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            //{
+            //    if (!FrmServerValidation.ValidateServer(this, apiWrapper))
+            //        Application.Exit();
+            //}
+
+            if (tmrServerValidation.Interval == 5000)
+            {
+                tmrServerValidation.Interval = (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
+            }
+                
+            tmrServerValidation.Enabled = true;
         }
     }
 }

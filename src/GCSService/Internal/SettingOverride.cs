@@ -1,5 +1,7 @@
 ﻿using AppSettings;
 
+using GSendShared;
+
 namespace GSendService.Internal
 {
     public class SettingOverride : ISettingOverride
@@ -8,7 +10,7 @@ namespace GSendService.Internal
         {
             if (settingName.Equals("Path"))
             {
-                propertyValue = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "db");
+                propertyValue = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProDbFolder);
                 return true;
             }
 

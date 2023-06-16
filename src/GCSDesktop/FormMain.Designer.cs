@@ -466,6 +466,7 @@ namespace GSendDesktop
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormMain";
             this.Text = "GSend";
+            this.Activated += new System.EventHandler(this.FormMain_Activated);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

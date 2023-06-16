@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddLicense" xml:space="preserve">
+    <value>AddLicense</value>
+  </data>
+  <data name="AddServerLicense" xml:space="preserve">
+    <value>Add Server License</value>
+  </data>
   <data name="AddService" xml:space="preserve">
     <value>Add Service</value>
   </data>
@@ -317,6 +323,9 @@
   </data>
   <data name="CheckList" xml:space="preserve">
     <value>Check List</value>
+  </data>
+  <data name="CheckNow" xml:space="preserve">
+    <value>Check Now</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
@@ -525,6 +534,9 @@
   <data name="ErrorCoolantNotTurnedOff" xml:space="preserve">
     <value>Coolant is used but not turned off</value>
   </data>
+  <data name="ErrorSavingServerUri" xml:space="preserve">
+    <value>An error occurred whilst saving server address:\r\n\r\n{0} </value>
+  </data>
   <data name="ErrorSubProgramMissing" xml:space="preserve">
     <value>GCode file uses a sub program {0} on line {1} which can not be found.</value>
   </data>
@@ -711,6 +723,24 @@
   <data name="LargeIcons" xml:space="preserve">
     <value>Large Icons</value>
   </data>
+  <data name="LicenseAddDescription" xml:space="preserve">
+    <value>Please enter the license and click submit to verify.</value>
+  </data>
+  <data name="LicenseCheckValidating" xml:space="preserve">
+    <value>Validating license...</value>
+  </data>
+  <data name="LicenseInvalid" xml:space="preserve">
+    <value>License is either invalid or unable to contact the server.</value>
+  </data>
+  <data name="LicenseInvalidEmpty" xml:space="preserve">
+    <value>Please enter a valid license</value>
+  </data>
+  <data name="LicenseNextCheck" xml:space="preserve">
+    <value>Automatic license validation in {0} seconds.</value>
+  </data>
+  <data name="LicenseValid" xml:space="preserve">
+    <value>License is valid</value>
+  </data>
   <data name="Line" xml:space="preserve">
     <value>Line</value>
   </data>
@@ -894,6 +924,9 @@
   <data name="SaveConfiguration" xml:space="preserve">
     <value>Save Configuration</value>
   </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>Save Error</value>
+  </data>
   <data name="SaveSubProgram" xml:space="preserve">
     <value>Save Subprogram</value>
   </data>
@@ -911,6 +944,12 @@
   </data>
   <data name="ServerNotConnected" xml:space="preserve">
     <value>No connection to Server</value>
+  </data>
+  <data name="ServerUri" xml:space="preserve">
+    <value>Server Address</value>
+  </data>
+  <data name="ServerValidation" xml:space="preserve">
+    <value>Server Validation</value>
   </data>
   <data name="ServiceDate" xml:space="preserve">
     <value>Service Date</value>
@@ -1433,6 +1472,9 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="UnableToContactServer" xml:space="preserve">
+    <value>Failed to connect to server</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Undo</value>

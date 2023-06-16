@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using GSendCommon;
+using GSendCommon.Settings;
 
 using GSendDesktop.Forms;
 

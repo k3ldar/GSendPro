@@ -1,4 +1,7 @@
 ﻿using AppSettings;
+
+using GSendShared;
+
 using PluginManager.Abstractions;
 
 namespace GSendService.Internal
@@ -17,7 +20,7 @@ namespace GSendService.Internal
         #region Constructors
 
         public DefaultSettingProvider()
-            : this (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro"), new SettingOverride(), new ApplicationOverride(), new SettingsError())
+            : this (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder), new SettingOverride(), new ApplicationOverride(), new SettingsError())
         {
 
         }
@@ -57,7 +60,7 @@ namespace GSendService.Internal
 
         public T GetSettings<T>(in string sectionName)
         {
-            return GetSettings<T>("appsettings.json", sectionName);
+            return GetSettings<T>(GSendShared.Constants.AppSettings, sectionName);
         }
 
         #endregion ISettingsProvider Methods

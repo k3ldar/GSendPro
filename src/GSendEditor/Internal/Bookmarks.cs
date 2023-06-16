@@ -17,7 +17,7 @@ namespace GSendEditor.Internal
 
         public Bookmarks()
         {
-            _bookMarksFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "Desktop", "bookmarks.json");
+            _bookMarksFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProDesktopFolder, "bookmarks.json");
         }
 
         internal Bookmark GetBookmarkForFile(string fileName)

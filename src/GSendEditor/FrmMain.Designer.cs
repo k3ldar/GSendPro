@@ -97,6 +97,7 @@
             this.toolStripBtnPreviousBookmark = new System.Windows.Forms.ToolStripButton();
             this.toolStripBtnNextBookmark = new System.Windows.Forms.ToolStripButton();
             this.toolStripBtnClearBookmarks = new System.Windows.Forms.ToolStripButton();
+            this.tmrServerValidation = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
@@ -386,19 +387,19 @@
             // 
             this.mnuHelpHelp.Name = "mnuHelpHelp";
             this.mnuHelpHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.mnuHelpHelp.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpHelp.Size = new System.Drawing.Size(118, 22);
             this.mnuHelpHelp.Text = "Help";
             this.mnuHelpHelp.Click += new System.EventHandler(this.mnuHelpHelp_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(115, 6);
             // 
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(118, 22);
             this.mnuHelpAbout.Text = "&About";
             this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
@@ -572,6 +573,7 @@
             // 
             // lvSubprograms
             // 
+            this.lvSubprograms.AllowColumnReorder = true;
             this.lvSubprograms.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -580,6 +582,9 @@
             this.columnHeaderDescription});
             this.lvSubprograms.Location = new System.Drawing.Point(9, 9);
             this.lvSubprograms.Name = "lvSubprograms";
+            this.lvSubprograms.OwnerDraw = true;
+            this.lvSubprograms.SaveName = "";
+            this.lvSubprograms.ShowToolTip = false;
             this.lvSubprograms.Size = new System.Drawing.Size(389, 266);
             this.lvSubprograms.SmallImageList = this.toolbarImageListSmall;
             this.lvSubprograms.TabIndex = 0;
@@ -758,6 +763,11 @@
             this.toolStripBtnClearBookmarks.Text = "toolStripButton9";
             this.toolStripBtnClearBookmarks.Click += new System.EventHandler(this.mnuBookmarksRemoveAll_Click);
             // 
+            // tmrServerValidation
+            // 
+            this.tmrServerValidation.Interval = 5000;
+            this.tmrServerValidation.Tick += new System.EventHandler(this.tmrServerValidation_Tick);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -835,7 +845,6 @@
         private GSendControls.Machine2DView machine2dView1;
         private TabPage tabPageProperties;
         private TabPage tabPageSubPrograms;
-        private ListView lvSubprograms;
         private ColumnHeader columnHeaderName;
         private ColumnHeader columnHeaderDescription;
         private ListBox lstWarningsErrors;
@@ -865,5 +874,7 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem mnuHelpHelp;
         private ToolStripSeparator toolStripMenuItem5;
+        private GSendControls.ListViewEx lvSubprograms;
+        private System.Windows.Forms.Timer tmrServerValidation;
     }
 }

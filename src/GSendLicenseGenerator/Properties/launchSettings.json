@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GSendLicenseGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "--user:\"Simon Carter\" --date:\"asdf\""
+    }
+  }
+}

@@ -22,5 +22,9 @@ namespace GSendShared.Abstractions
         /// Registered user or organisation
         /// </summary>
         string RegisteredUser { get; }
+
+        string ClientId { get; }
+
+        bool IsValid { get; }
     }
 }

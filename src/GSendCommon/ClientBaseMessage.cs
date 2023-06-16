@@ -29,5 +29,7 @@
         public decimal ServerCpuStatus { get; set; }
 
         public bool IsConnected { get; set; }
+
+        public bool IsLicensed { get; set; }
     }
 }

@@ -61,6 +61,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AddLicense.
+        /// </summary>
+        public static string AddLicense {
+            get {
+                return ResourceManager.GetString("AddLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Server License.
+        /// </summary>
+        public static string AddServerLicense {
+            get {
+                return ResourceManager.GetString("AddServerLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Service.
         /// </summary>
         public static string AddService {
@@ -660,6 +678,15 @@ namespace GSend.Language {
         public static string CheckList {
             get {
                 return ResourceManager.GetString("CheckList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check Now.
+        /// </summary>
+        public static string CheckNow {
+            get {
+                return ResourceManager.GetString("CheckNow", resourceCulture);
             }
         }
         
@@ -1285,6 +1312,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred whilst saving server address:\r\n\r\n{0} .
+        /// </summary>
+        public static string ErrorSavingServerUri {
+            get {
+                return ResourceManager.GetString("ErrorSavingServerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GCode file uses a sub program {0} on line {1} which can not be found..
         /// </summary>
         public static string ErrorSubProgramMissing {
@@ -1843,6 +1879,60 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter the license and click submit to verify..
+        /// </summary>
+        public static string LicenseAddDescription {
+            get {
+                return ResourceManager.GetString("LicenseAddDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating license....
+        /// </summary>
+        public static string LicenseCheckValidating {
+            get {
+                return ResourceManager.GetString("LicenseCheckValidating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License is either invalid or unable to contact the server..
+        /// </summary>
+        public static string LicenseInvalid {
+            get {
+                return ResourceManager.GetString("LicenseInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid license.
+        /// </summary>
+        public static string LicenseInvalidEmpty {
+            get {
+                return ResourceManager.GetString("LicenseInvalidEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic license validation in {0} seconds..
+        /// </summary>
+        public static string LicenseNextCheck {
+            get {
+                return ResourceManager.GetString("LicenseNextCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License is valid.
+        /// </summary>
+        public static string LicenseValid {
+            get {
+                return ResourceManager.GetString("LicenseValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line.
         /// </summary>
         public static string Line {
@@ -2392,6 +2482,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Error.
+        /// </summary>
+        public static string SaveError {
+            get {
+                return ResourceManager.GetString("SaveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Subprogram.
         /// </summary>
         public static string SaveSubProgram {
@@ -2442,6 +2541,24 @@ namespace GSend.Language {
         public static string ServerNotConnected {
             get {
                 return ResourceManager.GetString("ServerNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Address.
+        /// </summary>
+        public static string ServerUri {
+            get {
+                return ResourceManager.GetString("ServerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Validation.
+        /// </summary>
+        public static string ServerValidation {
+            get {
+                return ResourceManager.GetString("ServerValidation", resourceCulture);
             }
         }
         
@@ -4008,6 +4125,15 @@ namespace GSend.Language {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to server.
+        /// </summary>
+        public static string UnableToContactServer {
+            get {
+                return ResourceManager.GetString("UnableToContactServer", resourceCulture);
             }
         }
         

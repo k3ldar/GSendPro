@@ -6,6 +6,7 @@ using System.Text;
 using Shared.Classes;
 
 using GSendShared.Abstractions;
+using GSendShared;
 
 namespace GSendService.Internal
 {
@@ -33,7 +34,7 @@ namespace GSendService.Internal
             {
                 if (_activeLicense == null)
                 {
-                    string activeLicense = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "SmokeTest", "Data", "ActiveLicense.lic");
+                    string activeLicense = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, "lic.dat");
 
                     if (File.Exists(activeLicense))
                     {

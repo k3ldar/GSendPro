@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using GSendApi;
 
 using GSendCommon;
-
+using GSendCommon.Settings;
 using GSendControls;
 
 using GSendDesktop.Abstractions;
@@ -525,5 +525,12 @@ namespace GSendDesktop
         }
 
         #endregion Menu Items
+
+        private void FormMain_Activated(object sender, EventArgs e)
+        {
+            GSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+
+            FrmServerValidation.ValidateServer(this, apiWrapper);
+        }
     }
 }

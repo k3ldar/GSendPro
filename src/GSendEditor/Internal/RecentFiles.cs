@@ -10,7 +10,7 @@ namespace GSendEditor.Internal
 
         public RecentFiles()
         {
-            _recentsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "Desktop", "recentfiles.json");
+            _recentsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProDesktopFolder, "recentfiles.json");
         }
 
         internal List<RecentFile> GetRecentFiles()

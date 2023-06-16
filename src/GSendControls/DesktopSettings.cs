@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
+using GSendShared;
+
 namespace GSendControls
 {
     public static class DesktopSettings
@@ -39,7 +41,7 @@ namespace GSendControls
 
         private static string GetSettingsFile()
         {
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "GSendPro", "DeskTop");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProDesktopFolder);
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);

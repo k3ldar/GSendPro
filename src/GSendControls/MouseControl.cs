@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace GSendDesktop.Internal
 {
-    public sealed class MouseControl : IDisposable
+    public sealed record MouseControl : IDisposable
     {
         private Form _parent;
         private Cursor _cursor;

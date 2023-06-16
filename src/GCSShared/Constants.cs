@@ -20,9 +20,23 @@ namespace GSendShared
 
         public const int ReceiveBufferSize = 1024 * 8;
 
+        public const string GSendProAppFolder = "GSendPro";
+
+        public const string GSendProDbFolder = "db";
+
+        public const string GSendProSubProgramFolder = "Sub Programs";
+
+        public const string GSendProDesktopFolder = "DeskTop";
+
+        public const string AppSettings = "appsettings.json";
+
         public const string ServerUri = "wss://localhost:7154/client2/{0}/";
 
-        public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new();
+        public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
+        {
+            AllowTrailingCommas = true,
+            WriteIndented = true,
+        };
 
         public const string SettingsName = "GSend";
 
