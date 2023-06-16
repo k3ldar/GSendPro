@@ -793,11 +793,11 @@ namespace GSendEditor
 
             GSendApiWrapper apiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
-            //using (MouseControl mc = MouseControl.ShowWaitCursor(this))
-            //{
-            //    if (!FrmServerValidation.ValidateServer(this, apiWrapper))
-            //        Application.Exit();
-            //}
+            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            {
+                if (!FrmServerValidation.ValidateServer(this, apiWrapper))
+                    Application.Exit();
+            }
 
             if (tmrServerValidation.Interval == 5000)
             {

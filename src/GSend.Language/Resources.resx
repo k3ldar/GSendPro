@@ -540,6 +540,9 @@
   <data name="ErrorSubProgramMissing" xml:space="preserve">
     <value>GCode file uses a sub program {0} on line {1} which can not be found.</value>
   </data>
+  <data name="ExpireDate" xml:space="preserve">
+    <value>Expire Date</value>
+  </data>
   <data name="FeedDisplay" xml:space="preserve">
     <value>Feed Rate Display</value>
   </data>
@@ -711,6 +714,9 @@
   <data name="Hours" xml:space="preserve">
     <value>Hours</value>
   </data>
+  <data name="InvalidLicense" xml:space="preserve">
+    <value>The license entered is invalid</value>
+  </data>
   <data name="JobProfile" xml:space="preserve">
     <value>Job Profile</value>
   </data>
@@ -723,17 +729,26 @@
   <data name="LargeIcons" xml:space="preserve">
     <value>Large Icons</value>
   </data>
+  <data name="License" xml:space="preserve">
+    <value>License</value>
+  </data>
   <data name="LicenseAddDescription" xml:space="preserve">
     <value>Please enter the license and click submit to verify.</value>
   </data>
   <data name="LicenseCheckValidating" xml:space="preserve">
     <value>Validating license...</value>
   </data>
+  <data name="LicenseDetails" xml:space="preserve">
+    <value>License Details</value>
+  </data>
   <data name="LicenseInvalid" xml:space="preserve">
     <value>License is either invalid or unable to contact the server.</value>
   </data>
   <data name="LicenseInvalidEmpty" xml:space="preserve">
     <value>Please enter a valid license</value>
+  </data>
+  <data name="LicenseIsValid" xml:space="preserve">
+    <value>License Is Valid</value>
   </data>
   <data name="LicenseNextCheck" xml:space="preserve">
     <value>Automatic license validation in {0} seconds.</value>
@@ -816,6 +831,9 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="ObtainLicenseFrom" xml:space="preserve">
+    <value>A new license can be obtained from your account at https://www.gsend.pro</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -848,6 +866,9 @@
   </data>
   <data name="PauseAll" xml:space="preserve">
     <value>Pause All</value>
+  </data>
+  <data name="PleaseEnterAValidLicense" xml:space="preserve">
+    <value>Please enter a valid license</value>
   </data>
   <data name="Port" xml:space="preserve">
     <value>Port</value>
@@ -893,6 +914,9 @@
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="RegisteredUser" xml:space="preserve">
+    <value>Registered User</value>
   </data>
   <data name="RegisterService" xml:space="preserve">
     <value>Register Service</value>
@@ -1490,6 +1514,9 @@
   </data>
   <data name="View2D" xml:space="preserve">
     <value>2D View</value>
+  </data>
+  <data name="ViewLicense" xml:space="preserve">
+    <value>View License</value>
   </data>
   <data name="WarningsAndInformation" xml:space="preserve">
     <value>Errors, warnings and information count</value>

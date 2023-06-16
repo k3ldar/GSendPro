@@ -99,7 +99,8 @@ namespace GSendService.Internal
 
             return license.Expires > DateTime.MinValue &&
                 license.Expires >= DateTime.Now &&
-                !String.IsNullOrEmpty(license.RegisteredUser);
+                !String.IsNullOrEmpty(license.RegisteredUser) &&
+                license.IsValid;
         }
 
         #endregion ILicenseFactory Methods

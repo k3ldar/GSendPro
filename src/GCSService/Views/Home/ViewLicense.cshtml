@@ -1,0 +1,67 @@
+﻿@model GSendService.Models.AddLicenseModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Model.SeoTitle;
+
+    string isValid = Model.IsValid ? Languages.LanguageStrings.Yes : Languages.LanguageStrings.No;
+}
+<div class="row">
+    <div class="col">
+        <h3>@Localizer[nameof(GSend.Language.Resources.LicenseDetails)]</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.LabelFor(m => m.Username): @Model.Username
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.LabelFor(m => m.ExpireDate): @Model.ExpireDate.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.LabelFor(m => m.IsValid): @isValid
+    </div>
+</div>
+
+<div class="row hdrNext">
+    <div class="col">
+        <h4>@Localizer[nameof(GSend.Language.Resources.AddServerLicense)]</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div>@Html.ValidationSummary()</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>@Localizer[nameof(GSend.Language.Resources.LicenseAddDescription)]</p>
+        <p>@GSend.Language.Resources.ObtainLicenseFrom</p>
+    </div>
+</div>
+@using (Html.BeginForm(nameof(GSendService.Controllers.HomeController.ViewLicense), GSendService.Controllers.HomeController.Name, FormMethod.Post))
+{
+    <div class="row hd-row">
+        <div class="col">
+            @Html.LabelFor(m => m.NewLicense)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-12">
+            @Html.ValidationMessageFor(m => m.NewLicense)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-12 col-md-6 col-lg-5">
+            @Html.TextAreaFor(m => m.NewLicense, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row hd-row">
+        <div class="col">
+            <input class="btn btn-primary" type="submit" value="@Localizer[nameof(Languages.LanguageStrings.Submit)]" />
+        </div>
+    </div>
+}

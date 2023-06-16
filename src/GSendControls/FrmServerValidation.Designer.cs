@@ -38,6 +38,7 @@
             this.btnCheckNow = new System.Windows.Forms.Button();
             this.lblNextLicenseCheck = new System.Windows.Forms.Label();
             this.tmrLicenseCheck = new System.Windows.Forms.Timer(this.components);
+            this.btnViewLicense = new System.Windows.Forms.Button();
             this.pnlLicenseCheck.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,11 +123,22 @@
             this.tmrLicenseCheck.Interval = 300;
             this.tmrLicenseCheck.Tick += new System.EventHandler(this.tmrLicenseCheck_Tick);
             // 
+            // btnViewLicense
+            // 
+            this.btnViewLicense.Location = new System.Drawing.Point(12, 174);
+            this.btnViewLicense.Name = "btnViewLicense";
+            this.btnViewLicense.Size = new System.Drawing.Size(91, 23);
+            this.btnViewLicense.TabIndex = 6;
+            this.btnViewLicense.Text = "button1";
+            this.btnViewLicense.UseVisualStyleBackColor = true;
+            this.btnViewLicense.Click += new System.EventHandler(this.btnViewLicense_Click);
+            // 
             // FrmServerValidation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(485, 209);
+            this.Controls.Add(this.btnViewLicense);
             this.Controls.Add(this.pnlLicenseCheck);
             this.Controls.Add(this.lblLicenseValidation);
             this.Controls.Add(this.btnCancel);
@@ -157,5 +169,6 @@
         private System.Windows.Forms.Button btnCheckNow;
         private System.Windows.Forms.Label lblNextLicenseCheck;
         private System.Windows.Forms.Timer tmrLicenseCheck;
+        private System.Windows.Forms.Button btnViewLicense;
     }
 }

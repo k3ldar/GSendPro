@@ -1330,6 +1330,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expire Date.
+        /// </summary>
+        public static string ExpireDate {
+            get {
+                return ResourceManager.GetString("ExpireDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed Rate Display.
         /// </summary>
         public static string FeedDisplay {
@@ -1843,6 +1852,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The license entered is invalid.
+        /// </summary>
+        public static string InvalidLicense {
+            get {
+                return ResourceManager.GetString("InvalidLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Profile.
         /// </summary>
         public static string JobProfile {
@@ -1879,6 +1897,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License.
+        /// </summary>
+        public static string License {
+            get {
+                return ResourceManager.GetString("License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter the license and click submit to verify..
         /// </summary>
         public static string LicenseAddDescription {
@@ -1897,6 +1924,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to License Details.
+        /// </summary>
+        public static string LicenseDetails {
+            get {
+                return ResourceManager.GetString("LicenseDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License is either invalid or unable to contact the server..
         /// </summary>
         public static string LicenseInvalid {
@@ -1911,6 +1947,15 @@ namespace GSend.Language {
         public static string LicenseInvalidEmpty {
             get {
                 return ResourceManager.GetString("LicenseInvalidEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to License Is Valid.
+        /// </summary>
+        public static string LicenseIsValid {
+            get {
+                return ResourceManager.GetString("LicenseIsValid", resourceCulture);
             }
         }
         
@@ -2158,6 +2203,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new license can be obtained from your account at https://www.gsend.pro.
+        /// </summary>
+        public static string ObtainLicenseFrom {
+            get {
+                return ResourceManager.GetString("ObtainLicenseFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string OK {
@@ -2253,6 +2307,15 @@ namespace GSend.Language {
         public static string PauseAll {
             get {
                 return ResourceManager.GetString("PauseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid license.
+        /// </summary>
+        public static string PleaseEnterAValidLicense {
+            get {
+                return ResourceManager.GetString("PleaseEnterAValidLicense", resourceCulture);
             }
         }
         
@@ -2388,6 +2451,15 @@ namespace GSend.Language {
         public static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registered User.
+        /// </summary>
+        public static string RegisteredUser {
+            get {
+                return ResourceManager.GetString("RegisteredUser", resourceCulture);
             }
         }
         
@@ -4179,6 +4251,15 @@ namespace GSend.Language {
         public static string View2D {
             get {
                 return ResourceManager.GetString("View2D", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View License.
+        /// </summary>
+        public static string ViewLicense {
+            get {
+                return ResourceManager.GetString("ViewLicense", resourceCulture);
             }
         }
         

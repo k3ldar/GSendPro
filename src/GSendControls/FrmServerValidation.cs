@@ -13,6 +13,7 @@ using GSendApi;
 using GSendDesktop.Internal;
 using GSendCommon.Settings;
 using GSendShared;
+using System.Diagnostics;
 
 namespace GSendControls
 {
@@ -87,6 +88,7 @@ namespace GSendControls
                 GSend.Language.Resources.LicenseValid :
                 GSend.Language.Resources.LicenseInvalid;
             btnCheckNow.Text = GSend.Language.Resources.CheckNow;
+            btnViewLicense.Text = GSend.Language.Resources.ViewLicense;
         }
 
         private void FrmLicenseValidation_Shown(object sender, EventArgs e)
@@ -134,7 +136,6 @@ namespace GSendControls
         private void btnCheckNow_Click(object sender, EventArgs e)
         {
             _nextLicenseCheck = DateTime.UtcNow.AddMinutes(-30);
-
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -187,6 +188,15 @@ namespace GSendControls
         private void txtServerAddress_TextChanged(object sender, EventArgs e)
         {
             _uriChanged = true;
+        }
+
+        private void btnViewLicense_Click(object sender, EventArgs e)
+        {
+            UriBuilder uriBuilder = new UriBuilder(_apiWrapper.ServerAddress);
+            uriBuilder.Path = "/Home/ViewLicense";
+
+            Uri licenseUri = uriBuilder.Uri;
+            Process.Start(new ProcessStartInfo(licenseUri.ToString()) {  UseShellExecute = true });
         }
     }
 }

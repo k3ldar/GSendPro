@@ -25,7 +25,7 @@ namespace GSendService.Controllers
         public IActionResult Index()
         {
             if (!IsLicenseValid())
-                return RedirectToAction(nameof(AddLicense));
+                return RedirectToAction(nameof(ViewLicense));
 
             return View(CreateIndexModel());
         }
@@ -35,7 +35,7 @@ namespace GSendService.Controllers
         public IActionResult ViewMachine(long machineId)
         {
             if (!IsLicenseValid())
-                return RedirectToAction(nameof(AddLicense));
+                return RedirectToAction(nameof(ViewLicense));
 
             IMachine machine = _gSendDataProvider.MachineGet(machineId);
 
@@ -46,28 +46,48 @@ namespace GSendService.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddLicense()
+        public IActionResult ViewLicense()
         {
-            return View(new AddLicenseModel(GetModelData()));
+            return View(GetLicenseModel());
         }
 
         [HttpPost]
-        public IActionResult AddLicense(AddLicenseModel model)
+        public IActionResult ViewLicense(AddLicenseModel model)
         {
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
-            if (String.IsNullOrEmpty(model.License))
-                ModelState.AddModelError(nameof(model.License), GSend.Language.Resources.LicenseInvalidEmpty);
+            if (String.IsNullOrEmpty(model.NewLicense))
+                ModelState.AddModelError(nameof(model.NewLicense), GSend.Language.Resources.LicenseInvalidEmpty);
 
             if (ModelState.IsValid)
             {
+                ILicense license = _licenseFactory.LoadLicense(model.NewLicense);
 
+                if (!license.IsValid)
+                {
+                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidLicense);
+                }
+                else
+                {
+                    _licenseFactory.SetActiveLicense(license);
+                    System.IO.File.WriteAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat"), model.NewLicense);
+                }
             }
 
-            return RedirectToAction("ViewLicense");
+            if (ModelState.IsValid)
+                return RedirectToAction("ViewLicense");
+
+            return View(GetLicenseModel());
         }
 
+
+        private AddLicenseModel GetLicenseModel()
+        {
+            ILicense activeLicense = _licenseFactory.GetActiveLicense();
+
+            return new AddLicenseModel(GetModelData(), activeLicense.RegisteredUser, activeLicense.Expires, activeLicense.IsValid);
+        }
 
         private bool IsLicenseValid()
         {
