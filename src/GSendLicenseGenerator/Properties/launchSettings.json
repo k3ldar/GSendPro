@@ -2,7 +2,7 @@
   "profiles": {
     "GSendLicenseGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "--user:\"Simon Carter\" --date:\"asdf\""
+      "commandLineArgs": "--user:\"Simon Carter\" --date:\"asdf\" --id:\"696def41790b462a8114a76f7c663ebd\\n638225211222536795\\nNTFS\\n499461910528\\nFixed\""
     }
   }
 }

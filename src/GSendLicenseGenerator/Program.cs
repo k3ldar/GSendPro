@@ -4,6 +4,7 @@ using System.Text;
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Providers.Internal.Enc;
 
 namespace GSendLicenseGenerator
 {
@@ -12,14 +13,31 @@ namespace GSendLicenseGenerator
         private const byte LicenseVersion1 = 1;
         private const string headerValue = "GSend Pro";
         private static readonly byte[] Header = Encoding.ASCII.GetBytes(headerValue);
-        private const string key = "vTL9YkYt7jZduVWOB/JiumshargM6YzdVjsZfmN3hT8=";
+        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
+
 
         static int Main(string[] args)
         {
+            Environment.SetEnvironmentVariable("GSendProRootPath",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
+            GenerateUniqueSerialNumberInServiceForClientcomputer();
+
+            string dec = AesImpl.Decrypt(File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat")), key);
+
             CommandLineArgs cmdLineArgs = new CommandLineArgs(args);
 
+            return ProcessArgs(cmdLineArgs);
+        }
+
+        private static int ProcessArgs(CommandLineArgs cmdLineArgs)
+        {
             string userName = cmdLineArgs.Get("user", String.Empty);
             string dateTime = cmdLineArgs.Get("date", String.Empty);
+            string uniqueId = cmdLineArgs.Get("id", String.Empty);
+
+            string file = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "SerialNo.dat");
+
+            uniqueId = AesImpl.Decrypt(File.ReadAllText(file), key);
 
 
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(dateTime))
@@ -28,71 +46,81 @@ namespace GSendLicenseGenerator
                 return 1;
             }
 
+            string[] idParts = uniqueId.Replace("\\n", "\n").Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (idParts.Length != 5)
+                return -100;
+
+            DateTime createdDate = new DateTime(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
+
+            TimeSpan timeDiff = DateTime.UtcNow - createdDate;
+
+            if (timeDiff.TotalSeconds > 5000)
+                return -101;
+
             DateTime expires = DateTime.UtcNow.Date.AddDays(5);
-            string license = CreateLicense(1, userName, expires, 1000);
+            string license = CreateLicense(1, userName, expires, uniqueId);
             Console.WriteLine(license);
+
+            File.WriteAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat"), license);
+
+            string decrypted = AesImpl.Decrypt(File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat")), key);
+
             return 0;
         }
         private static string CreateLicense(in byte version, in string name, in DateTime expires,
-            in int maximumMachineCount)
+            in string id)
         {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (BinaryWriter binaryWriter = new BinaryWriter(ms))
-                {
-                    binaryWriter.Write(Header);
-                    binaryWriter.Write(version);
-                    binaryWriter.Write(name.Length);
-                    binaryWriter.Write(Encoding.UTF8.GetBytes(name));
-                    binaryWriter.Write(expires.Ticks);
-                    binaryWriter.Write(maximumMachineCount);
+            StringBuilder stringBuilder = new StringBuilder();
 
-                    ms.Position = 0;
-                    byte[] licenseData = new byte[ms.Length];
-                    int read = ms.Read(licenseData, 0, licenseData.Length);
+            for (int i = 0; i < Header.Length; i++)
+                stringBuilder.Append((char)Header[i]);
 
-                    return EncryptString(licenseData, Convert.FromBase64String(key));
-                }
-            }
+            stringBuilder.Append('\r');
+            stringBuilder.Append(version);
+            stringBuilder.Append('\r');
+            stringBuilder.Append(name.Length);
+            stringBuilder.Append('\r');
+            stringBuilder.Append(name);
+            stringBuilder.Append('\r');
+            stringBuilder.Append(expires.Ticks);
+            stringBuilder.Append('\r');
+            stringBuilder.Append(id.Length);
+            stringBuilder.Append('\r');
+            stringBuilder.Append(id);
+            stringBuilder.Append('\r');
+
+            return AesImpl.Encrypt(stringBuilder.ToString(), key);
         }
 
-        private static string EncryptString(byte[] message, byte[] key)
+
+
+
+
+
+
+
+        private static void GenerateUniqueSerialNumberInServiceForClientcomputer()
         {
-            using Aes aes = Aes.Create();
-            byte[] iv = aes.IV;
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                memStream.Write(iv, 0, iv.Length);
+            string file = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "SerialNo.dat");
 
-                using (CryptoStream cryptStream = new CryptoStream(memStream, aes.CreateEncryptor(key, aes.IV), CryptoStreamMode.Write))
-                {
-                    using (StreamWriter writer = new StreamWriter(cryptStream))
-                    {
-                        writer.Write(Convert.ToBase64String(message));
-                    }
-                }
+            if (File.Exists(file))
+                return;
 
-                byte[] buf = memStream.ToArray();
-                return Convert.ToBase64String(buf, 0, buf.Length);
-            }
-        }
+            char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
+            DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
 
-        private static string DecryptString(string encryptedValue, byte[] key)
-        {
-            byte[] bytes = Convert.FromBase64String(encryptedValue);
-            using Aes aes = Aes.Create();
-            using (MemoryStream memStream = new MemoryStream(bytes))
-            {
-                byte[] iv = new byte[16];
-                memStream.Read(iv, 0, 16);  // Pull the IV from the first 16 bytes of the encrypted value
-                using (CryptoStream cryptStream = new CryptoStream(memStream, aes.CreateDecryptor(key, iv), CryptoStreamMode.Read))
-                {
-                    using (StreamReader reader = new StreamReader(cryptStream))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                }
-            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(Guid.NewGuid().ToString("N"));
+            stringBuilder.Append('\n');
+            stringBuilder.Append(DateTime.UtcNow.Ticks);
+            stringBuilder.Append('\n');
+            stringBuilder.Append(drives.DriveFormat);
+            stringBuilder.Append("\n");
+            stringBuilder.Append(drives.TotalSize);
+            stringBuilder.Append("\n");
+            stringBuilder.Append(drives.DriveType);
+            File.WriteAllText(file, AesImpl.Encrypt(stringBuilder.ToString(), key));
         }
 
     }

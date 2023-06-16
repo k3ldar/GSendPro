@@ -5,7 +5,9 @@ using AspNetCore.PluginManager;
 using GSendService.Internal;
 
 using GSendShared;
+using GSendShared.Providers.Internal.Enc;
 
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using PluginManager;
@@ -26,7 +28,7 @@ namespace GSendService
             ThreadManager.ThreadExceptionRaised += ThreadManager_ThreadExceptionRaised;
             ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
-            Environment.SetEnvironmentVariable("GSendProRootPath", 
+            Environment.SetEnvironmentVariable("GSendProRootPath",
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
 
             Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "db"));
@@ -121,17 +123,27 @@ namespace GSendService
             if (File.Exists(file))
                 return;
 
-            byte[] b = new byte[] { 71, 83, 101, 110, 100, 32, 80, 114, 111, 32, 83, 101, 114, 105, 97, 108, 32, 78, 111, 32, 45, 32, 100, 56, 57, 48, 51, 52, 50, 99, 32, 102, 110, 52, 51, 56, 53, 55, 102, 104, 110, 97, 101, 119, 115 };
+            char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
+            DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
+
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(Guid.NewGuid().ToString("N"));
+            stringBuilder.Append('\n');
             stringBuilder.Append(DateTime.UtcNow.Ticks);
-            Shared.Utilities.FileEncryptedWrite(file, stringBuilder.ToString(), Encoding.UTF8.GetString(b));
+            stringBuilder.Append('\n');
+            stringBuilder.Append(drives.DriveFormat);
+            stringBuilder.Append("\n");
+            stringBuilder.Append(drives.TotalSize);
+            stringBuilder.Append("\n");
+            stringBuilder.Append(drives.DriveType);
+            File.WriteAllText(file, AesImpl.Encrypt(stringBuilder.ToString(), key));
         }
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
-                .ConfigureAppConfiguration(configureDelegate => 
+                .ConfigureAppConfiguration(configureDelegate =>
                 {
                     string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings);
                     configureDelegate.AddJsonFile(path, false, true);

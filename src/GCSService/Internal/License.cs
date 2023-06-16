@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 
 using GSendShared.Abstractions;
+using GSendShared.Providers.Internal.Enc;
 
 namespace GSendService.Internal
 {
@@ -25,13 +21,16 @@ namespace GSendService.Internal
 
         public License()
         {
+            IsValid = false;
             _options = new Dictionary<string, string>();
         }
 
         #endregion Constructors
 
-        private static readonly byte[] Header = new byte[9] { 71, 83, 101, 110, 100, 32, 80, 114, 111 };
-        private const string key = "vTL9YkYt7jZduVWOB/JiumshargM6YzdVjsZfmN3hT8=";
+        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
+        private const int PartCount = 5;
+        private const string headerValue = "GSend Pro";
+        private static readonly byte[] Header = Encoding.ASCII.GetBytes(headerValue);
 
         internal static ILicense CreateLicense(in ILicenseFactory licenseFactory, in string licenseData)
         {
@@ -42,30 +41,93 @@ namespace GSendService.Internal
 
             try
             {
-                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(DecryptString(licenseData, Convert.FromBase64String(key)))))
+                string decryptedData = AesImpl.Decrypt(licenseData, key);
+
+                string[] licParts = decryptedData.Split('\r', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                if (licParts.Length != 7)
+                    throw new InvalidLicenseException("Invalid license");
+
+                if (licParts[0] != "GSend Pro")
+                    throw new InvalidLicenseException("Invalid license header");
+
+                if (Int32.TryParse(licParts[2], out int regUserLen))
                 {
-                    using (BinaryReader binaryReader = new BinaryReader(ms))
-                    {
-                        byte[] header = binaryReader.ReadBytes(Header.Length);
+                    Result.RegisteredUser = licParts[3];
 
-                        if (CompareByteArrays(header, Header))
-                        {
-                            byte version = binaryReader.ReadByte();
-                            int nameLength = binaryReader.ReadInt32();
-                            Result.RegisteredUser = Encoding.UTF8.GetString(binaryReader.ReadBytes(nameLength));
-                            Result.Expires = new DateTime(binaryReader.ReadInt64(), DateTimeKind.Utc);
-                            int idLength = binaryReader.ReadInt32();
-                            Result.ClientId = Encoding.UTF8.GetString(binaryReader.ReadBytes(idLength));
-
-
-
-                            if (version > LicenseVersion1)
-                            {
-                                // whats new here?
-                            }
-                        }
-                    }
+                    if (regUserLen != Result.RegisteredUser.Length)
+                        throw new InvalidLicenseException("Invalid registered user");
                 }
+                else
+                {
+                    throw new InvalidLicenseException("Invalid registered user reference");
+                }
+
+                if (Int64.TryParse(licParts[4], out long ticks))
+                {
+                    Result.Expires = new DateTime(ticks, DateTimeKind.Utc);
+                }
+                else
+                {
+                    throw new InvalidLicenseException("Invalid date reference");
+                }
+
+
+                if (Int32.TryParse(licParts[1], out int version))
+                {
+                    //if (version > LicenseVersion1)
+                    //{
+                    //    // whats new here?
+                    //}
+                }
+                else
+                {
+                    throw new InvalidLicenseException("Invalid version reference");
+                }
+
+
+                Result.ClientId = licParts[6];
+
+                string[] serialNoParts = GetClientUniqueID().Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                if (serialNoParts.Length != PartCount)
+                    throw new InvalidLicenseException("Serial no invalid");
+
+                // validate license details
+                string[] idParts = Result.ClientId.Replace("\\n", "\n").Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                if (idParts.Length != PartCount)
+                    throw new InvalidLicenseException("Invalid serial no");
+
+                for (int i = 0; i < PartCount; i++)
+                {
+                    if (!serialNoParts[i].Equals(idParts[i]))
+                        throw new InvalidLicenseException("Serial no does not match");
+                }
+
+                DateTime dateCreated = new DateTime(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
+
+                TimeSpan createdSpan = DateTime.UtcNow - dateCreated;
+
+                if (createdSpan.TotalSeconds < 0)
+                    throw new InvalidLicenseException("Invalid create date");
+
+                if (createdSpan.TotalDays > 365)
+                    throw new InvalidLicenseException("Valid only for 1 year");
+
+                char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
+                DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
+
+                if (idParts[2] != drives.DriveFormat)
+                    throw new InvalidLicenseException("Setup has changed drive");
+
+                if (idParts[3] != drives.TotalSize.ToString())
+                    throw new InvalidLicenseException("Drive configuration changed");
+
+                if (!drives.DriveType.ToString().StartsWith(idParts[4]))
+                    throw new InvalidLicenseException("Drive type has changed");
+
+                Result.IsValid = Result.Expires.Date > DateTime.UtcNow;
             }
             catch (FormatException)
             {
@@ -93,24 +155,6 @@ namespace GSendService.Internal
             return true;
         }
 
-        private static string DecryptString(string encryptedValue, byte[] key)
-        {
-            byte[] bytes = Convert.FromBase64String(encryptedValue);
-            using Aes aes = Aes.Create();
-            using (MemoryStream memStream = new MemoryStream(bytes))
-            {
-                byte[] iv = new byte[16];
-                memStream.Read(iv, 0, 16);  // Pull the IV from the first 16 bytes of the encrypted value
-                using (CryptoStream cryptStream = new CryptoStream(memStream, aes.CreateDecryptor(key, iv), CryptoStreamMode.Read))
-                {
-                    using (StreamReader reader = new StreamReader(cryptStream))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                }
-            }
-        }
-
 
         #endregion Private Members
 
@@ -123,18 +167,7 @@ namespace GSendService.Internal
 
         public string ClientId { get; private set; }
 
-        private string _serialNo = null;
-
-        public bool IsValid
-        { 
-            get
-            {
-                if (_serialNo == null)
-                    _serialNo = GetClientUniqueID();
-
-                return Expires.Date > DateTime.UtcNow && ClientId.Equals(_serialNo);
-            }
-        }
+        public bool IsValid { get; private set; }
 
         #endregion ILicense Properties
 
@@ -155,15 +188,15 @@ namespace GSendService.Internal
 
         #endregion ILicense Methods
 
-        private string GetClientUniqueID()
+        private static string GetClientUniqueID()
         {
             string file = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "SerialNo.dat");
 
             if (!File.Exists(file))
                 return String.Empty;
 
-            byte[] b = new byte[] { 71, 83, 101, 110, 100, 32, 80, 114, 111, 32, 83, 101, 114, 105, 97, 108, 32, 78, 111, 32, 45, 32, 100, 56, 57, 48, 51, 52, 50, 99, 32, 102, 110, 52, 51, 56, 53, 55, 102, 104, 110, 97, 101, 119, 115 };
-            return Shared.Utilities.FileEncryptedRead(file, Encoding.UTF8.GetString(b));
+            byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
+            return AesImpl.Decrypt(File.ReadAllText(file), key);
         }
     }
 }

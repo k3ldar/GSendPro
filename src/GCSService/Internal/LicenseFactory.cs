@@ -70,38 +70,6 @@ namespace GSendService.Internal
         }
 
         /// <summary>
-        /// Retrieves license details in the form of a string
-        /// </summary>
-        /// <param name="license"></param>
-        /// <returns></returns>
-        public string SaveLicense(in ILicense license)
-        {
-            if (license == null)
-                throw new ArgumentNullException(nameof(license));
-
-            if (license as License == null)
-                return String.Empty; 
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (BinaryWriter binaryWriter = new BinaryWriter(ms))
-                {
-                    binaryWriter.Write(Header);
-                    binaryWriter.Write(LicenseVersion);
-                    binaryWriter.Write(license.RegisteredUser.Length);
-                    binaryWriter.Write(Encoding.UTF8.GetBytes(license.RegisteredUser));
-                    binaryWriter.Write(license.Expires.Ticks);
-
-                    ms.Position = 0;
-                    byte[] licenseData = new byte[ms.Length];
-                    int read = ms.Read(licenseData, 0, licenseData.Length);
-
-                    return EncryptString(licenseData, Convert.FromBase64String(key));
-                }
-            }
-        }
-
-        /// <summary>
         /// Sets the currently active license
         /// </summary>
         /// <param name="license"></param>
@@ -135,30 +103,5 @@ namespace GSendService.Internal
         }
 
         #endregion ILicenseFactory Methods
-
-        #region Private Static Methods
-
-        private static string EncryptString(byte[] message, byte[] key)
-        {
-            using Aes aes = Aes.Create();
-            byte[] iv = aes.IV;
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                memStream.Write(iv, 0, iv.Length);  // Add the IV to the first 16 bytes of the encrypted value
-                using (CryptoStream cryptStream = new CryptoStream(memStream, aes.CreateEncryptor(key, aes.IV), CryptoStreamMode.Write))
-                {
-                    using (StreamWriter writer = new StreamWriter(cryptStream))
-                    {
-                        writer.Write(Convert.ToBase64String(message));
-                    }
-                }
-
-                byte[] buf = memStream.ToArray();
-                return Convert.ToBase64String(buf, 0, buf.Length);
-            }
-        }
-
-
-        #endregion Private Static Methods
     }
 }

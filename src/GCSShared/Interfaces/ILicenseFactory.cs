@@ -10,13 +10,6 @@
         ILicense LoadLicense(in string license);
 
         /// <summary>
-        /// Retrieves license details in the form of a string
-        /// </summary>
-        /// <param name="license"></param>
-        /// <returns></returns>
-        string SaveLicense(in ILicense license);
-
-        /// <summary>
         /// Retrieves the currently active license for the application
         /// </summary>
         /// <returns><see cref="ILicense"/>ILicense instance</returns>
