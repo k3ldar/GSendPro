@@ -26,8 +26,10 @@ namespace GSendControls
         {
             InitializeComponent();
 
-            _shortcutHandler = new ShortcutHandler();
-            _shortcutHandler.RegisterKeyCombo = true;
+            _shortcutHandler = new ShortcutHandler
+            {
+                RegisterKeyCombo = true
+            };
             _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
             _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
         }
@@ -42,7 +44,7 @@ namespace GSendControls
             {
                 _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
 
-                ListViewItem item = new ListViewItem(shortcut.GroupName);
+                ListViewItem item = new(shortcut.GroupName);
                 item.SubItems.Add(shortcut.Name);
                 item.SubItems.Add(GetSelectedKeys(shortcut.DefaultKeys, false));
                 item.Tag = shortcut;
@@ -52,7 +54,7 @@ namespace GSendControls
 
         public static bool ShowDialog(Form parent, ref List<IShortcut> shortcutImplementation)
         {
-            using (ShortcutEditor scEditor = new ShortcutEditor(shortcutImplementation))
+            using (ShortcutEditor scEditor = new(shortcutImplementation))
             {
                 if (scEditor.ShowDialog(parent) == DialogResult.OK)
                 {
@@ -99,7 +101,7 @@ namespace GSendControls
 
         private static string GetSelectedKeys(List<int> keys, bool addSelectMessage)
         {
-            StringBuilder Result = new StringBuilder(200);
+            StringBuilder Result = new(200);
 
             for (int i = 0; i < keys.Count; i++)
             {

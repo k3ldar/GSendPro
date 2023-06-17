@@ -144,7 +144,7 @@ namespace GSendControls
 
         private void AddAnalyserProperty(string property, object value)
         {
-            ListViewItem item = new ListViewItem(property);
+            ListViewItem item = new(property);
             item.SubItems.Add(value == null ? "-" : value.ToString());
             listViewAnalyses.Items.Add(item);
         }

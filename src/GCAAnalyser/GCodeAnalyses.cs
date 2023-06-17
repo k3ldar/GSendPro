@@ -10,7 +10,7 @@ namespace GSendAnalyser
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {
-        private readonly object _lockObject = new object();
+        private readonly object _lockObject = new();
         private readonly List<IGCodeCommand> _commands = new();
         private List<IGCodeCommand> _allCommands;
         private readonly IPluginClassesService _pluginClassesService;

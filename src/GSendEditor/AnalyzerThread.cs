@@ -92,7 +92,7 @@ namespace GSendEditor
                         issues.Add(item);
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors(_subPrograms);
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_subPrograms);
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(null, issues, _gCodeAnalyses);
 
                     foreach (WarningErrorList item in issues)
@@ -110,7 +110,7 @@ namespace GSendEditor
 
                     if (Machine2DView != null)
                     {
-                        Rectangle machineSize = new Rectangle(0, 0, (int)(_gCodeAnalyses.MaxX + 500), (int)(_gCodeAnalyses.MaxY + 500));
+                        Rectangle machineSize = new(0, 0, (int)(_gCodeAnalyses.MaxX + 500), (int)(_gCodeAnalyses.MaxY + 500));
                         Machine2DView.MachineSize = machineSize;
                         Machine2DView.LoadGCode(_gCodeAnalyses);
                     }

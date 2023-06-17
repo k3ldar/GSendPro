@@ -15,9 +15,11 @@ namespace GSendService.Internal
         #region Private Members
 
         private volatile static ILicense _activeLicense = null;
-        private static readonly object _lockObject = new object();
+        private static readonly object _lockObject = new();
         private const string key = "vTL9YkYt7jZduVWOB/JiumshaubM6YzdVjsZfmN3hT8=";
+#pragma warning disable IDE0052 // Remove unread private members
         private static readonly byte[] Header = new byte[9] { 83, 109, 111, 107, 101, 84, 101, 115, 116 };
+#pragma warning restore IDE0052 // Remove unread private members
         private const byte LicenseVersion = 1;
 
         #endregion Private Members

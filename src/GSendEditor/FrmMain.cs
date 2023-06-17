@@ -330,8 +330,10 @@ namespace GSendEditor
             // get recently opened files
             foreach (RecentFile recentFile in recentFiles)
             {
-                ToolStripMenuItem recent = new ToolStripMenuItem(recentFile.FileName);
-                recent.Tag = recentFile;
+                ToolStripMenuItem recent = new(recentFile.FileName)
+                {
+                    Tag = recentFile
+                };
 
                 recent.Click += (sender, e) =>
                 {
@@ -492,8 +494,10 @@ namespace GSendEditor
 
                 foreach (ISubProgram subProgram in subPrograms)
                 {
-                    ListViewItem listViewItem = new ListViewItem();
-                    listViewItem.Text = subProgram.Name;
+                    ListViewItem listViewItem = new()
+                    {
+                        Text = subProgram.Name
+                    };
                     listViewItem.SubItems.Add(subProgram.Description);
                     listViewItem.Tag = subProgram;
                     listViewItem.ImageIndex = 5;
@@ -599,7 +603,7 @@ namespace GSendEditor
 
         private void mnuHelpHelp_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo psi = new ProcessStartInfo
+            ProcessStartInfo psi = new()
             {
                 FileName = Constants.HelpWebsite,
                 UseShellExecute = true
@@ -684,7 +688,7 @@ namespace GSendEditor
 
             if (String.IsNullOrEmpty(hoverWord))
             {
-                FastColoredTextBoxNS.Range r = new FastColoredTextBoxNS.Range(txtGCode, e.Place, e.Place);
+                FastColoredTextBoxNS.Range r = new(txtGCode, e.Place, e.Place);
                 hoverWord = r.GetFragment("[A-Z\\[\\]#0-9]").Text;
             }
 

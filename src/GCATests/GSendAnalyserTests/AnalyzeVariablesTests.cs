@@ -84,8 +84,10 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands.Count);
 
             MockSubPrograms mockSubPrograms = new();
-            SubProgramModel subProgram = new("O1000", "debug with vars", "#321=a value\n#322=value");
-            subProgram.Variables = new();
+            SubProgramModel subProgram = new("O1000", "debug with vars", "#321=a value\n#322=value")
+            {
+                Variables = new()
+            };
             subProgram.Variables.Add(new GCodeVariableModel(321, "a", 2));
             mockSubPrograms.SubPrograms.Add(subProgram);
             AnalyzeVariables sut = new(mockSubPrograms);

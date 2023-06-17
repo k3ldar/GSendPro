@@ -539,7 +539,7 @@ namespace GSendAnalyser.Internal
             List<IGCodeVariableBlock> Result = new();
 
             int variableBlockStart = line.IndexOf('[', 0);
-            string newCommandValue = line.Substring(0, variableBlockStart);
+            string newCommandValue = line[..variableBlockStart];
             commandValueConvert = Decimal.TryParse(newCommandValue, out commandValue);
 
             if (!commandValueConvert)
@@ -552,7 +552,7 @@ namespace GSendAnalyser.Internal
                 if (variableBlockStart >= 0 && variableBlockEnd > variableBlockStart)
                 {
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
-                    GCodeVariableBlockModel gCodeVariable = new GCodeVariableBlockModel(variable, lineNumber);
+                    GCodeVariableBlockModel gCodeVariable = new(variable, lineNumber);
 
                     Result.Add(gCodeVariable);
                 }

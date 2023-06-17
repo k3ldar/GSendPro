@@ -14,9 +14,13 @@ namespace GSendShared
 
         public CommandLineArgs()
             : this(Environment.GetCommandLineArgs())
-        { }
+        {
+        }
+
         public CommandLineArgs(string[] args)
-        { _args = ConvertArgsToDictionary(args ?? new string[] { }); }
+        { 
+            _args = ConvertArgsToDictionary(args ?? Array.Empty<string>()); 
+        }
 
         #endregion Constructors   
 
@@ -70,9 +74,9 @@ namespace GSendShared
 
         private static Dictionary<string, string> ConvertArgsToDictionary(string[] args)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            StringBuilder currentArg = new StringBuilder(30);
-            StringBuilder currentArgValue = new StringBuilder();
+            Dictionary<string, string> result = new();
+            StringBuilder currentArg = new(30);
+            StringBuilder currentArgValue = new();
             string arg = string.Join(" ", args);
             bool argFound = false;
             bool argValue = false;

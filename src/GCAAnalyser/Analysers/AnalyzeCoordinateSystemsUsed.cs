@@ -19,7 +19,7 @@ namespace GSendAnalyser.Analysers
                 coordinateSystems.ForEach(t =>
                 {
                     if (!gCodeAnalyses.CoordinateSystems.Contains(t.ToString()))
-                        gCodeAnalyses.CoordinateSystems += $"{t.ToString()},";
+                        gCodeAnalyses.CoordinateSystems += $"{t},";
                 });
             }
 

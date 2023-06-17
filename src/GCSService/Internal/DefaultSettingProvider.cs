@@ -48,7 +48,7 @@ namespace GSendService.Internal
             if (String.IsNullOrEmpty(sectionName))
                 throw new ArgumentNullException(nameof(sectionName));
 
-            ConfigurationBuilder builder = new ConfigurationBuilder();
+            ConfigurationBuilder builder = new();
             IConfigurationBuilder configBuilder = builder.SetBasePath(_rootPath);
             configBuilder.AddJsonFile(storage);
             IConfigurationRoot config = builder.Build();

@@ -11,7 +11,7 @@ namespace GSendAnalyser.Analysers
         {
             List<IGCodeCommand> subPrograms = gCodeAnalyses.AllCommands.Where(c => c.Command.Equals('O')).ToList();
 
-            gCodeAnalyses.SubProgramCount = subPrograms.Count();
+            gCodeAnalyses.SubProgramCount = subPrograms.Count;
 
             if (subPrograms.Count > 1 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {

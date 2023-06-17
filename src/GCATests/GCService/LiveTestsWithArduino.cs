@@ -35,8 +35,10 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
-            sut.TimeOut = TimeSpan.FromSeconds(5);
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            {
+                TimeOut = TimeSpan.FromSeconds(5)
+            };
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
@@ -57,9 +59,10 @@ namespace GSendTests.GCService
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
-
-            sut.TimeOut = TimeSpan.FromSeconds(1000);
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            {
+                TimeOut = TimeSpan.FromSeconds(1000)
+            };
 
             ThreadManager.ThreadStart(sut, "COM4", System.Threading.ThreadPriority.Normal);
             sut.OnGrblError += (sender, e) =>
@@ -155,9 +158,10 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
-
-            sut.TimeOut = TimeSpan.FromSeconds(1000);
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            {
+                TimeOut = TimeSpan.FromSeconds(1000)
+            };
 
             ThreadManager.ThreadStart(sut, "COM4", System.Threading.ThreadPriority.Normal);
             sut.OnGrblError += (sender, e) =>

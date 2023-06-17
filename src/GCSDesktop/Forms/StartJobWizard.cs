@@ -115,7 +115,7 @@ namespace GSendDesktop.Forms
 
                 if (Enum.TryParse(box.Items[e.Index].ToString(), true, out MachineStateOptions option))
                 {
-                    string text = $"{option.ToString().Substring(0, 3)} {option.ToString().Substring(7, 1)}";
+                    string text = $"{option.ToString()[..3]} {option.ToString().Substring(7, 1)}";
                     TextRenderer.DrawText(e.Graphics, text, box.Font, new Point(1, e.Bounds.Top + 2), fore);
 
                     if (_machineStatusModel.MachineStateOptions.HasFlag(option))
@@ -141,7 +141,7 @@ namespace GSendDesktop.Forms
             e.DrawBackground();
 
 
-            using SolidBrush brush = new SolidBrush(e.ForeColor);
+            using SolidBrush brush = new(e.ForeColor);
 
             e.Graphics.DrawString(toolProfile.Name, e.Font, brush, e.Bounds.Left + 1, e.Bounds.Top + 1);
 

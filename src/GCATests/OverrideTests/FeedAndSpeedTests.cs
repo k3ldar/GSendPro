@@ -34,8 +34,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
@@ -54,8 +56,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
@@ -74,8 +78,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
@@ -94,8 +100,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             _ = sut.Process(context, CancellationToken.None);
@@ -116,8 +124,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             _ = sut.Process(context, CancellationToken.None);
@@ -137,8 +147,10 @@ namespace GSendTests.OverrideTests
             MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
 
             FeedAndSpeedOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);

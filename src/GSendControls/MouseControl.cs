@@ -15,7 +15,7 @@ namespace GSendDesktop.Internal
 
         public static MouseControl ShowWaitCursor(Form parent)
         {
-            MouseControl Result = new MouseControl()
+            MouseControl Result = new()
             {
                 _parent = parent ?? throw new ArgumentNullException(nameof(parent)),
                 _cursor = parent.Cursor,

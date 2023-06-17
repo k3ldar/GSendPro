@@ -15,11 +15,11 @@ namespace GSendControls
 
         public static bool Show(IWin32Window parent, string title, string promptText, ref string value, InputBoxValidation validation, string validationTitle)
         {
-            using Form form = new Form();
-            using Label label = new Label();
-            using TextBox textBox = new TextBox();
-            using Button buttonOk = new Button();
-            using Button buttonCancel = new Button();
+            using Form form = new();
+            using Label label = new();
+            using TextBox textBox = new();
+            using Button buttonOk = new();
+            using Button buttonCancel = new();
 
             form.Text = title;
             label.Text = promptText;

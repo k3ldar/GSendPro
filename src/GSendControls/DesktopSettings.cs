@@ -22,7 +22,7 @@ namespace GSendControls
 
         public static T ReadValue<T>(string Section, string Key, T defaultValue)
         {
-            StringBuilder temp = new StringBuilder(255);
+            StringBuilder temp = new(255);
             _ = GetPrivateProfileString(Section, Key, "", temp, temp.Capacity, GetSettingsFile());
 
             if (temp.Length == 0)

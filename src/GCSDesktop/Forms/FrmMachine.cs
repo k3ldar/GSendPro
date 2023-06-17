@@ -47,7 +47,7 @@ namespace GSendDesktop.Forms
         private MachineUpdateThread _machineUpdateThread;
         private IGCodeAnalyses _gCodeAnalyses = null;
         private readonly object _lockObject = new();
-        private readonly Pen _borderPen = new Pen(SystemColors.ButtonShadow);
+        private readonly Pen _borderPen = new(SystemColors.ButtonShadow);
         private bool _machineConnected = false;
         private bool _isPaused = false;
         private bool _isRunning = false;
@@ -73,8 +73,10 @@ namespace GSendDesktop.Forms
             InitializeComponent();
             KeyPreview = true;
 
-            _shortcutHandler = new();
-            _shortcutHandler.RegisterKeyCombo = false;
+            _shortcutHandler = new()
+            {
+                RegisterKeyCombo = false
+            };
             _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
             _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
         }
@@ -1335,7 +1337,7 @@ namespace GSendDesktop.Forms
         {
             GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
-            using (FrmRegisterService frmRegisterService = new FrmRegisterService(_machine.Id, machineApiWrapper))
+            using (FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper))
             {
                 if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1371,9 +1373,11 @@ namespace GSendDesktop.Forms
                     if (ServiceListViewItemExists(service))
                         continue;
 
-                    TimeSpan spanSpindleHours = new TimeSpan(service.SpindleHours);
-                    ListViewItem serviceItem = new ListViewItem(service.ServiceDate.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern));
-                    serviceItem.Tag = service;
+                    TimeSpan spanSpindleHours = new(service.SpindleHours);
+                    ListViewItem serviceItem = new(service.ServiceDate.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern))
+                    {
+                        Tag = service
+                    };
 
                     string serviceType = GSend.Language.Resources.ServiceTypeDaily;
 
@@ -1396,7 +1400,7 @@ namespace GSendDesktop.Forms
                 List<SpindleHoursModel> spindleHours = machineApiWrapper.GetSpindleTime(_machine.Id, latestService);
 
                 long totalTicks = spindleHours.Where(tt => tt.TotalTime.Ticks > 0).Sum(sh => sh.TotalTime.Ticks);
-                TimeSpan remaining = new TimeSpan((trackBarServiceSpindleHours.Value * TimeSpan.TicksPerHour) - totalTicks);
+                TimeSpan remaining = new((trackBarServiceSpindleHours.Value * TimeSpan.TicksPerHour) - totalTicks);
                 lblSpindleHoursRemaining.Text = String.Format(GSend.Language.Resources.StatusServiceSpindleTime,
                     (int)remaining.TotalHours, remaining.Minutes);
 
@@ -1848,7 +1852,7 @@ namespace GSendDesktop.Forms
 
         private void toolStripStatusLabelWarnings_Paint(object sender, PaintEventArgs e)
         {
-            using (WarningPanel warningPanel = new WarningPanel())
+            using (WarningPanel warningPanel = new())
             {
                 e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
                 int count = warningsAndErrors.ErrorCount();
@@ -1896,13 +1900,13 @@ namespace GSendDesktop.Forms
             DataGridView grid = sender as DataGridView;
             string rowIdx = (e.RowIndex + 1).ToString();
 
-            StringFormat centerFormat = new StringFormat()
+            StringFormat centerFormat = new()
             {
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center
             };
 
-            Rectangle headerBounds = new Rectangle(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
+            Rectangle headerBounds = new(e.RowBounds.Left, e.RowBounds.Top, grid.RowHeadersWidth, e.RowBounds.Height);
             e.Graphics.DrawString(rowIdx, this.Font, SystemBrushes.ControlText, headerBounds, centerFormat);
         }
 
@@ -1983,7 +1987,7 @@ namespace GSendDesktop.Forms
                 {
                     GSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<GSendApiWrapper>();
 
-                    using (StartJobWizard startJobWizard = new StartJobWizard(_machineStatusModel, _gCodeAnalyses, apiWrapper))
+                    using (StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper))
                     {
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
@@ -2171,7 +2175,7 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new AnalyzeWarningAndErrors(_serviceProvider.GetRequiredService<ISubPrograms>());
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<ISubPrograms>());
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, null, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

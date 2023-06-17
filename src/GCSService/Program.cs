@@ -44,7 +44,7 @@ namespace GSendService
             };
 #pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
 
-            Logger logger = new Logger();
+            Logger logger = new();
 
             AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
             {
@@ -76,7 +76,7 @@ namespace GSendService
             PluginManagerService.UsePlugin(typeof(Localization.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(Breadcrumb.Plugin.PluginInitialisation));
 
-            PluginManagerConfiguration configuration = new PluginManagerConfiguration(logger)
+            PluginManagerConfiguration configuration = new(logger)
             {
                 ServiceConfigurator = new ServiceConfigurator(),
                 ConfigFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings)
@@ -126,15 +126,15 @@ namespace GSendService
             char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
             DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append(Guid.NewGuid().ToString("N"));
             stringBuilder.Append('\n');
             stringBuilder.Append(DateTime.UtcNow.Ticks);
             stringBuilder.Append('\n');
             stringBuilder.Append(drives.DriveFormat);
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
             stringBuilder.Append(drives.TotalSize);
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
             stringBuilder.Append(drives.DriveType);
             byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
             File.WriteAllText(file, AesImpl.Encrypt(stringBuilder.ToString(), key));

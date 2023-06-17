@@ -31,9 +31,11 @@ namespace GSendTests.OverrideTests
 
             MachineStateModel machineStateModel = new();
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
-            
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
+
 
             ToolChangeOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
@@ -52,8 +54,10 @@ namespace GSendTests.OverrideTests
 
             MachineStateModel machineStateModel = new();
 
-            MockOverrideContext context = new(machineStateModel);
-            context.GCode = gCodeLine;
+            MockOverrideContext context = new(machineStateModel)
+            {
+                GCode = gCodeLine
+            };
             context.Machine.AddOptions(MachineOptions.ToolChanger);
 
             ToolChangeOverride sut = new();

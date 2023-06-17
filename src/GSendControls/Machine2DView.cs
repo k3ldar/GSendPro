@@ -11,8 +11,8 @@ namespace GSendControls
 {
     public sealed class Machine2DView : Panel
     {
-        private readonly Pen _outerPen = new Pen(Color.Black, 1);
-        private readonly Pen _locationPen = new Pen(Color.Red, 1);
+        private readonly Pen _outerPen = new(Color.Black, 1);
+        private readonly Pen _locationPen = new(Color.Red, 1);
         private readonly Brush _fillBrush = new SolidBrush(Color.White);
 
         private Image _gCodeImage = null;
@@ -33,11 +33,11 @@ namespace GSendControls
         {
             _gCodeImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1);
             using Graphics g = Graphics.FromImage(_gCodeImage);
-            using Pen layerPen = new Pen(Color.Black, 1);
+            using Pen layerPen = new(Color.Black, 1);
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            PointF latestPos = new PointF(XDirectionWithInversion(0f), YDirectionWithInversion(0f));
+            PointF latestPos = new(XDirectionWithInversion(0f), YDirectionWithInversion(0f));
 
             foreach (IGCodeLine line in _gCodeAnalyses.AllLines(out int _))
             {
@@ -177,7 +177,7 @@ namespace GSendControls
 
             int ZoomSize = Math.Min(45, MachineSize.Width / 4);
             Point mouseLocation = PointToClient(Cursor.Position);
-            Rectangle sourceLocation = new Rectangle(mouseLocation.X - ZoomSize, mouseLocation.Y - ZoomSize, ZoomSize * 2, ZoomSize * 2);
+            Rectangle sourceLocation = new(mouseLocation.X - ZoomSize, mouseLocation.Y - ZoomSize, ZoomSize * 2, ZoomSize * 2);
 
             if (_zoomImage == null)
                 _zoomImage = new Bitmap(ZoomPanel.ClientRectangle.Width, ZoomPanel.ClientRectangle.Height);
@@ -226,7 +226,7 @@ namespace GSendControls
                 double h = radius * Math.Cos(sweepAngle);
                 // get center point. 
                 // Use sin(θ)=y/l and cos(θ)=x/l
-                PointF C = new PointF(
+                PointF C = new(
                     (float)(a.X + (x / 2) - (h * (y / l))),
                     (float)(a.Y + (y / 2) + (h * (x / l))));
 
@@ -308,7 +308,7 @@ namespace GSendControls
 
         public static Image ResizeImage(this Image image, int maximumWidth, int maximumHeight, bool enforceRatio, bool addPadding)
         {
-            ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders(); EncoderParameters encoderParameters = new EncoderParameters(1);
+            ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders(); EncoderParameters encoderParameters = new(1);
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             int canvasWidth = maximumWidth;
             int canvasHeight = maximumHeight;
@@ -337,7 +337,7 @@ namespace GSendControls
                 }
             }
 
-            Bitmap thumbnail = new Bitmap(canvasWidth, canvasHeight);
+            Bitmap thumbnail = new(canvasWidth, canvasHeight);
             Graphics graphic = Graphics.FromImage(thumbnail);
 
             if (enforceRatio && addPadding)

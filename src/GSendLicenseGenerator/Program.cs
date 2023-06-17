@@ -24,7 +24,7 @@ namespace GSendLicenseGenerator
 
             string dec = AesImpl.Decrypt(File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat")), key);
 
-            CommandLineArgs cmdLineArgs = new CommandLineArgs(args);
+            CommandLineArgs cmdLineArgs = new(args);
 
             return ProcessArgs(cmdLineArgs);
         }
@@ -51,7 +51,7 @@ namespace GSendLicenseGenerator
             if (idParts.Length != 5)
                 return -100;
 
-            DateTime createdDate = new DateTime(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
+            DateTime createdDate = new(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
 
             TimeSpan timeDiff = DateTime.UtcNow - createdDate;
 
@@ -71,7 +71,7 @@ namespace GSendLicenseGenerator
         private static string CreateLicense(in byte version, in string name, in DateTime expires,
             in string id)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             for (int i = 0; i < Header.Length; i++)
                 stringBuilder.Append((char)Header[i]);
@@ -110,15 +110,15 @@ namespace GSendLicenseGenerator
             char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
             DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Append(Guid.NewGuid().ToString("N"));
             stringBuilder.Append('\n');
             stringBuilder.Append(DateTime.UtcNow.Ticks);
             stringBuilder.Append('\n');
             stringBuilder.Append(drives.DriveFormat);
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
             stringBuilder.Append(drives.TotalSize);
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
             stringBuilder.Append(drives.DriveType);
             File.WriteAllText(file, AesImpl.Encrypt(stringBuilder.ToString(), key));
         }

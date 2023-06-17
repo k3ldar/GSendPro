@@ -11,11 +11,11 @@ namespace GSendShared.Providers.Internal.Enc
                 byte[] iv = aesAlg.IV;
 
                 using (ICryptoTransform encryptor = aesAlg.CreateEncryptor(key, iv))
-                using (MemoryStream msEncrypt = new MemoryStream())
+                using (MemoryStream msEncrypt = new())
                 {
                     msEncrypt.Write(iv, 0, iv.Length);
-                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                    using (CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (StreamWriter swEncrypt = new(csEncrypt))
                     {
                         swEncrypt.Write(plainText);
                     }
@@ -39,9 +39,9 @@ namespace GSendShared.Providers.Internal.Enc
                 Array.Copy(cipherText, iv.Length, cipherBytes, 0, cipherBytes.Length);
 
                 using (ICryptoTransform decryptor = aesAlg.CreateDecryptor(key, iv))
-                using (MemoryStream msDecrypt = new MemoryStream(cipherBytes))
-                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                using (MemoryStream msDecrypt = new(cipherBytes))
+                using (CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (StreamReader srDecrypt = new(csDecrypt))
                 {
                     return srDecrypt.ReadToEnd();
                 }

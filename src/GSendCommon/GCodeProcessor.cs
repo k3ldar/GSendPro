@@ -804,7 +804,7 @@ namespace GSendCommon
 
         public IMachine Machine => _machine;
 
-        public string Cpu => $"{ProcessCpuUsage.ToString("n1")}%/{SystemCpuUsage.ToString("n1")}%";
+        public string Cpu => $"{ProcessCpuUsage:n1}%/{SystemCpuUsage:n1}%";
 
         public bool IsRunning => _isRunning;
 
@@ -1022,7 +1022,9 @@ namespace GSendCommon
 
             if (span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent)
             {
+#pragma warning disable IDE0230 // Use UTF-8 string literal
                 _port.Write(new byte[] { (byte)CommandRequestStatus }, 0, 1);
+#pragma warning restore IDE0230 // Use UTF-8 string literal
                 _updateStatusSent = true;
                 _lastInformationCheck = DateTime.UtcNow;
             }

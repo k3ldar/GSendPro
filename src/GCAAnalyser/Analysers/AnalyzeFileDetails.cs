@@ -31,7 +31,7 @@ namespace GSendAnalyser.Analysers
         {
             byte[] data = hashAlgorithm.ComputeHash(input);
 
-            StringBuilder sBuilder = new StringBuilder();
+            StringBuilder sBuilder = new();
 
             for (int i = 0; i < data.Length; i++)
             {

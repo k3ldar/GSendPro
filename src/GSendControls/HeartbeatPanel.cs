@@ -45,7 +45,7 @@ namespace GSendControls
         private Brush _textBrush;
         private Queue<int> _points;
         private float _highestPoint;
-        private static StringFormat _format = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+        private static StringFormat _format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
         #endregion Private Members
 
@@ -180,7 +180,7 @@ namespace GSendControls
         private void DrawHeartBeat(in Graphics graphics, in Rectangle rectangle)
         {
             int[] points = _points.ToArray();
-            Rectangle fullArea = new Rectangle(0, 0, rectangle.Width - 1, rectangle.Height - 1);
+            Rectangle fullArea = new(0, 0, rectangle.Width - 1, rectangle.Height - 1);
             SmoothingMode previousSmoothingMode = graphics.SmoothingMode;
 
             if (MaximumPoints < 1)
@@ -195,7 +195,7 @@ namespace GSendControls
                 return;
 
             float leftPos = fullArea.Width - (points.Length * pointWidth) + pointWidth;
-            PointF lastPosition = new PointF(leftPos, fullArea.Height - (pointHeight * points[0]));
+            PointF lastPosition = new(leftPos, fullArea.Height - (pointHeight * points[0]));
 
             if (graphics.SmoothingMode != SmoothingMode.AntiAlias)
                 graphics.SmoothingMode = SmoothingMode.AntiAlias;
@@ -203,9 +203,9 @@ namespace GSendControls
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    PointF currentPosition = new PointF(leftPos, fullArea.Height - (pointHeight * points[i]));
+                    PointF currentPosition = new(leftPos, fullArea.Height - (pointHeight * points[i]));
 
-                    using (GraphicsPath gp = new GraphicsPath(FillMode.Winding))
+                    using (GraphicsPath gp = new(FillMode.Winding))
                     {
                         gp.AddLine(lastPosition, currentPosition);
                         gp.AddLine(lastPosition.X, lastPosition.Y, lastPosition.X, fullArea.Height);

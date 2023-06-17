@@ -130,11 +130,11 @@ namespace WinFormsApp4
       int diameter3 = radiusBottomRight * 2;
       int diameter4 = radiusBottomLeft * 2;
 
-      RectangleF arc1 = new RectangleF(bounds.Location, new Size(diameter1, diameter1));
-      RectangleF arc2 = new RectangleF(bounds.Location, new Size(diameter2, diameter2));
-      RectangleF arc3 = new RectangleF(bounds.Location, new Size(diameter3, diameter3));
-      RectangleF arc4 = new RectangleF(bounds.Location, new Size(diameter4, diameter4));
-      GraphicsPath path = new GraphicsPath();
+      RectangleF arc1 = new(bounds.Location, new Size(diameter1, diameter1));
+      RectangleF arc2 = new(bounds.Location, new Size(diameter2, diameter2));
+      RectangleF arc3 = new(bounds.Location, new Size(diameter3, diameter3));
+      RectangleF arc4 = new(bounds.Location, new Size(diameter4, diameter4));
+      GraphicsPath path = new();
 
       // top left arc  
       if (radiusTopLeft == 0)

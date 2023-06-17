@@ -26,7 +26,7 @@ namespace GSendService.Api
         [Route("/SpindleHoursApi/SpindleHoursGet/{machineId}/{fromDateTimeTicks}/")]
         public IActionResult SpindleHoursGet(long machineId, long fromDateTimeTicks)
         {
-            DateTime fromDate = new DateTime(fromDateTimeTicks, DateTimeKind.Utc);
+            DateTime fromDate = new(fromDateTimeTicks, DateTimeKind.Utc);
             List<SpindleHoursModel> Result = new();
             IReadOnlyList<MachineSpindleTimeDataRow> allSpindleTime = _spindleTimeTable.Select(m => m.MachineId.Equals(machineId) &&
                 m.StartTime >= fromDate && m.FinishTime > DateTime.MinValue);

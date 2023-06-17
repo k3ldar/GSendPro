@@ -55,9 +55,11 @@ namespace GSendTests.OverrideTests
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider());
-            GCodeOverrideContext context = new(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>());
-            context.GCode = gCodeLine;
-            context.ToolProfile = new ToolProfileModel();
+            GCodeOverrideContext context = new(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>())
+            {
+                GCode = gCodeLine,
+                ToolProfile = new ToolProfileModel()
+            };
 
             using (SpindleActiveTime sut = new(gSendDataProvider))
                 sut.Process(context, CancellationToken.None);

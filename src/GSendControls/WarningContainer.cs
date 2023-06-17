@@ -21,8 +21,10 @@ namespace GSendControls
                 return;
             }
 
-            WarningPanel warningPanel = new WarningPanel(informationType, message);
-            warningPanel.Width = flowLayoutWarningErrors.ClientSize.Width - 10;
+            WarningPanel warningPanel = new(informationType, message)
+            {
+                Width = flowLayoutWarningErrors.ClientSize.Width - 10
+            };
             warningPanel.WarningClose += WarningPanel_WarningClose;
             flowLayoutWarningErrors.Controls.Add(warningPanel);
             SortItems();

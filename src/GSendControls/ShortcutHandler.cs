@@ -19,12 +19,12 @@ namespace GSendControls
         private const int WM_SYSKEYDOWN = 0x104;
 
         private const int DefaultTimerInterval = 250;
-        private readonly Timer _timer = new Timer();
+        private readonly Timer _timer = new();
         private readonly List<int> _activeKeys = new();
         private static readonly Keys[] IgnoredKeys = { Keys.Control, Keys.ControlKey, Keys.RControlKey, Keys.LControlKey,
             Keys.Alt, Keys.Shift, Keys.ShiftKey, Keys.LShiftKey, Keys.RShiftKey };
 
-        private readonly Dictionary<string, List<int>> _combo = new Dictionary<string, List<int>>()
+        private readonly Dictionary<string, List<int>> _combo = new()
         {
 
         };
@@ -183,7 +183,7 @@ namespace GSendControls
             Trace.Write(text);
 
             foreach (int item in keys)
-                Trace.Write($"{item.ToString()}, ");
+                Trace.Write($"{item}, ");
 
             Trace.Write("\r\n");
         }

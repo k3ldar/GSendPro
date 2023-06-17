@@ -15,7 +15,7 @@ namespace GSendService.Internal
 
         #region Private Members
 
-        private readonly Dictionary<string, string> _options = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _options = new();
 
         #region Constructors
 
@@ -37,7 +37,7 @@ namespace GSendService.Internal
             if (licenseFactory == null)
                 throw new ArgumentNullException(nameof(licenseFactory));
 
-            License Result = new License();
+            License Result = new();
 
             try
             {
@@ -105,7 +105,7 @@ namespace GSendService.Internal
                         throw new InvalidLicenseException("Serial no does not match");
                 }
 
-                DateTime dateCreated = new DateTime(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
+                DateTime dateCreated = new(Convert.ToInt64(idParts[1]), DateTimeKind.Utc);
 
                 TimeSpan createdSpan = DateTime.UtcNow - dateCreated;
 

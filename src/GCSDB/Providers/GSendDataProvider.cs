@@ -83,7 +83,7 @@ namespace GSendDB.Providers
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId)
         {
             
-            MachineSpindleTimeDataRow Result = new MachineSpindleTimeDataRow()
+            MachineSpindleTimeDataRow Result = new()
             {
                 StartTime = DateTime.UtcNow,
                 FinishTime = DateTime.MinValue,
@@ -133,7 +133,7 @@ namespace GSendDB.Providers
 
         public long JobProfileAdd(string name, string description)
         {
-            JobProfileDataRow newJobProfile = new JobProfileDataRow()
+            JobProfileDataRow newJobProfile = new()
             {
                 JobName = name,
                 JobDescription = description,

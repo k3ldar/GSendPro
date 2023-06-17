@@ -70,9 +70,11 @@ namespace GSendControls
             _tooltip = new ToolTip();
 
             //timer for tooltip
-            _timerTooltip = new Timer();
-            _timerTooltip.Interval = 1000;
-            _timerTooltip.Enabled = false;
+            _timerTooltip = new Timer
+            {
+                Interval = 1000,
+                Enabled = false
+            };
             _timerTooltip.Tick += new EventHandler(timerTooltip_Tick);
 
             SaveName = this.Name;
@@ -122,7 +124,7 @@ namespace GSendControls
         {
             string sortText = _lvColumnSorter.Order == SortOrder.Ascending ? "↓" : "↑";
 
-            using (StringFormat sf = new StringFormat())
+            using (StringFormat sf = new())
             {
                 // Store the column text alignment, letting it default
                 // to Left if it has not been set to Center or Right.
@@ -388,7 +390,7 @@ namespace GSendControls
                 return;
 
             Point currPos = this.PointToClient(MousePosition);
-            ToolTipEventArgs args = new ToolTipEventArgs(GetItemAt(currPos.X, currPos.Y));
+            ToolTipEventArgs args = new(GetItemAt(currPos.X, currPos.Y));
 
             RaiseTooltip(args);
 

@@ -99,7 +99,7 @@ namespace GSendCommon
             if (fileName[0] != 'O')
                 throw new ArgumentException("Name must start with an O");
 
-            string number = fileName.Substring(1);
+            string number = fileName[1..];
 
             if (!ushort.TryParse(number, out ushort value))
                 throw new ArgumentException("File name has an invalid number");

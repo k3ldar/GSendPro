@@ -75,7 +75,7 @@ namespace GSendShared.Models
 
         private void GetVariableDetails(ref string varBlock, ref bool isVariable)
         {
-            if (ushort.TryParse(varBlock.Substring(1), out ushort value))
+            if (ushort.TryParse(varBlock[1..], out ushort value))
             {
                 Variables.Add(varBlock);
                 VariableIds.Add(value);

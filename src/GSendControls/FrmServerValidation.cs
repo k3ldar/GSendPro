@@ -48,7 +48,7 @@ namespace GSendControls
 
             if (isError || !isLicensed)
             {
-                using FrmServerValidation frmServerValidation = new FrmServerValidation(apiWrapper, isLicensed);
+                using FrmServerValidation frmServerValidation = new(apiWrapper, isLicensed);
 
                 if (frmServerValidation.ShowDialog(parent) != DialogResult.OK)
                 {
@@ -168,10 +168,12 @@ namespace GSendControls
         {
             try
             {
-                Uri https = new Uri(txtServerAddress.Text, UriKind.Absolute);
+                Uri https = new(txtServerAddress.Text, UriKind.Absolute);
 
-                UriBuilder uriBuilder = new UriBuilder(txtServerAddress.Text);
-                uriBuilder.Port = https.Port - 1;
+                UriBuilder uriBuilder = new(txtServerAddress.Text)
+                {
+                    Port = https.Port - 1
+                };
                 Uri http = uriBuilder.Uri;
                 GSendCommon.Settings.AppSettings appSettings = GSendCommon.Settings.AppSettings.Load();
                 appSettings.Kestrel.Endpoints.HTTPS.Url = https;
@@ -192,8 +194,10 @@ namespace GSendControls
 
         private void btnViewLicense_Click(object sender, EventArgs e)
         {
-            UriBuilder uriBuilder = new UriBuilder(_apiWrapper.ServerAddress);
-            uriBuilder.Path = "/Home/ViewLicense";
+            UriBuilder uriBuilder = new(_apiWrapper.ServerAddress)
+            {
+                Path = "/Home/ViewLicense"
+            };
 
             Uri licenseUri = uriBuilder.Uri;
             Process.Start(new ProcessStartInfo(licenseUri.ToString()) {  UseShellExecute = true });

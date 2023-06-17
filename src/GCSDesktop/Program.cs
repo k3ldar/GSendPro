@@ -22,7 +22,7 @@ namespace GSendDesktop
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
 
-            ApplicationPluginManager applicationPluginManager = new ApplicationPluginManager(
+            ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
                 new PluginSettings());
 

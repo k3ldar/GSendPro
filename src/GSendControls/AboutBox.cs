@@ -11,7 +11,7 @@ namespace GSendControls
 
         public static void ShowAboutBox(string name, Icon icon)
         {
-            using (AboutBox aboutBox = new AboutBox())
+            using (AboutBox aboutBox = new())
             {
                 aboutBox.Text = name;
                 aboutBox.Icon = icon;

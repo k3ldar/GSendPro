@@ -1,6 +1,6 @@
 ﻿namespace GSendApi
 {
-#pragma warning disable S3925 // "ISerializable" should be implemented correctly
+//#pragma warning disable S3925 // "ISerializable" should be implemented correctly
     public sealed class GSendApiException : Exception
     {
         public GSendApiException()
@@ -17,5 +17,5 @@
         { 
         }
     }
-#pragma warning restore S3925 // "ISerializable" should be implemented correctly
+//#pragma warning restore S3925 // "ISerializable" should be implemented correctly
 }
