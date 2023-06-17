@@ -94,7 +94,7 @@ namespace GSendDesktop.Forms
                 tabControlMain.TabPages.Remove(tabPageOverrides);
 
             _cancellationTokenRegistration = new();
-            _clientWebSocket = new GSendWebSocket(_cancellationTokenRegistration.Token, _machine.Name);
+            _clientWebSocket = new GSendWebSocket(_machine.Name, _cancellationTokenRegistration.Token);
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;

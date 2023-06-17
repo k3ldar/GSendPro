@@ -31,7 +31,7 @@ namespace GSendCommon
 
         public WebSocketState State => _clientWebSocket.State;
 
-        public GSendWebSocket(CancellationToken cancellationToken, string clientId)
+        public GSendWebSocket(string clientId, CancellationToken cancellationToken)
         {
             _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
             _cancellationToken = cancellationToken;
