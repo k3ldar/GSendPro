@@ -8,8 +8,8 @@ namespace GSendTests.Mocks
     [ExcludeFromCodeCoverage]
     public sealed class MockNotification : INotificationService
     {
-        private readonly List<INotificationListener> _registeredListeners = new List<INotificationListener>();
-        private readonly Dictionary<string, List<object>> _events = new Dictionary<string, List<object>>();
+        private readonly List<INotificationListener> _registeredListeners = new();
+        private readonly Dictionary<string, List<object>> _events = new();
 
         public List<INotificationListener> Listeners => _registeredListeners;
 

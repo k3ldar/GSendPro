@@ -29,14 +29,14 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void Construct_ValidInstance_Success()
         {
-            CurrentCommandValues currentCommandValues = new CurrentCommandValues()
+            CurrentCommandValues currentCommandValues = new()
             {
                 X = 1.1m,
                 Y = 2.2m,
                 Z = 3.3m,
             };
 
-            GCodeCommand sut = new GCodeCommand(0, 'G', 0, "0", String.Empty, null, currentCommandValues, 5, null);
+            GCodeCommand sut = new(0, 'G', 0, "0", String.Empty, null, currentCommandValues, 5, null);
 
             Assert.IsNotNull(sut);
             Assert.AreEqual("G0", sut.ToString());
@@ -50,7 +50,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void Construct_ValidInstance_MCode_Success()
         {
-            GCodeCommand sut = new GCodeCommand(1, 'M', 3, "3", String.Empty, null, new CurrentCommandValues(), 1, null);
+            GCodeCommand sut = new(1, 'M', 3, "3", String.Empty, null, new CurrentCommandValues(), 1, null);
             Assert.IsNotNull(sut);
             Assert.AreEqual("M3", sut.ToString());
             Assert.AreEqual(0m, sut.CurrentX);
@@ -63,7 +63,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void Construct_ContainsSubAnalyses_Success()
         {
-            GCodeCommand sut = new GCodeCommand(1, 'M', 3, "3", String.Empty, null, new CurrentCommandValues(), 1, new MockGCodeAnalyses());
+            GCodeCommand sut = new(1, 'M', 3, "3", String.Empty, null, new CurrentCommandValues(), 1, new MockGCodeAnalyses());
             Assert.IsNotNull(sut);
             Assert.AreEqual("M3", sut.ToString());
             Assert.AreEqual(0m, sut.CurrentX);

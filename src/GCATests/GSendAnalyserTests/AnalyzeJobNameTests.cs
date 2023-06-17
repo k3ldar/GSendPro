@@ -25,7 +25,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(5, analyses.Commands.Count);
 
-            AnalyzeM650JobName sut = new AnalyzeM650JobName();
+            AnalyzeM650JobName sut = new();
             sut.Analyze("", analyses);
 
             Assert.IsTrue(analyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName));
@@ -40,7 +40,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(5, analyses.Commands.Count);
 
-            AnalyzeM650JobName sut = new AnalyzeM650JobName();
+            AnalyzeM650JobName sut = new();
             sut.Analyze("", analyses);
 
             Assert.IsFalse(analyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName));
@@ -57,7 +57,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(7, analyses.Commands.Count);
 
-            AnalyzeM650JobName sut = new AnalyzeM650JobName();
+            AnalyzeM650JobName sut = new();
             sut.Analyze("", analyses);
 
             Assert.IsTrue(analyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames));

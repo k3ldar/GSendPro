@@ -34,7 +34,7 @@ namespace GSendTests.GCService
         public void Construct_ValidInstance_Success()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider();
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
             Assert.IsNotNull(sut);
             Assert.IsInstanceOfType(sut, typeof(BaseController));
         }
@@ -43,7 +43,7 @@ namespace GSendTests.GCService
         public void MachinesGet_RetrievesAllListedMachines_Success()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
             IActionResult result = sut.MachinesGet();
             Assert.IsNotNull(result);
@@ -77,7 +77,7 @@ namespace GSendTests.GCService
         public void MachinesAdd_NullParameter_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
             ActionResult Result = sut.MachineAdd(null) as ActionResult;
             Assert.IsNotNull(Result);
 
@@ -95,9 +95,9 @@ namespace GSendTests.GCService
         public void MachinesAdd_NameMissing_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
-            MachineModel model = new MachineModel();
+            MachineModel model = new();
 
             ActionResult Result = sut.MachineAdd(model) as ActionResult;
             Assert.IsNotNull(Result);
@@ -116,9 +116,9 @@ namespace GSendTests.GCService
         public void MachinesAdd_NameIsDuplicate_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
-            MachineModel model = new MachineModel()
+            MachineModel model = new()
             {
                 Name = "ProverXL",
                 MachineType = MachineType.CNC,
@@ -142,9 +142,9 @@ namespace GSendTests.GCService
         public void MachinesAdd_InvalidMachineType_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
-            MachineModel model = new MachineModel()
+            MachineModel model = new()
             {
                 Name = "ProverXL 2",
                 MachineType = MachineType.Unspecified,
@@ -167,9 +167,9 @@ namespace GSendTests.GCService
         public void MachinesAdd_DuplicateComPort_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(new byte[] { 2 }), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(new byte[] { 2 }), new MockSettingsProvider(), new MockNotification());
 
-            MachineModel model = new MachineModel()
+            MachineModel model = new()
             {
                 Name = "ProverXL 2",
                 MachineType = MachineType.Printer,
@@ -193,9 +193,9 @@ namespace GSendTests.GCService
         public void MachinesAdd_ComPortNotFound_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
-            MachineModel model = new MachineModel()
+            MachineModel model = new()
             {
                 Name = "ProverXL 2",
                 MachineType = MachineType.Printer,
@@ -218,11 +218,11 @@ namespace GSendTests.GCService
         [TestMethod]
         public void MachinesAdd_ValidNewDetails_Returns_JsonSuccessResponse()
         {
-            MockNotification notification = new MockNotification();
+            MockNotification notification = new();
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), notification);
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), notification);
 
-            MachineModel model = new MachineModel()
+            MachineModel model = new()
             {
                 Name = "ProverXL 2",
                 MachineType = MachineType.Printer,
@@ -248,7 +248,7 @@ namespace GSendTests.GCService
         public void MachinesDelete_InvalidMachineNotFound_Returns_JsonErrorResponse()
         {
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), new MockNotification());
 
             ActionResult Result = sut.MachineDelete(245) as ActionResult;
             Assert.IsNotNull(Result);
@@ -266,9 +266,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void MachinesDelete_ValidRequest_Returns_JsonSuccessResponse()
         {
-            MockNotification notification = new MockNotification();
+            MockNotification notification = new();
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), notification);
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(), new MockSettingsProvider(), notification);
 
             ActionResult Result = sut.MachineDelete(1) as ActionResult;
             Assert.IsNotNull(Result);
@@ -288,9 +288,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void MachinesUpdate_ValidRequest_Returns_JsonSuccessResponse()
         {
-            MockNotification notification = new MockNotification();
+            MockNotification notification = new();
             IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            MachineApi sut = new MachineApi(gSendDataProvider, new MockComPortProvider(new byte[] { 3 }), new MockSettingsProvider(), notification);
+            MachineApi sut = new(gSendDataProvider, new MockComPortProvider(new byte[] { 3 }), new MockSettingsProvider(), notification);
 
             MachineModel machineToUpdate = JsonSerializer.Deserialize<MachineModel>(JsonSerializer.Serialize(gSendDataProvider.MachineGet(1)), 
                 GSendShared.Constants.DefaultJsonSerializerOptions);

@@ -29,13 +29,13 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("T1M6");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
             
 
-            ToolChangeOverride sut = new ToolChangeOverride();
+            ToolChangeOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsTrue(result);
@@ -50,13 +50,13 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("M6");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
             context.Machine.AddOptions(MachineOptions.ToolChanger);
 
-            ToolChangeOverride sut = new ToolChangeOverride();
+            ToolChangeOverride sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(result);

@@ -49,17 +49,17 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1" });
+            MockGSendDataProvider gSendDataProvider = new(new string[] { "Machine 1" });
             IMachine mockMachine = gSendDataProvider.MachineGet(0);
-            MockComPort mockComport = new MockComPort(mockMachine);
+            MockComPort mockComport = new(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider());
-            GCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>());
+            GCodeOverrideContext context = new(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>());
             context.GCode = gCodeLine;
             context.ToolProfile = new ToolProfileModel();
 
-            using (SpindleActiveTime sut = new SpindleActiveTime(gSendDataProvider))
+            using (SpindleActiveTime sut = new(gSendDataProvider))
                 sut.Process(context, CancellationToken.None);
 
 
@@ -75,12 +75,12 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1" });
+            MockGSendDataProvider gSendDataProvider = new(new string[] { "Machine 1" });
             IMachine mockMachine = gSendDataProvider.MachineGet(0);
             mockMachine.AddOptions(MachineOptions.SoftStart);
             mockMachine.SoftStartSeconds = 30;
 
-            MockComPort mockComport = new MockComPort(mockMachine);
+            MockComPort mockComport = new(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider());
@@ -93,7 +93,7 @@ namespace GSendTests.OverrideTests
             Assert.AreEqual(1, lineCount);
             Assert.IsTrue(processor.StateModel.CommandQueueSize > 10 || mockComport.Commands.Count > 0, "Queue processed in another thread, has it happened there?");
 
-            SpindleSoftStart sut = new SpindleSoftStart();
+            SpindleSoftStart sut = new();
             sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(context.SendCommand);

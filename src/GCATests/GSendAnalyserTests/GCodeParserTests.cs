@@ -282,9 +282,9 @@ namespace GSendTests.GSendAnalyserTests
         public void ParseCodeWithSubProgram_SubProgramVariablesAndValuesRecognised_Success()
         {
             string subProgramContents = "#100=8000 ;Spindle Speed\nT1\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\n";
-            SubProgramModel subProgram = new SubProgramModel("O1001", "mock", subProgramContents);
+            SubProgramModel subProgram = new("O1001", "mock", subProgramContents);
 
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            MockSubPrograms mockSubPrograms = new();
             mockSubPrograms.SubPrograms.Add(subProgram);
 
             string gCodeWithVariables = "O1001 ;sub start\n";
@@ -303,9 +303,9 @@ namespace GSendTests.GSendAnalyserTests
         public void ParseCodeWithSubProgram_VariableCreatedByGCode_RedeclaredInSubProgram_CreatesError()
         {
             string subProgramContents = "#100=8000 ;Spindle Speed\nT1\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\n";
-            SubProgramModel subProgram = new SubProgramModel("O1001", "mock", subProgramContents);
+            SubProgramModel subProgram = new("O1001", "mock", subProgramContents);
 
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            MockSubPrograms mockSubPrograms = new();
             mockSubPrograms.SubPrograms.Add(subProgram);
 
             string gCodeWithVariables = "#100=23\nO1001 ;sub start\n";
@@ -324,7 +324,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void ParseCodeWithSubProgram_MaximumRecursionLimitReached_CreatesError()
         {
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            MockSubPrograms mockSubPrograms = new();
 
             string subProgramContents = "G17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS[#100]M3\nO1001\n";
             mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1001", "mock", subProgramContents));
@@ -344,7 +344,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void AllCommands_SetsCorrectLineNumber_Success()
         {
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
+            MockSubPrograms mockSubPrograms = new();
 
             string subProgramContents = "G17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000\nS200M3\n";
             mockSubPrograms.SubPrograms.Add(new SubProgramModel("O1001", "mock", subProgramContents));

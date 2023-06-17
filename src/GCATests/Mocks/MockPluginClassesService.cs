@@ -16,7 +16,7 @@ namespace GSendTests.Mocks
     {
         public object[] GetParameterInstances(Type type)
         {
-            List<object> Result = new List<object>();
+            List<object> Result = new();
 
             List<ConstructorInfo> constructors = type.GetConstructors()
                 .Where(c => c.IsPublic && !c.IsStatic && c.GetParameters().Length > 0)
@@ -27,7 +27,7 @@ namespace GSendTests.Mocks
             {
                 foreach (ParameterInfo param in constructor.GetParameters())
                 {
-                    List<object> list = new List<object>();
+                    List<object> list = new();
 
                     if (type.Equals(typeof(GSendAnalyser.Analysers.AnalyzeVariables)))
                     {

@@ -22,7 +22,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void GetAllPorts_ReturnsListOfValidPorts_Success()
         {
-            ComPortsApi sut = new ComPortsApi(new MockComPortProvider());
+            ComPortsApi sut = new(new MockComPortProvider());
             Assert.IsNotNull(sut);
 
             ActionResult Result = sut.GetAllPorts() as ActionResult;

@@ -32,7 +32,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new AnalyzeVariables(new MockSubPrograms());
+            AnalyzeVariables sut = new(new MockSubPrograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(1, analyses.Errors.Count);
@@ -48,7 +48,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new AnalyzeVariables(new MockSubPrograms());
+            AnalyzeVariables sut = new(new MockSubPrograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(1, analyses.Errors.Count);
@@ -64,7 +64,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new AnalyzeVariables(new MockSubPrograms());
+            AnalyzeVariables sut = new(new MockSubPrograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -83,12 +83,12 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(2, analyses.Commands.Count);
 
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
-            SubProgramModel subProgram = new SubProgramModel("O1000", "debug with vars", "#321=a value\n#322=value");
+            MockSubPrograms mockSubPrograms = new();
+            SubProgramModel subProgram = new("O1000", "debug with vars", "#321=a value\n#322=value");
             subProgram.Variables = new();
             subProgram.Variables.Add(new GCodeVariableModel(321, "a", 2));
             mockSubPrograms.SubPrograms.Add(subProgram);
-            AnalyzeVariables sut = new AnalyzeVariables(mockSubPrograms);
+            AnalyzeVariables sut = new(mockSubPrograms);
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -101,7 +101,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void VariableDeclaredInMultipleSubProgram_AddsError_Success()
         {
-            MockSubPrograms subPrograms = new MockSubPrograms();
+            MockSubPrograms subPrograms = new();
             subPrograms.SubPrograms.Add(new SubProgramModel("O1000", "O1000", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
             subPrograms.SubPrograms.Add(new SubProgramModel("O1001", "O1001", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
             string gCodeWithM650NoComment = "O1000\nO1001";
@@ -110,7 +110,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(2, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new AnalyzeVariables(subPrograms);
+            AnalyzeVariables sut = new(subPrograms);
             sut.Analyze("", analyses);
 
             Assert.AreEqual(4, analyses.Errors.Count);

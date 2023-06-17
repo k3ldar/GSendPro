@@ -25,7 +25,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(9, analyses.Commands.Count);
 
-            AnalyzeToolChange sut = new AnalyzeToolChange();
+            AnalyzeToolChange sut = new();
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);

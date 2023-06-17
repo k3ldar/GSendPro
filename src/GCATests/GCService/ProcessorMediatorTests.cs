@@ -74,7 +74,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void GetEvents_ReturnsAllRegisteredEventIds()
         {
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(), 
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(), 
                 new MockGSendDataProvider(), new MockComPortFactory(), new MockNotification(), 
                 new MockSettingsProvider(), new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
             Assert.IsNotNull(sut);
@@ -105,7 +105,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void OpenProcessors_OpensAndInitializesAllProcessors_Success()
         {
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(), 
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(), 
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }), 
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(), 
                 new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
@@ -123,7 +123,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void CloseProcessors_ClosesAllProcessors_Success()
         {    
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }),
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(), 
                 new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
@@ -146,7 +146,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void EventRaised_NotRecognized_DoesNothing()
         {
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }),
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
                 new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
@@ -179,7 +179,7 @@ namespace GSendTests.GCService
         [TestMethod]
         public void EventRaised_MachineRemove_RemovesExistingMachine()
         {
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(),
                 new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" }), 
                 new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
                 new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
@@ -202,8 +202,8 @@ namespace GSendTests.GCService
         [TestMethod]
         public void EventRaised_MachineUpdate_RemovesExistingMachineAndReAdds()
         {
-            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "Machine 1", "Machine 2" });
-            ProcessorMediator sut = new ProcessorMediator(new MockServiceProvider(), new Logger(),
+            MockGSendDataProvider gSendDataProvider = new(new string[] { "Machine 1", "Machine 2" });
+            ProcessorMediator sut = new(new MockServiceProvider(), new Logger(),
                 gSendDataProvider, new MockComPortFactory(), new MockNotification(), new MockSettingsProvider(),
                 new GCodeParserFactory(new MockPluginClassesService(), new MockSubPrograms()));
 

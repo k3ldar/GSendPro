@@ -28,14 +28,14 @@ namespace GSendTests.GCService
         [TestMethod]
         public void ConnectToGrblAfterReset()
         {
-            MachineModel machineModel = new MachineModel()
+            MachineModel machineModel = new()
             {
                 ComPort = "COM4"
             };
 
-            ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
+            ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
             sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
@@ -49,15 +49,15 @@ namespace GSendTests.GCService
         public void HomeAndPause()
         {
             ThreadManager.Initialise();
-            MachineModel machineModel = new MachineModel()
+            MachineModel machineModel = new()
             {
                 ComPort = "COM4"
             };
 
-            ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
+            ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
 
-            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             sut.TimeOut = TimeSpan.FromSeconds(1000);
 
@@ -106,14 +106,14 @@ namespace GSendTests.GCService
         [TestMethod]
         public void ConnectToGrbl_InvalidPort_AfterReset()
         {
-            MachineModel machineModel = new MachineModel()
+            MachineModel machineModel = new()
             {
                 ComPort = "COM12"
             };
 
-            ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
+            ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
             bool eventFired = false;
             sut.OnInvalidComPort += (sender, e) => { eventFired = true; };
             sut.TimeOut = TimeSpan.FromSeconds(5);
@@ -148,14 +148,14 @@ namespace GSendTests.GCService
             Assert.AreEqual(5, analyses.Commands[13].LineNumber);
             Assert.AreEqual(6, analyses.Commands[14].LineNumber);
 
-            MachineModel machineModel = new MachineModel()
+            MachineModel machineModel = new()
             {
                 ComPort = "COM4"
             };
 
-            ComPortFactory mockComPortFactory = new ComPortFactory(new MockSettingsProvider());
+            ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new GCodeProcessor(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             sut.TimeOut = TimeSpan.FromSeconds(1000);
 

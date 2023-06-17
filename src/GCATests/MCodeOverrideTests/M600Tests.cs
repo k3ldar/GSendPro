@@ -30,13 +30,13 @@ namespace GSendTests.MCodeOverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
 
-            M600Override sut = new M600Override();
+            M600Override sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(result);
@@ -50,13 +50,13 @@ namespace GSendTests.MCodeOverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("M600");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
 
-            M600Override sut = new M600Override();
+            M600Override sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(result);
@@ -70,13 +70,13 @@ namespace GSendTests.MCodeOverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P0");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
 
-            M600Override sut = new M600Override();
+            M600Override sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(result);
@@ -90,13 +90,13 @@ namespace GSendTests.MCodeOverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P2001");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
 
-            M600Override sut = new M600Override();
+            M600Override sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsFalse(result);
@@ -110,13 +110,13 @@ namespace GSendTests.MCodeOverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P0.001");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MachineStateModel machineStateModel = new MachineStateModel();
+            MachineStateModel machineStateModel = new();
             machineStateModel.Overrides.OverridesDisabled = false;
 
-            MockOverrideContext context = new MockOverrideContext(machineStateModel);
+            MockOverrideContext context = new(machineStateModel);
             context.GCode = gCodeLine;
 
-            M600Override sut = new M600Override();
+            M600Override sut = new();
             bool result = sut.Process(context, CancellationToken.None);
 
             Assert.IsTrue(result);

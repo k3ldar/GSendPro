@@ -28,7 +28,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void Construct_ValidInstance_Success()
         {
-            ApiSettings sut = new ApiSettings(new Uri("http://localhost/", UriKind.RelativeOrAbsolute));
+            ApiSettings sut = new(new Uri("http://localhost/", UriKind.RelativeOrAbsolute));
             Assert.IsNotNull(sut);
         }
     }

@@ -32,7 +32,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariableBlocks sut = new AnalyzeVariableBlocks();
+            AnalyzeVariableBlocks sut = new();
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -53,7 +53,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariableBlocks sut = new AnalyzeVariableBlocks();
+            AnalyzeVariableBlocks sut = new();
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -74,12 +74,12 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(2, analyses.Commands.Count);
 
-            MockSubPrograms mockSubPrograms = new MockSubPrograms();
-            SubProgramModel subProgram = new SubProgramModel("O1000", "debug with vars", "#321=a value\n#322=value");
+            MockSubPrograms mockSubPrograms = new();
+            SubProgramModel subProgram = new("O1000", "debug with vars", "#321=a value\n#322=value");
             subProgram.Variables = new();
             subProgram.Variables.Add(new GCodeVariableModel(321, "a", 2));
             mockSubPrograms.SubPrograms.Add(subProgram);
-            AnalyzeVariables sut = new AnalyzeVariables(mockSubPrograms);
+            AnalyzeVariables sut = new(mockSubPrograms);
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -98,7 +98,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariableBlocks sut = new AnalyzeVariableBlocks();
+            AnalyzeVariableBlocks sut = new();
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);

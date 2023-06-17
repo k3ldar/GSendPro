@@ -25,7 +25,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(5, analyses.Commands.Count);
 
-            AnalyzeSubPrograms sut = new AnalyzeSubPrograms();
+            AnalyzeSubPrograms sut = new();
             sut.Analyze("", analyses);
 
             Assert.AreEqual(5, analyses.SubProgramCount);
