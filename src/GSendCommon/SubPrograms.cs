@@ -85,13 +85,13 @@ namespace GSendCommon
             return File.Exists(fileName);
         }
 
-        private ISubProgram CreateSubProgramFromFileName(string fileName)
+        private static ISubProgram CreateSubProgramFromFileName(string fileName)
         {
             return JsonSerializer.Deserialize<ISubProgram>(File.ReadAllText(fileName), Constants.DefaultJsonSerializerOptions);
         }
 
         [DebuggerStepThrough]
-        private void ValidateFileName(string fileName)
+        private static void ValidateFileName(string fileName)
         {
             if (String.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName));

@@ -22,7 +22,7 @@ namespace GSendAnalyser.Analysers
             gCodeAnalyses.FileCRC = RetreiveCRC(gCodeAnalyses.FileInformation);
         }
 
-        private string RetreiveCRC(FileInfo fileInfo)
+        private static string RetreiveCRC(FileInfo fileInfo)
         {
             using SHA256 sha256 = SHA256.Create();
             return GetHash(sha256, File.ReadAllBytes(fileInfo.FullName));

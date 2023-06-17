@@ -39,7 +39,7 @@ namespace GSendControls
             UpdateLabel(lblMachineZ, HelperMethods.ConvertMeasurementForDisplay(DisplayFeedbackUnit, z));
         }
 
-        private void UpdateLabel(Label label, string newText)
+        private static void UpdateLabel(Label label, string newText)
         {
             if (!label.Text.Equals(newText))
                 label.Text = newText;

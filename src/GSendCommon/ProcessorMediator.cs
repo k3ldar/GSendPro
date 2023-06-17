@@ -207,7 +207,7 @@ namespace GSendCommon
             }
         }
 
-        private void RemoveMachine(long machineId)
+        private static void RemoveMachine(long machineId)
         {
             IGCodeProcessor machineToDelete = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
 

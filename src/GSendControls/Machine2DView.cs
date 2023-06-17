@@ -195,14 +195,14 @@ namespace GSendControls
 
         public event EventHandler ImageUpdated;
 
-        private float CalculateRadius(double offsetX, double offsetY, IGCodeCommand rCommand)
+        private static float CalculateRadius(double offsetX, double offsetY, IGCodeCommand rCommand)
         {
             if (rCommand != null)
                 return (float)rCommand.CommandValue;
 
             return (float)Math.Sqrt((offsetX * offsetX) + (offsetY * offsetY));
         }
-        private void DrawArcBetweenTwoPoints(Graphics g, Pen pen, PointF a, PointF b, float radius, bool flip = false)
+        private static void DrawArcBetweenTwoPoints(Graphics g, Pen pen, PointF a, PointF b, float radius, bool flip = false)
         {
             if (flip)
             {

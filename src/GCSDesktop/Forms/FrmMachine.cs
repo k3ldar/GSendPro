@@ -582,13 +582,13 @@ namespace GSendDesktop.Forms
                 toolStripStatusLabelStatus.ForeColor = foreColor;
         }
 
-        private void UpdateLabelText(Label label, string text)
+        private static void UpdateLabelText(Label label, string text)
         {
             if (label.Text != text)
                 label.Text = text;
         }
 
-        private string TimeSpanToTime(TimeSpan time)
+        private static string TimeSpanToTime(TimeSpan time)
         {
             const int HoursInDay = 24;
             const int MinutesInHour = 60;
@@ -2217,12 +2217,12 @@ namespace GSendDesktop.Forms
         }
 
 
-        private string FixEmptyValue(decimal value)
+        private static string FixEmptyValue(decimal value)
         {
             return value == 0 ? String.Empty : value.ToString();
         }
 
-        private string FixEmptyValue(CommandAttributes value)
+        private static string FixEmptyValue(CommandAttributes value)
         {
             CommandAttributes copy = value;
 
@@ -2350,7 +2350,7 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void UpdateMenuShortCut(ToolStripMenuItem menu, List<int> keys)
+        private static void UpdateMenuShortCut(ToolStripMenuItem menu, List<int> keys)
         {
             if (menu == null || keys == null || keys.Count == 0)
                 return;

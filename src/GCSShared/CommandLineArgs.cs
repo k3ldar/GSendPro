@@ -68,7 +68,7 @@ namespace GSendShared
 
         #region Private Methods   
 
-        private Dictionary<string, string> ConvertArgsToDictionary(string[] args)
+        private static Dictionary<string, string> ConvertArgsToDictionary(string[] args)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             StringBuilder currentArg = new StringBuilder(30);

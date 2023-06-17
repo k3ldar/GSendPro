@@ -264,7 +264,7 @@ namespace GSendTests.OverrideTests
             }
         }
 
-        private void CreateGCodeCommands(IGCodeLine gCodeLine, string gCode)
+        private static void CreateGCodeCommands(IGCodeLine gCodeLine, string gCode)
         {
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
             gCodeLine.Commands.Clear();

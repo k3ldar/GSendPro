@@ -272,7 +272,7 @@ namespace GSendDB.Providers
             return Result;
         }
 
-        private IMachine ConvertFromMachineDataRow(MachineDataRow machineDataRow)
+        private static IMachine ConvertFromMachineDataRow(MachineDataRow machineDataRow)
         {
             if (machineDataRow == null)
                 return null;

@@ -97,7 +97,7 @@ namespace GSendControls
             _shortcutHandler.KeyUp(e);
         }
 
-        private string GetSelectedKeys(List<int> keys, bool addSelectMessage)
+        private static string GetSelectedKeys(List<int> keys, bool addSelectMessage)
         {
             StringBuilder Result = new StringBuilder(200);
 

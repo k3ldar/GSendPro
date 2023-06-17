@@ -76,7 +76,7 @@ namespace GSendControls
             }
         }
 
-        private void AddMessage(WarningContainer warningsAndErrors, List<WarningErrorList> issues, InformationType informationType, string message)
+        private static void AddMessage(WarningContainer warningsAndErrors, List<WarningErrorList> issues, InformationType informationType, string message)
         {
             if (warningsAndErrors != null)
             {

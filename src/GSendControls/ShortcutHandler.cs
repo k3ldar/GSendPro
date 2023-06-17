@@ -178,7 +178,7 @@ namespace GSendControls
             return handled;
         }
 
-        private void ShowStatus(string text, List<int> keys)
+        private static void ShowStatus(string text, List<int> keys)
         {
             Trace.Write(text);
 

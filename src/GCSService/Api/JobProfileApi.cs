@@ -88,7 +88,7 @@ namespace GSendService.Api
             return GenerateJsonSuccessResponse();
         }
 
-        private bool ValidateJobProfile(IJobProfile jobProfileModel, out string errorData)
+        private static bool ValidateJobProfile(IJobProfile jobProfileModel, out string errorData)
         {
             if (jobProfileModel == null)
             {

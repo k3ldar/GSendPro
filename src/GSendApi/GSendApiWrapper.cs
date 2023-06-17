@@ -135,7 +135,7 @@ namespace GSendApi
             return httpClient;
         }
 
-        private HttpContent CreateContent<T>(T data)
+        private static HttpContent CreateContent<T>(T data)
         {
             byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, Constants.DefaultJsonSerializerOptions));
             HttpContent Result = new ByteArrayContent(content);

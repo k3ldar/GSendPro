@@ -188,7 +188,7 @@ namespace GSendAnalyser.Internal
             return Result;
         }
 
-        private void InternalParseVariable(GCodeAnalyses Result, int lineNumber, Span<char> line)
+        private static void InternalParseVariable(GCodeAnalyses Result, int lineNumber, Span<char> line)
         {
             string[] variableParts = line.ToString().Trim().Replace("\0", String.Empty).Split(CharEquals, 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
@@ -534,7 +534,7 @@ namespace GSendAnalyser.Internal
             return UpdateGCodeValue();
         }
 
-        private List<IGCodeVariableBlock> ParseVariableBlockss(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
+        private static List<IGCodeVariableBlock> ParseVariableBlockss(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
         {
             List<IGCodeVariableBlock> Result = new();
 

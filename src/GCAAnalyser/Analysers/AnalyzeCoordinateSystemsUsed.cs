@@ -28,7 +28,7 @@ namespace GSendAnalyser.Analysers
 
         }
 
-        private bool IsCoordCommand(decimal value)
+        private static bool IsCoordCommand(decimal value)
         {
             switch (value)
             {
