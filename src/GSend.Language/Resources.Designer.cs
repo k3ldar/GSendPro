@@ -565,6 +565,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GSend Pro.
+        /// </summary>
+        public static string AppNameSender {
+            get {
+                return ResourceManager.GetString("AppNameSender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attributes.
         /// </summary>
         public static string Attributes {
@@ -795,6 +804,15 @@ namespace GSend.Language {
         public static string CoordinateSystem {
             get {
                 return ResourceManager.GetString("CoordinateSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copyright (C) 2023 Simon Carter.  All rights reserved..
+        /// </summary>
+        public static string Copyright {
+            get {
+                return ResourceManager.GetString("Copyright", resourceCulture);
             }
         }
         

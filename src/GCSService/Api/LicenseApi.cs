@@ -24,7 +24,7 @@ namespace GSendService.Api
         {
             ILicense license = _licenseFactory.GetActiveLicense();
 
-            return license != null && license.Expires < DateTime.UtcNow;
+            return license != null && license.IsValid;
         }
     }
 }

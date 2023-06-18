@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Net.WebSockets;
 using System.Text.Json;
@@ -524,6 +525,11 @@ namespace GSendDesktop
             listViewMachines.View = View.Details;
         }
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox.ShowAboutBox(GSend.Language.Resources.AppNameSender, this.Icon);
+        }
+
         #endregion Menu Items
 
         private void FormMain_Activated(object sender, EventArgs e)
@@ -531,6 +537,17 @@ namespace GSendDesktop
             GSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<GSendApiWrapper>();
 
             FrmServerValidation.ValidateServer(this, apiWrapper);
+        }
+
+        private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psi = new()
+            {
+                FileName = Constants.HelpWebsite,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
     }
 }

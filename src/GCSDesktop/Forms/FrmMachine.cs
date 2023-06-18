@@ -2125,6 +2125,11 @@ namespace GSendDesktop.Forms
         }
 
 
+        private void mnuHelpAbout_Click(object sender, EventArgs e)
+        {
+            AboutBox.ShowAboutBox(GSend.Language.Resources.AppNameEditor, this.Icon);
+        }
+
         #endregion Menu
 
         #region G Code

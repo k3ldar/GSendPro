@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.WebSockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 using GSendShared;
-
-using Shared.Classes;
 
 using static GSendShared.Constants;
 
@@ -93,9 +85,11 @@ namespace GSendCommon
                     await _clientWebSocket.ConnectAsync(new Uri(String.Format(ServerUri, clientId)), _cancellationToken).ConfigureAwait(false);
                 }
 
+                DateTime dateTime = DateTime.UtcNow;
+
                 while (_clientWebSocket.State == WebSocketState.Connecting || !_isConnected)
                 {
-                    Trace.Write("Waiting for socket connection");
+                    Trace.WriteLine("Waiting for socket connection");
 
                     _isConnected = _clientWebSocket.State == WebSocketState.Open;
 
@@ -103,6 +97,12 @@ namespace GSendCommon
                     {
                         Connected.Invoke(this, EventArgs.Empty);
                     }
+
+                    TimeSpan span = DateTime.UtcNow - dateTime;
+
+                    if (span.TotalSeconds > 5)
+                        throw new TimeoutException();
+
 
                     await Task.Delay(10);
                 }

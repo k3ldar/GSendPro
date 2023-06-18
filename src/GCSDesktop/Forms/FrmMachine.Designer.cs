@@ -1083,6 +1083,7 @@
             // 
             // lvServices
             // 
+            this.lvServices.AllowColumnReorder = true;
             this.lvServices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnServiceHeaderDateTime,
             this.columnServiceHeaderServiceType,
@@ -1090,7 +1091,10 @@
             this.lvServices.Location = new System.Drawing.Point(332, 126);
             this.lvServices.MultiSelect = false;
             this.lvServices.Name = "lvServices";
+            this.lvServices.OwnerDraw = true;
+            this.lvServices.SaveName = "";
             this.lvServices.ShowItemToolTips = true;
+            this.lvServices.ShowToolTip = false;
             this.lvServices.Size = new System.Drawing.Size(427, 110);
             this.lvServices.TabIndex = 11;
             this.lvServices.UseCompatibleStateImageBehavior = false;
@@ -1765,8 +1769,9 @@
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
             this.mnuHelpAbout.Text = "About";
+            this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
             // warningsAndErrors
             // 
@@ -1871,6 +1876,7 @@
             // 
             // listViewGCode
             // 
+            this.listViewGCode.AllowColumnReorder = true;
             this.listViewGCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1887,6 +1893,9 @@
             this.listViewGCode.Location = new System.Drawing.Point(6, 6);
             this.listViewGCode.MultiSelect = false;
             this.listViewGCode.Name = "listViewGCode";
+            this.listViewGCode.OwnerDraw = true;
+            this.listViewGCode.SaveName = "";
+            this.listViewGCode.ShowToolTip = false;
             this.listViewGCode.Size = new System.Drawing.Size(753, 131);
             this.listViewGCode.TabIndex = 2;
             this.listViewGCode.UseCompatibleStateImageBehavior = false;

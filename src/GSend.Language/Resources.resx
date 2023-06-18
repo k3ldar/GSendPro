@@ -285,6 +285,9 @@
   <data name="AppNameEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
+  <data name="AppNameSender" xml:space="preserve">
+    <value>GSend Pro</value>
+  </data>
   <data name="Attributes" xml:space="preserve">
     <value>Attributes</value>
   </data>
@@ -362,6 +365,9 @@
   </data>
   <data name="CoordinateSystem" xml:space="preserve">
     <value>Selected Coordinates</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>Copyright (C) 2023 Simon Carter.  All rights reserved.</value>
   </data>
   <data name="CPUUsage" xml:space="preserve">
     <value>CPU Usage</value>

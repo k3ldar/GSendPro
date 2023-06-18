@@ -1,8 +1,4 @@
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using System.Security.Policy;
-
-using FastColoredTextBoxNS;
 
 using GSendApi;
 
@@ -184,7 +180,7 @@ namespace GSendEditor
 
         private bool IsSubprogram { get; set; } = false;
 
-        protected override void UpdateEnabledState() 
+        protected override void UpdateEnabledState()
         {
             mnuFileSave.Enabled = HasChanged && !String.IsNullOrEmpty(FileName);
             mnuEditCopy.Enabled = txtGCode.SelectedText.Length > 0;
@@ -239,10 +235,10 @@ namespace GSendEditor
             mnuFileNew_Click(sender, e);
 
             string[] args = Environment.GetCommandLineArgs();
-            
+
             if (args.Length > 1 && File.Exists(args[1]))
             {
-                LoadGCodeData( args[1]);
+                LoadGCodeData(args[1]);
             }
 
             try
@@ -614,7 +610,7 @@ namespace GSendEditor
 
         private void mnuHelpAbout_Click(object sender, EventArgs e)
         {
-            GSendControls.AboutBox.ShowAboutBox(GSend.Language.Resources.AppNameEditor, this.Icon);
+            AboutBox.ShowAboutBox(GSend.Language.Resources.AppNameEditor, this.Icon);
         }
 
         #endregion Menu's
@@ -753,10 +749,10 @@ namespace GSendEditor
         {
             if (lstWarningsErrors.InvokeRequired)
             {
-                Invoke(() =>  AnalyzerThread_OnRemoveItem(sender, e));
+                Invoke(() => AnalyzerThread_OnRemoveItem(sender, e));
                 return;
             }
-            
+
             lstWarningsErrors.Items.Remove((WarningErrorList)sender);
         }
 
@@ -807,7 +803,7 @@ namespace GSendEditor
             {
                 tmrServerValidation.Interval = (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
             }
-                
+
             tmrServerValidation.Enabled = true;
         }
     }

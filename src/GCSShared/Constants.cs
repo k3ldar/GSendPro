@@ -4,6 +4,8 @@ namespace GSendShared
 {
     public static class Constants
     {
+        public const string HomeWebsite = "https://www.gsend.pro/";
+
         public const string HelpWebsite = "https://www.gsend.pro/help";
 
         public const int MaximumRecentFiles = 10;

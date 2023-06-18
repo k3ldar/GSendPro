@@ -109,7 +109,7 @@ namespace GSendApi
 
         public bool IsLicenseValid()
         {
-            return CallGetApi<bool>($"LicenseApi/IsLicenseValid/");
+            return CallGetApi<bool>($"LicenseApi/IsLicensed/");
         }
 
         #endregion ILicense
