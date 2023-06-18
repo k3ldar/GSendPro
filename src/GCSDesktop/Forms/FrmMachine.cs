@@ -2180,7 +2180,7 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<ISubPrograms>());
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<GSendApiWrapper>());
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, null, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

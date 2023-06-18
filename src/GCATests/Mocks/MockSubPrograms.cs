@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 using GSendShared;
 
@@ -10,7 +11,13 @@ namespace GSendTests.Mocks
     {
         public bool Delete(string name)
         {
-            return false;
+            ISubProgram subProgram = SubPrograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+
+            if (subProgram == null)
+                return false;
+
+            SubPrograms.Remove(subProgram);
+            return true;
         }
 
         public bool Exists(string name)
@@ -30,7 +37,15 @@ namespace GSendTests.Mocks
 
         public bool Update(ISubProgram subProgram)
         {
-            throw new NotImplementedException();
+            ISubProgram existing = SubPrograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
+
+            if (existing == null)
+                return false;
+
+            existing.Name = subProgram.Name;
+            existing.Description = subProgram.Description;
+            existing.Contents = subProgram.Contents;
+            return true;
         }
 
         public List<ISubProgram> SubPrograms { get; set; } = new();

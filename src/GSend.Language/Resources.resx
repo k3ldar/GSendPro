@@ -1455,6 +1455,9 @@
   <data name="SubprogramDescription" xml:space="preserve">
     <value>Please enter a valid description at least 10 characters long</value>
   </data>
+  <data name="SubprogramError" xml:space="preserve">
+    <value>Subprogram Error</value>
+  </data>
   <data name="SubprogramError1" xml:space="preserve">
     <value>Line {0} contains 2 or more subprograms, subprograms must be on a unique line.</value>
   </data>
@@ -1466,6 +1469,9 @@
   </data>
   <data name="SubProgramId" xml:space="preserve">
     <value>Subprogram Id</value>
+  </data>
+  <data name="SubprogramNotFound" xml:space="preserve">
+    <value>Subprogram {0} could not be found</value>
   </data>
   <data name="SubPrograms" xml:space="preserve">
     <value>Sub Programs</value>

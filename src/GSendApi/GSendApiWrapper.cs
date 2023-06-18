@@ -114,6 +114,36 @@ namespace GSendApi
 
         #endregion ILicense
 
+        #region Subprograms
+
+        public List<ISubProgram> SubprogramGet()
+        {
+            return CallGetApi<List<ISubProgram>>("SubprogramApi/GetAllSubprograms/");
+        }
+
+        public ISubProgram SubprogramGet(string name)
+        {
+            return CallGetApi<ISubProgram>($"SubprogramApi/SubprogramGet/{name}");
+        }
+
+        public bool SubprogramExists(string name)
+        {
+            return CallGetApi<bool>($"SubprogramApi/SubprogramExists/{name}");
+        }
+
+        public bool SubprogramDelete(string name)
+        {
+            return CallDeleteApi($"SubprogramApi/SubprogramDelete/{name}");
+        }
+
+        public bool SubprogramUpdate(ISubProgram subProgram)
+        {
+            CallPutApi<ISubProgram>($"SubprogramApi/SubprogramUpdate/", subProgram);
+            return true;
+        }
+
+        #endregion Subprograms
+
         #region Private Methods
 
         private HttpClient CreateApiClient()
@@ -210,6 +240,19 @@ namespace GSendApi
             }
 
             throw new GSendApiException(responseModel.responseData);
+        }
+
+        private bool CallDeleteApi(string endPoint)
+        {
+            using HttpClient httpClient = CreateApiClient();
+            string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+            using HttpResponseMessage response = httpClient.DeleteAsync(address).Result;
+
+            string jsonData = response.Content.ReadAsStringAsync().Result;
+            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+            return responseModel.success;
         }
 
         #endregion Private Methods

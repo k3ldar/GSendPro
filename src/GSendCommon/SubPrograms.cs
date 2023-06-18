@@ -2,7 +2,6 @@
 using System.Text.Json;
 
 using GSendShared;
-using GSendShared.Abstractions;
 
 namespace GSendCommon
 {

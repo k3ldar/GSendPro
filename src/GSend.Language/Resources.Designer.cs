@@ -4075,6 +4075,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subprogram Error.
+        /// </summary>
+        public static string SubprogramError {
+            get {
+                return ResourceManager.GetString("SubprogramError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line {0} contains 2 or more subprograms, subprograms must be on a unique line..
         /// </summary>
         public static string SubprogramError1 {
@@ -4107,6 +4116,15 @@ namespace GSend.Language {
         public static string SubProgramId {
             get {
                 return ResourceManager.GetString("SubProgramId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subprogram {0} could not be found.
+        /// </summary>
+        public static string SubprogramNotFound {
+            get {
+                return ResourceManager.GetString("SubprogramNotFound", resourceCulture);
             }
         }
         

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using GSendApi;
+
 using GSendShared;
 
 namespace GSendControls
 {
     public partial class SubProgramForm : BaseForm
     {
-        private readonly ISubPrograms _subPrograms;
+        private readonly GSendApiWrapper _gsendApiWrapper;
 
-        public SubProgramForm(ISubPrograms subPrograms)
+        public SubProgramForm(GSendApiWrapper gsendApiWrapper)
         {
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _gsendApiWrapper = gsendApiWrapper ?? throw new ArgumentNullException(nameof(gsendApiWrapper));
             InitializeComponent();
         }
 
@@ -34,7 +36,7 @@ namespace GSendControls
         {
             string name = $"O{numericSubProgramId.Value}";
 
-            if (_subPrograms.Exists(name))
+            if (_gsendApiWrapper.SubprogramExists(name))
             {
                 DialogResult overWrite = MessageBox.Show(this,
                     String.Format(GSend.Language.Resources.SubprogramExistsOverwrite, name),

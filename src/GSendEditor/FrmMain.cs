@@ -23,7 +23,7 @@ namespace GSendEditor
     {
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
-        private readonly ISubPrograms _subPrograms;
+        private readonly GSendApiWrapper _gsendApiWrapper;
         private ISubProgram _subProgram;
         private readonly RecentFiles _recentFiles;
         private readonly Internal.Bookmarks _bookmarks;
@@ -33,10 +33,10 @@ namespace GSendEditor
         public FrmMain(IGSendContext gSendContext)
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
-            _subPrograms = _gSendContext.ServiceProvider.GetRequiredService<ISubPrograms>();
+            _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _subPrograms, txtGCode);
+                _gsendApiWrapper, txtGCode);
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
@@ -340,7 +340,7 @@ namespace GSendEditor
 
                     if (recent.IsSubprogram)
                     {
-                        ISubProgram sub = _subPrograms.Get(recent.FileName);
+                        ISubProgram sub = _gsendApiWrapper.SubprogramGet(recent.FileName);
 
                         if (sub == null)
                             _recentFiles.RemoveRecent(recent);
@@ -476,7 +476,7 @@ namespace GSendEditor
 
             //gCodeAnalyses.Variables.Values.ToList();
 
-            _subPrograms.Update(_subProgram);
+            _gsendApiWrapper.SubprogramUpdate(_subProgram);
             LoadSubprograms();
         }
 
@@ -486,7 +486,7 @@ namespace GSendEditor
             try
             {
                 lvSubprograms.Items.Clear();
-                List<ISubProgram> subPrograms = _subPrograms.GetAll();
+                List<ISubProgram> subPrograms = _gsendApiWrapper.SubprogramGet();
 
                 foreach (ISubProgram subProgram in subPrograms)
                 {
@@ -657,6 +657,16 @@ namespace GSendEditor
             if (SaveIfRequired())
                 return;
 
+            ISubProgram subWithContent = _gsendApiWrapper.SubprogramGet(subProgram.Name);
+
+            if (subWithContent == null)
+            {
+                MessageBox.Show(this, String.Format(GSend.Language.Resources.SubprogramNotFound, subProgram.Name), GSend.Language.Resources.SubprogramError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+                
+            subProgram.Contents = subWithContent.Contents;
+            subProgram.Description = subWithContent.Description;
 
             LoadSubprogram(subProgram);
         }

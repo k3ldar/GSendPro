@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using GSendApi;
+
 using GSendShared;
 
 namespace GSendControls
 {
     public sealed class AnalyzeWarningAndErrors
     {
-        private readonly ISubPrograms _subPrograms;
+        private readonly GSendApiWrapper _gSendApiWrapper;
 
-        public AnalyzeWarningAndErrors(ISubPrograms subPrograms)
+        public AnalyzeWarningAndErrors(GSendApiWrapper subPrograms)
         {
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _gSendApiWrapper = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
         }
 
         public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, List<WarningErrorList> issues, IGCodeAnalyses gCodeAnalyses)
@@ -57,7 +59,7 @@ namespace GSendControls
                     if (!String.IsNullOrEmpty(item.Comment))
                         subProgram += $" {item.Comment}";
 
-                    if (!_subPrograms.Exists($"{item.Command}{item.CommandValue}"))
+                    if (!_gSendApiWrapper.SubprogramExists($"{item.Command}{item.CommandValue}"))
                     {
                         AddMessage(warningsAndErrors, issues, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
                             subProgram, item.LineNumber));
