@@ -10,11 +10,11 @@ namespace GSendControls
 {
     public sealed class AnalyzeWarningAndErrors
     {
-        private readonly GSendApiWrapper _gSendApiWrapper;
+        private readonly IGSendApiWrapper _gSendApiWrapper;
 
-        public AnalyzeWarningAndErrors(GSendApiWrapper subPrograms)
+        public AnalyzeWarningAndErrors(IGSendApiWrapper subprograms)
         {
-            _gSendApiWrapper = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _gSendApiWrapper = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
         }
 
         public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, List<WarningErrorList> issues, IGCodeAnalyses gCodeAnalyses)

@@ -32,8 +32,6 @@ namespace GSendShared
 
         public const string AppSettings = "appsettings.json";
 
-        public const string ServerUri = "wss://localhost:7154/client2/{0}/";
-
         public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
         {
             AllowTrailingCommas = true,

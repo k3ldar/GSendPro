@@ -16,6 +16,7 @@ namespace GSendCommon
         private bool _isConnected = false;
         private DateTime _lastConnectionAttempt = DateTime.MinValue;
         private readonly string _clientId;
+        private readonly string _serverUri;
 
         public event ProcessMessageHandler ProcessMessage;
         public event EventHandler Connected;
@@ -23,8 +24,19 @@ namespace GSendCommon
 
         public WebSocketState State => _clientWebSocket.State;
 
-        public GSendWebSocket(string clientId, CancellationToken cancellationToken)
+        public GSendWebSocket(Uri serverUri, string clientId, CancellationToken cancellationToken)
         {
+            if (serverUri == null)
+                throw new ArgumentNullException(nameof(serverUri));
+
+            //if (serverUri.)
+            _serverUri = serverUri.ToString();
+
+            if (serverUri.Scheme.Equals("http"))
+                _serverUri = _serverUri.Replace("http", "ws");
+            else
+                _serverUri = _serverUri.Replace("https", "wss");
+
             _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
             _cancellationToken = cancellationToken;
             Task.Run(() => ReceiveMessageAsync()).ConfigureAwait(false);
@@ -82,7 +94,7 @@ namespace GSendCommon
                 if (_clientWebSocket.State != WebSocketState.Open && _clientWebSocket.State != WebSocketState.Connecting)
                 {
                     Trace.Write("Calling SocketConnectAsync");
-                    await _clientWebSocket.ConnectAsync(new Uri(String.Format(ServerUri, clientId)), _cancellationToken).ConfigureAwait(false);
+                    await _clientWebSocket.ConnectAsync(new Uri(String.Format("{0}client2/{1}", _serverUri, clientId)), _cancellationToken).ConfigureAwait(false);
                 }
 
                 DateTime dateTime = DateTime.UtcNow;

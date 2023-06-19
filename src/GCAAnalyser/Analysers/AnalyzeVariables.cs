@@ -1,15 +1,17 @@
-﻿using GSendShared;
+﻿using GSendApi;
+
+using GSendShared;
 using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeVariables : IGCodeAnalyzer
     {
-        private readonly ISubPrograms _subPrograms;
+        private readonly IGSendApiWrapper _apiWrapper;
 
-        public AnalyzeVariables(ISubPrograms subPrograms)
+        public AnalyzeVariables(IGSendApiWrapper apiWrapper)
         {
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
         }
 
         public int Order => int.MinValue;
@@ -18,38 +20,38 @@ namespace GSendAnalyser.Analysers
         {
             if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                Dictionary<ushort, IGCodeCommand> subProgramVariableDeclarations = new();
+                Dictionary<ushort, IGCodeCommand> subprogramVariableDeclarations = new();
                 Dictionary<ushort, int> declaredVariables = new();
-                List<IGCodeCommand> subPrograms = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).ToList();
-                List<ushort> subProgramVariables = new();
+                List<IGCodeCommand> subprograms = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).ToList();
+                List<ushort> subprogramVariables = new();
 
-                foreach (IGCodeCommand subProgram in subPrograms)
+                foreach (IGCodeCommand subProgram in subprograms)
                 {
                     string subProgramName = $"O{subProgram.CommandValue}";
 
-                    if (_subPrograms.Exists(subProgramName))
+                    if (_apiWrapper.SubprogramExists(subProgramName))
                     {
-                        ISubProgram sub = _subPrograms.Get(subProgramName);
+                        ISubProgram sub = _apiWrapper.SubprogramGet(subProgramName);
 
                         if (sub != null)
                         {
                             foreach (IGCodeVariable variable in sub.Variables)
                             {
-                                if (subProgramVariableDeclarations.ContainsKey(variable.VariableId))
+                                if (subprogramVariableDeclarations.ContainsKey(variable.VariableId))
                                 {
                                     codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid8,
                                         variable.VariableId,
-                                        $"O{subProgramVariableDeclarations[variable.VariableId].CommandValue}",
-                                        subProgramVariableDeclarations[variable.VariableId].LineNumber,
+                                        $"O{subprogramVariableDeclarations[variable.VariableId].CommandValue}",
+                                        subprogramVariableDeclarations[variable.VariableId].LineNumber,
                                         sub.Name,
                                         subProgram.LineNumber));
 
                                     continue;
                                 }
 
-                                subProgramVariableDeclarations.Add(variable.VariableId, subProgram);
+                                subprogramVariableDeclarations.Add(variable.VariableId, subProgram);
                                 declaredVariables.Add(variable.VariableId, 0);
-                                subProgramVariables.Add(variable.VariableId);
+                                subprogramVariables.Add(variable.VariableId);
                             }
                         }
                     }
@@ -72,7 +74,7 @@ namespace GSendAnalyser.Analysers
                                 declaredVariables[id]++;
                             }
 
-                            if (!subProgramVariables.Contains(id))
+                            if (!subprogramVariables.Contains(id))
                             {
                                 if (!gCodeAnalyses.Variables.ContainsKey(id))
                                 {
@@ -94,7 +96,7 @@ namespace GSendAnalyser.Analysers
 
                 foreach (ushort id in unusedVariables)
                 {
-                    if (subProgramVariables.Contains(id))
+                    if (subprogramVariables.Contains(id))
                     {
                         codeAnalyses.AddWarning(String.Format(GSend.Language.Resources.AnalysesVariableWarning2,
                             id, gCodeAnalyses.Variables[id].LineNumber));

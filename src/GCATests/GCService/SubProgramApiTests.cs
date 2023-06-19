@@ -35,19 +35,19 @@ namespace GSendTests.GCService
         [TestMethod]
         public void Construct_ValidInstance_Success()
         {
-            new SubprogramApi(new MockSubPrograms());
+            new SubprogramApi(new MockSubprograms());
         }
 
         [TestMethod]
         public void GetAllSubprogramNames_Success()
         {
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(new SubProgramModel("test1", "desc 1", "asfdasdf"));
-            subPrograms.SubPrograms.Add(new SubProgramModel("test2", "desc 2", "asfdasdf"));
-            subPrograms.SubPrograms.Add(new SubProgramModel("test3", "desc 3", "asfdasdf"));
-            subPrograms.SubPrograms.Add(new SubProgramModel("test4", "desc 4", "asfdasdf"));
-            subPrograms.SubPrograms.Add(new SubProgramModel("test5", "desc 5", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("test1", "desc 1", "asfdasdf"));
+            subprograms.Subprograms.Add(new SubprogramModel("test2", "desc 2", "asfdasdf"));
+            subprograms.Subprograms.Add(new SubprogramModel("test3", "desc 3", "asfdasdf"));
+            subprograms.Subprograms.Add(new SubprogramModel("test4", "desc 4", "asfdasdf"));
+            subprograms.Subprograms.Add(new SubprogramModel("test5", "desc 5", "asfdasdf"));
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.GetAllSubprograms() as ActionResult;
             Assert.IsNotNull(result);
@@ -76,8 +76,8 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramExists_NullName_DoesNotExist_ReturnsFalse()
         {
-            MockSubPrograms subPrograms = new();
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramExists(null) as ActionResult;
             Assert.IsNotNull(result);
@@ -95,8 +95,8 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramExists_ValidName_DoesNotExist_ReturnsFalse()
         {
-            MockSubPrograms subPrograms = new();
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramExists("O5000") as ActionResult;
             Assert.IsNotNull(result);
@@ -114,9 +114,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramExists_ValidName_Exists_ReturnsTrue()
         {
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(new SubProgramModel("O5000", "desc 1", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O5000", "desc 1", "asfdasdf"));
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramExists("O5000") as ActionResult;
             Assert.IsNotNull(result);
@@ -134,8 +134,8 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubSubprogramDelete_SubProgramNotfound_Returns_False()
         {
-            MockSubPrograms subPrograms = new();
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramDelete("O500") as ActionResult;
             Assert.IsNotNull(result);
@@ -153,9 +153,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubSubprogramDelete_SubProgramFound_Returns_True()
         {
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(new SubProgramModel("O5000", "desc 1", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O5000", "desc 1", "asfdasdf"));
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramDelete("O5000") as ActionResult;
             Assert.IsNotNull(result);
@@ -173,8 +173,8 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramGet_SubProgramNotFound_Returns_False()
         {
-            MockSubPrograms subPrograms = new();
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramGet("O500") as ActionResult;
             Assert.IsNotNull(result);
@@ -192,9 +192,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramGet_SubProgramNotFound_Returns_True()
         {
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(new SubProgramModel("O5000", "desc 1", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O5000", "desc 1", "asfdasdf"));
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramGet("O5000") as ActionResult;
             Assert.IsNotNull(result);
@@ -217,9 +217,9 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramUpdate_InvalidModel_Returns_False()
         {
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(new SubProgramModel("O5000", "desc 1", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O5000", "desc 1", "asfdasdf"));
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
             ActionResult result = sut.SubprogramUpdate(null) as ActionResult;
             Assert.IsNotNull(result);
@@ -237,12 +237,12 @@ namespace GSendTests.GCService
         [TestMethod]
         public void SubprogramUpdate_UpdatesFromModel_Returns_False()
         {
-            SubProgramModel subprogram = new SubProgramModel("O5000", "desc 1", "asfdasdf");
-            MockSubPrograms subPrograms = new();
-            subPrograms.SubPrograms.Add(subprogram);
-            SubprogramApi sut = new SubprogramApi(subPrograms);
+            SubprogramModel subprogram = new SubprogramModel("O5000", "desc 1", "asfdasdf");
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(subprogram);
+            SubprogramApi sut = new SubprogramApi(subprograms);
 
-            ActionResult result = sut.SubprogramUpdate(new SubProgramModel("O5000", "new desc", "new content")) as ActionResult;
+            ActionResult result = sut.SubprogramUpdate(new SubprogramModel("O5000", "new desc", "new content")) as ActionResult;
             Assert.IsNotNull(result);
 
             JsonResult jsonResult = result as JsonResult;

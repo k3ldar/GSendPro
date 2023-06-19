@@ -7,37 +7,37 @@ using GSendShared;
 
 namespace GSendTests.Mocks
 {
-    internal class MockSubPrograms : ISubPrograms
+    internal class MockSubprograms : ISubprograms
     {
         public bool Delete(string name)
         {
-            ISubProgram subProgram = SubPrograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+            ISubProgram subProgram = Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
 
             if (subProgram == null)
                 return false;
 
-            SubPrograms.Remove(subProgram);
+            Subprograms.Remove(subProgram);
             return true;
         }
 
         public bool Exists(string name)
         {
-            return SubPrograms.Any(sp => sp.Name.Equals(name));
+            return Subprograms.Any(sp => sp.Name.Equals(name));
         }
 
         public ISubProgram Get(string name)
         {
-            return SubPrograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+            return Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
         }
 
         public List<ISubProgram> GetAll()
         {
-            return SubPrograms;
+            return Subprograms;
         }
 
         public bool Update(ISubProgram subProgram)
         {
-            ISubProgram existing = SubPrograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
+            ISubProgram existing = Subprograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
 
             if (existing == null)
                 return false;
@@ -48,6 +48,6 @@ namespace GSendTests.Mocks
             return true;
         }
 
-        public List<ISubProgram> SubPrograms { get; set; } = new();
+        public List<ISubProgram> Subprograms { get; set; } = new();
     }
 }

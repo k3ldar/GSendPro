@@ -23,7 +23,7 @@ namespace GSendDesktop.Forms
         protected override string SectionName => nameof(StartJobWizard);
 
         public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, 
-            GSendApiWrapper machineApiWrapper)
+            IGSendApiWrapper machineApiWrapper)
             : this()
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));

@@ -3,14 +3,14 @@ using GSendShared.Abstractions;
 
 namespace GSendCommon
 {
-    public sealed class SubProgramModel : ISubProgram
+    public sealed class SubprogramModel : ISubProgram
     {
-        public SubProgramModel()
+        public SubprogramModel()
         {
 
         }
 
-        public SubProgramModel(string name, string description, string contents)
+        public SubprogramModel(string name, string description, string contents)
         {
             Name = name;
             Description = description;

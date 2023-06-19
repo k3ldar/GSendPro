@@ -20,8 +20,8 @@ namespace GSendTests.GSendAnalyserTests
         {
             string gCodeWithVariables = "M6\nG17\nG21\nG90\nG0Z51.8000\nG0X0.0000Y0.0000";
 
-            GCodeParser subPrograms = new(new MockPluginClassesService(), new MockSubPrograms());
-            IGCodeAnalyses analyses = subPrograms.Parse(gCodeWithVariables);
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
 
             Assert.AreEqual(9, analyses.Commands.Count);
 

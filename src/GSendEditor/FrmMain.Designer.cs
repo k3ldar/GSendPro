@@ -371,7 +371,7 @@
             this.mnuViewSubPrograms.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
             this.mnuViewSubPrograms.Size = new System.Drawing.Size(184, 22);
             this.mnuViewSubPrograms.Text = "Sub Programs";
-            this.mnuViewSubPrograms.Click += new System.EventHandler(this.subProgramsToolStripMenuItem_Click);
+            this.mnuViewSubPrograms.Click += new System.EventHandler(this.subprogramsToolStripMenuItem_Click);
             // 
             // mnuHelp
             // 

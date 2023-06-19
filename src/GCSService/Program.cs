@@ -64,6 +64,7 @@ namespace GSendService
 
             PluginManagerService.UsePlugin(typeof(PluginManager.DAL.TextFiles.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(GSendDB.PluginInitialization));
+            PluginManagerService.UsePlugin(typeof(GSendApi.PluginInitialization));
 
 #if !DEBUG
             PluginManagerService.UsePlugin(typeof(ErrorManager.Plugin.PluginInitialisation));

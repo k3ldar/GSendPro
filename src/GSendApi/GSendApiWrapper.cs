@@ -7,7 +7,7 @@ using GSendShared.Models;
 
 namespace GSendApi
 {
-    public sealed class GSendApiWrapper
+    public class GSendApiWrapper : IGSendApiWrapper
     {
         #region Private Members
 
@@ -23,6 +23,10 @@ namespace GSendApi
 
         #region Constructors
 
+        public GSendApiWrapper()
+        {
+
+        }
         public GSendApiWrapper(ApiSettings apiSettings)
         {
             _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));

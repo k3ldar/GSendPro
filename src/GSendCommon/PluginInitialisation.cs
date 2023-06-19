@@ -10,7 +10,7 @@ namespace GSendCommon
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ISubPrograms, SubPrograms>();
+            services.AddSingleton<ISubprograms, Subprograms>();
         }
 
         public void Finalise()

@@ -31,6 +31,8 @@ namespace GSendDesktop
             applicationPluginManager.RegisterPlugin(typeof(GSendAnalyser.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendCommon.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
+
 
 
             applicationPluginManager.ConfigureServices();

@@ -55,7 +55,7 @@ namespace GSendDesktop
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewLargeIcons = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewDetails = new System.Windows.Forms.ToolStripMenuItem();
-            this.subProgramsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.subprogramsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewSubProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,7 +187,7 @@ namespace GSendDesktop
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.machineToolStripMenuItem,
             this.viewToolStripMenuItem,
-            this.subProgramsToolStripMenuItem,
+            this.subprogramsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -268,13 +268,13 @@ namespace GSendDesktop
             this.mnuViewDetails.Text = "&Details";
             this.mnuViewDetails.Click += new System.EventHandler(this.mnuViewSmallIcons_Click);
             // 
-            // subProgramsToolStripMenuItem
+            // subprogramsToolStripMenuItem
             // 
-            this.subProgramsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.subprogramsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewSubProgramToolStripMenuItem});
-            this.subProgramsToolStripMenuItem.Name = "subProgramsToolStripMenuItem";
-            this.subProgramsToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
-            this.subProgramsToolStripMenuItem.Text = "Sub Programs";
+            this.subprogramsToolStripMenuItem.Name = "subprogramsToolStripMenuItem";
+            this.subprogramsToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
+            this.subprogramsToolStripMenuItem.Text = "Sub Programs";
             // 
             // viewSubProgramToolStripMenuItem
             // 
@@ -518,7 +518,7 @@ namespace GSendDesktop
         private ToolStripMenuItem removeMachineToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem closeToolStripMenuItem;
-        private ToolStripMenuItem subProgramsToolStripMenuItem;
+        private ToolStripMenuItem subprogramsToolStripMenuItem;
         private ToolStripMenuItem viewSubProgramToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem viewHelpToolStripMenuItem;

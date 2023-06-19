@@ -8,7 +8,7 @@ using GSendShared.Models;
 
 namespace GSendShared.Converters
 {
-    public sealed class JsonConverterSubProgram : JsonConverter<SubProgramModel>
+    public sealed class JsonConverterSubProgram : JsonConverter<SubprogramModel>
     {
         public JsonConverterSubProgram()
         {
@@ -19,12 +19,12 @@ namespace GSendShared.Converters
             return typeToConvert.IsAssignableFrom(typeof(ISubProgram));
         }
 
-        public override void Write(Utf8JsonWriter writer, SubProgramModel value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, SubprogramModel value, JsonSerializerOptions options)
         {
             JsonSerializer.Serialize(writer, value, options);
         }
 
-        public override SubProgramModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override SubprogramModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.Null)
                 return null;
@@ -32,7 +32,7 @@ namespace GSendShared.Converters
 
             using JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
 
-            return JsonSerializer.Deserialize<SubProgramModel>(jsonDocument.RootElement.ToString());
+            return JsonSerializer.Deserialize<SubprogramModel>(jsonDocument.RootElement.ToString());
         }
     }
 }

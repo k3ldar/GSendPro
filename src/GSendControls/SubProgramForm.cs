@@ -9,9 +9,9 @@ namespace GSendControls
 {
     public partial class SubProgramForm : BaseForm
     {
-        private readonly GSendApiWrapper _gsendApiWrapper;
+        private readonly IGSendApiWrapper _gsendApiWrapper;
 
-        public SubProgramForm(GSendApiWrapper gsendApiWrapper)
+        public SubProgramForm(IGSendApiWrapper gsendApiWrapper)
         {
             _gsendApiWrapper = gsendApiWrapper ?? throw new ArgumentNullException(nameof(gsendApiWrapper));
             InitializeComponent();

@@ -5,11 +5,11 @@ using GSendShared;
 
 namespace GSendCommon
 {
-    public sealed class SubPrograms : ISubPrograms
+    public sealed class Subprograms : ISubprograms
     {
         private readonly string _path;
 
-        public SubPrograms()
+        public Subprograms()
         {
             _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProSubProgramFolder);
 

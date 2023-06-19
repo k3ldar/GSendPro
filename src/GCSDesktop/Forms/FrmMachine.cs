@@ -94,7 +94,8 @@ namespace GSendDesktop.Forms
                 tabControlMain.TabPages.Remove(tabPageOverrides);
 
             _cancellationTokenRegistration = new();
-            _clientWebSocket = new GSendWebSocket(_machine.Name, _cancellationTokenRegistration.Token);
+            ApiSettings apiSettings = gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
+            _clientWebSocket = new GSendWebSocket(apiSettings.RootAddress, _machine.Name, _cancellationTokenRegistration.Token);
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
@@ -1335,7 +1336,7 @@ namespace GSendDesktop.Forms
 
         private void btnServiceReset_Click(object sender, EventArgs e)
         {
-            GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+            IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
             using (FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper))
             {
@@ -1364,7 +1365,7 @@ namespace GSendDesktop.Forms
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+                IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
                 List<MachineServiceModel> services = machineApiWrapper.MachineServices(_machine.Id);
 
@@ -1939,7 +1940,7 @@ namespace GSendDesktop.Forms
         {
             if (_configurationChanges || forceOverride)
             {
-                GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+                IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
                 machineApiWrapper.MachineUpdate(_machine);
 
@@ -1985,7 +1986,7 @@ namespace GSendDesktop.Forms
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
-                    GSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<GSendApiWrapper>();
+                    IGSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<IGSendApiWrapper>();
 
                     using (StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper))
                     {
@@ -2072,7 +2073,7 @@ namespace GSendDesktop.Forms
             if (String.IsNullOrEmpty(newName))
                 return GSend.Language.Resources.MachineNameEmpty;
 
-            GSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+            IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
             if (machineApiWrapper.MachineNameExists(newName))
                 return GSend.Language.Resources.MachineNameAlreadyExists;
@@ -2180,7 +2181,7 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<GSendApiWrapper>());
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<IGSendApiWrapper>());
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, null, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

@@ -23,7 +23,7 @@ namespace GSendEditor
     {
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
-        private readonly GSendApiWrapper _gsendApiWrapper;
+        private readonly IGSendApiWrapper _gsendApiWrapper;
         private ISubProgram _subProgram;
         private readonly RecentFiles _recentFiles;
         private readonly Internal.Bookmarks _bookmarks;
@@ -33,7 +33,7 @@ namespace GSendEditor
         public FrmMain(IGSendContext gSendContext)
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
-            _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+            _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
                 _gsendApiWrapper, txtGCode);
@@ -457,7 +457,7 @@ namespace GSendEditor
         private void SaveAsSubProgram(string name, string description)
         {
             if (_subProgram == null)
-                _subProgram = new SubProgramModel(name, description, String.Empty);
+                _subProgram = new SubprogramModel(name, description, String.Empty);
 
             _subProgram.Contents = txtGCode.Text;
 
@@ -486,9 +486,9 @@ namespace GSendEditor
             try
             {
                 lvSubprograms.Items.Clear();
-                List<ISubProgram> subPrograms = _gsendApiWrapper.SubprogramGet();
+                List<ISubProgram> subprograms = _gsendApiWrapper.SubprogramGet();
 
-                foreach (ISubProgram subProgram in subPrograms)
+                foreach (ISubProgram subProgram in subprograms)
                 {
                     ListViewItem listViewItem = new()
                     {
@@ -592,7 +592,7 @@ namespace GSendEditor
             tabControlMain.SelectedTab = tabPageProperties;
         }
 
-        private void subProgramsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void subprogramsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControlMain.SelectedTab = tabPageSubPrograms;
         }
@@ -801,7 +801,7 @@ namespace GSendEditor
         {
             tmrServerValidation.Enabled = false;
 
-            GSendApiWrapper apiWrapper = _gSendContext.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+            IGSendApiWrapper apiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
             using (MouseControl mc = MouseControl.ShowWaitCursor(this))
             {

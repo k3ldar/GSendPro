@@ -1,4 +1,6 @@
-﻿using GSendShared;
+﻿using GSendApi;
+
+using GSendShared;
 using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;
@@ -8,17 +10,17 @@ namespace GSendAnalyser.Internal
     internal sealed class GCodeParserFactory : IGCodeParserFactory
     {
         private readonly IPluginClassesService _pluginClassesService;
-        private readonly ISubPrograms _subPrograms;
+        private readonly IGSendApiWrapper _apiWrapper;
 
-        public GCodeParserFactory(IPluginClassesService pluginClassesService, ISubPrograms subPrograms)
+        public GCodeParserFactory(IPluginClassesService pluginClassesService, IGSendApiWrapper apiWrapper)
         {
             _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
         }
 
         public IGCodeParser CreateParser()
         {
-            return new GCodeParser(_pluginClassesService, _subPrograms);
+            return new GCodeParser(_pluginClassesService, _apiWrapper);
         }
     }
 }

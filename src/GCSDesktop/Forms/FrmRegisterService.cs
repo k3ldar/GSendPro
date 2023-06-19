@@ -20,7 +20,7 @@ namespace GSendDesktop.Forms
 {
     public partial class FrmRegisterService : BaseForm
     {
-        private readonly GSendApiWrapper _machineApiWrapper;
+        private readonly IGSendApiWrapper _machineApiWrapper;
         private readonly long _machineId;
 
         public FrmRegisterService()
@@ -33,7 +33,7 @@ namespace GSendDesktop.Forms
 
         protected override string SectionName => nameof(FrmRegisterService);
 
-        public FrmRegisterService(long machineId, GSendApiWrapper machineApiWrapper)
+        public FrmRegisterService(long machineId, IGSendApiWrapper machineApiWrapper)
             : this()
         {
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));

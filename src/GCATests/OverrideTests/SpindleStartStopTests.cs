@@ -45,7 +45,7 @@ namespace GSendTests.OverrideTests
         public void SpindleActiveTime_SpindleStarts_M3_StartsTimer()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
@@ -73,7 +73,7 @@ namespace GSendTests.OverrideTests
         public void SpindleSoftStart_SpindleStarts_M3_SpindleSpeedIncreasesEvery200Ms()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 

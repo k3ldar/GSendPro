@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+using GSendApi;
+
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
@@ -17,17 +19,17 @@ namespace GSendAnalyser.Internal
         private const int UserVariableStartingId = 100;
 
         private readonly IPluginClassesService _pluginClassesService;
-        private readonly ISubPrograms _subPrograms;
+        private readonly IGSendApiWrapper _apiWrapper;
         private int _index;
 
         #endregion Private Members
 
         #region Constructors
 
-        public GCodeParser(IPluginClassesService pluginClassesService, ISubPrograms subPrograms)
+        public GCodeParser(IPluginClassesService pluginClassesService, IGSendApiWrapper apiWrapper)
         {
             _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
         }
 
         #endregion Constructors
@@ -284,9 +286,9 @@ namespace GSendAnalyser.Internal
 
                         string subProgram = $"{currentCommand}{commandValue}";
 
-                        if (_subPrograms.Exists(subProgram))
+                        if (_apiWrapper.SubprogramExists(subProgram))
                         {
-                            ISubProgram sub = _subPrograms.Get(subProgram);
+                            ISubProgram sub = _apiWrapper.SubprogramGet(subProgram);
 
                             if (sub != null)
                             {

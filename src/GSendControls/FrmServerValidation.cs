@@ -21,7 +21,7 @@ namespace GSendControls
     {
 
         private DateTime _nextLicenseCheck;
-        private readonly GSendApiWrapper _apiWrapper;
+        private readonly IGSendApiWrapper _apiWrapper;
         private readonly bool _isLicensed;
         private bool _uriChanged = false;
 
@@ -30,7 +30,7 @@ namespace GSendControls
             InitializeComponent();
         }
 
-        public FrmServerValidation(GSendApiWrapper apiWrapper, bool isLicensed)
+        public FrmServerValidation(IGSendApiWrapper apiWrapper, bool isLicensed)
             : this()
         {
             _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
@@ -42,7 +42,7 @@ namespace GSendControls
             tmrLicenseCheck.Enabled = !_isLicensed;
         }
 
-        public static bool ValidateServer(Form parent, GSendApiWrapper apiWrapper)
+        public static bool ValidateServer(Form parent, IGSendApiWrapper apiWrapper)
         {
             bool isLicensed = ValidateLicense(apiWrapper, out bool isError);
 
@@ -60,7 +60,7 @@ namespace GSendControls
             return true;
         }
 
-        private static bool ValidateLicense(GSendApiWrapper apiWrapper, out bool isError)
+        private static bool ValidateLicense(IGSendApiWrapper apiWrapper, out bool isError)
         {
             isError = false;
             bool isLicensed = false;

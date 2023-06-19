@@ -20,7 +20,7 @@ namespace GSendTests.GSendAnalyserTests
         public void AnalyzeSubProgram_ContainsMultipleSubprogramsPerLine_CreatesError()
         {
             string gCode = "O1000O1001\nO1002\nO1003O1004";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubPrograms());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(5, analyses.Commands.Count);

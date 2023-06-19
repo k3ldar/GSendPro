@@ -10,21 +10,21 @@ namespace GSendService.Api
 {
     public class SubprogramApi : BaseController
     {
-        private readonly ISubPrograms _subPrograms;
+        private readonly ISubprograms _subprograms;
 
-        public SubprogramApi(ISubPrograms subPrograms)
+        public SubprogramApi(ISubprograms subprograms)
         {
-            _subPrograms = subPrograms ?? throw new ArgumentNullException(nameof(subPrograms));
+            _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
         }
 
         [HttpGet]
         public IActionResult GetAllSubprograms()
         {
-            List<ISubProgram> subPrograms = _subPrograms.GetAll();
+            List<ISubProgram> subprograms = _subprograms.GetAll();
 
             List<ISubProgram> names = new();
 
-            subPrograms.ForEach(sp => names.Add(new SubProgramModel(sp.Name, sp.Description, String.Empty)));
+            subprograms.ForEach(sp => names.Add(new SubprogramModel(sp.Name, sp.Description, String.Empty)));
 
             return GenerateJsonSuccessResponse(names);
         }
@@ -33,7 +33,7 @@ namespace GSendService.Api
         [Route("/SubprogramApi/SubprogramGet/{name}/")]
         public IActionResult SubprogramGet(string name)
         {
-            ISubProgram subProgram = _subPrograms.Get(name);
+            ISubProgram subProgram = _subprograms.Get(name);
 
             if (subProgram == null)
             {
@@ -50,7 +50,7 @@ namespace GSendService.Api
             if (String.IsNullOrEmpty(name))
                 return GenerateJsonSuccessResponse(false);
 
-            return GenerateJsonSuccessResponse(_subPrograms.Exists(name));
+            return GenerateJsonSuccessResponse(_subprograms.Exists(name));
         }
 
         [HttpDelete]
@@ -60,7 +60,7 @@ namespace GSendService.Api
             if (String.IsNullOrEmpty(name))
                 return GenerateJsonSuccessResponse(false);
 
-            return GenerateJsonSuccessResponse(_subPrograms.Delete(name));
+            return GenerateJsonSuccessResponse(_subprograms.Delete(name));
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace GSendService.Api
             if (model == null)
                 return GenerateJsonErrorResponse(400, "Invalid model");
 
-            _subPrograms.Update(model);
+            _subprograms.Update(model);
             return GenerateJsonSuccessResponse();
         }
     }

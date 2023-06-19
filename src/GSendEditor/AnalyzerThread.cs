@@ -15,11 +15,11 @@ namespace GSendEditor
         private const int ValidateWarningAndErrorsTimeout = 250;
 
         private readonly IGCodeParserFactory _gCodeParserFactory;
-        private readonly GSendApiWrapper _gSendApiWrapper;
+        private readonly IGSendApiWrapper _gSendApiWrapper;
         private IGCodeAnalyses _gCodeAnalyses;
 
         public AnalyzerThread(IGCodeParserFactory gCodeParserFactory,
-            GSendApiWrapper gSendApiWrapper, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
+            IGSendApiWrapper gSendApiWrapper, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             : base(txtGCode, TimeSpan.FromMilliseconds(10))
         {
 #if DEBUG

@@ -1,5 +1,3 @@
-using GSendApi;
-
 using GSendControls;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -26,12 +24,14 @@ namespace GSendEditor
                 new PluginManagerConfiguration(),
                 new PluginSettings());
 
-            applicationPluginManager.RegisterPlugin(typeof(GSendEditor.Internal.PluginInitialisation).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(Internal.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendAnalyser.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendCommon.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
+
 
 
             applicationPluginManager.ConfigureServices();

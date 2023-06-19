@@ -1,6 +1,6 @@
 ﻿namespace GSendShared
 {
-    public interface ISubPrograms
+    public interface ISubprograms
     {
         bool Exists(string name);
 

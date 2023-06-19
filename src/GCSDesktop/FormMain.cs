@@ -32,7 +32,7 @@ namespace GSendDesktop
     {
         private readonly IGSendContext _context;
 
-        private readonly GSendApiWrapper _machineApiWrapper;
+        private readonly IGSendApiWrapper _machineApiWrapper;
         private readonly IMessageNotifier _messageNotifier;
         private readonly ICommandProcessor _processCommand;
         private readonly GSendWebSocket _clientWebSocket;
@@ -42,7 +42,7 @@ namespace GSendDesktop
         private readonly ConcurrentDictionary<long, bool> _machineStateModel = new();
         private IMachine _selectedMachine = null;
 
-        public FormMain(IGSendContext context, GSendApiWrapper machineApiWrapper,
+        public FormMain(IGSendContext context, IGSendApiWrapper machineApiWrapper,
             IMessageNotifier messageNotifier, ICommandProcessor processCommand, GSendSettings settings)
         {
             InitializeComponent();
@@ -53,7 +53,8 @@ namespace GSendDesktop
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
 
             _cancellationTokenRegistration = new();
-            _clientWebSocket = new GSendWebSocket(nameof(FormMain), _cancellationTokenRegistration.Token);
+            ApiSettings apiSettings = context.ServiceProvider.GetRequiredService<ApiSettings>();
+            _clientWebSocket = new GSendWebSocket(apiSettings.RootAddress, nameof(FormMain), _cancellationTokenRegistration.Token);
             _clientWebSocket.ProcessMessage += ClientWebSocket_ProcessMessage;
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
@@ -483,7 +484,7 @@ namespace GSendDesktop
             mnuViewLargeIcons.Text = GSend.Language.Resources.LargeIcons;
             mnuViewDetails.Text = GSend.Language.Resources.Details;
 
-            subProgramsToolStripMenuItem.Text = GSend.Language.Resources.SubPrograms;
+            subprogramsToolStripMenuItem.Text = GSend.Language.Resources.SubPrograms;
             viewSubProgramToolStripMenuItem.Text = GSend.Language.Resources.View;
 
             helpToolStripMenuItem.Text = GSend.Language.Resources.Help;
@@ -534,7 +535,7 @@ namespace GSendDesktop
 
         private void FormMain_Activated(object sender, EventArgs e)
         {
-            GSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<GSendApiWrapper>();
+            IGSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
             FrmServerValidation.ValidateServer(this, apiWrapper);
         }
