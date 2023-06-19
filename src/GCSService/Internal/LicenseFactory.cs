@@ -1,12 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+﻿using GSendShared;
+using GSendShared.Abstractions;
 
 using Shared.Classes;
-
-using GSendShared.Abstractions;
-using GSendShared;
 
 namespace GSendService.Internal
 {
@@ -47,7 +42,7 @@ namespace GSendService.Internal
                             _activeLicense = existingLicense;
                         }
                     }
-                    
+
                     if (_activeLicense == null)
                     {
                         _activeLicense = new License();

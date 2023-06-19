@@ -1,6 +1,4 @@
-﻿using GSendShared;
-
-namespace GSendShared.Models
+﻿namespace GSendShared.Models
 {
     public sealed class GCodeVariableBlockModel : IGCodeVariableBlock
     {

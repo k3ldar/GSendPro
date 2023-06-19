@@ -8,7 +8,6 @@ using GSendCommon;
 using GSendService.Api;
 
 using GSendShared;
-using GSendShared.Models;
 
 using GSendTests.Mocks;
 
@@ -16,8 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using SharedPluginFeatures;
-
-using static GSendShared.Constants;
 
 namespace GSendTests.GCService
 {

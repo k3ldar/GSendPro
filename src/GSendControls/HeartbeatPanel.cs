@@ -25,9 +25,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 #pragma warning disable IDE0044
 
@@ -230,7 +230,7 @@ namespace GSendControls
                     graphics.SmoothingMode = previousSmoothingMode;
             }
         }
-    
+
 
         // from https://stackoverflow.com/questions/21001202/how-do-i-fill-everything-over-a-straight-line-and-under-a-curve
         //private List<GraphicsPath> getPaths(ChartArea ca, Series ser, double limit)

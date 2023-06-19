@@ -377,12 +377,12 @@
     {
         None = 0,
 
-        X = 1, 
-        
-        Y = 2, 
-        
-        Z = 3, 
-        
+        X = 1,
+
+        Y = 2,
+
+        Z = 3,
+
         All = 4
     }
 
@@ -700,8 +700,8 @@
 
     public enum Pin
     {
-        High = 0, 
-        
+        High = 0,
+
         Low = 1
     }
 

@@ -6,8 +6,6 @@ using System.Windows.Forms;
 
 using GSendShared;
 
-using Microsoft.VisualBasic.ApplicationServices;
-
 namespace GSendControls
 {
     public sealed class ShortcutHandler

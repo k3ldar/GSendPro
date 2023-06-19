@@ -1,10 +1,12 @@
-﻿using GSendShared.Abstractions;
-using GSendAnalyser.Internal;
+﻿using GSendAnalyser.Internal;
 
 using GSendShared;
-using Shared.Classes;
-using PluginManager.Abstractions;
+using GSendShared.Abstractions;
 using GSendShared.Models;
+
+using PluginManager.Abstractions;
+
+using Shared.Classes;
 
 namespace GSendAnalyser
 {
@@ -61,7 +63,7 @@ namespace GSendAnalyser
         public IReadOnlyList<IGCodeCommand> Commands => _commands.AsReadOnly();
 
         public IReadOnlyList<IGCodeCommand> AllCommands
-        { 
+        {
             get
             {
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
@@ -97,7 +99,7 @@ namespace GSendAnalyser
                 }
                 else
                 {
-                    if (Result.Count == 0 || command.LineNumber != Result[Result.Count -1].LineNumber)
+                    if (Result.Count == 0 || command.LineNumber != Result[Result.Count - 1].LineNumber)
                         lineNumber++;
 
                     if (command is GCodeCommand gCommand)

@@ -90,7 +90,7 @@ namespace GSendControls
                 List<WarningErrorList> existingItems = issues.Where(i => i.Message.Equals(message) && i.InfoType.Equals(informationType)).ToList();
 
                 if (existingItems.Count > 0)
-                { 
+                {
                     existingItems.ForEach(i => i.MarkedForRemoval = false);
                 }
                 else

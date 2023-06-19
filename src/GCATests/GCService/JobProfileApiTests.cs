@@ -386,10 +386,10 @@ namespace GSendTests.GCService
             profile.Name = "Updated name";
 
             result = sut.JobProfileUpdate(profile);
-            Assert.IsNotNull (result);
+            Assert.IsNotNull(result);
             jsonResult = result as JsonResult;
             Assert.IsNotNull(jsonResult);
-            Assert.AreEqual (200, jsonResult.StatusCode);
+            Assert.AreEqual(200, jsonResult.StatusCode);
 
             result = sut.JobProfilesGet();
             Assert.IsNotNull(result);

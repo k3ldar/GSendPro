@@ -7,7 +7,6 @@ using GSendService.Internal;
 using GSendShared;
 using GSendShared.Providers.Internal.Enc;
 
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using PluginManager;

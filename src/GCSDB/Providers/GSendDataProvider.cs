@@ -82,7 +82,7 @@ namespace GSendDB.Providers
 
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId)
         {
-            
+
             MachineSpindleTimeDataRow Result = new()
             {
                 StartTime = DateTime.UtcNow,
@@ -93,7 +93,7 @@ namespace GSendDB.Providers
             };
 
             _spindleTimeTable.Insert(Result);
-            
+
             return Result.Id;
         }
 
@@ -277,12 +277,12 @@ namespace GSendDB.Providers
             if (machineDataRow == null)
                 return null;
 
-            return new MachineModel(machineDataRow.Id, machineDataRow.Name, machineDataRow.MachineType, 
+            return new MachineModel(machineDataRow.Id, machineDataRow.Name, machineDataRow.MachineType,
                 machineDataRow.ComPort, machineDataRow.Options,
                 machineDataRow.AxisCount, machineDataRow.Settings,
                 machineDataRow.DisplayUnits, machineDataRow.FeedbackUnits, machineDataRow.OverrideSpeed,
-                machineDataRow.OverrideSpindle, machineDataRow.OverrideZDown, machineDataRow.OverrideZUp, 
-                machineDataRow.ConfigurationLastVerified, machineDataRow.LayerHeightWarning, machineDataRow.ProbeCommand, 
+                machineDataRow.OverrideSpindle, machineDataRow.OverrideZDown, machineDataRow.OverrideZUp,
+                machineDataRow.ConfigurationLastVerified, machineDataRow.LayerHeightWarning, machineDataRow.ProbeCommand,
                 machineDataRow.ProbeSpeed, machineDataRow.ProbeThickness,
                 machineDataRow.JogFeedRate, machineDataRow.JogUnits,
                 machineDataRow.SpindleType, machineDataRow.SoftStartSeconds,

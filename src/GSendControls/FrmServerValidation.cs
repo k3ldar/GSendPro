@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 using GSendApi;
 
 using GSendDesktop.Internal;
-using GSendCommon.Settings;
-using GSendShared;
-using System.Diagnostics;
 
 namespace GSendControls
 {
@@ -130,7 +121,7 @@ namespace GSendControls
                     btnOK.Enabled = true;
                     btnCheckNow.Enabled = true;
                 }
-            }            
+            }
         }
 
         private void btnCheckNow_Click(object sender, EventArgs e)
@@ -181,7 +172,7 @@ namespace GSendControls
                 appSettings.Kestrel.Endpoints.HTTP.Url = http;
                 appSettings.Save();
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 MessageBox.Show(this, String.Format(GSend.Language.Resources.ErrorSavingServerUri, err.Message), GSend.Language.Resources.SaveError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -200,7 +191,7 @@ namespace GSendControls
             };
 
             Uri licenseUri = uriBuilder.Uri;
-            Process.Start(new ProcessStartInfo(licenseUri.ToString()) {  UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(licenseUri.ToString()) { UseShellExecute = true });
         }
     }
 }

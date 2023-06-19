@@ -664,7 +664,7 @@ namespace GSendEditor
                 MessageBox.Show(this, String.Format(GSend.Language.Resources.SubprogramNotFound, subProgram.Name), GSend.Language.Resources.SubprogramError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-                
+
             subProgram.Contents = subWithContent.Contents;
             subProgram.Description = subWithContent.Description;
 

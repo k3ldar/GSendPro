@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+
 using GSendApi;
 
 using GSendShared;
@@ -27,7 +28,7 @@ namespace GSendCommon.Settings
             return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(path), Constants.DefaultJsonSerializerOptions);
         }
 
-        public void Save ()
+        public void Save()
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppSettings);
             File.WriteAllText(path, JsonSerializer.Serialize(this, Constants.DefaultJsonSerializerOptions));

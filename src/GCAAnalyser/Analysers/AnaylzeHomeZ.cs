@@ -1,6 +1,5 @@
-﻿using GSendShared.Abstractions;
-
-using GSendShared;
+﻿using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers
 {

@@ -13,7 +13,7 @@
         public long ToolProfile { get; set; }
 
         public TimeSpan TotalTime
-        { 
+        {
             get
             {
                 if (FinishDateTime > StartDateTime)

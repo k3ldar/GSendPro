@@ -11,11 +11,11 @@ namespace GSendControls
     public sealed class ApplicationPluginManager : BasePluginManager
     {
         public ApplicationPluginManager(
-            PluginManagerConfiguration configuration, 
+            PluginManagerConfiguration configuration,
             PluginSettings pluginSettings)
             : base(configuration, pluginSettings)
         {
-            
+
         }
 
         new public IServiceProvider ServiceProvider => base.ServiceProvider;

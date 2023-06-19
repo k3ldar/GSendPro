@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
-using System.IO.Ports;
+﻿using System.IO.Ports;
+
 using GSendCommon.Settings;
+
 using GSendShared;
 
 namespace GSendCommon

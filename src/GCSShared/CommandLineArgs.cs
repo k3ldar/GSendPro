@@ -18,8 +18,8 @@ namespace GSendShared
         }
 
         public CommandLineArgs(string[] args)
-        { 
-            _args = ConvertArgsToDictionary(args ?? Array.Empty<string>()); 
+        {
+            _args = ConvertArgsToDictionary(args ?? Array.Empty<string>());
         }
 
         #endregion Constructors   

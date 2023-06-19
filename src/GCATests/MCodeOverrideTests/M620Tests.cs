@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using System.Threading.Tasks;
-using GSendAnalyser.Internal;
+
 using GSendAnalyser;
-using GSendCommon.OverrideClasses;
-using GSendShared.Models;
+
 using GSendShared;
+using GSendShared.Models;
 
 using GSendTests.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GSendCommon.MCodeOverrides;
 
 namespace GSendTests.MCodeOverrideTests
 {

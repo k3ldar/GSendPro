@@ -40,7 +40,7 @@
             _machineStateOptions = MachineStateOptions.None;
         }
 
-        public MachineStateOptions MachineStateOptions {  get => _machineStateOptions; set => _machineStateOptions = value; }
+        public MachineStateOptions MachineStateOptions { get => _machineStateOptions; set => _machineStateOptions = value; }
 
         public byte MachineOverrideFeeds { get; set; }
 

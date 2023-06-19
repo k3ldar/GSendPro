@@ -332,7 +332,7 @@ namespace GSendControls
                 }
                 else
                 {
-                    canvasWidth = newImageWidth; 
+                    canvasWidth = newImageWidth;
                     canvasHeight = newImageHeight;
                 }
             }

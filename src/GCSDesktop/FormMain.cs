@@ -12,6 +12,7 @@ using GSendApi;
 
 using GSendCommon;
 using GSendCommon.Settings;
+
 using GSendControls;
 
 using GSendDesktop.Abstractions;
@@ -393,7 +394,7 @@ namespace GSendDesktop
             UpdateEnabledState();
         }
 
-        
+
         protected override void UpdateEnabledState()
         {
             if (InvokeRequired)

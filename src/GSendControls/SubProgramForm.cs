@@ -3,8 +3,6 @@ using System.Windows.Forms;
 
 using GSendApi;
 
-using GSendShared;
-
 namespace GSendControls
 {
     public partial class SubProgramForm : BaseForm

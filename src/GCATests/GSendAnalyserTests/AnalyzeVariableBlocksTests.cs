@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using GSendAnalyser.Analysers;
-using GSendAnalyser.Internal;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using GSendCommon;
 

@@ -205,7 +205,7 @@ namespace GSendControls
             base.OnMouseMove(e);
 
             //tooltip code
-            if (Utilities.Between(e.X, _oldPoint.X - 10, _oldPoint.X + 10) && 
+            if (Utilities.Between(e.X, _oldPoint.X - 10, _oldPoint.X + 10) &&
                 Utilities.Between(e.Y, _oldPoint.Y - 10, _oldPoint.Y + 10))
                 return;
 
@@ -289,7 +289,7 @@ namespace GSendControls
 
             file = Utilities.AddTrailingBackSlash(Utilities.AddTrailingBackSlash(file) + Application.ProductName);
             System.IO.Directory.CreateDirectory(file);
-            
+
             file += this.SaveName + this.Name + ".dat";
 
             XML.SetXMLValue("Settings", "SortOrder", _lvColumnSorter.Order.ToString(), file);
@@ -325,7 +325,7 @@ namespace GSendControls
                 return;
 
             string file = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            file = Utilities.AddTrailingBackSlash(Utilities.AddTrailingBackSlash(file) + Application.ProductName) + 
+            file = Utilities.AddTrailingBackSlash(Utilities.AddTrailingBackSlash(file) + Application.ProductName) +
                 this.SaveName + this.Name + ".dat";
 
             if (System.IO.File.Exists(file))
@@ -345,8 +345,8 @@ namespace GSendControls
 
                         try
                         {
-                            header.DisplayIndex = Utilities.CheckMinMax(XML.GetXMLValue("Settings", 
-                                String.Format("{0}DisplayIndex", name), header.DisplayIndex, file), 0, this.Columns.Count -1);
+                            header.DisplayIndex = Utilities.CheckMinMax(XML.GetXMLValue("Settings",
+                                String.Format("{0}DisplayIndex", name), header.DisplayIndex, file), 0, this.Columns.Count - 1);
                             header.Width = XML.GetXMLValue("Settings", String.Format("{0}Width", name), header.Width, file);
                         }
                         catch { } // ignore errors here

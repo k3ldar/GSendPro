@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-using GSendAnalyser.Internal;
-
 using GSendCommon;
 
 using GSendShared;

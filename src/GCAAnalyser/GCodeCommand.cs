@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text.Json;
 
 using GSendAnalyser.Internal;
 
@@ -29,13 +28,13 @@ namespace GSendAnalyser
 
         #region Constructors
 
-        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString, 
-            string comment, List<IGCodeVariableBlock> variables, CurrentCommandValues currentValues, 
+        public GCodeCommand(int index, char currentCommand, decimal commandValue, string commandValueString,
+            string comment, List<IGCodeVariableBlock> variables, CurrentCommandValues currentValues,
             int lineNumber, IGCodeAnalyses subAnalyses)
         {
 
             if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
-               throw new ArgumentOutOfRangeException(nameof(currentCommand));
+                throw new ArgumentOutOfRangeException(nameof(currentCommand));
 
             Index = index;
             Command = currentCommand;
@@ -176,9 +175,9 @@ namespace GSendAnalyser
         }
 
         public IGCodeCommand NextCommand
-        { 
-            get => _nextCommand; 
-            
+        {
+            get => _nextCommand;
+
             internal set
             {
                 _nextCommand = value;
@@ -271,7 +270,7 @@ namespace GSendAnalyser
                     break;
 
                 case 'G':
-                    switch(CommandValue)
+                    switch (CommandValue)
                     {
                         case 2:
                         case 3:

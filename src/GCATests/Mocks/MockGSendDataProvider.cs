@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-using GSendShared.Models;
-
 using GSendShared;
-using System.Diagnostics.CodeAnalysis;
+using GSendShared.Models;
 
 namespace GSendTests.Mocks
 {
@@ -25,7 +24,7 @@ namespace GSendTests.Mocks
             for (int i = 0; i < machineNames.Length; i++)
             {
                 _machines.Add(new MachineModel(i, machineNames[i],
-                    i % 2 == 0 ? MachineType.CNC : MachineType.Laser, 
+                    i % 2 == 0 ? MachineType.CNC : MachineType.Laser,
                     $"COM{i + 2}",
                     MachineOptions.None, 3, new GrblSettings(),
                     FeedRateDisplayUnits.MmPerMinute,

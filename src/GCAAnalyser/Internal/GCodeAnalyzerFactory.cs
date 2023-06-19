@@ -1,6 +1,4 @@
-﻿using GSendAnalyser.Analysers;
-
-using GSendShared.Abstractions;
+﻿using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;
 

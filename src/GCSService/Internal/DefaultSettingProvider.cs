@@ -20,7 +20,7 @@ namespace GSendService.Internal
         #region Constructors
 
         public DefaultSettingProvider()
-            : this (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder), new SettingOverride(), new ApplicationOverride(), new SettingsError())
+            : this(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder), new SettingOverride(), new ApplicationOverride(), new SettingsError())
         {
 
         }

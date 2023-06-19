@@ -30,7 +30,7 @@ namespace GSendControls
             btnZMinus.Tag = JogDirection.ZMinus;
             btnZPlus.Tag = JogDirection.ZPlus;
             _steps = new double[8] { 0.01, 0.1, 1, 5, 10, 50, 100, 0 };
-            selectionSteps.Maximum = _steps.Length -1;
+            selectionSteps.Maximum = _steps.Length - 1;
             selectionSteps.Minimum = 0;
         }
 
@@ -123,8 +123,8 @@ namespace GSendControls
 
         private void selectionSteps_ValueChanged(object sender, EventArgs e)
         {
-            selectionSteps.LabelValue = _steps[selectionSteps.Value] == 0 ? 
-                GSend.Language.Resources.Continuous : 
+            selectionSteps.LabelValue = _steps[selectionSteps.Value] == 0 ?
+                GSend.Language.Resources.Continuous :
                 _steps[selectionSteps.Value].ToString();
 
             OnUpdate?.Invoke(this, EventArgs.Empty);
@@ -139,48 +139,48 @@ namespace GSendControls
         {
             string groupName = GSend.Language.Resources.Jog;
 
-            List <IShortcut> result = new()
+            List<IShortcut> result = new()
             {
                 new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameIncreaseFeedRate,
                     new List<int>() { (int)Keys.Control, (int)Keys.PageUp },
                     (bool isKeyDown) => selectionFeed.Value += 100),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameDecreaseFeedRate, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameDecreaseFeedRate,
                     new List<int>() { (int) Keys.Control,(int) Keys.PageDown },
                     (bool isKeyDown) => selectionFeed.Value -= 100),
                 new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameDecreaseStepSize,
                     new List<int>() { (int)Keys.PageDown },
                     (bool isKeyDown) => selectionSteps.Value--),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameIncreaseStepSize, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameIncreaseStepSize,
                     new List<int>() { (int)Keys.PageUp },
                     (bool isKeyDown) => selectionSteps.Value++),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYplusXMinus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYplusXMinus,
                     new List<int>() { (int) Keys.Left,(int) Keys.Up },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XMinusYPlus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYPlus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYPlus,
                     new List<int>() { (int)Keys.Up },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.YPlus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYPlusXPlus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYPlusXPlus,
                     new List<int>() { (int) Keys.Up,(int) Keys.Right },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XPlusYPlus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameXPlus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameXPlus,
                     new List<int>() {(int) Keys.Right },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XPlus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYMinusXPlus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYMinusXPlus,
                     new List<int>() { (int) Keys.Down,(int) Keys.Right },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XPlusYMinus)),
                 new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYMinus,
                     new List<int>() {(int) Keys.Down },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.YMinus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYMinusXMinus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameYMinusXMinus,
                     new List<int>() { (int) Keys.Down,(int) Keys.Left },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XMinusYMinus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameXMinus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameXMinus,
                     new List<int>() { (int)Keys.Left },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.XMinus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameZPlus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameZPlus,
                     new List<int>() { (int) Keys.Control,(int) Keys.Up },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.ZPlus)),
-                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameZMinus, 
+                new ShortcutModel(groupName, GSend.Language.Resources.ShortcutNameZMinus,
                     new List<int>() { (int) Keys.Control,(int) Keys.Down },
                     (bool isKeyDown) => JogFromKeypress(isKeyDown, JogDirection.ZMinus)),
             };

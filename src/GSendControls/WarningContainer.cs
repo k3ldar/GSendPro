@@ -191,7 +191,7 @@ namespace GSendControls
 
             foreach (Control control in flowLayoutWarningErrors.Controls)
             {
-                control.Width = flowLayoutWarningErrors.ClientSize.Width -1;
+                control.Width = flowLayoutWarningErrors.ClientSize.Width - 1;
             }
         }
 

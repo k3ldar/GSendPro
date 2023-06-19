@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendShared;
@@ -138,7 +132,7 @@ namespace GSendControls
                 _selectedShortcut = null;
                 _selectedKeys.Clear();
             }
-                
+
             lblInUse.Visible = false;
             btnUpdate.Enabled = false;
             btnRemove.Enabled = txtKeyCombination.Text != GSend.Language.Resources.ShortcutPressCombination;

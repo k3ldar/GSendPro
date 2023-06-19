@@ -8,7 +8,7 @@ namespace GSendTests.Mocks
     internal sealed class MockComPortFactory : IComPortFactory
     {
         public MockComPortFactory()
-        { 
+        {
         }
 
         public MockComPortFactory(MockComPort mockComPort)

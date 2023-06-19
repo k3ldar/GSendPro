@@ -1,9 +1,5 @@
-﻿using GSendDB.Tables;
-
-using GSendShared;
+﻿using GSendShared;
 using GSendShared.Abstractions;
-
-using SimpleDB;
 
 namespace GSendCommon.OverrideClasses
 {
@@ -31,12 +27,12 @@ namespace GSendCommon.OverrideClasses
 
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            IGCodeCommand startStopCommand = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('M') && 
+            IGCodeCommand startStopCommand = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('M') &&
                 (
-                    c.CommandValue.Equals(2) || 
-                    c.CommandValue.Equals(3) || 
-                    c.CommandValue.Equals(4) || 
-                    c.CommandValue.Equals(5) || 
+                    c.CommandValue.Equals(2) ||
+                    c.CommandValue.Equals(3) ||
+                    c.CommandValue.Equals(4) ||
+                    c.CommandValue.Equals(5) ||
                     c.CommandValue.Equals(30)
                 ));
 

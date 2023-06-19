@@ -4,9 +4,10 @@ using System.Windows.Forms;
 
 using GSendApi;
 
+using GSendControls;
+
 using GSendShared;
 using GSendShared.Models;
-using GSendControls;
 
 namespace GSendDesktop.Forms
 {
@@ -22,7 +23,7 @@ namespace GSendDesktop.Forms
 
         protected override string SectionName => nameof(StartJobWizard);
 
-        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses, 
+        public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses,
             IGSendApiWrapper machineApiWrapper)
             : this()
         {
@@ -40,7 +41,7 @@ namespace GSendDesktop.Forms
             if (!String.IsNullOrEmpty(gCodeAnalyses.JobName) && cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName) > -1)
                 cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName);
             else
-                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard), 
+                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard),
                     Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[0]));
 
             int selectedIndex = 0;

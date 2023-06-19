@@ -1,5 +1,4 @@
-﻿using GSendCommon;
-using GSendCommon.Settings;
+﻿using GSendCommon.Settings;
 
 using GSendShared;
 using GSendShared.Abstractions;

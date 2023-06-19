@@ -38,7 +38,7 @@ namespace GSendShared
         string ProbeCommand { get; set; }
 
         int ProbeSpeed { get; set; }
-        
+
         decimal ProbeThickness { get; set; }
 
         int JogUnits { get; set; }

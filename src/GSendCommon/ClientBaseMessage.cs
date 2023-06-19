@@ -3,7 +3,7 @@
     public class ClientBaseMessage
     {
         public ClientBaseMessage()
-        { 
+        {
         }
 
         public ClientBaseMessage(string req)

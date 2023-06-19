@@ -1,7 +1,5 @@
 ﻿using System;
 
-using GSendAnalyser.Internal;
-
 using GSendShared;
 using GSendShared.Abstractions;
 
@@ -28,7 +26,7 @@ namespace GSendTests.Mocks
                     return new MockPluginClassesService();
                 }
             }
-                
+
             return null;
         }
     }

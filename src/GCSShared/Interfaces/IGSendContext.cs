@@ -1,7 +1,5 @@
 ﻿using GSendShared.Abstractions;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace GSendShared
 {
     public interface IGSendContext

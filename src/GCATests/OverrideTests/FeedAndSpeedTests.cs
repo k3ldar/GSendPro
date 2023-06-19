@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using System.Threading.Tasks;
-using GSendAnalyser.Internal;
+
 using GSendAnalyser;
-using GSendCommon.OverrideClasses;
-using GSendCommon;
-using GSendShared.Abstractions;
-using GSendShared.Models;
+
 using GSendShared;
+using GSendShared.Models;
 
 using GSendTests.Mocks;
 
@@ -245,9 +238,9 @@ namespace GSendTests.OverrideTests
             SendAndValidateXYCommand(sut, context, "G1X50Y50F1000", "G1X50Y50F2000", true, false, 1, 2000, true);
         }
 
-        private void SendAndValidateXYCommand(FeedAndSpeedOverride sut, MockOverrideContext context, 
-            string gCode, string expectedGCodeResponse, bool expectedProcessResult, 
-            bool expectedSendCommand, int expectedQueueCount, int expectedCurrentFeedRate, 
+        private void SendAndValidateXYCommand(FeedAndSpeedOverride sut, MockOverrideContext context,
+            string gCode, string expectedGCodeResponse, bool expectedProcessResult,
+            bool expectedSendCommand, int expectedQueueCount, int expectedCurrentFeedRate,
             bool expectedG1Command)
         {
             context.SendCommand = true;

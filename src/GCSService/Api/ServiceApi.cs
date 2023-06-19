@@ -37,9 +37,9 @@ namespace GSendService.Api
         [HttpPost]
         public IActionResult ServiceAdd([FromBody] MachineServiceModel machineServiceModel)
         {
-            _serviceTable.Insert(new MachineServiceDataRow 
-            { 
-                MachineId = machineServiceModel.MachineId, 
+            _serviceTable.Insert(new MachineServiceDataRow
+            {
+                MachineId = machineServiceModel.MachineId,
                 ServiceDate = machineServiceModel.ServiceDate,
                 ServiceType = machineServiceModel.ServiceType,
                 SpindleHours = machineServiceModel.SpindleHours,

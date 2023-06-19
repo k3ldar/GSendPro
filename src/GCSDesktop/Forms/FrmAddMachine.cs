@@ -3,13 +3,13 @@ using System.Windows.Forms;
 
 using GSendApi;
 
+using GSendControls;
+
 using GSendDesktop.Abstractions;
 
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;
-
-using GSendControls;
 
 namespace GSendDesktop.Forms
 {

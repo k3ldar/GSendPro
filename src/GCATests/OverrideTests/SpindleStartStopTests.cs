@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 using GSendAnalyser;
-using GSendAnalyser.Internal;
 
 using GSendCommon;
 using GSendCommon.OverrideClasses;
@@ -31,7 +25,7 @@ namespace GSendTests.OverrideTests
     {
         [TestInitialize]
         public void Setup()
-        { 
+        {
             ThreadManager.Initialise();
         }
 
@@ -40,7 +34,7 @@ namespace GSendTests.OverrideTests
         {
             ThreadManager.Finalise();
         }
-        
+
         [TestMethod]
         public void SpindleActiveTime_SpindleStarts_M3_StartsTimer()
         {

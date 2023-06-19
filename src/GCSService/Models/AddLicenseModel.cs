@@ -20,7 +20,7 @@ namespace GSendService.Models
         }
 
         [Required(ErrorMessage = nameof(GSend.Language.Resources.PleaseEnterAValidLicense))]
-        public string NewLicense {  get; set; }
+        public string NewLicense { get; set; }
 
         [Display(Name = nameof(GSend.Language.Resources.RegisteredUser))]
         public string Username { get; set; }
@@ -28,7 +28,7 @@ namespace GSendService.Models
         [Display(Name = nameof(GSend.Language.Resources.ExpireDate))]
         public DateTime ExpireDate { get; set; }
 
-        [Display(Name = nameof(GSend.Language.Resources.LicenseIsValid))] 
+        [Display(Name = nameof(GSend.Language.Resources.LicenseIsValid))]
         public bool IsValid { get; set; }
     }
 }

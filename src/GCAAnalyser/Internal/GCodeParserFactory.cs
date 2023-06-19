@@ -1,6 +1,5 @@
 ﻿using GSendApi;
 
-using GSendShared;
 using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;

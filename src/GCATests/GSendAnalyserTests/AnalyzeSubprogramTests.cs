@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using GSendAnalyser.Analysers;
-using GSendAnalyser.Internal;
 
 using GSendShared;
 

@@ -1,6 +1,7 @@
 ﻿using GSendShared.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
 using PluginManager.Abstractions;
 
 namespace GSendService.Internal

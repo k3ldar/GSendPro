@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 
 using GSendShared;
-using GSendShared.Abstractions;
 using GSendShared.Providers.Internal.Enc;
 
 namespace GSendLicenseGenerator
