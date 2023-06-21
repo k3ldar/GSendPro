@@ -6,7 +6,7 @@ using SharedPluginFeatures;
 
 namespace GSendService.Api
 {
-    public class LicenseApi : BaseController
+    public sealed class LicenseApi : BaseController
     {
         private readonly ILicenseFactory _licenseFactory;
 
@@ -15,6 +15,7 @@ namespace GSendService.Api
             _licenseFactory = licenseFactory ?? throw new ArgumentNullException(nameof(licenseFactory));
         }
 
+        [HttpGet]
         public IActionResult IsLicensed()
         {
             return GenerateJsonSuccessResponse(IsLicenseValid());

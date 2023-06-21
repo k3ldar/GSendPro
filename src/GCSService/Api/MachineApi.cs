@@ -29,6 +29,7 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult MachinesGet()
         {
             return GenerateJsonSuccessResponse(_gSendDataProvider.MachinesGet());
@@ -36,6 +37,7 @@ namespace GSendService.Api
 
         [HttpGet]
         [Route("/MachineApi/MachineExists/{name}/")]
+        [ApiAuthorization]
         public IActionResult MachineExists(string name)
         {
             bool exists = _gSendDataProvider.MachinesGet().Any(m => m.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
@@ -43,6 +45,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
+        [ApiAuthorization]
         public IActionResult MachineAdd([FromBody] IMachine model)
         {
             if (!ValidateMachineModel(model, true, out string errorData))
@@ -59,6 +62,7 @@ namespace GSendService.Api
         }
 
         [HttpDelete]
+        [ApiAuthorization]
         public IActionResult MachineDelete(long machineId)
         {
             IMachine deleteMachine = _gSendDataProvider.MachineGet(machineId);
@@ -77,6 +81,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
+        [ApiAuthorization]
         public IActionResult MachineUpdate([FromBody] IMachine model)
         {
             if (!ValidateMachineModel(model, false, out string errorData))

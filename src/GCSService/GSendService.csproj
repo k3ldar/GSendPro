@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ApiAuthorization.Plugin" Version="$(PluginVersion)" />
     <PackageReference Include="ApplicationSettings" Version="2.2.0" />
     <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="AspNetCore.PluginManager.Languages" Version="$(PluginVersion)" />

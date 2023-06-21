@@ -1,14 +1,21 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
 using GSendShared;
 using GSendShared.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.DataProtection;
+using SharedPluginFeatures;
+using GSendShared.Providers.Internal.Enc;
 
 namespace GSendApi
 {
     public class GSendApiWrapper : IGSendApiWrapper
     {
+        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
+
         #region Private Members
 
         private class JsonResponseModel
@@ -18,6 +25,9 @@ namespace GSendApi
         }
 
         private readonly ApiSettings _apiSettings;
+        private readonly string _merchantId;
+        private readonly string _apiKey;
+        private readonly string _secret;
 
         #endregion Private Members
 
@@ -25,9 +35,24 @@ namespace GSendApi
 
         public GSendApiWrapper()
         {
+            string apiFile = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "api.dat");
 
+            if (!File.Exists(apiFile))
+                throw new InvalidOperationException("Unable to find Api Data");
+
+            string decrypted = AesImpl.Decrypt(File.ReadAllText(apiFile), key);
+            string[] parts = decrypted.Split("#", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length != 3)
+                throw new InvalidOperationException("Invalid Api data");
+
+            _merchantId = parts[0];
+            _apiKey = parts[1];
+            _secret = parts[2];
         }
+
         public GSendApiWrapper(ApiSettings apiSettings)
+            : this()
         {
             _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));
         }
@@ -153,7 +178,7 @@ namespace GSendApi
         private HttpClient CreateApiClient()
         {
             HttpClient httpClient = new();
-            //httpClient.DefaultRequestHeaders.Accept.Clear();
+
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.UserAgent.Clear();
@@ -166,24 +191,37 @@ namespace GSendApi
      
             httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
 #endif
+
+            ulong nonce = (ulong)DateTime.UtcNow.Ticks;
+            long timestamp = HmacGenerator.EpochDateTime();
+            string auth = HmacGenerator.GenerateHmac(_apiKey, _secret, timestamp, nonce, _merchantId, String.Empty);
+
+            httpClient.DefaultRequestHeaders.Add("apikey", _apiKey);
+            httpClient.DefaultRequestHeaders.Add("merchantId", _merchantId);
+            httpClient.DefaultRequestHeaders.Add("nonce", nonce.ToString());
+            httpClient.DefaultRequestHeaders.Add("timestamp", timestamp.ToString());
+            httpClient.DefaultRequestHeaders.Add("authcode", auth);
+            httpClient.DefaultRequestHeaders.Add("payloadLength", "0");
+
+
             return httpClient;
         }
 
-        private static HttpContent CreateContent<T>(T data)
+        private HttpContent CreateContent<T>(T data)
         {
-            byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, Constants.DefaultJsonSerializerOptions));
+            byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, GSendShared.Constants.DefaultJsonSerializerOptions));
             HttpContent Result = new ByteArrayContent(content);
-            Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");               
 
             return Result;
         }
 
         private void CallPostApi<T>(string endPoint, T data)
         {
+            HttpContent content = CreateContent(data);
             using HttpClient httpClient = CreateApiClient();
             string address = $"{_apiSettings.RootAddress}{endPoint}";
 
-            HttpContent content = CreateContent(data);
             using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
 
             string jsonData = response.Content.ReadAsStringAsync().Result;
@@ -215,7 +253,7 @@ namespace GSendApi
 
                 if (responseModel.success)
                 {
-                    return JsonSerializer.Deserialize<T>(responseModel.responseData, Constants.DefaultJsonSerializerOptions);
+                    return JsonSerializer.Deserialize<T>(responseModel.responseData, GSendShared.Constants.DefaultJsonSerializerOptions);
                 }
 
                 throw new GSendApiException(responseModel.responseData);
@@ -233,9 +271,12 @@ namespace GSendApi
             string address = $"{_apiSettings.RootAddress}{endPoint}";
 
             HttpContent content = CreateContent(data);
+
             using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
 
             string jsonData = response.Content.ReadAsStringAsync().Result;
+
+            
             JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
 
             if (responseModel.success)

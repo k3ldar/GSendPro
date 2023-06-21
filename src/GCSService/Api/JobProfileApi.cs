@@ -10,7 +10,7 @@ using static SharedPluginFeatures.Constants;
 
 namespace GSendService.Api
 {
-    public class JobProfileApi : BaseController
+    public sealed class JobProfileApi : BaseController
     {
         private readonly IGSendDataProvider _gSendDataProvider;
         private readonly INotificationService _notificationService;
@@ -22,12 +22,14 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult JobProfilesGet()
         {
             return GenerateJsonSuccessResponse(_gSendDataProvider.JobProfilesGet());
         }
 
         [HttpPost]
+        [ApiAuthorization]
         public IActionResult JobProfileAdd([FromBody] IJobProfile model)
         {
             if (!ValidateJobProfile(model, out string errorData))
@@ -47,6 +49,7 @@ namespace GSendService.Api
         }
 
         [HttpDelete]
+        [ApiAuthorization]
         public IActionResult JobProfileDelete(long jobProfileId)
         {
             IJobProfile deleteJobProfile = _gSendDataProvider.JobProfileGet(jobProfileId);
@@ -68,6 +71,7 @@ namespace GSendService.Api
         }
 
         [HttpPut]
+        [ApiAuthorization]
         public IActionResult JobProfileUpdate([FromBody] IJobProfile model)
         {
             if (!ValidateJobProfile(model, out string errorData))

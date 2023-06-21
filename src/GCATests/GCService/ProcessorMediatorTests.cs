@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
+using GSendAnalyser.Internal;
+
 using GSendCommon;
 
 using GSendShared;

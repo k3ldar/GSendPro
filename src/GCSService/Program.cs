@@ -75,6 +75,7 @@ namespace GSendService
             PluginManagerService.UsePlugin(typeof(MemoryCache.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(Localization.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(Breadcrumb.Plugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(ApiAuthorization.Plugin.PluginInitialisation));
 
             PluginManagerConfiguration configuration = new(logger)
             {
@@ -92,8 +93,6 @@ namespace GSendService
 
 
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
-
-
 
             try
             {

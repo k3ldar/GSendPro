@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
+using GSendAnalyser.Internal;
+
 using GSendCommon;
 
 using GSendShared;

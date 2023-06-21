@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 using GSendAnalyser;
+using GSendAnalyser.Internal;
 
 using GSendCommon;
 using GSendCommon.OverrideClasses;

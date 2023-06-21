@@ -24,6 +24,7 @@ namespace GSendService.Api
 
         [HttpGet]
         [Route("/SpindleHoursApi/SpindleHoursGet/{machineId}/{fromDateTimeTicks}/")]
+        [ApiAuthorization]
         public IActionResult SpindleHoursGet(long machineId, long fromDateTimeTicks)
         {
             DateTime fromDate = new(fromDateTimeTicks, DateTimeKind.Utc);

@@ -18,6 +18,7 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult GetAllSubprograms()
         {
             List<ISubProgram> subprograms = _subprograms.GetAll();
@@ -31,6 +32,7 @@ namespace GSendService.Api
 
         [HttpGet]
         [Route("/SubprogramApi/SubprogramGet/{name}/")]
+        [ApiAuthorization]
         public IActionResult SubprogramGet(string name)
         {
             ISubProgram subProgram = _subprograms.Get(name);
@@ -45,6 +47,7 @@ namespace GSendService.Api
 
         [HttpGet]
         [Route("/SubprogramApi/SubprogramExists/{name}/")]
+        [ApiAuthorization]
         public IActionResult SubprogramExists(string name)
         {
             if (String.IsNullOrEmpty(name))
@@ -55,6 +58,7 @@ namespace GSendService.Api
 
         [HttpDelete]
         [Route("/SubprogramApi/SubprogramDelete/{name}/")]
+        [ApiAuthorization]
         public IActionResult SubprogramDelete(string name)
         {
             if (String.IsNullOrEmpty(name))
@@ -64,6 +68,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
+        [ApiAuthorization]
         public IActionResult SubprogramUpdate([FromBody] ISubProgram model)
         {
             if (model == null)

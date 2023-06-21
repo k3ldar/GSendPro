@@ -21,6 +21,7 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult ServicesGet(long machineId)
         {
             List<MachineServiceModel> dates = new();
@@ -35,6 +36,7 @@ namespace GSendService.Api
         }
 
         [HttpPost]
+        [ApiAuthorization]
         public IActionResult ServiceAdd([FromBody] MachineServiceModel machineServiceModel)
         {
             _serviceTable.Insert(new MachineServiceDataRow

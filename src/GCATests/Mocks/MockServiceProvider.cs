@@ -1,5 +1,7 @@
 ﻿using System;
 
+using GSendAnalyser.Internal;
+
 using GSendShared;
 using GSendShared.Abstractions;
 

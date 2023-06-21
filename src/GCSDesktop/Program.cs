@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 using GSendControls;
@@ -25,6 +26,11 @@ namespace GSendDesktop
             ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
                 new PluginSettings());
+
+            Environment.SetEnvironmentVariable("GSendProRootPath",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
+
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath")));
 
             applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);

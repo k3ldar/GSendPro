@@ -2,6 +2,8 @@
 using System.Net.WebSockets;
 using System.Text;
 
+using GSendApi;
+
 using GSendShared;
 
 using static GSendShared.Constants;
@@ -166,6 +168,10 @@ namespace GSendCommon
                 catch (InvalidOperationException)
                 {
                     Trace.WriteLine("Invalid operation");
+                }
+                catch (GSendApiException)
+                {
+                    Trace.WriteLine("ApiException");
                 }
                 catch (Exception ex)
                 {

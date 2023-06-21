@@ -20,6 +20,7 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult ToolsGet()
         {
             return GenerateJsonSuccessResponse(_gSendDataProvider.ToolsGet());

@@ -25,9 +25,9 @@ namespace GSendDesktop.Internal
             {
                 // ignore
             }
-            catch (GSendApiException gs)
+            catch (GSendApiException /* gs */)
             {
-                _messageNotifier.ShowMessage(gs.Message);
+                //_messageNotifier.ShowMessage(gs.Message);
             }
             catch (Exception ex)
             {

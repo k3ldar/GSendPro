@@ -1,5 +1,7 @@
 using GSendControls;
 
+using GSendShared;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager;
@@ -23,6 +25,11 @@ namespace GSendEditor
             ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
                 new PluginSettings());
+
+            Environment.SetEnvironmentVariable("GSendProRootPath",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
+
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath")));
 
             applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(Internal.PluginInitialisation).Assembly.Location);

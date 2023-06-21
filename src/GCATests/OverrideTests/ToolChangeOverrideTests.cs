@@ -2,6 +2,9 @@
 using System.Threading;
 
 using GSendAnalyser;
+using GSendAnalyser.Internal;
+
+using GSendCommon.OverrideClasses;
 
 using GSendShared;
 using GSendShared.Models;

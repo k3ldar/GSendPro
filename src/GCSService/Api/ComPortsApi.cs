@@ -16,6 +16,7 @@ namespace GSendService.Api
         }
 
         [HttpGet]
+        [ApiAuthorization]
         public IActionResult GetAllPorts()
         {
             return GenerateJsonSuccessResponse(_comPortProvider.AvailablePorts());

@@ -1363,6 +1363,12 @@ namespace GSendDesktop.Forms
 
         private void btnServiceRefresh_Click(object sender, EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Invoke(() => btnServiceRefresh_Click(sender, e));
+                return;
+            }
+
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
                 IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
