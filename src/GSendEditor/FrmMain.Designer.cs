@@ -98,6 +98,8 @@
             this.toolStripBtnNextBookmark = new System.Windows.Forms.ToolStripButton();
             this.toolStripBtnClearBookmarks = new System.Windows.Forms.ToolStripButton();
             this.tmrServerValidation = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonRefreshSubPrograms = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerPrimary)).BeginInit();
@@ -370,7 +372,7 @@
             this.mnuViewSubPrograms.Name = "mnuViewSubPrograms";
             this.mnuViewSubPrograms.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
             this.mnuViewSubPrograms.Size = new System.Drawing.Size(184, 22);
-            this.mnuViewSubPrograms.Text = "Sub Programs";
+            this.mnuViewSubPrograms.Text = "Subprograms";
             this.mnuViewSubPrograms.Click += new System.EventHandler(this.subprogramsToolStripMenuItem_Click);
             // 
             // mnuHelp
@@ -478,7 +480,6 @@
             this.txtGCode.ContextMenuStrip = this.contextMenuStripEditor;
             this.txtGCode.DefaultMarkerSize = 8;
             this.txtGCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtGCode.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtGCode.IsReplaceMode = false;
             this.txtGCode.LeftBracket = '[';
             this.txtGCode.LeftBracket2 = '(';
@@ -572,7 +573,7 @@
             this.tabPageSubPrograms.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageSubPrograms.Size = new System.Drawing.Size(404, 281);
             this.tabPageSubPrograms.TabIndex = 2;
-            this.tabPageSubPrograms.Text = "Sub Programs";
+            this.tabPageSubPrograms.Text = "Subprograms";
             this.tabPageSubPrograms.UseVisualStyleBackColor = true;
             // 
             // lvSubprograms
@@ -645,7 +646,9 @@
             this.toolStripBtnToggleBookmark,
             this.toolStripBtnPreviousBookmark,
             this.toolStripBtnNextBookmark,
-            this.toolStripBtnClearBookmarks});
+            this.toolStripBtnClearBookmarks,
+            this.toolStripSeparator4,
+            this.toolStripButtonRefreshSubPrograms});
             this.toolbarMain.Location = new System.Drawing.Point(0, 24);
             this.toolbarMain.Name = "toolbarMain";
             this.toolbarMain.Size = new System.Drawing.Size(1083, 25);
@@ -772,6 +775,20 @@
             this.tmrServerValidation.Interval = 5000;
             this.tmrServerValidation.Tick += new System.EventHandler(this.tmrServerValidation_Tick);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonRefreshSubPrograms
+            // 
+            this.toolStripButtonRefreshSubPrograms.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRefreshSubPrograms.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRefreshSubPrograms.Image")));
+            this.toolStripButtonRefreshSubPrograms.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRefreshSubPrograms.Name = "toolStripButtonRefreshSubPrograms";
+            this.toolStripButtonRefreshSubPrograms.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonRefreshSubPrograms.Click += new System.EventHandler(this.toolStripButtonRefreshSubPrograms_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -880,5 +897,7 @@
         private ToolStripSeparator toolStripMenuItem5;
         private GSendControls.ListViewEx lvSubprograms;
         private System.Windows.Forms.Timer tmrServerValidation;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripButton toolStripButtonRefreshSubPrograms;
     }
 }

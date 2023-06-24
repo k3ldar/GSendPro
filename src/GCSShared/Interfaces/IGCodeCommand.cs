@@ -41,7 +41,7 @@
         CommandAttributes Attributes { get; }
 
         /// <summary>
-        /// Sub programs will produce their own sub analyses
+        /// Subprograms will produce their own sub analyses
         /// </summary>
         IGCodeAnalyses SubAnalyses { get; }
 

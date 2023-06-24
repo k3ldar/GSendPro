@@ -274,7 +274,7 @@ namespace GSendDesktop
             this.viewSubProgramToolStripMenuItem});
             this.subprogramsToolStripMenuItem.Name = "subprogramsToolStripMenuItem";
             this.subprogramsToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
-            this.subprogramsToolStripMenuItem.Text = "Sub Programs";
+            this.subprogramsToolStripMenuItem.Text = "Subprograms";
             // 
             // viewSubProgramToolStripMenuItem
             // 

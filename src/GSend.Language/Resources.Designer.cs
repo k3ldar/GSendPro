@@ -538,7 +538,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Sub Programs.
+        ///   Looks up a localized string similar to &amp;Subprograms.
         /// </summary>
         public static string AppMenuViewSubPrograms {
             get {
@@ -1339,7 +1339,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GCode file uses a sub program {0} on line {1} which can not be found..
+        ///   Looks up a localized string similar to GCode file uses a subprogram {0} on line {1} which can not be found..
         /// </summary>
         public static string ErrorSubProgramMissing {
             get {
@@ -2496,6 +2496,15 @@ namespace GSend.Language {
         public static string RegisterService {
             get {
                 return ResourceManager.GetString("RegisterService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload Subprogrammes.
+        /// </summary>
+        public static string ReloadSubprogrammes {
+            get {
+                return ResourceManager.GetString("ReloadSubprogrammes", resourceCulture);
             }
         }
         
@@ -4138,7 +4147,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sub Programs.
+        ///   Looks up a localized string similar to Subprograms.
         /// </summary>
         public static string SubPrograms {
             get {

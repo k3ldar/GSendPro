@@ -129,6 +129,7 @@ namespace GSendEditor
             toolStripBtnPreviousBookmark.ToolTipText = GSend.Language.Resources.BookmarkPrevious;
             toolStripBtnNextBookmark.ToolTipText = GSend.Language.Resources.BookmarkNext;
             toolStripBtnClearBookmarks.ToolTipText = GSend.Language.Resources.BookmarkClearAll;
+            toolStripButtonRefreshSubPrograms.ToolTipText = GSend.Language.Resources.ReloadSubprogrammes;
 
 
             // tabs
@@ -615,6 +616,14 @@ namespace GSendEditor
 
         #endregion Menu's
 
+        #region Toolbars
+
+        private void toolStripButtonRefreshSubPrograms_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Toolbars
 
         private void LoadGCodeData(string fileName)
         {

@@ -277,7 +277,7 @@
     <value>&amp;Status Bar</value>
   </data>
   <data name="AppMenuViewSubPrograms" xml:space="preserve">
-    <value>&amp;Sub Programs</value>
+    <value>&amp;Subprograms</value>
   </data>
   <data name="AppName" xml:space="preserve">
     <value>GSend Pro</value>
@@ -544,7 +544,7 @@
     <value>An error occurred whilst saving server address:\r\n\r\n{0} </value>
   </data>
   <data name="ErrorSubProgramMissing" xml:space="preserve">
-    <value>GCode file uses a sub program {0} on line {1} which can not be found.</value>
+    <value>GCode file uses a subprogram {0} on line {1} which can not be found.</value>
   </data>
   <data name="ExpireDate" xml:space="preserve">
     <value>Expire Date</value>
@@ -929,6 +929,9 @@
   </data>
   <data name="RegisterService" xml:space="preserve">
     <value>Register Service</value>
+  </data>
+  <data name="ReloadSubprogrammes" xml:space="preserve">
+    <value>Reload Subprogrammes</value>
   </data>
   <data name="RenameErrorTitle" xml:space="preserve">
     <value>Rename Error</value>
@@ -1477,7 +1480,7 @@
     <value>Subprogram {0} could not be found</value>
   </data>
   <data name="SubPrograms" xml:space="preserve">
-    <value>Sub Programs</value>
+    <value>Subprograms</value>
   </data>
   <data name="TimeFormatDay" xml:space="preserve">
     <value>{0}d {1}h {2}m {3}s</value>
