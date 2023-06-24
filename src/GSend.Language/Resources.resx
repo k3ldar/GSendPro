@@ -720,6 +720,9 @@
   <data name="Hours" xml:space="preserve">
     <value>Hours</value>
   </data>
+  <data name="InvalidApiResponse" xml:space="preserve">
+    <value>An invalid response was returned whilst processing an Api call: {0}; {1}.</value>
+  </data>
   <data name="InvalidLicense" xml:space="preserve">
     <value>The license entered is invalid</value>
   </data>

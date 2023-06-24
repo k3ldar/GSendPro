@@ -856,7 +856,7 @@ namespace GSendDesktop.Forms
 
         private void SelectionOverrideRapids_ValueChanged(object sender, EventArgs e)
         {
-            if (cbOverrideLinkRapids.Checked)
+            if (selectionOverrideRapids.Checked)
             {
                 //_updatingRapidOverride = true;
                 _machineUpdateThread.Overrides.Rapids = (RapidsOverride)selectionOverrideRapids.Value;
@@ -866,7 +866,7 @@ namespace GSendDesktop.Forms
                 _machineUpdateThread.Overrides.Rapids = RapidsOverride.High;
             }
 
-            _machineUpdateThread.Overrides.OverrideRapids = cbOverrideLinkRapids.Checked;
+            _machineUpdateThread.Overrides.OverrideRapids = selectionOverrideRapids.Checked;
             selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride((RapidsOverride)selectionOverrideRapids.Value);
         }
 
@@ -877,10 +877,10 @@ namespace GSendDesktop.Forms
             _machineUpdateThread.Overrides.AxisZUp.NewValue = selectionOverrideZUp.Value;
             _machineUpdateThread.Overrides.AxisZDown.NewValue = selectionOverrideZDown.Value;
 
-            _machineUpdateThread.Overrides.OverrideSpindle = cbOverrideLinkSpindle.Checked;
-            _machineUpdateThread.Overrides.OverrideXY = cbOverrideLinkXY.Checked;
-            _machineUpdateThread.Overrides.OverrideZUp = cbOverrideLinkZUp.Checked;
-            _machineUpdateThread.Overrides.OverrideZDown = cbOverrideLinkZDown.Checked;
+            _machineUpdateThread.Overrides.OverrideSpindle = selectionOverrideSpindle.Checked;
+            _machineUpdateThread.Overrides.OverrideXY = selectionOverrideXY.Checked;
+            _machineUpdateThread.Overrides.OverrideZUp = selectionOverrideZUp.Checked;
+            _machineUpdateThread.Overrides.OverrideZDown = selectionOverrideZDown.Checked;
 
             _machineUpdateThread.Overrides.OverridesDisabled = cbOverridesDisable.Checked;
 
@@ -922,27 +922,27 @@ namespace GSendDesktop.Forms
             if (!_machineStatusModel.IsRunning)
                 trackBarPercent_ValueChanged(sender, e);
 
-            if (cbOverrideLinkRapids.Checked)
+            if (selectionOverrideRapids.Checked)
                 _machine.AddOptions(MachineOptions.OverrideRapids);
             else
                 _machine.RemoveOptions(MachineOptions.OverrideRapids);
 
-            if (cbOverrideLinkXY.Checked)
+            if (selectionOverrideXY.Checked)
                 _machine.AddOptions(MachineOptions.OverrideXY);
             else
                 _machine.RemoveOptions(MachineOptions.OverrideXY);
 
-            if (cbOverrideLinkZUp.Checked)
+            if (selectionOverrideZUp.Checked)
                 _machine.AddOptions(MachineOptions.OverrideZUp);
             else
                 _machine.RemoveOptions(MachineOptions.OverrideZUp);
 
-            if (cbOverrideLinkZDown.Checked)
+            if (selectionOverrideZDown.Checked)
                 _machine.AddOptions(MachineOptions.OverrideZDown);
             else
                 _machine.RemoveOptions(MachineOptions.OverrideZDown);
 
-            if (cbOverrideLinkSpindle.Checked)
+            if (selectionOverrideSpindle.Checked)
                 _machine.AddOptions(MachineOptions.OverrideSpindle);
             else
                 _machine.RemoveOptions(MachineOptions.OverrideSpindle);
@@ -1445,22 +1445,22 @@ namespace GSendDesktop.Forms
             selectionOverrideZUp.Maximum = (int)_machine.Settings.MaxFeedRateZ;
             selectionOverrideZUp.Minimum = 0;
 
-            cbOverrideLinkRapids.CheckedChanged -= OverrideAxis_Checked;
-            cbOverrideLinkXY.CheckedChanged -= OverrideAxis_Checked;
-            cbOverrideLinkZUp.CheckedChanged -= OverrideAxis_Checked;
-            cbOverrideLinkZDown.CheckedChanged -= OverrideAxis_Checked;
-            cbOverrideLinkSpindle.CheckedChanged -= OverrideAxis_Checked;
+            selectionOverrideRapids.EnabledChanged -= OverrideAxis_Checked;
+            selectionOverrideXY.EnabledChanged -= OverrideAxis_Checked;
+            selectionOverrideZUp.EnabledChanged -= OverrideAxis_Checked;
+            selectionOverrideZDown.EnabledChanged -= OverrideAxis_Checked;
+            selectionOverrideSpindle.EnabledChanged -= OverrideAxis_Checked;
 
-            cbOverrideLinkRapids.Checked = _machine.Options.HasFlag(MachineOptions.OverrideRapids);
-            cbOverrideLinkXY.Checked = _machine.Options.HasFlag(MachineOptions.OverrideXY);
-            cbOverrideLinkZUp.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZUp);
-            cbOverrideLinkZDown.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZDown);
+            selectionOverrideRapids.Checked = _machine.Options.HasFlag(MachineOptions.OverrideRapids);
+            selectionOverrideXY.Checked = _machine.Options.HasFlag(MachineOptions.OverrideXY);
+            selectionOverrideZUp.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZUp);
+            selectionOverrideZDown.Checked = _machine.Options.HasFlag(MachineOptions.OverrideZDown);
 
-            cbOverrideLinkRapids.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkXY.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkZUp.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkZDown.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
+            selectionOverrideRapids.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideXY.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideZUp.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideZDown.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideSpindle.EnabledChanged += OverrideAxis_Checked;
 
             //trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
             selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
@@ -1565,18 +1565,18 @@ namespace GSendDesktop.Forms
             trackBarServiceWeeks.ValueChanged += TrackBarServiceWeeks_ValueChanged;
             trackBarServiceSpindleHours.ValueChanged += TrackBarServiceSpindleHours_ValueChanged;
 
-            cbOverrideLinkRapids.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkXY.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkZDown.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkZUp.CheckedChanged += OverrideAxis_Checked;
-            cbOverrideLinkSpindle.CheckedChanged += OverrideAxis_Checked;
+            selectionOverrideRapids.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideXY.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideZDown.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideZUp.EnabledChanged += OverrideAxis_Checked;
+            selectionOverrideSpindle.EnabledChanged += OverrideAxis_Checked;
             cbOverridesDisable.CheckedChanged += OverrideAxis_Checked;
 
-            cbOverrideLinkRapids.CheckedChanged += SelectionOverrideRapids_ValueChanged;
-            cbOverrideLinkXY.CheckedChanged += SelectionOverride_ValueChanged;
-            cbOverrideLinkZDown.CheckedChanged += SelectionOverride_ValueChanged;
-            cbOverrideLinkZUp.CheckedChanged += SelectionOverride_ValueChanged;
-            cbOverrideLinkSpindle.CheckedChanged += SelectionOverride_ValueChanged;
+            selectionOverrideRapids.EnabledChanged += SelectionOverrideRapids_ValueChanged;
+            selectionOverrideXY.EnabledChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZDown.EnabledChanged += SelectionOverride_ValueChanged;
+            selectionOverrideZUp.EnabledChanged += SelectionOverride_ValueChanged;
+            selectionOverrideSpindle.EnabledChanged += SelectionOverride_ValueChanged;
             cbOverridesDisable.CheckedChanged += SelectionOverride_ValueChanged;
 
             trackBarPercent.ValueChanged += SelectionOverride_ValueChanged;
@@ -1684,11 +1684,11 @@ namespace GSendDesktop.Forms
 
             // Override tab
             cbOverridesDisable.Text = GSend.Language.Resources.DisableOverrides;
-            cbOverrideLinkRapids.Text = GSend.Language.Resources.Rapids;
-            cbOverrideLinkXY.Text = GSend.Language.Resources.OverrideXY;
-            cbOverrideLinkZUp.Text = GSend.Language.Resources.OverrideZUp;
-            cbOverrideLinkZDown.Text = GSend.Language.Resources.OverrideZDown;
-            cbOverrideLinkSpindle.Text = GSend.Language.Resources.Spindle;
+            selectionOverrideRapids.GroupName = GSend.Language.Resources.Rapids;
+            selectionOverrideXY.GroupName = GSend.Language.Resources.OverrideXY;
+            selectionOverrideZUp.GroupName = GSend.Language.Resources.OverrideZUp;
+            selectionOverrideZDown.GroupName = GSend.Language.Resources.OverrideZDown;
+            selectionOverrideSpindle.GroupName = GSend.Language.Resources.Spindle;
             selectionOverrideRapids.LabelValue = GSend.Language.Resources.RapidRateHigh;
 
             // Console tab
@@ -2487,63 +2487,63 @@ namespace GSendDesktop.Forms
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideEnabled,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkRapids.Checked = !cbOverrideLinkRapids.Checked; },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) selectionOverrideRapids.Checked = !selectionOverrideRapids.Checked; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideXYEnabled,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkXY.Checked = !cbOverrideLinkXY.Checked; },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) selectionOverrideXY.Checked = !selectionOverrideXY.Checked; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideZUpEnabled,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkZUp.Checked = !cbOverrideLinkZUp.Checked; },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) selectionOverrideZUp.Checked = !selectionOverrideZUp.Checked; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideZDownEnabled,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkZDown.Checked = !cbOverrideLinkZDown.Checked; },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) selectionOverrideZDown.Checked = !selectionOverrideZDown.Checked; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutToggleRapidsOverrideSpindleEnabled,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) cbOverrideLinkSpindle.Checked = !cbOverrideLinkSpindle.Checked; },
+                    (bool isKeyDown) => { if (isKeyDown && tabPageOverrides.Enabled) selectionOverrideSpindle.Checked = !selectionOverrideSpindle.Checked; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseRapidsSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkRapids.Enabled) selectionOverrideRapids.Value++; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideRapids.Enabled) selectionOverrideRapids.Value++; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseRapidsSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkRapids.Enabled) selectionOverrideRapids.Value--; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideRapids.Enabled) selectionOverrideRapids.Value--; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseXYSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkXY.Enabled) selectionOverrideXY.Value += 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideXY.Enabled) selectionOverrideXY.Value += 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseXYSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkXY.Enabled) selectionOverrideXY.Value -= 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideXY.Enabled) selectionOverrideXY.Value -= 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseZUpSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZUp.Enabled) selectionOverrideZUp.Value += 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideZUp.Enabled) selectionOverrideZUp.Value += 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseZUpSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZUp.Enabled) selectionOverrideZUp.Value -= 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideZUp.Enabled) selectionOverrideZUp.Value -= 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseZDownSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZDown.Enabled) selectionOverrideZDown.Value += 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideZDown.Enabled) selectionOverrideZDown.Value += 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseZDownSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkZDown.Enabled) selectionOverrideZDown.Value -= 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideZDown.Enabled) selectionOverrideZDown.Value -= 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutIncreaseSpindleSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkSpindle.Enabled) selectionOverrideSpindle.Value += 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideSpindle.Enabled) selectionOverrideSpindle.Value += 100; },
                     null),
                 new ShortcutModel(groupNameOverrides, GSend.Language.Resources.ShortcutDecreaseSpindleSpeed,
                     new List<int>() {  },
-                    (bool isKeyDown) => { if (isKeyDown && cbOverrideLinkSpindle.Enabled) selectionOverrideSpindle.Value -= 100; },
+                    (bool isKeyDown) => { if (isKeyDown && selectionOverrideSpindle.Enabled) selectionOverrideSpindle.Value -= 100; },
                     null),
 
                 // settings

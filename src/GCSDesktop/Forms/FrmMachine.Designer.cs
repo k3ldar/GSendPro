@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMachine));
-            this.selectionOverrideSpindle = new GSendControls.Selection();
-            this.selectionOverrideZDown = new GSendControls.Selection();
-            this.selectionOverrideZUp = new GSendControls.Selection();
-            this.selectionOverrideRapids = new GSendControls.Selection();
+            this.selectionOverrideSpindle = new GSendControls.CheckedSelection();
+            this.selectionOverrideZDown = new GSendControls.CheckedSelection();
+            this.selectionOverrideZUp = new GSendControls.CheckedSelection();
+            this.selectionOverrideRapids = new GSendControls.CheckedSelection();
             this.jogControl = new GSendControls.JogControl();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
@@ -75,16 +75,11 @@
             this.gCodeAnalysesDetails = new GSendControls.GCodeAnalysesDetails();
             this.machinePositionGeneral = new GSendControls.MachinePosition();
             this.tabPageOverrides = new System.Windows.Forms.TabPage();
-            this.cbOverrideLinkSpindle = new System.Windows.Forms.CheckBox();
-            this.cbOverrideLinkZDown = new System.Windows.Forms.CheckBox();
-            this.cbOverrideLinkZUp = new System.Windows.Forms.CheckBox();
-            this.cbOverrideLinkXY = new System.Windows.Forms.CheckBox();
-            this.cbOverrideLinkRapids = new System.Windows.Forms.CheckBox();
             this.cbOverridesDisable = new System.Windows.Forms.CheckBox();
             this.labelSpeedPercent = new System.Windows.Forms.Label();
             this.trackBarPercent = new System.Windows.Forms.TrackBar();
             this.machinePositionOverrides = new GSendControls.MachinePosition();
-            this.selectionOverrideXY = new GSendControls.Selection();
+            this.selectionOverrideXY = new GSendControls.CheckedSelection();
             this.tabPageJog = new System.Windows.Forms.TabPage();
             this.btnZeroAll = new System.Windows.Forms.Button();
             this.btnZeroZ = new System.Windows.Forms.Button();
@@ -238,6 +233,7 @@
             // selectionOverrideSpindle
             // 
             this.selectionOverrideSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideSpindle.Checked = false;
             this.selectionOverrideSpindle.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideSpindle.GroupName = "Spindle";
             this.selectionOverrideSpindle.HandleMouseWheel = false;
@@ -245,7 +241,7 @@
             this.selectionOverrideSpindle.LabelFormat = "{0}";
             this.selectionOverrideSpindle.LabelValue = null;
             this.selectionOverrideSpindle.LargeTickChange = 5;
-            this.selectionOverrideSpindle.Location = new System.Drawing.Point(671, 6);
+            this.selectionOverrideSpindle.Location = new System.Drawing.Point(685, 6);
             this.selectionOverrideSpindle.Maximum = 10;
             this.selectionOverrideSpindle.Minimum = 0;
             this.selectionOverrideSpindle.Name = "selectionOverrideSpindle";
@@ -259,6 +255,7 @@
             // selectionOverrideZDown
             // 
             this.selectionOverrideZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideZDown.Checked = false;
             this.selectionOverrideZDown.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZDown.GroupName = "Z Down";
             this.selectionOverrideZDown.HandleMouseWheel = false;
@@ -266,7 +263,7 @@
             this.selectionOverrideZDown.LabelFormat = "{0}";
             this.selectionOverrideZDown.LabelValue = null;
             this.selectionOverrideZDown.LargeTickChange = 50;
-            this.selectionOverrideZDown.Location = new System.Drawing.Point(584, 6);
+            this.selectionOverrideZDown.Location = new System.Drawing.Point(598, 6);
             this.selectionOverrideZDown.Maximum = 10;
             this.selectionOverrideZDown.Minimum = 0;
             this.selectionOverrideZDown.Name = "selectionOverrideZDown";
@@ -279,6 +276,7 @@
             // selectionOverrideZUp
             // 
             this.selectionOverrideZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideZUp.Checked = false;
             this.selectionOverrideZUp.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideZUp.GroupName = "Z Up";
             this.selectionOverrideZUp.HandleMouseWheel = false;
@@ -286,7 +284,7 @@
             this.selectionOverrideZUp.LabelFormat = "{0}";
             this.selectionOverrideZUp.LabelValue = null;
             this.selectionOverrideZUp.LargeTickChange = 50;
-            this.selectionOverrideZUp.Location = new System.Drawing.Point(496, 6);
+            this.selectionOverrideZUp.Location = new System.Drawing.Point(510, 6);
             this.selectionOverrideZUp.Maximum = 10;
             this.selectionOverrideZUp.Minimum = 0;
             this.selectionOverrideZUp.Name = "selectionOverrideZUp";
@@ -299,6 +297,7 @@
             // selectionOverrideRapids
             // 
             this.selectionOverrideRapids.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideRapids.Checked = false;
             this.selectionOverrideRapids.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
             this.selectionOverrideRapids.GroupName = "Rapids";
             this.selectionOverrideRapids.HandleMouseWheel = true;
@@ -306,7 +305,7 @@
             this.selectionOverrideRapids.LabelFormat = "High";
             this.selectionOverrideRapids.LabelValue = null;
             this.selectionOverrideRapids.LargeTickChange = 1;
-            this.selectionOverrideRapids.Location = new System.Drawing.Point(320, 6);
+            this.selectionOverrideRapids.Location = new System.Drawing.Point(334, 6);
             this.selectionOverrideRapids.Maximum = 2;
             this.selectionOverrideRapids.Minimum = 0;
             this.selectionOverrideRapids.Name = "selectionOverrideRapids";
@@ -353,7 +352,7 @@
             this.toolStripDropDownButtonCoordinateSystem});
             this.toolStripMain.Location = new System.Drawing.Point(0, 24);
             this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(796, 57);
+            this.toolStripMain.Size = new System.Drawing.Size(810, 57);
             this.toolStripMain.TabIndex = 1;
             this.toolStripMain.Text = "toolStrip1";
             // 
@@ -560,7 +559,7 @@
             this.statusStrip.Location = new System.Drawing.Point(0, 591);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.ShowItemToolTips = true;
-            this.statusStrip.Size = new System.Drawing.Size(796, 24);
+            this.statusStrip.Size = new System.Drawing.Size(810, 24);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 4;
             this.statusStrip.Text = "statusStrip";
@@ -635,7 +634,7 @@
             this.tabControlMain.MinimumSize = new System.Drawing.Size(773, 270);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(773, 270);
+            this.tabControlMain.Size = new System.Drawing.Size(787, 270);
             this.tabControlMain.TabIndex = 2;
             this.tabControlMain.Resize += new System.EventHandler(this.tabControlMain_Resize);
             // 
@@ -652,7 +651,7 @@
             this.tabPageMain.Location = new System.Drawing.Point(4, 24);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(765, 242);
+            this.tabPageMain.Size = new System.Drawing.Size(779, 242);
             this.tabPageMain.TabIndex = 0;
             this.tabPageMain.Text = "General";
             // 
@@ -723,11 +722,6 @@
             // tabPageOverrides
             // 
             this.tabPageOverrides.BackColor = System.Drawing.Color.White;
-            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkSpindle);
-            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZDown);
-            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkZUp);
-            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkXY);
-            this.tabPageOverrides.Controls.Add(this.cbOverrideLinkRapids);
             this.tabPageOverrides.Controls.Add(this.cbOverridesDisable);
             this.tabPageOverrides.Controls.Add(this.labelSpeedPercent);
             this.tabPageOverrides.Controls.Add(this.trackBarPercent);
@@ -740,68 +734,9 @@
             this.tabPageOverrides.Location = new System.Drawing.Point(4, 24);
             this.tabPageOverrides.Name = "tabPageOverrides";
             this.tabPageOverrides.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOverrides.Size = new System.Drawing.Size(765, 242);
+            this.tabPageOverrides.Size = new System.Drawing.Size(779, 242);
             this.tabPageOverrides.TabIndex = 1;
             this.tabPageOverrides.Text = "Overrides";
-            // 
-            // cbOverrideLinkSpindle
-            // 
-            this.cbOverrideLinkSpindle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOverrideLinkSpindle.AutoSize = true;
-            this.cbOverrideLinkSpindle.Location = new System.Drawing.Point(678, 9);
-            this.cbOverrideLinkSpindle.Name = "cbOverrideLinkSpindle";
-            this.cbOverrideLinkSpindle.Size = new System.Drawing.Size(83, 19);
-            this.cbOverrideLinkSpindle.TabIndex = 13;
-            this.cbOverrideLinkSpindle.Text = "checkBox1";
-            this.cbOverrideLinkSpindle.UseVisualStyleBackColor = true;
-            // 
-            // cbOverrideLinkZDown
-            // 
-            this.cbOverrideLinkZDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOverrideLinkZDown.AutoSize = true;
-            this.cbOverrideLinkZDown.Location = new System.Drawing.Point(592, 9);
-            this.cbOverrideLinkZDown.Name = "cbOverrideLinkZDown";
-            this.cbOverrideLinkZDown.Size = new System.Drawing.Size(67, 19);
-            this.cbOverrideLinkZDown.TabIndex = 6;
-            this.cbOverrideLinkZDown.Text = "Z Down";
-            this.cbOverrideLinkZDown.UseVisualStyleBackColor = true;
-            this.cbOverrideLinkZDown.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
-            // 
-            // cbOverrideLinkZUp
-            // 
-            this.cbOverrideLinkZUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOverrideLinkZUp.AutoSize = true;
-            this.cbOverrideLinkZUp.Location = new System.Drawing.Point(504, 9);
-            this.cbOverrideLinkZUp.Name = "cbOverrideLinkZUp";
-            this.cbOverrideLinkZUp.Size = new System.Drawing.Size(51, 19);
-            this.cbOverrideLinkZUp.TabIndex = 5;
-            this.cbOverrideLinkZUp.Text = "Z Up";
-            this.cbOverrideLinkZUp.UseVisualStyleBackColor = true;
-            this.cbOverrideLinkZUp.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
-            // 
-            // cbOverrideLinkXY
-            // 
-            this.cbOverrideLinkXY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOverrideLinkXY.AutoSize = true;
-            this.cbOverrideLinkXY.Location = new System.Drawing.Point(416, 9);
-            this.cbOverrideLinkXY.Name = "cbOverrideLinkXY";
-            this.cbOverrideLinkXY.Size = new System.Drawing.Size(45, 19);
-            this.cbOverrideLinkXY.TabIndex = 4;
-            this.cbOverrideLinkXY.Text = "X/Y";
-            this.cbOverrideLinkXY.UseVisualStyleBackColor = true;
-            this.cbOverrideLinkXY.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
-            // 
-            // cbOverrideLinkRapids
-            // 
-            this.cbOverrideLinkRapids.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOverrideLinkRapids.AutoSize = true;
-            this.cbOverrideLinkRapids.Location = new System.Drawing.Point(328, 9);
-            this.cbOverrideLinkRapids.Name = "cbOverrideLinkRapids";
-            this.cbOverrideLinkRapids.Size = new System.Drawing.Size(61, 19);
-            this.cbOverrideLinkRapids.TabIndex = 3;
-            this.cbOverrideLinkRapids.Text = "Rapids";
-            this.cbOverrideLinkRapids.UseVisualStyleBackColor = true;
-            this.cbOverrideLinkRapids.CheckedChanged += new System.EventHandler(this.OverrideAxis_Checked);
             // 
             // cbOverridesDisable
             // 
@@ -812,7 +747,6 @@
             this.cbOverridesDisable.TabIndex = 7;
             this.cbOverridesDisable.Text = "override disable";
             this.cbOverridesDisable.UseVisualStyleBackColor = true;
-            this.cbOverridesDisable.CheckedChanged += new System.EventHandler(this.SelectionOverride_ValueChanged);
             // 
             // labelSpeedPercent
             // 
@@ -846,14 +780,15 @@
             // selectionOverrideXY
             // 
             this.selectionOverrideXY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectionOverrideXY.Checked = false;
             this.selectionOverrideXY.FeedRateDisplay = GSendShared.FeedRateDisplayUnits.MmPerMinute;
-            this.selectionOverrideXY.GroupName = "Y";
+            this.selectionOverrideXY.GroupName = "X/Y";
             this.selectionOverrideXY.HandleMouseWheel = false;
             this.selectionOverrideXY.HasDisplayUnits = true;
             this.selectionOverrideXY.LabelFormat = "{0}";
             this.selectionOverrideXY.LabelValue = null;
             this.selectionOverrideXY.LargeTickChange = 50;
-            this.selectionOverrideXY.Location = new System.Drawing.Point(408, 6);
+            this.selectionOverrideXY.Location = new System.Drawing.Point(422, 6);
             this.selectionOverrideXY.Maximum = 10;
             this.selectionOverrideXY.Minimum = 0;
             this.selectionOverrideXY.Name = "selectionOverrideXY";
@@ -875,7 +810,7 @@
             this.tabPageJog.Location = new System.Drawing.Point(4, 24);
             this.tabPageJog.Name = "tabPageJog";
             this.tabPageJog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageJog.Size = new System.Drawing.Size(765, 242);
+            this.tabPageJog.Size = new System.Drawing.Size(779, 242);
             this.tabPageJog.TabIndex = 2;
             this.tabPageJog.Text = "Jog";
             // 
@@ -939,7 +874,7 @@
             this.tabPageSpindle.Location = new System.Drawing.Point(4, 24);
             this.tabPageSpindle.Name = "tabPageSpindle";
             this.tabPageSpindle.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSpindle.Size = new System.Drawing.Size(765, 242);
+            this.tabPageSpindle.Size = new System.Drawing.Size(779, 242);
             this.tabPageSpindle.TabIndex = 4;
             this.tabPageSpindle.Text = "Spindle";
             // 
@@ -1077,7 +1012,7 @@
             this.tabPageServiceSchedule.Location = new System.Drawing.Point(4, 24);
             this.tabPageServiceSchedule.Name = "tabPageServiceSchedule";
             this.tabPageServiceSchedule.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageServiceSchedule.Size = new System.Drawing.Size(765, 242);
+            this.tabPageServiceSchedule.Size = new System.Drawing.Size(779, 242);
             this.tabPageServiceSchedule.TabIndex = 6;
             this.tabPageServiceSchedule.Text = "Service Scgedule";
             // 
@@ -1221,7 +1156,7 @@
             this.tabPageMachineSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageMachineSettings.Name = "tabPageMachineSettings";
             this.tabPageMachineSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMachineSettings.Size = new System.Drawing.Size(765, 242);
+            this.tabPageMachineSettings.Size = new System.Drawing.Size(779, 242);
             this.tabPageMachineSettings.TabIndex = 3;
             this.tabPageMachineSettings.Text = "Machine Settings";
             // 
@@ -1300,7 +1235,7 @@
             this.tabPageSettings.Location = new System.Drawing.Point(4, 24);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSettings.Size = new System.Drawing.Size(765, 242);
+            this.tabPageSettings.Size = new System.Drawing.Size(779, 242);
             this.tabPageSettings.TabIndex = 8;
             this.tabPageSettings.Text = "Settings";
             // 
@@ -1515,7 +1450,7 @@
             this.mnuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(796, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(810, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1769,7 +1704,7 @@
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
             this.mnuHelpAbout.Text = "About";
             this.mnuHelpAbout.Click += new System.EventHandler(this.mnuHelpAbout_Click);
             // 
@@ -1782,7 +1717,7 @@
             this.warningsAndErrors.MaximumSize = new System.Drawing.Size(2048, 48);
             this.warningsAndErrors.MinimumSize = new System.Drawing.Size(204, 27);
             this.warningsAndErrors.Name = "warningsAndErrors";
-            this.warningsAndErrors.Size = new System.Drawing.Size(772, 28);
+            this.warningsAndErrors.Size = new System.Drawing.Size(786, 28);
             this.warningsAndErrors.TabIndex = 2;
             this.warningsAndErrors.OnUpdate += new System.EventHandler(this.warningsAndErrors_OnUpdate);
             this.warningsAndErrors.VisibleChanged += new System.EventHandler(this.WarningContainer_VisibleChanged);
@@ -1801,7 +1736,7 @@
             this.tabControlSecondary.Location = new System.Drawing.Point(12, 411);
             this.tabControlSecondary.Name = "tabControlSecondary";
             this.tabControlSecondary.SelectedIndex = 0;
-            this.tabControlSecondary.Size = new System.Drawing.Size(773, 171);
+            this.tabControlSecondary.Size = new System.Drawing.Size(787, 171);
             this.tabControlSecondary.TabIndex = 3;
             // 
             // tabPageConsole
@@ -1813,7 +1748,7 @@
             this.tabPageConsole.Location = new System.Drawing.Point(4, 4);
             this.tabPageConsole.Name = "tabPageConsole";
             this.tabPageConsole.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageConsole.Size = new System.Drawing.Size(765, 143);
+            this.tabPageConsole.Size = new System.Drawing.Size(779, 143);
             this.tabPageConsole.TabIndex = 0;
             this.tabPageConsole.Text = "tabPageConsole";
             this.tabPageConsole.UseVisualStyleBackColor = true;
@@ -1821,7 +1756,7 @@
             // btnGrblCommandSend
             // 
             this.btnGrblCommandSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGrblCommandSend.Location = new System.Drawing.Point(603, 113);
+            this.btnGrblCommandSend.Location = new System.Drawing.Point(617, 113);
             this.btnGrblCommandSend.Name = "btnGrblCommandSend";
             this.btnGrblCommandSend.Size = new System.Drawing.Size(75, 23);
             this.btnGrblCommandSend.TabIndex = 2;
@@ -1832,7 +1767,7 @@
             // btnGrblCommandClear
             // 
             this.btnGrblCommandClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGrblCommandClear.Location = new System.Drawing.Point(684, 113);
+            this.btnGrblCommandClear.Location = new System.Drawing.Point(698, 113);
             this.btnGrblCommandClear.Name = "btnGrblCommandClear";
             this.btnGrblCommandClear.Size = new System.Drawing.Size(75, 23);
             this.btnGrblCommandClear.TabIndex = 3;
@@ -1846,7 +1781,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserGrblCommand.Location = new System.Drawing.Point(6, 114);
             this.txtUserGrblCommand.Name = "txtUserGrblCommand";
-            this.txtUserGrblCommand.Size = new System.Drawing.Size(591, 23);
+            this.txtUserGrblCommand.Size = new System.Drawing.Size(605, 23);
             this.txtUserGrblCommand.TabIndex = 1;
             this.txtUserGrblCommand.TextChanged += new System.EventHandler(this.txtUserGrblCommand_TextChanged);
             this.txtUserGrblCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserGrblCommand_KeyDown);
@@ -1860,7 +1795,7 @@
             this.textBoxConsoleText.Multiline = true;
             this.textBoxConsoleText.Name = "textBoxConsoleText";
             this.textBoxConsoleText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxConsoleText.Size = new System.Drawing.Size(753, 102);
+            this.textBoxConsoleText.Size = new System.Drawing.Size(767, 102);
             this.textBoxConsoleText.TabIndex = 0;
             // 
             // tabPageGCode
@@ -1869,7 +1804,7 @@
             this.tabPageGCode.Location = new System.Drawing.Point(4, 4);
             this.tabPageGCode.Name = "tabPageGCode";
             this.tabPageGCode.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGCode.Size = new System.Drawing.Size(765, 143);
+            this.tabPageGCode.Size = new System.Drawing.Size(779, 143);
             this.tabPageGCode.TabIndex = 1;
             this.tabPageGCode.Text = "tabPageGCode";
             this.tabPageGCode.UseVisualStyleBackColor = true;
@@ -1939,7 +1874,7 @@
             this.tabPage2DView.Location = new System.Drawing.Point(4, 4);
             this.tabPage2DView.Name = "tabPage2DView";
             this.tabPage2DView.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2DView.Size = new System.Drawing.Size(765, 143);
+            this.tabPage2DView.Size = new System.Drawing.Size(779, 143);
             this.tabPage2DView.TabIndex = 2;
             this.tabPage2DView.Text = "tabPage1";
             this.tabPage2DView.UseVisualStyleBackColor = true;
@@ -1978,7 +1913,7 @@
             this.tabPageHeartbeat.Location = new System.Drawing.Point(4, 4);
             this.tabPageHeartbeat.Name = "tabPageHeartbeat";
             this.tabPageHeartbeat.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageHeartbeat.Size = new System.Drawing.Size(765, 143);
+            this.tabPageHeartbeat.Size = new System.Drawing.Size(779, 143);
             this.tabPageHeartbeat.TabIndex = 3;
             this.tabPageHeartbeat.Text = "graphs";
             this.tabPageHeartbeat.UseVisualStyleBackColor = true;
@@ -2101,7 +2036,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(796, 615);
+            this.ClientSize = new System.Drawing.Size(810, 615);
             this.Controls.Add(this.tabControlSecondary);
             this.Controls.Add(this.warningsAndErrors);
             this.Controls.Add(this.tabControlMain);
@@ -2170,10 +2105,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonClearAlarm;
         private System.Windows.Forms.ToolStripButton toolStripButtonResume;
         private System.Windows.Forms.ToolStripButton toolStripButtonHome;
-        private GSendControls.Selection selectionOverrideSpindle;
-        private GSendControls.Selection selectionOverrideZDown;
-        private GSendControls.Selection selectionOverrideZUp;
-        private GSendControls.Selection selectionOverrideRapids;
+        private GSendControls.CheckedSelection selectionOverrideSpindle;
+        private GSendControls.CheckedSelection selectionOverrideZDown;
+        private GSendControls.CheckedSelection selectionOverrideZUp;
+        private GSendControls.CheckedSelection selectionOverrideRapids;
         private GSendControls.JogControl jogControl;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.TabControl tabControlMain;
@@ -2297,13 +2232,8 @@
         private System.Windows.Forms.RadioButton rbFeedDisplayMmSec;
         private System.Windows.Forms.RadioButton rbFeedDisplayMmMin;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDisplayUnit;
-        private System.Windows.Forms.CheckBox cbOverrideLinkZDown;
-        private System.Windows.Forms.CheckBox cbOverrideLinkZUp;
-        private System.Windows.Forms.CheckBox cbOverrideLinkRapids;
-        private System.Windows.Forms.CheckBox cbOverrideLinkSpindle;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFeedRate;
-        private System.Windows.Forms.CheckBox cbOverrideLinkXY;
-        private GSendControls.Selection selectionOverrideXY;
+        private GSendControls.CheckedSelection selectionOverrideXY;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private GSendControls.GCodeAnalysesDetails gCodeAnalysesDetails;

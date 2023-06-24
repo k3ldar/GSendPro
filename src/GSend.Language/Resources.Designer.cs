@@ -1870,6 +1870,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An invalid response was returned whilst processing an Api call: {0}; {1}..
+        /// </summary>
+        public static string InvalidApiResponse {
+            get {
+                return ResourceManager.GetString("InvalidApiResponse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The license entered is invalid.
         /// </summary>
         public static string InvalidLicense {

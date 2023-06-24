@@ -35,7 +35,7 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult SubprogramGet(string name)
         {
-            ISubProgram subProgram = _subprograms.Get(name);
+             ISubProgram subProgram = _subprograms.Get(name);
 
             if (subProgram == null)
             {
@@ -67,7 +67,7 @@ namespace GSendService.Api
             return GenerateJsonSuccessResponse(_subprograms.Delete(name));
         }
 
-        [HttpPost]
+        [HttpPut]
         [ApiAuthorization]
         public IActionResult SubprogramUpdate([FromBody] ISubProgram model)
         {

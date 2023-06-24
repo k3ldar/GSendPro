@@ -211,7 +211,17 @@ namespace GSendApi
         {
             byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, GSendShared.Constants.DefaultJsonSerializerOptions));
             HttpContent Result = new ByteArrayContent(content);
-            Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");               
+            Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            //ulong nonce = (ulong)DateTime.UtcNow.Ticks;
+            //long timestamp = HmacGenerator.EpochDateTime();
+            //string auth = HmacGenerator.GenerateHmac(_apiKey, _secret, timestamp, nonce, _merchantId, String.Empty);
+
+            //Result.Headers.Add("apikey", _apiKey);
+            //Result.Headers.Add("merchantId", _merchantId);
+            //Result.Headers.Add("nonce", nonce.ToString());
+            //Result.Headers.Add("timestamp", timestamp.ToString());
+            //Result.Headers.Add("authcode", auth);
+            //Result.Headers.Add("payloadLength", "0");
 
             return Result;
         }
@@ -223,6 +233,9 @@ namespace GSendApi
             string address = $"{_apiSettings.RootAddress}{endPoint}";
 
             using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
+
+            if (!response.IsSuccessStatusCode)
+                throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallPostApi)));
 
             string jsonData = response.Content.ReadAsStringAsync().Result;
             JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
@@ -243,6 +256,9 @@ namespace GSendApi
                 string address = $"{_apiSettings.RootAddress}{endPoint}";
 
                 using HttpResponseMessage response = httpClient.GetAsync(address).Result;
+
+                if (!response.IsSuccessStatusCode)
+                    throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallGetApi)));
 
                 string jsonData = response.Content.ReadAsStringAsync().Result;
 
@@ -274,6 +290,9 @@ namespace GSendApi
 
             using HttpResponseMessage response = httpClient.PutAsync(address, content).Result;
 
+            if (!response.IsSuccessStatusCode)
+                throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallPutApi)));
+
             string jsonData = response.Content.ReadAsStringAsync().Result;
 
             
@@ -293,6 +312,9 @@ namespace GSendApi
             string address = $"{_apiSettings.RootAddress}{endPoint}";
 
             using HttpResponseMessage response = httpClient.DeleteAsync(address).Result;
+
+            if (!response.IsSuccessStatusCode)
+                throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallDeleteApi)));
 
             string jsonData = response.Content.ReadAsStringAsync().Result;
             JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
