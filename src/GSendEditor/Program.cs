@@ -5,6 +5,7 @@ using GSendShared;
 using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager;
+using PluginManager.Abstractions;
 
 using Shared.Classes;
 
@@ -45,6 +46,7 @@ namespace GSendEditor
 
             try
             {
+                GlobalExceptionHandler.InitializeGlobalExceptionHandlers(applicationPluginManager.ServiceProvider.GetRequiredService<ILogger>());
                 ApplicationConfiguration.Initialize();
                 Application.Run(applicationPluginManager.ServiceProvider.GetRequiredService<FrmMain>());
             }

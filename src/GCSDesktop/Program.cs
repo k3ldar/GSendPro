@@ -9,6 +9,7 @@ using GSendShared;
 using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager;
+using PluginManager.Abstractions;
 
 using Shared.Classes;
 
@@ -46,6 +47,7 @@ namespace GSendDesktop
             IGSendContext gSendContext = applicationPluginManager.ServiceProvider.GetService<IGSendContext>();
             try
             {
+                GlobalExceptionHandler.InitializeGlobalExceptionHandlers(applicationPluginManager.ServiceProvider.GetRequiredService<ILogger>());
                 ApplicationConfiguration.Initialize();
                 Application.Run(gSendContext.ServiceProvider.GetRequiredService<FormMain>());
             }

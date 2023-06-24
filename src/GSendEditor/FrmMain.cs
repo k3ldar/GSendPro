@@ -620,7 +620,7 @@ namespace GSendEditor
 
         private void toolStripButtonRefreshSubPrograms_Click(object sender, EventArgs e)
         {
-
+            LoadSubprograms();
         }
 
         #endregion Toolbars
