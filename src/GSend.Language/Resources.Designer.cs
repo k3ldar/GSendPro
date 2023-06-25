@@ -3904,6 +3904,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Errors have been detected..
+        /// </summary>
+        public static string StartJobErrorCount {
+            get {
+                return ResourceManager.GetString("StartJobErrorCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start Job Wizard.
         /// </summary>
         public static string StartJobWizard {

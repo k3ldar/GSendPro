@@ -1398,6 +1398,9 @@
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="StartJobErrorCount" xml:space="preserve">
+    <value>{0} Errors have been detected.</value>
+  </data>
   <data name="StartJobWizard" xml:space="preserve">
     <value>Start Job Wizard</value>
   </data>

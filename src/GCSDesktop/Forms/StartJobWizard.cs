@@ -15,6 +15,7 @@ namespace GSendDesktop.Forms
     {
         private readonly MachineStateModel _machineStatusModel;
         private readonly IGCodeAnalyses _gCodeAnalyses;
+        private int _errorCount = 0;
 
         public StartJobWizard()
         {
@@ -57,6 +58,9 @@ namespace GSendDesktop.Forms
             cmbTool.SelectedIndex = selectedIndex;
 
             ValidateCoordinateSystem();
+
+
+            lblErrors.Text = String.Format(GSend.Language.Resources.StartJobErrorCount, _errorCount);
         }
 
         public IToolProfile ToolProfile => GetToolProfile();
@@ -86,6 +90,9 @@ namespace GSendDesktop.Forms
                     if (Enum.TryParse(name, true, out MachineStateOptions option))
                     {
                         lstCoordinates.Items.Add(option);
+
+                        if (!_machineStatusModel.MachineStateOptions.HasFlag(option))
+                            _errorCount++;
                     }
                 }
             }

@@ -40,6 +40,7 @@
             this.lstCoordinates = new System.Windows.Forms.ListBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.cbSimulate = new System.Windows.Forms.CheckBox();
+            this.lblErrors = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnStart
@@ -140,11 +141,21 @@
             this.cbSimulate.Text = "simulate";
             this.cbSimulate.UseVisualStyleBackColor = true;
             // 
+            // lblErrors
+            // 
+            this.lblErrors.AutoSize = true;
+            this.lblErrors.Location = new System.Drawing.Point(12, 196);
+            this.lblErrors.Name = "lblErrors";
+            this.lblErrors.Size = new System.Drawing.Size(38, 15);
+            this.lblErrors.TabIndex = 9;
+            this.lblErrors.Text = "label1";
+            // 
             // StartJobWizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 272);
+            this.Controls.Add(this.lblErrors);
             this.Controls.Add(this.cbSimulate);
             this.Controls.Add(this.lstCoordinates);
             this.Controls.Add(this.lblWarnings);
@@ -178,5 +189,6 @@
         private System.Windows.Forms.ListBox lstCoordinates;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.CheckBox cbSimulate;
+        private System.Windows.Forms.Label lblErrors;
     }
 }
