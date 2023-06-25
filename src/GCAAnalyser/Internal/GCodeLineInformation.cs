@@ -1,7 +1,10 @@
-﻿using GSendShared;
+﻿using System.Diagnostics;
+
+using GSendShared;
 
 namespace GSendAnalyser.Internal
 {
+    [DebuggerDisplay("{GCode}")]
     internal sealed class GCodeLineInformation : IGCodeLineInfo
     {
         public GCodeLineInformation()

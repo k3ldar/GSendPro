@@ -1199,8 +1199,35 @@ namespace GSendDesktop.Forms
         public void SetZeroForAxes(object sender, EventArgs e)
         {
             ZeroAxis zeroAxis = (ZeroAxis)((Button)sender).Tag;
-            SendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, 0));
+            SendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
             tabPageJog.Focus();
+        }
+
+        private int GetCoordinateSystemForZero()
+        {
+            switch (_machineStatusModel.CoordinateSystem)
+            {
+                case CoordinateSystem.G54:
+                    return 1;
+
+                case CoordinateSystem.G55:
+                    return 2;
+
+                case CoordinateSystem.G56:
+                    return 3;
+
+                case CoordinateSystem.G57:
+                    return 4;
+
+                case CoordinateSystem.G58:
+                    return 5;
+
+                case CoordinateSystem.G59:
+                    return 6;
+
+                default:
+                    return 0;
+            }
         }
 
         #endregion Zeroing

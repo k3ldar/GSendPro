@@ -91,6 +91,8 @@ namespace GSendAnalyser
                 return;
             }
 
+            bool first = true;
+
             foreach (IGCodeCommand command in commands)
             {
                 if (command.Command.Equals('O') && command.SubAnalyses != null && command.SubAnalyses.Commands.Count > 0)
@@ -99,8 +101,11 @@ namespace GSendAnalyser
                 }
                 else
                 {
-                    if (Result.Count == 0 || command.LineNumber != Result[Result.Count - 1].LineNumber)
+                    if (/*Result.Count == 0 || */first || command.LineNumber != Result[Result.Count - 1].LineNumber)
+                    {
                         lineNumber++;
+                        first = false;
+                    }
 
                     if (command is GCodeCommand gCommand)
                         gCommand.MasterLineNumber = lineNumber;
@@ -185,7 +190,7 @@ namespace GSendAnalyser
 
             foreach (IGCodeCommand command in AllCommands)
             {
-                if (command.LineNumber > lineCount)
+                if (command.MasterLineNumber > lineCount)
                 {
                     currentLine = new(this);
                     lineCount++;

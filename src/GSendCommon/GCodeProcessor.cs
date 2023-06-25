@@ -176,7 +176,10 @@ namespace GSendCommon
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
 
                     if (commandToSend.IsCommentOnly)
+                    {
+                        NextCommand++;
                         continue;
+                    }
 
                     string commandText = commandToSend.GetGCode();
 
@@ -185,7 +188,7 @@ namespace GSendCommon
                         if (!String.IsNullOrEmpty(commandText) ||
                             !commandText.StartsWith("%"))
                         {
-                            //Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
+                            Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
 
                             bool overriddenGCode = InternalWriteLine(commandToSend);
