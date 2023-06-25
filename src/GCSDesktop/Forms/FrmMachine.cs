@@ -2214,7 +2214,7 @@ namespace GSendDesktop.Forms
                         UpdateDisplay();
                     }
 
-                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<IGSendApiWrapper>());
+                    AnalyzeWarningAndErrors analyzeWarningAndErrors = new(_serviceProvider.GetRequiredService<ISubprograms>());
                     analyzeWarningAndErrors.ViewAndAnalyseWarningsAndErrors(warningsAndErrors, null, _gCodeAnalyses);
 
                     if (_gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.UsesMistCoolant) && !_machine.Options.HasFlag(MachineOptions.MistCoolant))

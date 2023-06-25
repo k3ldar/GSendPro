@@ -20,7 +20,7 @@ namespace GSendTests.GSendAnalyserTests
         {
             string gCodeWithVariables = "G54\r\nG0X50 ; V Carve heart\r\nG55 ; move to second position/piece\r\nG0X50 ; repeat heart\r\nG56 ; move to third position\r\nG0X50 ; Repeat heart\r\nG57 ; move to fourth position\r\nG0X50 ; repeat heart\r\nG58 ; move to fifth position\r\nG0X50 ; repeat heart\r\nG59 ; move \r\nG0X50 ; repeat heart";
 
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
 
             Assert.AreEqual(18, analyses.Commands.Count);

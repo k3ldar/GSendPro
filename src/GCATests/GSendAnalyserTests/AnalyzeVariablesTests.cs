@@ -22,12 +22,12 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableNotDeclared_AddsError_Success()
         {
             string gCodeWithM650NoComment = "M650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new(new MockGSendApiWrapper());
+            AnalyzeVariables sut = new(new MockSubprograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(1, analyses.Errors.Count);
@@ -38,12 +38,12 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableDeclaredAfterFirstUsage_AddsError_Success()
         {
             string gCodeWithM650NoComment = "M650 [#321]\n#321=a value";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new(new MockGSendApiWrapper());
+            AnalyzeVariables sut = new(new MockSubprograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(1, analyses.Errors.Count);
@@ -54,12 +54,12 @@ namespace GSendTests.GSendAnalyserTests
         public void VariableDeclaredButNotUsed_AddsWarnings_Success()
         {
             string gCodeWithM650NoComment = "#200=a\n#201=b\n\n#321=a value\nM650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(1, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new(new MockGSendApiWrapper());
+            AnalyzeVariables sut = new(new MockSubprograms());
             sut.Analyze("", analyses);
 
             Assert.AreEqual(0, analyses.Errors.Count);
@@ -72,20 +72,20 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void VariableDeclaredInSubProgram_NotUsedInCurrentGCode_AddsWarnings_Success()
         {
+            MockSubprograms subprograms = new();
             string gCodeWithM650NoComment = "O1000\n#200=a\n#201=b\n\nM650 [#321]";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), subprograms);
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(2, analyses.Commands.Count);
 
-            MockGSendApiWrapper mockApiWrapper = new();
             SubprogramModel subProgram = new("O1000", "debug with vars", "#321=a value\n#322=value")
             {
                 Variables = new()
             };
             subProgram.Variables.Add(new GCodeVariableModel(321, "a", 2));
-            mockApiWrapper.Subprograms.Add(subProgram);
-            AnalyzeVariables sut = new(mockApiWrapper);
+            subprograms.Subprograms.Add(subProgram);
+            AnalyzeVariables sut = new(subprograms);
             sut.Analyze("", analyses);
 
             Assert.AreEqual(1, analyses.Errors.Count);
@@ -99,16 +99,16 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void VariableDeclaredInMultipleSubProgram_AddsError_Success()
         {
-            MockGSendApiWrapper apiWrapper = new();
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1000", "O1000", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1001", "O1001", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O1000", "O1000", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            subprograms.Subprograms.Add(new SubprogramModel("O1001", "O1001", "#100=2\n#121=3") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
             string gCodeWithM650NoComment = "O1000\nO1001";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), apiWrapper);
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), subprograms);
             IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
 
             Assert.AreEqual(2, analyses.Commands.Count);
 
-            AnalyzeVariables sut = new(apiWrapper);
+            AnalyzeVariables sut = new(subprograms);
             sut.Analyze("", analyses);
 
             Assert.AreEqual(4, analyses.Errors.Count);

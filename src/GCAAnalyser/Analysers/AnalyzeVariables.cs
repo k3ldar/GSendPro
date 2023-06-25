@@ -7,11 +7,11 @@ namespace GSendAnalyser.Analysers
 {
     internal class AnalyzeVariables : IGCodeAnalyzer
     {
-        private readonly IGSendApiWrapper _apiWrapper;
+        private readonly ISubprograms _subprograms;
 
-        public AnalyzeVariables(IGSendApiWrapper apiWrapper)
+        public AnalyzeVariables(ISubprograms subprograms)
         {
-            _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
+            _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
         }
 
         public int Order => int.MinValue;
@@ -29,9 +29,9 @@ namespace GSendAnalyser.Analysers
                 {
                     string subProgramName = $"O{subProgram.CommandValue}";
 
-                    if (_apiWrapper.SubprogramExists(subProgramName))
+                    if (_subprograms.Exists(subProgramName))
                     {
-                        ISubProgram sub = _apiWrapper.SubprogramGet(subProgramName);
+                        ISubProgram sub = _subprograms.Get(subProgramName);
 
                         if (sub != null)
                         {

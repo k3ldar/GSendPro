@@ -10,11 +10,11 @@ namespace GSendControls
 {
     public sealed class AnalyzeWarningAndErrors
     {
-        private readonly IGSendApiWrapper _gSendApiWrapper;
+        private readonly ISubprograms _subprograms;
 
-        public AnalyzeWarningAndErrors(IGSendApiWrapper subprograms)
+        public AnalyzeWarningAndErrors(ISubprograms subprograms)
         {
-            _gSendApiWrapper = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
+            _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
         }
 
         public void ViewAndAnalyseWarningsAndErrors(WarningContainer warningsAndErrors, List<WarningErrorList> issues, IGCodeAnalyses gCodeAnalyses)
@@ -59,7 +59,7 @@ namespace GSendControls
                     if (!String.IsNullOrEmpty(item.Comment))
                         subProgram += $" {item.Comment}";
 
-                    if (!_gSendApiWrapper.SubprogramExists($"{item.Command}{item.CommandValue}"))
+                    if (!_subprograms.Exists($"{item.Command}{item.CommandValue}"))
                     {
                         AddMessage(warningsAndErrors, issues, InformationType.Error, String.Format(GSend.Language.Resources.ErrorSubProgramMissing,
                             subProgram, item.LineNumber));

@@ -23,7 +23,7 @@ namespace GSendTests.MCodeOverrideTests
         public void Process_M600CodeNotFound_Returns_False()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
@@ -45,7 +45,7 @@ namespace GSendTests.MCodeOverrideTests
         public void Process_M600CodeFound_NoPCode_Returns_False()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M600");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
@@ -67,7 +67,7 @@ namespace GSendTests.MCodeOverrideTests
         public void Process_M600AndPCodeCodeFound_PCodeValueLessThanMinimum_Returns_False()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P0");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
@@ -89,7 +89,7 @@ namespace GSendTests.MCodeOverrideTests
         public void Process_M600AndPCodeCodeFound_PCodeValueGreaterThanMaximum_Returns_False()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P2001");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
@@ -111,7 +111,7 @@ namespace GSendTests.MCodeOverrideTests
         public void Process_M600AndPCodeCodeFound_PCodeValid_Returns_True()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M600P0.001");
             gCodeLine.Commands.AddRange(analyses.Commands);
 

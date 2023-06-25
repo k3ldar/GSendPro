@@ -44,6 +44,7 @@ namespace GSendService
             services.AddSingleton<IComPortFactory, ComPortFactory>();
             services.AddTransient<IProcessorMediator, ProcessorMediator>();
             services.AddSingleton<IStaticMethods, StaticMethods>();
+            services.AddSingleton<ISubprograms, Subprograms>();
         }
 
         public void Configure(in IApplicationBuilder app)

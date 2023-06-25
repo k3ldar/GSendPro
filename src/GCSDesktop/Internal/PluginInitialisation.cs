@@ -5,6 +5,8 @@ using System.Text.Json;
 
 using GSendCommon.Settings;
 
+using GSendControls;
+
 using GSendDesktop.Abstractions;
 using GSendDesktop.Forms;
 
@@ -34,6 +36,7 @@ namespace GSendDesktop.Internal
             services.AddTransient<ICommandProcessor, CommandProcessor>();
             services.AddTransient<FormMain>();
             services.AddTransient<FrmAddMachine>();
+            services.AddSingleton<ISubprograms, SubProgramsApi>();
         }
 
         public void Finalise()

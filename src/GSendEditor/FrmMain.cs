@@ -36,7 +36,7 @@ namespace GSendEditor
             _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _gsendApiWrapper, txtGCode);
+                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>(), txtGCode);
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);

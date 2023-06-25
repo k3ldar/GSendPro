@@ -29,6 +29,7 @@ namespace GSendEditor.Internal
             services.AddTransient<FrmMain>();
             services.AddTransient<SubProgramForm>();
             services.AddTransient<Bookmarks>();
+            services.AddSingleton<ISubprograms, SubProgramsApi>();
         }
 
         public void Finalise()

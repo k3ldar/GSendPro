@@ -28,7 +28,7 @@ namespace GSendTests.Mocks
 
                     if (type.Equals(typeof(GSendAnalyser.Analysers.AnalyzeVariables)))
                     {
-                        Result.Add(new MockGSendApiWrapper());
+                        Result.Add(new MockSubprograms());
                     }
                     else
                     {

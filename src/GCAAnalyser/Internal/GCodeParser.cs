@@ -19,17 +19,17 @@ namespace GSendAnalyser.Internal
         private const int UserVariableStartingId = 100;
 
         private readonly IPluginClassesService _pluginClassesService;
-        private readonly IGSendApiWrapper _apiWrapper;
+        private readonly ISubprograms _subprograms;
         private int _index;
 
         #endregion Private Members
 
         #region Constructors
 
-        public GCodeParser(IPluginClassesService pluginClassesService, IGSendApiWrapper apiWrapper)
+        public GCodeParser(IPluginClassesService pluginClassesService, ISubprograms subprograms)
         {
             _pluginClassesService = pluginClassesService ?? throw new ArgumentNullException(nameof(pluginClassesService));
-            _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
+            _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
         }
 
         #endregion Constructors
@@ -287,9 +287,9 @@ namespace GSendAnalyser.Internal
 
                         string subProgram = $"{currentCommand}{commandValue}";
 
-                        if (_apiWrapper.SubprogramExists(subProgram))
+                        if (_subprograms.Exists(subProgram))
                         {
-                            ISubProgram sub = _apiWrapper.SubprogramGet(subProgram);
+                            ISubProgram sub = _subprograms.Get(subProgram);
 
                             if (sub != null)
                             {

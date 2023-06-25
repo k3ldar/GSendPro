@@ -3,7 +3,7 @@ using System.Text.Json;
 
 using GSendShared;
 
-namespace GSendCommon
+namespace GSendService.Internal
 {
     public sealed class Subprograms : ISubprograms
     {

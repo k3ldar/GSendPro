@@ -23,7 +23,7 @@ namespace GSendTests.GSendAnalyserTests
         public void AnalyzeSubProgram_ContainsMultipleSubprogramsPerLine_CreatesError()
         {
             string gCode = "O1000O1001\nO1002\nO1003O1004";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockGSendApiWrapper());
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(5, analyses.Commands.Count);
@@ -46,13 +46,13 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void AllLines_CorrectlySplitsOutSubPrograms_Success()
         {
-            MockGSendApiWrapper apiWrapper = new();
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1000", "O1000", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1001", "O1001", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1002", "O1002", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O1000", "O1000", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            subprograms.Subprograms.Add(new SubprogramModel("O1001", "O1001", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            subprograms.Subprograms.Add(new SubprogramModel("O1002", "O1002", "X0\nY0\nX10\nY10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
 
             string gCode = "G54\nO1000\nG55\nO1001\nG56\nO1002";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), apiWrapper);
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), subprograms);
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(6, analyses.Commands.Count);
@@ -82,11 +82,11 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void AllLines_CorrectlySplitsOutRepeatedSubProgram_Success()
         {
-            MockGSendApiWrapper apiWrapper = new();
-            apiWrapper.Subprograms.Add(new SubprogramModel("O1000", "O1000", "G1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
+            MockSubprograms subprograms = new();
+            subprograms.Subprograms.Add(new SubprogramModel("O1000", "O1000", "G1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10\r\nG1X0Y0F10\r\nG1X100Y100F10") { Variables = new() { new GCodeVariableModel(100, "2", 1), new GCodeVariableModel(121, "3", 2) } });
 
             string gCode = "G54\nO1000\nG55\nO1000\nG56\nO1000";
-            GCodeParser gCodeParser = new(new MockPluginClassesService(), apiWrapper);
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), subprograms);
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(6, analyses.Commands.Count);
