@@ -32,9 +32,15 @@ namespace GSendTests.GSendAnalyserTests
             sut.Analyze("", analyses);
 
             Assert.AreEqual(5, analyses.SubProgramCount);
-            Assert.AreEqual(2, analyses.Errors.Count);
-            Assert.AreEqual("Line 1 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[0]);
-            Assert.AreEqual("Line 3 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[1]);
+            Assert.AreEqual(7, analyses.Errors.Count);
+            Assert.AreEqual("Subprogram O1000 could not be found", analyses.Errors[0]);
+            Assert.AreEqual("Subprogram O1001 could not be found", analyses.Errors[1]);
+            Assert.AreEqual("Subprogram O1002 could not be found", analyses.Errors[2]);
+            Assert.AreEqual("Subprogram O1003 could not be found", analyses.Errors[3]);
+            Assert.AreEqual("Subprogram O1004 could not be found", analyses.Errors[4]);
+            Assert.AreEqual("Line 1 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[5]);
+            Assert.AreEqual("Line 3 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[6]);
+            
         }
 
         [TestMethod]

@@ -88,7 +88,8 @@ namespace GSendTests.GSendAnalyserTests
             AnalyzeVariables sut = new(mockApiWrapper);
             sut.Analyze("", analyses);
 
-            Assert.AreEqual(0, analyses.Errors.Count);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Subprogram O1000 could not be found", analyses.Errors[0]);
 
             Assert.AreEqual(2, analyses.Warnings.Count);
             Assert.AreEqual("Variable #200 is declared on line 2 but not used.", analyses.Warnings[0]);
