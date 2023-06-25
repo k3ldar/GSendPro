@@ -1003,6 +1003,19 @@ namespace GSendCommon
                         {
                             activeCommand.Status = LineStatus.Processed;
                             UpdateMachineStateBufferData();
+
+                            if (activeCommand.Commands.Any(c => c.Command.Equals('G') &&
+                                        (
+                                            c.CommandValue.Equals(54) ||
+                                            c.CommandValue.Equals(55) ||
+                                            c.CommandValue.Equals(56) ||
+                                            c.CommandValue.Equals(57) ||
+                                            c.CommandValue.Equals(58) ||
+                                            c.CommandValue.Equals(59)
+                                        )))
+                            {
+                                SendAndProcessMessage("$G");
+                            }
                         }
 
                         _waitingForResponse = false;
