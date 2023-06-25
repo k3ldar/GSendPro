@@ -314,6 +314,10 @@ namespace GSendAnalyser.Internal
                                 }
                             }
                         }
+                        else
+                        {
+                            analysis.AddError(String.Format(GSend.Language.Resources.SubprogramNotFound, subProgram));
+                        }
 
                         break;
 
