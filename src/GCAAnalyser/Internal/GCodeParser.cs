@@ -350,6 +350,16 @@ namespace GSendAnalyser.Internal
 
                                 break;
 
+                            case 54:
+                            case 55:
+                            case 56:
+                            case 57:
+                            case 58:
+                            case 59:
+                                currentValues.Attributes |= CommandAttributes.ChangeCoordinates;
+
+                                break;
+
                             default:
                                 currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
                                 currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;

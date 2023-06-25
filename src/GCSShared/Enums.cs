@@ -331,6 +331,8 @@
         ContainsVariables = 33554432,
 
         InvalidCommentTooLong = 67108864,
+
+        ChangeCoordinates = 134217728,
     }
 
     public enum UnitOfMeasurement
