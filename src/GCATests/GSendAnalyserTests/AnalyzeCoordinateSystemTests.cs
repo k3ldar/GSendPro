@@ -33,6 +33,19 @@ namespace GSendTests.GSendAnalyserTests
             Assert.IsTrue(analyses.Commands[12].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
             Assert.IsTrue(analyses.Commands[15].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
 
+            Assert.IsFalse(analyses.Commands[1].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[2].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[4].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[5].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[7].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[8].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[10].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[11].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[13].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[14].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[16].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+            Assert.IsFalse(analyses.Commands[17].Attributes.HasFlag(CommandAttributes.ChangeCoordinates));
+
             AnalyzeCoordinateSystemsUsed sut = new();
             sut.Analyze("", analyses);
 

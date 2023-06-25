@@ -278,6 +278,7 @@ namespace GSendAnalyser.Internal
                 currentValues.Attributes &= ~CommandAttributes.MovementError;
                 currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
                 currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
+                currentValues.Attributes &= ~CommandAttributes.ChangeCoordinates;
                 GCodeAnalyses subProgramAnalyses = null;
 
                 switch (currentCommand)
