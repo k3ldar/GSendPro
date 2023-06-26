@@ -6,7 +6,7 @@ namespace GSendShared
 {
     [JsonConverter(typeof(Converters.JsonConverterSubProgram))]
 
-    public interface ISubProgram
+    public interface ISubprogram
     {
         string Name { get; set; }
 

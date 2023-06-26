@@ -6,10 +6,10 @@
 
         bool Delete(string name);
 
-        ISubProgram Get(string name);
+        ISubprogram Get(string name);
 
-        bool Update(ISubProgram subProgram);
+        bool Update(ISubprogram subProgram);
 
-        List<ISubProgram> GetAll();
+        List<ISubprogram> GetAll();
     }
 }

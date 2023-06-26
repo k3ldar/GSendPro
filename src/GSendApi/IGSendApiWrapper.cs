@@ -18,9 +18,9 @@ namespace GSendApi
         void MachineUpdate(IMachine machine);
         bool SubprogramDelete(string name);
         bool SubprogramExists(string name);
-        List<ISubProgram> SubprogramGet();
-        ISubProgram SubprogramGet(string name);
-        bool SubprogramUpdate(ISubProgram subProgram);
+        List<ISubprogram> SubprogramGet();
+        ISubprogram SubprogramGet(string name);
+        bool SubprogramUpdate(ISubprogram subProgram);
         List<IToolProfile> ToolProfilesGet();
     }
 }

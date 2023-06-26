@@ -29,7 +29,7 @@ namespace GSendDesktop.Internal
             GSendSettings gSendSettings = JsonSerializer.Deserialize<GSendSettings>(jsonData["GSend"].ToString(), Constants.DefaultJsonSerializerOptions);
 
             services.AddSingleton<IGSendContext, GSendContext>();
-            services.AddSingleton(new GSendSettings());
+            services.AddSingleton(gSendSettings);
             services.AddSingleton<IGsendSettings>(gSendSettings);
             services.AddTransient<IMessageNotifier, MessageNotifier>();
             services.AddTransient<IComPortProvider, ComPortProvider>();

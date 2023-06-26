@@ -48,7 +48,7 @@ namespace GSendService.Internal
             return File.Exists(fileName);
         }
 
-        public ISubProgram Get(string name)
+        public ISubprogram Get(string name)
         {
             ValidateFileName(name);
 
@@ -59,9 +59,9 @@ namespace GSendService.Internal
             return CreateSubProgramFromFileName(fileName);
         }
 
-        public List<ISubProgram> GetAll()
+        public List<ISubprogram> GetAll()
         {
-            List<ISubProgram> Result = new();
+            List<ISubprogram> Result = new();
 
             string[] files = Directory.GetFiles(_path, $"*{Constants.DefaultSubProgramFileExtension}");
 
@@ -73,7 +73,7 @@ namespace GSendService.Internal
             return Result;
         }
 
-        public bool Update(ISubProgram subProgram)
+        public bool Update(ISubprogram subProgram)
         {
             ValidateFileName(subProgram.Name);
             string fileName = Path.Combine(_path, subProgram.Name + Constants.DefaultSubProgramFileExtension);
@@ -84,9 +84,9 @@ namespace GSendService.Internal
             return File.Exists(fileName);
         }
 
-        private static ISubProgram CreateSubProgramFromFileName(string fileName)
+        private static ISubprogram CreateSubProgramFromFileName(string fileName)
         {
-            return JsonSerializer.Deserialize<ISubProgram>(File.ReadAllText(fileName), Constants.DefaultJsonSerializerOptions);
+            return JsonSerializer.Deserialize<ISubprogram>(File.ReadAllText(fileName), Constants.DefaultJsonSerializerOptions);
         }
 
         [DebuggerStepThrough]

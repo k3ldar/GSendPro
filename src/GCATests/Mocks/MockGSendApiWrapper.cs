@@ -60,7 +60,7 @@ namespace GSendTests.Mocks
 
         public bool SubprogramDelete(string name)
         {
-            ISubProgram subProgram = Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+            ISubprogram subProgram = Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
 
             if (subProgram == null)
                 return false;
@@ -74,19 +74,19 @@ namespace GSendTests.Mocks
             return Subprograms.Any(sp => sp.Name.Equals(name));
         }
 
-        public ISubProgram SubprogramGet(string name)
+        public ISubprogram SubprogramGet(string name)
         {
             return Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
         }
 
-        public List<ISubProgram> SubprogramGet()
+        public List<ISubprogram> SubprogramGet()
         {
             return Subprograms;
         }
 
-        public bool SubprogramUpdate(ISubProgram subProgram)
+        public bool SubprogramUpdate(ISubprogram subProgram)
         {
-            ISubProgram existing = Subprograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
+            ISubprogram existing = Subprograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
 
             if (existing == null)
                 return false;
@@ -97,7 +97,7 @@ namespace GSendTests.Mocks
             return true;
         }
 
-        public List<ISubProgram> Subprograms { get; set; } = new();
+        public List<ISubprogram> Subprograms { get; set; } = new();
 
         public List<IToolProfile> ToolProfilesGet()
         {

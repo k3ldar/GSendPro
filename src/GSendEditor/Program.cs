@@ -42,10 +42,13 @@ namespace GSendEditor
 
 
 
-            applicationPluginManager.ConfigureServices();
+            IServiceCollection serviceCollection = new ServiceCollection();
+            applicationPluginManager.ConfigureServices(serviceCollection);
+            applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
 
             try
             {
+                applicationPluginManager.ServiceProvider.GetRequiredService<ISubprograms>();
                 GlobalExceptionHandler.InitializeGlobalExceptionHandlers(applicationPluginManager.ServiceProvider.GetRequiredService<ILogger>());
                 ApplicationConfiguration.Initialize();
                 Application.Run(applicationPluginManager.ServiceProvider.GetRequiredService<FrmMain>());

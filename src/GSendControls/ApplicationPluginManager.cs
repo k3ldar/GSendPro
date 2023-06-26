@@ -18,7 +18,11 @@ namespace GSendControls
 
         }
 
-        new public IServiceProvider ServiceProvider => base.ServiceProvider;
+        new public IServiceProvider ServiceProvider
+        {
+            get => base.ServiceProvider;
+            set => base.ServiceProvider = value;
+        } 
 
         public void RegisterPlugin(string pluginName)
         {
@@ -67,7 +71,9 @@ namespace GSendControls
 
         protected override void ServiceConfigurationComplete(in IServiceCollection serviceCollection)
         {
-
+            serviceCollection.AddSingleton<IServiceProvider>(sp => { return ServiceProvider; });
+            serviceCollection.AddTransient<IServiceProvider>(sp => { return ServiceProvider; });
+            serviceCollection.AddScoped<IServiceProvider>(sp => { return ServiceProvider; });
         }
     }
 }

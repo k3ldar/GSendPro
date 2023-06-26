@@ -3,7 +3,7 @@ using GSendShared.Abstractions;
 
 namespace GSendCommon
 {
-    public sealed class SubprogramModel : ISubProgram
+    public sealed class SubprogramModel : ISubprogram
     {
         public SubprogramModel()
         {

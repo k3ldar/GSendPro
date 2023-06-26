@@ -289,7 +289,7 @@ namespace GSendAnalyser.Internal
 
                         if (_subprograms.Exists(subProgram))
                         {
-                            ISubProgram sub = _subprograms.Get(subProgram);
+                            ISubprogram sub = _subprograms.Get(subProgram);
 
                             if (sub != null)
                             {

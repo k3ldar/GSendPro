@@ -14,7 +14,7 @@ namespace GSendShared.Converters
 
         public override bool CanConvert(Type typeToConvert)
         {
-            return typeToConvert.IsAssignableFrom(typeof(ISubProgram));
+            return typeToConvert.IsAssignableFrom(typeof(ISubprogram));
         }
 
         public override void Write(Utf8JsonWriter writer, SubprogramModel value, JsonSerializerOptions options)

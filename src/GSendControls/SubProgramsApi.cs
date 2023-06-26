@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using GSendApi;
 
 using GSendShared;
 
+using Shared.Classes;
+
 namespace GSendControls
 {
     public sealed class SubProgramsApi : ISubprograms
     {
-        private readonly GSendApiWrapper _gSendApiWrapper;
+        private readonly IGSendApiWrapper _gSendApiWrapper;
+        private readonly CacheManager _subprogramCache = new(nameof(SubProgramsApi), TimeSpan.FromHours(2), true);
 
-        public SubProgramsApi(GSendApiWrapper gSendApiWrapper)
+        public SubProgramsApi(IGSendApiWrapper gSendApiWrapper)
         {
             _gSendApiWrapper = gSendApiWrapper ?? throw new ArgumentNullException(nameof(gSendApiWrapper));
         }
@@ -20,6 +24,8 @@ namespace GSendControls
         public bool Delete(string name)
         {
             ValidateFileName(name);
+
+            _subprogramCache.Clear();
 
             return _gSendApiWrapper.SubprogramDelete(name);
         }
@@ -29,29 +35,47 @@ namespace GSendControls
             try
             {
                 ValidateFileName(name);
+
+                return GetAll().Any(i => i.Name == name);
             }
             catch
             {
                 return false;
             }
-
-            return _gSendApiWrapper.SubprogramExists(name);
         }
 
-        public ISubProgram Get(string name)
+        public ISubprogram Get(string name)
         {
             ValidateFileName(name);
+            string cacheName = $"{nameof(GetAll)} - {name}";
 
-            return _gSendApiWrapper.SubprogramGet(name);
+            CacheItem allSubprograms = _subprogramCache.Get(cacheName);
+
+            if (allSubprograms == null)
+            {
+                allSubprograms = new(cacheName, _gSendApiWrapper.SubprogramGet(name));
+                _subprogramCache.Add(cacheName, allSubprograms);
+            }
+
+            return (ISubprogram)allSubprograms.GetValue();
         }
 
-        public List<ISubProgram> GetAll()
+        public List<ISubprogram> GetAll()
         {
-            return _gSendApiWrapper.SubprogramGet();
+            CacheItem allSubprograms = _subprogramCache.Get(nameof(GetAll));
+
+            if (allSubprograms == null)
+            {
+                allSubprograms = new(nameof(GetAll), _gSendApiWrapper.SubprogramGet());
+                _subprogramCache.Add(nameof(GetAll), allSubprograms);
+            }
+
+            return (List<ISubprogram>)allSubprograms.GetValue();
         }
 
-        public bool Update(ISubProgram subProgram)
+        public bool Update(ISubprogram subProgram)
         {
+            _subprogramCache.Clear();
             return _gSendApiWrapper.SubprogramUpdate(subProgram);
         }
 

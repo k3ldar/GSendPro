@@ -1,14 +1,12 @@
 ﻿using System.Net.Http.Headers;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
 using GSendShared;
 using GSendShared.Models;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.DataProtection;
-using SharedPluginFeatures;
 using GSendShared.Providers.Internal.Enc;
+
+using SharedPluginFeatures;
 
 namespace GSendApi
 {
@@ -145,14 +143,14 @@ namespace GSendApi
 
         #region Subprograms
 
-        public List<ISubProgram> SubprogramGet()
+        public List<ISubprogram> SubprogramGet()
         {
-            return CallGetApi<List<ISubProgram>>("SubprogramApi/GetAllSubprograms/");
+            return CallGetApi<List<ISubprogram>>("SubprogramApi/GetAllSubprograms/");
         }
 
-        public ISubProgram SubprogramGet(string name)
+        public ISubprogram SubprogramGet(string name)
         {
-            return CallGetApi<ISubProgram>($"SubprogramApi/SubprogramGet/{name}");
+            return CallGetApi<ISubprogram>($"SubprogramApi/SubprogramGet/{name}");
         }
 
         public bool SubprogramExists(string name)
@@ -165,9 +163,9 @@ namespace GSendApi
             return CallDeleteApi($"SubprogramApi/SubprogramDelete/{name}");
         }
 
-        public bool SubprogramUpdate(ISubProgram subProgram)
+        public bool SubprogramUpdate(ISubprogram subProgram)
         {
-            CallPutApi<ISubProgram>($"SubprogramApi/SubprogramUpdate/", subProgram);
+            CallPutApi<ISubprogram>($"SubprogramApi/SubprogramUpdate/", subProgram);
             return true;
         }
 
@@ -295,7 +293,7 @@ namespace GSendApi
 
             string jsonData = response.Content.ReadAsStringAsync().Result;
 
-            
+
             JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
 
             if (responseModel.success)

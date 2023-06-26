@@ -55,7 +55,7 @@ namespace GSendLicenseGenerator
             if (timeDiff.TotalSeconds > 5000)
                 return -101;
 
-            DateTime expires = DateTime.UtcNow.Date.AddDays(5);
+            DateTime expires = DateTime.UtcNow.Date.AddDays(30);
             string license = CreateLicense(1, userName, expires, uniqueId);
             Console.WriteLine(license);
 
@@ -65,6 +65,7 @@ namespace GSendLicenseGenerator
 
             return 0;
         }
+
         private static string CreateLicense(in byte version, in string name, in DateTime expires,
             in string id)
         {

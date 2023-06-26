@@ -41,13 +41,14 @@ namespace GSendDesktop
             applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
 
 
-
-            applicationPluginManager.ConfigureServices();
+            IServiceCollection serviceCollection = new ServiceCollection();
+            applicationPluginManager.ConfigureServices(serviceCollection);
+            applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
 
             IGSendContext gSendContext = applicationPluginManager.ServiceProvider.GetService<IGSendContext>();
             try
             {
-                GlobalExceptionHandler.InitializeGlobalExceptionHandlers(applicationPluginManager.ServiceProvider.GetRequiredService<ILogger>());
+                GlobalExceptionHandler.InitializeGlobalExceptionHandlers(gSendContext.ServiceProvider.GetRequiredService<ILogger>());
                 ApplicationConfiguration.Initialize();
                 Application.Run(gSendContext.ServiceProvider.GetRequiredService<FormMain>());
             }

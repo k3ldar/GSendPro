@@ -31,7 +31,7 @@ namespace GSendAnalyser.Analysers
 
                     if (_subprograms.Exists(subProgramName))
                     {
-                        ISubProgram sub = _subprograms.Get(subProgramName);
+                        ISubprogram sub = _subprograms.Get(subProgramName);
 
                         if (sub != null)
                         {

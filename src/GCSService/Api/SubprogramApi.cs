@@ -21,9 +21,9 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult GetAllSubprograms()
         {
-            List<ISubProgram> subprograms = _subprograms.GetAll();
+            List<ISubprogram> subprograms = _subprograms.GetAll();
 
-            List<ISubProgram> names = new();
+            List<ISubprogram> names = new();
 
             subprograms.ForEach(sp => names.Add(new SubprogramModel(sp.Name, sp.Description, String.Empty)));
 
@@ -35,7 +35,7 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult SubprogramGet(string name)
         {
-             ISubProgram subProgram = _subprograms.Get(name);
+             ISubprogram subProgram = _subprograms.Get(name);
 
             if (subProgram == null)
             {
@@ -69,7 +69,7 @@ namespace GSendService.Api
 
         [HttpPut]
         [ApiAuthorization]
-        public IActionResult SubprogramUpdate([FromBody] ISubProgram model)
+        public IActionResult SubprogramUpdate([FromBody] ISubprogram model)
         {
             if (model == null)
                 return GenerateJsonErrorResponse(400, "Invalid model");

@@ -24,7 +24,7 @@ namespace GSendEditor
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
-        private ISubProgram _subProgram;
+        private ISubprogram _subProgram;
         private readonly RecentFiles _recentFiles;
         private readonly Internal.Bookmarks _bookmarks;
         private Internal.Bookmark _activeBookmark;
@@ -341,7 +341,7 @@ namespace GSendEditor
 
                     if (recent.IsSubprogram)
                     {
-                        ISubProgram sub = _gsendApiWrapper.SubprogramGet(recent.FileName);
+                        ISubprogram sub = _gsendApiWrapper.SubprogramGet(recent.FileName);
 
                         if (sub == null)
                             _recentFiles.RemoveRecent(recent);
@@ -487,9 +487,9 @@ namespace GSendEditor
             try
             {
                 lvSubprograms.Items.Clear();
-                List<ISubProgram> subprograms = _gsendApiWrapper.SubprogramGet();
+                List<ISubprogram> subprograms = _gsendApiWrapper.SubprogramGet();
 
-                foreach (ISubProgram subProgram in subprograms)
+                foreach (ISubprogram subProgram in subprograms)
                 {
                     ListViewItem listViewItem = new()
                     {
@@ -650,14 +650,14 @@ namespace GSendEditor
 
         private void lvSubprograms_DoubleClick(object sender, EventArgs e)
         {
-            ISubProgram subProgram = null;
+            ISubprogram subProgram = null;
 
             if (sender is ListView lv)
             {
                 if (lv.SelectedItems.Count == 0)
                     return;
 
-                subProgram = lv.SelectedItems[0].Tag as ISubProgram;
+                subProgram = lv.SelectedItems[0].Tag as ISubprogram;
             }
 
             if (subProgram == null)
@@ -666,7 +666,7 @@ namespace GSendEditor
             if (SaveIfRequired())
                 return;
 
-            ISubProgram subWithContent = _gsendApiWrapper.SubprogramGet(subProgram.Name);
+            ISubprogram subWithContent = _gsendApiWrapper.SubprogramGet(subProgram.Name);
 
             if (subWithContent == null)
             {
@@ -680,7 +680,7 @@ namespace GSendEditor
             LoadSubprogram(subProgram);
         }
 
-        private void LoadSubprogram(ISubProgram subProgram)
+        private void LoadSubprogram(ISubprogram subProgram)
         {
             if (subProgram == null)
                 return;

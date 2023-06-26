@@ -55,7 +55,7 @@ namespace GSendTests.GCService
             Assert.AreEqual("application/json", jsonResult.ContentType);
 
             JsonResponseModel jsonResponseModel = jsonResult.Value as JsonResponseModel;
-            List<ISubProgram> names = JsonSerializer.Deserialize<List<ISubProgram>>(jsonResponseModel.ResponseData, GSendShared.Constants.DefaultJsonSerializerOptions);
+            List<ISubprogram> names = JsonSerializer.Deserialize<List<ISubprogram>>(jsonResponseModel.ResponseData, GSendShared.Constants.DefaultJsonSerializerOptions);
 
             Assert.AreEqual(5, names.Count);
             Assert.AreEqual("test1", names[0].Name);
@@ -204,7 +204,7 @@ namespace GSendTests.GCService
             JsonResponseModel jsonResponseModel = jsonResult.Value as JsonResponseModel;
             Assert.IsNotNull(jsonResponseModel);
             Assert.IsTrue(jsonResponseModel.Success);
-            ISubProgram subprogram = JsonSerializer.Deserialize<ISubProgram>(jsonResponseModel.ResponseData, GSendShared.Constants.DefaultJsonSerializerOptions);
+            ISubprogram subprogram = JsonSerializer.Deserialize<ISubprogram>(jsonResponseModel.ResponseData, GSendShared.Constants.DefaultJsonSerializerOptions);
             Assert.IsNotNull(subprogram);
             Assert.AreEqual("O5000", subprogram.Name);
             Assert.AreEqual("desc 1", subprogram.Description);
