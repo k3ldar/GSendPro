@@ -74,6 +74,8 @@
         MultipleJobNames = 2048,
 
         InvalidJobName = 4096,
+
+        PlaySound = 8192,
     }
 
     public enum ServiceType

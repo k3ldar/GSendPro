@@ -14,19 +14,36 @@ namespace GSendAnalyser.Analysers
             if (m605Commands.Count == 0)
                 return;
 
-            if (m605Commands.Count == 1)
+            if (m605Commands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                if (String.IsNullOrEmpty(m605Commands[0].Comment))
+                if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.PlaySound))
+                    codeAnalyses.AddOptions(AnalysesOptions.PlaySound);
+
+                List<int> lineNumbers = new();
+
+                foreach (IGCodeCommand command in m605Commands)
                 {
-                    gCodeAnalyses.AddOptions(AnalysesOptions.InvalidJobName);
-                    return;
+                    if (lineNumbers.Contains(command.MasterLineNumber))
+                    {
+                        codeAnalyses.AddError(GSend.Language.Resources.M605InvalidMultipleLines, command.MasterLineNumber);
+                        continue;
+                    }
+
+                    lineNumbers.Add(command.MasterLineNumber);
+
+                    string soundFile = command.CommentStripped;
+
+                    if (String.IsNullOrWhiteSpace(soundFile))
+                    {
+                        codeAnalyses.AddError(GSend.Language.Resources.M605InvalidSoundFileEmpty, command.MasterLineNumber);
+                    }
+                    else if (!File.Exists(soundFile))
+                    {
+                        codeAnalyses.AddWarning(GSend.Language.Resources.M605InvalidSoundFile, soundFile, command.MasterLineNumber);
+                        continue;
+                    }
                 }
-
-                gCodeAnalyses.JobName = m605Commands[0].Comment.Replace(";", String.Empty).Replace("(", String.Empty).Replace(")", String.Empty);
-                return;
             }
-
-            gCodeAnalyses.AddOptions(AnalysesOptions.MultipleJobNames);
         }
     }
 }

@@ -211,12 +211,22 @@ namespace GSendAnalyser
             _errors.Add(message);
         }
 
+        internal void AddError(string message, params object[] args)
+        {
+            AddError(String.Format(message, args));
+        }
+
         internal void AddWarning(string message)
         {
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentNullException(nameof(message));
 
             _warnings.Add(message);
+        }
+
+        internal void AddWarning(string message, params object[] args)
+        {
+            AddWarning(String.Format(message, args));
         }
 
         internal bool AddVariable(GCodeVariableModel variableModel)

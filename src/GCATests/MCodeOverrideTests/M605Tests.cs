@@ -43,7 +43,7 @@ namespace GSendTests.MCodeOverrideTests
         }
 
         [TestMethod]
-        public void Process_M605CodeNotFound_Returns_True()
+        public void Process_M605CodeFound_SoundFileExists_Returns_True()
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());

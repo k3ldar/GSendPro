@@ -12,7 +12,12 @@ namespace GSendCommon.MCodeOverrides
 
             if (m605Commands.Count > 0)
             {
+                List<int> lineNumbers = new();
 
+                foreach (IGCodeCommand command in m605Commands)
+                {
+                    //if ()
+                }
             }
 
             return false;

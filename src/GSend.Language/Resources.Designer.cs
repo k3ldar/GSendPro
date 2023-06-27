@@ -1618,6 +1618,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plays Sounds.
+        /// </summary>
+        public static string GCodePlaysSounds {
+            get {
+                return ResourceManager.GetString("GCodePlaysSounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Safe Z.
         /// </summary>
         public static string GCodeSafeZ {
@@ -2037,6 +2046,33 @@ namespace GSend.Language {
         public static string LoadSubProgramsError {
             get {
                 return ResourceManager.GetString("LoadSubProgramsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple M605 commands, only 1 M605 command is allowed per line..
+        /// </summary>
+        public static string M605InvalidMultipleLines {
+            get {
+                return ResourceManager.GetString("M605InvalidMultipleLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sound file &quot;{0}&quot; on line {1} could not be found..
+        /// </summary>
+        public static string M605InvalidSoundFile {
+            get {
+                return ResourceManager.GetString("M605InvalidSoundFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M605 command but no sound file was found, you must specify a sound file..
+        /// </summary>
+        public static string M605InvalidSoundFileEmpty {
+            get {
+                return ResourceManager.GetString("M605InvalidSoundFileEmpty", resourceCulture);
             }
         }
         

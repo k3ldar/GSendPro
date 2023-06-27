@@ -14,6 +14,11 @@
 
         string Comment { get; }
 
+        /// <summary>
+        /// returns the comment without the comment identifiers
+        /// </summary>
+        string CommentStripped { get; }
+
         List<IGCodeVariableBlock> VariableBlocks { get; }
 
         int Index { get; }

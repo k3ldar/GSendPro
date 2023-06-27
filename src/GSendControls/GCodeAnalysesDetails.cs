@@ -124,6 +124,7 @@ namespace GSendControls
                 if (gCodeAnalyses?.CoordinateSystems.Length > 0)
                     AddAnalyserProperty(GCodeCoordinateSystems, gCodeAnalyses?.CoordinateSystems);
 
+                AddAnalyserProperty(GCodePlaysSounds, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.PlaySound));
 
 
                 AddAnalyserProperty(GCodeHasEndProgram, gCodeAnalyses?.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram));

@@ -636,6 +636,9 @@
   <data name="GCodeMistCoolant" xml:space="preserve">
     <value>Mist Coolant</value>
   </data>
+  <data name="GCodePlaysSounds" xml:space="preserve">
+    <value>Plays Sounds</value>
+  </data>
   <data name="GCodeSafeZ" xml:space="preserve">
     <value>Safe Z</value>
   </data>
@@ -776,6 +779,15 @@
   </data>
   <data name="LoadSubProgramsError" xml:space="preserve">
     <value>There was a problem loading subprograms: {0}</value>
+  </data>
+  <data name="M605InvalidMultipleLines" xml:space="preserve">
+    <value>Line {0} contains multiple M605 commands, only 1 M605 command is allowed per line.</value>
+  </data>
+  <data name="M605InvalidSoundFile" xml:space="preserve">
+    <value>Sound file "{0}" on line {1} could not be found.</value>
+  </data>
+  <data name="M605InvalidSoundFileEmpty" xml:space="preserve">
+    <value>Line {0} contains M605 command but no sound file was found, you must specify a sound file.</value>
   </data>
   <data name="M650InvalidJobNameSpecified" xml:space="preserve">
     <value>M650 must specify the job name as a comment, i.e. M50 (Job Name)</value>
