@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>GSend Pro</title>
+</head>
+<body>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+    <header class="mnuBar">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/Index.html">GSend Pro</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="Index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="Sender.html">GCode Sender</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="Editor.html">GCode Editor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="Subprogram.html">Subprograms</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3 content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>GSend Pro includes a number of custom M codes that can be used within your G Code.  This allows users to customize and control external elements as well as automate tasks, whilst their program runs.</p>
+                    <p>The following M Codes are currently supported</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead><tr><th>M Code</th><th>Description</th><th>Usage</th><th>Restrictions</th></tr></thead>
+                        <tbody>
+                            <tr><td>M600</td><td>Pause processing of commands for upto 2 seconds.  An M600 must be immediately followed by a P value that indicates the number of milliseconds to pause for.</td><td>M600P200</td><td>The P value must be between 1 and 2000 milliseconds.</td></tr>
+                            <tr><td>M605</td><td>Play a sound, providing the user with an audiable warning.</td><td>M605;c:\path to sound file\sound.wav</td><td>The name of the sound file to play must be included as a comment after the command on the same line</td></tr>
+                            <!--<tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td></tr>-->
+                            <tr><td>M650</td><td>Add the job profile name to be used when running the code</td><td>M650 ;Cut out parts</td><td>The name of the job must appear as a comment after the command on the same line</td></tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - GSend Pro
+        </div>
+    </footer>
+
+</body>
+</html>

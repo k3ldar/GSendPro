@@ -8,7 +8,7 @@ using GSendShared.Models;
 
 using PluginManager.Abstractions;
 
-using static GSendAnalyser.Internal.Consts;
+using static GSendShared.Constants;
 
 namespace GSendAnalyser.Internal
 {
@@ -56,7 +56,7 @@ namespace GSendAnalyser.Internal
 
         private IGCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands, int recursionDepth)
         {
-            if (recursionDepth > Consts.MaxSubCommandRecursionDepth)
+            if (recursionDepth > Constants.MaxSubCommandRecursionDepth)
             {
                 Result.AddError(GSend.Language.Resources.SubProgramError2);
                 return Result;

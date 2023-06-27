@@ -85,7 +85,7 @@ namespace GSendAnalyser
 
         private void RecursivelyRetrieveAllCommands(List<IGCodeCommand> Result, IReadOnlyList<IGCodeCommand> commands, ref int lineNumber, int recursionDepth)
         {
-            if (recursionDepth > Consts.MaxSubCommandRecursionDepth)
+            if (recursionDepth > Constants.MaxSubCommandRecursionDepth)
             {
                 AddError(GSend.Language.Resources.SubProgramError2);
                 return;
@@ -101,7 +101,7 @@ namespace GSendAnalyser
                 }
                 else
                 {
-                    if (/*Result.Count == 0 || */first || command.LineNumber != Result[Result.Count - 1].LineNumber)
+                    if (first || command.LineNumber != Result[Result.Count - 1].LineNumber)
                     {
                         lineNumber++;
                         first = false;

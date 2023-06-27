@@ -1375,7 +1375,7 @@ namespace GSendCommon
         /// <returns></returns>
         private bool InternalWriteLine(string commandText)
         {
-            if (!String.IsNullOrEmpty(commandText) && commandText.Length > 0 && commandText[0] == '$')
+            if (!String.IsNullOrEmpty(commandText) && commandText.Length > 0 && commandText[0] == Constants.CharDollar)
             {
                 _port.WriteLine(commandText);
                 return false;

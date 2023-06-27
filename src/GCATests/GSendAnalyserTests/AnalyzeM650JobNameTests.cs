@@ -14,7 +14,7 @@ namespace GSendTests.GSendAnalyserTests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class AnalyzeJobNameTests
+    public class AnalyzeM650JobNameTests
     {
         [TestMethod]
         public void AnalyzeJobName_NoComment_AddsOptionForInvalidJobName()

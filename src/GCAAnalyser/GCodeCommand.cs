@@ -4,7 +4,7 @@ using GSendAnalyser.Internal;
 
 using GSendShared;
 
-using static GSendAnalyser.Internal.Consts;
+using static GSendShared.Constants;
 
 namespace GSendAnalyser
 {
@@ -254,12 +254,12 @@ namespace GSendAnalyser
         {
             switch (Command)
             {
-                case 'T':
+                case CharT:
                     Attributes |= CommandAttributes.ToolChange;
 
                     break;
 
-                case 'M':
+                case CharM:
                     switch (CommandValue)
                     {
                         case 0:
@@ -269,7 +269,7 @@ namespace GSendAnalyser
 
                     break;
 
-                case 'G':
+                case CharG:
                     switch (CommandValue)
                     {
                         case 2:
@@ -284,7 +284,7 @@ namespace GSendAnalyser
 
                     break;
 
-                case 'O':
+                case CharO:
                     Attributes |= CommandAttributes.SubProgram;
                     break;
             }
