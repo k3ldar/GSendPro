@@ -344,6 +344,8 @@ Source: "C:\GitProjects\GCA\Output\publish\Server\Microsoft.JSInterop.dll"; Dest
 
 
 ; System DLLs
+
+Source: "C:\GitProjects\GCA\Output\publish\Server\System.Windows.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\System.AppContext.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\System.CodeDom.dll"; DestDir: "{app}"; Flags: ignoreversion

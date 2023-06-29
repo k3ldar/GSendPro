@@ -110,5 +110,28 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("test + pass", analyses.Commands[0].VariableBlocks[2].Value);
             Assert.AreEqual("M650 a value45.6 test + pass", line);
         }
+
+        [TestMethod]
+        public void VariableBlock_MultipleStringValueReplaced_InComments_Success()
+        {
+            string gCodeWithM650NoComment = "#100=C:\\Windows\\Media\\\n#101=Alarm01.wav\n#102=notify.wav\nM605 ; [#100#101]";
+            GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = gCodeParser.Parse(gCodeWithM650NoComment);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+
+            AnalyzeVariableBlocks sut = new();
+            sut.Analyze("", analyses);
+
+            Assert.AreEqual(0, analyses.Errors.Count);
+
+            Assert.AreEqual(0, analyses.Warnings.Count);
+
+            string line = analyses.Lines(out int _)[0].GetGCode();
+            Assert.AreEqual(1, analyses.Commands[0].VariableBlocks.Count);
+            Assert.AreEqual("C:\\Windows\\Media\\Alarm01.wav", analyses.Commands[0].VariableBlocks[0].Value);
+            Assert.AreEqual("M605", line);
+            Assert.AreEqual(" C:\\Windows\\Media\\Alarm01.wav", analyses.Commands[0].CommentStripped(true));
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace GSendAnalyser.Analysers
                     return;
                 }
 
-                gCodeAnalyses.JobName = m650Commands[0].CommentStripped;
+                gCodeAnalyses.JobName = m650Commands[0].CommentStripped(false);
                 return;
             }
 

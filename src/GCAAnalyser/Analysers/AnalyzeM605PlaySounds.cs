@@ -31,7 +31,7 @@ namespace GSendAnalyser.Analysers
 
                     lineNumbers.Add(command.MasterLineNumber);
 
-                    string soundFile = command.CommentStripped;
+                    string soundFile = command.CommentStripped(true);
 
                     if (String.IsNullOrWhiteSpace(soundFile))
                     {

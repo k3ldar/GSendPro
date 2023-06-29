@@ -65,25 +65,6 @@ namespace GSendAnalyser
 
         public string Comment { get; }
 
-        public string CommentStripped
-        {
-            get
-            {
-                string Result = Comment;
-
-                if (String.IsNullOrWhiteSpace(Result))
-                    return Result;
-
-                if (Result.StartsWith(CharSemiColon))
-                    return Result.Substring(1);
-
-                if (Result.StartsWith(CharOpeningBracket) && Result.EndsWith(CharClosingBracket))
-                    return Result[1..^1];
-
-                return Result;
-            }
-        }
-
         public List<IGCodeVariableBlock> VariableBlocks { get; }
 
         public int Index { get; }
@@ -213,6 +194,27 @@ namespace GSendAnalyser
         #endregion Properties
 
         #region Public Methods
+
+        public string CommentStripped(bool replaceVariables)
+        {
+            string Result = Comment;
+
+            if (String.IsNullOrWhiteSpace(Result))
+                return Result;
+
+            if (Result.StartsWith(CharSemiColon))
+                Result = Result.Substring(1);
+            else if (Result.StartsWith(CharOpeningBracket) && Result.EndsWith(CharClosingBracket))
+                Result =  Result[1..^1];
+
+            if (replaceVariables && VariableBlocks.Count > 0)
+            {
+                foreach (IGCodeVariableBlock varBlock in VariableBlocks)
+                    Result = Result.Replace(varBlock.VariableBlock, varBlock.Value);
+            }
+
+            return Result;
+        }
 
         public string GetCommand()
         {

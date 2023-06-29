@@ -241,201 +241,6 @@ namespace GSendAnalyser.Internal
             char currentCommand = CharNull;
             bool isComment = false;
             StringBuilder comment = new(256);
-            List<IGCodeVariableBlock> variables = null;
-
-            GCodeCommand UpdateGCodeValue()
-            {
-                bool commandValueConvert = Decimal.TryParse(lineValues.ToString(), out decimal commandValue);
-
-                if (!commandValueConvert)
-                    commandValue = Decimal.MinValue;
-
-                if (!commandValueConvert)
-                {
-                    string variableBlock = lineValues.ToString();
-
-                    // does it contain variables
-                    int variableBlockStart = variableBlock.IndexOf('[');
-
-                    if (variableBlockStart > -1)
-                    {
-                        variables = ParseVariableBlockss(analysis, lineNumber, variableBlock, ref commandValueConvert, ref commandValue);
-
-                        if (variables.Count > 0)
-                            currentValues.Attributes |= CommandAttributes.ContainsVariables;
-                    }
-                    else if (variableBlockStart == -1 && variableBlock.IndexOf('#') > -1)
-                    {
-                        analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid5, lineNumber));
-                    }
-                }
-
-                Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
-                //decimal mantissa = Math.Round(100 * (commandValue - commandCode));
-
-                currentValues.Attributes &= ~CommandAttributes.Extrude;
-                currentValues.Attributes &= ~CommandAttributes.FeedRateError;
-                currentValues.Attributes &= ~CommandAttributes.MovementError;
-                currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
-                currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
-                currentValues.Attributes &= ~CommandAttributes.ChangeCoordinates;
-                GCodeAnalyses subProgramAnalyses = null;
-
-                switch (currentCommand)
-                {
-                    case CharO:
-
-                        string subProgram = $"{currentCommand}{commandValue}";
-
-                        if (_subprograms.Exists(subProgram))
-                        {
-                            ISubprogram sub = _subprograms.Get(subProgram);
-
-                            if (sub != null)
-                            {
-                                subProgramAnalyses = new GCodeAnalyses(_pluginClassesService);
-                                IGCodeAnalyses subprogramAnalyses = InternalParseGCode(subProgramAnalyses, UTF8Encoding.UTF8.GetBytes(sub.Contents), recursionDepth + 1);
-
-                                foreach (string error in subprogramAnalyses.Errors)
-                                    analysis.AddError(error);
-
-                                foreach (string warning in subprogramAnalyses.Warnings)
-                                    analysis.AddError(warning);
-
-                                // add subanalyses variables to parent
-                                foreach (KeyValuePair<ushort, IGCodeVariable> variable in subProgramAnalyses.Variables)
-                                {
-                                    if (analysis.Variables.ContainsKey(variable.Key))
-                                    {
-                                        analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid3, lineNumber, variable.Key));
-                                        continue;
-                                    }
-
-                                    analysis.AddVariable(new GCodeVariableModel(variable.Value.VariableId, variable.Value.Value.ToString(), lineNumber));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            analysis.AddError(String.Format(GSend.Language.Resources.SubprogramNotFound, subProgram));
-                        }
-
-                        break;
-
-                    case CharE:
-                        currentValues.Attributes |= CommandAttributes.Extrude;
-                        break;
-
-                    case CharF:
-                        if (commandValueConvert)
-                            currentValues.FeedRate = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.FeedRateError;
-
-                        break;
-
-                    case CharG:
-                        switch (commandCode)
-                        {
-                            case 0:
-                                currentValues.Attributes |= CommandAttributes.UseRapidRate;
-                                currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
-
-                                break;
-
-                            case 1:
-                            case 2:
-                            case 3:
-                                currentValues.Attributes |= CommandAttributes.AllowSpeedOverride;
-                                currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
-
-                                break;
-
-                            case 54:
-                            case 55:
-                            case 56:
-                            case 57:
-                            case 58:
-                            case 59:
-                                currentValues.Attributes |= CommandAttributes.ChangeCoordinates;
-
-                                break;
-
-                            default:
-                                currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
-                                currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
-
-                                break;
-                        }
-
-                        break;
-
-                    case CharS:
-                        if (commandValueConvert)
-                            currentValues.SpindleSpeed = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.SpindleSpeedError;
-
-                        break;
-
-                    case CharZ:
-                        if (commandValueConvert)
-                            currentValues.Z = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.MovementError;
-
-                        break;
-
-                    case CharX:
-                        if (commandValueConvert)
-                            currentValues.X = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.MovementError;
-
-                        break;
-
-                    case CharY:
-                        if (commandValueConvert)
-                            currentValues.Y = commandValue;
-                        else
-                            currentValues.Attributes |= CommandAttributes.MovementError;
-
-                        break;
-
-                    case CharM:
-                        if (commandValueConvert && (commandValue == 2 || commandValue == 30))
-                        {
-                            currentValues.Attributes |= CommandAttributes.EndProgram;
-                        }
-                        else if (commandValueConvert && commandValue == 5)
-                        {
-                            currentValues.SpindleSpeed = 0;
-                            currentValues.Attributes &= ~CommandAttributes.SpindleSpeed;
-                        }
-
-                        break;
-
-                    case CharPercent:
-                        currentValues.Attributes |= CommandAttributes.StartProgram;
-
-                        break;
-                }
-
-                if (currentValues.Attributes.HasFlag(CommandAttributes.StartProgram))
-                    currentValues.Attributes &= ~CommandAttributes.StartProgram;
-
-                CurrentCommandValues newValues = currentValues.Clone();
-                result = new GCodeCommand(_index++, currentCommand, commandValue, lineValues.ToString(), comment.ToString(), variables, newValues, lineNumber, subProgramAnalyses);
-
-                if (lastCommand != null)
-                    lastCommand.NextCommand = result;
-
-                result.PreviousCommand = lastCommand;
-
-                analysis.Add(result);
-                lineValues.Clear();
-                return result;
-            }
 
             bool isVariableBlock = false;
 
@@ -481,21 +286,21 @@ namespace GSendAnalyser.Internal
                     case CharPercent:
                         // new command
                         if (currentCommand != CharNull)
-                            lastCommand = UpdateGCodeValue();
+                            lastCommand = UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
 
                         currentCommand = c;
 
                         continue;
 
                     case CharNull:
-                        lastCommand = UpdateGCodeValue();
+                        lastCommand = UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
 
 
                         return result;
 
                     case CharLineFeed:
                         if (currentCommand != CharNull)
-                            lastCommand = UpdateGCodeValue();
+                            lastCommand = UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
 
                         continue;
 
@@ -548,16 +353,230 @@ namespace GSendAnalyser.Internal
                 }
             }
 
-            return UpdateGCodeValue();
+            return UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
         }
 
-        private static List<IGCodeVariableBlock> ParseVariableBlockss(GCodeAnalyses analyses, int lineNumber, string line, ref bool commandValueConvert, ref decimal commandValue)
+        private GCodeCommand UpdateGCodeValue(GCodeAnalyses analysis, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber, int recursionDepth, ref GCodeCommand result, char currentCommand, StringBuilder comment)
         {
-            List<IGCodeVariableBlock> Result = new();
+            string lineValue = lineValues.ToString().Trim();
+            List<IGCodeVariableBlock> variables = new();
+            bool commandValueConvert = Decimal.TryParse(lineValue, out decimal commandValue);
 
+            if (!commandValueConvert)
+                commandValue = Decimal.MinValue;
+
+            if (!commandValueConvert)
+            {
+                decimal retreivedCommandValue = RetrieveCommandVariableBlocks(analysis, lineValue, currentValues, lineNumber, variables);
+
+                if (!commandValueConvert)
+                    commandValue = retreivedCommandValue;
+            }
+
+            string comments = comment.ToString();
+
+            if (!String.IsNullOrWhiteSpace(comments))
+            {
+                RetrieveCommandVariableBlocks(analysis, comments, currentValues, lineNumber, variables);
+            }
+
+            Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
+            //decimal mantissa = Math.Round(100 * (commandValue - commandCode));
+
+            currentValues.Attributes &= ~CommandAttributes.Extrude;
+            currentValues.Attributes &= ~CommandAttributes.FeedRateError;
+            currentValues.Attributes &= ~CommandAttributes.MovementError;
+            currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
+            currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
+            currentValues.Attributes &= ~CommandAttributes.ChangeCoordinates;
+            GCodeAnalyses subProgramAnalyses = null;
+
+            switch (currentCommand)
+            {
+                case CharO:
+
+                    string subProgram = $"{currentCommand}{commandValue}";
+
+                    if (_subprograms.Exists(subProgram))
+                    {
+                        ISubprogram sub = _subprograms.Get(subProgram);
+
+                        if (sub != null)
+                        {
+                            subProgramAnalyses = new GCodeAnalyses(_pluginClassesService);
+                            IGCodeAnalyses subprogramAnalyses = InternalParseGCode(subProgramAnalyses, UTF8Encoding.UTF8.GetBytes(sub.Contents), recursionDepth + 1);
+
+                            foreach (string error in subprogramAnalyses.Errors)
+                                analysis.AddError(error);
+
+                            foreach (string warning in subprogramAnalyses.Warnings)
+                                analysis.AddError(warning);
+
+                            // add subanalyses variables to parent
+                            foreach (KeyValuePair<ushort, IGCodeVariable> variable in subProgramAnalyses.Variables)
+                            {
+                                if (analysis.Variables.ContainsKey(variable.Key))
+                                {
+                                    analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid3, lineNumber, variable.Key));
+                                    continue;
+                                }
+
+                                analysis.AddVariable(new GCodeVariableModel(variable.Value.VariableId, variable.Value.Value.ToString(), lineNumber));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        analysis.AddError(String.Format(GSend.Language.Resources.SubprogramNotFound, subProgram));
+                    }
+
+                    break;
+
+                case CharE:
+                    currentValues.Attributes |= CommandAttributes.Extrude;
+                    break;
+
+                case CharF:
+                    if (commandValueConvert)
+                        currentValues.FeedRate = commandValue;
+                    else
+                        currentValues.Attributes |= CommandAttributes.FeedRateError;
+
+                    break;
+
+                case CharG:
+                    switch (commandCode)
+                    {
+                        case 0:
+                            currentValues.Attributes |= CommandAttributes.UseRapidRate;
+                            currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
+
+                            break;
+
+                        case 1:
+                        case 2:
+                        case 3:
+                            currentValues.Attributes |= CommandAttributes.AllowSpeedOverride;
+                            currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
+
+                            break;
+
+                        case 54:
+                        case 55:
+                        case 56:
+                        case 57:
+                        case 58:
+                        case 59:
+                            currentValues.Attributes |= CommandAttributes.ChangeCoordinates;
+
+                            break;
+
+                        default:
+                            currentValues.Attributes &= ~CommandAttributes.UseRapidRate;
+                            currentValues.Attributes &= ~CommandAttributes.AllowSpeedOverride;
+
+                            break;
+                    }
+
+                    break;
+
+                case CharS:
+                    if (commandValueConvert)
+                        currentValues.SpindleSpeed = commandValue;
+                    else
+                        currentValues.Attributes |= CommandAttributes.SpindleSpeedError;
+
+                    break;
+
+                case CharZ:
+                    if (commandValueConvert)
+                        currentValues.Z = commandValue;
+                    else
+                        currentValues.Attributes |= CommandAttributes.MovementError;
+
+                    break;
+
+                case CharX:
+                    if (commandValueConvert)
+                        currentValues.X = commandValue;
+                    else
+                        currentValues.Attributes |= CommandAttributes.MovementError;
+
+                    break;
+
+                case CharY:
+                    if (commandValueConvert)
+                        currentValues.Y = commandValue;
+                    else
+                        currentValues.Attributes |= CommandAttributes.MovementError;
+
+                    break;
+
+                case CharM:
+                    if (commandValueConvert && (commandValue == 2 || commandValue == 30))
+                    {
+                        currentValues.Attributes |= CommandAttributes.EndProgram;
+                    }
+                    else if (commandValueConvert && commandValue == 5)
+                    {
+                        currentValues.SpindleSpeed = 0;
+                        currentValues.Attributes &= ~CommandAttributes.SpindleSpeed;
+                    }
+
+                    break;
+
+                case CharPercent:
+                    currentValues.Attributes |= CommandAttributes.StartProgram;
+
+                    break;
+            }
+
+            if (currentValues.Attributes.HasFlag(CommandAttributes.StartProgram))
+                currentValues.Attributes &= ~CommandAttributes.StartProgram;
+
+            CurrentCommandValues newValues = currentValues.Clone();
+            result = new GCodeCommand(_index++, currentCommand, commandValue, lineValue, comments, variables, newValues, lineNumber, subProgramAnalyses);
+
+            if (lastCommand != null)
+                lastCommand.NextCommand = result;
+
+            result.PreviousCommand = lastCommand;
+
+            analysis.Add(result);
+            lineValues.Clear();
+            return result;
+        }
+
+        private static decimal RetrieveCommandVariableBlocks(GCodeAnalyses analysis, string lineValues, CurrentCommandValues currentValues, int lineNumber, List<IGCodeVariableBlock> variables)
+        {
+            decimal Result = decimal.MinValue;
+
+            string variableBlock = lineValues;
+
+            // does it contain variables
+            int variableBlockStart = variableBlock.IndexOf('[');
+
+            if (variableBlockStart > -1)
+            {
+
+                Result = ParseVariableBlockss(analysis, variables, lineNumber, variableBlock);
+
+                if (variables.Count > 0)
+                    currentValues.Attributes |= CommandAttributes.ContainsVariables;
+            }
+            else if (variableBlockStart == -1 && variableBlock.IndexOf('#') > -1)
+            {
+                analysis.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid5, lineNumber));
+            }
+
+            return Result;
+        }
+
+        private static decimal ParseVariableBlockss(GCodeAnalyses analyses, List<IGCodeVariableBlock> variables, int lineNumber, string line)
+        {
             int variableBlockStart = line.IndexOf('[', 0);
             string newCommandValue = line[..variableBlockStart];
-            commandValueConvert = Decimal.TryParse(newCommandValue, out commandValue);
+            bool commandValueConvert = Decimal.TryParse(newCommandValue, out decimal commandValue);
 
             if (!commandValueConvert)
                 commandValue = Decimal.MinValue;
@@ -571,7 +590,7 @@ namespace GSendAnalyser.Internal
                     string variable = line.Substring(variableBlockStart, variableBlockEnd - variableBlockStart + 1);
                     GCodeVariableBlockModel gCodeVariable = new(variable, lineNumber);
 
-                    Result.Add(gCodeVariable);
+                    variables.Add(gCodeVariable);
                 }
                 else if (variableBlockStart >= 0 && variableBlockEnd < variableBlockStart)
                 {
@@ -584,7 +603,7 @@ namespace GSendAnalyser.Internal
                     variableBlockStart = -1;
             }
 
-            return Result;
+            return commandValue;
         }
 
         #endregion Private Methods

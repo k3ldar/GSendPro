@@ -130,6 +130,10 @@ namespace GSendCommon
                         {
                             if (!_commandQueue.TryDequeue(out _))
                             {
+                                if (!_isRunning)
+                                    return;
+
+                                // if this raises again, put _commandqueue in a specific lock everywhere
                                 throw new InvalidOperationException("Failed to dequeue command");
                             }
                         }

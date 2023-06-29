@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 
 using GSendApi;
 
@@ -21,6 +23,7 @@ namespace GSendEditor
 {
     public partial class FrmMain : BaseForm
     {
+        private readonly object _lockObject = new();
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
@@ -297,7 +300,7 @@ namespace GSendEditor
                             FileName = saveFileDialog1.FileName;
                         }
 
-                        File.WriteAllText(FileName, txtGCode.Text);
+                        SaveTextToFile();
                         lstWarningsErrors.Items.Clear();
                     }
 
@@ -402,7 +405,7 @@ namespace GSendEditor
                 }
                 else
                 {
-                    File.WriteAllText(FileName, txtGCode.Text);
+                    SaveTextToFile();
                 }
             }
             catch (IOException ioException)
@@ -424,7 +427,7 @@ namespace GSendEditor
 
             FileName = saveFileDialog1.FileName;
 
-            File.WriteAllText(FileName, txtGCode.Text);
+            SaveTextToFile();
             _activeBookmark.FileName = FileName;
             _bookmarks.UpdateBookmarks(_activeBookmark);
             HasChanged = false;
@@ -630,7 +633,7 @@ namespace GSendEditor
             if (!File.Exists(fileName))
                 return;
 
-            txtGCode.Text = File.ReadAllText(fileName);
+            txtGCode.Text = ReadTextFromFile(fileName);
             HasChanged = false;
             FileName = fileName;
             txtGCode.ClearUndo();
@@ -824,6 +827,29 @@ namespace GSendEditor
             }
 
             tmrServerValidation.Enabled = true;
+        }
+
+        private void SaveTextToFile()
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                byte[] fileBytes = Encoding.UTF8.GetBytes(txtGCode.Text);
+                using FileStream fs = File.OpenWrite(FileName);
+                fs.Position = 0;
+                fs.Write(fileBytes, 0, fileBytes.Length);
+            }
+        }
+
+        private string ReadTextFromFile(string fileName)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                byte[] bytes = new byte[fileStream.Length];
+                fileStream.Read(bytes, 0, bytes.Length);
+                string text = Encoding.UTF8.GetString(bytes);
+                return text;
+            }
         }
     }
 }
