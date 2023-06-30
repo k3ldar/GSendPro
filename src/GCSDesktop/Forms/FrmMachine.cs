@@ -159,6 +159,12 @@ namespace GSendDesktop.Forms
 
         private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Invoke(() => ClientWebSocket_Connected(sender, e));
+                return;
+            }
+
             _machineUpdateThread.IsThreadRunning = true;
             SendMessage(String.Format("mAddEvents:{0}", _machine.Id));
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerConnected;
@@ -168,6 +174,12 @@ namespace GSendDesktop.Forms
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
+            if (InvokeRequired)
+            {
+                Invoke(() => ClientWebSocket_ConnectionLost(sender, e));
+                return;
+            }
+
             StopJogging();
             warningsAndErrors.Visible = warningsAndErrors.TotalCount() > 0;
             _machineUpdateThread.IsThreadRunning = false;
@@ -240,7 +252,15 @@ namespace GSendDesktop.Forms
                     _machineStatusModel = element.Deserialize<MachineStateModel>();
 
                     if (_machineStatusModel != null)
+                    {
                         UpdateMachineStatus(_machineStatusModel);
+
+                        if (_machineConnected != _machineStatusModel.IsConnected)
+                        {
+                            _machineConnected = _machineStatusModel.IsConnected;
+                            UpdateEnabledState();
+                        }
+                    }
 
                     break;
 
@@ -335,6 +355,7 @@ namespace GSendDesktop.Forms
 
         protected override void UpdateEnabledState()
         {
+            bool isConnected = (_machineConnected && _machineStatusModel?.IsConnected == true);
             toolStripButtonSave.Enabled = _configurationChanges;
             mnuActionSaveConfig.Enabled = _configurationChanges;
 
@@ -347,13 +368,13 @@ namespace GSendDesktop.Forms
             toolStripButtonClearAlarm.Enabled = _machineConnected && _isAlarm;
             mnuActionClearAlarm.Enabled = toolStripButtonClearAlarm.Enabled;
 
-            toolStripButtonHome.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
+            toolStripButtonHome.Enabled = isConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             mnuActionHome.Enabled = toolStripButtonHome.Enabled;
 
-            toolStripButtonProbe.Enabled = _machineConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
+            toolStripButtonProbe.Enabled = isConnected && !_isAlarm && !_isJogging && !_isPaused && !_isRunning && !_isProbing;
             mnuActionProbe.Enabled = toolStripButtonProbe.Enabled;
 
-            toolStripButtonResume.Enabled = _isPaused || !_isRunning && _machineConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
+            toolStripButtonResume.Enabled = _isPaused || !_isRunning && isConnected && (_isPaused || _machineStatusModel?.TotalLines > 0);
             mnuActionRun.Enabled = toolStripButtonResume.Enabled;
             mnuMachineRename.Enabled = !_isRunning;
 
@@ -363,7 +384,7 @@ namespace GSendDesktop.Forms
             toolStripButtonStop.Enabled = _machineConnected && !_isProbing && (_isRunning || _isJogging || _isPaused);
             mnuActionStop.Enabled = toolStripButtonStop.Enabled;
 
-            toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && _machineConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
+            toolStripDropDownButtonCoordinateSystem.Enabled = !_isRunning && isConnected && !_isProbing && (!_isRunning || !_isJogging || !_isPaused);
 
             jogControl.Enabled = _machineConnected && !_isProbing && !_isAlarm && !_isRunning;
             btnZeroAll.Enabled = toolStripButtonProbe.Enabled;
@@ -1158,11 +1179,19 @@ namespace GSendDesktop.Forms
 
         private void ProcessErrorResponse(ClientBaseMessage clientMessage)
         {
+            if (_machineStatusModel.MachineState == MachineState.Alarm)
+                return;
+
             _isProbing = false;
             JsonElement element = (JsonElement)clientMessage.message;
             GrblError error = (GrblError)element.GetInt32();
             string alarmDescription = GSend.Language.Resources.ResourceManager.GetString($"Error{(int)error}");
-            warningsAndErrors.AddWarningPanel(InformationType.Error, alarmDescription);
+
+            if (!warningsAndErrors.Contains(InformationType.Error, alarmDescription))
+            {
+                warningsAndErrors.AddWarningPanel(InformationType.Error, alarmDescription);
+            }
+
             UpdateEnabledState();
         }
 

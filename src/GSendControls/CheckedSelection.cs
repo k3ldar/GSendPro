@@ -98,7 +98,6 @@ namespace GSendControls
 
             set
             {
-                Trace.WriteLine($"Is Enabled: {value}");
                 _enabled = value;
                 EnabledChanged?.Invoke(this, EventArgs.Empty);
             }

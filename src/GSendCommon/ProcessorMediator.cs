@@ -138,7 +138,7 @@ namespace GSendCommon
 
             if (receiveResult.CloseStatus != null || receiveResult.CloseStatusDescription != null)
             {
-                await webSocket.CloseAsync(
+                await webSocket.CloseOutputAsync(
                     receiveResult.CloseStatus.Value,
                     receiveResult.CloseStatusDescription,
                     CancellationToken);

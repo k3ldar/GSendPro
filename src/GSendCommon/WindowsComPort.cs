@@ -58,6 +58,13 @@ namespace GSendCommon
             if (!IsOpen())
             {
                 _serialPort.Open();
+
+                //discard initial bytes
+                if (_serialPort.BytesToRead > 0)
+                {
+                    _ = _serialPort.ReadExisting();
+                }
+
             }
         }
 

@@ -23,6 +23,10 @@ namespace GSendDesktop
             ThreadManager.Initialise(new SharedLib.Win.WindowsCpuUsage());
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
+            ThreadManager.ThreadExceptionRaised += ThreadManager_ThreadExceptionRaised;
+            ThreadManager.ThreadCancellAll += ThreadManager_ThreadCancellAll;
+            ThreadManager.ThreadForcedToClose += ThreadManager_ThreadForcedToClose;
+            ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
             ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
@@ -57,6 +61,26 @@ namespace GSendDesktop
                 ThreadManager.CancelAll();
                 gSendContext.CloseContext();
             }
+        }
+
+        private static void ThreadManager_ThreadStopped(object sender, Shared.ThreadManagerEventArgs e)
+        {
+            
+        }
+
+        private static void ThreadManager_ThreadForcedToClose(object sender, Shared.ThreadManagerEventArgs e)
+        {
+            
+        }
+
+        private static void ThreadManager_ThreadCancellAll(object sender, EventArgs e)
+        {
+           
+        }
+
+        private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
+        {
+            
         }
     }
 }

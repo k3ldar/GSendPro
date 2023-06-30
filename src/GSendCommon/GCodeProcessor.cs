@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
+using GSendAnalyser;
+
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
@@ -336,7 +338,17 @@ namespace GSendCommon
         public bool Stop()
         {
             Trace.WriteLine("Stop");
-            InternalWriteByte(new byte[] { 0x85 });
+
+            //if (_isPaused)
+            //{
+                //_port.WriteLine("CTRL-X");
+                //InternalWriteByte(new byte[] { 0x85 });
+            InternalWriteByte(new byte[] { 0x18 });
+            //}
+            //else
+            //{
+            //    _port.WriteLine("M2");
+            //}
 
             _jobTime.Stop();
 
@@ -1076,7 +1088,7 @@ namespace GSendCommon
 
                 OnMessageReceived?.Invoke(this, parts[1]);
 
-                if (parts[1].Equals("Pgm End"))
+                if (parts[1].Equals("Pgm End") && (_isRunning || _isPaused))
                     Stop();
             }
         }
@@ -1201,7 +1213,8 @@ namespace GSendCommon
                 }
             }
 
-            Stop();
+            if (_isRunning)
+                Stop();
 
             GrblError error = GrblError.Undefined;
 
@@ -1323,6 +1336,13 @@ namespace GSendCommon
 
                             if (!String.IsNullOrEmpty(line.Trim()))
                                 Result.AppendLine(line);
+
+                            if (line.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                Trace.WriteLine($"Response: {line}");
+                                ProcessErrorResponse(line);
+                                break;
+                            }
 
                             if (DateTime.UtcNow - sendTime > TimeOut)
                                 throw new TimeoutException();

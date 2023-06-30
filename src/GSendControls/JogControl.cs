@@ -15,6 +15,7 @@ namespace GSendControls
 
         public JogControl()
         {
+            DoubleBuffered = true;
             InitializeComponent();
             LoadResources();
             btnXMinus.Tag = JogDirection.XMinus;
