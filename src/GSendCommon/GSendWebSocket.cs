@@ -148,13 +148,13 @@ namespace GSendCommon
 
             while (true)
             {
-                await ValidateConnection();
-
-                if (!_isConnected)
-                    continue;
-
                 try
                 {
+                    await ValidateConnection();
+
+                    if (!_isConnected)
+                        continue;
+
                     WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
 
                     string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
@@ -176,7 +176,6 @@ namespace GSendCommon
                 catch (Exception ex)
                 {
                     Trace.WriteLine("Error in receiving messages: {err}", ex.Message);
-                    break;
                 }
             }
         }
