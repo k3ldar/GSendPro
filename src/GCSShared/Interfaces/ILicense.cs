@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Abstractions
+﻿using System;
+
+namespace GSendShared.Abstractions
 {
     public interface ILicense
     {

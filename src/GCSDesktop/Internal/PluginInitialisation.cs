@@ -30,7 +30,7 @@ namespace GSendDesktop.Internal
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(gSendSettings);
-            services.AddSingleton<IGsendSettings>(gSendSettings);
+            services.AddSingleton<IGSendSettings>(gSendSettings);
             services.AddTransient<IMessageNotifier, MessageNotifier>();
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<ICommandProcessor, CommandProcessor>();

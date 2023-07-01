@@ -1,4 +1,6 @@
-﻿using GSendShared.Abstractions;
+﻿using System;
+
+using GSendShared.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
 

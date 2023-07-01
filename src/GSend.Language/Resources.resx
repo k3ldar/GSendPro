@@ -555,7 +555,7 @@
   <data name="FeedRate" xml:space="preserve">
     <value>Feed</value>
   </data>
-  <data name="FileFilter" xml:space="preserve">
+  <data name="FileFilterDefaults" xml:space="preserve">
     <value>G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*</value>
   </data>
   <data name="FileName" xml:space="preserve">
@@ -853,7 +853,7 @@
     <value>No</value>
   </data>
   <data name="ObtainLicenseFrom" xml:space="preserve">
-    <value>A new license can be obtained from your account at https://www.gsend.pro</value>
+    <value>A new license can be obtained from your account at &lt;a href="https://www.gsend.pro" target="_blank"&gt;https://www.gsend.pro&lt;/a&gt;</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -989,6 +989,12 @@
   </data>
   <data name="ServerCpuStateDisconnected" xml:space="preserve">
     <value>Server Cpu -</value>
+  </data>
+  <data name="ServerErrorComTimeOut" xml:space="preserve">
+    <value>The COM port timed out waiting for a response.</value>
+  </data>
+  <data name="ServerErrorInvalidComPort" xml:space="preserve">
+    <value>Invalid COM port</value>
   </data>
   <data name="ServerNotConnected" xml:space="preserve">
     <value>No connection to Server</value>
@@ -1511,6 +1517,21 @@
   </data>
   <data name="TimeoutConnectingToMachine" xml:space="preserve">
     <value>An invalid, or no response was received when connecting to the machine.</value>
+  </data>
+  <data name="TimingsComPortsGet" xml:space="preserve">
+    <value>Get All Ports</value>
+  </data>
+  <data name="TimingsJobProfileAdd" xml:space="preserve">
+    <value>Job Profile Add</value>
+  </data>
+  <data name="TimingsJobProfileDelete" xml:space="preserve">
+    <value>Job Profile Delete</value>
+  </data>
+  <data name="TimingsJobProfileGet" xml:space="preserve">
+    <value>Job Profile Get</value>
+  </data>
+  <data name="TimingsJobProfileUpdate" xml:space="preserve">
+    <value>Job Profile Update</value>
   </data>
   <data name="TitleOpen" xml:space="preserve">
     <value>Open GCode File</value>

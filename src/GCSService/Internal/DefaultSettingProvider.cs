@@ -1,6 +1,11 @@
-﻿using AppSettings;
+﻿using System;
+using System.IO;
+
+using AppSettings;
 
 using GSendShared;
+
+using Microsoft.Extensions.Configuration;
 
 using PluginManager.Abstractions;
 

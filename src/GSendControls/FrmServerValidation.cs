@@ -12,6 +12,7 @@ namespace GSendControls
     {
 
         private DateTime _nextLicenseCheck;
+        private readonly BaseForm _parentForm;
         private readonly IGSendApiWrapper _apiWrapper;
         private readonly bool _isLicensed;
         private bool _uriChanged = false;
@@ -21,9 +22,11 @@ namespace GSendControls
             InitializeComponent();
         }
 
-        public FrmServerValidation(IGSendApiWrapper apiWrapper, bool isLicensed)
+        public FrmServerValidation(BaseForm parentForm, IGSendApiWrapper apiWrapper, bool isLicensed)
             : this()
         {
+            _parentForm = parentForm ?? throw new ArgumentNullException(nameof(parentForm));
+            _parentForm.OnServerConnected += ParentForm_OnServerConnected;
             _apiWrapper = apiWrapper ?? throw new ArgumentNullException(nameof(apiWrapper));
             _isLicensed = isLicensed;
 
@@ -33,13 +36,13 @@ namespace GSendControls
             tmrLicenseCheck.Enabled = !_isLicensed;
         }
 
-        public static bool ValidateServer(Form parent, IGSendApiWrapper apiWrapper)
+        public static bool ValidateServer(BaseForm parent, IGSendApiWrapper apiWrapper)
         {
             bool isLicensed = ValidateLicense(apiWrapper, out bool isError);
 
             if (isError || !isLicensed)
             {
-                using FrmServerValidation frmServerValidation = new(apiWrapper, isLicensed);
+                using FrmServerValidation frmServerValidation = new(parent, apiWrapper, isLicensed);
 
                 if (frmServerValidation.ShowDialog(parent) != DialogResult.OK)
                 {
@@ -192,6 +195,16 @@ namespace GSendControls
 
             Uri licenseUri = uriBuilder.Uri;
             Process.Start(new ProcessStartInfo(licenseUri.ToString()) { UseShellExecute = true });
+        }
+
+        private void FrmServerValidation_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _parentForm.OnServerConnected -= ParentForm_OnServerConnected;
+        }
+
+        private void ParentForm_OnServerConnected(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
         }
     }
 }

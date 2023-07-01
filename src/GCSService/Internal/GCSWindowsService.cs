@@ -1,6 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 
 using GSendShared;
+
+using Microsoft.Extensions.Hosting;
 
 using ILogger = PluginManager.Abstractions.ILogger;
 

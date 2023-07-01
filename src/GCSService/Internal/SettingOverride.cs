@@ -1,4 +1,7 @@
-﻿using AppSettings;
+﻿using System;
+using System.IO;
+
+using AppSettings;
 
 using GSendShared;
 

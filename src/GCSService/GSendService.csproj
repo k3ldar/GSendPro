@@ -2,26 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <StartupObject>GSendService.Program</StartupObject>
     <Nullable>disable</Nullable>
     <ApplicationIcon>ServiceIcon.ico</ApplicationIcon>
   </PropertyGroup>
-
+  
+  <PropertyGroup>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Remove="Views\Account\**" />
-    <Compile Remove="Views\Login\**" />
     <Compile Remove="Views\SystemAdmin\**" />
     <Content Remove="Views\Account\**" />
-    <Content Remove="Views\Login\**" />
     <Content Remove="Views\SystemAdmin\**" />
     <EmbeddedResource Remove="Views\Account\**" />
-    <EmbeddedResource Remove="Views\Login\**" />
     <EmbeddedResource Remove="Views\SystemAdmin\**" />
     <None Remove="Views\Account\**" />
-    <None Remove="Views\Login\**" />
     <None Remove="Views\SystemAdmin\**" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Content Remove="wwwroot\images\3DPrinter32x32.png" />
@@ -82,4 +83,17 @@
     <Folder Include="Providers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="SystemAdmin.Plugin" />
+  </ItemGroup>
+  
+  <Target Name="CopyDepsFiles" AfterTargets="Build" Condition="'$(TargetFramework)'!=''">
+
+    <ItemGroup>
+      <DepsFilePaths Include="$([System.IO.Path]::ChangeExtension('%(_ResolvedProjectReferencePaths.FullPath)', '.deps.json'))" />
+    </ItemGroup>
+
+    <Copy SourceFiles="%(DepsFilePaths.FullPath)" DestinationFolder="$(OutputPath)" Condition="Exists('%(DepsFilePaths.FullPath)')" />
+
+  </Target>
 </Project>

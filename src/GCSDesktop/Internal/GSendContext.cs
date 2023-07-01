@@ -15,7 +15,7 @@ namespace GSendDesktop
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<IMachine, FrmMachine> _machines = new();
 
-        public GSendContext(IServiceProvider serviceProvider, IGsendSettings gsendSettings)
+        public GSendContext(IServiceProvider serviceProvider, IGSendSettings gsendSettings)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             Settings = gsendSettings ?? throw new ArgumentNullException(nameof(gsendSettings));
@@ -51,6 +51,6 @@ namespace GSendDesktop
 
         public IServiceProvider ServiceProvider => _serviceProvider;
 
-        public IGsendSettings Settings { get; }
+        public IGSendSettings Settings { get; }
     }
 }

@@ -225,12 +225,12 @@ namespace GSendDesktop.Forms
 
             switch (clientMessage.request)
             {
-                case "ComPortTimeout":
-                    warningsAndErrors.AddWarningPanel(InformationType.Warning, "Com port time out");
+                case Constants.ComPortTimeOut:
+                    warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServerErrorComTimeOut);
                     break;
 
-                case "InvalidComPort":
-                    warningsAndErrors.AddWarningPanel(InformationType.ErrorKeep, "Com port bad");
+                case Constants.InvalidComPort:
+                    warningsAndErrors.AddWarningPanel(InformationType.ErrorKeep, GSend.Language.Resources.ServerErrorInvalidComPort);
                     break;
 
                 case Constants.MessageMachineProbeServer:
@@ -247,7 +247,7 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     break;
 
-                case "StateChanged":
+                case Constants.StateChanged:
                     JsonElement element = (JsonElement)clientMessage.message;
                     _machineStatusModel = element.Deserialize<MachineStateModel>();
 
@@ -1779,7 +1779,7 @@ namespace GSendDesktop.Forms
 
             // menu items
 
-            openFileDialog1.Filter = GSend.Language.Resources.FileFilter;
+            openFileDialog1.Filter = _gSendContext.Settings.FileFilter;
 
             //Machine
             mnuMachine.Text = GSend.Language.Resources.Machine;

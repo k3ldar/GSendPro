@@ -150,6 +150,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmServerValidation";
             this.Text = "FrmLicenseValidation";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmServerValidation_FormClosing);
             this.Shown += new System.EventHandler(this.FrmLicenseValidation_Shown);
             this.pnlLicenseCheck.ResumeLayout(false);
             this.pnlLicenseCheck.PerformLayout();

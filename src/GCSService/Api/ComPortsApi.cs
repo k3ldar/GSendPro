@@ -1,4 +1,6 @@
-﻿using GSendShared.Abstractions;
+﻿using System;
+
+using GSendShared.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,7 @@ namespace GSendService.Api
     public sealed class ComPortsApi : BaseController
     {
         private readonly IComPortProvider _comPortProvider;
+        internal readonly static Timings _comPortTimings = new();
 
         public ComPortsApi(IComPortProvider comPortProvider)
         {
@@ -19,7 +22,10 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult GetAllPorts()
         {
-            return GenerateJsonSuccessResponse(_comPortProvider.AvailablePorts());
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_comPortTimings))
+            {
+                return GenerateJsonSuccessResponse(_comPortProvider.AvailablePorts());
+            }
         }
     }
 }

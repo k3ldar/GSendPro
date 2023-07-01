@@ -29,6 +29,6 @@ namespace GSendEditor
 
         public IServiceProvider ServiceProvider => _serviceProvider;
 
-        public IGsendSettings Settings { get; } = new GSendSettings();
+        public IGSendSettings Settings { get; } = new GSendSettings();
     }
 }

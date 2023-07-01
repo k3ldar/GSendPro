@@ -1,4 +1,7 @@
-﻿using GSendShared;
+﻿using System;
+using System.Collections.Generic;
+
+using GSendShared;
 
 using SharedPluginFeatures;
 

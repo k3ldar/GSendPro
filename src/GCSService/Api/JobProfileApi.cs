@@ -1,4 +1,7 @@
-﻿using GSendShared;
+﻿using System;
+using System.Linq;
+
+using GSendShared;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +17,10 @@ namespace GSendService.Api
     {
         private readonly IGSendDataProvider _gSendDataProvider;
         private readonly INotificationService _notificationService;
+        internal readonly static Timings _jobProfilesGet = new();
+        internal readonly static Timings _jobProfileAdd = new();
+        internal readonly static Timings _jobProfileDelete = new();
+        internal readonly static Timings _jobProfileUpdate = new();
 
         public JobProfileApi(IGSendDataProvider gSendDataProvider, INotificationService notificationService)
         {
@@ -25,71 +32,83 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult JobProfilesGet()
         {
-            return GenerateJsonSuccessResponse(_gSendDataProvider.JobProfilesGet());
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_jobProfilesGet))
+            {
+                return GenerateJsonSuccessResponse(_gSendDataProvider.JobProfilesGet());
+            }
         }
 
         [HttpPost]
         [ApiAuthorization]
         public IActionResult JobProfileAdd([FromBody] IJobProfile model)
         {
-            if (!ValidateJobProfile(model, out string errorData))
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_jobProfileAdd))
+            {
+                if (!ValidateJobProfile(model, out string errorData))
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
-            if (_gSendDataProvider.JobProfilesGet().Any(jp => jp.Name.Equals(model.Name)))
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "duplicate name");
+                if (_gSendDataProvider.JobProfilesGet().Any(jp => jp.Name.Equals(model.Name)))
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "duplicate name");
 
-            _gSendDataProvider.JobProfileAdd(model.Name, model.Description);
+                _gSendDataProvider.JobProfileAdd(model.Name, model.Description);
 
-            if (_gSendDataProvider.JobProfilesGet().FirstOrDefault(j => j.Name.Equals(model.Name)) == null)
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error adding job profile");
+                if (_gSendDataProvider.JobProfilesGet().FirstOrDefault(j => j.Name.Equals(model.Name)) == null)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error adding job profile");
 
-            _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileAdd, model.Id);
+                _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileAdd, model.Id);
 
-            return GenerateJsonSuccessResponse();
+                return GenerateJsonSuccessResponse();
+            }
         }
 
         [HttpDelete]
         [ApiAuthorization]
         public IActionResult JobProfileDelete(long jobProfileId)
         {
-            IJobProfile deleteJobProfile = _gSendDataProvider.JobProfileGet(jobProfileId);
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_jobProfileDelete))
+            {
+                IJobProfile deleteJobProfile = _gSendDataProvider.JobProfileGet(jobProfileId);
 
-            if (deleteJobProfile == null)
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not found");
+                if (deleteJobProfile == null)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not found");
 
-            if (_gSendDataProvider.JobProfilesGet().Count == 1)
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not removed");
+                if (_gSendDataProvider.JobProfilesGet().Count == 1)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not removed");
 
-            _gSendDataProvider.JobProfileRemove(deleteJobProfile.Id);
+                _gSendDataProvider.JobProfileRemove(deleteJobProfile.Id);
 
-            if (_gSendDataProvider.JobProfilesGet().FirstOrDefault(m => m.Id.Equals(jobProfileId)) != null)
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error removing job profile");
+                if (_gSendDataProvider.JobProfilesGet().FirstOrDefault(m => m.Id.Equals(jobProfileId)) != null)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Error removing job profile");
 
-            _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileRemove, deleteJobProfile.Id);
+                _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileRemove, deleteJobProfile.Id);
 
-            return GenerateJsonSuccessResponse();
+                return GenerateJsonSuccessResponse();
+            }
         }
 
         [HttpPut]
         [ApiAuthorization]
         public IActionResult JobProfileUpdate([FromBody] IJobProfile model)
         {
-            if (!ValidateJobProfile(model, out string errorData))
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_jobProfileUpdate))
+            {
+                if (!ValidateJobProfile(model, out string errorData))
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, errorData);
 
-            IJobProfile updateJobProfile = _gSendDataProvider.JobProfileGet(model.Id);
+                IJobProfile updateJobProfile = _gSendDataProvider.JobProfileGet(model.Id);
 
-            if (updateJobProfile == null)
-                return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not found");
+                if (updateJobProfile == null)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Profile not found");
 
-            updateJobProfile.Name = model.Name;
-            updateJobProfile.Description = model.Description;
+                updateJobProfile.Name = model.Name;
+                updateJobProfile.Description = model.Description;
 
-            _gSendDataProvider.JobProfileUpdate(updateJobProfile);
+                _gSendDataProvider.JobProfileUpdate(updateJobProfile);
 
-            _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileUpdated, updateJobProfile.Id);
+                _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobProfileUpdated, updateJobProfile.Id);
 
-            return GenerateJsonSuccessResponse();
+                return GenerateJsonSuccessResponse();
+            }
         }
 
         private static bool ValidateJobProfile(IJobProfile jobProfileModel, out string errorData)

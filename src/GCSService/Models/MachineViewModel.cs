@@ -1,4 +1,6 @@
-﻿using SharedPluginFeatures;
+﻿using System;
+
+using SharedPluginFeatures;
 
 namespace GSendService.Models
 {

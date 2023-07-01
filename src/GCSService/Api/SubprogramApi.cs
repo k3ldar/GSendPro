@@ -1,4 +1,7 @@
-﻿using GSendCommon;
+﻿using System;
+using System.Collections.Generic;
+
+using GSendCommon;
 
 using GSendShared;
 

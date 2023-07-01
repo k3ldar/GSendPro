@@ -68,12 +68,12 @@ namespace GSendDesktop
 
         private void ClientWebSocket_Connected(object sender, EventArgs e)
         {
-            // not used in this context
+            RaiseServerConnected();
         }
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
-            // not used in this context
+            ValidateServerConnection();
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -535,6 +535,11 @@ namespace GSendDesktop
         #endregion Menu Items
 
         private void FormMain_Activated(object sender, EventArgs e)
+        {
+            ValidateServerConnection();
+        }
+
+        private void ValidateServerConnection()
         {
             IGSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 

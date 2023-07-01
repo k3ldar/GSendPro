@@ -12,6 +12,6 @@ namespace GSendShared
 
         bool IsClosing { get; }
 
-        IGsendSettings Settings { get; }
+        IGSendSettings Settings { get; }
     }
 }

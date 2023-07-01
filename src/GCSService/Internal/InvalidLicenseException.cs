@@ -1,4 +1,6 @@
-﻿namespace GSendService.Internal
+﻿using System;
+
+namespace GSendService.Internal
 {
     public class InvalidLicenseException : Exception
     {

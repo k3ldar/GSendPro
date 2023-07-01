@@ -8,6 +8,9 @@ using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Providers;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
 using PluginManager.Abstractions;
 
 using SharedPluginFeatures;
@@ -45,6 +48,7 @@ namespace GSendService
             services.AddTransient<IProcessorMediator, ProcessorMediator>();
             services.AddSingleton<IStaticMethods, StaticMethods>();
             services.AddSingleton<ISubprograms, Subprograms>();
+            services.AddSingleton<ISharedPluginHelper, SharedPluginHelper>();
         }
 
         public void Configure(in IApplicationBuilder app)

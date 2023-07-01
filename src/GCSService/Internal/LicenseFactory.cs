@@ -1,4 +1,7 @@
-﻿using GSendShared;
+﻿using System;
+using System.IO;
+
+using GSendShared;
 using GSendShared.Abstractions;
 
 using Shared.Classes;

@@ -300,7 +300,7 @@ namespace GSendCommon
 
         private void Processor_OnComPortTimeOut(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("ComPortTimeout"));
+            SendMessage(new ClientBaseMessage(Constants.ComPortTimeOut));
         }
 
         private void Processor_OnResponseReceived(IGCodeProcessor sender, string response)
@@ -319,7 +319,7 @@ namespace GSendCommon
 
             if (span.TotalMilliseconds > DelayBetweenUpdatesSent)
             {
-                SendMessage(new ClientBaseMessage("StateChanged", machineState));
+                SendMessage(new ClientBaseMessage(Constants.StateChanged, machineState));
                 _lastSendStatus = DateTime.UtcNow;
             }
         }
@@ -430,7 +430,7 @@ namespace GSendCommon
             if (_isLicensed)
             {
                 if (String.IsNullOrEmpty(request))
-                    request = "mStatusAll";
+                    request = Constants.MessageMachineStatusAll;
 
                 long machineId = -1;
                 string[] parts = request.Split(":", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);

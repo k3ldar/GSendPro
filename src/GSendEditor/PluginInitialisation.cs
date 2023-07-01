@@ -24,7 +24,7 @@ namespace GSendEditor.Internal
 
             services.AddSingleton<IGSendContext, GSendContext>();
             services.AddSingleton(new GSendSettings());
-            services.AddSingleton<IGsendSettings>(gSendSettings);
+            services.AddSingleton<IGSendSettings>(gSendSettings);
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<FrmMain>();
             services.AddTransient<SubProgramForm>();

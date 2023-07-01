@@ -198,6 +198,12 @@ namespace GSendShared
 
         public const string MessageRunGCode = "mStart:{0}:{1}";
 
+        public const string InvalidComPort = "InvalidComPort";
+
+        public const string ComPortTimeOut = "ComPortTimeout";
+
+        public const string StateChanged = "StateChanged";
+
         public const string StateSleep = "Sleep";
 
         public const string StateHome = "Home";

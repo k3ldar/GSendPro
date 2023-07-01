@@ -1,4 +1,10 @@
-﻿using AspNetCore.PluginManager;
+﻿using System;
+
+using AspNetCore.PluginManager;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GSendService
 {
@@ -8,8 +14,7 @@ namespace GSendService
         {
             PluginManagerService.ConfigureServices(services);
 
-            //services.AddControllersWithViews()
-            //    .AddRazorRuntimeCompilation();
+            services.AddControllersWithViews();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -48,12 +53,12 @@ namespace GSendService
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            //app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseCookiePolicy();
             app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

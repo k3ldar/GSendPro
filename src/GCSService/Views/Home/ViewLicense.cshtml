@@ -39,7 +39,7 @@
 <div class="row">
     <div class="col">
         <p>@Localizer[nameof(GSend.Language.Resources.LicenseAddDescription)]</p>
-        <p>@GSend.Language.Resources.ObtainLicenseFrom</p>
+        <p>@Html.Raw(GSend.Language.Resources.ObtainLicenseFrom)</p>
     </div>
 </div>
 @using (Html.BeginForm(nameof(GSendService.Controllers.HomeController.ViewLicense), GSendService.Controllers.HomeController.Name, FormMethod.Post))

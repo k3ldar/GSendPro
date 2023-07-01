@@ -1,4 +1,7 @@
-﻿using GSendService.Models;
+﻿using System;
+using System.IO;
+
+using GSendService.Models;
 
 using GSendShared;
 using GSendShared.Abstractions;

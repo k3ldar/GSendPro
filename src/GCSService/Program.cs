@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 using AspNetCore.PluginManager;
@@ -7,7 +10,11 @@ using GSendService.Internal;
 using GSendShared;
 using GSendShared.Providers.Internal.Enc;
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using PluginManager;
 

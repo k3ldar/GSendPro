@@ -105,5 +105,12 @@ namespace GSendControls
         {
             DesktopSettings.WriteValue(SectionName, $"{tabControl.Name}{nameof(tabControl.SelectedIndex)}", tabControl.SelectedIndex);
         }
+
+        protected void RaiseServerConnected()
+        {
+            OnServerConnected?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler OnServerConnected;
     }
 }

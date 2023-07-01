@@ -2,7 +2,7 @@
 
 namespace GSendCommon.Settings
 {
-    public sealed class GSendSettings : IGsendSettings
+    public sealed class GSendSettings : IGSendSettings
     {
         public bool AllowDuplicateComPorts { get; set; }
 
@@ -23,5 +23,7 @@ namespace GSendCommon.Settings
         public int ConnectTimeOut { get; set; } = 10000;
 
         public int UpdateMilliseconds { get; set; } = 200;
+
+        public string FileFilter { get; set; } = GSend.Language.Resources.FileFilterDefaults;
     }
 }

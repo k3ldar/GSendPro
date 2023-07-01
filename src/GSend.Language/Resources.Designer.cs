@@ -1377,9 +1377,9 @@ namespace GSend.Language {
         /// <summary>
         ///   Looks up a localized string similar to G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*.
         /// </summary>
-        public static string FileFilter {
+        public static string FileFilterDefaults {
             get {
-                return ResourceManager.GetString("FileFilter", resourceCulture);
+                return ResourceManager.GetString("FileFilterDefaults", resourceCulture);
             }
         }
         
@@ -2266,7 +2266,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new license can be obtained from your account at https://www.gsend.pro.
+        ///   Looks up a localized string similar to A new license can be obtained from your account at &lt;a href=&quot;https://www.gsend.pro&quot; target=&quot;_blank&quot;&gt;https://www.gsend.pro&lt;/a&gt;.
         /// </summary>
         public static string ObtainLicenseFrom {
             get {
@@ -2676,6 +2676,24 @@ namespace GSend.Language {
         public static string ServerCpuStateDisconnected {
             get {
                 return ResourceManager.GetString("ServerCpuStateDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The COM port timed out waiting for a response..
+        /// </summary>
+        public static string ServerErrorComTimeOut {
+            get {
+                return ResourceManager.GetString("ServerErrorComTimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port.
+        /// </summary>
+        public static string ServerErrorInvalidComPort {
+            get {
+                return ResourceManager.GetString("ServerErrorInvalidComPort", resourceCulture);
             }
         }
         
@@ -4242,6 +4260,51 @@ namespace GSend.Language {
         public static string TimeoutConnectingToMachine {
             get {
                 return ResourceManager.GetString("TimeoutConnectingToMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get All Ports.
+        /// </summary>
+        public static string TimingsComPortsGet {
+            get {
+                return ResourceManager.GetString("TimingsComPortsGet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Profile Add.
+        /// </summary>
+        public static string TimingsJobProfileAdd {
+            get {
+                return ResourceManager.GetString("TimingsJobProfileAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Profile Delete.
+        /// </summary>
+        public static string TimingsJobProfileDelete {
+            get {
+                return ResourceManager.GetString("TimingsJobProfileDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Profile Get.
+        /// </summary>
+        public static string TimingsJobProfileGet {
+            get {
+                return ResourceManager.GetString("TimingsJobProfileGet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Profile Update.
+        /// </summary>
+        public static string TimingsJobProfileUpdate {
+            get {
+                return ResourceManager.GetString("TimingsJobProfileUpdate", resourceCulture);
             }
         }
         

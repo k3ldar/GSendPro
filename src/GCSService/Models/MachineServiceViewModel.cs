@@ -1,4 +1,7 @@
-﻿namespace GSendService.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace GSendService.Models
 {
     public class MachineServiceViewModel
     {
