@@ -1,0 +1,37 @@
+﻿@model SharedPluginFeatures.BaseModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <p>The GCode editor has been designed to enable easy editing whilst integrating with the analyzer to provide instant feedback on the edits being made.</p>
+        <p>Click each image to view without scrolling in a seperate tab/window.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="w3-content w3-section" style="max-width:100%">
+            <a href="/images/editor/1.png" target="_blank"><img class="mySlides" src="/images/editor/1.png" style="width:100%"></a>
+            <a href="/images/editor/2.png" target="_blank"><img class="mySlides" src="/images/editor/2.png" style="width:100%"></a>
+            <a href="/images/editor/3.png" target="_blank"><img class="mySlides" src="/images/editor/3.png" style="width:100%"></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 5000);
+    }
+</script>

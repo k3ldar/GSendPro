@@ -1,34 +1,29 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 
-using gsend.pro.Models;
-
-using Microsoft.AspNetCore.Mvc;
+using SharedPluginFeatures;
 
 namespace gsend.pro.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(new  BaseModel(GetModelData()));
         }
 
-        public IActionResult Privacy()
+        public IActionResult Editor()
         {
-            return View();
+            return View(new BaseModel(GetModelData()));
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Sender()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new BaseModel(GetModelData()));
         }
     }
 }

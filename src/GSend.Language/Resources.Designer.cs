@@ -4444,6 +4444,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GCode Editor.
+        /// </summary>
+        public static string WebMenuEditor {
+            get {
+                return ResourceManager.GetString("WebMenuEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode Sender.
+        /// </summary>
+        public static string WebMenuSender {
+            get {
+                return ResourceManager.GetString("WebMenuSender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string Yes {

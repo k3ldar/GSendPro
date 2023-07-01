@@ -1,0 +1,43 @@
+﻿@model SharedPluginFeatures.BaseModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <p>The GCode sender provides a lot of functionality that has been specifically designed to allow fine grained control over your machine whilst viewing multiple machines on a single monitor.</p>
+        <p>You can easily control multiple machines from a single PC/Laptop, the only limit is the computer itself.</p>
+        <p>Click each image to view without scrolling in a seperate tab/window.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="w3-content w3-section" style="max-width:100%">
+            <a href="/images/sender/1.png" target="_blank"><img class="mySlides" src="/images/sender/1.png" style="width:100%"></a>
+            <a href="/images/sender/2.png" target="_blank"><img class="mySlides" src="/images/sender/2.png" style="width:100%"></a>
+            <a href="/images/sender/3.png" target="_blank"><img class="mySlides" src="/images/sender/3.png" style="width:100%"></a>
+            <a href="/images/sender/4.png" target="_blank"><img class="mySlides" src="/images/sender/4.png" style="width:100%"></a>
+            <a href="/images/sender/5.png" target="_blank"><img class="mySlides" src="/images/sender/5.png" style="width:100%"></a>
+            <a href="/images/sender/6.png" target="_blank"><img class="mySlides" src="/images/sender/6.png" style="width:100%"></a>
+            <a href="/images/sender/7.png" target="_blank"><img class="mySlides" src="/images/sender/7.png" style="width:100%"></a>
+            <a href="/images/sender/8.png" target="_blank"><img class="mySlides" src="/images/sender/8.png" style="width:100%"></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 5000);
+    }
+</script>

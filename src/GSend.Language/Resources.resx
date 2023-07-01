@@ -1578,6 +1578,12 @@
   <data name="WarnLayerHeight" xml:space="preserve">
     <value>Warn if layer height is more than</value>
   </data>
+  <data name="WebMenuEditor" xml:space="preserve">
+    <value>GCode Editor</value>
+  </data>
+  <data name="WebMenuSender" xml:space="preserve">
+    <value>GCode Sender</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
