@@ -304,7 +304,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The file contains invalid G Code, check maximum line length.
+        ///   Looks up a localized string similar to The file contains invalid G-Code, check maximum line length.
         /// </summary>
         public static string AnalysesWarningContainsInvalidGCode {
             get {
@@ -673,6 +673,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M{0}.
+        /// </summary>
+        public static string BreadcrumbMCode {
+            get {
+                return ResourceManager.GetString("BreadcrumbMCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M Codes.
         /// </summary>
         public static string BreadcrumbMCodes {
@@ -696,6 +705,15 @@ namespace GSend.Language {
         public static string BreadcrumbSubprograms {
             get {
                 return ResourceManager.GetString("BreadcrumbSubprograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode Variables.
+        /// </summary>
+        public static string BreadcrumbVariables {
+            get {
+                return ResourceManager.GetString("BreadcrumbVariables", resourceCulture);
             }
         }
         
@@ -988,7 +1006,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatically select from G Code file.
+        ///   Looks up a localized string similar to Automatically select from G-Code file.
         /// </summary>
         public static string DisplayUpdateFromFile {
             get {
@@ -1411,7 +1429,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*.
+        ///   Looks up a localized string similar to G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*.
         /// </summary>
         public static string FileFilterDefaults {
             get {
@@ -2059,7 +2077,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please load a G Code file..
+        ///   Looks up a localized string similar to Please load a G-Code file..
         /// </summary>
         public static string LoadFileForDetails {
             get {
@@ -2082,6 +2100,24 @@ namespace GSend.Language {
         public static string LoadSubProgramsError {
             get {
                 return ResourceManager.GetString("LoadSubProgramsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid M600 on line {0}.  M600 must be followed by a P-code.
+        /// </summary>
+        public static string M600InvalidNoPCommand {
+            get {
+                return ResourceManager.GetString("M600InvalidNoPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid M600 on line {0}, the P-code must be between 1 and 2000..
+        /// </summary>
+        public static string M600InvalidPCommandValue {
+            get {
+                return ResourceManager.GetString("M600InvalidPCommandValue", resourceCulture);
             }
         }
         
@@ -4489,6 +4525,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors.
+        /// </summary>
+        public static string WebMenuErrors {
+            get {
+                return ResourceManager.GetString("WebMenuErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example.
+        /// </summary>
+        public static string WebMenuExample {
+            get {
+                return ResourceManager.GetString("WebMenuExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M600 - Pause.
+        /// </summary>
+        public static string WebMenuM600 {
+            get {
+                return ResourceManager.GetString("WebMenuM600", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M605 - Play Sound.
+        /// </summary>
+        public static string WebMenuM605 {
+            get {
+                return ResourceManager.GetString("WebMenuM605", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M Codes.
         /// </summary>
         public static string WebMenuMCodes {
@@ -4512,6 +4584,33 @@ namespace GSend.Language {
         public static string WebMenuSubprograms {
             get {
                 return ResourceManager.GetString("WebMenuSubprograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage.
+        /// </summary>
+        public static string WebMenuUsage {
+            get {
+                return ResourceManager.GetString("WebMenuUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variables.
+        /// </summary>
+        public static string WebMenuVariables {
+            get {
+                return ResourceManager.GetString("WebMenuVariables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warnings.
+        /// </summary>
+        public static string WebMenuWarnings {
+            get {
+                return ResourceManager.GetString("WebMenuWarnings", resourceCulture);
             }
         }
         

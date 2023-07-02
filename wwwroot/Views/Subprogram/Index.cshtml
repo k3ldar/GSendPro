@@ -1,24 +1,39 @@
 ﻿<div class="row">
     <div class="col-sm-12">
-        <p>What are subprogramms and how can they be used, each subprogram is essentially GCode, you can create G Code for a specific task, e.g V Carve a heart, if the GCode to carve the heart were then saved as subprogram, you couls easily re-use the same GCode</p>
+        <h3>@GSend.Language.Resources.WebMenuSubprograms</h3>
     </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p><strong>What are subprogramms and how can they be used?</strong> A subprogram is a re-usable set of G-code commands grouped together which can be called from your main G-code program.  The benefits provided are code reusability, modularity, simplified program flow, paramaterization and code organisation.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>Using subprogramms provides the potential for productivity enhancements by providing a set of instructions which can be reused multiple times within a program or across different programs, instead of repeating the same code again and again.  This in turn leads to easier maintainable code which is easy to debug.</p>
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-12">
         <p>In the following image the subprogram, in this case V carving a heart is used to repeat a job at 6 different work coordinates, easily reproducing a carve across multiple positions, without copying all the code for the V carve again and again.</p>
     </div>
-
+</div>
+<div class="row">
     <div class="col-sm-12">
         <img class="imgFill" src="/images/subprogram/1.png" />
     </div>
-
-
+</div>
+<div class="row">
     <div class="col-sm-12">
         <p>In the image above there are further codes and subprograms, subprogram O1000 sets the initial job parameters and turns on the spindle:</p>
     </div>
-
+</div>
+<div class="row">
     <div class="col-sm-12">
         <img class="imgFill" src="/images/subprogram/2.png" />
     </div>
-
+</div>
+<div class="row">
     <div class="col-sm-12">
         <p><a href="/Variables/Index">Variables</a> and custom <a href="/MCodes/Index">M Codes</a> can also be used to enhance the experience, for instance in subprogram O1000 a variable is used to set the spindle speed, this can be changed whilst the program runs by having a new variable with a different value.</p>
         <p>Custom M Codes are used in this example to pause for 1 second after the job has been repeated and M610 allows for a sound to be played on the computer which provides an audiable reference for the operator.</p>

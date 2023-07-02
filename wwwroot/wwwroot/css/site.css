@@ -20,13 +20,17 @@ body {
     border-bottom: 4px solid #3d3d3d;
     height: 33px;
     margin-bottom: 4px;
+    font-display: block; 
 }
 
 .nav-item-nohover {
-    border: 0;
+    border: 0 0 4px 0;
     height: 33px;
     margin-bottom: 4px;
-    font-size: 14px;
+}
+
+.nav-link {
+    font-size: unset;
 }
 
 /* Carousel */
@@ -48,11 +52,11 @@ body {
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 576px) {
     .navbar-brand {
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .nav-item {
-        font-size: 13px;
+        font-size: 10px;
     }
 
     .cart-summary {
@@ -143,6 +147,9 @@ body {
     }
 }
 
+.nav-item {
+    white-space: nowrap;
+}
 
 .validation-summary-errors {
     color: red;
@@ -158,8 +165,8 @@ body {
 }
 
 .bc {
-    padding: 8px 0px 2px 0px;
-    min-height: 36px !important;
+    padding: 2px 0px 2px 0px;
+    height: 30px !important;
     display: contents;
 }
 
@@ -286,4 +293,24 @@ body {
 
 .rowSpace {
     margin: 10px 0 0 0;
+}
+
+.gcode-blue {
+    color: blue;
+}
+
+.gcode-brown {
+    color: brown;
+}
+
+.gcode-magenta {
+    color: magenta;
+}
+
+.gcode-green {
+    color: green;
+}
+
+.gcode-black {
+    color: black;
 }

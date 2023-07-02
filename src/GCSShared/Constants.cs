@@ -52,9 +52,8 @@ namespace GSendShared
         public const char CharVariableBlockStart = '[';
         public const char CharVariableBlockEnd = ']';
 
-
+        public const int MCode600 = 600;
         public const int MCode605 = 605;
-
         public const int MCode650 = 650;
 
 

@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Providers\**" />
+    <Content Remove="Providers\**" />
+    <EmbeddedResource Remove="Providers\**" />
+    <None Remove="Providers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ApiAuthorization.Plugin" Version="$(PluginVersion)" />
     <PackageReference Include="ApplicationSettings" Version="2.2.0" />
     <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
@@ -46,7 +53,6 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Providers\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -199,7 +199,7 @@
     <value>GCode file contains option to turn on flood coolant but is not supported.  This command will be ignored.</value>
   </data>
   <data name="AnalysesWarningContainsInvalidGCode" xml:space="preserve">
-    <value>The file contains invalid G Code, check maximum line length</value>
+    <value>The file contains invalid G-Code, check maximum line length</value>
   </data>
   <data name="AnalysesWarningContainsMistCoolantOption" xml:space="preserve">
     <value>GCode file contains option to turn on mist coolant but is not supported.  This command will be ignored.</value>
@@ -321,6 +321,9 @@
   <data name="BreadcrumbEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
+  <data name="BreadcrumbMCode" xml:space="preserve">
+    <value>M{0}</value>
+  </data>
   <data name="BreadcrumbMCodes" xml:space="preserve">
     <value>M Codes</value>
   </data>
@@ -329,6 +332,9 @@
   </data>
   <data name="BreadcrumbSubprograms" xml:space="preserve">
     <value>Subprograms</value>
+  </data>
+  <data name="BreadcrumbVariables" xml:space="preserve">
+    <value>GCode Variables</value>
   </data>
   <data name="BufferSize" xml:space="preserve">
     <value>Buffer Size: {0}</value>
@@ -427,7 +433,7 @@
     <value>Display units</value>
   </data>
   <data name="DisplayUpdateFromFile" xml:space="preserve">
-    <value>Automatically select from G Code file</value>
+    <value>Automatically select from G-Code file</value>
   </data>
   <data name="Error0" xml:space="preserve">
     <value>Undefined Grbl error</value>
@@ -568,7 +574,7 @@
     <value>Feed</value>
   </data>
   <data name="FileFilterDefaults" xml:space="preserve">
-    <value>G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*</value>
+    <value>G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*</value>
   </data>
   <data name="FileName" xml:space="preserve">
     <value>File name:</value>
@@ -784,13 +790,19 @@
     <value>Line</value>
   </data>
   <data name="LoadFileForDetails" xml:space="preserve">
-    <value>Please load a G Code file.</value>
+    <value>Please load a G-Code file.</value>
   </data>
   <data name="LoadGCode" xml:space="preserve">
     <value>Load GCode</value>
   </data>
   <data name="LoadSubProgramsError" xml:space="preserve">
     <value>There was a problem loading subprograms: {0}</value>
+  </data>
+  <data name="M600InvalidNoPCommand" xml:space="preserve">
+    <value>Invalid M600 on line {0}.  M600 must be followed by a P-code</value>
+  </data>
+  <data name="M600InvalidPCommandValue" xml:space="preserve">
+    <value>Invalid M600 on line {0}, the P-code must be between 1 and 2000.</value>
   </data>
   <data name="M605InvalidMultipleLines" xml:space="preserve">
     <value>Line {0} contains multiple M605 commands, only 1 M605 command is allowed per line.</value>
@@ -1593,6 +1605,18 @@
   <data name="WebMenuEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
+  <data name="WebMenuErrors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="WebMenuExample" xml:space="preserve">
+    <value>Example</value>
+  </data>
+  <data name="WebMenuM600" xml:space="preserve">
+    <value>M600 - Pause</value>
+  </data>
+  <data name="WebMenuM605" xml:space="preserve">
+    <value>M605 - Play Sound</value>
+  </data>
   <data name="WebMenuMCodes" xml:space="preserve">
     <value>M Codes</value>
   </data>
@@ -1601,6 +1625,15 @@
   </data>
   <data name="WebMenuSubprograms" xml:space="preserve">
     <value>Subprograms</value>
+  </data>
+  <data name="WebMenuUsage" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="WebMenuVariables" xml:space="preserve">
+    <value>Variables</value>
+  </data>
+  <data name="WebMenuWarnings" xml:space="preserve">
+    <value>Warnings</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

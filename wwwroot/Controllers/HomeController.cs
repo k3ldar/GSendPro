@@ -27,5 +27,11 @@ namespace gsend.pro.Controllers
         {
             return View(new BaseModel(GetModelData()));
         }
+
+        [Breadcrumb(nameof(GSend.Language.Resources.BreadcrumbVariables))]
+        public IActionResult Variables()
+        {
+            return View(new BaseModel(GetModelData()));
+        }
     }
 }

@@ -1356,7 +1356,7 @@
             this.cbAutoSelectFeedbackUnit.Name = "cbAutoSelectFeedbackUnit";
             this.cbAutoSelectFeedbackUnit.Size = new System.Drawing.Size(135, 43);
             this.cbAutoSelectFeedbackUnit.TabIndex = 2;
-            this.cbAutoSelectFeedbackUnit.Text = "Automatically select from G Code file";
+            this.cbAutoSelectFeedbackUnit.Text = "Automatically select from G-Code file";
             this.cbAutoSelectFeedbackUnit.UseVisualStyleBackColor = true;
             // 
             // rbFeedbackInch
@@ -1471,14 +1471,14 @@
             // 
             this.mnuMachineLoadGCode.Name = "mnuMachineLoadGCode";
             this.mnuMachineLoadGCode.Size = new System.Drawing.Size(143, 22);
-            this.mnuMachineLoadGCode.Text = "Load G Code";
+            this.mnuMachineLoadGCode.Text = "Load G-Code";
             this.mnuMachineLoadGCode.Click += new System.EventHandler(this.mnuMachineLoadGCode_Click);
             // 
             // mnuMachineClearGCode
             // 
             this.mnuMachineClearGCode.Name = "mnuMachineClearGCode";
             this.mnuMachineClearGCode.Size = new System.Drawing.Size(143, 22);
-            this.mnuMachineClearGCode.Text = "Clear G Code";
+            this.mnuMachineClearGCode.Text = "Clear G-Code";
             this.mnuMachineClearGCode.Click += new System.EventHandler(this.mnuMachineClearGCode_Click);
             // 
             // toolStripMenuItem2
@@ -2029,7 +2029,7 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = "G Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            this.openFileDialog1.Filter = "G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
             // FrmMachine
             // 

@@ -51,5 +51,9 @@
         string CommentStripped(bool replaceVariables);
 
         string GetCommand();
+
+        IGCodeCommand PreviousCommand { get; }
+
+        IGCodeCommand NextCommand { get; }
     }
 }

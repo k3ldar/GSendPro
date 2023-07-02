@@ -1,0 +1,62 @@
+﻿<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuM605</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>M605 is used to play a sound, this can be used as an audiable notification or warning for the user at a predetermined point within the G-code.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuUsage</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>There is no limit to the number of sounds that can be played during the execution of G-code.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>Each M605 command must be on a line with no other commands.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>The name of the sound file must appear as a comment after the M605 command but on the same line.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>There is no limit to the number of sounds that can be played, each M605 command must be on it's own line'.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p><a href="/Home/Variables">Variables</a> can be used to ensure the line limit of 256 characters is not breached</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuExample</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>The following sample plays a sound at the start of the G-code to indicate the job is starting and a sound at the end of the G-code to indicate the job has finished.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+            <code>
+                @Html.ToGCode(@"M605 ;c:\\sounds\\JobStart.wav
+.. other g code here
+M30
+M605 ;c:\\sounds\\EndJob.wav")
+            </code>
+    </div>
+</div>
