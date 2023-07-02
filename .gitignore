@@ -349,8 +349,13 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /Installer/gsendpro.exe
-/src/gsend.pro/Views/Search/
-/src/gsend.pro/Views/Account/
-/src/gsend.pro/Views/Login/
-/src/gsend.pro/Views/SystemAdmin/
-/src/gsend.pro/wwwroot/images/SystemAdmin/
+/wwwroot/Views/Search/
+/wwwroot/Views/Account/
+/wwwroot/Views/Login/
+/wwwroot/Views/SystemAdmin/
+/wwwroot/images/SystemAdmin/
+
+/wwwroot/wwwroot/images/UserAccount/
+/src/gsend.pro/wwwroot/images/UserAccount/
+/wwwroot/wwwroot/images/SystemAdmin/
+/wwwroot/wwwroot/images/login/

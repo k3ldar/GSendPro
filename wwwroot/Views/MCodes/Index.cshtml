@@ -1,0 +1,30 @@
+﻿<div class="row">
+    <div class="col-sm-12">
+        <p>GSend Pro includes a number of custom M codes that can be used within your G Code.  This allows users to customize and control external elements as well as automate tasks, whilst their program runs.</p>
+    </div>
+    <div class="col-sm-12">
+        <p>The following M Codes are currently supported</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead><tr><th>M Code</th><th>Description</th><th>Usage</th><th>Restrictions</th></tr></thead>
+            <tbody>
+                <tr><td>M600</td><td>Pause processing of commands for upto 2 seconds.  An M600 must be immediately followed by a P value that indicates the number of milliseconds to pause for.</td><td>M600P200</td><td>The P value must be between 1 and 2000 milliseconds.</td></tr>
+                <tr><td>M605</td><td>Play a sound, providing the user with an audiable warning.</td><td>M605;c:\path to sound file\sound.wav</td><td>The name of the sound file to play must be included as a comment after the command on the same line</td></tr>
+                <!--<tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td></tr>-->
+                <tr><td>M650</td><td>Add the job profile name to be used when running the code</td><td>M650 ;Cut out parts</td><td>The name of the job must appear as a comment after the command on the same line</td></tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

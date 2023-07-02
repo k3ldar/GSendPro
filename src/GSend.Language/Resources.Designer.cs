@@ -664,6 +664,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GCode Editor.
+        /// </summary>
+        public static string BreadcrumbEditor {
+            get {
+                return ResourceManager.GetString("BreadcrumbEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M Codes.
+        /// </summary>
+        public static string BreadcrumbMCodes {
+            get {
+                return ResourceManager.GetString("BreadcrumbMCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GCode Sender.
+        /// </summary>
+        public static string BreadcrumbSender {
+            get {
+                return ResourceManager.GetString("BreadcrumbSender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subprograms.
+        /// </summary>
+        public static string BreadcrumbSubprograms {
+            get {
+                return ResourceManager.GetString("BreadcrumbSubprograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buffer Size: {0}.
         /// </summary>
         public static string BufferSize {
@@ -4453,11 +4489,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M Codes.
+        /// </summary>
+        public static string WebMenuMCodes {
+            get {
+                return ResourceManager.GetString("WebMenuMCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GCode Sender.
         /// </summary>
         public static string WebMenuSender {
             get {
                 return ResourceManager.GetString("WebMenuSender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subprograms.
+        /// </summary>
+        public static string WebMenuSubprograms {
+            get {
+                return ResourceManager.GetString("WebMenuSubprograms", resourceCulture);
             }
         }
         

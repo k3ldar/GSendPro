@@ -318,6 +318,18 @@
   <data name="BookmarkToggle" xml:space="preserve">
     <value>Toggle bookmark</value>
   </data>
+  <data name="BreadcrumbEditor" xml:space="preserve">
+    <value>GCode Editor</value>
+  </data>
+  <data name="BreadcrumbMCodes" xml:space="preserve">
+    <value>M Codes</value>
+  </data>
+  <data name="BreadcrumbSender" xml:space="preserve">
+    <value>GCode Sender</value>
+  </data>
+  <data name="BreadcrumbSubprograms" xml:space="preserve">
+    <value>Subprograms</value>
+  </data>
   <data name="BufferSize" xml:space="preserve">
     <value>Buffer Size: {0}</value>
   </data>
@@ -1581,8 +1593,14 @@
   <data name="WebMenuEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
+  <data name="WebMenuMCodes" xml:space="preserve">
+    <value>M Codes</value>
+  </data>
   <data name="WebMenuSender" xml:space="preserve">
     <value>GCode Sender</value>
+  </data>
+  <data name="WebMenuSubprograms" xml:space="preserve">
+    <value>Subprograms</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

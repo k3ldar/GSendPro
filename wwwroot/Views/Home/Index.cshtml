@@ -1,0 +1,95 @@
+﻿@model SharedPluginFeatures.BaseModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Home";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>Controlling multiple cnc machines simultaneously, <a href="subprogram.html">subprogrammes</a>, machine service schedules, tool life management, job profiles and customised <a href="/MCodes/Index">M codes</a> to control IoT devices, Arduino boards and play sounds are just some of the ways that define GSend Pro and make it stand out from similar programs.</p>
+    </div>
+    <div class="col-sm-12">
+        <h3>Features</h3>
+    </div>
+
+
+    <div class="col-sm-12">
+        <p>GSend Pro currently has the following features:</p>
+    </div>
+
+    <div class="col-sm-12">
+        <table class="table">
+            <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><th>GCode Editor</th><td>Dedicated <a href="/Home/Editor">GCode editor</a>.</td></tr>
+                <tr><td></td><td>2D Preview of GCode.</td></tr>
+                <tr><td></td><td>Analyze GCode for errors and warnings.</td></tr>
+                <tr><td></td><td>GCode properties.</td></tr>
+                <tr><td></td><td>View and create subprograms.</td></tr>
+                <tr><td></td><td>Bookmarks so you can quickly return to specific locations within the GCode.</td></tr>
+
+
+                <tr><th>GCode Sender</th><td>Control multiple machines simultaneously.</td></tr>
+                <tr><td></td><td>Console to manually enter commands to control your CNCs.</td></tr>
+                <tr><td></td><td>GCode properties provide easy to view feedback on the GCode that has been loaded.</td></tr>
+                <tr><td></td><td>Work and machine coordinates.</td></tr>
+                <tr><td></td><td>Visual notification area for feedback on errors, warnings and information.</td></tr>
+                <tr><td></td><td>Override X/Y, Z Up and Z Down as well as spindle speed.</td></tr>
+                <tr><td></td><td>Configure speeds to a percentage of the machines maximum X/Y values.</td></tr>
+                <tr><td></td><td>View GCode with attributes which describe what each line will do.</td></tr>
+                <tr><td></td><td>Jog in all directions, including diagonally.</td></tr>
+                <tr><td></td><td>Set X, Y and Z program origins.</td></tr>
+                <tr><td></td><td>2D View of loaded GCode.</td></tr>
+                <tr><td></td><td>Spindle soft start, incrementally increase and decrease the spindle speed.</td></tr>
+                <tr><td></td><td>Allow an initial delay in starting the GCode to allow for VFD spindle to start.</td></tr>
+                <tr><td></td><td>Heartbeat graphs to visualize the state of the sender and grbl processor.</td></tr>
+                <tr><td></td><td>Easily change grbl settings using the property sheet.</td></tr>
+                <tr><td></td><td>Get notification if the settings have changed since last loaded.</td></tr>
+                <tr><td></td><td>Automatically change spindle mode if the CNC is used for both spindle and lazer.</td></tr>
+                <tr><td></td><td>Receive warnings if the layer height exceeds the user defined height.</td></tr>
+                <tr><td></td><td>Easily generate probing commands.</td></tr>
+                <tr><td></td><td>Display can be set to mm or inches or automatically set based on the GCode that was loaded.</td></tr>
+                <tr><td></td><td>View the feed rate in mm/min, mm/sec, inch/min or inch/sec and change whilst the program is being sent.</td></tr>
+                <tr><td></td><td>Status bar for easy to view overview of current status.</td></tr>
+                <tr><td></td><td>Start wizard which can perform checks to ensure coordinate system has been set.</td></tr>
+                <tr><td></td><td>Pause a running job, includes pausing the job runtime.</td></tr>
+                <tr><td></td><td>Stop the current job from running.</td></tr>
+                <tr><td></td><td>Simulate sending the code to verify it works correctly.</td></tr>
+                <tr><td></td><td>Simplifed UI allowing users to easily see multiple CNCs simultaneously, or expand to see all details.</td></tr>
+                <tr><td></td><td>Validate GCode against custom settings.</td></tr>
+
+                <tr><th>Service Schedule</th><td>Maintain a service schedule based on machine use.</td></tr>
+                <tr><td></td><td>Service schedule data retained for easy viewing.</td></tr>
+                <tr><td></td><td>View remaining spindle/lazer time until next service.</td></tr>
+
+
+                <tr><th>Variables</th><td>Add variables to GCode.</td></tr>
+                <tr><td></td><td>Provide standard values directly.</td></tr>
+                <tr><td></td><td>Combine variables.</td></tr>
+
+
+                <tr><th>Subcommands</th><td>Create subcommands for repeatable tasks.</td></tr>
+
+
+                <tr><td></td><td>All subcommands use the letter O as per GCode specifications.</td></tr>
+                <tr><td></td><td>Combine multiple subcommands into a single program.</td></tr>
+                <tr><td></td><td>Nest subprograms.</td></tr>
+
+
+                <tr><th>Tool life Management</th><td>Track and monitor tool life.</td></tr>
+                <tr><td></td><td>Multiple tool profiles allowed.</td></tr>
+                <tr><td></td><td>Notification if current job will exceed tool life.</td></tr>
+
+                <tr><th>Job Profiles</th><td>Easily track different jobs using job profiles.</td></tr>
+                <tr><td></td><td>Obtain a unique serial no for each job profile.</td></tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-sm-12">
+        <p>The application will be available shortly for general use, if you would like to participate in testing please contact <a href="mailto:gsendpro@gmail.com" target="_blank">gsendpro@gmail.com</a></p>
+    </div>
+
+</div>
