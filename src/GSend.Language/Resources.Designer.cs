@@ -673,6 +673,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Profiles.
+        /// </summary>
+        public static string BreadcrumbJobProfile {
+            get {
+                return ResourceManager.GetString("BreadcrumbJobProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M{0}.
         /// </summary>
         public static string BreadcrumbMCode {
@@ -705,6 +714,15 @@ namespace GSend.Language {
         public static string BreadcrumbSubprograms {
             get {
                 return ResourceManager.GetString("BreadcrumbSubprograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool Life.
+        /// </summary>
+        public static string BreadcrumbToolLife {
+            get {
+                return ResourceManager.GetString("BreadcrumbToolLife", resourceCulture);
             }
         }
         
@@ -2149,7 +2167,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M650 must specify the job name as a comment, i.e. M50 (Job Name).
+        ///   Looks up a localized string similar to M650 must specify the job name as a comment, i.e. M650 (Job Name).
         /// </summary>
         public static string M650InvalidJobNameSpecified {
             get {
@@ -4543,6 +4561,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job Profiles.
+        /// </summary>
+        public static string WebMenuJobProfile {
+            get {
+                return ResourceManager.GetString("WebMenuJobProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M600 - Pause.
         /// </summary>
         public static string WebMenuM600 {
@@ -4561,11 +4588,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M650 - Job Name.
+        /// </summary>
+        public static string WebMenuM650 {
+            get {
+                return ResourceManager.GetString("WebMenuM650", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M Codes.
         /// </summary>
         public static string WebMenuMCodes {
             get {
                 return ResourceManager.GetString("WebMenuMCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to See Also.
+        /// </summary>
+        public static string WebMenuSeeAlso {
+            get {
+                return ResourceManager.GetString("WebMenuSeeAlso", resourceCulture);
             }
         }
         
@@ -4584,6 +4629,15 @@ namespace GSend.Language {
         public static string WebMenuSubprograms {
             get {
                 return ResourceManager.GetString("WebMenuSubprograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool Life.
+        /// </summary>
+        public static string WebMenuToolLife {
+            get {
+                return ResourceManager.GetString("WebMenuToolLife", resourceCulture);
             }
         }
         

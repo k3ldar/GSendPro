@@ -1,6 +1,4 @@
-﻿using GSendApi;
-
-using GSendControls;
+﻿using GSendControls;
 
 using GSendShared;
 using GSendShared.Abstractions;

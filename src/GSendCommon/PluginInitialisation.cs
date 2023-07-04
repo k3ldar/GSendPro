@@ -1,6 +1,4 @@
-﻿using GSendShared;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 

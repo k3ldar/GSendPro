@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using GSendCommon.Settings;
-
 using GSendDesktop.Forms;
 
 using GSendShared;

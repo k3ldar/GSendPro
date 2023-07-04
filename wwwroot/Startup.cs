@@ -1,6 +1,4 @@
-﻿using System;
-
-using AspNetCore.PluginManager;
+﻿using AspNetCore.PluginManager;
 
 using Breadcrumb.Plugin;
 

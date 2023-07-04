@@ -22,7 +22,7 @@ namespace GSendControls
         {
             get => base.ServiceProvider;
             set => base.ServiceProvider = value;
-        } 
+        }
 
         public void RegisterPlugin(string pluginName)
         {

@@ -2,44 +2,43 @@
 
 namespace GSendDB.Tables
 {
-    internal class JobProfileDataRowTriggers : ITableTriggers<JobProfileDataRow>
+    internal class JobExecutionDataRowTriggers : ITableTriggers<JobExecutionDataRow>
     {
         public int Position => 0;
 
         public TriggerType TriggerTypes => TriggerType.BeforeDelete;
 
-        public void AfterDelete(List<JobProfileDataRow> records)
+        public void AfterDelete(List<JobExecutionDataRow> records)
         {
             // not used but declared as part of interface
         }
 
-        public void AfterInsert(List<JobProfileDataRow> records)
+        public void AfterInsert(List<JobExecutionDataRow> records)
         {
             // not used but declared as part of interface
         }
 
-        public void AfterUpdate(List<JobProfileDataRow> records)
+        public void AfterUpdate(List<JobExecutionDataRow> records)
         {
             // not used but declared as part of interface
         }
 
-        public void BeforeDelete(List<JobProfileDataRow> records)
-        {
-            if (records.Any(r => r.Id.Equals(0)))
-                throw new InvalidDataRowException("", "", "Undable to delete default record");
-        }
-
-        public void BeforeInsert(List<JobProfileDataRow> records)
+        public void BeforeDelete(List<JobExecutionDataRow> records)
         {
             // not used but declared as part of interface
         }
 
-        public void BeforeUpdate(List<JobProfileDataRow> records)
+        public void BeforeInsert(List<JobExecutionDataRow> records)
         {
             // not used but declared as part of interface
         }
 
-        public void BeforeUpdate(JobProfileDataRow newRecord, JobProfileDataRow oldRecord)
+        public void BeforeUpdate(List<JobExecutionDataRow> records)
+        {
+            // not used but declared as part of interface
+        }
+
+        public void BeforeUpdate(JobExecutionDataRow newRecord, JobExecutionDataRow oldRecord)
         {
             // not used but declared as part of interface
         }

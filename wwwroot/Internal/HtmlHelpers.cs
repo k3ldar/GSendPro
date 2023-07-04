@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,7 +28,7 @@ namespace gsend.pro
         {
             StringBuilder Result = new();
             LastCodeType lastCode = LastCodeType.None;
-            
+
             void CloseBlock(string color, LastCodeType currentCode)
             {
                 if (lastCode != LastCodeType.None && lastCode != currentCode)

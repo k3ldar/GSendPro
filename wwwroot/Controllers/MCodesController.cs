@@ -10,7 +10,7 @@ namespace gsend.pro.Controllers
     {
         public const string MCodes = "MCodes";
 
-        private static readonly string[] _validMCodes = { "M600", "M605" };
+        private static readonly string[] _validMCodes = { "M600", "M605", "M650" };
 
         [Breadcrumb(nameof(GSend.Language.Resources.BreadcrumbMCodes))]
         [Route("/MCodes/Index")]
@@ -29,6 +29,7 @@ namespace gsend.pro.Controllers
             BaseModel baseModel = new BaseModel(GetModelData());
             baseModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.BreadcrumbMCodes, "/MCodes/Index", false));
             baseModel.Breadcrumbs.Add(new BreadcrumbItem(mCode, $"/MCodes/{mCode}/", false));
+
             return View(mCode, baseModel);
         }
     }

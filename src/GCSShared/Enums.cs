@@ -1,5 +1,19 @@
 ﻿namespace GSendShared
 {
+    /// <summary>
+    /// Status of job execution
+    /// </summary>
+    public enum JobExecutionStatus
+    {
+        None = 0,
+
+        Started = 1,
+
+        Error = 2,
+
+        Completed = 3,
+    }
+
     [Flags]
     public enum MachineStateOptions
     {

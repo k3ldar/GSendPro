@@ -65,22 +65,22 @@ namespace GSendDesktop
 
         private static void ThreadManager_ThreadStopped(object sender, Shared.ThreadManagerEventArgs e)
         {
-            
+
         }
 
         private static void ThreadManager_ThreadForcedToClose(object sender, Shared.ThreadManagerEventArgs e)
         {
-            
+
         }
 
         private static void ThreadManager_ThreadCancellAll(object sender, EventArgs e)
         {
-           
+
         }
 
         private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
         {
-            
+
         }
     }
 }

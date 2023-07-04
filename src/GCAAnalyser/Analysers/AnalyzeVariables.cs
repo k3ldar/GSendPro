@@ -1,6 +1,4 @@
-﻿using GSendApi;
-
-using GSendShared;
+﻿using GSendShared;
 using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers

@@ -150,7 +150,7 @@ namespace GSendDesktop
 
             if (statuses.Count != _machines.Count)
                 UpdateMachines();
-             //error checking
+            //error checking
             foreach (StatusResponseMessage status in statuses)
             {
                 if (!_machines.ContainsKey(status.Id))

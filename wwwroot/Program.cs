@@ -1,24 +1,14 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-
 using AspNetCore.PluginManager;
 
 using gsend.pro.Internal;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using PluginManager;
 
 using Shared.Classes;
-
-using LogLevel = PluginManager.LogLevel;
 
 namespace gsend.pro
 {

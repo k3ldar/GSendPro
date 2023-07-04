@@ -1,7 +1,5 @@
 ﻿using System.Text;
 
-using GSendApi;
-
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Models;

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Text.Json;
 
 using SharedPluginFeatures;
 
@@ -10,7 +8,7 @@ namespace gsend.pro.Internal
     {
         public void ErrorRaised(in ErrorInformation errorInformation)
         {
-            
+
         }
 
         public bool MissingPage(in string path, ref string replacePath)

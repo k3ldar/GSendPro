@@ -321,6 +321,9 @@
   <data name="BreadcrumbEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
+  <data name="BreadcrumbJobProfile" xml:space="preserve">
+    <value>Job Profiles</value>
+  </data>
   <data name="BreadcrumbMCode" xml:space="preserve">
     <value>M{0}</value>
   </data>
@@ -332,6 +335,9 @@
   </data>
   <data name="BreadcrumbSubprograms" xml:space="preserve">
     <value>Subprograms</value>
+  </data>
+  <data name="BreadcrumbToolLife" xml:space="preserve">
+    <value>Tool Life</value>
   </data>
   <data name="BreadcrumbVariables" xml:space="preserve">
     <value>GCode Variables</value>
@@ -814,7 +820,7 @@
     <value>Line {0} contains M605 command but no sound file was found, you must specify a sound file.</value>
   </data>
   <data name="M650InvalidJobNameSpecified" xml:space="preserve">
-    <value>M650 must specify the job name as a comment, i.e. M50 (Job Name)</value>
+    <value>M650 must specify the job name as a comment, i.e. M650 (Job Name)</value>
   </data>
   <data name="M650MultipleJobNamesSpecified" xml:space="preserve">
     <value>M650 can only be included once within a GCode file</value>
@@ -1611,20 +1617,32 @@
   <data name="WebMenuExample" xml:space="preserve">
     <value>Example</value>
   </data>
+  <data name="WebMenuJobProfile" xml:space="preserve">
+    <value>Job Profiles</value>
+  </data>
   <data name="WebMenuM600" xml:space="preserve">
     <value>M600 - Pause</value>
   </data>
   <data name="WebMenuM605" xml:space="preserve">
     <value>M605 - Play Sound</value>
   </data>
+  <data name="WebMenuM650" xml:space="preserve">
+    <value>M650 - Job Name</value>
+  </data>
   <data name="WebMenuMCodes" xml:space="preserve">
     <value>M Codes</value>
+  </data>
+  <data name="WebMenuSeeAlso" xml:space="preserve">
+    <value>See Also</value>
   </data>
   <data name="WebMenuSender" xml:space="preserve">
     <value>GCode Sender</value>
   </data>
   <data name="WebMenuSubprograms" xml:space="preserve">
     <value>Subprograms</value>
+  </data>
+  <data name="WebMenuToolLife" xml:space="preserve">
+    <value>Tool Life</value>
   </data>
   <data name="WebMenuUsage" xml:space="preserve">
     <value>Usage</value>

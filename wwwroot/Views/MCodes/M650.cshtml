@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuM650</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>M650 is used to specify the <a href="/Home/JobProfile">job profile</a> name used when executing the g-code.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuUsage</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>Only one occurance of M650 should appear in the g-code, adding this m-code more than once will display an error.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>Each M650 command must be on a line with no other commands.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>The name of the job profile must appear as a comment after the M605 command but on the same line.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>An error will be shown if the job profile name is invalid or does not exist.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.WebMenuExample</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p>The following example assumes there is a custom job profile by the name of "Small Chest".</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <code>
+            @Html.ToGCode(@"M650 (Small Chest)
+            .. other g code here
+            M30")
+        </code>
+    </div>
+</div>

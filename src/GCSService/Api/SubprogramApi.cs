@@ -38,7 +38,7 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult SubprogramGet(string name)
         {
-             ISubprogram subProgram = _subprograms.Get(name);
+            ISubprogram subProgram = _subprograms.Get(name);
 
             if (subProgram == null)
             {

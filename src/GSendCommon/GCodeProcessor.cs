@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
-using GSendAnalyser;
-
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
@@ -341,8 +339,8 @@ namespace GSendCommon
 
             //if (_isPaused)
             //{
-                //_port.WriteLine("CTRL-X");
-                //InternalWriteByte(new byte[] { 0x85 });
+            //_port.WriteLine("CTRL-X");
+            //InternalWriteByte(new byte[] { 0x85 });
             InternalWriteByte(new byte[] { 0x18 });
             //}
             //else

@@ -57,6 +57,7 @@ namespace GSendDB
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<MachineServiceDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<JobProfileDataRow>>();
             _ = app.ApplicationServices.GetService<ISimpleDBOperations<ToolDatabaseDataRow>>();
+            _ = app.ApplicationServices.GetService<ISimpleDBOperations<JobExecutionDataRow>>();
         }
 
         public void Configure(in IApplicationBuilder app)
@@ -72,6 +73,7 @@ namespace GSendDB
             services.AddSingleton(typeof(TableRowDefinition), typeof(MachineServiceDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(JobProfileDataRow));
             services.AddSingleton(typeof(TableRowDefinition), typeof(ToolDatabaseDataRow));
+            services.AddSingleton(typeof(TableRowDefinition), typeof(JobExecutionDataRow));
         }
 
         public void AfterConfigureServices(in IServiceCollection services)

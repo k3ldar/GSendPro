@@ -40,7 +40,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("Subprogram O1004 could not be found", analyses.Errors[4]);
             Assert.AreEqual("Line 1 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[5]);
             Assert.AreEqual("Line 3 contains 2 or more subprograms, subprograms must be on a unique line.", analyses.Errors[6]);
-            
+
         }
 
         [TestMethod]

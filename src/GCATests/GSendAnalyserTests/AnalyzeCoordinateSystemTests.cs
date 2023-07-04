@@ -51,7 +51,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
             Assert.AreEqual(0, analyses.Errors.Count);
-            Assert.AreEqual("G54,G55,G56,G57,G58,G59", analyses.CoordinateSystems);  
+            Assert.AreEqual("G54,G55,G56,G57,G58,G59", analyses.CoordinateSystems);
         }
     }
 }
