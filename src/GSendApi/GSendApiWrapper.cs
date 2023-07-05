@@ -130,6 +130,10 @@ namespace GSendApi
 
         #region Job Execution
 
+        public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
+        {
+            return CallPostApi<IJobExecution>($"/JobExecuteApi/Create/{machineId}/{toolId}/{jobProfileId}/");
+        }
 
         #endregion Job Execution
     }

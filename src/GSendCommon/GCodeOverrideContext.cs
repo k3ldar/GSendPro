@@ -62,7 +62,7 @@ namespace GSendCommon
 
         public MachineStateModel MachineStateModel { get; }
 
-        public IToolProfile ToolProfile { get; set; }
+        public IJobExecution JobExecution { get; set; }
 
 
         public bool ProcessGCodeOverrides(IGCodeLine line)

@@ -821,14 +821,15 @@ namespace GSendCommon
 
                         response.request = Constants.MessageRunGCodeAdmin;
 
-                        if (foundMachine && proc != null && parts.Length == 3)
+                        if (foundMachine && proc != null && parts.Length == 4)
                         {
                             long toolProfileId = Convert.ToInt64(parts[2]);
+                            long jobProfileId = Convert.ToInt64(parts[3]);
 
                             IGSendDataProvider gSendDataProvider = _serviceProvider.GetRequiredService<IGSendDataProvider>();
-                            IToolProfile toolProfile = gSendDataProvider.ToolGet(toolProfileId);
+                            IJobExecution jobExecution = gSendDataProvider.JobExecutionCreate(machineId, toolProfileId, jobProfileId);
 
-                            proc.Start(toolProfile);
+                            proc.Start(jobExecution);
                             response.success = true;
                         }
                         else

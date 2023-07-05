@@ -8,7 +8,7 @@ namespace GSendShared
 
         bool Disconnect();
 
-        bool Start(IToolProfile toolProfile);
+        bool Start(IJobExecution jobExecution);
 
         bool Pause();
 

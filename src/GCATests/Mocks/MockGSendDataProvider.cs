@@ -6,6 +6,8 @@ using System.Linq;
 using GSendShared;
 using GSendShared.Models;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
@@ -16,6 +18,7 @@ namespace GSendTests.Mocks
         public MockGSendDataProvider()
         {
             _machines = new List<IMachine>();
+            JobExecutionUpdateCalled = false;
         }
 
         public MockGSendDataProvider(string[] machineNames)
@@ -138,6 +141,25 @@ namespace GSendTests.Mocks
             return ToolProfiles.FirstOrDefault(tp => tp.Id.Equals(toolid));
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
+        public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (CreateFalseResponseWhenCalled)
+                return null;
+
+            return new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))
+            {
+                Id = 123,
+            };
+        }
+
+        public void JobExecutionUpdate(IJobExecution jobExecution)
+        {
+            Assert.IsNotNull(jobExecution);
+            JobExecutionUpdateCalled = true;
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
 
         public bool SpindleTimeFinishCalled { get; private set; }
@@ -145,5 +167,9 @@ namespace GSendTests.Mocks
         public List<IJobProfile> JobProfiles { get; private set; } = new();
 
         public List<IToolProfile> ToolProfiles { get; private set; } = new();
+
+        public bool CreateFalseResponseWhenCalled { get; set; }
+
+        public bool JobExecutionUpdateCalled { get; set; }
     }
 }

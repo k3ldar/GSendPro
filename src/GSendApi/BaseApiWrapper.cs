@@ -122,6 +122,28 @@ namespace GSendApi
             throw new GSendApiException(responseModel.responseData);
         }
 
+        protected T CallPostApi<T>(string endPoint)
+        {
+            HttpContent content = CreateContent(String.Empty);
+            using HttpClient httpClient = CreateApiClient();
+            string address = $"{_apiSettings.RootAddress}{endPoint}";
+
+            using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
+
+            if (!response.IsSuccessStatusCode)
+                throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallPostApi)));
+
+            string jsonData = response.Content.ReadAsStringAsync().Result;
+            JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+            if (responseModel.success)
+            {
+                return JsonSerializer.Deserialize<T>(responseModel.responseData, GSendShared.Constants.DefaultJsonSerializerOptions);
+            }
+
+            throw new GSendApiException(responseModel.responseData);
+        }
+
         protected T CallGetApi<T>(string endPoint)
         {
             try

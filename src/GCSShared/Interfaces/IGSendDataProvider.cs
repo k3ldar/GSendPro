@@ -31,5 +31,9 @@
         IReadOnlyList<IToolProfile> ToolsGet();
 
         IToolProfile ToolGet(long toolProfileId);
+
+        IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId);
+
+        void JobExecutionUpdate(IJobExecution jobExecution);
     }
 }

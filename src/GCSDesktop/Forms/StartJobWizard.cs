@@ -34,16 +34,21 @@ namespace GSendDesktop.Forms
             if (machineApiWrapper == null)
                 throw new ArgumentNullException(nameof(machineApiWrapper));
 
+            string jobName = DesktopSettings.ReadValue<string>(nameof(StartJobWizard), Constants.StartWizardSelectedJob, String.Empty);
+
+            if (!String.IsNullOrEmpty(gCodeAnalyses.JobName))
+                jobName = gCodeAnalyses.JobName;
+
             foreach (IJobProfile jobProfile in machineApiWrapper.JobProfilesGet())
             {
-                cmbJobProfiles.Items.Add(jobProfile.Name);
+                int index = cmbJobProfiles.Items.Add(jobProfile);
+
+                if (jobProfile.Name.Equals(jobName))
+                    cmbJobProfiles.SelectedIndex = index;
             }
 
-            if (!String.IsNullOrEmpty(gCodeAnalyses.JobName) && cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName) > -1)
-                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(gCodeAnalyses.JobName);
-            else
-                cmbJobProfiles.SelectedIndex = cmbJobProfiles.Items.IndexOf(DesktopSettings.ReadValue<string>(nameof(StartJobWizard),
-                    Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[0]));
+            if (cmbJobProfiles.SelectedIndex == -1)
+                cmbJobProfiles.SelectedIndex = 0;
 
             int selectedIndex = 0;
 
@@ -65,11 +70,18 @@ namespace GSendDesktop.Forms
 
         public IToolProfile ToolProfile => GetToolProfile();
 
+        public IJobProfile JobProfile => GetJobProfile();
+
         public bool IsSimulation => cbSimulate.Checked;
 
         private IToolProfile GetToolProfile()
         {
             return cmbTool.SelectedItem as IToolProfile;
+        }
+
+        private IJobProfile GetJobProfile()
+        {
+            return cmbJobProfiles.SelectedItem as IJobProfile;
         }
 
         private void ValidateCoordinateSystem()
@@ -138,7 +150,8 @@ namespace GSendDesktop.Forms
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            DesktopSettings.WriteValue(nameof(StartJobWizard), Constants.StartWizardSelectedJob, (string)cmbJobProfiles.Items[cmbJobProfiles.SelectedIndex]);
+            IJobProfile jobProfile = cmbJobProfiles.Items[cmbJobProfiles.SelectedIndex] as IJobProfile;
+            DesktopSettings.WriteValue(nameof(StartJobWizard), Constants.StartWizardSelectedJob, jobProfile.Name);
             DialogResult = DialogResult.OK;
         }
 
@@ -152,6 +165,21 @@ namespace GSendDesktop.Forms
             using SolidBrush brush = new(e.ForeColor);
 
             e.Graphics.DrawString(toolProfile.Name, e.Font, brush, e.Bounds.Left + 1, e.Bounds.Top + 1);
+
+            if (!e.State.HasFlag(DrawItemState.NoFocusRect))
+                e.DrawFocusRectangle();
+        }
+
+        private void cmbJobProfiles_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            IJobProfile jobProfile = cmbJobProfiles.Items[e.Index] as IJobProfile;
+
+            e.DrawBackground();
+
+
+            using SolidBrush brush = new(e.ForeColor);
+
+            e.Graphics.DrawString(jobProfile.Name, e.Font, brush, e.Bounds.Left + 1, e.Bounds.Top + 1);
 
             if (!e.State.HasFlag(DrawItemState.NoFocusRect))
                 e.DrawFocusRectangle();

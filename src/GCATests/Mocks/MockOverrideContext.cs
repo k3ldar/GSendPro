@@ -32,7 +32,7 @@ namespace GSendTests.Mocks
 
         public ConcurrentQueue<IGCodeLine> CommandQueue { get; } = new();
 
-        public IToolProfile ToolProfile => throw new NotImplementedException();
+        public IJobExecution JobExecution => throw new NotImplementedException();
 
         public void Cancel()
         {

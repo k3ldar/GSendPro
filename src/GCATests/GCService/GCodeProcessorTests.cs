@@ -132,7 +132,7 @@ namespace GSendTests.GCService
             GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
 
             Assert.IsFalse(sut.IsConnected);
-            Assert.IsFalse(sut.Start(new ToolProfileModel()));
+            Assert.IsFalse(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
         }
 
         [TestMethod]
@@ -145,9 +145,11 @@ namespace GSendTests.GCService
             };
 
             MockComPortFactory mockComPortFactory = new();
+            MockGSendDataProvider mockDataProvider = new MockGSendDataProvider();
+
 
             bool startCalled = false;
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            GCodeProcessor sut = new(mockDataProvider, machineModel, mockComPortFactory, new MockServiceProvider())
             {
                 TimeOut = TimeSpan.FromSeconds(5)
             };
@@ -155,9 +157,10 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start(new ToolProfileModel()));
+            Assert.IsTrue(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
             Assert.IsTrue(sut.IsConnected);
             Assert.IsTrue(startCalled);
+            Assert.IsTrue(mockDataProvider.JobExecutionUpdateCalled);
         }
 
         [TestMethod]
@@ -196,7 +199,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start(new ToolProfileModel()));
+            Assert.IsTrue(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -241,7 +244,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start(new ToolProfileModel()));
+            Assert.IsTrue(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -288,7 +291,7 @@ namespace GSendTests.GCService
 
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start(new ToolProfileModel()));
+            Assert.IsTrue(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.Pause());
             Assert.IsTrue(sut.IsPaused);
@@ -319,7 +322,7 @@ namespace GSendTests.GCService
             sut.OnStop += (sender, e) => { stopCalled = true; };
             Assert.IsFalse(sut.IsConnected);
             Assert.AreEqual(ConnectResult.Success, sut.Connect());
-            Assert.IsTrue(sut.Start(new ToolProfileModel()));
+            Assert.IsTrue(sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1))));
             Assert.IsFalse(sut.IsPaused);
             Assert.IsTrue(sut.IsRunning);
             Assert.IsTrue(sut.IsConnected);
@@ -745,7 +748,7 @@ namespace GSendTests.GCService
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
-            sut.Start(new ToolProfileModel());
+            sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1)));
             Assert.IsTrue(sut.IsRunning);
 
             mockComPortFactory.MockComPort.RaisePinError();
@@ -772,7 +775,7 @@ namespace GSendTests.GCService
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
-            sut.Start(new ToolProfileModel());
+            sut.Start(new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1)));
             Assert.IsTrue(sut.IsRunning);
 
             mockComPortFactory.MockComPort.RaiseSerialError();

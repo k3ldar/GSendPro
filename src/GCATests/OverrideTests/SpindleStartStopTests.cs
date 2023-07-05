@@ -53,7 +53,7 @@ namespace GSendTests.OverrideTests
             GCodeOverrideContext context = new(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>())
             {
                 GCode = gCodeLine,
-                ToolProfile = new ToolProfileModel()
+                JobExecution = new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1)),
             };
 
             using (SpindleActiveTime sut = new(gSendDataProvider))

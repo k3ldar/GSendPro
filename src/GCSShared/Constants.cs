@@ -105,6 +105,8 @@ namespace GSendShared
 
         public const string NotificationJobProfileUpdated = "JobProfileUpdated";
 
+        public const string NotificationJobExecutionAdd = "JobExecutionAdd";
+
         public const string MessageMachineStatusAll = "mStatusAll";
 
         public const string MessageMachinePauseAll = "mPauseAll";
@@ -195,7 +197,7 @@ namespace GSendShared
 
         public const string MessageRunGCodeAdmin = "mStart";
 
-        public const string MessageRunGCode = "mStart:{0}:{1}";
+        public const string MessageRunGCode = "mStart:{0}:{1}:{2}";
 
         public const string InvalidComPort = "InvalidComPort";
 

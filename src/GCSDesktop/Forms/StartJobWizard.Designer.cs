@@ -82,6 +82,7 @@
             this.cmbJobProfiles.Name = "cmbJobProfiles";
             this.cmbJobProfiles.Size = new System.Drawing.Size(269, 23);
             this.cmbJobProfiles.TabIndex = 3;
+            this.cmbJobProfiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbJobProfiles_DrawItem);
             // 
             // cmbTool
             // 

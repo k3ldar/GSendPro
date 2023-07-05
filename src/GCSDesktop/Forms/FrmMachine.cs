@@ -2055,12 +2055,13 @@ namespace GSendDesktop.Forms
                         if (startJobWizard.ShowDialog() == DialogResult.OK)
                         {
                             _toolProfile = startJobWizard.ToolProfile;
+                            IJobProfile jobProfile = startJobWizard.JobProfile;
                             _gcodeLines.ForEach(l => l.Status = LineStatus.Undefined);
 
                             if (startJobWizard.IsSimulation)
                                 SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
-                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id));
+                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
                         }
                     }
                 }

@@ -42,7 +42,7 @@ namespace GSendShared.Abstractions
 
         ConcurrentQueue<IGCodeLine> CommandQueue { get; }
 
-        IToolProfile ToolProfile { get; }
+        IJobExecution JobExecution { get; }
 
         bool ProcessGCodeOverrides(IGCodeLine line);
 

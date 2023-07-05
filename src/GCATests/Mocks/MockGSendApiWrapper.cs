@@ -103,5 +103,10 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

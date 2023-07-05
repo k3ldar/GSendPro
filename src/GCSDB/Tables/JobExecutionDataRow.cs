@@ -13,6 +13,7 @@ namespace GSendDB.Tables
         private DateTime _jobStarted;
         private DateTime _jobFinished;
         private JobExecutionStatus _status;
+        private bool _simulation;
 
         public DateTime StartDateTime
         {
@@ -97,6 +98,20 @@ namespace GSendDB.Tables
                     return;
 
                 _toolId = value;
+                Update();
+            }
+        }
+
+        public bool Simulation
+        {
+            get => _simulation;
+
+            set
+            {
+                if (value == _simulation)
+                    return;
+
+                _simulation = value;
                 Update();
             }
         }

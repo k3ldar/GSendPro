@@ -280,14 +280,21 @@ namespace GSendCommon
             return !_port.IsOpen();
         }
 
-        public bool Start(IToolProfile toolProfile)
+        public bool Start(IJobExecution jobExecution)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            if (jobExecution == null) 
+                throw new ArgumentNullException(nameof(jobExecution));
+
+            if (jobExecution.ToolProfile == null)
+                throw new ArgumentException(nameof(jobExecution.ToolProfile));
 
             if (_overrideContext is GCodeOverrideContext overrideContext)
-                overrideContext.ToolProfile = toolProfile;
+            {
+                overrideContext.JobExecution = jobExecution;
+            }
 
+            jobExecution.Start(_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode));
+            _gSendDataProvider.JobExecutionUpdate(jobExecution);
             return Start();
         }
 
@@ -361,6 +368,7 @@ namespace GSendCommon
                 _machineStateModel.QueueSize = _sendQueue.Count;
                 _commandQueue.Clear();
                 _machineStateModel.CommandQueueSize = _commandQueue.Count;
+                _machineStateModel.IsRunning = false;
             }
 
             _overrideContext.Cancel();
@@ -371,8 +379,15 @@ namespace GSendCommon
             if (_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                 ToggleSimulation();
 
-            if (_overrideContext is GCodeOverrideContext overrideContext)
-                overrideContext.ToolProfile = null;
+            if (_overrideContext.JobExecution != null && _overrideContext is GCodeOverrideContext overrideContext)
+            {
+                overrideContext.JobExecution.Finish();
+                _gSendDataProvider.JobExecutionUpdate(overrideContext.JobExecution);
+                //update job execution
+                overrideContext.JobExecution = null;
+            }
+
+
 
             return true;
         }
@@ -801,7 +816,10 @@ namespace GSendCommon
         public bool ToggleSimulation()
         {
             string simulationValue = SendCommandWaitForOKCommand("$C");
-
+            
+            if (_updateStatusSent)
+                _updateStatusSent = false;
+            
             if (simulationValue.Contains("Enabled"))
             {
                 _machineStateModel.OptionAdd(MachineStateOptions.SimulationMode);
@@ -1050,7 +1068,7 @@ namespace GSendCommon
         {
             TimeSpan span = DateTime.UtcNow - _lastInformationCheck;
 
-            if (span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent)
+            if ((span.TotalMilliseconds > DelayBetweenUpdateRequestsMilliseconds && !_updateStatusSent) || span.TotalSeconds > 1)
             {
 #pragma warning disable IDE0230 // Use UTF-8 string literal
                 _port.Write(new byte[] { (byte)CommandRequestStatus }, 0, 1);
@@ -1199,6 +1217,13 @@ namespace GSendCommon
             }
         }
 
+        private void UpdateContextSetError()
+        {
+            if (_overrideContext.JobExecution != null && _overrideContext.JobExecution is JobExecutionModel executionModel)
+            {
+                executionModel.Status = JobExecutionStatus.Error;
+            }
+        }
         private void ProcessErrorResponse(string response)
         {
             _jobTime.Stop();
@@ -1212,7 +1237,10 @@ namespace GSendCommon
             }
 
             if (_isRunning)
+            {
+                UpdateContextSetError();
                 Stop();
+            }
 
             GrblError error = GrblError.Undefined;
 
@@ -1244,6 +1272,7 @@ namespace GSendCommon
 
             GrblAlarm alarm = GrblAlarm.Undefined;
 
+            UpdateContextSetError();
             Stop();
 
             if (Int32.TryParse(response[6..], out int alarmCode))
@@ -1301,7 +1330,10 @@ namespace GSendCommon
         private void DisconnectForSerialError()
         {
             if (IsRunning)
+            {
+                UpdateContextSetError();
                 Stop();
+            }
 
             if (IsConnected)
                 Disconnect();

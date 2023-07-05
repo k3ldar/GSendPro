@@ -15,17 +15,62 @@ namespace GSendDB.Providers
         private readonly ISimpleDBOperations<MachineSpindleTimeDataRow> _spindleTimeTable;
         private readonly ISimpleDBOperations<JobProfileDataRow> _jobProfileTable;
         private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
+        private readonly ISimpleDBOperations<JobExecutionDataRow> _jobExecutionTable;
 
         public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
             ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable,
             ISimpleDBOperations<JobProfileDataRow> jobProfileTable,
-            ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable)
+            ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable,
+            ISimpleDBOperations<JobExecutionDataRow> jobExecutionTable)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
             _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
             _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
+            _jobExecutionTable = jobExecutionTable ?? throw new ArgumentNullException(nameof(jobExecutionTable));
         }
+
+        #region Job Execution
+
+        public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
+        {
+            JobExecutionDataRow jobExecutionDataRow = new()
+            {
+                JobProfileId = jobProfileId,
+                MachineId = machineId,
+                ToolId = toolId,
+                Status = JobExecutionStatus.None
+            };
+
+            _jobExecutionTable.Insert(jobExecutionDataRow);
+
+            JobExecutionModel jobExecutionModel = new(
+                CreateToolDatabaseModelFromToolDatabaseDataRow(_toolDatabaseTable.Select(toolId)),
+                CreateJobProfileModelFromJobProfileDataRow(_jobProfileTable.Select(jobProfileId)))
+            {
+                Id = jobExecutionDataRow.Id,
+                Machine = ConvertFromMachineDataRow(_machineDataRow.Select(machineId)),
+            };
+            
+            return jobExecutionModel;
+        }
+
+        public void JobExecutionUpdate(IJobExecution jobExecution)
+        {
+            if (jobExecution == null)
+                throw new ArgumentNullException(nameof(jobExecution));
+
+            JobExecutionDataRow jobExecutionDataRow = _jobExecutionTable.Select(jobExecution.Id);
+
+            jobExecutionDataRow.Status = jobExecution.Status;
+            jobExecutionDataRow.StartDateTime = jobExecution.StartDateTime;
+            jobExecutionDataRow.FinishDateTime = jobExecution.FinishDateTime;
+            jobExecutionDataRow.Simulation = jobExecution.Simulation;
+
+            _jobExecutionTable.Update(jobExecutionDataRow);
+        }
+
+        #endregion Job Execution
 
         #region Machines
 
