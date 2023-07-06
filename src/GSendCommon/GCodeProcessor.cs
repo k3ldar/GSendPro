@@ -1304,6 +1304,10 @@ namespace GSendCommon
             {
                 ProcessGrblResponse();
             }
+            catch (OverflowException)
+            {
+                OnComPortTimeOut?.Invoke(this, e);
+            }
             catch (TimeoutException)
             {
                 OnComPortTimeOut?.Invoke(this, e);

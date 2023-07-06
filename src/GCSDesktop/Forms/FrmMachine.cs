@@ -407,6 +407,9 @@ namespace GSendDesktop.Forms
 
             mnuMachineLoadGCode.Enabled = _machineStatusModel?.IsRunning == false;
             mnuMachineClearGCode.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
+
+            tabPageServiceSchedule.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
+            tabPageSpindle.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
         }
 
         private void UpdateMachineStatus(MachineStateModel status)

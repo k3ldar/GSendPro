@@ -26,6 +26,7 @@ namespace GSendControls
             };
             _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
             _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
+            lblInUse.Visible = false;
         }
 
         public ShortcutEditor(List<IShortcut> shortcutImplementation)
