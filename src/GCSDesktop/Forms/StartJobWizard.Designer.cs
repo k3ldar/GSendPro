@@ -76,11 +76,12 @@
             // 
             // cmbJobProfiles
             // 
+            this.cmbJobProfiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbJobProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbJobProfiles.FormattingEnabled = true;
             this.cmbJobProfiles.Location = new System.Drawing.Point(12, 27);
             this.cmbJobProfiles.Name = "cmbJobProfiles";
-            this.cmbJobProfiles.Size = new System.Drawing.Size(269, 23);
+            this.cmbJobProfiles.Size = new System.Drawing.Size(269, 24);
             this.cmbJobProfiles.TabIndex = 3;
             this.cmbJobProfiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbJobProfiles_DrawItem);
             // 

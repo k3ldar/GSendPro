@@ -817,9 +817,6 @@ namespace GSendCommon
         {
             string simulationValue = SendCommandWaitForOKCommand("$C");
             
-            if (_updateStatusSent)
-                _updateStatusSent = false;
-            
             if (simulationValue.Contains("Enabled"))
             {
                 _machineStateModel.OptionAdd(MachineStateOptions.SimulationMode);
@@ -1389,6 +1386,9 @@ namespace GSendCommon
             finally
             {
                 _initialising = false;
+
+                if (_updateStatusSent)
+                    _updateStatusSent = false;
             }
             return Result.ToString();
         }
@@ -1413,12 +1413,20 @@ namespace GSendCommon
             DateTime sendTime = DateTime.UtcNow;
             _port.WriteLine(commandText);
 
-            while (_waitingForResponse)
+            try
             {
-                if (DateTime.UtcNow - sendTime > timeout)
-                    throw new TimeoutException();
+                while (_waitingForResponse)
+                {
+                    if (DateTime.UtcNow - sendTime > timeout)
+                        throw new TimeoutException();
 
-                Thread.Sleep(TimeSpan.Zero);
+                    Thread.Sleep(TimeSpan.Zero);
+                }
+            }
+            finally
+            {
+                if (_updateStatusSent)
+                    _updateStatusSent = false;
             }
         }
 

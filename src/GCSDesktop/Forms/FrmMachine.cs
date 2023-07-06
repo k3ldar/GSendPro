@@ -225,6 +225,12 @@ namespace GSendDesktop.Forms
 
             switch (clientMessage.request)
             {
+                case "Stop":
+                    if (_machineStatusModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
+                        SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+                    
+                    break;
+
                 case Constants.ComPortTimeOut:
                     warningsAndErrors.AddWarningPanel(InformationType.Warning, GSend.Language.Resources.ServerErrorComTimeOut);
                     break;
