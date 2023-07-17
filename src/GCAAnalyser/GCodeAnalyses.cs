@@ -170,7 +170,7 @@ namespace GSendAnalyser
             {
                 if (command.LineNumber > lineCount)
                 {
-                    currentLine = new(this);
+                    currentLine = new(this, command);
                     lineCount++;
                     Result.Add(currentLine);
                 }
@@ -192,7 +192,7 @@ namespace GSendAnalyser
             {
                 if (command.MasterLineNumber > lineCount)
                 {
-                    currentLine = new(this);
+                    currentLine = new(this, command);
                     lineCount++;
                     Result.Add(currentLine);
                 }

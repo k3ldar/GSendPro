@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using GSendShared;
@@ -194,6 +195,7 @@ namespace GSendCommon
                         {
                             Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
+                            RaiseOnLineStatusUpdated(commandToSend);
 
                             bool overriddenGCode = InternalWriteLine(commandToSend);
 
@@ -282,7 +284,7 @@ namespace GSendCommon
 
         public bool Start(IJobExecution jobExecution)
         {
-            if (jobExecution == null) 
+            if (jobExecution == null)
                 throw new ArgumentNullException(nameof(jobExecution));
 
             if (jobExecution.ToolProfile == null)
@@ -292,6 +294,8 @@ namespace GSendCommon
             {
                 overrideContext.JobExecution = jobExecution;
             }
+
+            OnLineStatusUpdated?.Invoke(-1, -1, LineStatus.Undefined);
 
             jobExecution.Start(_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode));
             _gSendDataProvider.JobExecutionUpdate(jobExecution);
@@ -816,7 +820,7 @@ namespace GSendCommon
         public bool ToggleSimulation()
         {
             string simulationValue = SendCommandWaitForOKCommand("$C");
-            
+
             if (simulationValue.Contains("Enabled"))
             {
                 _machineStateModel.OptionAdd(MachineStateOptions.SimulationMode);
@@ -968,6 +972,8 @@ namespace GSendCommon
 
         public event ResponseReceivedHandler OnResponseReceived;
 
+        public event UpdateLineStatus OnLineStatusUpdated;
+
         #endregion IGCodeProcessor Events
 
         #region ThreadManager
@@ -1032,6 +1038,8 @@ namespace GSendCommon
                         {
                             activeCommand.Status = LineStatus.Processed;
                             UpdateMachineStateBufferData();
+
+                            RaiseOnLineStatusUpdated(activeCommand);
 
                             if (activeCommand.Commands.Any(c => c.Command.Equals('G') &&
                                         (
@@ -1230,7 +1238,10 @@ namespace GSendCommon
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
                     activeCommand.Status = LineStatus.Failed;
+
                 }
+
+                RaiseOnLineStatusUpdated(activeCommand);
             }
 
             if (_isRunning)
@@ -1265,6 +1276,8 @@ namespace GSendCommon
                 {
                     activeCommand.Status = LineStatus.Failed;
                 }
+
+                RaiseOnLineStatusUpdated(activeCommand);
             }
 
             GrblAlarm alarm = GrblAlarm.Undefined;
@@ -1543,6 +1556,12 @@ namespace GSendCommon
         {
             _machineStateModel.QueueSize = _sendQueue.Count;
             _machineStateModel.BufferSize = InternalGetBufferSize();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void RaiseOnLineStatusUpdated(IGCodeLine command)
+        {
+            OnLineStatusUpdated?.Invoke(command.LineNumber, command.MasterLineNumber, command.Status);
         }
 
         #endregion Private Methods

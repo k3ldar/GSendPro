@@ -28,5 +28,10 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public int LineNumber { get; }
+
+        public int MasterLineNumber { get; }
+
     }
 }

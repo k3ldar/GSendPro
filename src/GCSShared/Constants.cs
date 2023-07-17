@@ -193,6 +193,8 @@ namespace GSendShared
 
         public const string MessageToggleSimulation = "mToggleSimulation:{0}";
 
+        public const string MessageLineStatusUpdated = "LineStatusUpdated";
+
         public const string StateUndefined = "Undefined";
 
         public const string MessageRunGCodeAdmin = "mStart";
@@ -222,6 +224,8 @@ namespace GSendShared
         public const string StateIdle = "Idle";
 
         public const string StateHold = "Hold";
+
+
 
 
 

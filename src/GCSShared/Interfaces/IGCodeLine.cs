@@ -18,5 +18,9 @@
         IGCodeLineInfo GetGCodeInfo();
 
         bool IsCommentOnly { get; }
+
+        int LineNumber { get; }
+
+        int MasterLineNumber { get; }
     }
 }

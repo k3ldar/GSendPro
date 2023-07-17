@@ -123,5 +123,7 @@ namespace GSendShared
         event MessageHandler OnMessageReceived;
 
         event ResponseReceivedHandler OnResponseReceived;
+
+        event UpdateLineStatus OnLineStatusUpdated;
     }
 }

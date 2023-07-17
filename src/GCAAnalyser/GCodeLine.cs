@@ -13,13 +13,28 @@ namespace GSendAnalyser
         private readonly IGCodeAnalyses _codeAnalyses;
 
         public GCodeLine(IGCodeAnalyses gCodeAnalyses)
+            : this(gCodeAnalyses, null)
+        {
+        }
+
+        public GCodeLine(IGCodeAnalyses gCodeAnalyses, IGCodeCommand command)
         {
             _codeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
+
+            if (command != null)
+            {
+                LineNumber = command.LineNumber;
+                MasterLineNumber = command.MasterLineNumber;
+            }
         }
 
         public LineStatus Status { get; set; }
 
         public List<IGCodeCommand> Commands { get; } = new();
+
+        public int LineNumber { get; }
+
+        public int MasterLineNumber { get; }
 
         public string GetGCode()
         {

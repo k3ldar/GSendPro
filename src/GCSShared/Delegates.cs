@@ -28,4 +28,6 @@ namespace GSendShared
     public delegate void ShortcutUpdatedDelegate(List<int> keys);
 
     public delegate void ShortcutKeyHandler(object sender, ShortcutArgs e);
+
+    public delegate void UpdateLineStatus(int lineNumber, int masterLineNumber, LineStatus lineStatus);
 }

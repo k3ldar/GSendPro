@@ -202,6 +202,7 @@
             this.heartbeatPanelAvailableBlocks = new GSendControls.HeartbeatPanel();
             this.heartbeatPanelAvailableRXBytes = new GSendControls.HeartbeatPanel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.columnHeaderStatus = new System.Windows.Forms.ColumnHeader();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -1470,38 +1471,38 @@
             // mnuMachineLoadGCode
             // 
             this.mnuMachineLoadGCode.Name = "mnuMachineLoadGCode";
-            this.mnuMachineLoadGCode.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineLoadGCode.Size = new System.Drawing.Size(145, 22);
             this.mnuMachineLoadGCode.Text = "Load G-Code";
             this.mnuMachineLoadGCode.Click += new System.EventHandler(this.mnuMachineLoadGCode_Click);
             // 
             // mnuMachineClearGCode
             // 
             this.mnuMachineClearGCode.Name = "mnuMachineClearGCode";
-            this.mnuMachineClearGCode.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineClearGCode.Size = new System.Drawing.Size(145, 22);
             this.mnuMachineClearGCode.Text = "Clear G-Code";
             this.mnuMachineClearGCode.Click += new System.EventHandler(this.mnuMachineClearGCode_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(140, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(142, 6);
             // 
             // mnuMachineRename
             // 
             this.mnuMachineRename.Name = "mnuMachineRename";
-            this.mnuMachineRename.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineRename.Size = new System.Drawing.Size(145, 22);
             this.mnuMachineRename.Text = "Rename";
             this.mnuMachineRename.Click += new System.EventHandler(this.mnuMachineRename_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(140, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(142, 6);
             // 
             // mnuMachineClose
             // 
             this.mnuMachineClose.Name = "mnuMachineClose";
-            this.mnuMachineClose.Size = new System.Drawing.Size(143, 22);
+            this.mnuMachineClose.Size = new System.Drawing.Size(145, 22);
             this.mnuMachineClose.Text = "Close";
             this.mnuMachineClose.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -1822,7 +1823,8 @@
             this.columnHeaderComments,
             this.columnHeaderFeed,
             this.columnHeaderSpindleSpeed,
-            this.columnHeaderAttributes});
+            this.columnHeaderAttributes,
+            this.columnHeaderStatus});
             this.listViewGCode.FullRowSelect = true;
             this.listViewGCode.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listViewGCode.Location = new System.Drawing.Point(6, 6);
@@ -2030,6 +2032,11 @@
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = "G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
+            // 
+            // columnHeaderStatus
+            // 
+            this.columnHeaderStatus.Text = "Status";
+            this.columnHeaderStatus.Width = 100;
             // 
             // FrmMachine
             // 
@@ -2272,5 +2279,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
         private System.Windows.Forms.ToolStripMenuItem mnuMachineRename;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ColumnHeader columnHeaderStatus;
     }
 }

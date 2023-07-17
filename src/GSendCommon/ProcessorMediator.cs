@@ -276,6 +276,7 @@ namespace GSendCommon
             processor.OnMachineStateChanged += Processor_OnMachineStateChanged;
             processor.OnMessageReceived += Processor_OnMessageReceived;
             processor.OnResponseReceived += Processor_OnResponseReceived;
+            processor.OnLineStatusUpdated += Processor_OnLineStatusUpdated;
         }
 
         private void RemoveEventsFromProcessor(IGCodeProcessor processor)
@@ -296,6 +297,8 @@ namespace GSendCommon
             processor.OnMachineStateChanged -= Processor_OnMachineStateChanged;
             processor.OnMessageReceived -= Processor_OnMessageReceived;
             processor.OnResponseReceived -= Processor_OnResponseReceived;
+            processor.OnLineStatusUpdated -= Processor_OnLineStatusUpdated;
+
         }
 
         private void Processor_OnComPortTimeOut(IGCodeProcessor sender, EventArgs e)
@@ -384,6 +387,10 @@ namespace GSendCommon
             SendMessage(new ClientBaseMessage("CommandSent"));
         }
 
+        private void Processor_OnLineStatusUpdated(int lineNumber, int masterLineNumber, LineStatus lineStatus)
+        {
+            SendMessage(new ClientBaseMessage(Constants.MessageLineStatusUpdated, new LineStatusUpdateModel(lineNumber, masterLineNumber, lineStatus)));
+        }
 
         #endregion Processor Events
 

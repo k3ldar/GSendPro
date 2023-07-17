@@ -356,6 +356,30 @@ namespace GSendDesktop.Forms
                     }
 
                     break;
+
+                case Constants.MessageLineStatusUpdated:
+                    LineStatusUpdateModel lineStatusUpdateModel = (LineStatusUpdateModel)JsonSerializer.Deserialize<LineStatusUpdateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+
+                    if (lineStatusUpdateModel != null)
+                    {
+                        if (lineStatusUpdateModel.LineNumber == -1 && lineStatusUpdateModel.Status.Equals(LineStatus.Undefined))
+                        {
+                            _gcodeLines.ForEach(gcl => gcl.Status = LineStatus.Undefined);
+                        }
+                        else
+                        {
+                            IGCodeLine updateLine = _gcodeLines.FirstOrDefault(gcl => gcl.LineNumber.Equals(lineStatusUpdateModel.LineNumber) && gcl.MasterLineNumber.Equals(lineStatusUpdateModel.MasterLineNumber));
+
+                            if (updateLine != null)
+                            {
+                                updateLine.Status = lineStatusUpdateModel.Status;
+                            }
+                        }
+
+                        listViewGCode.Invalidate();
+                    }
+
+                    break;
             }
         }
 
@@ -1769,6 +1793,7 @@ namespace GSendDesktop.Forms
             columnHeaderFeed.Text = GSend.Language.Resources.FeedRate;
             columnHeaderGCode.Text = GSend.Language.Resources.GCode;
             columnHeaderSpindleSpeed.Text = GSend.Language.Resources.Spindle;
+            columnHeaderStatus.Text = GSend.Language.Resources.Status;
 
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
@@ -2065,7 +2090,6 @@ namespace GSendDesktop.Forms
                         {
                             _toolProfile = startJobWizard.ToolProfile;
                             IJobProfile jobProfile = startJobWizard.JobProfile;
-                            _gcodeLines.ForEach(l => l.Status = LineStatus.Undefined);
 
                             if (startJobWizard.IsSimulation)
                                 SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
@@ -2346,6 +2370,7 @@ namespace GSendDesktop.Forms
             item.SubItems.Add(FixEmptyValue(gCodeLineInfo.FeedRate));
             item.SubItems.Add(FixEmptyValue(gCodeLineInfo.SpindleSpeed));
             item.SubItems.Add(FixEmptyValue(gCodeLineInfo.Attributes));
+            item.SubItems.Add(gcodeLine.Status.ToString());
             item.Tag = gcodeLine;
             e.Item = item;
         }
