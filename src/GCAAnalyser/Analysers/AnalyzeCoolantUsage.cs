@@ -12,13 +12,13 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            if (gCodeAnalyses.AllCommands.Any(c => c.ToString().Equals("M7")))
+            if (gCodeAnalyses.AllSpecificCommands(Constants.CharM).Any(c => c.CommandValue.Equals(7)))
                 gCodeAnalyses.AddOptions(AnalysesOptions.UsesMistCoolant);
 
-            if (gCodeAnalyses.AllCommands.Any(c => c.ToString().Equals("M8")))
+            if (gCodeAnalyses.AllSpecificCommands(Constants.CharM).Any(c => c.CommandValue.Equals(8)))
                 gCodeAnalyses.AddOptions(AnalysesOptions.UsesFloodCoolant);
 
-            if (gCodeAnalyses.AllCommands.Any(c => c.ToString().Equals("M9")))
+            if (gCodeAnalyses.AllSpecificCommands(Constants.CharM).Any(c => c.CommandValue.Equals(9)))
                 gCodeAnalyses.AddOptions(AnalysesOptions.TurnsOffCoolant);
         }
     }

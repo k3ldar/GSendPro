@@ -12,10 +12,10 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            IReadOnlyList<IGCodeCommand> allCommands = gCodeAnalyses.AllCommands.Where(c => c.Command.Equals('G') && (c.CommandValue.Equals(20) || c.CommandValue.Equals(21))).ToList();
+            IReadOnlyList<IGCodeCommand> allCommands = gCodeAnalyses.AllSpecificCommands(Constants.CharG).Where(c => (c.CommandValue.Equals(20) || c.CommandValue.Equals(21))).ToList();
 
-            int inchesCount = allCommands.Count(c => c.Command.Equals('G') && c.CommandValue.Equals(20));
-            int mmCount = allCommands.Count(c => c.Command.Equals('G') && c.CommandValue.Equals(21));
+            int inchesCount = allCommands.Count(c => c.CommandValue.Equals(20));
+            int mmCount = allCommands.Count(c => c.CommandValue.Equals(21));
 
             if ((inchesCount > 0 && mmCount > 0) || (inchesCount == 0 && mmCount == 0))
                 gCodeAnalyses.UnitOfMeasurement = UnitOfMeasurement.Error;

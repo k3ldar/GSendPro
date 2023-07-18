@@ -1,4 +1,6 @@
-﻿using GSendAnalyser.Internal;
+﻿using System.Diagnostics;
+
+using GSendAnalyser.Internal;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -15,6 +17,7 @@ namespace GSendAnalyser
         private readonly object _lockObject = new();
         private readonly List<IGCodeCommand> _commands = new();
         private List<IGCodeCommand> _allCommands;
+        private readonly Dictionary<char, List<IGCodeCommand>> _allSpecificCommands = new();
         private readonly IPluginClassesService _pluginClassesService;
         private readonly Dictionary<ushort, IGCodeVariable> _variables = new();
         private readonly List<string> _errors = new();
@@ -40,14 +43,34 @@ namespace GSendAnalyser
 
         public void Analyse(string fileName)
         {
-            IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory(_pluginClassesService);
-
-            IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
-
-            Parallel.ForEach(analyzers, gCodeAnalyzer =>
+            Stopwatch totalAnalyze = new();
+            totalAnalyze.Start();
+            try
             {
-                gCodeAnalyzer.Analyze(fileName, this);
-            });
+                IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory(_pluginClassesService);
+
+                IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
+
+                Parallel.ForEach(analyzers, gCodeAnalyzer =>
+                {
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    try
+                    {
+                        stopwatch.Start();
+                        gCodeAnalyzer.Analyze(fileName, this);
+                    }
+                    finally
+                    {
+                        stopwatch.Stop();
+                        Trace.WriteLine($"{gCodeAnalyzer}: {stopwatch.ElapsedMilliseconds}");
+                    }
+                });
+            }
+            finally
+            {
+                totalAnalyze.Stop();
+                Trace.WriteLine($"Total Analyze Time: {totalAnalyze.ElapsedMilliseconds}");
+            }
         }
 
         public void AddOptions(AnalysesOptions options)
@@ -80,6 +103,19 @@ namespace GSendAnalyser
 
                     return _allCommands;
                 }
+            }
+        }
+
+        public IReadOnlyList<IGCodeCommand> AllSpecificCommands(char commandCode)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                if (!_allSpecificCommands.ContainsKey(commandCode))
+                {
+                    _allSpecificCommands.Add(commandCode, AllCommands.Where(c => c.Command.Equals(commandCode)).ToList());
+                }
+
+                return _allSpecificCommands[commandCode];
             }
         }
 

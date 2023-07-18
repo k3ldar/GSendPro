@@ -9,7 +9,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> coordinateSystems = gCodeAnalyses.AllCommands.Where(c => c.Command.Equals('G') && IsCoordCommand(c.CommandValue)).OrderBy(c => c.CommandValue).ToList();
+            List<IGCodeCommand> coordinateSystems = gCodeAnalyses.AllSpecificCommands(Constants.CharG).Where(c => IsCoordCommand(c.CommandValue)).OrderBy(c => c.CommandValue).ToList();
             gCodeAnalyses.CoordinateSystems = String.Empty;
 
             if (coordinateSystems.Count > 0)

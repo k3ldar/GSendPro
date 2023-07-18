@@ -29,8 +29,7 @@ namespace GSendAnalyser.Analysers
             });
 
 
-            List<IGCodeCommand> layerCommands = gCodeAnalyses.AllCommands.Where(c =>
-                c.Command.Equals('Z') &&
+            List<IGCodeCommand> layerCommands = gCodeAnalyses.AllSpecificCommands(Constants.CharZ).Where(c =>
                 c.CommandValue < gCodeAnalyses.SafeZ &&
                 (
                     !c.Attributes.HasFlag(CommandAttributes.SafeZ) &&

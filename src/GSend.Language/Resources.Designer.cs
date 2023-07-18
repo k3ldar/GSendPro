@@ -205,6 +205,60 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to open a COM port &quot;{1}&quot; when it is already open..
+        /// </summary>
+        public static string AnalysesError2 {
+            get {
+                return ResourceManager.GetString("AnalysesError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} must appear on it&apos;s own line without any other commands..
+        /// </summary>
+        public static string AnalysesError3 {
+            get {
+                return ResourceManager.GetString("AnalysesError3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that is already closed..
+        /// </summary>
+        public static string AnalysesError4 {
+            get {
+                return ResourceManager.GetString("AnalysesError4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
+        /// </summary>
+        public static string AnalysesError5 {
+            get {
+                return ResourceManager.GetString("AnalysesError5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM Port &quot;{0}&quot; is opened but never closed..
+        /// </summary>
+        public static string AnalysesError6 {
+            get {
+                return ResourceManager.GetString("AnalysesError6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The COM port &quot;{0}&quot; on line {1} does not exist..
+        /// </summary>
+        public static string AnalysesError7 {
+            get {
+                return ResourceManager.GetString("AnalysesError7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid variable on line {0}, must contain a name and value, i.e. #101=value.
         /// </summary>
         public static string AnalysesVariableInvalid1 {
@@ -4584,6 +4638,15 @@ namespace GSend.Language {
         public static string WebMenuM605 {
             get {
                 return ResourceManager.GetString("WebMenuM605", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 - Open Com Port.
+        /// </summary>
+        public static string WebMenuM620 {
+            get {
+                return ResourceManager.GetString("WebMenuM620", resourceCulture);
             }
         }
         

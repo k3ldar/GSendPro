@@ -12,10 +12,10 @@ namespace GSendAnalyser.Analysers
             if (gCodeAnalyses == null)
                 throw new ArgumentNullException(nameof(gCodeAnalyses));
 
-            if (gCodeAnalyses.AllCommands.Any(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(6)))
+            if (gCodeAnalyses.AllSpecificCommands(Constants.CharM).Any(c => c.CommandValue.Equals(6)))
                 gCodeAnalyses.AddOptions(AnalysesOptions.ContainsAutomaticToolChanges);
 
-            List<IGCodeCommand> tools = gCodeAnalyses.AllCommands.Where(c => c.Command.Equals('T')).ToList();
+            List<IGCodeCommand> tools = gCodeAnalyses.AllSpecificCommands(Constants.CharT).ToList();
 
             if (tools.Count > 0)
             {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using GSendAnalyser.Analysers;
+
 using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;
@@ -29,6 +31,10 @@ namespace GSendTests.Mocks
                     if (type.Equals(typeof(GSendAnalyser.Analysers.AnalyzeVariables)))
                     {
                         Result.Add(new MockSubprograms());
+                    }
+                    else if (type.Equals(typeof(AnalyzeM62XComPorts)))
+                    {
+                        Result.Add(new MockComPortProvider());
                     }
                     else
                     {

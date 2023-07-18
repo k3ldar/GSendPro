@@ -8,6 +8,8 @@ namespace GSendShared
 
         IReadOnlyList<IGCodeCommand> AllCommands { get; }
 
+        IReadOnlyList<IGCodeCommand> AllSpecificCommands(char commandCode);
+
         decimal SafeZ { get; set; }
 
         decimal HomeZ { get; set; }

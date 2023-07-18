@@ -8,12 +8,19 @@ namespace GSendTests.Mocks
     [ExcludeFromCodeCoverage]
     internal class MockComPortProvider : IComPortProvider
     {
+        private readonly string _port;
         private readonly byte[] _availablePorts;
 
         public MockComPortProvider()
             : this(new byte[] { 5, 6, 7 })
         {
 
+        }
+
+        public MockComPortProvider(string port)
+            : this(new byte[] { })
+        {
+            _port = port;
         }
 
         public MockComPortProvider(byte[] availablePorts)
@@ -29,6 +36,9 @@ namespace GSendTests.Mocks
             {
                 Result.Add($"COM{port}");
             }
+
+            if (!string.IsNullOrWhiteSpace(_port))
+                Result.Add(_port);
 
             return Result.ToArray();
         }

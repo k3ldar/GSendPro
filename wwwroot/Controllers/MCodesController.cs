@@ -10,7 +10,7 @@ namespace gsend.pro.Controllers
     {
         public const string MCodes = "MCodes";
 
-        private static readonly string[] _validMCodes = { "M600", "M605", "M650" };
+        private static readonly string[] _validMCodes = { "M600", "M605", "M620", "M621", "M622", "M650" };
 
         [Breadcrumb(nameof(GSend.Language.Resources.BreadcrumbMCodes))]
         [Route("/MCodes/Index")]

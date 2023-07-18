@@ -53,6 +53,11 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
+        public IReadOnlyList<IGCodeCommand> AllSpecificCommands(char commandCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Analyse()
         {
             throw new NotImplementedException();
