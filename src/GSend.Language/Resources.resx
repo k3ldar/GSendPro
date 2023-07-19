@@ -156,6 +156,21 @@
   <data name="Alarm9" xml:space="preserve">
     <value>Homing fail. Could not find limit switch within search distance.</value>
   </data>
+  <data name="AnalyseError10" xml:space="preserve">
+    <value>Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port.</value>
+  </data>
+  <data name="AnalyseError11" xml:space="preserve">
+    <value>Command {0}{1} on line {2} does not specify the timeout period.</value>
+  </data>
+  <data name="AnalyseError12" xml:space="preserve">
+    <value>Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}.</value>
+  </data>
+  <data name="AnalyseError8" xml:space="preserve">
+    <value>Command {0}{1} on line {2} does not specify a COM port.</value>
+  </data>
+  <data name="AnalyseError9" xml:space="preserve">
+    <value>Command {0}{1} on line {2} does not contain a value that can be sent to a COM port.</value>
+  </data>
   <data name="AnalyserProperty" xml:space="preserve">
     <value>Property</value>
   </data>
@@ -172,10 +187,10 @@
     <value>M620 command on line {0} must appear on it's own line without any other commands.</value>
   </data>
   <data name="AnalysesError4" xml:space="preserve">
-    <value>M620 command on line {0} attempts to close a COM port "{1}" that is already closed.</value>
+    <value>M620 command on line {0} attempts to close a COM port "{1}" that was never opened.</value>
   </data>
   <data name="AnalysesError5" xml:space="preserve">
-    <value>M620 command on line {0} attempts to close a COM port "{1}" that was never opened.</value>
+    <value>M620 command on line {0} attempts to close a COM port "{1}" that is already closed.</value>
   </data>
   <data name="AnalysesError6" xml:space="preserve">
     <value>COM Port "{0}" is opened but never closed.</value>
@@ -1647,11 +1662,23 @@
   <data name="WebMenuM620" xml:space="preserve">
     <value>M620 - Open Com Port</value>
   </data>
+  <data name="WebMenuM621" xml:space="preserve">
+    <value>M621 - Close COM Port</value>
+  </data>
+  <data name="WebMenuM622" xml:space="preserve">
+    <value>M622 - Send non blocking command</value>
+  </data>
+  <data name="WebMenuM623" xml:space="preserve">
+    <value>M623 - Send blocking command</value>
+  </data>
   <data name="WebMenuM650" xml:space="preserve">
     <value>M650 - Job Name</value>
   </data>
   <data name="WebMenuMCodes" xml:space="preserve">
     <value>M Codes</value>
+  </data>
+  <data name="WebMenuParameters" xml:space="preserve">
+    <value>Parameters</value>
   </data>
   <data name="WebMenuSeeAlso" xml:space="preserve">
     <value>See Also</value>

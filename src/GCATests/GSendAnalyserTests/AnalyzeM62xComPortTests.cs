@@ -147,5 +147,216 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Errors.Count);
             Assert.AreEqual("COM Port \"COM9\" is opened but never closed.", analyses.Errors[0]);
         }
+
+        [TestMethod]
+        public void Analyze_ComPortNonBlockingCommand_ComPortNotSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM622;\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M622 on line 2 does not specify a COM port.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortNonBlockingCommand_ComPortNotSpecifiedOrClosed_AddsErrors()
+        {
+            string gCodeWithVariables = "M620;COM9\nM622;";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(2, analyses.Errors.Count);
+            Assert.AreEqual("Command M622 on line 2 does not specify a COM port.", analyses.Errors[0]);
+            Assert.AreEqual("COM Port \"COM9\" is opened but never closed.", analyses.Errors[1]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortNonBlockingCommand_NoCommandToSendSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM622;COM9\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M622 on line 2 does not contain a value that can be sent to a COM port.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_ComPortNotSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 does not specify a COM port.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_ComPortNotSpecifiedOrClosed_AddsErrors()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(2, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 does not specify a COM port.", analyses.Errors[0]);
+            Assert.AreEqual("COM Port \"COM9\" is opened but never closed.", analyses.Errors[1]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_NoCommandToSendSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:600:ok\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 does not contain a value that can be sent to a COM port.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_NoCommandResponseSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:500\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 does not contain a response value that can be verified after sending data to a COM port.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_NoTimeoutPeriodSpecified_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 does not specify the timeout period.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_BelowMinimum_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:-99:0k:data\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_AboveMaximum_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:10001:ok:data\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_String_AddsError()
+        {
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:timeout:ok:data\nM621;COM9";
+
+            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(3, analyses.Commands.Count);
+
+
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            sut.Analyze("", analyses);
+
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual(1, analyses.Errors.Count);
+            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
+        }
     }
 }

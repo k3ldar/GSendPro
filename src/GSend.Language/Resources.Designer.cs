@@ -178,6 +178,51 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port..
+        /// </summary>
+        public static string AnalyseError10 {
+            get {
+                return ResourceManager.GetString("AnalyseError10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify the timeout period..
+        /// </summary>
+        public static string AnalyseError11 {
+            get {
+                return ResourceManager.GetString("AnalyseError11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}..
+        /// </summary>
+        public static string AnalyseError12 {
+            get {
+                return ResourceManager.GetString("AnalyseError12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
+        /// </summary>
+        public static string AnalyseError8 {
+            get {
+                return ResourceManager.GetString("AnalyseError8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a value that can be sent to a COM port..
+        /// </summary>
+        public static string AnalyseError9 {
+            get {
+                return ResourceManager.GetString("AnalyseError9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property.
         /// </summary>
         public static string AnalyserProperty {
@@ -223,7 +268,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that is already closed..
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
         /// </summary>
         public static string AnalysesError4 {
             get {
@@ -232,7 +277,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that is already closed..
         /// </summary>
         public static string AnalysesError5 {
             get {
@@ -4651,6 +4696,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M621 - Close COM Port.
+        /// </summary>
+        public static string WebMenuM621 {
+            get {
+                return ResourceManager.GetString("WebMenuM621", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M622 - Send non blocking command.
+        /// </summary>
+        public static string WebMenuM622 {
+            get {
+                return ResourceManager.GetString("WebMenuM622", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M623 - Send blocking command.
+        /// </summary>
+        public static string WebMenuM623 {
+            get {
+                return ResourceManager.GetString("WebMenuM623", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M650 - Job Name.
         /// </summary>
         public static string WebMenuM650 {
@@ -4665,6 +4737,15 @@ namespace GSend.Language {
         public static string WebMenuMCodes {
             get {
                 return ResourceManager.GetString("WebMenuMCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string WebMenuParameters {
+            get {
+                return ResourceManager.GetString("WebMenuParameters", resourceCulture);
             }
         }
         

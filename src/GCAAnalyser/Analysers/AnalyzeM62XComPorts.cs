@@ -22,24 +22,32 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> m620Commands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => IsComPortCommand(c.CommandValue)).ToList();
+            List<IGCodeCommand> comPortCommands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => IsComPortCommand(c.CommandValue)).ToList();
 
-            if (m620Commands.Count == 0)
+            if (comPortCommands.Count == 0)
                 return;
 
             if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
                 Dictionary<string, bool> comPortUsage = new();
 
-                foreach (IGCodeCommand command in m620Commands)
+                foreach (IGCodeCommand command in comPortCommands)
                 {
-                    string comPort = command.CommentStripped(true);
+                    string[] comPortComments = command.CommentStripped(true).Split(Constants.CharColon, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                    if (comPortComments.Length == 0)
+                    {
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError8, command.Command, command.CommandValueString, command.LineNumber);
+                        continue;
+                    }
+
+                    string comPort = comPortComments[0];
 
                     if (!_comPortProvider.AvailablePorts().Contains(comPort))
                     {
                         codeAnalyses.AddError(GSend.Language.Resources.AnalysesError7, comPort, command.LineNumber);
                     }
-                    else if (command.CommandValue == 620)
+                    else if (command.CommandValue == Constants.MCode620)
                     {
                         //open port
                         if (!comPortUsage.ContainsKey(comPort))
@@ -58,15 +66,48 @@ namespace GSendAnalyser.Analysers
 
                         comPortUsage[comPort] = true;
                     }
-                    else if (command.CommandValue == 621)
+                    else if (command.CommandValue == Constants.MCode621)
                     {
                         // close port
                         if (!comPortUsage.ContainsKey(comPort))
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError5, command.LineNumber, comPort);
-                        else if (!comPortUsage[comPort])
                             codeAnalyses.AddError(GSend.Language.Resources.AnalysesError4, command.LineNumber, comPort);
+                        else if (!comPortUsage[comPort])
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError5, command.LineNumber, comPort);
                         else
                             comPortUsage[comPort] = false;
+                    }
+                    else if (command.CommandValue == Constants.MCode622)
+                    {
+                        if (comPortComments.Length == 1)
+                        {
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber);
+                        }
+                    }
+                    else if (command.CommandValue == Constants.MCode623)
+                    {
+                        if (comPortComments.Length == 1)
+                        {
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError11, command.Command, command.CommandValueString, command.LineNumber);
+                            continue;
+                        }
+                        else if (comPortComments.Length == 2)
+                        {
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError10, command.Command, command.CommandValueString, command.LineNumber);
+                            continue;
+                        }
+                        else if (comPortComments.Length == 3)
+                        {
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber);
+                            continue;
+                        }
+                        
+                        if (!Int32.TryParse(comPortComments[1], out int timeoutPeriod) || 
+                            timeoutPeriod < Constants.MCode623MinTimeoutValue || 
+                            timeoutPeriod > Constants.MCode623MaxTimeoutValue)
+                        {
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError12, command.Command, command.CommandValueString, command.LineNumber, 
+                                Constants.MCode623MinTimeoutValue, Constants.MCode623MaxTimeoutValue);
+                        }
                     }
                 }
 
@@ -84,9 +125,10 @@ namespace GSendAnalyser.Analysers
         {
             switch (value)
             {
-                case 620:
-                case 621:
-                case 622:
+                case Constants.MCode620:
+                case Constants.MCode621:
+                case Constants.MCode622:
+                case Constants.MCode623:
 
                     return true;
             }

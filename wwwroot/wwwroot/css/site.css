@@ -216,6 +216,10 @@ body {
     }
 }
 
+.paramTable {
+    width: 100%;
+}
+
 .nav-item {
     white-space: nowrap;
 }
@@ -314,6 +318,7 @@ body {
 
     h3 {
         font-size: 1.25rem;
+        padding-top: 10px;
     }
 }
 
@@ -382,4 +387,8 @@ body {
 
 .gcode-black {
     color: black;
+}
+
+h3 {
+    padding-top: 12px;
 }

@@ -19,6 +19,7 @@ namespace GSendShared
         public const char CharOpeningBracket = '(';
         public const char CharClosingBracket = ')';
         public const char CharSemiColon = ';';
+        public const char CharColon = ':';
         public const char CharA = 'A';
         public const char CharB = 'B';
         public const char CharC = 'C';
@@ -54,7 +55,14 @@ namespace GSendShared
 
         public const int MCode600 = 600;
         public const int MCode605 = 605;
+        public const int MCode620 = 620;
+        public const int MCode621 = 621;
+        public const int MCode622 = 622;
+        public const int MCode623 = 623;
         public const int MCode650 = 650;
+
+        public const int MCode623MinTimeoutValue = 100;
+        public const int MCode623MaxTimeoutValue = 10000;
 
 
         public const string HomeWebsite = "https://www.gsend.pro/";

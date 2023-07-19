@@ -1,11 +1,11 @@
 ﻿<div class="row">
     <div class="col-sm-12">
-        <h3>@GSend.Language.Resources.WebMenuM620</h3>
+        <h3>@GSend.Language.Resources.WebMenuM621</h3>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>M620 is used to open a COM port, this can be used to control other devices attached to the computer, like an Arduino board.</p>
+        <p>M621 is used to close a COM port that was opened using <a href="/MCodes/M620/">M620</a>.</p>
     </div>
 </div>
 <div class="row">
@@ -29,31 +29,6 @@
                     <td>No</td>
                     <td>Name of the COM port to be opened, i.e. COM2</td>
                 </tr>
-                <tr>
-                    <td>Timeout</td>
-                    <td>Yes</td>
-                    <td>Timeout period for read/write and opening port.  Default 1000ms, minimum 100ms, maximum 10000ms</td>
-                </tr>
-                <tr>
-                    <td>Baud Rate</td>
-                    <td>Yes</td>
-                    <td>Baud rate for communicating with the COM port, default value is 115200.  Consult device manufacturer for expected baud rate.</td>
-                </tr>
-                <tr>
-                    <td>Parity</td>
-                    <td>Yes</td>
-                    <td>Specifies the parity bit for communication, default value is None.  Valid values are: None; Odd; Even; Mark; Space </td>
-                </tr>
-                <tr>
-                    <td>Data Bits</td>
-                    <td>Yes</td>
-                    <td>Data bits length, default value is 8.  Valid values are 5, 6, 7 &amp; 8</td>
-                </tr>
-                <tr>
-                    <td>Stop Bits</td>
-                    <td>Yes</td>
-                    <td>Sets the number of stop bits ber byte.  Default value is One.  Valid values are One, Two, OnePointFive</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -70,7 +45,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Each M620 command must be on a line with no other commands.</p>
+        <p>Each M621 command must be on a line with no other commands.</p>
     </div>
 </div>
 <div class="row">
@@ -80,12 +55,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Optional paramaters must be filled in sequence, for example, if you wish to set Parity then you must also set Timeout and Baud Rate.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <p>A error will be shown if the COM port does not exist.</p>
+        <p>A error will be shown if the COM port does not exist or has not been opened.</p>
     </div>
 </div>
 <div class="row">
@@ -101,7 +71,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample opens a COM port, sends a command without waiting for a response and then closes the COM port.</p>
+        <p>The following sample opens a COM port, sends a non blocking command and then closes the COM port.</p>
     </div>
 </div>
 <div class="row">
