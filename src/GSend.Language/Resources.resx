@@ -165,6 +165,27 @@
   <data name="AnalyseError12" xml:space="preserve">
     <value>Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}.</value>
   </data>
+  <data name="AnalyseError13" xml:space="preserve">
+    <value>Invalid COM port parameter, {0} must be a {1} value between {2} and {3}</value>
+  </data>
+  <data name="AnalyseError14" xml:space="preserve">
+    <value>Invalid COM port parameter, {0} must be a {1} value</value>
+  </data>
+  <data name="AnalyseError15" xml:space="preserve">
+    <value>Invalid COM port parameter, Parity must be None, Odd, Even, Mark or Space</value>
+  </data>
+  <data name="AnalyseError16" xml:space="preserve">
+    <value>Invalid COM port parameter, Data bits must be 5, 6, 7, or 8</value>
+  </data>
+  <data name="AnalyseError17" xml:space="preserve">
+    <value>Invalid COM port parameter, Stop bits must be One, Two or OnePointFive</value>
+  </data>
+  <data name="AnalyseError18" xml:space="preserve">
+    <value>Invalid COM port parameter, COM port name is mandatory</value>
+  </data>
+  <data name="AnalyseError19" xml:space="preserve">
+    <value>Invalid COM port parameter, baud rate must be greater than zero</value>
+  </data>
   <data name="AnalyseError8" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not specify a COM port.</value>
   </data>
@@ -944,6 +965,15 @@
   </data>
   <data name="OverrideZUp" xml:space="preserve">
     <value>Z Up</value>
+  </data>
+  <data name="ParameterBaudRate" xml:space="preserve">
+    <value>Baud Rate</value>
+  </data>
+  <data name="ParameterNumber" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="ParameterTimeoutValue" xml:space="preserve">
+    <value>Timeout</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>

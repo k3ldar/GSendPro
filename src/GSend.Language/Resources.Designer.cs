@@ -205,6 +205,69 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value between {2} and {3}.
+        /// </summary>
+        public static string AnalyseError13 {
+            get {
+                return ResourceManager.GetString("AnalyseError13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value.
+        /// </summary>
+        public static string AnalyseError14 {
+            get {
+                return ResourceManager.GetString("AnalyseError14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Parity must be None, Odd, Even, Mark or Space.
+        /// </summary>
+        public static string AnalyseError15 {
+            get {
+                return ResourceManager.GetString("AnalyseError15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Data bits must be 5, 6, 7, or 8.
+        /// </summary>
+        public static string AnalyseError16 {
+            get {
+                return ResourceManager.GetString("AnalyseError16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Stop bits must be One, Two or OnePointFive.
+        /// </summary>
+        public static string AnalyseError17 {
+            get {
+                return ResourceManager.GetString("AnalyseError17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, COM port name is mandatory.
+        /// </summary>
+        public static string AnalyseError18 {
+            get {
+                return ResourceManager.GetString("AnalyseError18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, baud rate must be greater than zero.
+        /// </summary>
+        public static string AnalyseError19 {
+            get {
+                return ResourceManager.GetString("AnalyseError19", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
         /// </summary>
         public static string AnalyseError8 {
@@ -2541,6 +2604,33 @@ namespace GSend.Language {
         public static string OverrideZUp {
             get {
                 return ResourceManager.GetString("OverrideZUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baud Rate.
+        /// </summary>
+        public static string ParameterBaudRate {
+            get {
+                return ResourceManager.GetString("ParameterBaudRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string ParameterNumber {
+            get {
+                return ResourceManager.GetString("ParameterNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string ParameterTimeoutValue {
+            get {
+                return ResourceManager.GetString("ParameterTimeoutValue", resourceCulture);
             }
         }
         

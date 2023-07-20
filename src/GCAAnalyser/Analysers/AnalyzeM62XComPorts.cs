@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using GSendShared.Abstractions;
 using GSendShared;
+using GSendShared.Helpers;
 
 namespace GSendAnalyser.Analysers
 {
@@ -49,6 +50,16 @@ namespace GSendAnalyser.Analysers
                     }
                     else if (command.CommandValue == Constants.MCode620)
                     {
+                        try
+                        {
+                            _ = ValidateParameters.ExtractComPortProperties(comPortComments);
+                        }
+                        catch (ArgumentException ae)
+                        {
+                            codeAnalyses.AddError(ae.Message);
+                            continue;
+                        }
+
                         //open port
                         if (!comPortUsage.ContainsKey(comPort))
                         {
