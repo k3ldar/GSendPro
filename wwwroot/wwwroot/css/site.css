@@ -27,6 +27,9 @@ body {
     padding-top: 60px;
 }
 
+.bg-blue {
+    background-color: #2E86C1;
+}
 .navbar-brand {
     margin: 2px 16px 2px 0;
 }
