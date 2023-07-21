@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -49,6 +50,11 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
+        public void ProcessError(Exception error)
+        {
+            ExceptionsRaised.Add(error);
+        }
+
         public bool ProcessGCodeOverrides(IGCodeLine line)
         {
             throw new NotImplementedException();
@@ -58,5 +64,7 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public List<Exception> ExceptionsRaised { get; } = new();
     }
 }

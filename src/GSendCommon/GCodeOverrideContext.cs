@@ -104,7 +104,7 @@ namespace GSendCommon
                     SendCommand = true;
 
                     GCode = line ?? throw new ArgumentNullException(nameof(line));
-
+                    //add new overrides for M620, M621, M622 and blocking M623
                     foreach (IMCodeOverride overrideItem in GetMCodeOverrides())
                     {
                         if (overrideItem.Process(this, cancellationToken))
@@ -130,6 +130,14 @@ namespace GSendCommon
         }
 
         public void ProcessError(GrblError error)
+        {
+            foreach (IGCodeOverride item in CreateGCodeOverrides())
+            {
+                item.Process(error);
+            }
+        }
+
+        public void ProcessError(Exception error)
         {
             foreach (IGCodeOverride item in CreateGCodeOverrides())
             {

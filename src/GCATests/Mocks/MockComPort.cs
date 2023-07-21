@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendTests.Mocks
 {
@@ -23,8 +24,14 @@ namespace GSendTests.Mocks
         {
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
         }
+        public MockComPort(IComPortModel comPortModel)
+        {
+            Model = comPortModel ?? throw new ArgumentNullException(nameof(comPortModel));
+        }
 
         public IMachine Machine { get; private set; }
+
+        public IComPortModel Model { get; private set; }
 
         public List<string> CommandsToReturn { get; set; } = new();
 
@@ -49,7 +56,7 @@ namespace GSendTests.Mocks
         public void Open()
         {
             if (ThrowFileNotFoundException)
-                throw new FileNotFoundException(Machine.ComPort);
+                throw new FileNotFoundException(Model == null ? Machine.ComPort : Model.Name);
 
             if (_isOpen)
                 throw new InvalidOperationException("Should not open when already open");

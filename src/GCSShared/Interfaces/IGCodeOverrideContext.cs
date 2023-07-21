@@ -52,6 +52,8 @@ namespace GSendShared.Abstractions
 
         void ProcessError(GrblError error);
 
+        void ProcessError(Exception error);
+
         void Cancel();
     }
 }

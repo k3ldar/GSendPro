@@ -72,6 +72,11 @@ namespace GSendCommon.OverrideClasses
             StopSpindleTimer();
         }
 
+        public void Process(Exception error)
+        {
+
+        }
+
         private void StopSpindleTimer()
         {
             if (_spindleTimeId > -1)

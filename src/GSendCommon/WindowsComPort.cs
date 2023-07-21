@@ -1,27 +1,29 @@
 ﻿using System.IO.Ports;
+using System.Reflection.PortableExecutable;
 
 using GSendCommon.Settings;
 
 using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendCommon
 {
     public sealed class WindowsComPort : IComPort
     {
         private readonly SerialPort _serialPort;
-        private readonly GSendSettings _settings;
 
         public WindowsComPort(IMachine machine, GSendSettings settings)
         {
             if (machine == null)
                 throw new ArgumentNullException(nameof(machine));
 
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
 
-            if (!Enum.TryParse<Parity>(_settings.Parity, out Parity parity))
+            if (!Enum.TryParse<Parity>(settings.Parity, out Parity parity))
                 parity = Parity.None;
 
-            if (!Enum.TryParse<StopBits>(_settings.StopBits, out StopBits stopBits))
+            if (!Enum.TryParse<StopBits>(settings.StopBits, out StopBits stopBits))
                 stopBits = StopBits.One;
 
             _serialPort = new SerialPort(machine.ComPort, settings.BaudRate,
@@ -35,6 +37,21 @@ namespace GSendCommon
             _serialPort.WriteTimeout = settings.WriteTimeout;
 #endif
 
+            _serialPort.DataReceived += SerialPort_DataReceived;
+            _serialPort.ErrorReceived += SerialPort_ErrorReceived;
+            _serialPort.PinChanged += SerialPort_PinChanged;
+        }
+
+        public WindowsComPort(IComPortModel comPortModel)
+        {
+            if (comPortModel == null)
+                throw new ArgumentNullException(nameof(comPortModel));
+
+            _serialPort = new SerialPort(comPortModel.Name, comPortModel.BaudRate,
+                comPortModel.Parity, comPortModel.DataBits, comPortModel.StopBits);
+
+            _serialPort.ReadTimeout = comPortModel.Timeout;
+            _serialPort.WriteTimeout = comPortModel.Timeout;
             _serialPort.DataReceived += SerialPort_DataReceived;
             _serialPort.ErrorReceived += SerialPort_ErrorReceived;
             _serialPort.PinChanged += SerialPort_PinChanged;
@@ -64,7 +81,6 @@ namespace GSendCommon
                 {
                     _ = _serialPort.ReadExisting();
                 }
-
             }
         }
 

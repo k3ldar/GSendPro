@@ -67,5 +67,10 @@ namespace GSendCommon.OverrideClasses
         {
             // not used in this context
         }
+
+        public void Process(Exception error)
+        {
+
+        }
     }
 }

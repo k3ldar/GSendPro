@@ -612,6 +612,9 @@
   <data name="Error9" xml:space="preserve">
     <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
+  <data name="ErrorComPortOpen" xml:space="preserve">
+    <value>Com port {0} has already been opened.</value>
+  </data>
   <data name="ErrorConnectingToMachine" xml:space="preserve">
     <value>An error occurred whilst trying to connect to the machine.</value>
   </data>

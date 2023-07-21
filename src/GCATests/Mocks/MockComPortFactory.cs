@@ -1,12 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using GSendShared;
+using GSendShared.Abstractions;
+
+using Shared.Classes;
+
+using static GSend.Language.Resources;
 
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
     internal sealed class MockComPortFactory : IComPortFactory
     {
+        private readonly object _lockObject = new();
+        private readonly Dictionary<string, IComPort> _comPorts = new();
+
         public MockComPortFactory()
         {
         }
@@ -22,6 +32,41 @@ namespace GSendTests.Mocks
         {
             MockComPort = MockComPort ?? new MockComPort(machine);
             return MockComPort;
+        }
+
+        public IComPort CreateComPort(IComPortModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+
+                if (_comPorts.ContainsKey(model.Name))
+                    throw new InvalidOperationException(String.Format(ErrorComPortOpen, model.Name));
+
+                MockComPort comPort = MockComPort ?? new MockComPort(model);
+
+                _comPorts.Add(model.Name, comPort);
+
+                return comPort;
+            }
+        }
+
+        public void DeleteComPort(IComPort comPort)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IComPort GetComPort(string comPort)
+        {
+            using (TimedLock tl = TimedLock.Lock(_lockObject))
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

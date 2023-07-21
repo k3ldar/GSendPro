@@ -33,5 +33,11 @@
         /// </summary>
         /// <param name="error"></param>
         void Process(GrblError error);
+
+        /// <summary>
+        /// Processes an exception
+        /// </summary>
+        /// <param name="error"></param>
+        void Process(Exception error);
     }
 }

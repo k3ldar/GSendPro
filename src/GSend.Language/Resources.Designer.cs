@@ -1546,6 +1546,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Com port {0} has already been opened..
+        /// </summary>
+        public static string ErrorComPortOpen {
+            get {
+                return ResourceManager.GetString("ErrorComPortOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred whilst trying to connect to the machine..
         /// </summary>
         public static string ErrorConnectingToMachine {

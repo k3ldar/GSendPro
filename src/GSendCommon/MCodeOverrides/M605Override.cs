@@ -5,12 +5,11 @@ using Shared.Classes;
 
 namespace GSendCommon.MCodeOverrides
 {
-
     internal class M605Override : IMCodeOverride
     {
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            List<GSendShared.IGCodeCommand> m605Commands = overrideContext.GCode.Commands.Where(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(Constants.MCode605)).ToList();
+            List<IGCodeCommand> m605Commands = overrideContext.GCode.Commands.Where(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(Constants.MCode605)).ToList();
 
             if (m605Commands.Count == 0)
                 return false;
