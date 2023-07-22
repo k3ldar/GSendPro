@@ -974,6 +974,8 @@ namespace GSendCommon
 
         public event UpdateLineStatus OnLineStatusUpdated;
 
+        public event InformationUpdate OnInformationUpdate;
+
         #endregion IGCodeProcessor Events
 
         #region ThreadManager
@@ -1562,6 +1564,11 @@ namespace GSendCommon
         private void RaiseOnLineStatusUpdated(IGCodeLine command)
         {
             OnLineStatusUpdated?.Invoke(command.LineNumber, command.MasterLineNumber, command.Status);
+        }
+
+        public void RaiseOnInformationUpdate(InformationType informationType, string message)
+        {
+            OnInformationUpdate?.Invoke(informationType, message);
         }
 
         #endregion Private Methods

@@ -380,6 +380,16 @@ namespace GSendDesktop.Forms
                     }
 
                     break;
+
+                case Constants.MessageInformationUpdate:
+                    InformationMessageModel informationMessageModel = (InformationMessageModel)JsonSerializer.Deserialize<InformationMessageModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+
+                    if (informationMessageModel != null)
+                    {
+                        warningsAndErrors.AddWarningPanel(informationMessageModel.InformationType, informationMessageModel.Message);
+                    }
+
+                    break;
             }
         }
 
@@ -1325,7 +1335,7 @@ namespace GSendDesktop.Forms
 
             AddMessageToConsole(txtUserGrblCommand.Text);
 
-            string command = txtUserGrblCommand.Text.Trim();
+            string command = txtUserGrblCommand.Text.Replace(":", "\t").Trim();
 
             if (txtUserGrblCommand.Text.StartsWith("$") || txtUserGrblCommand.Text == "?")
                 SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));

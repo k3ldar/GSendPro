@@ -4,6 +4,8 @@ namespace GSendShared
 {
     public interface IComPort
     {
+        string Name { get; }
+
         void Open();
 
         void Close();

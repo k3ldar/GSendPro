@@ -979,6 +979,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to COM port {0} has been closed..
+        /// </summary>
+        public static string ComPortClosed {
+            get {
+                return ResourceManager.GetString("ComPortClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has been sent to COM port {1}.
+        /// </summary>
+        public static string ComPortDataSent {
+            get {
+                return ResourceManager.GetString("ComPortDataSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM port {0} has been opened..
+        /// </summary>
+        public static string ComPortOpened {
+            get {
+                return ResourceManager.GetString("ComPortOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Configuration {
@@ -1546,7 +1573,16 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Com port {0} has already been opened..
+        ///   Looks up a localized string similar to COM port {0} has not been opened..
+        /// </summary>
+        public static string ErrorComPortNotOpen {
+            get {
+                return ResourceManager.GetString("ErrorComPortNotOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM port {0} has already been opened..
         /// </summary>
         public static string ErrorComPortOpen {
             get {

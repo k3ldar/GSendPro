@@ -20,6 +20,8 @@ namespace GSendCommon
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
+            Name = machine.ComPort;
+
             if (!Enum.TryParse<Parity>(settings.Parity, out Parity parity))
                 parity = Parity.None;
 
@@ -47,6 +49,8 @@ namespace GSendCommon
             if (comPortModel == null)
                 throw new ArgumentNullException(nameof(comPortModel));
 
+            Name = comPortModel.Name;
+
             _serialPort = new SerialPort(comPortModel.Name, comPortModel.BaudRate,
                 comPortModel.Parity, comPortModel.DataBits, comPortModel.StopBits);
 
@@ -56,6 +60,8 @@ namespace GSendCommon
             _serialPort.ErrorReceived += SerialPort_ErrorReceived;
             _serialPort.PinChanged += SerialPort_PinChanged;
         }
+
+        public string Name { get; }
 
         public void Close()
         {

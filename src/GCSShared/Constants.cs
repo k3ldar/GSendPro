@@ -203,6 +203,8 @@ namespace GSendShared
 
         public const string MessageLineStatusUpdated = "LineStatusUpdated";
 
+        public const string MessageInformationUpdate = "mInfoUpdate";
+
         public const string StateUndefined = "Undefined";
 
         public const string MessageRunGCodeAdmin = "mStart";

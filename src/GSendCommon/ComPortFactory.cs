@@ -1,4 +1,6 @@
-﻿using GSendCommon.Settings;
+﻿using System.Reflection;
+
+using GSendCommon.Settings;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -39,13 +41,13 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-
                 if (_comPorts.ContainsKey(model.Name))
                     throw new InvalidOperationException(String.Format(ErrorComPortOpen, model.Name));
 
                 WindowsComPort comPort = new WindowsComPort(model);
 
                 _comPorts.Add(model.Name, comPort);
+                comPort.Open();
 
                 return comPort;
             }
@@ -53,17 +55,30 @@ namespace GSendCommon
 
         public void DeleteComPort(IComPort comPort)
         {
+            if (comPort == null)
+                throw new ArgumentNullException(nameof(comPort));
+
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                throw new NotImplementedException();
+                if (!_comPorts.ContainsKey(comPort.Name))
+                    throw new InvalidOperationException(String.Format(ErrorComPortNotOpen, comPort.Name));
+
+                comPort.Close();
+                _comPorts.Remove(comPort.Name);
             }
         }
 
         public IComPort GetComPort(string comPort)
         {
+            if (String.IsNullOrEmpty(comPort))
+                throw new ArgumentNullException(nameof(comPort));
+
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                throw new NotImplementedException();
+                if (!_comPorts.ContainsKey(comPort))
+                    throw new InvalidOperationException(String.Format(ErrorComPortNotOpen, comPort));
+
+                return _comPorts[comPort];
             }
         }
     }

@@ -277,6 +277,7 @@ namespace GSendCommon
             processor.OnMessageReceived += Processor_OnMessageReceived;
             processor.OnResponseReceived += Processor_OnResponseReceived;
             processor.OnLineStatusUpdated += Processor_OnLineStatusUpdated;
+            processor.OnInformationUpdate += Processor_OnInformationUpdate;
         }
 
         private void RemoveEventsFromProcessor(IGCodeProcessor processor)
@@ -298,7 +299,7 @@ namespace GSendCommon
             processor.OnMessageReceived -= Processor_OnMessageReceived;
             processor.OnResponseReceived -= Processor_OnResponseReceived;
             processor.OnLineStatusUpdated -= Processor_OnLineStatusUpdated;
-
+            processor.OnInformationUpdate -= Processor_OnInformationUpdate;
         }
 
         private void Processor_OnComPortTimeOut(IGCodeProcessor sender, EventArgs e)
@@ -390,6 +391,11 @@ namespace GSendCommon
         private void Processor_OnLineStatusUpdated(int lineNumber, int masterLineNumber, LineStatus lineStatus)
         {
             SendMessage(new ClientBaseMessage(Constants.MessageLineStatusUpdated, new LineStatusUpdateModel(lineNumber, masterLineNumber, lineStatus)));
+        }
+
+        private void Processor_OnInformationUpdate(InformationType informationType, string message)
+        {
+            SendMessage(new ClientBaseMessage(Constants.MessageInformationUpdate, new InformationMessageModel(informationType, message)));
         }
 
         #endregion Processor Events
@@ -619,7 +625,7 @@ namespace GSendCommon
                     case Constants.MessageMachineWriteLineServer:
                         if (foundMachine && proc != null)
                         {
-                            response.success = proc.WriteLine(parts[2]);
+                            response.success = proc.WriteLine(parts[2].Replace("\t", ":"));
                         }
                         else
                         {

@@ -174,5 +174,13 @@ namespace GSendCommon
 
             return _mCodeOverrides;
         }
+
+        public void SendInformationUpdate(InformationType informationType, string message)
+        {
+            if (Processor is GCodeProcessor gCodeProcessor)
+            {
+                gCodeProcessor.RaiseOnInformationUpdate(informationType, message);
+            }
+        }
     }
 }

@@ -54,6 +54,8 @@ namespace GSendShared.Abstractions
 
         void ProcessError(Exception error);
 
+        void SendInformationUpdate(InformationType informationType, string message);
+
         void Cancel();
     }
 }

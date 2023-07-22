@@ -199,6 +199,8 @@ namespace GSendTests.Mocks
 
         public bool ThrowFileNotFoundException { get; set; }
 
+        public string Name => throw new NotImplementedException();
+
         public void RaisePinError()
         {
             PinChanged?.Invoke(this, null);

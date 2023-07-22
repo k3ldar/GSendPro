@@ -423,6 +423,15 @@
   <data name="CommandQueueSize" xml:space="preserve">
     <value>Command Queue Size: {0}</value>
   </data>
+  <data name="ComPortClosed" xml:space="preserve">
+    <value>COM port {0} has been closed.</value>
+  </data>
+  <data name="ComPortDataSent" xml:space="preserve">
+    <value>{0} has been sent to COM port {1}</value>
+  </data>
+  <data name="ComPortOpened" xml:space="preserve">
+    <value>COM port {0} has been opened.</value>
+  </data>
   <data name="Configuration" xml:space="preserve">
     <value>Configuration</value>
   </data>
@@ -612,8 +621,11 @@
   <data name="Error9" xml:space="preserve">
     <value>G-code commands are locked out during alarm or jog state.</value>
   </data>
+  <data name="ErrorComPortNotOpen" xml:space="preserve">
+    <value>COM port {0} has not been opened.</value>
+  </data>
   <data name="ErrorComPortOpen" xml:space="preserve">
-    <value>Com port {0} has already been opened.</value>
+    <value>COM port {0} has already been opened.</value>
   </data>
   <data name="ErrorConnectingToMachine" xml:space="preserve">
     <value>An error occurred whilst trying to connect to the machine.</value>

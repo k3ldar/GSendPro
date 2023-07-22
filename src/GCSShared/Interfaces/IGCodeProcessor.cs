@@ -125,5 +125,7 @@ namespace GSendShared
         event ResponseReceivedHandler OnResponseReceived;
 
         event UpdateLineStatus OnLineStatusUpdated;
+
+        event InformationUpdate OnInformationUpdate;
     }
 }

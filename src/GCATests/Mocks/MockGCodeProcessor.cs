@@ -63,6 +63,7 @@ namespace GSendTests.Mocks
         public event MessageHandler OnMessageReceived;
         public event ResponseReceivedHandler OnResponseReceived;
         public event UpdateLineStatus OnLineStatusUpdated;
+        public event InformationUpdate OnInformationUpdate;
 #pragma warning restore CS0067
         public void Clear()
         {

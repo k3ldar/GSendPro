@@ -29,13 +29,13 @@ namespace GSendCommon.MCodeOverrides
                 {
                     IComPortModel comPortModel = ValidateParameters.ExtractComPortProperties(comPortComments);
                     IComPort comPort = _comPortFactory.CreateComPort(comPortModel);
-                    comPort.Open();
-
+                    overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortOpened, comPort.Name));
                     overrideContext.SendCommand = false;
                     return true;
                 }
                 catch (Exception ae)
                 {
+                    overrideContext.SendInformationUpdate(InformationType.Error, ae.Message);
                     overrideContext.ProcessError(ae);
                     throw;
                 }
