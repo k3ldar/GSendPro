@@ -386,7 +386,10 @@ namespace GSendDesktop.Forms
 
                     if (informationMessageModel != null)
                     {
-                        warningsAndErrors.AddWarningPanel(informationMessageModel.InformationType, informationMessageModel.Message);
+                        if (_isRunning || informationMessageModel.InformationType != InformationType.Information)
+                            warningsAndErrors.AddWarningPanel(informationMessageModel.InformationType, informationMessageModel.Message);
+                        else
+                            AddMessageToConsole($"{informationMessageModel.Message}");
                     }
 
                     break;

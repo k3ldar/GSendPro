@@ -979,7 +979,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to COM port {0} has been closed..
+        ///   Looks up a localized string similar to {0} has been closed..
         /// </summary>
         public static string ComPortClosed {
             get {
@@ -988,7 +988,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} has been sent to COM port {1}.
+        ///   Looks up a localized string similar to {0} has been sent to {1}.
         /// </summary>
         public static string ComPortDataSent {
             get {
@@ -997,7 +997,16 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to COM port {0} has been opened..
+        ///   Looks up a localized string similar to {0} has been sent to {1}, response {2} received.
+        /// </summary>
+        public static string ComPortDataSentResponseReceived {
+            get {
+                return ResourceManager.GetString("ComPortDataSentResponseReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has been opened..
         /// </summary>
         public static string ComPortOpened {
             get {
@@ -1573,7 +1582,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to COM port {0} has not been opened..
+        ///   Looks up a localized string similar to {0} has not been opened..
         /// </summary>
         public static string ErrorComPortNotOpen {
             get {
@@ -1582,7 +1591,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to COM port {0} has already been opened..
+        ///   Looks up a localized string similar to {0} has already been opened..
         /// </summary>
         public static string ErrorComPortOpen {
             get {

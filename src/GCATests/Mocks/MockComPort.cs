@@ -27,6 +27,7 @@ namespace GSendTests.Mocks
         public MockComPort(IComPortModel comPortModel)
         {
             Model = comPortModel ?? throw new ArgumentNullException(nameof(comPortModel));
+            Name = comPortModel.Name;
         }
 
         public IMachine Machine { get; private set; }
@@ -199,7 +200,7 @@ namespace GSendTests.Mocks
 
         public bool ThrowFileNotFoundException { get; set; }
 
-        public string Name => throw new NotImplementedException();
+        public string Name { get; set; }
 
         public void RaisePinError()
         {

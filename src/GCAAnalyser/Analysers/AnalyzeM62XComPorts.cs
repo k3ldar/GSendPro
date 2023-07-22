@@ -96,28 +96,14 @@ namespace GSendAnalyser.Analysers
                     }
                     else if (command.CommandValue == Constants.MCode623)
                     {
-                        if (comPortComments.Length == 1)
+                        try
                         {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError11, command.Command, command.CommandValueString, command.LineNumber);
-                            continue;
+                            _ = ValidateParameters.ExtractM623Properties(command);
                         }
-                        else if (comPortComments.Length == 2)
+                        catch (ArgumentException ae)
                         {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError10, command.Command, command.CommandValueString, command.LineNumber);
+                            codeAnalyses.AddError(ae.Message);
                             continue;
-                        }
-                        else if (comPortComments.Length == 3)
-                        {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber);
-                            continue;
-                        }
-                        
-                        if (!Int32.TryParse(comPortComments[1], out int timeoutPeriod) || 
-                            timeoutPeriod < Constants.MCode623MinTimeoutValue || 
-                            timeoutPeriod > Constants.MCode623MaxTimeoutValue)
-                        {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError12, command.Command, command.CommandValueString, command.LineNumber, 
-                                Constants.MCode623MinTimeoutValue, Constants.MCode623MaxTimeoutValue);
                         }
                     }
                 }

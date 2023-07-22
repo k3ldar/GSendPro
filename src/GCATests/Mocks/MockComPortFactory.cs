@@ -57,7 +57,10 @@ namespace GSendTests.Mocks
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                throw new NotImplementedException();
+                if (MockComPort != null)
+                {
+                    MockComPort.Close();
+                }
             }
         }
 
@@ -65,7 +68,7 @@ namespace GSendTests.Mocks
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                throw new NotImplementedException();
+                return MockComPort ?? throw new InvalidOperationException();
             }
         }
     }

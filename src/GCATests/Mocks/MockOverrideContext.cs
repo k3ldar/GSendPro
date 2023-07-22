@@ -67,9 +67,11 @@ namespace GSendTests.Mocks
 
         public void SendInformationUpdate(InformationType informationType, string message)
         {
-            throw new NotImplementedException();
+            SendInformation.Add($"{informationType} - {message}");
         }
 
         public List<Exception> ExceptionsRaised { get; } = new();
+
+        public List<string> SendInformation = new();
     }
 }

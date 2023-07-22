@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using GSendShared;
 using GSendShared.Abstractions;
-using GSendShared;
 
 namespace GSendCommon.MCodeOverrides
 {
@@ -40,7 +34,12 @@ namespace GSendCommon.MCodeOverrides
                         throw new ArgumentException(String.Format(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber));
 
                     IComPort comPort = _comPortFactory.GetComPort(comPortComments[0]);
+
+                    if (!comPort.IsOpen())
+                        throw new InvalidOperationException(String.Format(GSend.Language.Resources.ComPortClosed, comPort.Name));
+
                     string dataToSend = comment.Substring(comPortComments[0].Length + 1);
+
                     comPort.WriteLine(dataToSend);
                     overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortDataSent, dataToSend, comPort.Name));
 

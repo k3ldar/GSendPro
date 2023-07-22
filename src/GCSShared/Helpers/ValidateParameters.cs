@@ -75,5 +75,46 @@ namespace GSendShared.Helpers
 
             return new ComPortModel(portName, timeOut, baudRate, parity, dataBits, stopBits);
         }
+
+        public static M623Model ExtractM623Properties(IGCodeCommand command)
+        {
+            string commentStripped = command.CommentStripped(true);
+            string[] values = commentStripped.Split(Constants.CharColon, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+            if (values.Length == 0)
+            {
+                throw new ArgumentException(String.Format(AnalyseError8, command.Command, command.CommandValueString, command.LineNumber));
+            }
+
+            if (values.Length == 1)
+            {
+                throw new ArgumentException(String.Format(AnalyseError11, command.Command, command.CommandValueString, command.LineNumber));
+            }
+            else if (values.Length == 2)
+            {
+                throw new ArgumentException(String.Format(AnalyseError10, command.Command, command.CommandValueString, command.LineNumber));
+            }
+            else if (values.Length == 3)
+            {
+                throw new ArgumentException(String.Format(AnalyseError9, command.Command, command.CommandValueString, command.LineNumber));
+            }
+
+            if (!Int32.TryParse(values[1], out int timeoutPeriod) ||
+                timeoutPeriod < Constants.MCode623MinTimeoutValue ||
+                timeoutPeriod > Constants.MCode623MaxTimeoutValue)
+            {
+                throw new ArgumentException(String.Format(AnalyseError12, command.Command, command.CommandValueString, command.LineNumber,
+                    Constants.MCode623MinTimeoutValue, Constants.MCode623MaxTimeoutValue));
+            }
+
+            string commandToSend = values[3];
+
+            for (int i = 4; i < values.Length; i++)
+            {
+                commandToSend += Constants.ColonChar + values[i];
+            }
+
+            return new M623Model(values[0], values[2], timeoutPeriod, commandToSend);
+        }
     }
 }

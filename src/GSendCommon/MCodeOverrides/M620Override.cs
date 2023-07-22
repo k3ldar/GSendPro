@@ -31,6 +31,7 @@ namespace GSendCommon.MCodeOverrides
                     IComPort comPort = _comPortFactory.CreateComPort(comPortModel);
                     overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortOpened, comPort.Name));
                     overrideContext.SendCommand = false;
+                    comPort.Open();
                     return true;
                 }
                 catch (Exception ae)
