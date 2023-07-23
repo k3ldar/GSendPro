@@ -67,7 +67,8 @@ namespace GSendTests.MCodeOverrideTests
 
             MockOverrideContext context = new(machineStateModel)
             {
-                GCode = gCodeLine
+                GCode = gCodeLine,
+                Variables = analyses.Variables,
             };
 
             M620Override sut = new(new MockComPortFactory());
@@ -90,10 +91,11 @@ namespace GSendTests.MCodeOverrideTests
 
             MockOverrideContext context = new(machineStateModel)
             {
-                GCode = gCodeLine
+                GCode = gCodeLine,
+                Variables = analyses.Variables,
             };
 
-            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' })));
+            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' }), 100));
             mockComPort.ThrowFileNotFoundException = true;
             MockComPortFactory mockComPortFactory = new MockComPortFactory(mockComPort);
             M620Override sut = new(mockComPortFactory);
@@ -115,10 +117,11 @@ namespace GSendTests.MCodeOverrideTests
 
             MockOverrideContext context = new(machineStateModel)
             {
-                GCode = gCodeLine
+                GCode = gCodeLine,
+                Variables = analyses.Variables,
             };
 
-            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' })));
+            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' }), 100));
             MockComPortFactory mockComPortFactory = new MockComPortFactory(mockComPort);
             M620Override sut = new(mockComPortFactory);
             bool result = sut.Process(context, CancellationToken.None);

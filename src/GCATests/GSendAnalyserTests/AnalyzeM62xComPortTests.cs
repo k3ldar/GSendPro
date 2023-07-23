@@ -35,60 +35,9 @@ namespace GSendTests.GSendAnalyserTests
         }
 
         [TestMethod]
-        public void Analyze_ComPortParameterTimeOutInvalidString_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM1:asdf";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 1 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Invalid COM port parameter, Timeout must be a Number value between 100 and 10000", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortParameterTimeOutInvalidBelowMinimum_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM1:99";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 1 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Invalid COM port parameter, Timeout must be a Number value between 100 and 10000", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortParameterTimeOutInvalidAboveMaximum_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM1:10001";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 1 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Invalid COM port parameter, Timeout must be a Number value between 100 and 10000", analyses.Errors[0]);
-        }
-
-        [TestMethod]
         public void Analyze_ComPortParameterTimeOutValidMax_Success()
         {
-            string gCodeWithVariables = "M620;COM1:10000\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -120,7 +69,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterBaudRateIsString_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:asdf";
+            string gCodeWithVariables = "M620;COM1:asdf";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -137,7 +86,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterBaudRateBelowMinimum_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:0";
+            string gCodeWithVariables = "M620;COM1:0";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -154,7 +103,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityNotRecognised_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:string";
+            string gCodeWithVariables = "M620;COM1:9200:string";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -171,7 +120,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityValid_None_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -187,7 +136,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityValid_Odd_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:odd\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:odd\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -203,7 +152,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityValid_Even_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:EvEn\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:EvEn\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -219,7 +168,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityValid_Mark_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:Mark\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:Mark\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -235,7 +184,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterParityValid_Space_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:sPaCe\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:sPaCe\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -251,7 +200,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBitsInvalid_String_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:string";
+            string gCodeWithVariables = "M620;COM1:9200:None:string";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -268,7 +217,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBitsInvalidNumber_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:4";
+            string gCodeWithVariables = "M620;COM1:9200:None:4";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -285,7 +234,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBits_ValidNumber5_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:5\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:5\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -301,7 +250,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBits_ValidNumber6_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:6\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:6\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -317,7 +266,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBits_ValidNumber7_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:7\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:7\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -333,7 +282,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterDataBits_ValidNumber8_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:8\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:8\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -349,7 +298,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterStopBitsInvalid_String_AddsError()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:8:asdf";
+            string gCodeWithVariables = "M620;COM1:9200:None:8:asdf";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -366,7 +315,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterStopBitsValid_One_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:8:oNe\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:8:oNe\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -382,7 +331,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterStopBitsValid_Two_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:8:two\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:8:two\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -398,7 +347,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortParameterStopBitsValid_OnePointFive_Success()
         {
-            string gCodeWithVariables = "M620;COM1:999:9200:None:8:OnePointFive\nM621;COM1";
+            string gCodeWithVariables = "M620;COM1:9200:None:8:OnePointFive\nM621;COM1";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -626,7 +575,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortBlockingCommand_NoCommandToSendSpecified_AddsError()
         {
-            string gCodeWithVariables = "M620;COM9\nM623;COM9:600:ok\nM621;COM9";
+            string gCodeWithVariables = "M620;COM9\nM623;COM9:ok\nM621;COM9";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
@@ -645,25 +594,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_ComPortBlockingCommand_NoCommandResponseSpecified_AddsError()
         {
-            string gCodeWithVariables = "M620;COM9\nM623;COM9:500\nM621;COM9";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-            Assert.AreEqual(3, analyses.Commands.Count);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Command M623 on line 2 does not contain a response value that can be verified after sending data to a COM port.", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortBlockingCommand_NoTimeoutPeriodSpecified_AddsError()
-        {
             string gCodeWithVariables = "M620;COM9\nM623;COM9\nM621;COM9";
 
             GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
@@ -677,64 +607,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
             Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Command M623 on line 2 does not specify the timeout period.", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_BelowMinimum_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM9\nM623;COM9:-99:0k:data\nM621;COM9";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-            Assert.AreEqual(3, analyses.Commands.Count);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_AboveMaximum_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM9\nM623;COM9:10001:ok:data\nM621;COM9";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-            Assert.AreEqual(3, analyses.Commands.Count);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
-        }
-
-        [TestMethod]
-        public void Analyze_ComPortBlockingCommand_InvalidTimeoutPeriod_String_AddsError()
-        {
-            string gCodeWithVariables = "M620;COM9\nM623;COM9:timeout:ok:data\nM621;COM9";
-
-            GCodeParser subprograms = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = subprograms.Parse(gCodeWithVariables);
-
-            Assert.AreEqual(3, analyses.Commands.Count);
-
-
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
-            sut.Analyze("", analyses);
-
-            Assert.IsNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Command M623 on line 2 contains an invalid timeout period, it must be a number between 100 and 10000.", analyses.Errors[0]);
+            Assert.AreEqual("Command M623 on line 2 does not contain a response value that can be verified after sending data to a COM port.", analyses.Errors[0]);
         }
     }
 }

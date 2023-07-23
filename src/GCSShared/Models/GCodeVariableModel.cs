@@ -44,6 +44,28 @@ namespace GSendShared.Models
 
         public object Value { get; set; }
 
+        public decimal DecimalValue
+        {
+            get
+            {
+                if (!IsDecimal)
+                    throw new InvalidOperationException();
+
+                return Convert.ToDecimal(Value);
+            }
+        }
+
+        public int IntValue
+        {
+            get
+            {
+                if (!Int32.TryParse(Value.ToString(), out int value))
+                    throw new InvalidOperationException();
+
+                return value;
+            }
+        }
+
         public bool IsBoolean { get; set; }
 
         public bool IsDecimal { get; set; }

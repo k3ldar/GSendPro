@@ -27,7 +27,7 @@ namespace GSendCommon.MCodeOverrides
 
                 try
                 {
-                    IComPortModel comPortModel = ValidateParameters.ExtractComPortProperties(comPortComments);
+                    IComPortModel comPortModel = ValidateParameters.ExtractComPortProperties(comPortComments, overrideContext.Variables[Constants.SystemVariableTimeout].IntValue);
                     IComPort comPort = _comPortFactory.CreateComPort(comPortModel);
                     overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortOpened, comPort.Name));
                     overrideContext.SendCommand = false;

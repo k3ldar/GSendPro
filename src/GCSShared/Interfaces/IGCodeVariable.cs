@@ -13,6 +13,10 @@ namespace GSendShared.Abstractions
 
         object Value { get; set; }
 
+        decimal DecimalValue { get; }
+
+        int IntValue { get; }
+
         ushort VariableId { get; set; }
     }
 }

@@ -31,11 +31,6 @@
                     <td>Name of the COM port to be opened, i.e. COM2</td>
                 </tr>
                 <tr>
-                    <td>Timeout</td>
-                    <td>Yes</td>
-                    <td>Timeout period for read/write and opening port.  Default 1000ms, minimum 100ms, maximum 10000ms</td>
-                </tr>
-                <tr>
                     <td>Baud Rate</td>
                     <td>Yes</td>
                     <td>Baud rate for communicating with the COM port, default value is 115200.  Consult device manufacturer for expected baud rate.</td>
@@ -91,7 +86,12 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>An error will be shown if the baud rate is not greater than 0, an error may also occur if the baud rate exceeds the maximum baud rate for the devvice.</p>
+        <p>An error will be shown if the baud rate is not greater than 0, an error may also occur if the baud rate exceeds the maximum baud rate for the device.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <p><a href="/MCodes/M601/">M601</a> can be used to set the timeout period for read/write and opening port.  Default 1000ms, minimum 100ms, maximum 10000ms.</p>
     </div>
 </div>
 <div class="row">

@@ -31,11 +31,6 @@
                     <td>Name of the COM port to be opened, i.e. COM2</td>
                 </tr>
                 <tr>
-                    <td>Timeout</td>
-                    <td>No</td>
-                    <td>Timeout value waiting for a response, between 100 and 10000 milliseconds</td>
-                </tr>
-                <tr>
                     <td>Response</td>
                     <td>No</td>
                     <td>Expected response from the device attached to the COM port.</td>
@@ -71,7 +66,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The timeout period in milliseconds must appear as the second parameter.</p>
+        <p><a href="/MCodes/M601/">M601</a> can be used to set the timeout period for waiting for a valid response.  Default 1000ms, minimum 100ms, maximum 10000ms.</p>
     </div>
 </div>
 <div class="row">
@@ -107,8 +102,8 @@
 <div class="row">
     <div class="col-sm-12">
         <p>The parameters required are the COM port, the time out period in milliseconds, the expected response and the string data to be sent, parameters must be seperated by a colon (:).</p>
-        <code>@Html.ToGCode("M623:COM3:500:ok:data to send")</code>
-        <p>In the above example the port is COM3, the timeout is 500ms, the expected response is "ok" and the data is "data to send"</p>
+        <code>@Html.ToGCode("M623:COM3:ok:data to send")</code>
+        <p>In the above example the port is COM3, the default timeout our 1000ms is used, the expected response is "ok" and the data is "data to send"</p>
     </div>
 </div>
 <div class="row">
@@ -130,8 +125,9 @@
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M620 ;COM9
-M623;COM9:1000:ok:SETPINHIGH:A9
+                @Html.ToGCode(@"M601P1000
+M620 ;COM9
+M623;COM9:ok:SETPINHIGH:A9
 M621;COM9
 .. other g code here
 M30")

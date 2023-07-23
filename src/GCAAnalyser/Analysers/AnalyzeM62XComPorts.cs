@@ -52,7 +52,7 @@ namespace GSendAnalyser.Analysers
                     {
                         try
                         {
-                            _ = ValidateParameters.ExtractComPortProperties(comPortComments);
+                            _ = ValidateParameters.ExtractComPortProperties(comPortComments, gCodeAnalyses.Variables[Constants.SystemVariableTimeout].IntValue);
                         }
                         catch (ArgumentException ae)
                         {
@@ -98,7 +98,7 @@ namespace GSendAnalyser.Analysers
                     {
                         try
                         {
-                            _ = ValidateParameters.ExtractM623Properties(command);
+                            _ = ValidateParameters.ExtractM623Properties(command, codeAnalyses.Variables[Constants.SystemVariableTimeout].IntValue);
                         }
                         catch (ArgumentException ae)
                         {

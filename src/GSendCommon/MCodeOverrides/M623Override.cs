@@ -30,7 +30,7 @@ namespace GSendCommon.MCodeOverrides
 
                 try
                 {
-                    M623Model m623Model = ValidateParameters.ExtractM623Properties(command);
+                    M623Model m623Model = ValidateParameters.ExtractM623Properties(command, overrideContext.Variables[Constants.SystemVariableTimeout].IntValue);
 
                     IComPort comPort = _comPortFactory.GetComPort(m623Model.ComPort);
 
