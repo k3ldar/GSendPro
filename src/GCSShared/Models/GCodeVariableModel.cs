@@ -48,10 +48,10 @@ namespace GSendShared.Models
         {
             get
             {
-                if (!IsDecimal)
-                    throw new InvalidOperationException();
+                if (IsDecimal)
+                    return Convert.ToDecimal(Value.ToString());
 
-                return Convert.ToDecimal(Value);
+                return Decimal.MinValue;
             }
         }
 
@@ -60,7 +60,7 @@ namespace GSendShared.Models
             get
             {
                 if (!Int32.TryParse(Value.ToString(), out int value))
-                    throw new InvalidOperationException();
+                    return Int32.MinValue;
 
                 return value;
             }

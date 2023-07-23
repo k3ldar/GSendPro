@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-using GSendShared.Abstractions;
 using GSendShared;
+using GSendShared.Abstractions;
 
 namespace GSendCommon.MCodeOverrides
 {
@@ -13,7 +9,7 @@ namespace GSendCommon.MCodeOverrides
     {
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            List<IGCodeCommand> m630Commands = overrideContext.GCode.Commands.Where(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(Constants.MCode630)).ToList();
+            List<IGCodeCommand> m630Commands = overrideContext.GCode.Commands.Where(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(Constants.MCode630RunProgram)).ToList();
 
             if (m630Commands.Count == 0)
                 return false;
@@ -25,9 +21,20 @@ namespace GSendCommon.MCodeOverrides
 
                 try
                 {
-                    //overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortDataSent, dataToSend, comPort.Name));
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo(comment);
+
+                    //run the exe here after checking for M630.1 in previous line
+                    if (command.PreviousCommand != null && command.PreviousCommand.Command.Equals(Constants.CharM) && command.PreviousCommand.CommandValue.Equals(Constants.MCode630RunProgramParams))
+                    {
+                        processStartInfo.Arguments = command.PreviousCommand.CommentStripped(true);
+                    }
+
+                    processStartInfo.UseShellExecute = true;
+
+                    System.Diagnostics.Process.Start(processStartInfo);
 
                     overrideContext.SendCommand = false;
+
                     return true;
                 }
                 catch (Exception ae)

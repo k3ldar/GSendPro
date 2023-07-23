@@ -186,6 +186,18 @@
   <data name="AnalyseError19" xml:space="preserve">
     <value>Invalid COM port parameter, baud rate must be greater than zero</value>
   </data>
+  <data name="AnalyseError20" xml:space="preserve">
+    <value>Invalid M630 on line {0} executable not found: {1}</value>
+  </data>
+  <data name="AnalyseError21" xml:space="preserve">
+    <value>Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line.</value>
+  </data>
+  <data name="AnalyseError22" xml:space="preserve">
+    <value>Line {0} contains M630 command but no executable file was found, you must specify an executable file.</value>
+  </data>
+  <data name="AnalyseError23" xml:space="preserve">
+    <value>The only file extensions valid for running a program are .exe, .com and .bat</value>
+  </data>
   <data name="AnalyseError8" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not specify a COM port.</value>
   </data>
@@ -203,6 +215,9 @@
   </data>
   <data name="AnalysesError2" xml:space="preserve">
     <value>M620 command on line {0} attempts to open a COM port "{1}" when it is already open.</value>
+  </data>
+  <data name="AnalysesError24" xml:space="preserve">
+    <value>End program was not found</value>
   </data>
   <data name="AnalysesError3" xml:space="preserve">
     <value>M620 command on line {0} must appear on it's own line without any other commands.</value>

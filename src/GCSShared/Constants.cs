@@ -60,7 +60,8 @@ namespace GSendShared
         public const int MCode621 = 621;
         public const int MCode622 = 622;
         public const int MCode623 = 623;
-        public const int MCode630 = 630;
+        public const int MCode630RunProgram = 630;
+        public const decimal MCode630RunProgramParams = 630.1M;
         public const int MCode650JobName = 650;
 
         public const int MCodeMinTimeoutValue = 100;

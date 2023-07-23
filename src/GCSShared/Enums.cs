@@ -90,6 +90,8 @@
         InvalidJobName = 4096,
 
         PlaySound = 8192,
+
+        RunProgram = 16384,
     }
 
     public enum ServiceType

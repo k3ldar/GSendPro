@@ -115,7 +115,10 @@ namespace GSendEditor
                         Machine2DView.LoadGCode(_gCodeAnalyses);
                     }
 
-                    _lastValidateWarningsAndErrors = DateTime.MaxValue;
+                    if (issues.Count > 0)
+                        _lastValidateWarningsAndErrors = DateTime.Now.AddSeconds(5);
+                    else
+                        _lastValidateWarningsAndErrors = DateTime.MaxValue;
                 }
             }
 

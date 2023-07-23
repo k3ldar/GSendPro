@@ -56,7 +56,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Parameters can be added by using M630.1 M code, </p>
+        <p>Parameters can be added by using M630.1 M code, this must appear in the line previous to M630.</p>
     </div>
 </div>
 <div class="row">
@@ -78,14 +78,11 @@
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M630.1 ;--p
-M630;COM9:SETPINHIGH:A9
-M621;COM9
+                @Html.ToGCode(@"M630.1 ; --p
+M630;c:\program files\myexecutable.exe
 .. other g code here
 M30")
             </code>
-
-            <p>The above example assumes that there is a custom program running on the port which can accept the string data sent.</p>
     </div>
 </div>
 

@@ -268,6 +268,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid M630 on line {0} executable not found: {1}.
+        /// </summary>
+        public static string AnalyseError20 {
+            get {
+                return ResourceManager.GetString("AnalyseError20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line..
+        /// </summary>
+        public static string AnalyseError21 {
+            get {
+                return ResourceManager.GetString("AnalyseError21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630 command but no executable file was found, you must specify an executable file..
+        /// </summary>
+        public static string AnalyseError22 {
+            get {
+                return ResourceManager.GetString("AnalyseError22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The only file extensions valid for running a program are .exe, .com and .bat.
+        /// </summary>
+        public static string AnalyseError23 {
+            get {
+                return ResourceManager.GetString("AnalyseError23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
         /// </summary>
         public static string AnalyseError8 {
@@ -318,6 +354,15 @@ namespace GSend.Language {
         public static string AnalysesError2 {
             get {
                 return ResourceManager.GetString("AnalysesError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End program was not found.
+        /// </summary>
+        public static string AnalysesError24 {
+            get {
+                return ResourceManager.GetString("AnalysesError24", resourceCulture);
             }
         }
         

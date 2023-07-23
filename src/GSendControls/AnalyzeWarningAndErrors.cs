@@ -33,6 +33,11 @@ namespace GSendControls
                 AddMessage(warningsAndErrors, issues, InformationType.Warning, GSend.Language.Resources.ErrorCoolantNotTurnedOff);
             }
 
+            if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram))
+            {
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.AnalysesError24);
+            }
+
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))
             {
                 AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.AnalysesWarningContainsInvalidGCode);
