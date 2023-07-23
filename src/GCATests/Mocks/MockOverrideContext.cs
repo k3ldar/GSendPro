@@ -72,6 +72,8 @@ namespace GSendTests.Mocks
 
         public List<Exception> ExceptionsRaised { get; } = new();
 
+        public IReadOnlyDictionary<ushort, IGCodeVariable> Variables { get; set; }
+
         public List<string> SendInformation = new();
     }
 }

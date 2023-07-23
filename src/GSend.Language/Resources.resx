@@ -267,6 +267,12 @@
   <data name="AnalysesWarningLongComment" xml:space="preserve">
     <value>Comment on line {0} is too long and will be ignored.</value>
   </data>
+  <data name="AnalyzeError20" xml:space="preserve">
+    <value>Invalid M601 on line {0}.  M601 must be followed by a P-code</value>
+  </data>
+  <data name="AnalyzeError21" xml:space="preserve">
+    <value>Invalid M601 on line {0}, the P-code value must be between 100 and 10000.</value>
+  </data>
   <data name="AppMenuEdit" xml:space="preserve">
     <value>&amp;Edit</value>
   </data>
@@ -1704,6 +1710,9 @@
   <data name="WebMenuM600" xml:space="preserve">
     <value>M600 - Pause</value>
   </data>
+  <data name="WebMenuM601" xml:space="preserve">
+    <value>M601 - Timeout</value>
+  </data>
   <data name="WebMenuM605" xml:space="preserve">
     <value>M605 - Play Sound</value>
   </data>
@@ -1718,6 +1727,9 @@
   </data>
   <data name="WebMenuM623" xml:space="preserve">
     <value>M623 - Send blocking command</value>
+  </data>
+  <data name="WebMenuM630" xml:space="preserve">
+    <value>M630 - Run Executable</value>
   </data>
   <data name="WebMenuM650" xml:space="preserve">
     <value>M650 - Job Name</value>

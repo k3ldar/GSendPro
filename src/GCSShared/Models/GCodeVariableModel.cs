@@ -12,16 +12,16 @@ namespace GSendShared.Models
 
         }
 
-        public GCodeVariableModel(ushort variableId, string value, int lineNumber)
+        public GCodeVariableModel(ushort variableId, object value)
         {
             VariableId = variableId;
 
-            if (Decimal.TryParse(value, out decimal decimalValue))
+            if (Decimal.TryParse(value.ToString(), out decimal decimalValue))
             {
                 IsDecimal = true;
                 Value = decimalValue;
             }
-            else if (Boolean.TryParse(value, out bool boolValue))
+            else if (Boolean.TryParse(value.ToString(), out bool boolValue))
             {
                 IsBoolean = true;
                 Value = boolValue;
@@ -30,6 +30,12 @@ namespace GSendShared.Models
             {
                 Value = value;
             }
+
+        }
+
+        public GCodeVariableModel(ushort variableId, string value, int lineNumber)
+            : this (variableId, value)
+        {
 
             LineNumber = lineNumber;
         }

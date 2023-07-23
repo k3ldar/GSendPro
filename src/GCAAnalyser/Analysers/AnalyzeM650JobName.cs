@@ -9,7 +9,7 @@ namespace GSendAnalyser.Analysers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> m650Commands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => c.CommandValue.Equals(Constants.MCode650)).ToList();
+            List<IGCodeCommand> m650Commands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => c.CommandValue.Equals(Constants.MCode650JobName)).ToList();
 
             if (m650Commands.Count == 0)
                 return;

@@ -20,6 +20,7 @@ namespace GSendCommon
         private List<IGCodeOverride> _gCodeOverrides;
         private CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _serviceProvider;
+        private IReadOnlyDictionary<ushort, IGCodeVariable> _codeOverrides;
 
         public GCodeOverrideContext(IServiceProvider serviceProvider, IStaticMethods staticMethods, IGCodeProcessor processor,
             IMachine machine, MachineStateModel machineStateModel, ConcurrentQueue<IGCodeLine> commandQueue)
@@ -64,6 +65,15 @@ namespace GSendCommon
 
         public IJobExecution JobExecution { get; set; }
 
+        public IReadOnlyDictionary<ushort, IGCodeVariable> Variables
+        {
+            get => _codeOverrides ?? new Dictionary<ushort, IGCodeVariable>();
+            
+            set
+            {
+                _codeOverrides = value;
+            }
+        }
 
         public bool ProcessGCodeOverrides(IGCodeLine line)
         {

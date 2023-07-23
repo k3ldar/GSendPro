@@ -44,6 +44,8 @@ namespace GSendShared.Abstractions
 
         IJobExecution JobExecution { get; }
 
+        IReadOnlyDictionary<ushort, IGCodeVariable> Variables { get; }
+
         bool ProcessGCodeOverrides(IGCodeLine line);
 
         bool ProcessMCodeOverrides(IGCodeLine line);

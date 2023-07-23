@@ -53,16 +53,23 @@ namespace GSendShared
         public const char CharVariableBlockStart = '[';
         public const char CharVariableBlockEnd = ']';
 
-        public const int MCode600 = 600;
+        public const int MCode600Pause = 600;
+        public const int MCode601Timeout = 601;
         public const int MCode605 = 605;
         public const int MCode620 = 620;
         public const int MCode621 = 621;
         public const int MCode622 = 622;
         public const int MCode623 = 623;
-        public const int MCode650 = 650;
+        public const int MCode630 = 630;
+        public const int MCode650JobName = 650;
 
-        public const int MCode623MinTimeoutValue = 100;
-        public const int MCode623MaxTimeoutValue = 10000;
+        public const int MCodeMinTimeoutValue = 100;
+        public const int MCodeMaxTimeoutValue = 10000;
+
+
+        public const int SystemVariableCount = 1;
+        public const ushort SystemVariableTimeout = 1;
+        public const ushort SystemVariableMax = 99;
 
 
         public const string HomeWebsite = "https://www.gsend.pro/";

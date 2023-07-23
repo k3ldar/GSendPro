@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode works in a similar manner to the G4 dwell command, it allows a pause between 1ms and 2000ms.</p>
+        <p>@Model.MCode sets the timeout value for custom M codes, it allows a timeout between 100ms and 10000ms.</p>
     </div>
 </div>
 
@@ -17,7 +17,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode must be immediately followed by a P-code, the P code must have a value between 1 and 2000 which indicates the number of milliseconds to pause for.</p>
+        <p>@Model.MCode must be immediately followed by a P-code, the P code must have a value between 100 and 10000 which indicates the number of milliseconds to set for timeout.</p>
     </div>
 </div>
 
@@ -28,13 +28,18 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample inserts a pause for half a second.</p>
+        <p>The following example sets a timeout to 1000ms (1 second) when sending commands to a COM port.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
         <code>
-            @Html.ToGCode("M600P500 ; pause for 500ms")
+            @Html.ToGCode(@"M601P1000
+            M620 ;COM9
+            M622;COM9:SETPINHIGH:A9
+            M621;COM9
+            .. other g code here
+            M30")
         </code>
     </div>
 </div>

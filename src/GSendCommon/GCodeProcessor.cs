@@ -416,6 +416,10 @@ namespace GSendCommon
 
             _commandsToSend = gCodeAnalyses.AllLines(out _lineCount);
             _machineStateModel.TotalLines = _lineCount;
+
+            if (_overrideContext is GCodeOverrideContext overrideContext)
+                overrideContext.Variables = gCodeAnalyses.Variables;
+
             return true;
         }
 

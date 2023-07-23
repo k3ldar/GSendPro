@@ -135,7 +135,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.AreEqual(2 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.IsTrue(analyses.Variables.ContainsKey(100));
             Assert.AreEqual(15.2m, analyses.Variables[100].Value);
             Assert.IsTrue(analyses.Variables[100].IsDecimal);
@@ -157,7 +157,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.AreEqual(2 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.IsTrue(analyses.Variables.ContainsKey(100));
             Assert.AreEqual(15.2m, analyses.Variables[100].Value);
             Assert.IsTrue(analyses.Variables[100].IsDecimal);
@@ -185,7 +185,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.AreEqual(2 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.IsTrue(analyses.Variables.ContainsKey(100));
             Assert.AreEqual(15.2m, analyses.Variables[100].Value);
             Assert.IsTrue(analyses.Variables[100].IsDecimal);
@@ -212,7 +212,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(3, analyses.Variables.Count);
+            Assert.AreEqual(3 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.IsTrue(analyses.Variables.ContainsKey(100));
             Assert.AreEqual(15.2m, analyses.Variables[100].Value);
             Assert.IsTrue(analyses.Variables[100].IsDecimal);
@@ -259,7 +259,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(0, analyses.Variables.Count);
+            Assert.AreEqual(0 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.AreEqual(1, analyses.Errors.Count);
             Assert.IsTrue(analyses.Commands[0].Attributes.HasFlag(CommandAttributes.SpindleSpeedError));
             Assert.AreEqual("Invalid variable on line 1, variable must be enclosed by square brackets (i.e. [#234])", analyses.Errors[0]);
@@ -273,7 +273,7 @@ namespace GSendTests.GSendAnalyserTests
             GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
 
-            Assert.AreEqual(2, analyses.Variables.Count);
+            Assert.AreEqual(2 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.AreEqual(0, analyses.Errors.Count);
         }
 
@@ -294,7 +294,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands.Count);
             Assert.AreEqual(CommandAttributes.SpindleSpeedError | CommandAttributes.MovementZUp | CommandAttributes.UseRapidRate | CommandAttributes.ToolChange | CommandAttributes.SubProgram, analyses.Commands[0].Attributes);
             Assert.IsNotNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Variables.Count);
+            Assert.AreEqual(1 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.AreEqual(0, analyses.Errors.Count);
         }
 
@@ -315,7 +315,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands.Count);
             Assert.AreEqual(CommandAttributes.SpindleSpeedError | CommandAttributes.MovementZUp | CommandAttributes.UseRapidRate | CommandAttributes.ToolChange | CommandAttributes.SubProgram, analyses.Commands[0].Attributes);
             Assert.IsNotNull(analyses.Commands[0].SubAnalyses);
-            Assert.AreEqual(1, analyses.Variables.Count);
+            Assert.AreEqual(1 + Constants.SystemVariableCount, analyses.Variables.Count);
             Assert.AreEqual(1, analyses.Errors.Count);
             Assert.AreEqual("Invalid variable on line 2, duplicate variable #100 declared.", analyses.Errors[0]);
         }
@@ -404,6 +404,33 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands[1].LineNumber);
             Assert.AreEqual('G', analyses.Commands[1].Command);
             Assert.AreEqual("17", analyses.Commands[1].CommandValueString);
+        }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void Parse_GCodeContainsMantissa_CorrectlyParsed()
+        {
+            string gCodeWithVariables = "G630.1;/c --d -a\nG630; myexe.exe";
+
+            GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(2, analyses.Commands.Count);
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+
+            Assert.AreEqual('G', analyses.Commands[0].Command);
+            Assert.AreEqual(630.1m, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(";/c --d -a", analyses.Commands[0].Comment);
+            Assert.AreEqual("630.1", analyses.Commands[0].CommandValueString);
+            Assert.AreEqual(1, analyses.Commands[0].LineNumber);
+            Assert.AreEqual(CommandAttributes.None, analyses.Commands[0].Attributes);
+
+            Assert.AreEqual('G', analyses.Commands[1].Command);
+            Assert.AreEqual(630m, analyses.Commands[1].CommandValue);
+            Assert.AreEqual("; myexe.exe", analyses.Commands[1].Comment);
+            Assert.AreEqual("630", analyses.Commands[1].CommandValueString);
+            Assert.AreEqual(2, analyses.Commands[1].LineNumber);
+            Assert.AreEqual(CommandAttributes.None, analyses.Commands[1].Attributes);
         }
     }
 }

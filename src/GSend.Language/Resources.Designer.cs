@@ -511,6 +511,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid M601 on line {0}.  M601 must be followed by a P-code.
+        /// </summary>
+        public static string AnalyzeError20 {
+            get {
+                return ResourceManager.GetString("AnalyzeError20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid M601 on line {0}, the P-code value must be between 100 and 10000..
+        /// </summary>
+        public static string AnalyzeError21 {
+            get {
+                return ResourceManager.GetString("AnalyzeError21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Edit.
         /// </summary>
         public static string AppMenuEdit {
@@ -4822,6 +4840,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M601 - Timeout.
+        /// </summary>
+        public static string WebMenuM601 {
+            get {
+                return ResourceManager.GetString("WebMenuM601", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M605 - Play Sound.
         /// </summary>
         public static string WebMenuM605 {
@@ -4863,6 +4890,15 @@ namespace GSend.Language {
         public static string WebMenuM623 {
             get {
                 return ResourceManager.GetString("WebMenuM623", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M630 - Run Executable.
+        /// </summary>
+        public static string WebMenuM630 {
+            get {
+                return ResourceManager.GetString("WebMenuM630", resourceCulture);
             }
         }
         

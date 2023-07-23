@@ -1,0 +1,25 @@
+﻿@model gsend.pro.Models.MCodeModel
+
+@if(Model.SeeAlso.Length > 0)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>@GSend.Language.Resources.WebMenuSeeAlso</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 seeAlso">
+            <ul>
+                @{
+                    foreach (int seeAlso in Model.SeeAlso)
+                    {
+                        System.Resources.ResourceManager resManager = GSend.Language.Resources.ResourceManager;
+                        string menuData = resManager.GetString($"WebMenuM{seeAlso}", GSend.Language.Resources.Culture);
+                        string uri = $"/MCodes/M{seeAlso}/";
+                        <li><a href="@uri">@menuData</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+}

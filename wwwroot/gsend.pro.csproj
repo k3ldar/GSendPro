@@ -52,10 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\src\GSend.Language\GSend.Language.csproj" />
   </ItemGroup>
 

@@ -27,8 +27,8 @@ namespace GSendShared.Helpers
 
             if (values.Length > 1)
             {
-                if (!Int32.TryParse(values[1], out timeOut) || timeOut < MCode623MinTimeoutValue || timeOut > MCode623MaxTimeoutValue)
-                    throw new ArgumentException(String.Format(AnalyseError13, ParameterTimeoutValue, ParameterNumber, MCode623MinTimeoutValue, MCode623MaxTimeoutValue));
+                if (!Int32.TryParse(values[1], out timeOut) || timeOut < MCodeMinTimeoutValue || timeOut > MCodeMaxTimeoutValue)
+                    throw new ArgumentException(String.Format(AnalyseError13, ParameterTimeoutValue, ParameterNumber, MCodeMinTimeoutValue, MCodeMaxTimeoutValue));
             }
 
             if (values.Length > 2 && !Int32.TryParse(values[2], out baudRate))
@@ -100,11 +100,11 @@ namespace GSendShared.Helpers
             }
 
             if (!Int32.TryParse(values[1], out int timeoutPeriod) ||
-                timeoutPeriod < Constants.MCode623MinTimeoutValue ||
-                timeoutPeriod > Constants.MCode623MaxTimeoutValue)
+                timeoutPeriod < Constants.MCodeMinTimeoutValue ||
+                timeoutPeriod > Constants.MCodeMaxTimeoutValue)
             {
                 throw new ArgumentException(String.Format(AnalyseError12, command.Command, command.CommandValueString, command.LineNumber,
-                    Constants.MCode623MinTimeoutValue, Constants.MCode623MaxTimeoutValue));
+                    Constants.MCodeMinTimeoutValue, Constants.MCodeMaxTimeoutValue));
             }
 
             string commandToSend = values[3];

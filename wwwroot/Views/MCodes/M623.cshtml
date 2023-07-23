@@ -1,11 +1,12 @@
-﻿<div class="row">
+﻿@model gsend.pro.Models.MCodeModel
+<div class="row">
     <div class="col-sm-12">
-        <h3>@GSend.Language.Resources.WebMenuM623</h3>
+        <h3>@Model.Description</h3>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>M623 is used to send a command to an open COM port and block any commands from running until a response is received.</p>
+        <p>@Model.MCode is used to send a command to an open COM port and block any commands from running until a response is received.</p>
     </div>
 </div>
 <div class="row">
@@ -60,7 +61,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Each M623 command must be on a line with no other commands.</p>
+        <p>Each @Model.MCode command must be on a line with no other commands.</p>
     </div>
 </div>
 <div class="row">
@@ -90,7 +91,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>An error will be shown if the parameters of the M623 command are not correctly formatted.</p>
+        <p>An error will be shown if the parameters of the @Model.MCode command are not correctly formatted.</p>
     </div>
 </div>
 <div class="row">
@@ -139,3 +140,5 @@ M30")
             <p>The above example assumes that there is a custom program running on the port which can accept the command and provide the expected response.</p>
     </div>
 </div>
+
+@await Html.PartialAsync("~/Views/MCodes/_seeAlso.cshtml", Model)

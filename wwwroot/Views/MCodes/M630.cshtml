@@ -1,12 +1,12 @@
 ﻿@model gsend.pro.Models.MCodeModel
 <div class="row">
     <div class="col-sm-12">
-        <h3>@Model.Description</h3>
+        <h3>@GSend.Language.Resources.WebMenuM630</h3>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode is used to close a COM port that was opened using <a href="/MCodes/M620/">M620</a>.</p>
+        <p>@Model.MCode is used to run an executable file without blocking any commands.</p>
     </div>
 </div>
 <div class="row">
@@ -26,9 +26,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>COM Port</td>
+                    <td>Executable</td>
                     <td>No</td>
-                    <td>Name of the COM port to be opened, i.e. COM2</td>
+                    <td>Name of the .exe executable to be run</td>
                 </tr>
             </tbody>
         </table>
@@ -41,7 +41,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>A COM port can be openend and closed as many times as required.</p>
+        <p></p>
     </div>
 </div>
 <div class="row">
@@ -51,12 +51,12 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The name of the COM port must appear as a comment after the M620 command but on the same line.</p>
+        <p>An error will be shown if the executable file is not found.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>A error will be shown if the COM port does not exist or has not been opened.</p>
+        <p>Parameters can be added by using M630.1 M code, </p>
     </div>
 </div>
 <div class="row">
@@ -72,20 +72,20 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample opens a COM port, sends a non blocking command and then closes the COM port.</p>
+        <p>The following sample runs an executable, with parameters.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M620 ;COM9
-M622;COM9:SETPINHIGH:A9
+                @Html.ToGCode(@"M630.1 ;--p
+M630;COM9:SETPINHIGH:A9
 M621;COM9
 .. other g code here
 M30")
             </code>
 
-            <p>The above example assumes that there is a custom program running on the port which can accept the <a href="/MCodes/M622">M622</a> command</p>
+            <p>The above example assumes that there is a custom program running on the port which can accept the string data sent.</p>
     </div>
 </div>
 

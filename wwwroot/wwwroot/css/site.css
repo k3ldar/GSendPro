@@ -242,13 +242,15 @@ body {
 
 .bc {
     padding: 2px 0px 2px 0px;
-    height: 30px !important;
+    height: 20px !important;
     display: contents;
 }
 
     .bc ul {
         list-style: none;
         padding-left: 6px;
+        padding-top: 6px;
+        margin-bottom: 8px;
     }
 
         .bc ul li {
@@ -395,3 +397,27 @@ body {
 h3 {
     padding-top: 12px;
 }
+
+
+.seeAlso {
+    padding: 2px 0px 2px 0px;
+    display: contents;
+}
+
+    .seeAlso ul {
+        list-style: none;
+        padding-left: 6px;
+        padding-top: 6px;
+        margin-bottom: 8px;
+    }
+
+        .seeAlso ul li {
+            display: block;
+            font-size: 12px;
+            padding: 4px 0 4px 0;
+        }
+
+            .seeAlso ul li a {
+                color: #0275d8;
+                text-decoration: none;
+            }

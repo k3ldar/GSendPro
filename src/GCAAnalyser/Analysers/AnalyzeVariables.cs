@@ -90,7 +90,7 @@ namespace GSendAnalyser.Analysers
                 }
 
                 List<ushort> unusedVariables = gCodeAnalyses.Variables.Keys
-                    .Where(k => !declaredVariables.ContainsKey(k) || (declaredVariables.ContainsKey(k) && declaredVariables[k].Equals(0))).ToList();
+                    .Where(k => k > Constants.SystemVariableMax && !declaredVariables.ContainsKey(k) || (declaredVariables.ContainsKey(k) && declaredVariables[k].Equals(0))).ToList();
 
                 foreach (ushort id in unusedVariables)
                 {

@@ -1,11 +1,12 @@
-﻿<div class="row">
+﻿@model gsend.pro.Models.MCodeModel
+<div class="row">
     <div class="col-sm-12">
-        <h3>@GSend.Language.Resources.WebMenuM650</h3>
+        <h3>@Model.Description</h3>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>M650 is used to specify the <a href="/Home/JobProfile">job profile</a> name used when executing the g-code.</p>
+        <p>@Model.MCode is used to specify the <a href="/Home/JobProfile">job profile</a> name used when executing the g-code.</p>
     </div>
 </div>
 
@@ -16,12 +17,12 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Only one occurance of M650 should appear in the g-code, adding this m-code more than once will display an error.</p>
+        <p>Only one occurance of @Model.MCode should appear in the g-code, adding this m-code more than once will display an error.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Each M650 command must be on a line with no other commands.</p>
+        <p>Each @Model.MCode command must be on a line with no other commands.</p>
     </div>
 </div>
 <div class="row">
@@ -54,3 +55,5 @@
         </code>
     </div>
 </div>
+
+@await Html.PartialAsync("~/Views/MCodes/_seeAlso.cshtml", Model)

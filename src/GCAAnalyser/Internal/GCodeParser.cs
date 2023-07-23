@@ -49,10 +49,15 @@ namespace GSendAnalyser.Internal
         private IGCodeAnalyses InternalParseGCode(byte[] gCodeCommands, int recursionDepth)
         {
             GCodeAnalyses Result = new(_pluginClassesService);
-            return InternalParseGCode(Result, gCodeCommands, recursionDepth);
+            Result = InternalParseGCode(Result, gCodeCommands, recursionDepth);
+
+            // system variables
+            Result.AddVariable(new GCodeVariableModel(Constants.SystemVariableTimeout, 1000));
+
+            return Result;
         }
 
-        private IGCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands, int recursionDepth)
+        private GCodeAnalyses InternalParseGCode(GCodeAnalyses Result, byte[] gCodeCommands, int recursionDepth)
         {
             if (recursionDepth > Constants.MaxSubCommandRecursionDepth)
             {
