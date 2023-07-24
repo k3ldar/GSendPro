@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode is used to send a command to an open COM port without blocking any commands and without waiting for a response.</p>
+        <p>@Model.MCode is used to run an executable file and block any commands from running until a response is received and validated.</p>
     </div>
 </div>
 <div class="row">
@@ -26,14 +26,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>COM Port</td>
+                    <td>Executable</td>
                     <td>No</td>
-                    <td>Name of the COM port to be opened, i.e. COM2</td>
-                </tr>
-                <tr>
-                    <td>Command</td>
-                    <td>No</td>
-                    <td>Data to be sent to the COM port</td>
+                    <td>Name of the .exe executable to be run</td>
                 </tr>
             </tbody>
         </table>
@@ -46,7 +41,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Data is sent to an open COM port as a string, it is up to the device connected to interperate the data and provide a response.</p>
+        <p></p>
     </div>
 </div>
 <div class="row">
@@ -56,22 +51,17 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The name of the COM port must appear as the first parameter within the comment but on the same line.</p>
+        <p>An error will be shown if the executable file is not found.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>An error will be shown if the COM port does not exist or has not been opened.</p>
+        <p>Parameters can be added by using M631.1 M code, this must appear in the line previous to @Model.MCode.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>An error will be shown if the parameters of the @Model.MCode command are not correctly formatted.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <p>The parameters required are the COM port and the string data to be sent, parameters must be seperated by a colon (:).</p>
+        <p>Expected result can be set using M631.2, this must appear in the line previous to the M631(.x) or on the line after the @Model.MCode.</p>
     </div>
 </div>
 <div class="row">
@@ -87,20 +77,18 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample opens a COM port, sends a non blocking command and then closes the COM port, in this example the string "SETPINHIGH:A9" is the data sent to the com port.</p>
+        <p>The following sample runs an executable, with parameters and blocks until a response is received, in this instance the response received should be 0 (zero).</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M620 ;COM9
-M622;COM9:SETPINHIGH:A9
-M621;COM9
+                @Html.ToGCode(@"M631.1 ; --p
+M631.2P0
+M631;c:\program files\myexecutable.exe
 .. other g code here
 M30")
             </code>
-
-            <p>The above example assumes that there is a custom program running on the port which can accept the string data sent.</p>
     </div>
 </div>
 

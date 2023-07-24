@@ -11,10 +11,10 @@
         <div class="col-sm-12 seeAlso">
             <ul>
                 @{
-                    foreach (int seeAlso in Model.SeeAlso)
+                    foreach (decimal seeAlso in Model.SeeAlso)
                     {
                         System.Resources.ResourceManager resManager = GSend.Language.Resources.ResourceManager;
-                        string menuData = resManager.GetString($"WebMenuM{seeAlso}", GSend.Language.Resources.Culture);
+                        string menuData = resManager.GetString($"WebMenuM{seeAlso.ToString().Replace(".", "_")}", GSend.Language.Resources.Culture);
                         string uri = $"/MCodes/M{seeAlso}/";
                         <li><a href="@uri">@menuData</a></li>
                     }

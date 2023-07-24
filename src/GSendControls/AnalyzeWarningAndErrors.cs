@@ -45,12 +45,12 @@ namespace GSendControls
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.MultipleJobNames))
             {
-                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M650MultipleJobNamesSpecified);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M602MultipleJobNamesSpecified);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidJobName))
             {
-                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M650InvalidJobNameSpecified);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.M602InvalidJobNameSpecified);
             }
 
             if (gCodeAnalyses.SubProgramCount > 0)

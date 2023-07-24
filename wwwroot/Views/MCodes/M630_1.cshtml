@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode is used to send a command to an open COM port without blocking any commands and without waiting for a response.</p>
+        <p>@Model.MCode is used when parameters are required when running an executable using M630.</p>
     </div>
 </div>
 <div class="row">
@@ -26,14 +26,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>COM Port</td>
+                    <td>Parameters</td>
                     <td>No</td>
-                    <td>Name of the COM port to be opened, i.e. COM2</td>
-                </tr>
-                <tr>
-                    <td>Command</td>
-                    <td>No</td>
-                    <td>Data to be sent to the COM port</td>
+                    <td>List of all parameters required.</td>
                 </tr>
             </tbody>
         </table>
@@ -46,7 +41,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Data is sent to an open COM port as a string, it is up to the device connected to interperate the data and provide a response.</p>
+        <p></p>
     </div>
 </div>
 <div class="row">
@@ -56,22 +51,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The name of the COM port must appear as the first parameter within the comment but on the same line.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <p>An error will be shown if the COM port does not exist or has not been opened.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <p>An error will be shown if the parameters of the @Model.MCode command are not correctly formatted.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <p>The parameters required are the COM port and the string data to be sent, parameters must be seperated by a colon (:).</p>
+        <p>An error will be shown if there are no parameters specified.</p>
     </div>
 </div>
 <div class="row">
@@ -87,20 +67,17 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample opens a COM port, sends a non blocking command and then closes the COM port, in this example the string "SETPINHIGH:A9" is the data sent to the com port.</p>
+        <p>The following sample runs an executable, with parameters. In this instance the parameters "--p" are passed when running the executable.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M620 ;COM9
-M622;COM9:SETPINHIGH:A9
-M621;COM9
+                @Html.ToGCode(@"M630.1 ; --p
+M630;c:\program files\myexecutable.exe
 .. other g code here
 M30")
             </code>
-
-            <p>The above example assumes that there is a custom program running on the port which can accept the string data sent.</p>
     </div>
 </div>
 

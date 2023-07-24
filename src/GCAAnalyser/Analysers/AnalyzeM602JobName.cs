@@ -3,26 +3,26 @@ using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers
 {
-    public sealed class AnalyzeM650JobName : IGCodeAnalyzer
+    public sealed class AnalyzeM602JobName : IGCodeAnalyzer
     {
         public int Order => int.MinValue;
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            List<IGCodeCommand> m650Commands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => c.CommandValue.Equals(Constants.MCode650JobName)).ToList();
+            List<IGCodeCommand> m602Commands = gCodeAnalyses.AllSpecificCommands(Constants.CharM).Where(c => c.CommandValue.Equals(Constants.MCode602JobName)).ToList();
 
-            if (m650Commands.Count == 0)
+            if (m602Commands.Count == 0)
                 return;
 
-            if (m650Commands.Count == 1)
+            if (m602Commands.Count == 1)
             {
-                if (String.IsNullOrEmpty(m650Commands[0].Comment))
+                if (String.IsNullOrEmpty(m602Commands[0].Comment))
                 {
                     gCodeAnalyses.AddOptions(AnalysesOptions.InvalidJobName);
                     return;
                 }
 
-                gCodeAnalyses.JobName = m650Commands[0].CommentStripped(false);
+                gCodeAnalyses.JobName = m602Commands[0].CommentStripped(false);
                 return;
             }
 

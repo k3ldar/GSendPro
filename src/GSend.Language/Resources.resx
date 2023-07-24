@@ -912,11 +912,11 @@
   <data name="M605InvalidSoundFileEmpty" xml:space="preserve">
     <value>Line {0} contains M605 command but no sound file was found, you must specify a sound file.</value>
   </data>
-  <data name="M650InvalidJobNameSpecified" xml:space="preserve">
-    <value>M650 must specify the job name as a comment, i.e. M650 (Job Name)</value>
+  <data name="M602InvalidJobNameSpecified" xml:space="preserve">
+    <value>M602 must specify the job name as a comment, i.e. M602 (Job Name)</value>
   </data>
-  <data name="M650MultipleJobNamesSpecified" xml:space="preserve">
-    <value>M650 can only be included once within a GCode file</value>
+  <data name="M602MultipleJobNamesSpecified" xml:space="preserve">
+    <value>M602 can only be included once within a GCode file</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
@@ -1710,6 +1710,45 @@
   <data name="WarnLayerHeight" xml:space="preserve">
     <value>Warn if layer height is more than</value>
   </data>
+  <data name="WebDescM600" xml:space="preserve">
+    <value>Pause processing of commands for upto 2 seconds.</value>
+  </data>
+  <data name="WebDescM601" xml:space="preserve">
+    <value>Sets the timeout value required in some custom M Codes.</value>
+  </data>
+  <data name="WebDescM605" xml:space="preserve">
+    <value>Play a sound.</value>
+  </data>
+  <data name="WebDescM620" xml:space="preserve">
+    <value>Open a COM port.</value>
+  </data>
+  <data name="WebDescM621" xml:space="preserve">
+    <value>Closes a COM port.</value>
+  </data>
+  <data name="WebDescM622" xml:space="preserve">
+    <value>Sends a command to an open COM port and does not wait for a response.</value>
+  </data>
+  <data name="WebDescM623" xml:space="preserve">
+    <value>Sends a command to an open COM port and blocks all processing until a valid response is received.</value>
+  </data>
+  <data name="WebDescM630" xml:space="preserve">
+    <value>Runs an executable file without waiting for a response.</value>
+  </data>
+  <data name="WebDescM630_1" xml:space="preserve">
+    <value>Provides parameters that can be sent with an M630 code.</value>
+  </data>
+  <data name="WebDescM631" xml:space="preserve">
+    <value>Runs an executable file and block any commands from being sent until a response has been received and validated.</value>
+  </data>
+  <data name="WebDescM631_1" xml:space="preserve">
+    <value>Provides parameters that can be sent with an M631 code.</value>
+  </data>
+  <data name="WebDescM631_2" xml:space="preserve">
+    <value>Provides a response code that is validated against M631 code.</value>
+  </data>
+  <data name="WebDescM602" xml:space="preserve">
+    <value>Add the job profile name to be used when running the code</value>
+  </data>
   <data name="WebMenuEditor" xml:space="preserve">
     <value>GCode Editor</value>
   </data>
@@ -1746,8 +1785,23 @@
   <data name="WebMenuM630" xml:space="preserve">
     <value>M630 - Run Executable</value>
   </data>
-  <data name="WebMenuM650" xml:space="preserve">
-    <value>M650 - Job Name</value>
+  <data name="WebMenuM630_1" xml:space="preserve">
+    <value>M630.1 Run Executable Parameter</value>
+  </data>
+  <data name="WebMenuM631" xml:space="preserve">
+    <value>M631 - Run Executable (Blocking)</value>
+  </data>
+  <data name="WebMenuM631_1" xml:space="preserve">
+    <value>M631.1 Run Executable Parameter</value>
+  </data>
+  <data name="WebMenuM631_2" xml:space="preserve">
+    <value>M631.2 Run Executable Response</value>
+  </data>
+  <data name="WebMenuM602" xml:space="preserve">
+    <value>M602 - Job Name</value>
+  </data>
+  <data name="WebMenuMCode" xml:space="preserve">
+    <value>M Code</value>
   </data>
   <data name="WebMenuMCodes" xml:space="preserve">
     <value>M Codes</value>

@@ -6,7 +6,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>@Model.MCode is used to run an executable file without blocking any commands.</p>
+        <p>@Model.MCode is used when specifying a valid return code, when running an executable using M631.</p>
     </div>
 </div>
 <div class="row">
@@ -26,9 +26,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Executable</td>
-                    <td>No</td>
-                    <td>Name of the .exe executable to be run</td>
+                    <td>None</td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -46,30 +46,24 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Each @Model.MCode command must be on a line with no other commands.</p>
+        <p>Each @Model.MCode command must be on a line with only a P code on the same line.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>An error will be shown if the executable file is not found.</p>
+        <p>@Model.MCode must have a P code straight after it and the value of the P code represents the return value after running the executable file.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>Parameters can be added by using M630.1 M code, this must appear in the line previous to @Model.MCode.</p>
+        <p>An error will be shown if there are no P code is present.</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p><a href="/MCodes/M601/">M601</a> can be used to set the timeout period for waiting for a valid response.  Default 1000ms, minimum 100ms, maximum 10000ms.</p>
+        <p>An error will be shown if the @Model.MCode does not precede either M630 or M630.1</p>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <p><a href="/Home/Variables">Variables</a> can be used to ensure the line limit of 256 characters is not breached</p>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-sm-12">
         <h3>@GSend.Language.Resources.WebMenuExample</h3>
@@ -77,14 +71,15 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <p>The following sample runs an executable, with parameters.</p>
+        <p>The following sample runs an executable, with parameters. In this instance the parameters "--p" are passed when running the executable and the executable exit code should be 0 (zero).</p>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
             <code>
-                @Html.ToGCode(@"M630.1 ; --p
-M630;c:\program files\myexecutable.exe
+                @Html.ToGCode(@"M631.2P0
+M631.1 ; --p
+M631;c:\program files\myexecutable.exe
 .. other g code here
 M30")
             </code>

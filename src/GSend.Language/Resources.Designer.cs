@@ -2419,6 +2419,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M602 must specify the job name as a comment, i.e. M602 (Job Name).
+        /// </summary>
+        public static string M602InvalidJobNameSpecified {
+            get {
+                return ResourceManager.GetString("M602InvalidJobNameSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M602 can only be included once within a GCode file.
+        /// </summary>
+        public static string M602MultipleJobNamesSpecified {
+            get {
+                return ResourceManager.GetString("M602MultipleJobNamesSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Line {0} contains multiple M605 commands, only 1 M605 command is allowed per line..
         /// </summary>
         public static string M605InvalidMultipleLines {
@@ -2442,24 +2460,6 @@ namespace GSend.Language {
         public static string M605InvalidSoundFileEmpty {
             get {
                 return ResourceManager.GetString("M605InvalidSoundFileEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M650 must specify the job name as a comment, i.e. M650 (Job Name).
-        /// </summary>
-        public static string M650InvalidJobNameSpecified {
-            get {
-                return ResourceManager.GetString("M650InvalidJobNameSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M650 can only be included once within a GCode file.
-        /// </summary>
-        public static string M650MultipleJobNamesSpecified {
-            get {
-                return ResourceManager.GetString("M650MultipleJobNamesSpecified", resourceCulture);
             }
         }
         
@@ -4840,6 +4840,123 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause processing of commands for upto 2 seconds..
+        /// </summary>
+        public static string WebDescM600 {
+            get {
+                return ResourceManager.GetString("WebDescM600", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the timeout value required in some custom M Codes..
+        /// </summary>
+        public static string WebDescM601 {
+            get {
+                return ResourceManager.GetString("WebDescM601", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add the job profile name to be used when running the code.
+        /// </summary>
+        public static string WebDescM602 {
+            get {
+                return ResourceManager.GetString("WebDescM602", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play a sound..
+        /// </summary>
+        public static string WebDescM605 {
+            get {
+                return ResourceManager.GetString("WebDescM605", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a COM port..
+        /// </summary>
+        public static string WebDescM620 {
+            get {
+                return ResourceManager.GetString("WebDescM620", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Closes a COM port..
+        /// </summary>
+        public static string WebDescM621 {
+            get {
+                return ResourceManager.GetString("WebDescM621", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sends a command to an open COM port and does not wait for a response..
+        /// </summary>
+        public static string WebDescM622 {
+            get {
+                return ResourceManager.GetString("WebDescM622", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sends a command to an open COM port and blocks all processing until a valid response is received..
+        /// </summary>
+        public static string WebDescM623 {
+            get {
+                return ResourceManager.GetString("WebDescM623", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Runs an executable file without waiting for a response..
+        /// </summary>
+        public static string WebDescM630 {
+            get {
+                return ResourceManager.GetString("WebDescM630", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provides parameters that can be sent with an M630 code..
+        /// </summary>
+        public static string WebDescM630_1 {
+            get {
+                return ResourceManager.GetString("WebDescM630_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Runs an executable file and block any commands from being sent until a response has been received and validated..
+        /// </summary>
+        public static string WebDescM631 {
+            get {
+                return ResourceManager.GetString("WebDescM631", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provides parameters that can be sent with an M631 code..
+        /// </summary>
+        public static string WebDescM631_1 {
+            get {
+                return ResourceManager.GetString("WebDescM631_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provides a response code that is validated against M631 code..
+        /// </summary>
+        public static string WebDescM631_2 {
+            get {
+                return ResourceManager.GetString("WebDescM631_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GCode Editor.
         /// </summary>
         public static string WebMenuEditor {
@@ -4890,6 +5007,15 @@ namespace GSend.Language {
         public static string WebMenuM601 {
             get {
                 return ResourceManager.GetString("WebMenuM601", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M602 - Job Name.
+        /// </summary>
+        public static string WebMenuM602 {
+            get {
+                return ResourceManager.GetString("WebMenuM602", resourceCulture);
             }
         }
         
@@ -4948,11 +5074,47 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M650 - Job Name.
+        ///   Looks up a localized string similar to M630.1 Run Executable Parameter.
         /// </summary>
-        public static string WebMenuM650 {
+        public static string WebMenuM630_1 {
             get {
-                return ResourceManager.GetString("WebMenuM650", resourceCulture);
+                return ResourceManager.GetString("WebMenuM630_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M631 - Run Executable (Blocking).
+        /// </summary>
+        public static string WebMenuM631 {
+            get {
+                return ResourceManager.GetString("WebMenuM631", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M631.1 Run Executable Parameter.
+        /// </summary>
+        public static string WebMenuM631_1 {
+            get {
+                return ResourceManager.GetString("WebMenuM631_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M631.2 Run Executable Response.
+        /// </summary>
+        public static string WebMenuM631_2 {
+            get {
+                return ResourceManager.GetString("WebMenuM631_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M Code.
+        /// </summary>
+        public static string WebMenuMCode {
+            get {
+                return ResourceManager.GetString("WebMenuMCode", resourceCulture);
             }
         }
         

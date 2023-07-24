@@ -1,4 +1,5 @@
-﻿<div class="row">
+﻿@model gsend.pro.Models.MCodeIndex
+<div class="row">
     <div class="col-sm-12">
         <h3>@GSend.Language.Resources.WebMenuMCodes</h3>
     </div>
@@ -21,28 +22,24 @@
 <div class="row">
     <div class="col-sm-12">
         <table class="table">
-            <thead><tr><th>M Code</th><th>Description</th></tr></thead>
+            <thead><tr><th>@GSend.Language.Resources.WebMenuMCode</th><th>@GSend.Language.Resources.Description</th></tr></thead>
             <tbody>
-                <tr><td><a href="/MCodes/M600/">M600</a></td><td>Pause processing of commands for upto 2 seconds.  An M600 must be immediately followed by a P value that indicates the number of milliseconds to pause for.</td></tr>
-                <tr><td><a href="/MCodes/M601/">M601</a></td><td>Sets the timeout value required in some custom M Codes.</td></tr>
-                <tr><td><a href="/MCodes/M605/">M605</a></td><td>Play a sound.</td></tr>
-                <tr><td><a href="/MCodes/M620/">M620</a></td><td>Open a COM port.</td></tr>
-                <tr><td><a href="/MCodes/M621/">M621</a></td><td>Closes a COM port.</td></tr>
-                <tr><td><a href="/MCodes/M622/">M622</a></td><td>Sends a command to an open COM port and does not wait for a response.</td></tr>
-                <tr><td><a href="/MCodes/M623/">M623</a></td><td>Sends a command to an open COM port and blocks all processing until a valid response is received.</td></tr>
-                <tr><td><a href="/MCodes/M630/">M630</a></td><td>Runs an executable file without waiting for a response.</td></tr>
-                <!--
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                <tr><td><a href="/MCodes/M6xx/">M6xx</a></td><td></td></tr>
-                -->
-                <tr><td><a href="/MCodes/M650/">M650</a></td><td>Add the job profile name to be used when running the code</td></tr>
+                @{
+                    foreach (string mCode in Model.AvailableMCodes)
+                    {
+                        System.Resources.ResourceManager resManager = GSend.Language.Resources.ResourceManager;
+                        string menuData = resManager.GetString($"WebDesc{mCode.ToString().Replace(".", "_")}", GSend.Language.Resources.Culture);
+                        string uri = $"/MCodes/{mCode}/";
+                        <tr>
+                        <td>
+                        <a href="@uri">@mCode</a>
+                        </td>
+                        <td>
+                        @menuData
+                        </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>

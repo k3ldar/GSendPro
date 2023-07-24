@@ -27,6 +27,7 @@ namespace GSendCommon.MCodeOverrides
             switch (value)
             {
                 case 630.1m:
+                case 631.1m:
                     return true;
 
                 default:

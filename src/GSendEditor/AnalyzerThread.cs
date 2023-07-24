@@ -10,7 +10,7 @@ namespace GSendEditor
     internal class AnalyzerThread : ThreadManager
     {
         private DateTime _lastValidateWarningsAndErrors;
-        private const int ValidateWarningAndErrorsTimeout = 250;
+        private const int ValidateWarningAndErrorsTimeout = 350;
 
         private readonly IGCodeParserFactory _gCodeParserFactory;
         private readonly ISubprograms _subprograms;
@@ -116,7 +116,7 @@ namespace GSendEditor
                     }
 
                     if (issues.Count > 0)
-                        _lastValidateWarningsAndErrors = DateTime.Now.AddSeconds(5);
+                        _lastValidateWarningsAndErrors = DateTime.UtcNow.AddSeconds(5);
                     else
                         _lastValidateWarningsAndErrors = DateTime.MaxValue;
                 }
