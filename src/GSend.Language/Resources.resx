@@ -1838,12 +1838,12 @@
 </value>
   </data>
   <data name="AnalyseError25" xml:space="preserve">
-    <value>Line {0} contains M630.1 command but no parameters were found, you must specify an executable file.</value>
+    <value>Line {0} contains M630.1 command but no parameters were found, you must specify parameters for an M630 command.</value>
   </data>
   <data name="AnalyseError26" xml:space="preserve">
     <value>Line {0} contains multiple M631.1 commands, only 1 M631.1 command is allowed per line.</value>
   </data>
   <data name="AnalyseError27" xml:space="preserve">
-    <value>Line {0} contains M631.1 command but no parameters were found, you must specify an executable file.</value>
+    <value>Line {0} contains M631.1 command but no parameters were found, you must specify parameters for an M631 command.</value>
   </data>
 </root>
