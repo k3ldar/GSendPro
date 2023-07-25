@@ -304,6 +304,43 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple M630.1 commands, only 1 M630.1 command is allowed per line.
+        ///.
+        /// </summary>
+        public static string AnalyseError24 {
+            get {
+                return ResourceManager.GetString("AnalyseError24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630.1 command but no parameters were found, you must specify parameters for an M630 command..
+        /// </summary>
+        public static string AnalyseError25 {
+            get {
+                return ResourceManager.GetString("AnalyseError25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple M631.1 commands, only 1 M631.1 command is allowed per line..
+        /// </summary>
+        public static string AnalyseError26 {
+            get {
+                return ResourceManager.GetString("AnalyseError26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M631.1 command but no parameters were found, you must specify parameters for an M631 command..
+        /// </summary>
+        public static string AnalyseError27 {
+            get {
+                return ResourceManager.GetString("AnalyseError27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
         /// </summary>
         public static string AnalyseError8 {
