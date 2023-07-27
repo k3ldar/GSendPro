@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using GSendAnalyser.Analyzers;
+using GSendAnalyzer.Analyzers;
 
 using GSendShared.Abstractions;
 
@@ -28,7 +28,7 @@ namespace GSendTests.Mocks
                 {
                     List<object> list = new();
 
-                    if (type.Equals(typeof(GSendAnalyser.Analyzers.AnalyzeVariables)))
+                    if (type.Equals(typeof(AnalyzeVariables)))
                     {
                         Result.Add(new MockSubprograms());
                     }
@@ -80,7 +80,7 @@ namespace GSendTests.Mocks
 
         private void GetAnalyzersOfType<T>(List<T> analyzerList, Type typeRequired)
         {
-            foreach (Type type in typeof(GSendAnalyser.GCodeAnalyses).Assembly.GetTypes())
+            foreach (Type type in typeof(GSendAnalyzer.GCodeAnalyses).Assembly.GetTypes())
             {
                 if (type.IsClass && type.GetInterface(typeRequired.Name) != null)
                 {

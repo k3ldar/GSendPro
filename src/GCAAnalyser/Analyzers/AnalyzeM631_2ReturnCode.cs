@@ -1,7 +1,7 @@
 ﻿using GSendShared;
 using GSendShared.Abstractions;
 
-namespace GSendAnalyser.Analyzers
+namespace GSendAnalyzer.Analyzers
 {
     internal class AnalyzeM631_2ReturnCode : IGCodeAnalyzer
     {

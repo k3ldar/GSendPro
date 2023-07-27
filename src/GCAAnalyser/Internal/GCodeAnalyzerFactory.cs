@@ -2,7 +2,7 @@
 
 using PluginManager.Abstractions;
 
-namespace GSendAnalyser.Internal
+namespace GSendAnalyzer.Internal
 {
     internal sealed class GCodeAnalyzerFactory : IGCodeAnalyzerFactory
     {

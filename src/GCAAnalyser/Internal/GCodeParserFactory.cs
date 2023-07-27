@@ -3,7 +3,7 @@ using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;
 
-namespace GSendAnalyser.Internal
+namespace GSendAnalyzer.Internal
 {
     internal sealed class GCodeParserFactory : IGCodeParserFactory
     {

@@ -8,7 +8,7 @@ using GSendShared.Abstractions;
 using GSendShared;
 using GSendShared.Helpers;
 
-namespace GSendAnalyser.Analyzers
+namespace GSendAnalyzer.Analyzers
 {
     internal class AnalyzeM62XComPorts : IGCodeAnalyzer
     {

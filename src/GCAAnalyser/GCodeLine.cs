@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-using GSendAnalyser.Internal;
+using GSendAnalyzer.Internal;
 
 using GSendShared;
 
-namespace GSendAnalyser
+namespace GSendAnalyzer
 {
     [DebuggerDisplay("{GetGCodeInfo()}")]
     public sealed class GCodeLine : IGCodeLine

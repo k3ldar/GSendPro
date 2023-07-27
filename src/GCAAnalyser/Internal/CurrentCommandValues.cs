@@ -1,6 +1,6 @@
 ﻿using GSendShared;
 
-namespace GSendAnalyser.Internal
+namespace GSendAnalyzer.Internal
 {
     public sealed class CurrentCommandValues
     {

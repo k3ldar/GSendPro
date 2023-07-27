@@ -72,7 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCAAnalyser\GSendAnalyser.csproj" />
+    <ProjectReference Include="..\GCAAnalyser\GSendAnalyzer.csproj" />
     <ProjectReference Include="..\GCSDB\GSendDB.csproj" />
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
     <ProjectReference Include="..\GSend.Language\GSend.Language.csproj" />

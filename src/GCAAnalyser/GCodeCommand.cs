@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 
-using GSendAnalyser.Internal;
+using GSendAnalyzer.Internal;
 
 using GSendShared;
 
 using static GSendShared.Constants;
 
-namespace GSendAnalyser
+namespace GSendAnalyzer
 {
     [DebuggerDisplay("{Command}{CommandValue}; Line: {LineNumber}; Feed: {CurrentFeedRate}; X:{CurrentX}; Y:{CurrentY}; Z:{CurrentZ}; Spindle:{SpindleOn}; Index: {Index}")]
     public class GCodeCommand : IGCodeCommand

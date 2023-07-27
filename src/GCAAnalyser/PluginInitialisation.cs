@@ -1,4 +1,4 @@
-﻿using GSendAnalyser.Internal;
+﻿using GSendAnalyzer.Internal;
 
 using GSendShared.Abstractions;
 
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
-namespace GSendAnalyser
+namespace GSendAnalyzer
 {
     public sealed class PluginInitialisation : IPlugin
     {

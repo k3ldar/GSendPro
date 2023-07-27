@@ -36,7 +36,7 @@ namespace GSendEditor
             applicationPluginManager.RegisterPlugin(typeof(Internal.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);
-            applicationPluginManager.RegisterPlugin(typeof(GSendAnalyser.PluginInitialisation).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(GSendAnalyzer.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendCommon.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
 

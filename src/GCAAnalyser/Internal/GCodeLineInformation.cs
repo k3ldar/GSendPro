@@ -2,7 +2,7 @@
 
 using GSendShared;
 
-namespace GSendAnalyser.Internal
+namespace GSendAnalyzer.Internal
 {
     [DebuggerDisplay("{GCode}")]
     internal sealed class GCodeLineInformation : IGCodeLineInfo

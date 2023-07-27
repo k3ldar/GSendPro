@@ -8,7 +8,7 @@ using PluginManager.Abstractions;
 
 using static GSendShared.Constants;
 
-namespace GSendAnalyser.Internal
+namespace GSendAnalyzer.Internal
 {
     internal sealed class GCodeParser : IGCodeParser
     {

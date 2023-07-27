@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-using GSendAnalyser.Internal;
+using GSendAnalyzer.Internal;
 
 using GSendShared;
 using GSendShared.Abstractions;
@@ -10,7 +10,7 @@ using PluginManager.Abstractions;
 
 using Shared.Classes;
 
-namespace GSendAnalyser
+namespace GSendAnalyzer
 {
     internal class GCodeAnalyses : IGCodeAnalyses
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSendAnalyser", "GCAAnalyser\GSendAnalyser.csproj", "{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSendAnalyzer", "GCAAnalyser\GSendAnalyzer.csproj", "{8F04B1D3-DAD6-4F35-9835-6592EC63CA63}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSendTests", "GCATests\GSendTests.csproj", "{1BFC1490-0D84-4B81-9C51-BFFA5B946646}"
 EndProject

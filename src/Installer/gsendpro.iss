@@ -88,8 +88,8 @@ Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.deps.json"; DestDi
 ; Solution Files
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.dll"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyser.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyser.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.dll"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.dll"; DestDir: "{app}"; Flags: ignoreversion

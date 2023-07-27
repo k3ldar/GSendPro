@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-using GSendAnalyser;
-using GSendAnalyser.Internal;
+using GSendAnalyzer;
+using GSendAnalyzer.Internal;
 
 using GSendTests.Mocks;
 

@@ -1,6 +1,6 @@
 ﻿using GSendShared;
 
-namespace GSendAnalyser.Analyzers
+namespace GSendAnalyzer.Analyzers
 {
     public class BaseAnalyzer
     {

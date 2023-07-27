@@ -2,7 +2,7 @@
 using GSendShared.Abstractions;
 using GSendShared.Models;
 
-namespace GSendAnalyser.Analyzers
+namespace GSendAnalyzer.Analyzers
 {
     internal class AnalyzeVariableBlocks : IGCodeAnalyzer
     {

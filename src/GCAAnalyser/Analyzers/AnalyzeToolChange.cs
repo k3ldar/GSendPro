@@ -1,7 +1,7 @@
 ﻿using GSendShared;
 using GSendShared.Abstractions;
 
-namespace GSendAnalyser.Analyzers
+namespace GSendAnalyzer.Analyzers
 {
     public class AnalyzeToolChange : IGCodeAnalyzer
     {
