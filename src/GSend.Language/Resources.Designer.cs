@@ -178,204 +178,6 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port..
-        /// </summary>
-        public static string AnalyseError10 {
-            get {
-                return ResourceManager.GetString("AnalyseError10", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify the timeout period..
-        /// </summary>
-        public static string AnalyseError11 {
-            get {
-                return ResourceManager.GetString("AnalyseError11", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}..
-        /// </summary>
-        public static string AnalyseError12 {
-            get {
-                return ResourceManager.GetString("AnalyseError12", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value between {2} and {3}.
-        /// </summary>
-        public static string AnalyseError13 {
-            get {
-                return ResourceManager.GetString("AnalyseError13", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value.
-        /// </summary>
-        public static string AnalyseError14 {
-            get {
-                return ResourceManager.GetString("AnalyseError14", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, Parity must be None, Odd, Even, Mark or Space.
-        /// </summary>
-        public static string AnalyseError15 {
-            get {
-                return ResourceManager.GetString("AnalyseError15", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, Data bits must be 5, 6, 7, or 8.
-        /// </summary>
-        public static string AnalyseError16 {
-            get {
-                return ResourceManager.GetString("AnalyseError16", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, Stop bits must be One, Two or OnePointFive.
-        /// </summary>
-        public static string AnalyseError17 {
-            get {
-                return ResourceManager.GetString("AnalyseError17", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, COM port name is mandatory.
-        /// </summary>
-        public static string AnalyseError18 {
-            get {
-                return ResourceManager.GetString("AnalyseError18", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid COM port parameter, baud rate must be greater than zero.
-        /// </summary>
-        public static string AnalyseError19 {
-            get {
-                return ResourceManager.GetString("AnalyseError19", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid M630 on line {0} executable not found: {1}.
-        /// </summary>
-        public static string AnalyseError20 {
-            get {
-                return ResourceManager.GetString("AnalyseError20", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line..
-        /// </summary>
-        public static string AnalyseError21 {
-            get {
-                return ResourceManager.GetString("AnalyseError21", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains M630 command but no executable file was found, you must specify an executable file..
-        /// </summary>
-        public static string AnalyseError22 {
-            get {
-                return ResourceManager.GetString("AnalyseError22", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The only file extensions valid for running a program are .exe, .com and .bat.
-        /// </summary>
-        public static string AnalyseError23 {
-            get {
-                return ResourceManager.GetString("AnalyseError23", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains multiple commands, M630.1 command must be on a line of it&apos;s own..
-        /// </summary>
-        public static string AnalyseError24 {
-            get {
-                return ResourceManager.GetString("AnalyseError24", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains M630.1 command but no parameters were found, you must specify parameters for an M630 command..
-        /// </summary>
-        public static string AnalyseError25 {
-            get {
-                return ResourceManager.GetString("AnalyseError25", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains multiple commands, M631.1 command must be on a line of it&apos;s own..
-        /// </summary>
-        public static string AnalyseError26 {
-            get {
-                return ResourceManager.GetString("AnalyseError26", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains M631.1 command but no parameters were found, you must specify parameters for an M631 command..
-        /// </summary>
-        public static string AnalyseError27 {
-            get {
-                return ResourceManager.GetString("AnalyseError27", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains M630.1 command which must be followed by an M630 command..
-        /// </summary>
-        public static string AnalyseError28 {
-            get {
-                return ResourceManager.GetString("AnalyseError28", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains M631.1 command which must be followed by an M631 or M631.2 command..
-        /// </summary>
-        public static string AnalyseError29 {
-            get {
-                return ResourceManager.GetString("AnalyseError29", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
-        /// </summary>
-        public static string AnalyseError8 {
-            get {
-                return ResourceManager.GetString("AnalyseError8", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a value that can be sent to a COM port..
-        /// </summary>
-        public static string AnalyseError9 {
-            get {
-                return ResourceManager.GetString("AnalyseError9", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Property.
         /// </summary>
         public static string AnalyserProperty {
@@ -610,6 +412,96 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port..
+        /// </summary>
+        public static string AnalyzeError10 {
+            get {
+                return ResourceManager.GetString("AnalyzeError10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify the timeout period..
+        /// </summary>
+        public static string AnalyzeError11 {
+            get {
+                return ResourceManager.GetString("AnalyzeError11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}..
+        /// </summary>
+        public static string AnalyzeError12 {
+            get {
+                return ResourceManager.GetString("AnalyzeError12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value between {2} and {3}.
+        /// </summary>
+        public static string AnalyzeError13 {
+            get {
+                return ResourceManager.GetString("AnalyzeError13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, {0} must be a {1} value.
+        /// </summary>
+        public static string AnalyzeError14 {
+            get {
+                return ResourceManager.GetString("AnalyzeError14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Parity must be None, Odd, Even, Mark or Space.
+        /// </summary>
+        public static string AnalyzeError15 {
+            get {
+                return ResourceManager.GetString("AnalyzeError15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Data bits must be 5, 6, 7, or 8.
+        /// </summary>
+        public static string AnalyzeError16 {
+            get {
+                return ResourceManager.GetString("AnalyzeError16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, Stop bits must be One, Two or OnePointFive.
+        /// </summary>
+        public static string AnalyzeError17 {
+            get {
+                return ResourceManager.GetString("AnalyzeError17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, COM port name is mandatory.
+        /// </summary>
+        public static string AnalyzeError18 {
+            get {
+                return ResourceManager.GetString("AnalyzeError18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid COM port parameter, baud rate must be greater than zero.
+        /// </summary>
+        public static string AnalyzeError19 {
+            get {
+                return ResourceManager.GetString("AnalyzeError19", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid M601 on line {0}.  M601 must be followed by a P-code.
         /// </summary>
         public static string AnalyzeError20 {
@@ -624,6 +516,105 @@ namespace GSend.Language {
         public static string AnalyzeError21 {
             get {
                 return ResourceManager.GetString("AnalyzeError21", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630 command but no executable file was found, you must specify an executable file..
+        /// </summary>
+        public static string AnalyzeError22 {
+            get {
+                return ResourceManager.GetString("AnalyzeError22", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The only file extensions valid for running a program are .exe, .com and .bat.
+        /// </summary>
+        public static string AnalyzeError23 {
+            get {
+                return ResourceManager.GetString("AnalyzeError23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple commands, M630.1 command must be on a line of it&apos;s own..
+        /// </summary>
+        public static string AnalyzeError24 {
+            get {
+                return ResourceManager.GetString("AnalyzeError24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630.1 command but no parameters were found, you must specify parameters for an M630 command..
+        /// </summary>
+        public static string AnalyzeError25 {
+            get {
+                return ResourceManager.GetString("AnalyzeError25", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple commands, M631.1 command must be on a line of it&apos;s own..
+        /// </summary>
+        public static string AnalyzeError26 {
+            get {
+                return ResourceManager.GetString("AnalyzeError26", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M631.1 command but no parameters were found, you must specify parameters for an M631 command..
+        /// </summary>
+        public static string AnalyzeError27 {
+            get {
+                return ResourceManager.GetString("AnalyzeError27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630.1 command which must be followed by an M630 command..
+        /// </summary>
+        public static string AnalyzeError28 {
+            get {
+                return ResourceManager.GetString("AnalyzeError28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M631.1 command which must be followed by an M631 or M631.2 command..
+        /// </summary>
+        public static string AnalyzeError29 {
+            get {
+                return ResourceManager.GetString("AnalyzeError29", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid M631.2 on line {0}.  M631.2 must be followed by a P-code specifying the expected return value.
+        /// </summary>
+        public static string AnalyzeError30 {
+            get {
+                return ResourceManager.GetString("AnalyzeError30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not specify a COM port..
+        /// </summary>
+        public static string AnalyzeError8 {
+            get {
+                return ResourceManager.GetString("AnalyzeError8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a value that can be sent to a COM port..
+        /// </summary>
+        public static string AnalyzeError9 {
+            get {
+                return ResourceManager.GetString("AnalyzeError9", resourceCulture);
             }
         }
         

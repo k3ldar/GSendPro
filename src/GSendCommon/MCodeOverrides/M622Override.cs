@@ -28,10 +28,10 @@ namespace GSendCommon.MCodeOverrides
                 try
                 {
                     if (comPortComments.Length == 0)
-                        throw new ArgumentException(String.Format(GSend.Language.Resources.AnalyseError8, command.Command, command.CommandValueString, command.LineNumber));
+                        throw new ArgumentException(String.Format(GSend.Language.Resources.AnalyzeError8, command.Command, command.CommandValueString, command.LineNumber));
 
                     if (comPortComments.Length == 1)
-                        throw new ArgumentException(String.Format(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber));
+                        throw new ArgumentException(String.Format(GSend.Language.Resources.AnalyzeError9, command.Command, command.CommandValueString, command.LineNumber));
 
                     IComPort comPort = _comPortFactory.GetComPort(comPortComments[0]);
 

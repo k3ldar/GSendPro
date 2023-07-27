@@ -22,20 +22,20 @@ namespace GSendShared.Helpers
                 portName = values[0];
 
             if (String.IsNullOrEmpty(portName))
-                throw new ArgumentException(AnalyseError18);
+                throw new ArgumentException(AnalyzeError18);
 
             if (values.Length > 1 && !Int32.TryParse(values[1], out baudRate))
             {
-                throw new ArgumentException(String.Format(AnalyseError14, ParameterBaudRate, ParameterNumber));
+                throw new ArgumentException(String.Format(AnalyzeError14, ParameterBaudRate, ParameterNumber));
             }
 
             if (baudRate < 1)
-                throw new ArgumentException(AnalyseError19);
+                throw new ArgumentException(AnalyzeError19);
 
             if (values.Length > 2)
             {
                 if (!Enum.TryParse(typeof(Parity), values[2], true, out object newParity))
-                    throw new ArgumentException(AnalyseError15);
+                    throw new ArgumentException(AnalyzeError15);
 
                 parity = (Parity)newParity;
             }
@@ -43,7 +43,7 @@ namespace GSendShared.Helpers
             if (values.Length > 3)
             {
                 if (!Int32.TryParse(values[3], out dataBits))
-                    throw new ArgumentException(AnalyseError16);
+                    throw new ArgumentException(AnalyzeError16);
 
                 switch (dataBits)
                 {
@@ -54,14 +54,14 @@ namespace GSendShared.Helpers
                         break;
 
                     default:
-                        throw new ArgumentException(AnalyseError16);
+                        throw new ArgumentException(AnalyzeError16);
                 }
             }
 
             if (values.Length > 4)
             {
                 if (!Enum.TryParse(typeof(StopBits), values[4], true, out object newStopBits))
-                    throw new ArgumentException(AnalyseError17);
+                    throw new ArgumentException(AnalyzeError17);
 
                 stopBits = (StopBits)newStopBits;
             }
@@ -76,16 +76,16 @@ namespace GSendShared.Helpers
 
             if (values.Length == 0)
             {
-                throw new ArgumentException(String.Format(AnalyseError8, command.Command, command.CommandValueString, command.LineNumber));
+                throw new ArgumentException(String.Format(AnalyzeError8, command.Command, command.CommandValueString, command.LineNumber));
             }
 
             if (values.Length == 1)
             {
-                throw new ArgumentException(String.Format(AnalyseError10, command.Command, command.CommandValueString, command.LineNumber));
+                throw new ArgumentException(String.Format(AnalyzeError10, command.Command, command.CommandValueString, command.LineNumber));
             }
             else if (values.Length == 2)
             {
-                throw new ArgumentException(String.Format(AnalyseError9, command.Command, command.CommandValueString, command.LineNumber));
+                throw new ArgumentException(String.Format(AnalyzeError9, command.Command, command.CommandValueString, command.LineNumber));
             }
 
             string commandToSend = values[2];

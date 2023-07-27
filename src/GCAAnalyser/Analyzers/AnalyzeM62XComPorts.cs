@@ -38,7 +38,7 @@ namespace GSendAnalyzer.Analyzers
 
                     if (comPortComments.Length == 0)
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError8, command.Command, command.CommandValueString, command.LineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError8, command.Command, command.CommandValueString, command.LineNumber);
                         continue;
                     }
 
@@ -91,7 +91,7 @@ namespace GSendAnalyzer.Analyzers
                     {
                         if (comPortComments.Length == 1)
                         {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalyseError9, command.Command, command.CommandValueString, command.LineNumber);
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError9, command.Command, command.CommandValueString, command.LineNumber);
                         }
                     }
                     else if (command.CommandValue == Constants.MCode623)

@@ -24,7 +24,7 @@ namespace GSendAnalyzer.Analyzers
                         (command.PreviousCommand != null && command.PreviousCommand.MasterLineNumber == command.MasterLineNumber) ||
                         (command.NextCommand != null && command.NextCommand.MasterLineNumber == command.MasterLineNumber))
                     {
-                        string error = String.Format(GSend.Language.Resources.AnalyseError26, command.MasterLineNumber);
+                        string error = String.Format(GSend.Language.Resources.AnalyzeError26, command.MasterLineNumber);
                         if (!codeAnalyses.Errors.Contains(error))
                             codeAnalyses.AddError(error);
 
@@ -37,12 +37,12 @@ namespace GSendAnalyzer.Analyzers
 
                     if (String.IsNullOrWhiteSpace(parameters))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError27, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError27, command.MasterLineNumber);
                     }
 
                     if (!ValidateNextCommand(command, Constants.MCode631RunProgram, new decimal[] { Constants.MCode631RunProgramParams, Constants.MCode631RunProgramResult}, new char[] { Constants.CharP }, 0))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError29, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError29, command.MasterLineNumber);
                     }
                 }
             }

@@ -156,52 +156,52 @@
   <data name="Alarm9" xml:space="preserve">
     <value>Homing fail. Could not find limit switch within search distance.</value>
   </data>
-  <data name="AnalyseError10" xml:space="preserve">
+  <data name="AnalyzeError10" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port.</value>
   </data>
-  <data name="AnalyseError11" xml:space="preserve">
+  <data name="AnalyzeError11" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not specify the timeout period.</value>
   </data>
-  <data name="AnalyseError12" xml:space="preserve">
+  <data name="AnalyzeError12" xml:space="preserve">
     <value>Command {0}{1} on line {2} contains an invalid timeout period, it must be a number between {3} and {4}.</value>
   </data>
-  <data name="AnalyseError13" xml:space="preserve">
+  <data name="AnalyzeError13" xml:space="preserve">
     <value>Invalid COM port parameter, {0} must be a {1} value between {2} and {3}</value>
   </data>
-  <data name="AnalyseError14" xml:space="preserve">
+  <data name="AnalyzeError14" xml:space="preserve">
     <value>Invalid COM port parameter, {0} must be a {1} value</value>
   </data>
-  <data name="AnalyseError15" xml:space="preserve">
+  <data name="AnalyzeError15" xml:space="preserve">
     <value>Invalid COM port parameter, Parity must be None, Odd, Even, Mark or Space</value>
   </data>
-  <data name="AnalyseError16" xml:space="preserve">
+  <data name="AnalyzeError16" xml:space="preserve">
     <value>Invalid COM port parameter, Data bits must be 5, 6, 7, or 8</value>
   </data>
-  <data name="AnalyseError17" xml:space="preserve">
+  <data name="AnalyzeError17" xml:space="preserve">
     <value>Invalid COM port parameter, Stop bits must be One, Two or OnePointFive</value>
   </data>
-  <data name="AnalyseError18" xml:space="preserve">
+  <data name="AnalyzeError18" xml:space="preserve">
     <value>Invalid COM port parameter, COM port name is mandatory</value>
   </data>
-  <data name="AnalyseError19" xml:space="preserve">
+  <data name="AnalyzeError19" xml:space="preserve">
     <value>Invalid COM port parameter, baud rate must be greater than zero</value>
   </data>
-  <data name="AnalyseError20" xml:space="preserve">
+  <data name="AnalyzeError20" xml:space="preserve">
     <value>Invalid M630 on line {0} executable not found: {1}</value>
   </data>
-  <data name="AnalyseError21" xml:space="preserve">
+  <data name="AnalyzeError21" xml:space="preserve">
     <value>Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line.</value>
   </data>
-  <data name="AnalyseError22" xml:space="preserve">
+  <data name="AnalyzeError22" xml:space="preserve">
     <value>Line {0} contains M630 command but no executable file was found, you must specify an executable file.</value>
   </data>
-  <data name="AnalyseError23" xml:space="preserve">
+  <data name="AnalyzeError23" xml:space="preserve">
     <value>The only file extensions valid for running a program are .exe, .com and .bat</value>
   </data>
-  <data name="AnalyseError8" xml:space="preserve">
+  <data name="AnalyzeError8" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not specify a COM port.</value>
   </data>
-  <data name="AnalyseError9" xml:space="preserve">
+  <data name="AnalyzeError9" xml:space="preserve">
     <value>Command {0}{1} on line {2} does not contain a value that can be sent to a COM port.</value>
   </data>
   <data name="AnalyserProperty" xml:space="preserve">
@@ -1833,22 +1833,25 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="AnalyseError24" xml:space="preserve">
+  <data name="AnalyzeError24" xml:space="preserve">
     <value>Line {0} contains multiple commands, M630.1 command must be on a line of it's own.</value>
   </data>
-  <data name="AnalyseError25" xml:space="preserve">
+  <data name="AnalyzeError25" xml:space="preserve">
     <value>Line {0} contains M630.1 command but no parameters were found, you must specify parameters for an M630 command.</value>
   </data>
-  <data name="AnalyseError26" xml:space="preserve">
+  <data name="AnalyzeError26" xml:space="preserve">
     <value>Line {0} contains multiple commands, M631.1 command must be on a line of it's own.</value>
   </data>
-  <data name="AnalyseError27" xml:space="preserve">
+  <data name="AnalyzeError27" xml:space="preserve">
     <value>Line {0} contains M631.1 command but no parameters were found, you must specify parameters for an M631 command.</value>
   </data>
-  <data name="AnalyseError28" xml:space="preserve">
+  <data name="AnalyzeError28" xml:space="preserve">
     <value>Line {0} contains M630.1 command which must be followed by an M630 command.</value>
   </data>
-  <data name="AnalyseError29" xml:space="preserve">
+  <data name="AnalyzeError29" xml:space="preserve">
     <value>Line {0} contains M631.1 command which must be followed by an M631 or M631.2 command.</value>
+  </data>
+  <data name="AnalyzeError30" xml:space="preserve">
+    <value>Invalid M631.2 on line {0}.  M631.2 must be followed by a P-code specifying the expected return value</value>
   </data>
 </root>

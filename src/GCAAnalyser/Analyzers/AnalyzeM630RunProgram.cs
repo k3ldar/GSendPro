@@ -25,7 +25,7 @@ namespace GSendAnalyzer.Analyzers
                 {
                     if (lineNumbers.Contains(command.MasterLineNumber))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError21, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError21, command.MasterLineNumber);
                         continue;
                     }
 
@@ -35,15 +35,15 @@ namespace GSendAnalyzer.Analyzers
 
                     if (String.IsNullOrWhiteSpace(exeFile))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError22, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError22, command.MasterLineNumber);
                     }
                     else if (!ValidExtension(Path.GetExtension(exeFile).ToUpper()))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError23, Path.GetExtension(exeFile));
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError23, Path.GetExtension(exeFile));
                     }
                     else if (!File.Exists(exeFile))
                     {
-                        codeAnalyses.AddWarning(GSend.Language.Resources.AnalyseError20, command.MasterLineNumber, exeFile);
+                        codeAnalyses.AddWarning(GSend.Language.Resources.AnalyzeError20, command.MasterLineNumber, exeFile);
                         continue;
                     }
                 }
