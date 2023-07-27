@@ -11,7 +11,7 @@ namespace GSendTests.GSendAnalyserTests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class AnalyzeM631_1RunParameters
+    public class AnalyzeM631_2RunResponseTests
     {
         [TestMethod]
         public void doit()

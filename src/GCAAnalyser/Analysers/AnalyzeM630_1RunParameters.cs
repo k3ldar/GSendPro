@@ -3,7 +3,7 @@ using GSendShared.Abstractions;
 
 namespace GSendAnalyser.Analysers
 {
-    internal class AnalyzeM630_1RunParameters : IGCodeAnalyzer
+    internal class AnalyzeM630_1RunParameters : BaseAnalyzer, IGCodeAnalyzer
     {
         public int Order => int.MinValue;
 
@@ -16,16 +16,18 @@ namespace GSendAnalyser.Analysers
 
             if (mCommands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.RunProgram))
-                    codeAnalyses.AddOptions(AnalysesOptions.RunProgram);
-
                 List<int> lineNumbers = new();
 
                 foreach (IGCodeCommand command in mCommands)
                 {
-                    if (lineNumbers.Contains(command.MasterLineNumber))
+                    if (lineNumbers.Contains(command.MasterLineNumber) || 
+                        (command.PreviousCommand != null && command.PreviousCommand.MasterLineNumber == command.MasterLineNumber) ||
+                        (command.NextCommand != null && command.NextCommand.MasterLineNumber == command.MasterLineNumber))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError24, command.MasterLineNumber);
+                        string error = String.Format(GSend.Language.Resources.AnalyseError24, command.MasterLineNumber);
+                        if (!codeAnalyses.Errors.Contains(error))
+                            codeAnalyses.AddError(error);
+
                         continue;
                     }
 
@@ -36,6 +38,11 @@ namespace GSendAnalyser.Analysers
                     if (String.IsNullOrWhiteSpace(parameters))
                     {
                         codeAnalyses.AddError(GSend.Language.Resources.AnalyseError25, command.MasterLineNumber);
+                    }
+
+                    if (!ValidateNextCommand(command, Constants.MCode630RunProgram))
+                    {
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyseError28, command.MasterLineNumber);
                     }
                 }
             }

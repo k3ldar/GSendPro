@@ -304,8 +304,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains multiple M630.1 commands, only 1 M630.1 command is allowed per line.
-        ///.
+        ///   Looks up a localized string similar to Line {0} contains multiple commands, M630.1 command must be on a line of it&apos;s own..
         /// </summary>
         public static string AnalyseError24 {
             get {
@@ -323,7 +322,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Line {0} contains multiple M631.1 commands, only 1 M631.1 command is allowed per line..
+        ///   Looks up a localized string similar to Line {0} contains multiple commands, M631.1 command must be on a line of it&apos;s own..
         /// </summary>
         public static string AnalyseError26 {
             get {
@@ -337,6 +336,24 @@ namespace GSend.Language {
         public static string AnalyseError27 {
             get {
                 return ResourceManager.GetString("AnalyseError27", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630.1 command which must be followed by an M630 command..
+        /// </summary>
+        public static string AnalyseError28 {
+            get {
+                return ResourceManager.GetString("AnalyseError28", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M631.1 command which must be followed by an M631 or M631.2 command..
+        /// </summary>
+        public static string AnalyseError29 {
+            get {
+                return ResourceManager.GetString("AnalyseError29", resourceCulture);
             }
         }
         
