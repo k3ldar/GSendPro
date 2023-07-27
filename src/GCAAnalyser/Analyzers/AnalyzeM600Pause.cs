@@ -1,7 +1,7 @@
 ﻿using GSendShared;
 using GSendShared.Abstractions;
 
-namespace GSendAnalyser.Analysers
+namespace GSendAnalyser.Analyzers
 {
     public sealed class AnalyzeM600Pause : IGCodeAnalyzer
     {

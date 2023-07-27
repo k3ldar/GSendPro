@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 using GSendAnalyser;
-using GSendAnalyser.Analysers;
+using GSendAnalyser.Analyzers;
 using GSendAnalyser.Internal;
 
 using GSendShared;

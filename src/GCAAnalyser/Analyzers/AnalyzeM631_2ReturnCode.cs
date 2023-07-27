@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using GSendShared;
 using GSendShared.Abstractions;
-using GSendShared;
 
-namespace GSendAnalyser.Analysers
+namespace GSendAnalyser.Analyzers
 {
     internal class AnalyzeM631_2ReturnCode : IGCodeAnalyzer
     {

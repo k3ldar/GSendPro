@@ -4,7 +4,7 @@ using System.Text;
 using GSendShared;
 using GSendShared.Abstractions;
 
-namespace GSendAnalyser.Analysers
+namespace GSendAnalyser.Analyzers
 {
     internal class AnalyzeFileDetails : IGCodeAnalyzer
     {

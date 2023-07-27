@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
-using GSendAnalyser.Analysers;
+using GSendAnalyser.Analyzers;
 using GSendAnalyser.Internal;
+
 using GSendShared;
+
 using GSendTests.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -117,6 +114,5 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(0, analyses.Warnings.Count);
             Assert.AreEqual(0, analyses.Errors.Count);
         }
-
     }
 }
