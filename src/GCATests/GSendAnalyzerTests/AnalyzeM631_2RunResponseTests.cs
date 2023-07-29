@@ -45,7 +45,7 @@ namespace GSendTests.GSendAnalyserTests
 
             Assert.AreEqual(0, analyses.Warnings.Count);
             Assert.AreEqual(1, analyses.Errors.Count);
-            Assert.AreEqual("Line 1 contains multiple commands, M631.1 command must be on a line of it's own.", analyses.Errors[0]);
+            Assert.AreEqual("Invalid M631.2 on line 1.  M631.2 must be followed by a P-code specifying the expected return value", analyses.Errors[0]);
         }
 
         [TestMethod]

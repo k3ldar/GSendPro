@@ -3,7 +3,7 @@ using GSendShared.Abstractions;
 
 namespace GSendAnalyzer.Analyzers
 {
-    internal class AnalyzeM631_2ReturnCode : IGCodeAnalyzer
+    internal class AnalyzeM631_2ReturnCode : BaseAnalyzer, IGCodeAnalyzer
     {
         public int Order => int.MinValue;
 
@@ -26,12 +26,12 @@ namespace GSendAnalyzer.Analyzers
 
                     if (command.NextCommand.Command != Constants.CharP)
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError20, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError30, command.MasterLineNumber);
                     }
 
-                    if (command.NextCommand.CommandValue < Constants.MCodeMinTimeoutValue || command.NextCommand.CommandValue > Constants.MCodeMaxTimeoutValue)
+                    if (!ValidateNextCommand(command, Constants.MCode631RunProgram, new decimal[] { Constants.MCode631RunProgramParams, Constants.MCode631RunProgramResult }, new char[] { Constants.CharP }, 0))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError21, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError29, command.MasterLineNumber);
                     }
                 }
             }
