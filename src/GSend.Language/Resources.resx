@@ -187,10 +187,10 @@
     <value>Invalid COM port parameter, baud rate must be greater than zero</value>
   </data>
   <data name="AnalyzeError20" xml:space="preserve">
-    <value>Invalid M630 on line {0} executable not found: {1}</value>
+    <value>Invalid M601 on line {0}.  M601 must be followed by a P-code</value>
   </data>
   <data name="AnalyzeError21" xml:space="preserve">
-    <value>Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line.</value>
+    <value>Invalid M601 on line {0}, the P-code value must be between 100 and 10000.</value>
   </data>
   <data name="AnalyzeError22" xml:space="preserve">
     <value>Line {0} contains M630 command but no executable file was found, you must specify an executable file.</value>
@@ -210,28 +210,28 @@
   <data name="AnalyserValue" xml:space="preserve">
     <value>Value</value>
   </data>
-  <data name="AnalysesError1" xml:space="preserve">
+  <data name="AnalyzeError1" xml:space="preserve">
     <value>M6 Automatic tool change found, but no tool specified.</value>
   </data>
-  <data name="AnalysesError2" xml:space="preserve">
+  <data name="AnalyzeError2" xml:space="preserve">
     <value>M620 command on line {0} attempts to open a COM port "{1}" when it is already open.</value>
   </data>
-  <data name="AnalysesError24" xml:space="preserve">
+  <data name="AnalyzeError33" xml:space="preserve">
     <value>End program was not found</value>
   </data>
-  <data name="AnalysesError3" xml:space="preserve">
+  <data name="AnalyzeError3" xml:space="preserve">
     <value>M620 command on line {0} must appear on it's own line without any other commands.</value>
   </data>
-  <data name="AnalysesError4" xml:space="preserve">
+  <data name="AnalyzeError4" xml:space="preserve">
     <value>M620 command on line {0} attempts to close a COM port "{1}" that was never opened.</value>
   </data>
-  <data name="AnalysesError5" xml:space="preserve">
+  <data name="AnalyzeError5" xml:space="preserve">
     <value>M620 command on line {0} attempts to close a COM port "{1}" that is already closed.</value>
   </data>
-  <data name="AnalysesError6" xml:space="preserve">
+  <data name="AnalyzeError6" xml:space="preserve">
     <value>COM Port "{0}" is opened but never closed.</value>
   </data>
-  <data name="AnalysesError7" xml:space="preserve">
+  <data name="AnalyzeError7" xml:space="preserve">
     <value>The COM port "{0}" on line {1} does not exist.</value>
   </data>
   <data name="AnalysesVariableInvalid1" xml:space="preserve">
@@ -281,12 +281,6 @@
   </data>
   <data name="AnalysesWarningLongComment" xml:space="preserve">
     <value>Comment on line {0} is too long and will be ignored.</value>
-  </data>
-  <data name="AnalyzeError20" xml:space="preserve">
-    <value>Invalid M601 on line {0}.  M601 must be followed by a P-code</value>
-  </data>
-  <data name="AnalyzeError21" xml:space="preserve">
-    <value>Invalid M601 on line {0}, the P-code value must be between 100 and 10000.</value>
   </data>
   <data name="AppMenuEdit" xml:space="preserve">
     <value>&amp;Edit</value>
@@ -1853,5 +1847,20 @@
   </data>
   <data name="AnalyzeError30" xml:space="preserve">
     <value>Invalid M631.2 on line {0}.  M631.2 must be followed by a P-code specifying the expected return value</value>
+  </data>
+  <data name="AnalyzeError31" xml:space="preserve">
+    <value>P631.2 on line {0} can not have any other commands on the same line except a P command indicating the return result.</value>
+  </data>
+  <data name="AnalyzeError32" xml:space="preserve">
+    <value>Line {0} contains M631.2 command which must be followed by an M631 or M631.1 command.</value>
+  </data>
+  <data name="AnalyzeError34" xml:space="preserve">
+    <value>Line {0} contains M630 command but no executable file was found, you must specify an executable file.</value>
+  </data>
+  <data name="AnalyzeError35" xml:space="preserve">
+    <value>Invalid M630 on line {0} executable not found: {1}</value>
+  </data>
+  <data name="AnalyzeError36" xml:space="preserve">
+    <value>Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line.</value>
   </data>
 </root>

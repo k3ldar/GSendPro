@@ -27,7 +27,7 @@ namespace GSendAnalyzer.Analyzers
             {
                 if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
                 {
-                    codeAnalyses.AddError(GSend.Language.Resources.AnalysesError1);
+                    codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError1);
                 }
             }
 

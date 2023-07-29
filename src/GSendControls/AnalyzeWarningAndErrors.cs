@@ -35,7 +35,7 @@ namespace GSendControls
 
             if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.HasEndProgram))
             {
-                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.AnalysesError24);
+                AddMessage(warningsAndErrors, issues, InformationType.Error, GSend.Language.Resources.AnalyzeError33);
             }
 
             if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.InvalidGCode))

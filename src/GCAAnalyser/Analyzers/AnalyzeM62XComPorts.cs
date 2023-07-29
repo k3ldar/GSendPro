@@ -46,7 +46,7 @@ namespace GSendAnalyzer.Analyzers
 
                     if (!_comPortProvider.AvailablePorts().Contains(comPort))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalysesError7, comPort, command.LineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError7, comPort, command.LineNumber);
                     }
                     else if (command.CommandValue == Constants.MCode620)
                     {
@@ -69,11 +69,11 @@ namespace GSendAnalyzer.Analyzers
                         if ((command.PreviousCommand?.LineNumber == command.LineNumber || command.NextCommand?.LineNumber == command.LineNumber) &&
                             (command.PreviousCommand?.MasterLineNumber == command.MasterLineNumber || command.NextCommand?.MasterLineNumber == command.MasterLineNumber))
                         {
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError3, command.LineNumber);
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError3, command.LineNumber);
                         }
 
                         if (comPortUsage[comPort])
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError2, command.LineNumber, comPort);
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError2, command.LineNumber, comPort);
 
                         comPortUsage[comPort] = true;
                     }
@@ -81,9 +81,9 @@ namespace GSendAnalyzer.Analyzers
                     {
                         // close port
                         if (!comPortUsage.ContainsKey(comPort))
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError4, command.LineNumber, comPort);
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError4, command.LineNumber, comPort);
                         else if (!comPortUsage[comPort])
-                            codeAnalyses.AddError(GSend.Language.Resources.AnalysesError5, command.LineNumber, comPort);
+                            codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError5, command.LineNumber, comPort);
                         else
                             comPortUsage[comPort] = false;
                     }
@@ -112,7 +112,7 @@ namespace GSendAnalyzer.Analyzers
                 {
                     if (kvp.Value)
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalysesError6, kvp.Key);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError6, kvp.Key);
                     }
                 }
             }

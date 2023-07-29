@@ -196,78 +196,6 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M6 Automatic tool change found, but no tool specified..
-        /// </summary>
-        public static string AnalysesError1 {
-            get {
-                return ResourceManager.GetString("AnalysesError1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} attempts to open a COM port &quot;{1}&quot; when it is already open..
-        /// </summary>
-        public static string AnalysesError2 {
-            get {
-                return ResourceManager.GetString("AnalysesError2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End program was not found.
-        /// </summary>
-        public static string AnalysesError24 {
-            get {
-                return ResourceManager.GetString("AnalysesError24", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} must appear on it&apos;s own line without any other commands..
-        /// </summary>
-        public static string AnalysesError3 {
-            get {
-                return ResourceManager.GetString("AnalysesError3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
-        /// </summary>
-        public static string AnalysesError4 {
-            get {
-                return ResourceManager.GetString("AnalysesError4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that is already closed..
-        /// </summary>
-        public static string AnalysesError5 {
-            get {
-                return ResourceManager.GetString("AnalysesError5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to COM Port &quot;{0}&quot; is opened but never closed..
-        /// </summary>
-        public static string AnalysesError6 {
-            get {
-                return ResourceManager.GetString("AnalysesError6", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The COM port &quot;{0}&quot; on line {1} does not exist..
-        /// </summary>
-        public static string AnalysesError7 {
-            get {
-                return ResourceManager.GetString("AnalysesError7", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid variable on line {0}, must contain a name and value, i.e. #101=value.
         /// </summary>
         public static string AnalysesVariableInvalid1 {
@@ -412,6 +340,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M6 Automatic tool change found, but no tool specified..
+        /// </summary>
+        public static string AnalyzeError1 {
+            get {
+                return ResourceManager.GetString("AnalyzeError1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Command {0}{1} on line {2} does not contain a response value that can be verified after sending data to a COM port..
         /// </summary>
         public static string AnalyzeError10 {
@@ -498,6 +435,15 @@ namespace GSend.Language {
         public static string AnalyzeError19 {
             get {
                 return ResourceManager.GetString("AnalyzeError19", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to open a COM port &quot;{1}&quot; when it is already open..
+        /// </summary>
+        public static string AnalyzeError2 {
+            get {
+                return ResourceManager.GetString("AnalyzeError2", resourceCulture);
             }
         }
         
@@ -592,11 +538,110 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} must appear on it&apos;s own line without any other commands..
+        /// </summary>
+        public static string AnalyzeError3 {
+            get {
+                return ResourceManager.GetString("AnalyzeError3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid M631.2 on line {0}.  M631.2 must be followed by a P-code specifying the expected return value.
         /// </summary>
         public static string AnalyzeError30 {
             get {
                 return ResourceManager.GetString("AnalyzeError30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to P631.2 on line {0} can not have any other commands on the same line except a P command indicating the return result..
+        /// </summary>
+        public static string AnalyzeError31 {
+            get {
+                return ResourceManager.GetString("AnalyzeError31", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M631.2 command which must be followed by an M631 or M631.1 command..
+        /// </summary>
+        public static string AnalyzeError32 {
+            get {
+                return ResourceManager.GetString("AnalyzeError32", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End program was not found.
+        /// </summary>
+        public static string AnalyzeError33 {
+            get {
+                return ResourceManager.GetString("AnalyzeError33", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains M630 command but no executable file was found, you must specify an executable file..
+        /// </summary>
+        public static string AnalyzeError34 {
+            get {
+                return ResourceManager.GetString("AnalyzeError34", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid M630 on line {0} executable not found: {1}.
+        /// </summary>
+        public static string AnalyzeError35 {
+            get {
+                return ResourceManager.GetString("AnalyzeError35", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line..
+        /// </summary>
+        public static string AnalyzeError36 {
+            get {
+                return ResourceManager.GetString("AnalyzeError36", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
+        /// </summary>
+        public static string AnalyzeError4 {
+            get {
+                return ResourceManager.GetString("AnalyzeError4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that is already closed..
+        /// </summary>
+        public static string AnalyzeError5 {
+            get {
+                return ResourceManager.GetString("AnalyzeError5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COM Port &quot;{0}&quot; is opened but never closed..
+        /// </summary>
+        public static string AnalyzeError6 {
+            get {
+                return ResourceManager.GetString("AnalyzeError6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The COM port &quot;{0}&quot; on line {1} does not exist..
+        /// </summary>
+        public static string AnalyzeError7 {
+            get {
+                return ResourceManager.GetString("AnalyzeError7", resourceCulture);
             }
         }
         

@@ -4,6 +4,77 @@ namespace GSendAnalyzer.Analyzers
 {
     public class BaseAnalyzer
     {
+        protected bool HasCommandsOnSameLine(IGCodeCommand command, char ignoreCommands)
+        {
+            var commandsOnLine = CommandsOnSameLine(command);
+
+            return commandsOnLine.Any(c => c.Command != ignoreCommands);
+        }
+
+        protected List<IGCodeCommand> CommandsOnSameLine(IGCodeCommand command)
+        {
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+
+            List<IGCodeCommand> Result = new();
+
+            LookPrevious(command, Result);
+            LookNext(command, Result);
+
+
+            return Result;
+        }
+
+        private void LookPrevious(IGCodeCommand command, List<IGCodeCommand> commands)
+        {
+            IGCodeCommand previous = command.PreviousCommand;
+
+            while (true)
+            {
+                if (previous == null)
+                    break;
+
+                if (previous.MasterLineNumber == command.MasterLineNumber)
+                    commands.Add(previous);
+                else
+                    break;
+
+                previous = previous.PreviousCommand;
+            }
+        }
+
+        private void LookNext(IGCodeCommand command, List<IGCodeCommand> commands)
+        {
+            IGCodeCommand next = command.NextCommand;
+
+            while (true)
+            {
+                if (next == null)
+                    break;
+
+                if (next.MasterLineNumber == command.MasterLineNumber)
+                    commands.Add(next);
+                else
+                    break;
+
+                next = next.NextCommand;
+            }
+        }
+
+        protected bool ValidatePreviousNextCommand(IGCodeCommand command, char toFindCommand)
+        {
+            if (command == null)
+                return false;
+
+            if (command.PreviousCommand != null && command.PreviousCommand.Command == toFindCommand)
+                return true;
+
+            if (command.NextCommand != null && command.NextCommand.Command == toFindCommand)
+                return true;
+
+            return false;
+        }
+
         protected bool ValidateNextCommand(IGCodeCommand command, decimal finalNextTo)
         {
             if (command == null)

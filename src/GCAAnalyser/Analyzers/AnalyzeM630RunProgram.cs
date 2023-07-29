@@ -25,7 +25,7 @@ namespace GSendAnalyzer.Analyzers
                 {
                     if (lineNumbers.Contains(command.MasterLineNumber))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError21, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError36, command.MasterLineNumber);
                         continue;
                     }
 
@@ -43,7 +43,7 @@ namespace GSendAnalyzer.Analyzers
                     }
                     else if (!File.Exists(exeFile))
                     {
-                        codeAnalyses.AddWarning(GSend.Language.Resources.AnalyzeError20, command.MasterLineNumber, exeFile);
+                        codeAnalyses.AddWarning(GSend.Language.Resources.AnalyzeError35, command.MasterLineNumber, exeFile);
                         continue;
                     }
                 }

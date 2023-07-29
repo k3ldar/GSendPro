@@ -18,20 +18,20 @@ namespace GSendAnalyzer.Analyzers
             {
                 foreach (IGCodeCommand command in mCommands)
                 {
-                    if (command.NextCommand == null)
+                    if (!ValidatePreviousNextCommand(command, Constants.CharP))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.M600InvalidNoPCommand, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError30, command.MasterLineNumber);
                         continue;
                     }
 
-                    if (command.NextCommand.Command != Constants.CharP)
+                    if (HasCommandsOnSameLine(command, Constants.CharP))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError30, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError31, command.MasterLineNumber);
                     }
 
                     if (!ValidateNextCommand(command, Constants.MCode631RunProgram, new decimal[] { Constants.MCode631RunProgramParams, Constants.MCode631RunProgramResult }, new char[] { Constants.CharP }, 0))
                     {
-                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError29, command.MasterLineNumber);
+                        codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError32, command.MasterLineNumber);
                     }
                 }
             }
