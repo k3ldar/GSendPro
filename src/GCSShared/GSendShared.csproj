@@ -11,7 +11,7 @@
     <PackageReference Include="AspNetCore.PluginManager.Languages" Version="$(PluginVersion)" />
     <PackageReference Include="Middleware" Version="$(PluginVersion)" />
     <PackageReference Include="PluginManager" Version="$(PluginVersion)" />
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.8.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
     <PackageReference Include="SharedPluginFeatures" Version="$(PluginVersion)" />
     <PackageReference Include="System.IO.Ports" Version="7.0.0" />
   </ItemGroup>

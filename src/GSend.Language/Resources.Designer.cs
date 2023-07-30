@@ -322,6 +322,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Running a program on line {0}, timeout period not specified using M601, default value of 1000 milliseconds will be used..
+        /// </summary>
+        public static string AnalysesWarningDefaultTimeoutRunProgram {
+            get {
+                return ResourceManager.GetString("AnalysesWarningDefaultTimeoutRunProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum layer height is {0} which exceeds warning level of {1}.
         /// </summary>
         public static string AnalysesWarningLayerHeightTooMuch {
@@ -660,6 +669,15 @@ namespace GSend.Language {
         public static string AnalyzeError9 {
             get {
                 return ResourceManager.GetString("AnalyzeError9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running a program on line {0}, return code not found, default return value of zero will be used..
+        /// </summary>
+        public static string AnaylsesWarningNoReturnCode {
+            get {
+                return ResourceManager.GetString("AnaylsesWarningNoReturnCode", resourceCulture);
             }
         }
         

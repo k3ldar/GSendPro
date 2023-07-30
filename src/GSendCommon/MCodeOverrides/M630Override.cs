@@ -2,11 +2,19 @@
 
 using GSendShared;
 using GSendShared.Abstractions;
+using Shared.Classes;
 
 namespace GSendCommon.MCodeOverrides
 {
-    internal class M630Override : IMCodeOverride
+    internal class M630Override : BaseOverride, IMCodeOverride
     {
+        private readonly IRunProgram _runProgram;
+
+        public M630Override(IRunProgram runProgram)
+        {
+            _runProgram = runProgram;
+        }
+
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
             List<IGCodeCommand> m630Commands = overrideContext.GCode.Commands.Where(c => c.Command.Equals(Constants.CharM) && c.CommandValue.Equals(Constants.MCode630RunProgram)).ToList();
@@ -17,21 +25,21 @@ namespace GSendCommon.MCodeOverrides
             if (m630Commands.Count == 1)
             {
                 IGCodeCommand command = m630Commands[0];
-                string comment = command.CommentStripped(true);
+                string programName = command.CommentStripped(true);
 
                 try
                 {
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo(comment);
+                    string args = null;
+
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo(programName);
 
                     //run the exe here after checking for M630.1 in previous line
                     if (command.PreviousCommand != null && command.PreviousCommand.Command.Equals(Constants.CharM) && command.PreviousCommand.CommandValue.Equals(Constants.MCode630RunProgramParams))
                     {
-                        processStartInfo.Arguments = command.PreviousCommand.CommentStripped(true);
+                        args = command.PreviousCommand.CommentStripped(true);
                     }
 
-                    processStartInfo.UseShellExecute = true;
-
-                    System.Diagnostics.Process.Start(processStartInfo);
+                    _runProgram.Run(programName, args, true, false, 0);
 
                     overrideContext.SendCommand = false;
 

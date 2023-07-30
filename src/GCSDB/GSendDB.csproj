@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Middleware" Version="$(PluginVersion)" />
     <PackageReference Include="PluginManager" Version="$(PluginVersion)" />
-    <PackageReference Include="SC.Shared.Library.Core" Version="3.8.0" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
     <PackageReference Include="SharedPluginFeatures" Version="$(PluginVersion)" />
     <PackageReference Include="SimpleDB" Version="$(PluginVersion)" />
     <PackageReference Include="PluginManager.DAL.TextFiles" Version="$(PluginVersion)" />

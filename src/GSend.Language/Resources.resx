@@ -1863,4 +1863,10 @@
   <data name="AnalyzeError36" xml:space="preserve">
     <value>Line {0} contains multiple M630 commands, only 1 M630 command is allowed per line.</value>
   </data>
+  <data name="AnalysesWarningDefaultTimeoutRunProgram" xml:space="preserve">
+    <value>Running a program on line {0}, timeout period not specified using M601, default value of 1000 milliseconds will be used.</value>
+  </data>
+  <data name="AnaylsesWarningNoReturnCode" xml:space="preserve">
+    <value>Running a program on line {0}, return code not found, default return value of zero will be used.</value>
+  </data>
 </root>

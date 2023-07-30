@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
+using Shared.Classes;
+using SharedLib.Win.Classes;
 
 namespace GSendCommon
 {
@@ -8,7 +10,7 @@ namespace GSendCommon
     {
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddTransient<IRunProgram, WindowsRunProgram>();
         }
 
         public void Finalise()

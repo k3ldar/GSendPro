@@ -28,6 +28,12 @@
   <PropertyGroup>
     <FrameWorkLatestVersion>net7.0</FrameWorkLatestVersion>
   </PropertyGroup>
+	
+  <PropertyGroup>
+    <PluginVersion>5.3.0</PluginVersion>
+	<SharedVer>3.9.1</SharedVer>
+	<SharedWinVer>1.1.0</SharedWinVer>
+  </PropertyGroup>
   
   <PropertyGroup>
     <Version>0.7.0</Version>
@@ -36,7 +42,6 @@
     <Company>Simon Carter</Company>
     <Copyright>Copyright (c) 2022 - 2023.  Simon Carter.  All rights reserved.</Copyright>
     <Description>Advanced GCode Sender, Analyzer and Editor</Description>
-    <PluginVersion>5.2.0</PluginVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">
