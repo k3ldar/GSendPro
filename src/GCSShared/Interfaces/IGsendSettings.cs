@@ -23,5 +23,9 @@
         int UpdateMilliseconds { get; set; }
 
         string FileFilter { get; set; }
+
+        int MaximumLineLength { get; set; }
+
+        int MaximumBufferSize { get; set; }
     }
 }

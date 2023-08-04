@@ -17,14 +17,6 @@
 @using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.Edit), GSendService.Controllers.MachinesController.Name, FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
-    @if (Model.IsConnected)
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                @Html.ValidationSummary()
-            </div>
-        </div>
-    }
     <div class="row rowSpace">
         <div class="col-4">
             @Html.LabelFor(m => m.Name)

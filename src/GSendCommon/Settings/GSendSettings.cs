@@ -25,5 +25,9 @@ namespace GSendCommon.Settings
         public int UpdateMilliseconds { get; set; } = 200;
 
         public string FileFilter { get; set; } = GSend.Language.Resources.FileFilterDefaults;
+
+        public int MaximumLineLength { get; set; } = 256;
+
+        public int MaximumBufferSize { get; set; } = 135;
     }
 }

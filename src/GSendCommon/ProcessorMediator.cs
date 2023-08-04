@@ -75,7 +75,7 @@ namespace GSendCommon
 
                 foreach (IMachine machine in machines)
                 {
-                    IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, machine, _comPortFactory, _serviceProvider);
+                    IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, machine, _comPortFactory, _serviceProvider, _settings);
                     _machines.Add(processor);
                     processor.TimeOut = TimeSpan.FromMilliseconds(_settings.ConnectTimeOut);
                 }
@@ -218,7 +218,7 @@ namespace GSendCommon
 
             if (newMachine != null)
             {
-                IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, newMachine, _comPortFactory, _serviceProvider);
+                IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, newMachine, _comPortFactory, _serviceProvider, _settings);
                 _machines.Add(processor);
             }
         }

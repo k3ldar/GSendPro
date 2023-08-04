@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+using GSendCommon.Settings;
+
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
@@ -80,15 +82,17 @@ namespace GSendCommon
         private readonly Stopwatch _jobTime = new();
         private bool _updateStatusSent = false;
         private readonly ProcessGCodeJob _processJobThread;
-
+        private readonly IGSendSettings _gSendSettings;
 
         #region Constructors
 
         public GCodeProcessor(IGSendDataProvider gSendDataProvider, IMachine machine,
-            IComPortFactory comPortFactory, IServiceProvider serviceProvider)
+            IComPortFactory comPortFactory, IServiceProvider serviceProvider,
+            IGSendSettings gSendSettings)
             : base(machine, TimeSpan.FromMilliseconds(Constants.QueueProcessMilliseconds))
         {
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
+            _gSendSettings = gSendSettings ?? throw new ArgumentNullException(nameof(gSendSettings));
 
             if (comPortFactory == null)
                 throw new ArgumentNullException(nameof(comPortFactory));
@@ -121,7 +125,7 @@ namespace GSendCommon
 
             if (_commandQueue.Count > 0)
             {
-                while (BufferSize < Constants.MaxBufferSize)
+                while (BufferSize < _gSendSettings.MaximumBufferSize)
                 {
                     if (_commandQueue.TryPeek(out IGCodeLine peekCommand))
                     {
@@ -140,7 +144,7 @@ namespace GSendCommon
                         }
                         else
                         {
-                            if ((BufferSize + peekCommand.GetGCode().Length + 1) < Constants.MaxBufferSize)
+                            if ((BufferSize + peekCommand.GetGCode().Length + 1) < _gSendSettings.MaximumBufferSize)
                             {
                                 _machineStateModel.CommandQueueSize = _commandQueue.Count;
                                 _commandQueue.TryDequeue(out peekCommand);
@@ -176,7 +180,7 @@ namespace GSendCommon
             {
                 _machineStateModel.JobTime = new TimeSpan(_jobTime.ElapsedTicks);
 
-                while (BufferSize < Constants.MaxBufferSize && NextCommand < _commandsToSend.Count)
+                while (BufferSize < _gSendSettings.MaximumBufferSize && NextCommand < _commandsToSend.Count)
                 {
                     IGCodeLine commandToSend = _commandsToSend[NextCommand];
 
@@ -188,7 +192,7 @@ namespace GSendCommon
 
                     string commandText = commandToSend.GetGCode();
 
-                    if ((BufferSize + commandText.Length + 1) < Constants.MaxBufferSize && IsRunning)
+                    if ((BufferSize + commandText.Length + 1) < _gSendSettings.MaximumBufferSize && IsRunning)
                     {
                         if (!String.IsNullOrEmpty(commandText) ||
                             !commandText.StartsWith("%"))

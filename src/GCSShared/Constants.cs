@@ -88,8 +88,6 @@ namespace GSendShared
 
         public const int QueueProcessMilliseconds = 20;
 
-        public const int MaxBufferSize = 135;
-
         public const int MinConnectionWait = 500;
 
         public const int SocketKeepAliveMinutes = 5;
