@@ -18,6 +18,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
+using Shared.Classes;
+
+using SharedLib.Win.Classes;
+
 namespace GSendDesktop.Internal
 {
     public sealed class PluginInitialisation : IPlugin
@@ -37,6 +41,7 @@ namespace GSendDesktop.Internal
             services.AddTransient<FormMain>();
             services.AddTransient<FrmAddMachine>();
             services.AddSingleton<ISubprograms, SubProgramsApi>();
+            services.AddSingleton<IRunProgram, WindowsRunProgram>();
         }
 
         public void Finalise()

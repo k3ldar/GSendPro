@@ -2194,16 +2194,10 @@ namespace GSendDesktop.Forms
         {
             string name = _machine.Name;
 
+            ApiSettings apiSettings = _gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
+            IRunProgram runProgram = _gSendContext.ServiceProvider.GetRequiredService<IRunProgram>();
 
-            if (InputDialog.Show(this, GSend.Language.Resources.RenameMachine,
-                GSend.Language.Resources.NewMachineNamePrompt, ref name, validation,
-                GSend.Language.Resources.RenameErrorTitle))
-            {
-                _machine.Name = name;
-                UpdateConfigurationChanged();
-                Text = String.Format(GSend.Language.Resources.MachineTitle, _machine.MachineType, _machine.Name);
-                SaveChanges(true);
-            }
+            runProgram.Run($"{apiSettings.RootAddress}/Machines/Edit/{_machine.Id}/", null, true, false, 1000);
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
