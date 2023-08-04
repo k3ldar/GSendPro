@@ -1869,4 +1869,16 @@
   <data name="AnaylsesWarningNoReturnCode" xml:space="preserve">
     <value>Running a program on line {0}, return code not found, default return value of zero will be used.</value>
   </data>
+  <data name="AnalyzeError37" xml:space="preserve">
+    <value>Unexpected return code for M631 on line {0}.  Expected {1} actual result was {2}.</value>
+  </data>
+  <data name="UpdateConnectedMachine" xml:space="preserve">
+    <value>Settings can not be updated whilst connected to the machine.</value>
+  </data>
+  <data name="InvalidMachineNameLength" xml:space="preserve">
+    <value>Machine name must be between 5 and 40 characters long.</value>
+  </data>
+  <data name="InvalidMachineNameUnique" xml:space="preserve">
+    <value>Machine name is already in use, each machine must have a unique name.</value>
+  </data>
 </root>

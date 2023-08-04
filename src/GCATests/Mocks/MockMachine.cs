@@ -11,6 +11,7 @@ namespace GSendTests.Mocks
 
         public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public MachineType MachineType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public MachineFirmware MachineFirmware { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string ComPort { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public MachineOptions Options { get; set; }
         public byte AxisCount { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

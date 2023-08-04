@@ -619,6 +619,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unexpected return code for M631 on line {0}.  Expected {1} actual result was {2}..
+        /// </summary>
+        public static string AnalyzeError37 {
+            get {
+                return ResourceManager.GetString("AnalyzeError37", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
         /// </summary>
         public static string AnalyzeError4 {
@@ -2352,6 +2361,24 @@ namespace GSend.Language {
         public static string InvalidLicense {
             get {
                 return ResourceManager.GetString("InvalidLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine name must be between 5 and 40 characters long..
+        /// </summary>
+        public static string InvalidMachineNameLength {
+            get {
+                return ResourceManager.GetString("InvalidMachineNameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine name is already in use, each machine must have a unique name..
+        /// </summary>
+        public static string InvalidMachineNameUnique {
+            get {
+                return ResourceManager.GetString("InvalidMachineNameUnique", resourceCulture);
             }
         }
         
@@ -4881,6 +4908,15 @@ namespace GSend.Language {
         public static string Undo {
             get {
                 return ResourceManager.GetString("Undo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings can not be updated whilst connected to the machine..
+        /// </summary>
+        public static string UpdateConnectedMachine {
+            get {
+                return ResourceManager.GetString("UpdateConnectedMachine", resourceCulture);
             }
         }
         

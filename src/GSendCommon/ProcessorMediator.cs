@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net.WebSockets;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
 
@@ -163,7 +164,22 @@ namespace GSendCommon
 
         public bool EventRaised(in string eventId, in object param1, in object param2, ref object result)
         {
-            return false;
+            switch (eventId)
+            {
+                case Constants.NotificationMachineConnected:
+                    int machineId = Convert.ToInt32(param1);
+                    IGCodeProcessor processor = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+
+                    if (processor == null)
+                        result = false;
+                    else
+                        result = processor.IsConnected;
+
+                    return true;
+
+                default:
+                    return false;
+            }
         }
 
         public void EventRaised(in string eventId, in object param1, in object param2)
@@ -234,6 +250,7 @@ namespace GSendCommon
 
             processor.Machine.Options = updateMachine.Options;
             processor.Machine.Name = updateMachine.Name;
+            processor.Machine.ComPort = updateMachine.ComPort;
             processor.Machine.ProbeCommand = updateMachine.ProbeCommand;
             processor.Machine.ProbeSpeed = updateMachine.ProbeSpeed;
             processor.Machine.ProbeThickness = updateMachine.ProbeThickness;
@@ -241,7 +258,6 @@ namespace GSendCommon
             processor.Machine.JogUnits = updateMachine.JogUnits;
             processor.Machine.SpindleType = updateMachine.SpindleType;
             processor.Machine.SoftStartSeconds = updateMachine.SoftStartSeconds;
-
         }
 
         public List<string> GetEvents()
@@ -250,7 +266,8 @@ namespace GSendCommon
             {
                 Constants.NotificationMachineAdd,
                 Constants.NotificationMachineRemove,
-                Constants.NotificationMachineUpdated
+                Constants.NotificationMachineUpdated,
+                Constants.NotificationMachineConnected,
             };
         }
 

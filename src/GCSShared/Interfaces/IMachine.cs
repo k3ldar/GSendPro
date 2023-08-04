@@ -13,6 +13,8 @@ namespace GSendShared
 
         MachineType MachineType { get; set; }
 
+        MachineFirmware MachineFirmware { get; set; }
+
         string ComPort { get; set; }
 
         MachineOptions Options { get; set; }

@@ -10,6 +10,7 @@ namespace GSendDB.Tables
     {
         private string _name;
         private MachineType _machineType;
+        private MachineFirmware _machineFirmware;
         private string _comPort;
         private MachineOptions _options;
         private byte _axisCount;
@@ -65,6 +66,20 @@ namespace GSendDB.Tables
                     return;
 
                 _machineType = value;
+                Update();
+            }
+        }
+
+        public MachineFirmware MachineFirmware
+        {
+            get => _machineFirmware;
+
+            set
+            {
+                if (value == _machineFirmware)
+                    return;
+
+                _machineFirmware = value;
                 Update();
             }
         }

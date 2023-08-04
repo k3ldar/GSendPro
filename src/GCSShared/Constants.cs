@@ -4,6 +4,8 @@ namespace GSendShared
 {
     public static class Constants
     {
+        public const int MinimumMachineNameLength = 5;
+        public const int MaximumMachineNameLength = 40;
         public const int MaxSubCommandRecursionDepth = 15;
         public const int MinSpindleSpeed = 0;
         public const int MaxSpindleSpeed = 35000;
@@ -125,6 +127,8 @@ namespace GSendShared
         public const string NotificationJobProfileUpdated = "JobProfileUpdated";
 
         public const string NotificationJobExecutionAdd = "JobExecutionAdd";
+
+        public const string NotificationMachineConnected = "MachineConnected";
 
         public const string MessageMachineStatusAll = "mStatusAll";
 

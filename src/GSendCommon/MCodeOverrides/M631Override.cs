@@ -57,9 +57,12 @@ namespace GSendCommon.MCodeOverrides
                         overrideContext.SendInformationUpdate(InformationType.Warning,
                             String.Format(GSend.Language.Resources.AnalysesWarningDefaultTimeoutRunProgram, mCommands[0].MasterLineNumber));
 
-                    if (_runProgram.Run(program, args, false, true, timeoutMilliseconds) != returnCode)
-                    {
+                    int runResult = _runProgram.Run(program, args, false, true, timeoutMilliseconds);
 
+                    if (runResult != returnCode)
+                    {
+                        overrideContext.SendInformationUpdate(InformationType.Error, 
+                            String.Format(GSend.Language.Resources.AnalyzeError37, mCommands[0].MasterLineNumber, returnCode, runResult));
                     }
 
                     overrideContext.SendCommand = false;

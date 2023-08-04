@@ -12,6 +12,8 @@ var gSend = (function () {
         sendUpdateRequest: false,
         isConnected: false,
         statusUpdateCode: '',
+        connectedYes: 'Yes',
+        connectedNo: 'No'
     }
 
     let that = {
@@ -38,8 +40,11 @@ var gSend = (function () {
         connectToMachine: function (id) {
             var machine = document.getElementById("mConn" + id);
 
-            if (machine.classList.contains('bg-secondary')) {
+            if (machine.innerHTML === _settings.connectedNo) {
                 _settings.socket.send("mConnect:" + id);
+            }
+            else if (machine.innerHTML === _settings.connectedYes) {
+                _settings.socket.send("mDisconnect:" + id);
             }
         },
 
@@ -125,7 +130,7 @@ var gSend = (function () {
                 let ms = document.getElementById("mStat" + arrMachines[i].Id);
                 let mcpu = document.getElementById("mCpu" + arrMachines[i].Id);
 
-                mc.innerText = arrMachines[i].Connected;
+                mc.innerText = arrMachines[i].Connected ? _settings.connectedYes : _settings.connectedNo;
                 mcpu.innerText = arrMachines[i].CpuStatus;
 
                 if (arrMachines[i].Connected) {

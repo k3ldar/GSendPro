@@ -168,6 +168,14 @@
         Printer,
     }
 
+    /// <summary>
+    /// Machine firmware
+    /// </summary>
+    public enum MachineFirmware
+    {
+        grblv1_1,
+    }
+
     [Flags]
     public enum MachineOptions
     {

@@ -7,7 +7,7 @@
 
         }
 
-        public MachineModel(long id, string name, MachineType machineType, string comPort, MachineOptions options, byte axisCount,
+        public MachineModel(long id, string name, MachineType machineType, MachineFirmware machineFirmware, string comPort, MachineOptions options, byte axisCount,
             GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle,
             int overrideZDown, int overrideZUp, DateTime configurationLastVerified, decimal layerHeightWarning,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
@@ -20,6 +20,7 @@
             Id = id;
             Name = name;
             MachineType = machineType;
+            MachineFirmware = machineFirmware;
             ComPort = comPort;
             Options = options;
             AxisCount = axisCount;
@@ -48,6 +49,8 @@
         public string Name { get; set; }
 
         public MachineType MachineType { get; set; }
+
+        public MachineFirmware MachineFirmware { get; set; }
 
         public string ComPort { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+using GSendService.Attributes;
 using GSendService.Models;
 
 using GSendShared;
@@ -12,6 +13,7 @@ using SharedPluginFeatures;
 
 namespace GSendService.Controllers
 {
+    [LicenseValidation]
     public class HomeController : BaseController
     {
         public const string Name = "Home";
@@ -27,25 +29,7 @@ namespace GSendService.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            if (!IsLicenseValid())
-                return RedirectToAction(nameof(ViewLicense));
-
             return View(CreateIndexModel());
-        }
-
-        [HttpGet]
-        [Route("/ViewMachine/{machineId}/")]
-        public IActionResult ViewMachine(long machineId)
-        {
-            if (!IsLicenseValid())
-                return RedirectToAction(nameof(ViewLicense));
-
-            IMachine machine = _gSendDataProvider.MachineGet(machineId);
-
-            if (machine == null)
-                RedirectToAction(nameof(Index));
-
-            return View(CreateMachineModel(machine));
         }
 
         [HttpGet]
@@ -92,24 +76,9 @@ namespace GSendService.Controllers
             return new AddLicenseModel(GetModelData(), activeLicense.RegisteredUser, activeLicense.Expires, activeLicense.IsValid);
         }
 
-        private bool IsLicenseValid()
-        {
-            ILicense license = _licenseFactory.GetActiveLicense();
-
-            return license != null && license.IsValid;
-        }
-
         private IndexViewModel CreateIndexModel()
         {
             return new IndexViewModel(GetModelData(), _gSendDataProvider.MachinesGet());
-        }
-
-        private MachineViewModel CreateMachineModel(IMachine machine)
-        {
-            return new MachineViewModel(GetModelData(), machine.Name)
-            {
-
-            };
         }
     }
 }

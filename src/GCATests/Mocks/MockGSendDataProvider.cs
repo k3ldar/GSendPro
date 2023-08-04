@@ -28,6 +28,7 @@ namespace GSendTests.Mocks
             {
                 _machines.Add(new MachineModel(i, machineNames[i],
                     i % 2 == 0 ? MachineType.CNC : MachineType.Laser,
+                    MachineFirmware.grblv1_1,
                     $"COM{i + 2}",
                     MachineOptions.None, 3, new GrblSettings(),
                     FeedRateDisplayUnits.MmPerMinute,

@@ -280,6 +280,7 @@ namespace GSendDB.Providers
 
             machineDataRow.Name = machine.Name;
             machineDataRow.MachineType = machine.MachineType;
+            machineDataRow.MachineFirmware = machine.MachineFirmware;
             machineDataRow.ComPort = machine.ComPort;
             machineDataRow.Options = machine.Options;
             machineDataRow.AxisCount = machine.AxisCount;
@@ -323,7 +324,7 @@ namespace GSendDB.Providers
                 return null;
 
             return new MachineModel(machineDataRow.Id, machineDataRow.Name, machineDataRow.MachineType,
-                machineDataRow.ComPort, machineDataRow.Options,
+                machineDataRow.MachineFirmware, machineDataRow.ComPort, machineDataRow.Options,
                 machineDataRow.AxisCount, machineDataRow.Settings,
                 machineDataRow.DisplayUnits, machineDataRow.FeedbackUnits, machineDataRow.OverrideSpeed,
                 machineDataRow.OverrideSpindle, machineDataRow.OverrideZDown, machineDataRow.OverrideZUp,

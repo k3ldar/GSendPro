@@ -11,45 +11,49 @@
 
 <table class="table">
     <thead class="thead-dark">
-        <th scope="col" width="6%"></th>
-    <th scope="col" width="25%">@GSend.Language.Resources.Name</th>
-        <th scope="col" width="8%">Type</th>
-        <th scope="col" width="10%">CPU</th>
-        <th scope="col" width="10%">ComPort</th>
-        <th scope="col" width="10%">Connected</th>
-        <th scope="col" width="15%">@GSend.Language.Resources.Status</th>
-        <th scope="col" width="10%"></th>
-    </th>
-        @{
+        <tr>
+            <th scope="col" width="6%"></th>
+            <th scope="col" width="25%">@GSend.Language.Resources.Name</th>
+            <th scope="col" width="8%">Type</th>
+            <th scope="col" width="10%">CPU</th>
+            <th scope="col" width="10%">ComPort</th>
+            <th scope="col" width="10%">Connected</th>
+            <th scope="col" width="15%">@GSend.Language.Resources.Status</th>
+            <th scope="col" width="10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
         foreach (GSendShared.IMachine machine in Model.Machines)
         {
             string machineStatus = $"mStat{machine.Id}";
             string machineCon = $"mConn{machine.Id}";
             string machineCpu = $"mCpu{machine.Id}";
             <tr>
-            <td scope="row">
-                @switch (machine.MachineType)
-                {
-                    case GSendShared.MachineType.CNC:
-                        <img src="/images/CNC32x32.png" alt="CNC Router" />
-                        break;
+                <td scope="row">
+                    @switch (machine.MachineType)
+                    {
+                        case GSendShared.MachineType.CNC:
+                            <img src="/images/CNC32x32.png" alt="CNC Router" />
+                            break;
 
-                    case GSendShared.MachineType.Printer:
-                        <img src="/images/3DPrinter32x32.png" alt="CNC Router" />
-                        break;
+                        case GSendShared.MachineType.Printer:
+                            <img src="/images/3DPrinter32x32.png" alt="CNC Router" />
+                            break;
                     }
-            </td>
-            <td>@machine.Name</td>
+                </td>
+                <td>@machine.Name</td>
 
-            <td>@machine.MachineType</td>
-            <td><span id="@machineCpu">0.0%/0.0%</span></td>
-            <td>@machine.ComPort</td>
+                <td>@machine.MachineType</td>
+                <td><span id="@machineCpu">0.0%/0.0%</span></td>
+                <td>@machine.ComPort</td>
                 <td><button id="@machineCon" class="btn bg-secondary" onclick="javascript:gSend.connectToMachine(@machine.Id);">@GSend.Language.Resources.No</button></td>
-            <td><button id="@machineStatus" class="btn bg-secondary" onclick="javascript:gSend.clearAlarm(@machine.Id);"></button></td>
-                <td><a class="btn btn-primary" href="/ViewMachine/@machine.Id/" target="_blank" role="button">@GSend.Language.Resources.View</a></td>
-        </tr>
+                <td><button id="@machineStatus" class="btn bg-secondary" onclick="javascript:gSend.clearAlarm(@machine.Id);" style="display:none;"></button></td>
+                <td><a class="btn btn-primary" href="/Machines/View/@machine.Id/" target="_blank" role="button">@GSend.Language.Resources.View</a></td>
+            </tr>
+        }
     }
-}
+    </tbody>
 </table>
 
 <div class="row">
@@ -65,6 +69,8 @@
         connState: document.getElementById("connectionState"),
         serverIp: scheme + "://" + document.location.hostname + port + "/webclient/",
         statusUpdateCode: 'mStatusAll',
+        connectedYes: '@Languages.LanguageStrings.Yes',
+        connectedNo: '@Languages.LanguageStrings.No'
     }
 
     gSend.init(settings);

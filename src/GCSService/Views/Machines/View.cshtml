@@ -1,0 +1,35 @@
+﻿@model GSendService.Models.ViewMachineModel
+@{
+    ViewData["Title"] = $"{Model.Name} {Model.SeoTitle}";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@Model.Name</h3>
+    </div>
+</div>
+<div class="row rowSpace">
+    <div class="col-2">
+        @Html.LabelFor(m => m.MachineType)
+    </div>
+    <div class="col-2">
+        @Model.MachineType
+    </div>
+</div>
+<div class="row rowSpace">
+    <div class="col-2">
+        @Html.LabelFor(m => m.ComPort)
+    </div>
+    <div class="col-2">
+        @Model.ComPort
+    </div>
+    <div class="col-6">
+        
+    </div>
+    <div class="col-2">
+        <a class="btn btn-primary" href="/Machines/Edit/@Model.Id/" role="button">@Languages.LanguageStrings.Update</a>
+    </div>
+</div>
+<script>
+    gSend.init();
+</script>
