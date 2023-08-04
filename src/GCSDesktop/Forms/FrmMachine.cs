@@ -2192,12 +2192,10 @@ namespace GSendDesktop.Forms
 
         private void mnuMachineRename_Click(object sender, EventArgs e)
         {
-            string name = _machine.Name;
-
             ApiSettings apiSettings = _gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
             IRunProgram runProgram = _gSendContext.ServiceProvider.GetRequiredService<IRunProgram>();
 
-            runProgram.Run($"{apiSettings.RootAddress}/Machines/Edit/{_machine.Id}/", null, true, false, 1000);
+            runProgram.Run($"{apiSettings.RootAddress}Machines/Edit/{_machine.Id}/", null, true, false, apiSettings.Timeout);
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
