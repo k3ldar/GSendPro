@@ -74,10 +74,11 @@ namespace GSendTests.GCService
             Assert.IsNotNull(sut);
 
             List<string> events = sut.GetEvents();
-            Assert.AreEqual(3, events.Count);
+            Assert.AreEqual(4, events.Count);
             Assert.AreEqual("MachineAdd", events[0]);
             Assert.AreEqual("MachineRemove", events[1]);
             Assert.AreEqual("MachineUpdate", events[2]);
+            Assert.AreEqual("MachineConnected", events[3]);
         }
 
         [TestMethod]

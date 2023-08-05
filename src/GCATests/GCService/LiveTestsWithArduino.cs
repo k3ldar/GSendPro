@@ -5,6 +5,7 @@ using System.Threading;
 using GSendAnalyzer.Internal;
 
 using GSendCommon;
+using GSendCommon.Settings;
 
 using GSendShared;
 using GSendShared.Models;
@@ -32,7 +33,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider(), new GSendSettings())
             {
                 TimeOut = TimeSpan.FromSeconds(5)
             };
@@ -56,7 +57,7 @@ namespace GSendTests.GCService
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider(), new GSendSettings())
             {
                 TimeOut = TimeSpan.FromSeconds(1000)
             };
@@ -113,7 +114,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider());
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider(), new GSendSettings());
             bool eventFired = false;
             sut.OnInvalidComPort += (sender, e) => { eventFired = true; };
             sut.TimeOut = TimeSpan.FromSeconds(5);
@@ -155,7 +156,7 @@ namespace GSendTests.GCService
 
             ComPortFactory mockComPortFactory = new(new MockSettingsProvider());
 
-            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider())
+            GCodeProcessor sut = new(new MockGSendDataProvider(), machineModel, mockComPortFactory, new MockServiceProvider(), new GSendSettings())
             {
                 TimeOut = TimeSpan.FromSeconds(1000)
             };
