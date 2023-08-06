@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Xml.Linq;
 
 using GSendService.Attributes;
 using GSendService.Models;
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Models;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,12 +89,14 @@ namespace GSendService.Controllers
                     ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
             }
 
+            bool isConnected = IsMachineConnected(model.Id);
+
             if (String.IsNullOrEmpty(model.ComPort))
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.ServerErrorInvalidComPort);
 
             if (!ModelState.IsValid)
             {
-                EditMachineModel machineEditModel = CreateMachineEditModel(_gSendDataProvider.MachineGet(model.Id), IsMachineConnected(model.Id));
+                EditMachineModel machineEditModel = CreateMachineEditModel(_gSendDataProvider.MachineGet(model.Id), isConnected);
                 machineEditModel.Name = model.Name;
                 machineEditModel.MachineFirmware = model.MachineFirmware;
                 machineEditModel.MachineType = model.MachineType;
@@ -107,8 +111,65 @@ namespace GSendService.Controllers
             machine.MachineType = model.MachineType;
 
             _gSendDataProvider.MachineUpdate(machine);
+            _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineUpdated, machine.Id);
 
             return RedirectToAction(nameof(View), new { machineId = model.Id });
+        }
+
+        [HttpGet]
+        //[Breadcrumb()]
+        public IActionResult Add()
+        {
+            EditMachineModel machineEditModel = CreateMachineAddModel();
+
+            //machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
+            //machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.Edit}", $"/{Name}/{nameof(Edit)}/{machineId}", false));
+
+            return View(machineEditModel);
+        }
+
+        [HttpPost]
+        public IActionResult Add(EditMachineModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            if (ModelState.IsValid)
+            {
+                if (_gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name))
+                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
+            }
+
+            if (String.IsNullOrEmpty(model.ComPort))
+                ModelState.AddModelError(String.Empty, GSend.Language.Resources.ServerErrorInvalidComPort);
+
+            if (!ModelState.IsValid)
+            {
+                EditMachineModel machineEditModel = CreateMachineAddModel();
+                machineEditModel.Name = model.Name;
+                machineEditModel.MachineFirmware = model.MachineFirmware;
+                machineEditModel.MachineType = model.MachineType;
+                machineEditModel.ComPort = model.ComPort;
+
+                return View(machineEditModel);
+            }
+
+            IMachine machine = new MachineModel()
+            {
+                Name = model.Name,
+                ComPort = model.ComPort,
+                MachineType = model.MachineType,
+                MachineFirmware = model.MachineFirmware,
+                OverrideSpeed = 40,
+                OverrideSpindle = 5000,
+                OverrideZDownSpeed = 300,
+                OverrideZUpSpeed = 300,
+                SoftStartSeconds = 30,
+            };
+            
+            _gSendDataProvider.MachineAdd(machine);
+            _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineAdd, machine.Id);
+            return RedirectToAction(nameof(View), new { machineId = machine.Id });
         }
 
 
@@ -142,6 +203,13 @@ namespace GSendService.Controllers
         {
             return new EditMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.MachineFirmware, 
                 machine.ComPort, _comPortProvider.AvailablePorts(), isConnected)
+            {
+
+            };
+        }
+        private EditMachineModel CreateMachineAddModel()
+        {
+            return new EditMachineModel(GetModelData(), _comPortProvider.AvailablePorts())
             {
 
             };

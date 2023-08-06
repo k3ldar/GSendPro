@@ -31,5 +31,7 @@
         public bool IsConnected { get; set; }
 
         public bool IsLicensed { get; set; }
+
+        public long CombinedHash { get; set; }
     }
 }

@@ -15,12 +15,12 @@
         /// <summary>
         /// Delegate that is called to perform action of shortcut
         /// </summary>
-        ShortcutKeyDelegate Trigger { get; }
+        ShortcutKeyDownHandler Trigger { get; }
 
         /// <summary>
         /// Called when shortcut is updated
         /// </summary>
-        ShortcutUpdatedDelegate KeysUpdated { get; }
+        ShortcutUpdatedHandler KeysUpdated { get; }
 
         /// <summary>
         /// Existing key combination (maps to System.Windows.Forms.Keys)

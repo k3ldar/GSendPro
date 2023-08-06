@@ -4,7 +4,7 @@ namespace GSendShared.Models
 {
     public sealed class ShortcutModel : IShortcut
     {
-        public ShortcutModel(string groupName, string name, List<int> defaultKeys, ShortcutKeyDelegate trigger, ShortcutUpdatedDelegate keysUpdated = null)
+        public ShortcutModel(string groupName, string name, List<int> defaultKeys, ShortcutKeyDownHandler trigger, ShortcutUpdatedHandler keysUpdated = null)
         {
             if (String.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException(nameof(groupName));
@@ -23,9 +23,9 @@ namespace GSendShared.Models
 
         public string Name { get; }
 
-        public ShortcutKeyDelegate Trigger { get; }
+        public ShortcutKeyDownHandler Trigger { get; }
 
-        public ShortcutUpdatedDelegate KeysUpdated { get; }
+        public ShortcutUpdatedHandler KeysUpdated { get; }
 
         public List<int> DefaultKeys { get; }
     }

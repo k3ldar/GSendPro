@@ -48,7 +48,5 @@ namespace GSendService.Internal
         }
 
         #endregion Overridden Methods
-
-
     }
 }

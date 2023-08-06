@@ -70,7 +70,7 @@ namespace GSendControls
         }
 
         [Browsable(true)]
-        public event JogCommand OnJogStart;
+        public event JogCommandHandler OnJogStart;
 
         [Browsable(true)]
         public event EventHandler OnJogStop;

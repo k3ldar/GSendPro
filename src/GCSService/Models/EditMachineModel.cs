@@ -15,7 +15,7 @@ namespace GSendService.Models
 
         public EditMachineModel(BaseModelData modelData, long id, string name, MachineType machineType,
             MachineFirmware machineFirmware, string comport, string[] comPorts, bool isConnected)
-           : base(modelData)
+           : this(modelData, comPorts)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
@@ -30,6 +30,12 @@ namespace GSendService.Models
             ComPorts = comPorts;
             IsConnected = isConnected;
             MachineFirmware = machineFirmware;
+        }
+
+        public EditMachineModel(BaseModelData modelData, string[] comPorts)
+           : base(modelData)
+        {
+            ComPorts = comPorts;
         }
 
         public long Id { get; set; }

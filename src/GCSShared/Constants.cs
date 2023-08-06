@@ -218,6 +218,8 @@ namespace GSendShared
 
         public const string MessageInformationUpdate = "mInfoUpdate";
 
+        public const string MessageConfigurationUpdated = "mConfigUpdate";
+
         public const string StateUndefined = "Undefined";
 
         public const string MessageRunGCodeAdmin = "mStart";

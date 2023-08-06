@@ -980,9 +980,11 @@ namespace GSendCommon
 
         public event ResponseReceivedHandler OnResponseReceived;
 
-        public event UpdateLineStatus OnLineStatusUpdated;
+        public event UpdateLineStatusHandler OnLineStatusUpdated;
 
-        public event InformationUpdate OnInformationUpdate;
+        public event InformationUpdateHandler OnInformationUpdate;
+
+        public event ConfigurationUpdatedHandler OnConfigurationUpdated;
 
         #endregion IGCodeProcessor Events
 
@@ -1577,6 +1579,11 @@ namespace GSendCommon
         public void RaiseOnInformationUpdate(InformationType informationType, string message)
         {
             OnInformationUpdate?.Invoke(informationType, message);
+        }
+
+        public void RaiseOnConfigurationUpdated(ConfigurationUpdatedMessage configurationUpdatedMessage)
+        {
+            OnConfigurationUpdated?.Invoke(configurationUpdatedMessage);
         }
 
         #endregion Private Methods

@@ -1204,6 +1204,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine configuration has changed, please restart GSend Pro to continue.
+        /// </summary>
+        public static string ConfigurationUpdatedRestart {
+            get {
+                return ResourceManager.GetString("ConfigurationUpdatedRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to !! Grbl settings changed since last connected.
         /// </summary>
         public static string ConfigurationUpdatedSinceLastConnect {

@@ -1,11 +1,10 @@
 ﻿@model GSendService.Models.EditMachineModel
 @{
     ViewData["Title"] = $"{Model.Name} {Model.SeoTitle}";
-    string isDisabled = Model.IsConnected ? " disabled" : String.Empty;
 }
 <div class="row">
     <div class="col-sm-12">
-        <h3>@Languages.LanguageStrings.Edit @Model.Name</h3>
+        <h3>@GSend.Language.Resources.MachineAdd</h3>
     </div>
 </div>
 <div class="row">
@@ -14,7 +13,7 @@
     </div>
 </div>
 
-@using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.Edit), GSendService.Controllers.MachinesController.Name, FormMethod.Post))
+@using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.Add), GSendService.Controllers.MachinesController.Name, FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
     <div class="row rowSpace">
@@ -51,10 +50,10 @@
     </div>
     <div class="row rowSpace">
         <div class="col-4">
-
         </div>
         <div class="col-2">
-            <button type="submit" class="btn btn-primary"@isDisabled>@Languages.LanguageStrings.Save</button>
+            <button type="submit" class="btn btn-primary">@Languages.LanguageStrings.Save</button>
         </div>
     </div>
 }
+

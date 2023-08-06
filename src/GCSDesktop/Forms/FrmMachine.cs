@@ -58,6 +58,7 @@ namespace GSendDesktop.Forms
         private bool _appliedSettingsChanged = false;
         private bool _configurationChanges = false;
         private bool _lastMessageWasHiddenCommand = false;
+        private bool _canConnectMachine = true;
         private int _totalLines;
         private List<IGCodeLine> _gcodeLines;
         private IToolProfile _toolProfile;
@@ -228,7 +229,7 @@ namespace GSendDesktop.Forms
                 case "Stop":
                     if (_machineStatusModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                         SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
-                    
+
                     break;
 
                 case Constants.ComPortTimeOut:
@@ -393,6 +394,24 @@ namespace GSendDesktop.Forms
                     }
 
                     break;
+
+                case Constants.MessageConfigurationUpdated:
+                    ConfigurationUpdatedMessage updateMessage = (ConfigurationUpdatedMessage)JsonSerializer.Deserialize<ConfigurationUpdatedMessage>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+
+                    if (_machine.Name != updateMessage.Name)
+                    {
+                        _machine.Name = updateMessage.Name;
+                        Text = String.Format(GSend.Language.Resources.MachineTitle, _machine.MachineType, _machine.Name);
+                    }
+
+                    if (_machine.ComPort != updateMessage.Comport || _machine.MachineFirmware != updateMessage.MachineFirmware || _machine.MachineType != updateMessage.MachineType)
+                    {
+                        _canConnectMachine = false;
+                        warningsAndErrors.AddWarningPanel(InformationType.ErrorKeep, GSend.Language.Resources.ConfigurationUpdatedRestart);
+                        UpdateEnabledState();
+                    }
+
+                    break;
             }
         }
 
@@ -402,7 +421,7 @@ namespace GSendDesktop.Forms
             toolStripButtonSave.Enabled = _configurationChanges;
             mnuActionSaveConfig.Enabled = _configurationChanges;
 
-            toolStripButtonConnect.Enabled = !_machineConnected;
+            toolStripButtonConnect.Enabled = _canConnectMachine && !_machineConnected;
             mnuActionConnect.Enabled = toolStripButtonConnect.Enabled;
 
             toolStripButtonDisconnect.Enabled = _machineConnected && !_isJogging && !_isProbing;
@@ -1578,12 +1597,12 @@ namespace GSendDesktop.Forms
             jogControl.FeedMinimum = 0;
             jogControl.StepValue = 7;
             jogControl.FeedRate = _machine.JogFeedrate;
-            trackBarPercent.Value = _machine.OverrideSpeed;
-            selectionOverrideSpindle.Value = _machine.OverrideSpindle;
-            selectionOverrideZDown.Value = _machine.OverrideZDownSpeed;
-            selectionOverrideZUp.Value = _machine.OverrideZUpSpeed;
+            trackBarPercent.Value = Shared.Utilities.CheckMinMax(_machine.OverrideSpeed, trackBarPercent.Minimum, trackBarPercent.Maximum);
+            selectionOverrideSpindle.Value = Shared.Utilities.CheckMinMax(_machine.OverrideSpindle, selectionOverrideSpindle.Minimum, selectionOverrideSpindle.Maximum);
+            selectionOverrideZDown.Value = Shared.Utilities.CheckMinMax(_machine.OverrideZDownSpeed, selectionOverrideZDown.Minimum, selectionOverrideZDown.Maximum);
+            selectionOverrideZUp.Value = Shared.Utilities.CheckMinMax(_machine.OverrideZUpSpeed, selectionOverrideZUp.Minimum, selectionOverrideZUp.Maximum);
             cbSoftStart.Checked = _machine.SoftStart;
-            trackBarDelaySpindle.Value = _machine.SoftStartSeconds;
+            trackBarDelaySpindle.Value = Shared.Utilities.CheckMinMax(_machine.SoftStartSeconds, trackBarDelaySpindle.Minimum, trackBarDelaySpindle.Maximum);
 
             //trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
             selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;

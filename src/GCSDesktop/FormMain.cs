@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net.WebSockets;
+using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -42,6 +44,7 @@ namespace GSendDesktop
         private readonly Dictionary<long, ListViewItem> _machines = new();
         private readonly ConcurrentDictionary<long, bool> _machineStateModel = new();
         private IMachine _selectedMachine = null;
+        private long _machineHashCombined = 0;
 
         public FormMain(IGSendContext context, IGSendApiWrapper machineApiWrapper,
             IMessageNotifier messageNotifier, ICommandProcessor processCommand, GSendSettings settings)
@@ -104,10 +107,18 @@ namespace GSendDesktop
             if (!toolStripStatusCpu.Text.Equals(serverCpu))
                 toolStripStatusCpu.Text = serverCpu;
 
+            if (clientMessage.CombinedHash != _machineHashCombined)
+            {
+                _machineHashCombined = clientMessage.CombinedHash;
+                UpdateMachines();
+            }
 
             if (clientMessage.request.Equals(MessageMachineStatusAll))
             {
                 List<StatusResponseMessage> statuses = JsonSerializer.Deserialize<List<StatusResponseMessage>>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+
+                if (statuses.Any(s => s.UpdatedConfiguration))
+                    UpdateMachines();
 
                 UpdateMachineStatus(statuses);
             }
@@ -150,6 +161,7 @@ namespace GSendDesktop
 
             if (statuses.Count != _machines.Count)
                 UpdateMachines();
+
             //error checking
             foreach (StatusResponseMessage status in statuses)
             {
@@ -265,12 +277,10 @@ namespace GSendDesktop
 
         private void toolStripButtonAddMachine_Click(object sender, EventArgs e)
         {
-            using FrmAddMachine frmAddMachine = _context.ServiceProvider.GetService<FrmAddMachine>();
+            ApiSettings apiSettings = _context.ServiceProvider.GetRequiredService<ApiSettings>();
+            IRunProgram runProgram = _context.ServiceProvider.GetRequiredService<IRunProgram>();
 
-            if (frmAddMachine.ShowDialog(this) == DialogResult.OK)
-            {
-                UpdateMachines();
-            }
+            runProgram.Run($"{apiSettings.RootAddress}Machines/Add/", null, true, false, apiSettings.Timeout);
         }
 
         private void toolStripButtonPauseAll_Click(object sender, EventArgs e)
@@ -321,6 +331,12 @@ namespace GSendDesktop
 
         private void UpdateMachines()
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => { UpdateMachines(); }));
+                return;
+            }
+
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
                 _processCommand.ProcessCommand(() =>
@@ -393,7 +409,6 @@ namespace GSendDesktop
             _selectedMachine = listViewMachines.SelectedItems.Count == 0 ? null : listViewMachines.SelectedItems[0].Tag as IMachine;
             UpdateEnabledState();
         }
-
 
         protected override void UpdateEnabledState()
         {
@@ -514,7 +529,10 @@ namespace GSendDesktop
 
         private void toolStripButtonRemoveMachine_Click(object sender, EventArgs e)
         {
+            //ApiSettings apiSettings = _context.ServiceProvider.GetRequiredService<ApiSettings>();
+            //IRunProgram runProgram = _context.ServiceProvider.GetRequiredService<IRunProgram>();
 
+            //runProgram.Run($"{apiSettings.RootAddress}Machines/Delete/{}", null, true, false, apiSettings.Timeout);
         }
 
         private void mnuViewLargeIcons_Click(object sender, EventArgs e)

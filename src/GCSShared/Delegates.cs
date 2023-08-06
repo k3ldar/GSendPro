@@ -21,15 +21,17 @@ namespace GSendShared
 
     public delegate void ProcessMessageHandler(string message);
 
-    public delegate void JogCommand(JogDirection jogDirection, double stepSize, double feedRate);
+    public delegate void JogCommandHandler(JogDirection jogDirection, double stepSize, double feedRate);
 
-    public delegate void ShortcutKeyDelegate(bool isKeyDown);
+    public delegate void ShortcutKeyDownHandler(bool isKeyDown);
 
-    public delegate void ShortcutUpdatedDelegate(List<int> keys);
+    public delegate void ShortcutUpdatedHandler(List<int> keys);
 
     public delegate void ShortcutKeyHandler(object sender, ShortcutArgs e);
 
-    public delegate void UpdateLineStatus(int lineNumber, int masterLineNumber, LineStatus lineStatus);
+    public delegate void UpdateLineStatusHandler(int lineNumber, int masterLineNumber, LineStatus lineStatus);
 
-    public delegate void InformationUpdate(InformationType informationType, string message);
+    public delegate void InformationUpdateHandler(InformationType informationType, string message);
+
+    public delegate void ConfigurationUpdatedHandler(ConfigurationUpdatedMessage configurationUpdatedMessage);
 }

@@ -19,7 +19,8 @@
             <th scope="col" width="10%">ComPort</th>
             <th scope="col" width="10%">Connected</th>
             <th scope="col" width="15%">@GSend.Language.Resources.Status</th>
-            <th scope="col" width="10%"></th>
+            <th scope="col" width="5%"></th>
+            <th scope="col" width="5%"></th>
         </tr>
     </thead>
     <tbody>
@@ -50,15 +51,21 @@
                 <td><button id="@machineCon" class="btn bg-secondary" onclick="javascript:gSend.connectToMachine(@machine.Id);">@GSend.Language.Resources.No</button></td>
                 <td><button id="@machineStatus" class="btn bg-secondary" onclick="javascript:gSend.clearAlarm(@machine.Id);" style="display:none;"></button></td>
                 <td><a class="btn btn-primary" href="/Machines/View/@machine.Id/" target="_blank" role="button">@GSend.Language.Resources.View</a></td>
+                <td><a class="btn btn-primary" href="/Machines/Delete/@machine.Id/" role="button">@Languages.LanguageStrings.Delete</a></td>
             </tr>
         }
     }
     </tbody>
 </table>
-
 <div class="row">
     <div class="col-sm-2">
         <p><span id="connectionState" class="badge bg-danger">Server Not Connected</span></p>
+    </div>
+    <div class="col-sm-9">
+        
+    </div>
+    <div class="col-sm-1">
+        <a class="btn btn-primary" href="/Machines/Add/" role="button">@Languages.LanguageStrings.Add</a>
     </div>
 </div>
 <script>

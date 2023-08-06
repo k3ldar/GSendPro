@@ -39,7 +39,6 @@ namespace GSendDesktop.Internal
             services.AddTransient<IComPortProvider, ComPortProvider>();
             services.AddTransient<ICommandProcessor, CommandProcessor>();
             services.AddTransient<FormMain>();
-            services.AddTransient<FrmAddMachine>();
             services.AddSingleton<ISubprograms, SubProgramsApi>();
             services.AddSingleton<IRunProgram, WindowsRunProgram>();
         }

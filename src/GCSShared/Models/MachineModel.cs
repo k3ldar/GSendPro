@@ -7,21 +7,25 @@
 
         }
 
+        public MachineModel(string name, MachineType machineType, MachineFirmware machineFirmware, string comPort)
+        {
+            Name = name;
+            MachineType = machineType;
+            MachineFirmware = machineFirmware;
+            ComPort = comPort;
+        }
+
         public MachineModel(long id, string name, MachineType machineType, MachineFirmware machineFirmware, string comPort, MachineOptions options, byte axisCount,
             GrblSettings settings, FeedRateDisplayUnits displayUnits, FeedbackUnit feedbackUnit, int overrideSpeed, int overrideSpindle,
             int overrideZDown, int overrideZUp, DateTime configurationLastVerified, decimal layerHeightWarning,
             string probeCommand, int probeSpeed, decimal probeThickness, int jogFeedRate, int jogUnits, SpindleType spindleType,
             int softStartSeconds, int serviceWeeks, int serviceSpindleHours)
-            : this()
+            : this(name, machineType, machineFirmware, comPort)
         {
             if (String.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
 
             Id = id;
-            Name = name;
-            MachineType = machineType;
-            MachineFirmware = machineFirmware;
-            ComPort = comPort;
             Options = options;
             AxisCount = axisCount;
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -104,6 +108,21 @@
         public void RemoveOptions(MachineOptions options)
         {
             Options &= ~options;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashcode = 7497;
+                hashcode = hashcode * 7345 ^ Id.GetHashCode();
+                hashcode = hashcode * 7345 ^ Name.GetHashCode();
+                hashcode = hashcode * 7345 ^ MachineType.GetHashCode();
+                hashcode = hashcode * 7345 ^ MachineFirmware.GetHashCode();
+                hashcode = hashcode * 7345 ^ ComPort.GetHashCode();
+
+                return hashcode;
+            }
         }
     }
 }

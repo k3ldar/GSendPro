@@ -13,12 +13,15 @@ var gSend = (function () {
         isConnected: false,
         statusUpdateCode: '',
         connectedYes: 'Yes',
-        connectedNo: 'No'
+        connectedNo: 'No',
+        machineHash: 0,
     }
 
     let that = {
         init: function (settings) {
             _settings = settings;
+
+            _settings.machineHash = -1;
 
             if (_settings.isConnected == undefined)
                 _settings.isConnected = false;
@@ -109,8 +112,20 @@ var gSend = (function () {
                 if (event.data != '') {
                     var jsonData = $.parseJSON(event.data);
 
-                    if (jsonData.success && jsonData.request === 'mStatusAll') {
-                        that.updateMachineStatus(jsonData.message);
+                    
+                    if (jsonData.success)
+                    {
+                        if (_settings.machineHash != jsonData.CombinedHash) {
+                            var isReload = _settings.machineHash != -1;
+                            _settings.machineHash = jsonData.CombinedHash;
+
+                            if (isReload)
+                                location.reload();
+                        }
+
+                        if (jsonData.request === 'mStatusAll') {
+                            that.updateMachineStatus(jsonData.message);
+                        }
                     }
                     else {
 

@@ -328,7 +328,7 @@
             this.jogControl.Size = new System.Drawing.Size(439, 190);
             this.jogControl.StepValue = 0;
             this.jogControl.TabIndex = 5;
-            this.jogControl.OnJogStart += new GSendShared.JogCommand(this.jogControl_OnJogStart);
+            this.jogControl.OnJogStart += new GSendShared.JogCommandHandler(this.jogControl_OnJogStart);
             this.jogControl.OnJogStop += new System.EventHandler(this.jogControl_OnJogStop);
             this.jogControl.OnUpdate += new System.EventHandler(this.jogControl_OnUpdate);
             // 

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Net.WebSockets;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
 
@@ -39,6 +38,10 @@ namespace GSendCommon
         private bool _processEvents = false;
         private ulong _messageId = 0;
         private string _clientId = null;
+        private static long _machineCombinedHash = 0;
+        private static readonly object _staticLockObject = new();
+        private static bool _eventsRegistered = false;
+
 
         public ProcessorMediator(IServiceProvider serviceProvider,
             ILogger logger,
@@ -59,7 +62,16 @@ namespace GSendCommon
             _settings = settingsProvider.GetSettings<GSendSettings>(Constants.SettingsName);
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
 
-            notificationService.RegisterListener(this);
+            using (TimedLock tl = TimedLock.Lock(_staticLockObject))
+            {
+                if (!_eventsRegistered)
+                {
+                    _eventsRegistered = true;
+
+                    notificationService.RegisterListener(this);
+                }
+            }
+
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -79,6 +91,8 @@ namespace GSendCommon
                     _machines.Add(processor);
                     processor.TimeOut = TimeSpan.FromMilliseconds(_settings.ConnectTimeOut);
                 }
+
+                UpdateCombinedMachineHash();
             }
         }
 
@@ -94,7 +108,7 @@ namespace GSendCommon
                 });
 
                 _machines.Clear();
-
+                UpdateCombinedMachineHash();
                 ThreadManager.CancelAll();
             }
         }
@@ -220,10 +234,11 @@ namespace GSendCommon
             {
                 IGCodeProcessor processor = new GCodeProcessor(_gSendDataProvider, newMachine, _comPortFactory, _serviceProvider, _settings);
                 _machines.Add(processor);
+                UpdateCombinedMachineHash();
             }
         }
 
-        private static void RemoveMachine(long machineId)
+        private void RemoveMachine(long machineId)
         {
             IGCodeProcessor machineToDelete = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
 
@@ -233,6 +248,7 @@ namespace GSendCommon
                     machineToDelete.Disconnect();
 
                 _machines.Remove(machineToDelete);
+                UpdateCombinedMachineHash();
             }
         }
 
@@ -258,6 +274,21 @@ namespace GSendCommon
             processor.Machine.JogUnits = updateMachine.JogUnits;
             processor.Machine.SpindleType = updateMachine.SpindleType;
             processor.Machine.SoftStartSeconds = updateMachine.SoftStartSeconds;
+
+            if (processor is GCodeProcessor codeProcessor)
+            {
+                ConfigurationUpdatedMessage message = new ConfigurationUpdatedMessage()
+                {
+                    Name = updateMachine.Name,
+                    Comport = updateMachine.ComPort,
+                    MachineFirmware = updateMachine.MachineFirmware,
+                    MachineType = updateMachine.MachineType,
+                };
+
+                codeProcessor.RaiseOnConfigurationUpdated(message);
+            }
+
+            UpdateCombinedMachineHash();
         }
 
         public List<string> GetEvents()
@@ -295,6 +326,7 @@ namespace GSendCommon
             processor.OnResponseReceived += Processor_OnResponseReceived;
             processor.OnLineStatusUpdated += Processor_OnLineStatusUpdated;
             processor.OnInformationUpdate += Processor_OnInformationUpdate;
+            processor.OnConfigurationUpdated += Processor_OnConfigurationUpdated;
         }
 
         private void RemoveEventsFromProcessor(IGCodeProcessor processor)
@@ -317,6 +349,7 @@ namespace GSendCommon
             processor.OnResponseReceived -= Processor_OnResponseReceived;
             processor.OnLineStatusUpdated -= Processor_OnLineStatusUpdated;
             processor.OnInformationUpdate -= Processor_OnInformationUpdate;
+            processor.OnConfigurationUpdated -= Processor_OnConfigurationUpdated;
         }
 
         private void Processor_OnComPortTimeOut(IGCodeProcessor sender, EventArgs e)
@@ -415,6 +448,11 @@ namespace GSendCommon
             SendMessage(new ClientBaseMessage(Constants.MessageInformationUpdate, new InformationMessageModel(informationType, message)));
         }
 
+        private void Processor_OnConfigurationUpdated(ConfigurationUpdatedMessage configurationUpdatedMessage)
+        {
+            SendMessage(new ClientBaseMessage(Constants.MessageConfigurationUpdated, configurationUpdatedMessage));
+        }
+
         #endregion Processor Events
 
         #region Private Methods
@@ -425,6 +463,7 @@ namespace GSendCommon
                 return;
 
             clientBaseMessage.ServerCpuStatus = ThreadManager.CpuUsage;
+            clientBaseMessage.CombinedHash = _machineCombinedHash;
 
             byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(clientBaseMessage, Constants.DefaultJsonSerializerOptions));
 
@@ -806,6 +845,7 @@ namespace GSendCommon
                         }
 
                         response.message = machineStates;
+                        response.CombinedHash = _machineCombinedHash;
                         response.success = true;
                         break;
 
@@ -880,12 +920,30 @@ namespace GSendCommon
                 response.success = false;
             }
 
+            response.CombinedHash = _machineCombinedHash;
+
             byte[] json = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response, Constants.DefaultJsonSerializerOptions));
 
             if (json.Length > BufferSize)
                 throw new InvalidOperationException();
 
             return json;
+        }
+
+        private void UpdateCombinedMachineHash()
+        {
+            long newHash = 0;
+
+            unchecked
+            {
+                for (int i = 0; i < _machines.Count; i++)
+                {
+                    newHash += _machines[i].Machine.GetHashCode();
+                }
+            }
+
+            if (newHash != _machineCombinedHash)
+                _machineCombinedHash = newHash;
         }
 
         #endregion Private Methods

@@ -85,6 +85,9 @@ namespace GSendDB.Providers
 
             _machineDataRow.Insert(machineDataRow);
 
+            if (machine is MachineModel machineModel)
+                machineModel.Id = machineDataRow.Id;
+
             return true;
         }
 
