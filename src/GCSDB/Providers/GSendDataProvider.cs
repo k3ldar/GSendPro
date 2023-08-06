@@ -97,7 +97,8 @@ namespace GSendDB.Providers
 
             if (rowToDelete != null)
             {
-                _machineDataRow.Delete(rowToDelete);
+                rowToDelete.IsDeleted = true;
+                _machineDataRow.Update(rowToDelete);
             }
         }
 
@@ -121,7 +122,7 @@ namespace GSendDB.Providers
 
         public IMachine MachineGet(long machineId)
         {
-            return ConvertFromMachineDataRow(_machineDataRow.Select(machineId));
+            return ConvertFromMachineDataRow(_machineDataRow.Select(m => m.Id == machineId && !m.IsDeleted).FirstOrDefault());
         }
 
         #endregion Machines
@@ -315,7 +316,8 @@ namespace GSendDB.Providers
 
             foreach (MachineDataRow machineDataRow in _machineDataRow.Select())
             {
-                Result.Add(ConvertFromMachineDataRow(machineDataRow));
+                if (!machineDataRow.IsDeleted)
+                    Result.Add(ConvertFromMachineDataRow(machineDataRow));
             }
 
             return Result;

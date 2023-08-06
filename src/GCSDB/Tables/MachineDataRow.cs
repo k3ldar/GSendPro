@@ -32,6 +32,7 @@ namespace GSendDB.Tables
         private int _serviceWeeks;
         private int _serviceSpindleHours;
         private decimal _layerHeightWarning;
+        private bool _isDeleted;
 
 
         // Update ConvertFromIMachineToMachineDataRow in gSendDataProvider
@@ -48,10 +49,24 @@ namespace GSendDB.Tables
 
             set
             {
-                if (value == Name)
+                if (value == _name)
                     return;
 
                 _name = value;
+                Update();
+            }
+        }
+
+        public bool IsDeleted
+        {
+            get => _isDeleted;
+
+            set
+            {
+                if (value == _isDeleted)
+                    return;
+
+                _isDeleted = value;
                 Update();
             }
         }
