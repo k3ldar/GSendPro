@@ -1294,6 +1294,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible to delete a machine whilst it is connected..
+        /// </summary>
+        public static string DeleteConnectedMachine {
+            get {
+                return ResourceManager.GetString("DeleteConnectedMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -2622,6 +2631,24 @@ namespace GSend.Language {
         public static string MachineAdd {
             get {
                 return ResourceManager.GetString("MachineAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Machine.
+        /// </summary>
+        public static string MachineDelete {
+            get {
+                return ResourceManager.GetString("MachineDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select the confirm delete option..
+        /// </summary>
+        public static string MachineDeleteConfirm {
+            get {
+                return ResourceManager.GetString("MachineDeleteConfirm", resourceCulture);
             }
         }
         

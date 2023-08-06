@@ -50,7 +50,7 @@
                 <td>@machine.ComPort</td>
                 <td><button id="@machineCon" class="btn bg-secondary" onclick="javascript:gSend.connectToMachine(@machine.Id);">@GSend.Language.Resources.No</button></td>
                 <td><button id="@machineStatus" class="btn bg-secondary" onclick="javascript:gSend.clearAlarm(@machine.Id);" style="display:none;"></button></td>
-                <td><a class="btn btn-primary" href="/Machines/View/@machine.Id/" target="_blank" role="button">@GSend.Language.Resources.View</a></td>
+                <td><a class="btn btn-primary" href="/Machines/View/@machine.Id/" role="button">@GSend.Language.Resources.View</a></td>
                 <td><a class="btn btn-primary" href="/Machines/Delete/@machine.Id/" role="button">@Languages.LanguageStrings.Delete</a></td>
             </tr>
         }

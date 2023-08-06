@@ -1884,4 +1884,13 @@
   <data name="InvalidMachineNameUnique" xml:space="preserve">
     <value>Machine name is already in use, each machine must have a unique name.</value>
   </data>
+  <data name="DeleteConnectedMachine" xml:space="preserve">
+    <value>It is not possible to delete a machine whilst it is connected.</value>
+  </data>
+  <data name="MachineDelete" xml:space="preserve">
+    <value>Delete Machine</value>
+  </data>
+  <data name="MachineDeleteConfirm" xml:space="preserve">
+    <value>You must select the confirm delete option.</value>
+  </data>
 </root>

@@ -45,7 +45,7 @@ namespace GSendService.Controllers
             IMachine machine = _gSendDataProvider.MachineGet(machineId);
 
             if (machine == null)
-                RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
 
             ViewMachineModel viewMachineModel = CreateMachineViewModel(machine);
             viewMachineModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
@@ -60,9 +60,9 @@ namespace GSendService.Controllers
             IMachine machine = _gSendDataProvider.MachineGet(machineId);
 
             if (machine == null)
-                RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
 
-            EditMachineModel machineEditModel = CreateMachineEditModel(machine, IsMachineConnected(machineId));
+            EditMachineModel machineEditModel = CreateMachineEditModel(machine, IsMachineConnected(machineId, true));
 
             machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
             machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.Edit}", $"/{Name}/{nameof(Edit)}/{machineId}", false));
@@ -89,7 +89,7 @@ namespace GSendService.Controllers
                     ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
             }
 
-            bool isConnected = IsMachineConnected(model.Id);
+            bool isConnected = IsMachineConnected(model.Id, true);
 
             if (String.IsNullOrEmpty(model.ComPort))
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.ServerErrorInvalidComPort);
@@ -117,15 +117,10 @@ namespace GSendService.Controllers
         }
 
         [HttpGet]
-        //[Breadcrumb()]
+        [Breadcrumb(nameof(Add))]
         public IActionResult Add()
         {
-            EditMachineModel machineEditModel = CreateMachineAddModel();
-
-            //machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
-            //machineEditModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.Edit}", $"/{Name}/{nameof(Edit)}/{machineId}", false));
-
-            return View(machineEditModel);
+            return View(CreateMachineAddModel());
         }
 
         [HttpPost]
@@ -172,8 +167,68 @@ namespace GSendService.Controllers
             return RedirectToAction(nameof(View), new { machineId = machine.Id });
         }
 
+        [HttpGet]
+        [Route("/Machines/Delete/{machineId}/")]
+        public IActionResult Delete(long machineId)
+        {
+            IMachine machine = _gSendDataProvider.MachineGet(machineId);
 
-        private bool IsMachineConnected(long machineId)
+            if (machine == null)
+                return RedirectToAction(nameof(Index));
+
+            DeleteMachineModel machineDeleteModel = CreateMachineDeleteModel(machine, IsMachineConnected(machineId, false));
+
+            machineDeleteModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
+            machineDeleteModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.Delete}", $"/{Name}/{nameof(Edit)}/{machineId}", false));
+
+            return View(machineDeleteModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(DeleteMachineModel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model));
+
+            IMachine machine = _gSendDataProvider.MachineGet(model.Id);
+
+            if (machine == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!model.ConfirmDelete)
+                ModelState.AddModelError(String.Empty, GSend.Language.Resources.MachineDeleteConfirm);
+
+            if (ModelState.IsValid)
+            {
+                if (_gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name && m.Id != model.Id))
+                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
+            }
+
+            bool isConnected = IsMachineConnected(model.Id, false);
+
+            if (!ModelState.IsValid)
+            {
+                DeleteMachineModel machineDeleteModel = CreateMachineDeleteModel(_gSendDataProvider.MachineGet(model.Id), isConnected);
+                machineDeleteModel.Name = model.Name;
+                machineDeleteModel.MachineFirmware = model.MachineFirmware;
+                machineDeleteModel.MachineType = model.MachineType;
+                machineDeleteModel.ComPort = model.ComPort;
+
+                machineDeleteModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{model.Id}/", false));
+                machineDeleteModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.Delete}", $"/{Name}/{nameof(Edit)}/{model.Id}", false));
+
+                return View(machineDeleteModel);
+            }
+
+            _gSendDataProvider.MachineRemove(model.Id);
+            _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineUpdated, machine.Id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool IsMachineConnected(long machineId, bool isUpdate)
         {
             object connectedState = false;
             bool isConnected = true;
@@ -185,7 +240,10 @@ namespace GSendService.Controllers
 
             if (isConnected)
             {
-                ModelState.AddModelError(String.Empty, GSend.Language.Resources.UpdateConnectedMachine);
+                if (isUpdate)
+                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.UpdateConnectedMachine);
+                else
+                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.DeleteConnectedMachine);
             }
 
             return isConnected;
@@ -193,26 +251,24 @@ namespace GSendService.Controllers
 
         private ViewMachineModel CreateMachineViewModel(IMachine machine)
         {
-            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort)
-            {
-
-            };
+            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort);
         }
 
         private EditMachineModel CreateMachineEditModel(IMachine machine, bool isConnected)
         {
             return new EditMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.MachineFirmware, 
-                machine.ComPort, _comPortProvider.AvailablePorts(), isConnected)
-            {
-
-            };
+                machine.ComPort, _comPortProvider.AvailablePorts(), isConnected);
         }
+
+        private DeleteMachineModel CreateMachineDeleteModel(IMachine machine, bool isConnected)
+        {
+            return new DeleteMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.MachineFirmware,
+                machine.ComPort, isConnected);
+        }
+
         private EditMachineModel CreateMachineAddModel()
         {
-            return new EditMachineModel(GetModelData(), _comPortProvider.AvailablePorts())
-            {
-
-            };
+            return new EditMachineModel(GetModelData(), _comPortProvider.AvailablePorts());
         }
     }
 }

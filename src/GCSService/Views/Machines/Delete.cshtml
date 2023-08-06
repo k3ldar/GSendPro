@@ -1,0 +1,68 @@
+﻿@model GSendService.Models.DeleteMachineModel
+@{
+    ViewData["Title"] = $"{Model.Name} {Model.SeoTitle}";
+    string isDisabled = Model.IsConnected ? " disabled" : String.Empty;
+}
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.MachineDelete</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div>@Html.ValidationSummary(true)</div>
+    </div>
+</div>
+
+@using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.Delete), GSendService.Controllers.MachinesController.Name, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.Name)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = true })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.MachineType)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.MachineType, new { @class = "form-control", @readonly = true })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.MachineFirmware)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.MachineFirmware, new { @class = "form-control", @readonly = true })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.ComPort)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.ComPort, new { @class = "form-control", @readonly = true })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.ConfirmDelete)
+        </div>
+        <div class="col-6">
+            @Html.CheckBoxFor(m => m.ConfirmDelete)
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary"@isDisabled>@Languages.LanguageStrings.Delete</button>
+        </div>
+    </div>
+}
+
