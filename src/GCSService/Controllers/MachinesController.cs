@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Xml.Linq;
 
 using GSendService.Attributes;
 using GSendService.Models;
@@ -161,7 +159,7 @@ namespace GSendService.Controllers
                 OverrideZUpSpeed = 300,
                 SoftStartSeconds = 30,
             };
-            
+
             _gSendDataProvider.MachineAdd(machine);
             _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineAdd, machine.Id);
             return RedirectToAction(nameof(View), new { machineId = machine.Id });
@@ -256,7 +254,7 @@ namespace GSendService.Controllers
 
         private EditMachineModel CreateMachineEditModel(IMachine machine, bool isConnected)
         {
-            return new EditMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.MachineFirmware, 
+            return new EditMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.MachineFirmware,
                 machine.ComPort, _comPortProvider.AvailablePorts(), isConnected);
         }
 

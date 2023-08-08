@@ -15,7 +15,7 @@ namespace GSendDB.Tables
 
         public void AfterInsert(List<ToolDatabaseDataRow> records)
         {
-            // not used but declared as part of interface
+            records.ForEach(r => r.UsageLastReset = DateTime.UtcNow);
         }
 
         public void AfterUpdate(List<ToolDatabaseDataRow> records)

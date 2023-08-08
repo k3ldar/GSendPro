@@ -585,7 +585,7 @@ namespace GSendDesktop.Forms
 
                     toolStripProgressBarJob.Value = status.LineNumber;
 
-                    UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, TimeSpanToTime(status.JobTime)));
+                    UpdateLabelText(lblJobTime, String.Format(GSend.Language.Resources.TotalJobTime, GSendShared.HelperMethods.TimeSpanToTime(status.JobTime)));
 
 
                     if (!toolStripStatusLabelStatus.Text.Equals(HelperMethods.TranslateState(status.MachineState)))
@@ -675,25 +675,6 @@ namespace GSendDesktop.Forms
         {
             if (label.Text != text)
                 label.Text = text;
-        }
-
-        private static string TimeSpanToTime(TimeSpan time)
-        {
-            const int HoursInDay = 24;
-            const int MinutesInHour = 60;
-            const int SecondsInHour = 60;
-            const string NoTime = "-";
-
-            if (time.TotalHours >= HoursInDay)
-                return String.Format(GSend.Language.Resources.TimeFormatDay, time.Days, time.Hours, time.Minutes, time.Seconds);
-            else if (time.TotalMinutes >= MinutesInHour)
-                return String.Format(GSend.Language.Resources.TimeFormatHour, time.Hours, time.Minutes, time.Seconds);
-            else if (time.TotalSeconds >= SecondsInHour)
-                return String.Format(GSend.Language.Resources.TimeFormatMinute, time.Minutes, time.Seconds);
-            else if (time.TotalMilliseconds <= TimeSpan.Zero.TotalMilliseconds)
-                return NoTime;
-
-            return String.Format(GSend.Language.Resources.TimeFormatSecond, time.Seconds);
         }
 
         #endregion Client Web Socket

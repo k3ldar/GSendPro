@@ -2365,6 +2365,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool Id.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An invalid response was returned whilst processing an Api call: {0}; {1}..
         /// </summary>
         public static string InvalidApiResponse {
@@ -4899,6 +4908,24 @@ namespace GSend.Language {
         public static string ToolProfile {
             get {
                 return ResourceManager.GetString("ToolProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools.
+        /// </summary>
+        public static string Tools {
+            get {
+                return ResourceManager.GetString("Tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours Used.
+        /// </summary>
+        public static string ToolsHoursUsed {
+            get {
+                return ResourceManager.GetString("ToolsHoursUsed", resourceCulture);
             }
         }
         

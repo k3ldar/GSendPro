@@ -7,6 +7,7 @@ namespace GSendDB.Tables
     {
         private string _toolName;
         private string _description;
+        private DateTime _resetUsage;
 
         public string ToolName
         {
@@ -32,6 +33,20 @@ namespace GSendDB.Tables
                     return;
 
                 _description = value;
+                Update();
+            }
+        }
+
+        public DateTime UsageLastReset
+        {
+            get => _resetUsage;
+
+            set
+            {
+                if (value == _resetUsage)
+                    return;
+
+                _resetUsage = value;
                 Update();
             }
         }

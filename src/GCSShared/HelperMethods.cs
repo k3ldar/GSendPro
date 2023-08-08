@@ -4,6 +4,25 @@ namespace GSendShared
 {
     public static class HelperMethods
     {
+        public static string TimeSpanToTime(TimeSpan time)
+        {
+            const int HoursInDay = 24;
+            const int MinutesInHour = 60;
+            const int SecondsInHour = 60;
+            const string NoTime = "-";
+
+            if (time.TotalHours >= HoursInDay)
+                return String.Format(GSend.Language.Resources.TimeFormatDay, time.Days, time.Hours, time.Minutes, time.Seconds);
+            else if (time.TotalMinutes >= MinutesInHour)
+                return String.Format(GSend.Language.Resources.TimeFormatHour, time.Hours, time.Minutes, time.Seconds);
+            else if (time.TotalSeconds >= SecondsInHour)
+                return String.Format(GSend.Language.Resources.TimeFormatMinute, time.Minutes, time.Seconds);
+            else if (time.TotalMilliseconds <= TimeSpan.Zero.TotalMilliseconds)
+                return NoTime;
+
+            return String.Format(GSend.Language.Resources.TimeFormatSecond, time.Seconds);
+        }
+
         public static string ConvertMeasurementForDisplay(FeedbackUnit feedbackUnit, double mmMin)
         {
             switch (feedbackUnit)

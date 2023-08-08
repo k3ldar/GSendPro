@@ -18,6 +18,7 @@ namespace GSendService.Api
         private readonly IGSendDataProvider _gSendDataProvider;
         private readonly INotificationService _notificationService;
         internal readonly static Timings _jobExecutionCreate = new();
+        internal readonly static Timings _jobExecutionToolTime = new();
 
         public JobExecutionApi(IGSendDataProvider gSendDataProvider, INotificationService notificationService) 
         {
@@ -40,6 +41,24 @@ namespace GSendService.Api
                 _notificationService.RaiseEvent(GSendShared.Constants.NotificationJobExecutionAdd, model.Id);
 
                 return GenerateJsonSuccessResponse(model);
+            }
+        }
+
+        [HttpPost]
+        [ApiAuthorization]
+        [Route("/JobExecuteApi/ToolHours/{toolId}/")]
+        public IActionResult JobExecutionTooltime(long toolId)
+        {
+            using (StopWatchTimer swt = StopWatchTimer.Initialise(_jobExecutionToolTime))
+            {
+                IToolProfile toolProfile = _gSendDataProvider.ToolGet(toolId);
+
+                if (toolProfile == null)
+                    return GenerateJsonErrorResponse(HtmlResponseBadRequest, "Unable to evaulutate job execution time");
+
+                TimeSpan totalTime = _gSendDataProvider.JobExecutionByTool(toolProfile);
+
+                return GenerateJsonSuccessResponse(totalTime);
             }
         }
 

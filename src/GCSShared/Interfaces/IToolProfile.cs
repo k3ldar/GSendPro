@@ -11,5 +11,7 @@ namespace GSendShared
         string Name { get; set; }
 
         string Description { get; set; }
+
+        DateTime UsageLastReset { get; set; }
     }
 }

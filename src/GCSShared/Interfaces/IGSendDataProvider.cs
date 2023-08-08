@@ -35,5 +35,7 @@
         IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId);
 
         void JobExecutionUpdate(IJobExecution jobExecution);
+
+        TimeSpan JobExecutionByTool(IToolProfile toolProfile);
     }
 }

@@ -70,6 +70,18 @@ namespace GSendDB.Providers
             _jobExecutionTable.Update(jobExecutionDataRow);
         }
 
+        public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
+        {
+            if (toolProfile == null) 
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            var rows = _jobExecutionTable.Select(je => je.StartDateTime >= toolProfile.UsageLastReset &&
+                je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue);
+            long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
+
+            return new TimeSpan(ticks);
+        }
+
         #endregion Job Execution
 
         #region Machines
@@ -269,6 +281,7 @@ namespace GSendDB.Providers
                 Id = toolDatabaseDataRow.Id,
                 Name = toolDatabaseDataRow.ToolName,
                 Description = toolDatabaseDataRow.Description,
+                UsageLastReset = toolDatabaseDataRow.UsageLastReset,
             };
         }
 

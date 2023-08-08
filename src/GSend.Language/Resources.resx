@@ -1893,4 +1893,13 @@
   <data name="MachineDeleteConfirm" xml:space="preserve">
     <value>You must select the confirm delete option.</value>
   </data>
+  <data name="Id" xml:space="preserve">
+    <value>Tool Id</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="ToolsHoursUsed" xml:space="preserve">
+    <value>Hours Used</value>
+  </data>
 </root>
