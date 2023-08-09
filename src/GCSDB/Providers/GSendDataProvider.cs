@@ -3,6 +3,8 @@
 using GSendShared;
 using GSendShared.Models;
 
+using Microsoft.AspNetCore.Mvc;
+
 using Shared.Classes;
 
 using SimpleDB;
@@ -80,6 +82,57 @@ namespace GSendDB.Providers
             long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
 
             return new TimeSpan(ticks);
+        }
+
+        public IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed)
+        {
+            if (toolProfile == null)
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            if (sinceLastUsed)
+            {
+                return from je in _jobExecutionTable.Select()
+                         where je.StartDateTime >= toolProfile.UsageLastReset && je.ToolId == toolProfile.Id && 
+                            !je.Simulation && je.FinishDateTime > DateTime.MinValue
+                         join m in _machineDataRow.Select() on je.MachineId equals m.Id
+                         select new JobExecutionStatistics()
+                         {
+                             Date = je.FinishDateTime.Date,
+                             MachineName = m.Name,
+                             ToolName = toolProfile.Name,
+                             TotalSeconds = je.FinishDateTime - je.StartDateTime
+                         };
+            }
+            else
+            {
+                return from je in _jobExecutionTable.Select()
+                       where je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue
+                       join m in _machineDataRow.Select() on je.MachineId equals m.Id
+                       select new JobExecutionStatistics()
+                       {
+                           Date = je.FinishDateTime.Date,
+                           MachineName = m.Name,
+                           ToolName = toolProfile.Name,
+                           TotalSeconds = je.FinishDateTime - je.StartDateTime
+                       };
+            }
+
+            //List<JobExecutionStatistics> Result = new();
+
+            //foreach (JobExecutionDataRow row in rows)
+            //{
+            //    JobExecutionStatistics stats = new()
+            //    { 
+            //        Date = row.FinishDateTime.Date,
+            //        MachineName = 
+            //    };
+
+
+            //}
+
+            //long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
+
+            //return Result;
         }
 
         #endregion Job Execution
@@ -265,6 +318,43 @@ namespace GSendDB.Providers
         public IToolProfile ToolGet(long toolProfileId)
         {
             return CreateToolDatabaseModelFromToolDatabaseDataRow(_toolDatabaseTable.Select(toolProfileId));
+        }
+
+        public void ToolAdd(IToolProfile toolProfile)
+        {
+            if (toolProfile == null)
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            _toolDatabaseTable.Insert(new ToolDatabaseDataRow() { ToolName = toolProfile.Name, Description = toolProfile.Description });
+        }
+
+        public void ToolUpdate(IToolProfile toolProfile)
+        {
+            if (toolProfile == null)
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id);
+
+            if (dataRow == null)
+                throw new InvalidOperationException("Tool not found");
+
+            dataRow.ToolName = toolProfile.Name;
+            dataRow.Description = toolProfile.Description;
+            _toolDatabaseTable.Update(dataRow);
+        }
+
+        public void ToolResetUsage(IToolProfile toolProfile)
+        {
+            if (toolProfile == null)
+                throw new ArgumentNullException(nameof(toolProfile));
+
+            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id);
+
+            if (dataRow == null)
+                throw new InvalidOperationException("Tool not found");
+
+            dataRow.UsageLastReset = DateTime.UtcNow;
+            _toolDatabaseTable.Update(dataRow);
         }
 
         #endregion Tool Profiles

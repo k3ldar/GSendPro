@@ -5,18 +5,17 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <h3>GSend Control Panel</h3>
+        <h3>@GSend.Language.Resources.ToolDatabase</h3>
     </div>
 </div>
 
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col" width="6%">@GSend.Language.Resources.Id</th>
-            <th scope="col" width="25%">@GSend.Language.Resources.Name</th>
+            <th scope="col" width="10%">@GSend.Language.Resources.Id</th>
+            <th scope="col" width="65%">@GSend.Language.Resources.Name</th>
             <th scope="col" width="15%">@GSend.Language.Resources.ToolsHoursUsed</th>
-            <th scope="col" width="5%"></th>
-            <th scope="col" width="5%"></th>
+            <th scope="col" width="10%"></th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +28,7 @@
                 </td>
                 <td>@tool.Name</td>
                 <td>@GSendShared.HelperMethods.TimeSpanToTime(tool.TotalTimeUsed)</td>
-                <td><a class="btn btn-primary" href="/Machines/View/@tool.Id/" role="button">@GSend.Language.Resources.View</a></td>
-                <td><a class="btn btn-primary" href="/Machines/Delete/@tool.Id/" role="button">@Languages.LanguageStrings.Delete</a></td>
+                <td><a class="btn btn-primary fr" href="/Tools/Edit/@tool.Id/" role="button">@GSend.Language.Resources.Edit</a></td>
             </tr>
         }
     }
@@ -44,6 +42,6 @@
         
     </div>
     <div class="col-sm-1">
-        <a class="btn btn-primary" href="/Machines/Add/" role="button">@Languages.LanguageStrings.Add</a>
+        <a class="btn btn-primary fr" href="/Tools/Add/" role="button">@Languages.LanguageStrings.Add</a>
     </div>
 </div>

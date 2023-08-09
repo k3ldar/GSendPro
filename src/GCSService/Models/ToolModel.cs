@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using GSendShared.Models;
 
 using SharedPluginFeatures;
 
@@ -15,10 +18,10 @@ namespace GSendService.Models
             TotalTimeUsed = totalTime;
         }
 
-        public ToolModel(BaseModelData modelData)
+        public ToolModel(BaseModelData modelData, TimeSpan totalTime)
             : base(modelData)
         {
-
+            TotalTimeUsed = totalTime;
         }
 
         public long Id { get; set; }
@@ -30,5 +33,7 @@ namespace GSendService.Models
         public TimeSpan TotalTimeUsed { get; }
 
         public DateTime UsageLastReset { get; set; }
+
+        public List<JobExecutionStatistics> Statistics { get; set; }
     }
 }

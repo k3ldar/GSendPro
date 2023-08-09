@@ -26,6 +26,10 @@ body {
     padding-top: 60px;
 }
 
+.fr {
+    float: right;
+}
+
 .bg-blue {
     background-color: #2E86C1;
 }

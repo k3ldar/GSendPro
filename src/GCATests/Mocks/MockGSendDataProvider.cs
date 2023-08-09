@@ -161,6 +161,31 @@ namespace GSendTests.Mocks
             JobExecutionUpdateCalled = true;
         }
 
+        public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToolAdd(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToolUpdate(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToolResetUsage(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
 
         public bool SpindleTimeFinishCalled { get; private set; }

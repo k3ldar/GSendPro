@@ -1,4 +1,6 @@
-﻿namespace GSendShared
+﻿using GSendShared.Models;
+
+namespace GSendShared
 {
     public interface IGSendDataProvider
     {
@@ -32,10 +34,18 @@
 
         IToolProfile ToolGet(long toolProfileId);
 
+        void ToolAdd(IToolProfile toolProfile);
+
+        void ToolUpdate(IToolProfile toolProfile);
+
+        void ToolResetUsage(IToolProfile toolProfile);
+
         IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId);
 
         void JobExecutionUpdate(IJobExecution jobExecution);
 
         TimeSpan JobExecutionByTool(IToolProfile toolProfile);
+
+        IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed);
     }
 }

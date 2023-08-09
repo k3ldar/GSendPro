@@ -1,0 +1,57 @@
+﻿@model GSendService.Models.ToolModel
+@{
+    ViewData["Title"] = Model.SeoTitle;
+    bool isReadOnly = Model.Id == 0;
+    string isDisabled = isReadOnly ? " disabled" : String.Empty;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@String.Format("{0} {1}", GSend.Language.Resources.Edit, Model.Name)</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div>@Html.ValidationSummary(true)</div>
+    </div>
+</div>
+@using (Html.BeginForm(nameof(GSendService.Controllers.ToolsController.Edit), GSendService.Controllers.ToolsController.Name, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.Name)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.Description)
+        </div>
+        <div class="col-6">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.UsageLastReset)
+        </div>
+        <div class="col-4">
+            @Html.TextBoxFor(m => m.UsageLastReset, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-2">
+            <a class="btn btn-primary fr"@isDisabled href="/Tools/ResetUsage/@Model.Id/">@GSend.Language.Resources.ToolResetUsage</a>
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-8">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary fr"@isDisabled>@Languages.LanguageStrings.Save</button>
+        </div>
+    </div>
+}
+

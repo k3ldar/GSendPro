@@ -1,0 +1,44 @@
+﻿@model GSendService.Models.ToolModel
+@{
+    ViewData["Title"] = Model.SeoTitle;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.ToolAdd</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div>@Html.ValidationSummary(true)</div>
+    </div>
+</div>
+@using (Html.BeginForm(nameof(GSendService.Controllers.ToolsController.Add), GSendService.Controllers.ToolsController.Name, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.Name)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.Description)
+        </div>
+        <div class="col-6">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-8">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary fr">@Languages.LanguageStrings.Save</button>
+        </div>
+    </div>
+}
+

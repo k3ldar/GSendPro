@@ -6,7 +6,7 @@ namespace GSendDB.Tables
     {
         public int Position => 0;
 
-        public TriggerType TriggerTypes => TriggerType.BeforeDelete;
+        public TriggerType TriggerTypes => TriggerType.BeforeDelete | TriggerType.BeforeInsert;
 
         public void AfterDelete(List<ToolDatabaseDataRow> records)
         {
@@ -15,7 +15,7 @@ namespace GSendDB.Tables
 
         public void AfterInsert(List<ToolDatabaseDataRow> records)
         {
-            records.ForEach(r => r.UsageLastReset = DateTime.UtcNow);
+            // not used but declared as part of interface
         }
 
         public void AfterUpdate(List<ToolDatabaseDataRow> records)
@@ -31,7 +31,7 @@ namespace GSendDB.Tables
 
         public void BeforeInsert(List<ToolDatabaseDataRow> records)
         {
-            // not used but declared as part of interface
+            records.ForEach(r => r.UsageLastReset = DateTime.UtcNow);
         }
 
         public void BeforeUpdate(List<ToolDatabaseDataRow> records)

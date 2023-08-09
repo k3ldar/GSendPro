@@ -1429,6 +1429,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Undefined Grbl error.
         /// </summary>
         public static string Error0 {
@@ -4903,11 +4912,56 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Tool.
+        /// </summary>
+        public static string ToolAdd {
+            get {
+                return ResourceManager.GetString("ToolAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool Database.
+        /// </summary>
+        public static string ToolDatabase {
+            get {
+                return ResourceManager.GetString("ToolDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool description can not be empty.
+        /// </summary>
+        public static string ToolErrorInvalidDescription {
+            get {
+                return ResourceManager.GetString("ToolErrorInvalidDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool name can not be empty.
+        /// </summary>
+        public static string ToolErrorInvalidName {
+            get {
+                return ResourceManager.GetString("ToolErrorInvalidName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tool Profile.
         /// </summary>
         public static string ToolProfile {
             get {
                 return ResourceManager.GetString("ToolProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Usage.
+        /// </summary>
+        public static string ToolResetUsage {
+            get {
+                return ResourceManager.GetString("ToolResetUsage", resourceCulture);
             }
         }
         
