@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 using GSendService.Attributes;
 using GSendService.Models;
@@ -120,7 +121,6 @@ namespace GSendService.Controllers
                     Id = model.Id,
                     Name = model.Name,
                     Description = model.Description,
-                    Statistics = _gSendDataProvider.JobExecutionModelsGetByTool(_gSendDataProvider.ToolGet(model.Id), false).ToList(),
                 };
 
                 return View(resultModel);
@@ -135,6 +135,46 @@ namespace GSendService.Controllers
 
             _gSendDataProvider.ToolUpdate(toolProfile);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        [Breadcrumb(nameof(Edit), Name, nameof(Index))]
+        [Route("/Tools/ViewUsage/{id}/")]
+        public IActionResult ViewUsage(long id)
+        {
+            IToolProfile tool = _gSendDataProvider.ToolGet(id);
+
+            if (tool == null)
+                return RedirectToAction(nameof(Index));
+
+            IEnumerable<JobExecutionStatistics> toolData = _gSendDataProvider.JobExecutionModelsGetByTool(tool, false);
+
+            List<JobExecutionStatistics> machines = toolData.DistinctBy(td => td.MachineName).ToList();
+
+            ChartModel chartModel = new();
+            chartModel.DataNames.Add(new KeyValuePair<ChartDataType, string>(ChartDataType.String, "Day"));
+            machines.ForEach(m => chartModel.DataNames.Add(new KeyValuePair<ChartDataType, string>(ChartDataType.Number, m.MachineName)));
+
+            Dictionary<DateTime, List<JobExecutionStatistics>> toolDataGrouped = toolData.GroupBy(td => td.Date.Date).ToDictionary(d => d.Key, d => d.ToList());
+
+            foreach (var toolStat in toolDataGrouped)
+            {
+                List<Decimal> datavalues = new List<decimal>();
+                chartModel.DataValues[toolStat.Key.Date.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)] = datavalues;
+
+                foreach (var machine in machines)
+                {
+                    datavalues.Add((decimal)toolStat.Value.Sum(ts => ts.TotalTime.TotalMinutes));
+                }
+                //var machineGroup = toolStat.Value.Sum(ts => ts.MachineName);
+                //machines.ForEach(m => m.MachineName.Equals(toolStat.MachineName) ? );
+                //datavalues.Add(day.BotVisits);
+                //datavalues.Add(day.Bounced);
+            }
+
+            ToolUsageViewModel model = new ToolUsageViewModel(GetModelData(), tool.Name, chartModel);
+
+            return View(model);
         }
 
         [HttpGet]
@@ -194,8 +234,6 @@ namespace GSendService.Controllers
             Result.Name = toolProfile.Name;
             Result.Description = toolProfile.Description;
             Result.UsageLastReset = toolProfile.UsageLastReset;
-            Result.Statistics = _gSendDataProvider.JobExecutionModelsGetByTool(toolProfile, false).ToList();
-
 
             return Result;
         }

@@ -5,6 +5,8 @@ using GSendShared.Models;
 
 using SharedPluginFeatures;
 
+using SystemAdmin.Plugin.Models;
+
 namespace GSendService.Models
 {
     public sealed class ToolModel : BaseModel
@@ -34,6 +36,6 @@ namespace GSendService.Models
 
         public DateTime UsageLastReset { get; set; }
 
-        public List<JobExecutionStatistics> Statistics { get; set; }
+        public ChartViewModel Statistics { get; set; }
     }
 }

@@ -100,7 +100,7 @@ namespace GSendDB.Providers
                              Date = je.FinishDateTime.Date,
                              MachineName = m.Name,
                              ToolName = toolProfile.Name,
-                             TotalSeconds = je.FinishDateTime - je.StartDateTime
+                             TotalTime = je.FinishDateTime - je.StartDateTime
                          };
             }
             else
@@ -113,26 +113,9 @@ namespace GSendDB.Providers
                            Date = je.FinishDateTime.Date,
                            MachineName = m.Name,
                            ToolName = toolProfile.Name,
-                           TotalSeconds = je.FinishDateTime - je.StartDateTime
+                           TotalTime = je.FinishDateTime - je.StartDateTime
                        };
             }
-
-            //List<JobExecutionStatistics> Result = new();
-
-            //foreach (JobExecutionDataRow row in rows)
-            //{
-            //    JobExecutionStatistics stats = new()
-            //    { 
-            //        Date = row.FinishDateTime.Date,
-            //        MachineName = 
-            //    };
-
-
-            //}
-
-            //long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
-
-            //return Result;
         }
 
         #endregion Job Execution

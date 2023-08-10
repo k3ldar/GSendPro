@@ -13,8 +13,9 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col" width="10%">@GSend.Language.Resources.Id</th>
-            <th scope="col" width="65%">@GSend.Language.Resources.Name</th>
+            <th scope="col" width="55%">@GSend.Language.Resources.Name</th>
             <th scope="col" width="15%">@GSend.Language.Resources.ToolsHoursUsed</th>
+            <th scope="col" width="10%"></th>
             <th scope="col" width="10%"></th>
         </tr>
     </thead>
@@ -23,12 +24,11 @@
         foreach (GSendService.Models.ToolModel tool in Model.Tools)
         {
             <tr>
-                <td scope="row">
-                    @tool.Id
-                </td>
+                <td scope="row">@tool.Id</td>
                 <td>@tool.Name</td>
                 <td>@GSendShared.HelperMethods.TimeSpanToTime(tool.TotalTimeUsed)</td>
                 <td><a class="btn btn-primary fr" href="/Tools/Edit/@tool.Id/" role="button">@GSend.Language.Resources.Edit</a></td>
+                <td><a class="btn btn-primary fr" href="/Tools/ViewUsage/@tool.Id/" role="button">@GSend.Language.Resources.View</a></td>
             </tr>
         }
     }

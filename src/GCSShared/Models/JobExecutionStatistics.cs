@@ -6,7 +6,7 @@
 
         public string MachineName { get; set; }
 
-        public TimeSpan TotalSeconds { get; set; }
+        public TimeSpan TotalTime { get; set; }
 
         public string ToolName { get; set; }
     }

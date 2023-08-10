@@ -5083,6 +5083,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Usage.
+        /// </summary>
+        public static string ViewUsage {
+            get {
+                return ResourceManager.GetString("ViewUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors, warnings and information count.
         /// </summary>
         public static string WarningsAndInformation {

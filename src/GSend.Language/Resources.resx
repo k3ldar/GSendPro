@@ -1920,4 +1920,7 @@
   <data name="ToolsHoursUsed" xml:space="preserve">
     <value>Hours Used</value>
   </data>
+  <data name="ViewUsage" xml:space="preserve">
+    <value>View Usage</value>
+  </data>
 </root>
