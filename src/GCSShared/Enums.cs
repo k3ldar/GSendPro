@@ -1,6 +1,26 @@
 ﻿namespace GSendShared
 {
     /// <summary>
+    /// Views for chart data by period
+    /// </summary>
+    public enum ChartViewPeriod
+    {
+        Daily,
+
+        Weekly,
+
+        Monthly,
+    }
+
+
+    public enum ChartViewTimePeriod
+    {
+        Minutes,
+
+        Hours,
+    }
+
+    /// <summary>
     /// Status of job execution
     /// </summary>
     public enum JobExecutionStatus

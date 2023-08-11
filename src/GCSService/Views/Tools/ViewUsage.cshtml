@@ -1,24 +1,33 @@
 ﻿@model GSendService.Models.ToolUsageViewModel
 @{
     ViewData["Title"] = Model.SeoTitle;
-    bool isLine = Model.DataValues.Count > 1;
+    bool isLine = Model.DataValues.Any(dv => dv.Value.Count > 1);
+    bool hasData = Model.DataValues.Count > 0;
 }
 <script type="text/javascript" src="~/js/charts_loader.js"></script>
 <script type="text/javascript">
     @if (isLine)
     {
-        @Html.Raw("google.charts.load('current', { 'packages': ['line'] });");
-        @Html.Raw("google.charts.setOnLoadCallback(drawLineChart);");
+        @Html.Raw("google.charts.load('current', { 'packages': ['line'] });")
+        ;
+        @Html.Raw("google.charts.setOnLoadCallback(drawLineChart);")
+        ;
     }
     else
     {
-        @Html.Raw("google.charts.load('current', { 'packages': ['bar'] });");
-        @Html.Raw("google.charts.setOnLoadCallback(drawBarChart);");
+        @Html.Raw("google.charts.load('current', { 'packages': ['bar'] });")
+        ;
+        @Html.Raw("google.charts.setOnLoadCallback(drawBarChart);")
+        ;
     }
 
-    function drawLineChart() {
+    @if (!hasData)
+    {
+        @Html.Raw("return;")
+    }
+        function drawLineChart() {
 
-    var data = new google.visualization.DataTable();
+            var data = new google.visualization.DataTable();
 
     @{
         foreach (KeyValuePair<SharedPluginFeatures.ChartDataType, string> header in Model.DataNames)
@@ -57,18 +66,18 @@
         ;
     }
 
-        var options = {
-            chart: {
-                title: '@Model.ChartTitle',
-            },
-            width: 900,
-            height: 500
-        };
+            var options = {
+                chart: {
+                    title: '@Model.ChartTitle',
+                },
+                width: 900,
+                height: 500
+            };
 
-        var chart = new google.charts.Line(document.getElementById('chart_data'));
+            var chart = new google.charts.Line(document.getElementById('chart_data'));
 
-        chart.draw(data, google.charts.Line.convertOptions(options));
-    }
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
 
     function drawBarChart() {
 
@@ -111,7 +120,7 @@
         ;
     }
 
-        var options = {
+            var options = {
             chart: {
                 title: '@Model.ChartTitle',
             },
@@ -129,8 +138,90 @@
         <h3>@String.Format("{0} {1}", GSend.Language.Resources.ViewUsage, Model.Title)</h3>
     </div>
 </div>
-<div class="row">
-    <div class="col systemGrid">
-        <div id="chart_data"></div>
+
+@if (hasData)
+{
+    <div class="row">
+        <div class="col systemGrid">
+            <div id="chart_data"></div>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="row">
+        <div class="col systemGrid">
+            @GSend.Language.Resources.ToolUsageNoData
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm(nameof(GSendService.Controllers.ToolsController.ViewUsage), GSendService.Controllers.ToolsController.Name, FormMethod.Post))
+{
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.ViewPeriod)
+        </div>
+        <div class="col-3">
+            @Html.DropDownListFor(m => m.ViewPeriod, new SelectList(Enum.GetValues(typeof(GSendShared.ChartViewPeriod))), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.TimePeriod)
+        </div>
+        <div class="col-3">
+            @Html.DropDownListFor(m => m.TimePeriod, new SelectList(Enum.GetValues(typeof(GSendShared.ChartViewTimePeriod))), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.RecentData)
+        </div>
+        <div class="col-3">
+            @Html.CheckBoxFor(m => m.RecentData)
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-5">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary fr">@Languages.LanguageStrings.Update</button>
+        </div>
+    </div>
+}
+
+@if (hasData)
+{
+    <div class="row">
+        <div class="col systemGrid">
+            <h4>@GSend.Language.Resources.RawData</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col systemGrid">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" width="10%">@Languages.LanguageStrings.Date</th>
+                        <th scope="col" width="55%">@GSend.Language.Resources.Machine</th>
+                        <th scope="col" width="15%">@GSend.Language.Resources.TotalTimeUsed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (GSendShared.Models.JobExecutionStatistics statistic in Model.RawData)
+                        {
+                            <tr>
+                                <td scope="row">@statistic.Date</td>
+                                <td>@statistic.MachineName</td>
+                                <td>@GSendShared.HelperMethods.TimeSpanToTime(statistic.TotalTime)</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}

@@ -1294,6 +1294,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string Day {
+            get {
+                return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It is not possible to delete a machine whilst it is connected..
         /// </summary>
         public static string DeleteConnectedMachine {
@@ -2779,6 +2788,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string Month {
+            get {
+                return ResourceManager.GetString("Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -3081,6 +3099,15 @@ namespace GSend.Language {
         public static string Rapids {
             get {
                 return ResourceManager.GetString("Rapids", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raw Data.
+        /// </summary>
+        public static string RawData {
+            get {
+                return ResourceManager.GetString("RawData", resourceCulture);
             }
         }
         
@@ -4984,6 +5011,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no data to display.
+        /// </summary>
+        public static string ToolUsageNoData {
+            get {
+                return ResourceManager.GetString("ToolUsageNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time Running: {0}.
         /// </summary>
         public static string TotalJobTime {
@@ -4998,6 +5034,15 @@ namespace GSend.Language {
         public static string TotalLines {
             get {
                 return ResourceManager.GetString("TotalLines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Time Used.
+        /// </summary>
+        public static string TotalTimeUsed {
+            get {
+                return ResourceManager.GetString("TotalTimeUsed", resourceCulture);
             }
         }
         
@@ -5466,6 +5511,15 @@ namespace GSend.Language {
         public static string WebMenuWarnings {
             get {
                 return ResourceManager.GetString("WebMenuWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Week.
+        /// </summary>
+        public static string Week {
+            get {
+                return ResourceManager.GetString("Week", resourceCulture);
             }
         }
         
