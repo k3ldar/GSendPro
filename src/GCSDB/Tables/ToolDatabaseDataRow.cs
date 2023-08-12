@@ -8,6 +8,7 @@ namespace GSendDB.Tables
         private string _toolName;
         private string _description;
         private DateTime _resetUsage;
+        private decimal _expectedLifeMinutes;
 
         public string ToolName
         {
@@ -47,6 +48,20 @@ namespace GSendDB.Tables
                     return;
 
                 _resetUsage = value;
+                Update();
+            }
+        }
+        
+        public decimal ExpectedLifeMinutes
+        {
+            get => _expectedLifeMinutes;
+
+            set
+            {
+                if (value == _expectedLifeMinutes)
+                    return;
+
+                _expectedLifeMinutes = value;
                 Update();
             }
         }

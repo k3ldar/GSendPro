@@ -44,7 +44,7 @@ namespace GSendService.Controllers
         [Breadcrumb(nameof(Add), Name, nameof(Index))]
         public IActionResult Add()
         {
-            return View(new ToolModel(GetModelData(), TimeSpan.Zero));
+            return View(new ToolModel(GetModelData(), TimeSpan.Zero) { ExpectedLifeMinutes = 60 * 30});
         }
 
         [HttpPost]
@@ -70,6 +70,7 @@ namespace GSendService.Controllers
                 {
                     Name = model.Name,
                     Description = model.Description,
+                    ExpectedLifeMinutes = model.ExpectedLifeMinutes,
                 };
 
                 return View(resultModel);
@@ -79,6 +80,7 @@ namespace GSendService.Controllers
             {
                 Name = model.Name,
                 Description = model.Description,
+                ExpectedLifeMinutes = model.ExpectedLifeMinutes,
             };
 
             _gSendDataProvider.ToolAdd(toolProfile);
@@ -122,6 +124,7 @@ namespace GSendService.Controllers
                     Id = model.Id,
                     Name = model.Name,
                     Description = model.Description,
+                    ExpectedLifeMinutes = model.ExpectedLifeMinutes,
                 };
 
                 return View(resultModel);
@@ -132,6 +135,7 @@ namespace GSendService.Controllers
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
+                ExpectedLifeMinutes = model.ExpectedLifeMinutes,
             };
 
             _gSendDataProvider.ToolUpdate(toolProfile);
@@ -203,7 +207,7 @@ namespace GSendService.Controllers
 
             ToolUsageViewModel model = new ToolUsageViewModel(GetModelData(), tool, chartModel, viewPeriod, viewTimePeriod, isRecent, toolData);
 
-            model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.Tools, "/Tools/Index", false));
+            model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ToolDatabase, "/Tools/Index", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(tool.Name, $"/Tools/Edit/{tool.Id}/", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ViewUsage, $"/Tools/ViewUsage/{tool.Id}/", false));
             return model;
@@ -239,6 +243,7 @@ namespace GSendService.Controllers
             Result.Name = toolProfile.Name;
             Result.Description = toolProfile.Description;
             Result.UsageLastReset = toolProfile.UsageLastReset;
+            Result.ExpectedLifeMinutes = toolProfile.ExpectedLifeMinutes;
 
             return Result;
         }

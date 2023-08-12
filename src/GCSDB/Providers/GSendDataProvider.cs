@@ -323,6 +323,7 @@ namespace GSendDB.Providers
 
             dataRow.ToolName = toolProfile.Name;
             dataRow.Description = toolProfile.Description;
+            dataRow.ExpectedLifeMinutes = toolProfile.ExpectedLifeMinutes;
             _toolDatabaseTable.Update(dataRow);
         }
 
@@ -355,6 +356,7 @@ namespace GSendDB.Providers
                 Name = toolDatabaseDataRow.ToolName,
                 Description = toolDatabaseDataRow.Description,
                 UsageLastReset = toolDatabaseDataRow.UsageLastReset,
+                ExpectedLifeMinutes = toolDatabaseDataRow.ExpectedLifeMinutes,
             };
         }
 

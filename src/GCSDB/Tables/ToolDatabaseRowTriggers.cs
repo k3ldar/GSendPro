@@ -31,7 +31,13 @@ namespace GSendDB.Tables
 
         public void BeforeInsert(List<ToolDatabaseDataRow> records)
         {
-            records.ForEach(r => r.UsageLastReset = DateTime.UtcNow);
+            foreach (var row in records)
+            {
+                if (row.ExpectedLifeMinutes <= 0)
+                    row.ExpectedLifeMinutes = 60 * 30;
+
+                row.UsageLastReset = DateTime.UtcNow;
+            }
         }
 
         public void BeforeUpdate(List<ToolDatabaseDataRow> records)

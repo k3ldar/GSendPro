@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using GSendShared.Models;
 
 using SharedPluginFeatures;
 
@@ -33,6 +30,8 @@ namespace GSendService.Models
         public string Description { get; set; }
 
         public TimeSpan TotalTimeUsed { get; }
+
+        public decimal ExpectedLifeMinutes { get; set; }
 
         public DateTime UsageLastReset { get; set; }
 

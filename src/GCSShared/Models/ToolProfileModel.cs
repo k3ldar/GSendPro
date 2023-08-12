@@ -10,5 +10,7 @@ namespace GSendShared.Models
         public string Description { get; set; }
 
         public DateTime UsageLastReset { get; set; }
+
+        public decimal ExpectedLifeMinutes { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <div>@Html.ValidationSummary(true)</div>
+        <div>@Html.ValidationSummary(false)</div>
     </div>
 </div>
 @using (Html.BeginForm(nameof(GSendService.Controllers.ToolsController.Add), GSendService.Controllers.ToolsController.Name, FormMethod.Post))
@@ -31,6 +31,14 @@
         </div>
         <div class="col-6">
             @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.ExpectedLifeMinutes)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.ExpectedLifeMinutes, new { @type = "number", @class = "form-control", @min = "1" })
         </div>
     </div>
     <div class="row rowSpace">

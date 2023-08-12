@@ -13,5 +13,7 @@ namespace GSendShared
         string Description { get; set; }
 
         DateTime UsageLastReset { get; set; }
+
+        decimal ExpectedLifeMinutes { get; set; }
     }
 }
