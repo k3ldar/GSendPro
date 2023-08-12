@@ -28,155 +28,156 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartJobWizard));
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.lblJobProfile = new System.Windows.Forms.Label();
-            this.cmbJobProfiles = new System.Windows.Forms.ComboBox();
-            this.cmbTool = new System.Windows.Forms.ComboBox();
-            this.lblTool = new System.Windows.Forms.Label();
-            this.lblWarnings = new System.Windows.Forms.Label();
-            this.lstCoordinates = new System.Windows.Forms.ListBox();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.cbSimulate = new System.Windows.Forms.CheckBox();
-            this.lblErrors = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            btnStart = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            lblJobProfile = new System.Windows.Forms.Label();
+            cmbJobProfiles = new System.Windows.Forms.ComboBox();
+            cmbTool = new System.Windows.Forms.ComboBox();
+            lblTool = new System.Windows.Forms.Label();
+            lblWarnings = new System.Windows.Forms.Label();
+            lstWarningsAndErrors = new System.Windows.Forms.ListBox();
+            imageList1 = new System.Windows.Forms.ImageList(components);
+            cbSimulate = new System.Windows.Forms.CheckBox();
+            lblErrors = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // btnStart
             // 
-            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(439, 237);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "button1";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            btnStart.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnStart.Location = new System.Drawing.Point(439, 237);
+            btnStart.Name = "btnStart";
+            btnStart.Size = new System.Drawing.Size(75, 23);
+            btnStart.TabIndex = 0;
+            btnStart.Text = "button1";
+            btnStart.UseVisualStyleBackColor = true;
+            btnStart.Click += btnStart_Click;
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(358, 237);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "button2";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            btnCancel.Location = new System.Drawing.Point(358, 237);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(75, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "button2";
+            btnCancel.UseVisualStyleBackColor = true;
             // 
             // lblJobProfile
             // 
-            this.lblJobProfile.AutoSize = true;
-            this.lblJobProfile.Location = new System.Drawing.Point(12, 9);
-            this.lblJobProfile.Name = "lblJobProfile";
-            this.lblJobProfile.Size = new System.Drawing.Size(38, 15);
-            this.lblJobProfile.TabIndex = 2;
-            this.lblJobProfile.Text = "label1";
+            lblJobProfile.AutoSize = true;
+            lblJobProfile.Location = new System.Drawing.Point(12, 9);
+            lblJobProfile.Name = "lblJobProfile";
+            lblJobProfile.Size = new System.Drawing.Size(38, 15);
+            lblJobProfile.TabIndex = 2;
+            lblJobProfile.Text = "label1";
             // 
             // cmbJobProfiles
             // 
-            this.cmbJobProfiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbJobProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbJobProfiles.FormattingEnabled = true;
-            this.cmbJobProfiles.Location = new System.Drawing.Point(12, 27);
-            this.cmbJobProfiles.Name = "cmbJobProfiles";
-            this.cmbJobProfiles.Size = new System.Drawing.Size(269, 24);
-            this.cmbJobProfiles.TabIndex = 3;
-            this.cmbJobProfiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbJobProfiles_DrawItem);
+            cmbJobProfiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            cmbJobProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbJobProfiles.FormattingEnabled = true;
+            cmbJobProfiles.Location = new System.Drawing.Point(12, 27);
+            cmbJobProfiles.Name = "cmbJobProfiles";
+            cmbJobProfiles.Size = new System.Drawing.Size(229, 24);
+            cmbJobProfiles.TabIndex = 3;
+            cmbJobProfiles.DrawItem += cmbJobProfiles_DrawItem;
             // 
             // cmbTool
             // 
-            this.cmbTool.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTool.FormattingEnabled = true;
-            this.cmbTool.Location = new System.Drawing.Point(12, 86);
-            this.cmbTool.Name = "cmbTool";
-            this.cmbTool.Size = new System.Drawing.Size(269, 24);
-            this.cmbTool.TabIndex = 5;
-            this.cmbTool.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTool_DrawItem);
+            cmbTool.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            cmbTool.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbTool.FormattingEnabled = true;
+            cmbTool.Location = new System.Drawing.Point(12, 86);
+            cmbTool.Name = "cmbTool";
+            cmbTool.Size = new System.Drawing.Size(229, 24);
+            cmbTool.TabIndex = 5;
+            cmbTool.DrawItem += cmbTool_DrawItem;
+            cmbTool.SelectedIndexChanged += cmbTool_SelectedIndexChanged;
             // 
             // lblTool
             // 
-            this.lblTool.AutoSize = true;
-            this.lblTool.Location = new System.Drawing.Point(12, 68);
-            this.lblTool.Name = "lblTool";
-            this.lblTool.Size = new System.Drawing.Size(38, 15);
-            this.lblTool.TabIndex = 4;
-            this.lblTool.Text = "label1";
+            lblTool.AutoSize = true;
+            lblTool.Location = new System.Drawing.Point(12, 68);
+            lblTool.Name = "lblTool";
+            lblTool.Size = new System.Drawing.Size(38, 15);
+            lblTool.TabIndex = 4;
+            lblTool.Text = "label1";
             // 
             // lblWarnings
             // 
-            this.lblWarnings.AutoSize = true;
-            this.lblWarnings.Location = new System.Drawing.Point(296, 9);
-            this.lblWarnings.Name = "lblWarnings";
-            this.lblWarnings.Size = new System.Drawing.Size(38, 15);
-            this.lblWarnings.TabIndex = 6;
-            this.lblWarnings.Text = "label1";
+            lblWarnings.AutoSize = true;
+            lblWarnings.Location = new System.Drawing.Point(259, 9);
+            lblWarnings.Name = "lblWarnings";
+            lblWarnings.Size = new System.Drawing.Size(38, 15);
+            lblWarnings.TabIndex = 6;
+            lblWarnings.Text = "label1";
             // 
-            // lstCoordinates
+            // lstWarningsAndErrors
             // 
-            this.lstCoordinates.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstCoordinates.FormattingEnabled = true;
-            this.lstCoordinates.ItemHeight = 18;
-            this.lstCoordinates.Location = new System.Drawing.Point(296, 27);
-            this.lstCoordinates.Name = "lstCoordinates";
-            this.lstCoordinates.Size = new System.Drawing.Size(218, 148);
-            this.lstCoordinates.TabIndex = 7;
-            this.lstCoordinates.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstCoordinates_DrawItem);
+            lstWarningsAndErrors.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            lstWarningsAndErrors.FormattingEnabled = true;
+            lstWarningsAndErrors.ItemHeight = 18;
+            lstWarningsAndErrors.Location = new System.Drawing.Point(259, 27);
+            lstWarningsAndErrors.Name = "lstWarningsAndErrors";
+            lstWarningsAndErrors.Size = new System.Drawing.Size(255, 148);
+            lstWarningsAndErrors.TabIndex = 7;
+            lstWarningsAndErrors.DrawItem += lstWarningAndErrors_DrawItem;
             // 
             // imageList1
             // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "Error_red_16x16.png");
-            this.imageList1.Images.SetKeyName(1, "tick16x16.png");
+            imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            imageList1.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            imageList1.Images.SetKeyName(0, "Error_red_16x16.png");
+            imageList1.Images.SetKeyName(1, "tick16x16.png");
+            imageList1.Images.SetKeyName(2, "Warning_yellow_7231_16x16_cyan.ico");
             // 
             // cbSimulate
             // 
-            this.cbSimulate.AutoSize = true;
-            this.cbSimulate.Location = new System.Drawing.Point(12, 240);
-            this.cbSimulate.Name = "cbSimulate";
-            this.cbSimulate.Size = new System.Drawing.Size(71, 19);
-            this.cbSimulate.TabIndex = 8;
-            this.cbSimulate.Text = "simulate";
-            this.cbSimulate.UseVisualStyleBackColor = true;
+            cbSimulate.AutoSize = true;
+            cbSimulate.Location = new System.Drawing.Point(12, 240);
+            cbSimulate.Name = "cbSimulate";
+            cbSimulate.Size = new System.Drawing.Size(71, 19);
+            cbSimulate.TabIndex = 8;
+            cbSimulate.Text = "simulate";
+            cbSimulate.UseVisualStyleBackColor = true;
             // 
             // lblErrors
             // 
-            this.lblErrors.AutoSize = true;
-            this.lblErrors.Location = new System.Drawing.Point(12, 196);
-            this.lblErrors.Name = "lblErrors";
-            this.lblErrors.Size = new System.Drawing.Size(38, 15);
-            this.lblErrors.TabIndex = 9;
-            this.lblErrors.Text = "label1";
+            lblErrors.AutoSize = true;
+            lblErrors.Location = new System.Drawing.Point(12, 196);
+            lblErrors.Name = "lblErrors";
+            lblErrors.Size = new System.Drawing.Size(38, 15);
+            lblErrors.TabIndex = 9;
+            lblErrors.Text = "label1";
             // 
             // StartJobWizard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 272);
-            this.Controls.Add(this.lblErrors);
-            this.Controls.Add(this.cbSimulate);
-            this.Controls.Add(this.lstCoordinates);
-            this.Controls.Add(this.lblWarnings);
-            this.Controls.Add(this.cmbTool);
-            this.Controls.Add(this.lblTool);
-            this.Controls.Add(this.cmbJobProfiles);
-            this.Controls.Add(this.lblJobProfile);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnStart);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "StartJobWizard";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "StartJobWizard";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(526, 272);
+            Controls.Add(lblErrors);
+            Controls.Add(cbSimulate);
+            Controls.Add(lstWarningsAndErrors);
+            Controls.Add(lblWarnings);
+            Controls.Add(cmbTool);
+            Controls.Add(lblTool);
+            Controls.Add(cmbJobProfiles);
+            Controls.Add(lblJobProfile);
+            Controls.Add(btnCancel);
+            Controls.Add(btnStart);
+            DoubleBuffered = true;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "StartJobWizard";
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            Text = "StartJobWizard";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -188,7 +189,7 @@
         private System.Windows.Forms.ComboBox cmbTool;
         private System.Windows.Forms.Label lblTool;
         private System.Windows.Forms.Label lblWarnings;
-        private System.Windows.Forms.ListBox lstCoordinates;
+        private System.Windows.Forms.ListBox lstWarningsAndErrors;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.CheckBox cbSimulate;
         private System.Windows.Forms.Label lblErrors;

@@ -132,12 +132,12 @@ namespace GSendApi
 
         public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
         {
-            return CallPostApi<IJobExecution>($"/JobExecuteApi/Create/{machineId}/{toolId}/{jobProfileId}/");
+            return CallPostApi<IJobExecution>($"JobExecuteApi/Create/{machineId}/{toolId}/{jobProfileId}/");
         }
 
         public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
         {
-            return CallGetApi<TimeSpan>($"/JobExecuteApi/ToolHours/{toolProfile.Id}/");
+            return CallGetApi<TimeSpan>($"JobExecuteApi/ToolHours/{toolProfile.Id}/");
         }
 
         #endregion Job Execution

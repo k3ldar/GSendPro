@@ -16,7 +16,7 @@ namespace GSendService.Models
         
         public ToolUsageViewModel(in BaseModelData modelData, IToolProfile toolProfile, ChartModel chartModel, 
             ChartViewPeriod viewPeriod, ChartViewTimePeriod timePeriod, bool recentData,
-            IEnumerable<JobExecutionStatistics> rawData)
+            IEnumerable<JobExecutionStatistics> rawData, List<ToolUsageHistoryModel> history)
             : base(modelData)
         {
             if (toolProfile == null)
@@ -31,6 +31,7 @@ namespace GSendService.Models
             TimePeriod = timePeriod;
             RecentData = recentData;
             RawData = rawData ?? throw new ArgumentNullException(nameof(rawData));
+            History = history ?? throw new ArgumentNullException(nameof(history));
         }
 
         #endregion Constructors
@@ -54,6 +55,8 @@ namespace GSendService.Models
         public bool RecentData { get; set; }
 
         public IEnumerable<JobExecutionStatistics> RawData { get; }
+
+        public List<ToolUsageHistoryModel> History { get; set; }
 
         #endregion Public Properties
     }

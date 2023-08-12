@@ -1852,6 +1852,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected lifetime in minutes.
+        /// </summary>
+        public static string ExpectedLifeTimeMinutes {
+            get {
+                return ResourceManager.GetString("ExpectedLifeTimeMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expire Date.
         /// </summary>
         public static string ExpireDate {
@@ -2838,6 +2847,15 @@ namespace GSend.Language {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No usage history available.
+        /// </summary>
+        public static string NoUsageHistory {
+            get {
+                return ResourceManager.GetString("NoUsageHistory", resourceCulture);
             }
         }
         
@@ -4570,7 +4588,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Errors have been detected..
+        ///   Looks up a localized string similar to {0} Errors and warnings have been detected..
         /// </summary>
         public static string StartJobErrorCount {
             get {
@@ -5011,6 +5029,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tool time exceeds expected lifetime.
+        /// </summary>
+        public static string ToolTimeExceeded {
+            get {
+                return ResourceManager.GetString("ToolTimeExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no data to display.
         /// </summary>
         public static string ToolUsageNoData {
@@ -5043,6 +5070,15 @@ namespace GSend.Language {
         public static string TotalTimeUsed {
             get {
                 return ResourceManager.GetString("TotalTimeUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Usage.
+        /// </summary>
+        public static string TotalUsageTime {
+            get {
+                return ResourceManager.GetString("TotalUsageTime", resourceCulture);
             }
         }
         
@@ -5097,6 +5133,24 @@ namespace GSend.Language {
         public static string Usage {
             get {
                 return ResourceManager.GetString("Usage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage History.
+        /// </summary>
+        public static string UsageHistory {
+            get {
+                return ResourceManager.GetString("UsageHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usage last reset.
+        /// </summary>
+        public static string UsageLastReset {
+            get {
+                return ResourceManager.GetString("UsageLastReset", resourceCulture);
             }
         }
         

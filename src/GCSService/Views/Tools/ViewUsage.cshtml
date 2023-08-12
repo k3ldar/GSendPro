@@ -225,3 +225,43 @@ else
     </div>
 
 }
+<div class="row rowSpace">
+    <div class="col-8">
+        <h4>@GSend.Language.Resources.UsageHistory</h4>
+    </div>
+</div>
+
+@{
+    if (Model.History.Count > 0)
+    {
+        <div class="row rowSpace">
+            <div class="col-4">
+                <h5>@Languages.LanguageStrings.DateTime</h5>
+            </div>
+            <div class="col-4">
+                <h5>@GSend.Language.Resources.TotalUsageTime</h5>
+            </div>
+        </div>
+
+        foreach (GSendShared.Models.ToolUsageHistoryModel historyItem in Model.History)
+        {
+            <div class="row rowSpace">
+                <div class="col-4">
+                    @historyItem.LastChanged.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern)
+                </div>
+                <div class="col-4">
+                    @GSendShared.HelperMethods.TimeSpanToTime(TimeSpan.FromMinutes(historyItem.UsageMinutes))
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row rowSpace">
+            <div class="col-8">
+                @GSend.Language.Resources.NoUsageHistory
+            </div>
+        </div>
+    }
+}
+

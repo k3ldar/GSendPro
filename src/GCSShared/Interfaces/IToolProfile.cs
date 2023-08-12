@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
+using GSendShared.Models;
+
 namespace GSendShared
 {
     [JsonConverter(typeof(Converters.JsonConverterToolsModel))]
@@ -14,6 +16,8 @@ namespace GSendShared
 
         DateTime UsageLastReset { get; set; }
 
-        decimal ExpectedLifeMinutes { get; set; }
+        double ExpectedLifeMinutes { get; set; }
+
+        List<ToolUsageHistoryModel> History {get; set;}
     }
 }

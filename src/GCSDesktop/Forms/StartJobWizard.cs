@@ -9,13 +9,29 @@ using GSendControls;
 using GSendShared;
 using GSendShared.Models;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace GSendDesktop.Forms
 {
     public partial class StartJobWizard : BaseForm
     {
         private readonly MachineStateModel _machineStatusModel;
         private readonly IGCodeAnalyses _gCodeAnalyses;
+        private readonly IGSendApiWrapper _gSendApiWrapper;
         private int _errorCount = 0;
+
+        private class ErrorWarningListItem
+        {
+            public ErrorWarningListItem(int imageIndex, string message)
+            {
+                ImageIndex = imageIndex;
+                Message = message;
+            }
+
+            public string Message { get; }
+
+            public int ImageIndex { get; }
+        }
 
         public StartJobWizard()
         {
@@ -30,6 +46,7 @@ namespace GSendDesktop.Forms
         {
             _machineStatusModel = machineStatusModel ?? throw new ArgumentNullException(nameof(machineStatusModel));
             _gCodeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
+            _gSendApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
 
             if (machineApiWrapper == null)
                 throw new ArgumentNullException(nameof(machineApiWrapper));
@@ -61,11 +78,6 @@ namespace GSendDesktop.Forms
             }
 
             cmbTool.SelectedIndex = selectedIndex;
-
-            ValidateCoordinateSystem();
-
-
-            lblErrors.Text = String.Format(GSend.Language.Resources.StartJobErrorCount, _errorCount);
         }
 
         public IToolProfile ToolProfile => GetToolProfile();
@@ -91,8 +103,6 @@ namespace GSendDesktop.Forms
             if (coords.Length == 0)
                 coords = new string[] { _machineStatusModel.CoordinateSystem.ToString() };
 
-            lstCoordinates.Items.Clear();
-
             foreach (string coords2 in coords)
             {
                 foreach (char axis in new char[] { 'X', 'Y', 'Z' })
@@ -101,10 +111,17 @@ namespace GSendDesktop.Forms
 
                     if (Enum.TryParse(name, true, out MachineStateOptions option))
                     {
-                        lstCoordinates.Items.Add(option);
-
                         if (!_machineStatusModel.MachineStateOptions.HasFlag(option))
+                        {
                             _errorCount++;
+                            lstWarningsAndErrors.Items.Add(new ErrorWarningListItem(0,
+                                $"{option.ToString()[..3]} {option.ToString().Substring(7, 1)}"));
+                        }
+                        else
+                        {
+                            lstWarningsAndErrors.Items.Add(new ErrorWarningListItem(1,
+                                $"{option.ToString()[..3]} {option.ToString().Substring(7, 1)}"));
+                        }
                     }
                 }
             }
@@ -121,7 +138,7 @@ namespace GSendDesktop.Forms
             lblWarnings.Text = GSend.Language.Resources.CheckList;
         }
 
-        private void lstCoordinates_DrawItem(object sender, DrawItemEventArgs e)
+        private void lstWarningAndErrors_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
 
@@ -133,16 +150,13 @@ namespace GSendDesktop.Forms
                 if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
                     fore = SystemColors.HighlightText;
 
-                if (Enum.TryParse(box.Items[e.Index].ToString(), true, out MachineStateOptions option))
-                {
-                    string text = $"{option.ToString()[..3]} {option.ToString().Substring(7, 1)}";
-                    TextRenderer.DrawText(e.Graphics, text, box.Font, new Point(1, e.Bounds.Top + 2), fore);
+                ErrorWarningListItem currentItem = box.Items[e.Index] as ErrorWarningListItem;
 
-                    if (_machineStatusModel.MachineStateOptions.HasFlag(option))
-                        e.Graphics.DrawImage(imageList1.Images[1], new Point(40, e.Bounds.Top + 1));
-                    else
-                        e.Graphics.DrawImage(imageList1.Images[0], new Point(40, e.Bounds.Top + 1));
-                }
+                if (currentItem == null)
+                    return;
+
+                e.Graphics.DrawImage(imageList1.Images[currentItem.ImageIndex], new Point(1, e.Bounds.Top + 1));
+                TextRenderer.DrawText(e.Graphics, currentItem.Message, box.Font, new Point(20, e.Bounds.Top + 2), fore);
             }
 
             e.DrawFocusRectangle();
@@ -183,6 +197,37 @@ namespace GSendDesktop.Forms
 
             if (!e.State.HasFlag(DrawItemState.NoFocusRect))
                 e.DrawFocusRectangle();
+        }
+
+        private void cmbTool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ResetToolLifeWarning();
+        }
+
+        private void ResetToolLifeWarning()
+        {
+            _errorCount = 0;
+            IToolProfile toolProfile = GetToolProfile();
+
+            if (toolProfile == null)
+                return;
+
+            lstWarningsAndErrors.Items.Clear();
+
+
+            // time remaining with tool
+            TimeSpan totalUsageSinceLastReset = _gSendApiWrapper.JobExecutionByTool(toolProfile);
+            TimeSpan toolLife = TimeSpan.FromMinutes(toolProfile.ExpectedLifeMinutes);
+
+            if ((toolLife - totalUsageSinceLastReset) > _gCodeAnalyses.TotalTime)
+            {
+                _errorCount++;
+                lstWarningsAndErrors.Items.Add(new ErrorWarningListItem(2, GSend.Language.Resources.ToolTimeExceeded));
+            }
+
+            ValidateCoordinateSystem();
+
+            lblErrors.Text = String.Format(GSend.Language.Resources.StartJobErrorCount, _errorCount);
         }
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using Shared.Classes;
 
+using SharedPluginFeatures;
+
 using SimpleDB;
 
 namespace GSendDB.Providers
@@ -18,18 +20,21 @@ namespace GSendDB.Providers
         private readonly ISimpleDBOperations<JobProfileDataRow> _jobProfileTable;
         private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
         private readonly ISimpleDBOperations<JobExecutionDataRow> _jobExecutionTable;
+        private readonly IMemoryCache _memoryCache;
 
         public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
             ISimpleDBOperations<MachineSpindleTimeDataRow> spindleTimeTable,
             ISimpleDBOperations<JobProfileDataRow> jobProfileTable,
             ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable,
-            ISimpleDBOperations<JobExecutionDataRow> jobExecutionTable)
+            ISimpleDBOperations<JobExecutionDataRow> jobExecutionTable,
+            IMemoryCache memoryCache)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
             _spindleTimeTable = spindleTimeTable ?? throw new ArgumentNullException(nameof(spindleTimeTable));
             _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
             _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
             _jobExecutionTable = jobExecutionTable ?? throw new ArgumentNullException(nameof(jobExecutionTable));
+            _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
         #region Job Execution
@@ -54,6 +59,7 @@ namespace GSendDB.Providers
                 Machine = ConvertFromMachineDataRow(_machineDataRow.Select(machineId)),
             };
             
+            _memoryCache.GetExtendingCache().Clear();
             return jobExecutionModel;
         }
 
@@ -70,6 +76,7 @@ namespace GSendDB.Providers
             jobExecutionDataRow.Simulation = jobExecution.Simulation;
 
             _jobExecutionTable.Update(jobExecutionDataRow);
+            _memoryCache.GetExtendingCache().Clear();
         }
 
         public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
@@ -77,11 +84,21 @@ namespace GSendDB.Providers
             if (toolProfile == null) 
                 throw new ArgumentNullException(nameof(toolProfile));
 
-            var rows = _jobExecutionTable.Select(je => je.StartDateTime >= toolProfile.UsageLastReset &&
-                je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue);
-            long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
+            string cacheName = $"Tool execution: {toolProfile.Id} {toolProfile.Name}";
 
-            return new TimeSpan(ticks);
+            CacheItem cacheItem = _memoryCache.GetExtendingCache().Get(cacheName);
+
+            if (cacheItem == null)
+            {
+                var rows = _jobExecutionTable.Select(je => je.StartDateTime >= toolProfile.UsageLastReset &&
+                    je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue);
+                long ticks = rows.Sum(je => je.FinishDateTime.Ticks - je.StartDateTime.Ticks);
+
+                cacheItem = new CacheItem(cacheName, ticks);
+                _memoryCache.GetExtendingCache().Add(cacheName, cacheItem);
+            }
+
+            return new TimeSpan((long)cacheItem.Value);
         }
 
         public IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed)
@@ -89,33 +106,46 @@ namespace GSendDB.Providers
             if (toolProfile == null)
                 throw new ArgumentNullException(nameof(toolProfile));
 
-            if (sinceLastUsed)
+            string cacheName = $"Tool execution statistics: {toolProfile.Id} {toolProfile.Name} {sinceLastUsed}";
+
+            CacheItem cacheItem = _memoryCache.GetExtendingCache().Get(cacheName);
+
+            if (cacheItem == null)
             {
-                return from je in _jobExecutionTable.Select()
-                         where je.StartDateTime >= toolProfile.UsageLastReset && je.ToolId == toolProfile.Id && 
-                            !je.Simulation && je.FinishDateTime > DateTime.MinValue
-                         join m in _machineDataRow.Select() on je.MachineId equals m.Id
-                         select new JobExecutionStatistics()
-                         {
-                             Date = je.FinishDateTime.Date,
-                             MachineName = m.Name,
-                             ToolName = toolProfile.Name,
-                             TotalTime = je.FinishDateTime - je.StartDateTime
-                         };
+                if (sinceLastUsed)
+                {
+                    IEnumerable<JobExecutionStatistics> result = from je in _jobExecutionTable.Select()
+                           where je.StartDateTime >= toolProfile.UsageLastReset && je.ToolId == toolProfile.Id &&
+                              !je.Simulation && je.FinishDateTime > DateTime.MinValue
+                           join m in _machineDataRow.Select() on je.MachineId equals m.Id
+                           select new JobExecutionStatistics()
+                           {
+                               Date = je.FinishDateTime.Date,
+                               MachineName = m.Name,
+                               ToolName = toolProfile.Name,
+                               TotalTime = je.FinishDateTime - je.StartDateTime
+                           };
+                    cacheItem = new CacheItem(cacheName, result);
+                }
+                else
+                {
+                    IEnumerable<JobExecutionStatistics> result = from je in _jobExecutionTable.Select()
+                           where je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue
+                           join m in _machineDataRow.Select() on je.MachineId equals m.Id
+                           select new JobExecutionStatistics()
+                           {
+                               Date = je.FinishDateTime.Date,
+                               MachineName = m.Name,
+                               ToolName = toolProfile.Name,
+                               TotalTime = je.FinishDateTime - je.StartDateTime
+                           };
+                    cacheItem = new CacheItem(cacheName, result);
+                }
+
+                _memoryCache.GetExtendingCache().Add(cacheName, cacheItem);
             }
-            else
-            {
-                return from je in _jobExecutionTable.Select()
-                       where je.ToolId == toolProfile.Id && !je.Simulation && je.FinishDateTime > DateTime.MinValue
-                       join m in _machineDataRow.Select() on je.MachineId equals m.Id
-                       select new JobExecutionStatistics()
-                       {
-                           Date = je.FinishDateTime.Date,
-                           MachineName = m.Name,
-                           ToolName = toolProfile.Name,
-                           TotalTime = je.FinishDateTime - je.StartDateTime
-                       };
-            }
+
+            return (IEnumerable<JobExecutionStatistics>)cacheItem.Value;
         }
 
         #endregion Job Execution
@@ -332,12 +362,16 @@ namespace GSendDB.Providers
             if (toolProfile == null)
                 throw new ArgumentNullException(nameof(toolProfile));
 
+            _memoryCache.GetExtendingCache().Clear();
             ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id);
 
             if (dataRow == null)
                 throw new InvalidOperationException("Tool not found");
 
             dataRow.UsageLastReset = DateTime.UtcNow;
+            double usage = JobExecutionByTool(toolProfile).TotalMinutes;
+
+            dataRow.ToolHistory.Add(new ToolUsageHistory(dataRow.UsageLastReset, usage));
             _toolDatabaseTable.Update(dataRow);
         }
 
@@ -350,7 +384,11 @@ namespace GSendDB.Providers
             if (toolDatabaseDataRow == null)
                 return null;
 
-            return new ToolProfileModel()
+            List<ToolUsageHistoryModel> history = new();
+
+            toolDatabaseDataRow.ToolHistory.ForEach(th => history.Add(new ToolUsageHistoryModel(th.LastChanged, th.UsageMinutes)));
+
+            return new ToolProfileModel(history)
             {
                 Id = toolDatabaseDataRow.Id,
                 Name = toolDatabaseDataRow.ToolName,

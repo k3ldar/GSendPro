@@ -1543,7 +1543,7 @@
     <value>Start</value>
   </data>
   <data name="StartJobErrorCount" xml:space="preserve">
-    <value>{0} Errors have been detected.</value>
+    <value>{0} Errors and warnings have been detected.</value>
   </data>
   <data name="StartJobWizard" xml:space="preserve">
     <value>Start Job Wizard</value>
@@ -1923,17 +1923,35 @@
   <data name="Day" xml:space="preserve">
     <value>Day</value>
   </data>
+  <data name="ExpectedLifeTimeMinutes" xml:space="preserve">
+    <value>Expected lifetime in minutes</value>
+  </data>
   <data name="Month" xml:space="preserve">
     <value>Month</value>
   </data>
+  <data name="NoUsageHistory" xml:space="preserve">
+    <value>No usage history available</value>
+  </data>
   <data name="RawData" xml:space="preserve">
     <value>Raw Data</value>
+  </data>
+  <data name="ToolTimeExceeded" xml:space="preserve">
+    <value>Tool time exceeds expected lifetime</value>
   </data>
   <data name="ToolUsageNoData" xml:space="preserve">
     <value>There is no data to display</value>
   </data>
   <data name="TotalTimeUsed" xml:space="preserve">
     <value>Total Time Used</value>
+  </data>
+  <data name="TotalUsageTime" xml:space="preserve">
+    <value>Total Usage</value>
+  </data>
+  <data name="UsageHistory" xml:space="preserve">
+    <value>Usage History</value>
+  </data>
+  <data name="UsageLastReset" xml:space="preserve">
+    <value>Usage last reset</value>
   </data>
   <data name="ViewUsage" xml:space="preserve">
     <value>View Usage</value>

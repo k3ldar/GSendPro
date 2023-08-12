@@ -108,5 +108,10 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

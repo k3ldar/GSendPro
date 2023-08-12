@@ -44,7 +44,7 @@ namespace GSendService.Controllers
         [Breadcrumb(nameof(Add), Name, nameof(Index))]
         public IActionResult Add()
         {
-            return View(new ToolModel(GetModelData(), TimeSpan.Zero) { ExpectedLifeMinutes = 60 * 30});
+            return View(new ToolModel(GetModelData(), TimeSpan.Zero, new List<ToolUsageHistoryModel>()) { ExpectedLifeMinutes = 60 * 30});
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace GSendService.Controllers
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolDatabase), "/Tools/Index", false));
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolAdd), "/Tools/Add", false));
 
-                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero)
+                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero, model.History)
                 {
                     Name = model.Name,
                     Description = model.Description,
@@ -119,7 +119,7 @@ namespace GSendService.Controllers
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolDatabase), "/Tools/Index", false));
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.Edit), "/Tools/Edit", false));
 
-                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero)
+                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero, new List<ToolUsageHistoryModel>())
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -199,13 +199,14 @@ namespace GSendService.Controllers
 
         private ToolUsageViewModel CreateToolUsageModel(IToolProfile tool, bool isRecent, ChartViewPeriod viewPeriod, ChartViewTimePeriod viewTimePeriod)
         {
-            IEnumerable<JobExecutionStatistics> toolData = _gSendDataProvider.JobExecutionModelsGetByTool(tool, !isRecent);
+            IEnumerable<JobExecutionStatistics> toolData = _gSendDataProvider.JobExecutionModelsGetByTool(tool, isRecent)
+                .Where(td => td.TotalTime.TotalSeconds > 1);
 
             List<JobExecutionStatistics> machines = toolData.DistinctBy(td => td.MachineName).ToList();
 
             ChartModel chartModel = GetToolUsage(toolData, machines, viewPeriod, viewTimePeriod);
 
-            ToolUsageViewModel model = new ToolUsageViewModel(GetModelData(), tool, chartModel, viewPeriod, viewTimePeriod, isRecent, toolData);
+            ToolUsageViewModel model = new ToolUsageViewModel(GetModelData(), tool, chartModel, viewPeriod, viewTimePeriod, isRecent, toolData, tool.History);
 
             model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ToolDatabase, "/Tools/Index", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(tool.Name, $"/Tools/Edit/{tool.Id}/", false));
@@ -234,9 +235,9 @@ namespace GSendService.Controllers
             ToolModel Result = null;
 
             if (includeModelData)
-                Result = new ToolModel(GetModelData(), totalTimeUsed);
+                Result = new ToolModel(GetModelData(), totalTimeUsed, toolProfile.History);
             else
-                Result = new ToolModel(totalTimeUsed);
+                Result = new ToolModel(totalTimeUsed, toolProfile.History);
 
 
             Result.Id = toolProfile.Id;

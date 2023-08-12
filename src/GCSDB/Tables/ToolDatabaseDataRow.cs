@@ -8,7 +8,14 @@ namespace GSendDB.Tables
         private string _toolName;
         private string _description;
         private DateTime _resetUsage;
-        private decimal _expectedLifeMinutes;
+        private double _expectedLifeMinutes;
+        private ObservableList<ToolUsageHistory> _toolHistory;
+
+        public ToolDatabaseDataRow()
+        {
+            _toolHistory = new ObservableList<ToolUsageHistory>();
+            _toolHistory.Changed += ObservableDataChanged;
+        }
 
         public string ToolName
         {
@@ -52,7 +59,7 @@ namespace GSendDB.Tables
             }
         }
         
-        public decimal ExpectedLifeMinutes
+        public double ExpectedLifeMinutes
         {
             get => _expectedLifeMinutes;
 
@@ -62,6 +69,24 @@ namespace GSendDB.Tables
                     return;
 
                 _expectedLifeMinutes = value;
+                Update();
+            }
+        }
+
+        public ObservableList<ToolUsageHistory> ToolHistory
+        {
+            get => _toolHistory;
+
+            set
+            {
+                if (value == null)
+                    throw new InvalidOperationException();
+
+                if (_toolHistory != null)
+                    _toolHistory.Changed -= ObservableDataChanged;
+
+                _toolHistory = value;
+                _toolHistory.Changed += ObservableDataChanged;
                 Update();
             }
         }

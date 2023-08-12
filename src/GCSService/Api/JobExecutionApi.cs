@@ -44,7 +44,7 @@ namespace GSendService.Api
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [ApiAuthorization]
         [Route("/JobExecuteApi/ToolHours/{toolId}/")]
         public IActionResult JobExecutionTooltime(long toolId)

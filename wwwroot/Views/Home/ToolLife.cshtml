@@ -3,3 +3,71 @@
         <h3>@GSend.Language.Resources.WebMenuToolLife</h3>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12 col-md-6 rowSpace">
+        <div class="w3-content w3-section" style="max-width:100%">
+            <img class="mySlides" src="/images/ToolLife/UsageGraph.png" style="width:100%" />
+            <img class="mySlides" src="/images/ToolLife/Rawdata.png" style="width:100%" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 rowSpace">
+        <p>
+            GSend Pro includes tool monitoring options which can achieve all of the benefits, in a simplified model
+            you can have the same tool setup for different materials to ensure consistent monitoring, all the data
+            is available in both raw and chart formats.
+        </p>
+        <p>
+            Monitoring tool life with CNC machines offers several advantages that contribute to
+            efficient and cost-effective machining processes. One of the key benefits is optimized tool usage,
+            as monitoring allows for maximizing the utilization of each tool, reducing unnecessary tool changes,
+            and minimizing production downtime. This leads to cost savings by extending the lifespan of tools.
+
+        </p>
+        <p>
+            Additionally, monitoring tool life helps reduce scrap and rework. As tools wear out,
+            the quality of machined parts can degrade, leading to increased scrap rates and the
+            need for rework. By detecting tool wear or breakage early, monitoring helps minimize
+            the production of defective parts and reduces the need for rework and improved process stability.
+        </p>
+        <p>
+            Tool life monitoring also supports preventive maintenance strategies. Scheduled tool changes and
+            maintenance activities can be planned based on actual tool wear data, reducing the likelihood
+            of unexpected downtime due to tool failures.  It can also reveal patterns and trends in tool
+            wear based on different materials, cutting conditions, or machining strategies. This
+            information can be used to refine and optimize machining processes for improved efficiency and performance.
+
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 rowSpace">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 rowSpace">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+    </div>
+</div>
+<script>
+    var myIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+        if (myIndex > x.length) { myIndex = 1 }
+        x[myIndex - 1].style.display = "block";
+        setTimeout(carousel, 5000);
+    }
+</script>
