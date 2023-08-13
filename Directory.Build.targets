@@ -16,26 +16,6 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <RepositoryUrl>https://github.com/k3ldar/.NetCorePluginManager</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>GCode Sender</PackageTags>
-    <PackageProjectUrl>http://pluginmanager.website/</PackageProjectUrl>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <PackageReleaseNotes>Supports net7.0</PackageReleaseNotes>
-    <PackageTags>Advanced GCode Sender, Analyzer and Editor</PackageTags>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <FrameWorkLatestVersion>net7.0</FrameWorkLatestVersion>
-  </PropertyGroup>
-	
-  <PropertyGroup>
-    <PluginVersion>5.3.0</PluginVersion>
-	<SharedVer>3.9.1</SharedVer>
-	<SharedWinVer>1.1.0</SharedWinVer>
-  </PropertyGroup>
-  
-  <PropertyGroup>
     <Version>0.7.0</Version>
     <LangVersion>latest</LangVersion>
     <Authors>Simon Carter (s1cart3r@gmail.com)</Authors>
@@ -43,39 +23,5 @@
     <Copyright>Copyright (c) 2022 - 2023.  Simon Carter.  All rights reserved.</Copyright>
     <Description>Advanced GCode Sender, Analyzer and Editor</Description>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0'">
-    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0-windows'">
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0-windows'">
-    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>GSendTests</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
 
 </Project>

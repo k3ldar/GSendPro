@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <BaseOutputPath>..\Output\Website</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,22 +59,5 @@
   <ItemGroup>
     <Using Include="SystemAdmin.Plugin" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Views\MCodes\M620.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <Target Name="CopyDepsFiles" AfterTargets="Build" Condition="'$(TargetFramework)'!=''">
-
-    <ItemGroup>
-      <DepsFilePaths Include="$([System.IO.Path]::ChangeExtension('%(_ResolvedProjectReferencePaths.FullPath)', '.deps.json'))" />
-    </ItemGroup>
-
-    <Copy SourceFiles="%(DepsFilePaths.FullPath)" DestinationFolder="$(OutputPath)" Condition="Exists('%(DepsFilePaths.FullPath)')" />
-
-  </Target>
 
 </Project>
