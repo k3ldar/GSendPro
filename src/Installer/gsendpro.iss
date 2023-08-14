@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "GSend Pro"
-#define MyAppVersion "0.6"
+#define MyAppVersion "0.7"
 #define MyAppPublisher "GSend Pro."
 #define MyAppURL "https://www.gsend.pro/"
 #define MyAppExeName "GSendEditor.exe"
@@ -40,6 +40,10 @@ SolidCompression=yes
 WizardStyle=modern
 ArchitecturesInstallIn64BitMode=x64
 MergeDuplicateFiles=yes
+PrivilegesRequired=admin
+OutputDir=..\..\Output\Installer
+DisableDirPage=true
+LicenseFile=sla.rtf
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -116,6 +120,7 @@ Source: "C:\GitProjects\GCA\Output\publish\Desktop\AspNetCore.PluginManager.dll"
 Source: "C:\GitProjects\GCA\Output\publish\Server\Breadcrumb.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\CacheControl.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\ErrorManager.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\GitProjects\GCA\Output\publish\Server\ApiAuthorization.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\Languages.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\Localization.Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\LoginPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -151,7 +156,7 @@ Source: "C:\GitProjects\GCA\Output\publish\Desktop\DirectWriteForwarder.dll"; De
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostfxr.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostpolicy.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore_amd64_amd64_7.0.22.51805.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore_amd64_amd64_7.0.22.51805.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordbi.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorlib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorrc.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -596,7 +601,7 @@ Name: "{autodesktop}\GSend Pro Desktop"; Filename: "{app}\GSendDesktop.exe"; Tas
 Filename: "{app}\GSendEditor.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend GCode Editor", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 Filename: "{app}\GSendDesktop.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend Desktop", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
-Filename: {sys}\sc.exe; Parameters: "create GSendPro start= auto binPath= ""{app}\GSendService.exe""" ; Flags: runhidden; StatusMsg: "Creating GSend Pro Server"
+Filename: {sys}\sc.exe; Parameters: "create GSendPro start= auto binPath= ""{app}\GSendService.exe""" ; Flags: runhidden runascurrentuser; StatusMsg: "Installing GSend Pro Server"
 
 [UninstallRun]
 Filename: {sys}\sc.exe; Parameters: "stop GSendPro" ; RunOnceId: "gsend_service"; Flags: runhidden

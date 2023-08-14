@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 using GSendControls;
@@ -20,6 +22,9 @@ namespace GSendDesktop
         [STAThread]
         static void Main()
         {
+            if (CheckForUpdate())
+                return;
+
             ThreadManager.Initialise(new SharedLib.Win.WindowsCpuUsage());
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
@@ -81,6 +86,31 @@ namespace GSendDesktop
         private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
         {
 
+        }
+
+        private static bool CheckForUpdate()
+        {
+            string installFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gsend.pro.update.exe");
+            string deletePreviousInstallFile = installFile.Replace(".exe", ".old.exe");
+
+            if (File.Exists(deletePreviousInstallFile))
+            {
+                File.Delete(deletePreviousInstallFile);
+            }
+
+            if (File.Exists(installFile) && MessageBox.Show(null, 
+                GSend.Language.Resources.UpdateAvailable, 
+                GSend.Language.Resources.NewUpdate,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                File.Move(installFile, deletePreviousInstallFile);
+
+                Process.Start(deletePreviousInstallFile);
+                return true;
+            }
+
+            return false;
         }
     }
 }

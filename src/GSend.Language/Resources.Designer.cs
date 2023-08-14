@@ -2833,6 +2833,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GSend Pro - New Version.
+        /// </summary>
+        public static string NewUpdate {
+            get {
+                return ResourceManager.GetString("NewUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next Service.
         /// </summary>
         public static string NextService {
@@ -5106,6 +5115,15 @@ namespace GSend.Language {
         public static string Undo {
             get {
                 return ResourceManager.GetString("Undo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new version of GSend Pro is now ready to be installed, would you like to install now?.
+        /// </summary>
+        public static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
             }
         }
         

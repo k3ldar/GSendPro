@@ -101,6 +101,9 @@ namespace GSendService
 
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
 
+            CheckForUpdatesThread checkForUpdatesThread = new();
+            ThreadManager.ThreadStart(checkForUpdatesThread, nameof(checkForUpdatesThread), System.Threading.ThreadPriority.BelowNormal, true);
+
             try
             {
                 CreateHostBuilder(args).Build().Run();

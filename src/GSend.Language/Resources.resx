@@ -1959,4 +1959,10 @@
   <data name="Week" xml:space="preserve">
     <value>Week</value>
   </data>
+  <data name="NewUpdate" xml:space="preserve">
+    <value>GSend Pro - New Version</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>A new version of GSend Pro is now ready to be installed, would you like to install now?</value>
+  </data>
 </root>
