@@ -61,8 +61,6 @@ Name: "{app}\Views"; Permissions: everyone-full
 Name: "{app}\wwwroot"; Permissions: everyone-full
 
 [Files]
-;Source: "C:\GitProjects\GCA\Output\publish\Editor\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-
 ; Configuration Files
 Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{commonappdata}\GSendPro"; Flags: onlyifdoesntexist
 
@@ -71,9 +69,8 @@ Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{
 Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\web.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.pdb"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 
+Source: "C:\GitProjects\GCA\Output\publish\Server\wwwroot\*"; DestDir: "{app}\wwwroot"; Flags: ignoreversion recursesubdirs
 
 ; Desktop Files
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -84,31 +81,19 @@ Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.exe"; DestDir: "
 Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.pdb"; DestDir: "{app}"; Flags: ignoreversion
-
 
 
 
 ; Solution Files
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendControls.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendControls.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDB.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDB.pdb"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.pdb"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendDesktop.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendShared.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendShared.pdb"; DestDir: "{app}"; Flags: ignoreversion
 
-;Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "C:\GitProjects\GCA\Output\publish\Server\GSendService.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 
@@ -156,7 +141,6 @@ Source: "C:\GitProjects\GCA\Output\publish\Desktop\DirectWriteForwarder.dll"; De
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostfxr.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\hostpolicy.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordaccore_amd64_amd64_7.0.22.51805.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscordbi.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorlib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\mscorrc.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -601,14 +585,15 @@ Name: "{autodesktop}\GSend Pro Desktop"; Filename: "{app}\GSendDesktop.exe"; Tas
 Filename: "{app}\GSendEditor.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend GCode Editor", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 Filename: "{app}\GSendDesktop.exe"; Description: "{cm:LaunchProgram,{#StringChange("GSend Desktop", '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
-Filename: {sys}\sc.exe; Parameters: "create GSendPro start= auto binPath= ""{app}\GSendService.exe""" ; Flags: runhidden runascurrentuser; StatusMsg: "Installing GSend Pro Server"
 
 [UninstallRun]
-Filename: {sys}\sc.exe; Parameters: "stop GSendPro" ; RunOnceId: "gsend_service"; Flags: runhidden
-Filename: {sys}\sc.exe; Parameters: "delete GSendPro" ; RunOnceId: "gsend_service"; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "stop ""GSend Pro""" ; RunOnceId: "gsend_stop_service"; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "delete ""GSend Pro""" ; RunOnceId: "gsend_remove_service"; Flags: runhidden
 
 [Code]
 
+var
+_restartRequired : Boolean;
 
 // Code for installing dependencies
 type
@@ -628,13 +613,6 @@ var
   Dependency_NeedRestart, 
   Dependency_ForceX86: Boolean;
   Dependency_DownloadPage: TDownloadWizardPage;
-
-procedure DeinitializeSetup();
-var
-  ResultCode: Integer;
-begin
-  Exec('sc.exe', 'start GSendPro', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
-end;
 
 <event('InitializeWizard')>
 procedure Dependency_Internal1;
@@ -869,6 +847,77 @@ begin
   end;
 end;
 
+// check TCP port availability (1-65535), return false if occupied
+function CheckPortOccupied(Port: String): Boolean;
+var
+  ResultCode: Integer;
+begin
+ Exec(ExpandConstant('{cmd}'), '/C netstat -anp TCP | findstr /r "127.0.0.1:' + Port + '\> 0.0.0.0:' + Port + '\>"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  if ResultCode  <> 1 then 
+  begin
+    Log('TCP port '+Port+' is occupied');
+    Result := True; 
+  end else
+  begin
+    Result := False;
+  end;
+end;
+
+function FileReplaceString(const FileName, SearchString, ReplaceString: string):boolean;
+var
+  MyFile : TStrings;
+  MyText : string;
+begin
+  MyFile := TStringList.Create;
+
+  try
+    result := true;
+
+    try
+      MyFile.LoadFromFile(FileName);
+      MyText := MyFile.Text;
+
+      { Only save if text has been changed. }
+      while StringChangeEx(MyText, SearchString, ReplaceString, True) > 0 then
+      begin;
+        MyFile.Text := MyText;
+      end;
+        
+      MyFile.SaveToFile(FileName);
+    except
+      result := false;
+    end;
+  finally
+    MyFile.Free;
+  end;
+end;
+
+procedure CreateAndStartService();
+var
+  ResultCode: Integer;
+  scFile: String;
+begin
+    _restartRequired := false;
+
+    WizardForm.FilenameLabel.Caption := 'Creating GSend Pro Service';
+    scFile := ExpandConstant('{sys}\sc.exe');
+    Exec(scFile, ExpandConstant('create "GSend Pro" start= auto binPath= "{app}\GSendService.exe"'), '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
+    if ResultCode = 0 then
+    begin
+      WizardForm.FilenameLabel.Caption := 'Starting GSend Pro Service';
+      Exec(scFile, 'start "GSend Pro"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
+      if ResultCode <> 0 then
+      begin
+          _restartRequired := true;
+          MsgBox('An error occurred whilst starting the GSend Pro service.  A restart will be required, result code: ' + IntToStr(ResultCode), mbError, MB_OK);
+      end;
+    end else
+    begin
+        MsgBox('An error occurred whilst creating the GSend Pro service, result code: ' + IntToStr(ResultCode), mbError, MB_OK);
+    end;
+end;
 
 // standard code for installer
 
@@ -886,5 +935,16 @@ begin
   begin
     DeleteFile(ExpandConstant('{app}\netcorecheck.exe'));
     DeleteFile(ExpandConstant('{app}\netcorecheck_x64.exe'));
+    CreateAndStartService();
   end;
+end;
+
+procedure DeinitializeSetup();
+begin
+
+end;
+
+function NeedRestart(): Boolean;
+begin
+    Result := _restartRequired;
 end;
