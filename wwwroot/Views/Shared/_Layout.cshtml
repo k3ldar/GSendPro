@@ -1,4 +1,26 @@
 ﻿@using SharedPluginFeatures;
+@using Shared.Classes
+
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@model SharedPluginFeatures.BaseModel
+@{
+    bool loggedIn = Model.UserIsLoggedIn;
+    ShoppingCartSummary cartSummary = Model.CartSummary;
+    var items = Localizer[nameof(Languages.LanguageStrings.Items)];
+    string cost = 0d.ToString("C", Model.CartSummary.Culture);
+
+    if (cartSummary != null)
+    {
+        items = cartSummary.TotalItems == 1 ? Localizer[nameof(Languages.LanguageStrings.Item)] : Localizer[nameof(Languages.LanguageStrings.Items)];
+        cost = cartSummary.Total.ToString("C", Model.CartSummary.Culture);
+    }
+
+    string language = System.Threading.Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+    string title = (string)Context.Items[SharedPluginFeatures.Constants.SeoTitle];
+    string keywords = (string)Context.Items[SharedPluginFeatures.Constants.SeoMetaKeywords];
+    string description = (string)Context.Items[SharedPluginFeatures.Constants.SeoMetaDescription];
+    string author = (string)Context.Items[SharedPluginFeatures.Constants.SeoMetaAuthor];
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +76,29 @@
                         }
                     </ul>
                 </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" style="float:right;">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            @if (!loggedIn)
+                            {
+                                <a class="nav-link text-dark" href="/Login/Index">@Localizer[nameof(Languages.LanguageStrings.Login)]</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link text-dark" href="/Login/Logout">@Localizer[nameof(Languages.LanguageStrings.Logout)]</a>
+                            }
+                        </li>
+                        @*<li class="nav-item nav-item-nohover">
+                            @await Html.PartialAsync("~/Views/Search/_ShowQuickSearch.cshtml", new SearchPlugin.Models.QuickSearchViewModel())
+                        </li>*@
+                    </ul>
+                    <div class="cart-summary">
+                        <a href="/Cart/">
+                            <img src="~/images/Cart/shopping-cart-24.png" alt="cart" />
+                            <p>@Model.CartSummary.TotalItems @items<span>@cost</span></p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
@@ -73,7 +118,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - gsend.pro - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2023 - gsend.pro - <a href="/Company/Privacy">Privacy</a>
         </div>
     </footer>
 

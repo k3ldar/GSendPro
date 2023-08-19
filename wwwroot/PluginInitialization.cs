@@ -5,6 +5,8 @@ using gsend.pro.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
+using Middleware;
+
 using PluginManager.Abstractions;
 
 using SharedPluginFeatures;
@@ -50,7 +52,7 @@ namespace gsend.pro
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // not implemented at this time
+            services.AddTransient<IApplicationProvider, ApplicationProvider>();
         }
 
         public void Finalise()

@@ -57,7 +57,12 @@ namespace gsend.pro
             PluginManagerService.UsePlugin(typeof(UserAccount.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(LoginPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(SystemAdmin.Plugin.PluginInitialisation));
-
+            PluginManagerService.UsePlugin(typeof(Company.Plugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(ShoppingCartPlugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(Sitemap.Plugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(HelpdeskPlugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(ProductPlugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(ImageManager.Plugin.PluginInitialisation));
 
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
 
