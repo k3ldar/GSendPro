@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.WebSockets;
-using System.Reflection.PortableExecutable;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
@@ -18,7 +17,6 @@ using GSendCommon.Settings;
 using GSendControls;
 
 using GSendDesktop.Abstractions;
-using GSendDesktop.Forms;
 using GSendDesktop.Internal;
 
 using GSendShared;

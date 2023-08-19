@@ -44,12 +44,13 @@ PrivilegesRequired=admin
 OutputDir=..\..\Output\Installer
 DisableDirPage=true
 LicenseFile=sla.rtf
+DisableWelcomePage=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; 
 
 
 
@@ -62,7 +63,7 @@ Name: "{app}\wwwroot"; Permissions: everyone-full
 
 [Files]
 ; Configuration Files
-Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{commonappdata}\GSendPro"; Flags: onlyifdoesntexist
+Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{commonappdata}\GSendPro"; Flags: onlyifdoesntexist uninsneveruninstall;
 
 
 ; Server Files
@@ -594,6 +595,8 @@ Filename: {sys}\sc.exe; Parameters: "delete ""GSend Pro""" ; RunOnceId: "gsend_r
 
 var
 _restartRequired : Boolean;
+_failedToFindPort: Boolean;
+_updateServiceSettings: Boolean;
 
 // Code for installing dependencies
 type
@@ -847,15 +850,21 @@ begin
   end;
 end;
 
-// check TCP port availability (1-65535), return false if occupied
+procedure CheckExistingConfigFile;
+begin
+  _updateServiceSettings := not FileExists(ExpandConstant('{commonappdata}\GSendPro\appsettings.json'));
+end;
+
+// check TCP port availability (1-65535), return true if occupied
 function CheckPortOccupied(Port: String): Boolean;
 var
   ResultCode: Integer;
 begin
- Exec(ExpandConstant('{cmd}'), '/C netstat -anp TCP | findstr /r "127.0.0.1:' + Port + '\> 0.0.0.0:' + Port + '\>"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec(ExpandConstant('{cmd}'), '/C netstat -anp TCP | findstr /r "127.0.0.1:' + Port + '\> 0.0.0.0:' + Port + '\>"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
   if ResultCode  <> 1 then 
   begin
-    Log('TCP port '+Port+' is occupied');
+    Log('TCP port ' + Port + ' is occupied');
     Result := True; 
   end else
   begin
@@ -878,18 +887,55 @@ begin
       MyText := MyFile.Text;
 
       { Only save if text has been changed. }
-      while StringChangeEx(MyText, SearchString, ReplaceString, True) > 0 then
+      if StringChangeEx(MyText, SearchString, ReplaceString, True) > 0 then
       begin;
         MyFile.Text := MyText;
+        MyFile.SaveToFile(FileName);
       end;
-        
-      MyFile.SaveToFile(FileName);
     except
       result := false;
     end;
   finally
     MyFile.Free;
   end;
+end;
+
+procedure CreateFirewallRules(port: string);
+var
+  ResultCode: Integer;
+begin
+    Exec('netsh', ExpandConstant('advfirewall firewall add rule name="GSend Pro Server Inbound" dir=in program="{app}\GSendService.exe" action=allow'), '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    Exec('netsh', ExpandConstant('advfirewall firewall add rule name="GSend Pro Server Outbound" protocol=TCP dir=out localport=' + port + ' action=allow'), '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;
+
+procedure ConfigureService();
+var
+  port: Integer;
+  attempts: Integer;
+begin
+  port := 7150;
+  _failedToFindPort := true;
+  attempts := 0;
+
+  WizardForm.FilenameLabel.Caption := 'Configuring Service';
+
+  while (_failedToFindPort) and (attempts < 50) do
+  begin
+    if CheckPortOccupied(IntToStr(port)) then
+    begin
+        port := port + 1;
+        attempts := attempts + 1;
+    end else
+    begin
+        _failedToFindPort := false;
+        break;
+    end;
+  end;
+
+  FileReplaceString(ExpandConstant('{commonappdata}\GSendPro\appsettings.json'), '"Url": "http://localhost:7156"', '"Url": "http://*:' + IntToStr(port) + '"');
+  FileReplaceString(ExpandConstant('{commonappdata}\GSendPro\appsettings.json'), 'http://localhost:7156/', 'http://localhost:' + IntToStr(port) + '/');
+
+  CreateFirewallRules(IntToStr(port));
 end;
 
 procedure CreateAndStartService();
@@ -903,8 +949,12 @@ begin
     scFile := ExpandConstant('{sys}\sc.exe');
     Exec(scFile, ExpandConstant('create "GSend Pro" start= auto binPath= "{app}\GSendService.exe"'), '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 
-    if ResultCode = 0 then
+    if (ResultCode = 0) or (ResultCode = 1073) then
     begin
+
+      if (_updateServiceSettings) then
+          ConfigureService();
+
       WizardForm.FilenameLabel.Caption := 'Starting GSend Pro Service';
       Exec(scFile, 'start "GSend Pro"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 
@@ -923,10 +973,10 @@ end;
 
 function InitializeSetup: Boolean;
 begin
-  //Dependency_AddDotNet70;
-  //Dependency_AddDotNet70Desktop
+    Dependency_AddDotNet70;
+    Dependency_AddDotNet70Desktop
 
-  Result := True;
+    Result := True;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
@@ -935,8 +985,22 @@ begin
   begin
     DeleteFile(ExpandConstant('{app}\netcorecheck.exe'));
     DeleteFile(ExpandConstant('{app}\netcorecheck_x64.exe'));
+
     CreateAndStartService();
   end;
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+var
+  ResultCode: Integer;
+begin
+    if (CurPageID = wpLicense) then
+    begin
+        CheckExistingConfigFile();
+
+        // stop service in case it's running for upgrade scenario
+        Exec(ExpandConstant('{sys}\sc.exe'), 'stop "GSend Pro"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    end;
 end;
 
 procedure DeinitializeSetup();
@@ -947,4 +1011,10 @@ end;
 function NeedRestart(): Boolean;
 begin
     Result := _restartRequired;
+end;
+
+function GetCustomSetupExitCode: Integer;
+begin
+    if _failedToFindPort then
+        Result := -100;
 end;

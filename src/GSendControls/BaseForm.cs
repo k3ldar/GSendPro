@@ -81,11 +81,14 @@ namespace GSendControls
 
         protected virtual void SaveSettings()
         {
-            DesktopSettings.WriteValue(SectionName, nameof(Screen), Screen.FromControl(this).DeviceName);
-            DesktopSettings.WriteValue(SectionName, nameof(Width), Width);
-            DesktopSettings.WriteValue(SectionName, nameof(Height), Height);
-            DesktopSettings.WriteValue(SectionName, nameof(Top), Top);
-            DesktopSettings.WriteValue(SectionName, nameof(Left), Left);
+            if (WindowState == FormWindowState.Normal)
+            {
+                DesktopSettings.WriteValue(SectionName, nameof(Screen), Screen.FromControl(this).DeviceName);
+                DesktopSettings.WriteValue(SectionName, nameof(Width), Width);
+                DesktopSettings.WriteValue(SectionName, nameof(Height), Height);
+                DesktopSettings.WriteValue(SectionName, nameof(Top), Top);
+                DesktopSettings.WriteValue(SectionName, nameof(Left), Left);
+            }
         }
 
         protected void SaveSettings(SplitContainer splitContainer)
