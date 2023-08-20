@@ -628,6 +628,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid GCode detected on line {0}.
+        /// </summary>
+        public static string AnalyzeError38 {
+            get {
+                return ResourceManager.GetString("AnalyzeError38", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
         /// </summary>
         public static string AnalyzeError4 {
@@ -1884,6 +1893,24 @@ namespace GSend.Language {
         public static string FeedRate {
             get {
                 return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save changes to {0}?.
+        /// </summary>
+        public static string FileChanged {
+            get {
+                return ResourceManager.GetString("FileChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save changes?.
+        /// </summary>
+        public static string FileChangedNew {
+            get {
+                return ResourceManager.GetString("FileChangedNew", resourceCulture);
             }
         }
         
@@ -3252,6 +3279,15 @@ namespace GSend.Language {
         public static string SaveAsSubprogram {
             get {
                 return ResourceManager.GetString("SaveAsSubprogram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        public static string SaveChanges {
+            get {
+                return ResourceManager.GetString("SaveChanges", resourceCulture);
             }
         }
         

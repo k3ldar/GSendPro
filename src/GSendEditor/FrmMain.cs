@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using System.Windows.Forms;
 
 using GSendApi;
 
@@ -14,6 +15,7 @@ using GSendEditor.Internal;
 using GSendShared;
 using GSendShared.Abstractions;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
@@ -23,6 +25,7 @@ namespace GSendEditor
     public partial class FrmMain : BaseForm
     {
         private readonly object _lockObject = new();
+        private readonly object _updateSubprogramsLock = new();
         private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
@@ -233,27 +236,26 @@ namespace GSendEditor
             toolStripStatusLabelWarnings.Invalidate();
         }
 
-        private void FrmMain_Shown(object sender, EventArgs e)
+        private void FrmMain_Load(object sender, EventArgs e)
         {
-            mnuFileNew_Click(sender, e);
-
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length > 1 && File.Exists(args[1]))
             {
+                //Task.Delay(TimeSpan.FromMilliseconds(50))
+                //    .ContinueWith(task =>
+                //    {
+                mnuFileNew_Click(sender, e);
+
                 LoadGCodeData(args[1]);
+                //});
             }
+        }
 
-            try
-            {
-                LoadSubprograms();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, String.Format(GSend.Language.Resources.LoadSubProgramsError, ex.Message), Languages.LanguageStrings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
+        private void FrmMain_Shown(object sender, EventArgs e)
+        {
             tmrServerValidation.Enabled = true;
+            tmrUpdateSubprograms.Enabled = true;
         }
 
         private void txtGCode_SelectionChangedDelayed(object sender, EventArgs e)
@@ -278,7 +280,18 @@ namespace GSendEditor
         {
             if (HasChanged)
             {
-                DialogResult saveResult = MessageBox.Show("Has changed, save?", "Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                string savePrompt;
+                string fileName = FileName;
+
+                if (String.IsNullOrEmpty(fileName))
+                    savePrompt = GSend.Language.Resources.FileChangedNew;
+                else
+                    savePrompt = String.Format(GSend.Language.Resources.FileChanged, fileName);
+
+                DialogResult saveResult = MessageBox.Show(
+                    savePrompt,
+                    GSend.Language.Resources.SaveChanges, 
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if (saveResult == DialogResult.Yes)
                 {
@@ -300,7 +313,7 @@ namespace GSendEditor
                         }
 
                         SaveTextToFile();
-                        lstWarningsErrors.Items.Clear();
+                        ClearWarnings();
                     }
 
                     return false;
@@ -312,8 +325,19 @@ namespace GSendEditor
                 }
             }
 
-            lstWarningsErrors.Items.Clear();
+            ClearWarnings();
             return false;
+        }
+
+        private void ClearWarnings()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(ClearWarnings);
+                return;
+            }
+
+            lstWarningsErrors.Items.Clear();
         }
 
         #region Menu's
@@ -371,7 +395,7 @@ namespace GSendEditor
             HasChanged = false;
             UpdateEnabledState();
             txtGCode.ClearUndo();
-            lstWarningsErrors.Items.Clear();
+            ClearWarnings();
             gCodeAnalysesDetails1.ClearAnalyser();
             IsSubprogram = false;
             _subProgram = null;
@@ -477,36 +501,69 @@ namespace GSendEditor
                 _subProgram.Variables.Add(gCodeAnalyses.Variables[variable]);
             }
 
-            //gCodeAnalyses.Variables.Values.ToList();
-
             _gsendApiWrapper.SubprogramUpdate(_subProgram);
             LoadSubprograms();
         }
 
         private void LoadSubprograms()
         {
-            lvSubprograms.BeginUpdate();
-            try
+            if (lvSubprograms.InvokeRequired)
             {
-                lvSubprograms.Items.Clear();
-                List<ISubprogram> subprograms = _gsendApiWrapper.SubprogramGet();
+                Invoke(LoadSubprograms);
+                return;
+            }
 
-                foreach (ISubprogram subProgram in subprograms)
+            using (TimedLock tl = TimedLock.Lock(_updateSubprogramsLock))
+            {
+                lvSubprograms.BeginUpdate();
+                try
                 {
-                    ListViewItem listViewItem = new()
+                    foreach (ListViewItem item in lvSubprograms.Items)
+                        item.Tag = null;
+
+                    List<ISubprogram> subprograms = _gsendApiWrapper.SubprogramGet();
+
+                    foreach (ISubprogram subProgram in subprograms)
                     {
-                        Text = subProgram.Name
-                    };
-                    listViewItem.SubItems.Add(subProgram.Description);
-                    listViewItem.Tag = subProgram;
-                    listViewItem.ImageIndex = 5;
-                    lvSubprograms.Items.Add(listViewItem);
+                        ListViewItem listViewItem = GetSubprogramListItem(subProgram.Name);
+
+                        listViewItem.SubItems[1].Text = subProgram.Description;
+                        listViewItem.Tag = subProgram;
+                        listViewItem.ImageIndex = 5;
+                    }
+
+                    for (int i = lvSubprograms.Items.Count - 1; i >= 0; i--)
+                    {
+                        if (lvSubprograms.Items[i].Tag == null)
+                            lvSubprograms.Items.RemoveAt(i);
+                    }
+                }
+                finally
+                {
+                    lvSubprograms.EndUpdate();
                 }
             }
-            finally
+        }
+
+        private ListViewItem GetSubprogramListItem(string name)
+        {
+            for (int i = lvSubprograms.Items.Count - 1; i >= 0; i--)
             {
-                lvSubprograms.EndUpdate();
+                if (lvSubprograms.Items[i].Text == name)
+                {
+                    return lvSubprograms.Items[i];
+                }
             }
+
+            ListViewItem listViewItem = new ListViewItem()
+            {
+                Text = name,
+            };
+
+            listViewItem.SubItems.Add(String.Empty);
+            lvSubprograms.Items.Add(listViewItem);
+
+            return listViewItem;
         }
 
         private void mnuFileExit_Click(object sender, EventArgs e)
@@ -632,11 +689,17 @@ namespace GSendEditor
             if (!File.Exists(fileName))
                 return;
 
+            if (txtGCode.InvokeRequired)
+            {
+                Invoke(LoadGCodeData, fileName);
+                return;
+            }
+
             txtGCode.Text = ReadTextFromFile(fileName);
             HasChanged = false;
             FileName = fileName;
             txtGCode.ClearUndo();
-            lstWarningsErrors.Items.Clear();
+            ClearWarnings();
             UpdateTitleBar();
             UpdateEnabledState();
             IsSubprogram = false;
@@ -779,6 +842,9 @@ namespace GSendEditor
 
         private void AnalyzerThread_OnAddItem(object sender, EventArgs e)
         {
+            if (IsDisposed)
+                return;
+
             if (lstWarningsErrors.InvokeRequired)
             {
                 Invoke(() => AnalyzerThread_OnAddItem(sender, e));
@@ -849,6 +915,18 @@ namespace GSendEditor
                 string text = Encoding.UTF8.GetString(bytes);
                 return text;
             }
+        }
+
+        private void tmrUpdateSubprograms_Tick(object sender, EventArgs e)
+        {
+            tmrUpdateSubprograms.Enabled = false;
+
+            if (tmrUpdateSubprograms.Interval == 1000)
+                tmrUpdateSubprograms.Interval = 30000;
+
+            LoadSubprograms();
+
+            tmrUpdateSubprograms.Enabled = true;
         }
     }
 }

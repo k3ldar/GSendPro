@@ -1965,4 +1965,16 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>A new version of GSend Pro is now ready to be installed, would you like to install now?</value>
   </data>
+  <data name="AnalyzeError38" xml:space="preserve">
+    <value>Invalid GCode detected on line {0}</value>
+  </data>
+  <data name="FileChanged" xml:space="preserve">
+    <value>Do you want to save changes to {0}?</value>
+  </data>
+  <data name="FileChangedNew" xml:space="preserve">
+    <value>Do you want to save changes?</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
 </root>

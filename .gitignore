@@ -358,3 +358,4 @@ MigrationBackup/
 /wwwroot/wwwroot/images/SystemAdmin/
 /wwwroot/wwwroot/images/login/
 /Output/Installer/
+/src/GSendEditor/Properties/launchSettings.json
