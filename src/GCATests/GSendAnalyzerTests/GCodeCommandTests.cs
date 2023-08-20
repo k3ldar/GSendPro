@@ -19,10 +19,10 @@ namespace GSendTests.GSendAnalyserTests
 
         [TestMethod]
         [TestCategory(TestCategoryAnalyser)]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Construct_InvalidInstance_CodeIsNotInRange_Throws()
         {
-            new GCodeCommand(2, '#', 0, "0", String.Empty, null, new CurrentCommandValues(), 1, null);
+            GCodeCommand sut = new GCodeCommand(2, '#', 0, "0", String.Empty, null, new CurrentCommandValues(), 1, null);
+            Assert.IsFalse(sut.IsValidGCode);
         }
 
         [TestMethod]
@@ -44,6 +44,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2.2m, sut.CurrentY);
             Assert.AreEqual(3.3m, sut.CurrentZ);
             Assert.AreEqual(5, sut.LineNumber);
+            Assert.IsTrue(sut.IsValidGCode);
         }
 
         [TestMethod]
@@ -57,6 +58,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(0m, sut.CurrentY);
             Assert.AreEqual(0m, sut.CurrentZ);
             Assert.IsNull(sut.SubAnalyses);
+            Assert.IsTrue(sut.IsValidGCode);
         }
 
         [TestMethod]
@@ -70,6 +72,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(0m, sut.CurrentY);
             Assert.AreEqual(0m, sut.CurrentZ);
             Assert.IsNotNull(sut.SubAnalyses);
+            Assert.IsTrue(sut.IsValidGCode);
         }
     }
 }

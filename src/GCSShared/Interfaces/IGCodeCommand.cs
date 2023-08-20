@@ -38,6 +38,8 @@
 
         bool CoolantEnabled { get; }
 
+        bool IsValidGCode { get; }
+
         CommandAttributes Attributes { get; }
 
         /// <summary>

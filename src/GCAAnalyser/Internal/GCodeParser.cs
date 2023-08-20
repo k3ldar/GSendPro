@@ -538,6 +538,7 @@ namespace GSendAnalyzer.Internal
                 currentValues.Attributes &= ~CommandAttributes.StartProgram;
 
             CurrentCommandValues newValues = currentValues.Clone();
+
             result = new GCodeCommand(_index++, currentCommand, commandValue, lineValue, comments, variables, newValues, lineNumber, subProgramAnalyses);
 
             if (lastCommand != null)

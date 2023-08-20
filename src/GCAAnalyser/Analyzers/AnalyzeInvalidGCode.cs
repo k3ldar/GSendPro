@@ -15,6 +15,16 @@ namespace GSendAnalyzer.Analyzers
             {
                 gCodeAnalyses.AddOptions(AnalysesOptions.InvalidGCode);
             }
+
+            var invalidGCode = gCodeAnalyses.AllCommands.Where(c => !c.IsValidGCode).ToList();
+
+            if (invalidGCode.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
+            {
+                foreach (var command in invalidGCode)
+                {
+                    codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError38, command.LineNumber);
+                }
+            }
         }
     }
 }

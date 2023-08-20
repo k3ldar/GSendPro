@@ -34,7 +34,9 @@ namespace GSendAnalyzer
         {
 
             if ((currentCommand.Equals('\0') && String.IsNullOrEmpty(comment)) || !ValidChars.Contains(currentCommand))
-                throw new ArgumentOutOfRangeException(nameof(currentCommand));
+                IsValidGCode = false;
+            else 
+                IsValidGCode = true;
 
             Index = index;
             Command = currentCommand;
@@ -88,6 +90,8 @@ namespace GSendAnalyzer
         public bool SpindleOn => _currentCodeValues.SpindleSpeed != 0;
 
         public bool CoolantEnabled => _currentCodeValues.Coolant;
+
+        public bool IsValidGCode { get; }
 
         public CommandAttributes Attributes { get; internal set; }
 
