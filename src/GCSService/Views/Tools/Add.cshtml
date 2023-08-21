@@ -23,6 +23,7 @@
         </div>
         <div class="col-6">
             @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
     <div class="row rowSpace">
@@ -31,6 +32,16 @@
         </div>
         <div class="col-6">
             @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Description)
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-4">
+            @Html.LabelFor(m => m.LengthInMillimetres)
+        </div>
+        <div class="col-6">
+            @Html.TextBoxFor(m => m.LengthInMillimetres, new { @type = "number", @class = "form-control", @min = "1" })
+            @Html.ValidationMessageFor(m => m.LengthInMillimetres)
         </div>
     </div>
     <div class="row rowSpace">
@@ -39,6 +50,7 @@
         </div>
         <div class="col-6">
             @Html.TextBoxFor(m => m.ExpectedLifeMinutes, new { @type = "number", @class = "form-control", @min = "1" })
+            @Html.ValidationMessageFor(m => m.ExpectedLifeMinutes)
         </div>
     </div>
     <div class="row rowSpace">

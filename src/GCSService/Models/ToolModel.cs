@@ -40,6 +40,9 @@ namespace GSendService.Models
         [Display(Name = nameof(GSend.Language.Resources.Description))]
         public string Description { get; set; }
 
+        [Display(Name = nameof(GSend.Language.Resources.ToolLengthInMm))]
+        public double LengthInMillimetres { get; set; }
+
         [Display(Name = nameof(GSend.Language.Resources.TotalTimeUsed))]
         public TimeSpan TotalTimeUsed { get; }
 

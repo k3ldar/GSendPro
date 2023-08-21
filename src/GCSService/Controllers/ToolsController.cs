@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 using GSendService.Attributes;
@@ -44,7 +43,7 @@ namespace GSendService.Controllers
         [Breadcrumb(nameof(Add), Name, nameof(Index))]
         public IActionResult Add()
         {
-            return View(new ToolModel(GetModelData(), TimeSpan.Zero, new List<ToolUsageHistoryModel>()) { ExpectedLifeMinutes = 60 * 30});
+            return View(new ToolModel(GetModelData(), TimeSpan.Zero, new List<ToolUsageHistoryModel>()) { ExpectedLifeMinutes = 60 * 30 });
         }
 
         [HttpPost]
@@ -71,6 +70,7 @@ namespace GSendService.Controllers
                     Name = model.Name,
                     Description = model.Description,
                     ExpectedLifeMinutes = model.ExpectedLifeMinutes,
+                    LengthInMillimetres = model.LengthInMillimetres,
                 };
 
                 return View(resultModel);
@@ -81,6 +81,7 @@ namespace GSendService.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 ExpectedLifeMinutes = model.ExpectedLifeMinutes,
+                LengthInMillimetres = model.LengthInMillimetres,
             };
 
             _gSendDataProvider.ToolAdd(toolProfile);
@@ -136,6 +137,7 @@ namespace GSendService.Controllers
                 Name = model.Name,
                 Description = model.Description,
                 ExpectedLifeMinutes = model.ExpectedLifeMinutes,
+                LengthInMillimetres = model.LengthInMillimetres,
             };
 
             _gSendDataProvider.ToolUpdate(toolProfile);
@@ -245,6 +247,7 @@ namespace GSendService.Controllers
             Result.Description = toolProfile.Description;
             Result.UsageLastReset = toolProfile.UsageLastReset;
             Result.ExpectedLifeMinutes = toolProfile.ExpectedLifeMinutes;
+            Result.LengthInMillimetres = toolProfile.LengthInMillimetres;
 
             return Result;
         }

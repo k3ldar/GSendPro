@@ -14,6 +14,8 @@ namespace GSendShared
 
         string Description { get; set; }
 
+        double LengthInMillimetres { get; set; }
+
         DateTime UsageLastReset { get; set; }
 
         double ExpectedLifeMinutes { get; set; }

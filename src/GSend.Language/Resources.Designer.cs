@@ -5038,6 +5038,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length in mm.
+        /// </summary>
+        public static string ToolLengthInMm {
+            get {
+                return ResourceManager.GetString("ToolLengthInMm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tool Profile.
         /// </summary>
         public static string ToolProfile {

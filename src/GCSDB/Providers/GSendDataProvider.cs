@@ -338,7 +338,12 @@ namespace GSendDB.Providers
             if (toolProfile == null)
                 throw new ArgumentNullException(nameof(toolProfile));
 
-            _toolDatabaseTable.Insert(new ToolDatabaseDataRow() { ToolName = toolProfile.Name, Description = toolProfile.Description });
+            _toolDatabaseTable.Insert(new ToolDatabaseDataRow() 
+            { 
+                ToolName = toolProfile.Name, 
+                Description = toolProfile.Description,
+                LengthInMillimetres = toolProfile.LengthInMillimetres
+            });
         }
 
         public void ToolUpdate(IToolProfile toolProfile)
@@ -353,6 +358,7 @@ namespace GSendDB.Providers
 
             dataRow.ToolName = toolProfile.Name;
             dataRow.Description = toolProfile.Description;
+            dataRow.LengthInMillimetres = toolProfile.LengthInMillimetres;
             dataRow.ExpectedLifeMinutes = toolProfile.ExpectedLifeMinutes;
             _toolDatabaseTable.Update(dataRow);
         }
@@ -395,6 +401,7 @@ namespace GSendDB.Providers
                 Description = toolDatabaseDataRow.Description,
                 UsageLastReset = toolDatabaseDataRow.UsageLastReset,
                 ExpectedLifeMinutes = toolDatabaseDataRow.ExpectedLifeMinutes,
+                LengthInMillimetres = toolDatabaseDataRow.LengthInMillimetres,
             };
         }
 

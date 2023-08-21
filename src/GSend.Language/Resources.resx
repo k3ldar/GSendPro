@@ -1977,4 +1977,7 @@
   <data name="SaveChanges" xml:space="preserve">
     <value>Save Changes</value>
   </data>
+  <data name="ToolLengthInMm" xml:space="preserve">
+    <value>Length in mm</value>
+  </data>
 </root>

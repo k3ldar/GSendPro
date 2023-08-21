@@ -20,6 +20,8 @@ namespace GSendShared.Models
 
         public string Description { get; set; }
 
+        public double LengthInMillimetres { get; set; }
+
         public DateTime UsageLastReset { get; set; }
 
         public double ExpectedLifeMinutes { get; set; }

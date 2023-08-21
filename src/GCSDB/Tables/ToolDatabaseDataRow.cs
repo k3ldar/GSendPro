@@ -9,6 +9,7 @@ namespace GSendDB.Tables
         private string _description;
         private DateTime _resetUsage;
         private double _expectedLifeMinutes;
+        private double _lengthInMillimetres;
         private ObservableList<ToolUsageHistory> _toolHistory;
 
         public ToolDatabaseDataRow()
@@ -41,6 +42,20 @@ namespace GSendDB.Tables
                     return;
 
                 _description = value;
+                Update();
+            }
+        }
+
+        public double LengthInMillimetres
+        {
+            get => _lengthInMillimetres;
+
+            set
+            {
+                if (value == _lengthInMillimetres)
+                    return;
+
+                _lengthInMillimetres = value;
                 Update();
             }
         }
