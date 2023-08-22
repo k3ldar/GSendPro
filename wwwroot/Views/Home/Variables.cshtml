@@ -9,6 +9,84 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <h3>Variable Id's 1 to 100 are reserved for system use, these can not be set within custom GCode.</h3>
+        <p>
+            Using variables in G-code provides several benefits that contribute to more efficient and effective programming.  Variables allow you
+            to store values for repeated use throughout your program. Instead of embedding specific values directly into commands, you can assign
+            these values to variables and reference them as needed. This simplifies updates and maintenance since changes can be made in a single place.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            Variables in G-code can be ingeniously employed to overcome line length limitations imposed by the controller or software.
+            When a specific line of G-code becomes too long to be executed properly, variables come to the rescue.
+            By breaking down the lengthy command into smaller parts and assigning these parts to variables, you can effectively stay
+            within the line length constraints. These variables then represent different sections of the command.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            Variables facilitate parameterization, allowing you to define variables that can be easily adjusted for different scenarios
+            or machine configurations. This is valuable when running the same program on multiple machines with varying parameters or
+            when users need to customize aspects of the program.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            In summary, using variables in G-code streamlines reusability, enhances flexibility, improves readability, enables calculations
+            and logic, and supports parameterization. These advantages collectively lead to more efficient, maintainable, and adaptable G-code programs.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            The following example shows how variables can be used to store different parts of a command:
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            <code>
+            @Html.ToGCode(@"#120=c:\sounds\
+            #121=JobStart.wav
+            #121=JobEnd.wav
+            M605 ;[#120#121]
+            .. other g code here
+            M30
+            M605 ;[#120#122]")
+        </code>
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            At the present time only number can be used for variable names, this is expected to change in future versions. 
+        </p>
+        <p>
+            Variable Id's must be between 100 and 65000.
+        </p>
+        <p>
+            To use a variable within GCode it must be declared between square brackets [] also known as a variable block.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        </p>Variable Id's #1 to #100 are reserved for system use, these can not be set within custom GCode.</p>
     </div>
 </div>
