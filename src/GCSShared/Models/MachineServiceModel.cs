@@ -4,15 +4,18 @@
     {
         public MachineServiceModel()
         {
+            ServiceItems = new();
         }
 
-        public MachineServiceModel(long id, long machineId, DateTime serviceDate, ServiceType serviceType, long spindleHours)
+        public MachineServiceModel(long id, long machineId, DateTime serviceDate, ServiceType serviceType, 
+            long spindleHours, List<long> serviceItems)
         {
             Id = id;
             MachineId = machineId;
             ServiceDate = serviceDate;
             ServiceType = serviceType;
             SpindleHours = spindleHours;
+            ServiceItems = serviceItems ?? throw new ArgumentNullException(nameof(serviceItems));
         }
 
         public long Id { get; set; }
@@ -24,5 +27,7 @@
         public ServiceType ServiceType { get; set; }
 
         public long SpindleHours { get; set; }
+
+        public List<long> ServiceItems { get; set; }
     }
 }

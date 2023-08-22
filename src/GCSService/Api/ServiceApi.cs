@@ -32,7 +32,8 @@ namespace GSendService.Api
 
             foreach (MachineServiceDataRow service in services)
             {
-                dates.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, (ServiceType)service.ServiceType, service.SpindleHours));
+                dates.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, 
+                    (ServiceType)service.ServiceType, service.SpindleHours, service.Items));
             }
 
             return GenerateJsonSuccessResponse(dates);
@@ -42,13 +43,17 @@ namespace GSendService.Api
         [ApiAuthorization]
         public IActionResult ServiceAdd([FromBody] MachineServiceModel machineServiceModel)
         {
-            _serviceTable.Insert(new MachineServiceDataRow
+            MachineServiceDataRow serviceTableDataRow = new()
             {
                 MachineId = machineServiceModel.MachineId,
                 ServiceDate = machineServiceModel.ServiceDate,
                 ServiceType = machineServiceModel.ServiceType,
                 SpindleHours = machineServiceModel.SpindleHours,
-            });
+            };
+
+            machineServiceModel.ServiceItems.ForEach(serviceTableDataRow.Items.Add);
+
+            _serviceTable.Insert(serviceTableDataRow);
 
             return GenerateJsonSuccessResponse();
         }

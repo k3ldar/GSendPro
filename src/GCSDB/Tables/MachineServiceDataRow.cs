@@ -11,6 +11,13 @@ namespace GSendDB.Tables
         private DateTime _date;
         private ServiceType _serviceType;
         private long _spindleHours;
+        private ObservableList<long> _items;
+
+        public MachineServiceDataRow()
+        {
+            _items = new();
+            _items.Changed += ObservableDataChanged;
+        }
 
         [ForeignKey("Machines")]
         public long MachineId
@@ -65,6 +72,24 @@ namespace GSendDB.Tables
                     return;
 
                 _spindleHours = value;
+                Update();
+            }
+        }
+
+        public ObservableList<long> Items
+        {
+            get => _items;
+
+            set
+            {
+                if (value == null)
+                    throw new InvalidOperationException();
+
+                if (_items != null)
+                    _items.Changed -= ObservableDataChanged;
+
+                _items = value;
+                _items.Changed += ObservableDataChanged;
                 Update();
             }
         }
