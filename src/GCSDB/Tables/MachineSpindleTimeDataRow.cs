@@ -3,7 +3,7 @@
 namespace GSendDB.Tables
 {
     [Table("MachineSpindleTime", CompressionType.Brotli, CachingStrategy.Memory, WriteStrategy.Forced)]
-    public class MachineSpindleTimeDataRow : TableRowDefinition
+    internal class MachineSpindleTimeDataRow : TableRowDefinition
     {
         private long _machineId;
         private int _maxRpm;

@@ -2,7 +2,7 @@
 
 namespace GSendDB.Tables
 {
-    public sealed class ToolDatabaseDefaults : ITableDefaults<ToolDatabaseDataRow>
+    internal sealed class ToolDatabaseDefaults : ITableDefaults<ToolDatabaseDataRow>
     {
         public long PrimarySequence => -1;
 

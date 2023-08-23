@@ -18,6 +18,8 @@ namespace GSendShared
 
         void SpindleTimeFinish(long spindleTimeId);
 
+        IReadOnlyList<ISpindleTime> SpindleTimeGet(long machineId);
+
         IJobProfile JobProfileGet(long jobId);
 
         IReadOnlyList<IJobProfile> JobProfilesGet();
@@ -47,5 +49,9 @@ namespace GSendShared
         TimeSpan JobExecutionByTool(IToolProfile toolProfile);
 
         IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed);
+
+        void ServiceAdd(MachineServiceModel service);
+
+        IReadOnlyList<MachineServiceModel> ServicesGet(long machineId);
     }
 }

@@ -89,7 +89,6 @@
 
   <ItemGroup>
     <Folder Include="Providers\" />
-    <Folder Include="Views\ServiceSchedule\" />
   </ItemGroup>
 
   <ItemGroup>

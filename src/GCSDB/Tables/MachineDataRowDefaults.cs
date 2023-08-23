@@ -2,7 +2,7 @@
 
 namespace GSendDB.Tables
 {
-    public sealed class MachineDataRowDefaults : ITableDefaults<MachineDataRow>
+    internal sealed class MachineDataRowDefaults : ITableDefaults<MachineDataRow>
     {
         public long PrimarySequence => 0;
 

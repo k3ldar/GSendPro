@@ -5,7 +5,7 @@ using SimpleDB;
 namespace GSendDB.Tables
 {
     [Table("MachineService", CompressionType.Brotli, CachingStrategy.Memory, WriteStrategy.Forced)]
-    public sealed class MachineServiceDataRow : TableRowDefinition
+    internal sealed class MachineServiceDataRow : TableRowDefinition
     {
         private long _machineId;
         private DateTime _date;

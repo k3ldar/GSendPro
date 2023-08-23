@@ -35,7 +35,7 @@ namespace GSendDB.Tables
                     new ServiceItemsDataRow() { Name = "Inspect Lead/Ball Screws", IsDaily = false, IsMinor = false, IsMajor = true },
                     new ServiceItemsDataRow() { Name = "Test individual Limit Switches", IsDaily = false, IsMinor = false, IsMajor = true },
                     new ServiceItemsDataRow() { Name = "Validate Gantry is Square", IsDaily = false, IsMinor = false, IsMajor = true },
-                    new ServiceItemsDataRow() { Name = "Confirm all screws/bolts are correctly tightened", IsDaily = false, IsMinor = false, IsMajor = true },
+                    new ServiceItemsDataRow() { Name = "Verify screws/bolts correctly tightened", IsDaily = false, IsMinor = false, IsMajor = true },
                 };
             }
 

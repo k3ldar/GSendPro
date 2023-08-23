@@ -23,11 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Internal\" />
+    <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
+    <Folder Include="Internal\" />
   </ItemGroup>
 
 </Project>

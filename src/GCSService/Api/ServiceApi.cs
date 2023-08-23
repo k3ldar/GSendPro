@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using GSendDB.Tables;
 
@@ -16,44 +17,25 @@ namespace GSendService.Api
 {
     public class ServiceApi : BaseController
     {
-        private readonly ISimpleDBOperations<MachineServiceDataRow> _serviceTable;
+        private readonly IGSendDataProvider _gSendDataProvider;
 
-        public ServiceApi(ISimpleDBOperations<MachineServiceDataRow> serviceTable)
+        public ServiceApi(IGSendDataProvider gSendDataProvider)
         {
-            _serviceTable = serviceTable ?? throw new ArgumentNullException(nameof(serviceTable));
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
         }
 
         [HttpGet]
         [ApiAuthorization]
         public IActionResult ServicesGet(long machineId)
         {
-            List<MachineServiceModel> dates = new();
-            IReadOnlyList<MachineServiceDataRow> services = _serviceTable.Select(m => m.MachineId.Equals(machineId));
-
-            foreach (MachineServiceDataRow service in services)
-            {
-                dates.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, 
-                    (ServiceType)service.ServiceType, service.SpindleHours, service.Items));
-            }
-
-            return GenerateJsonSuccessResponse(dates);
+            return GenerateJsonSuccessResponse(_gSendDataProvider.ServicesGet(machineId).ToList());
         }
 
         [HttpPost]
         [ApiAuthorization]
         public IActionResult ServiceAdd([FromBody] MachineServiceModel machineServiceModel)
         {
-            MachineServiceDataRow serviceTableDataRow = new()
-            {
-                MachineId = machineServiceModel.MachineId,
-                ServiceDate = machineServiceModel.ServiceDate,
-                ServiceType = machineServiceModel.ServiceType,
-                SpindleHours = machineServiceModel.SpindleHours,
-            };
-
-            machineServiceModel.ServiceItems.ForEach(serviceTableDataRow.Items.Add);
-
-            _serviceTable.Insert(serviceTableDataRow);
+            _gSendDataProvider.ServiceAdd(machineServiceModel);
 
             return GenerateJsonSuccessResponse();
         }

@@ -3,7 +3,7 @@
 namespace GSendDB.Tables
 {
     [Table("ToolDatabase", CompressionType.Brotli, CachingStrategy.Memory, WriteStrategy.Forced)]
-    public sealed class ToolDatabaseDataRow : TableRowDefinition
+    internal sealed class ToolDatabaseDataRow : TableRowDefinition
     {
         private string _toolName;
         private string _description;

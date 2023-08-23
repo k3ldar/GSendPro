@@ -186,6 +186,21 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
+        public IReadOnlyList<ISpindleTime> SpindleTimeGet(long machineId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ServiceAdd(MachineServiceModel service)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IReadOnlyList<MachineServiceModel> ServicesGet(long machineId)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
 
         public bool SpindleTimeFinishCalled { get; private set; }

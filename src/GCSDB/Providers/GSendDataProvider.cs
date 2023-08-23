@@ -20,6 +20,7 @@ namespace GSendDB.Providers
         private readonly ISimpleDBOperations<JobProfileDataRow> _jobProfileTable;
         private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
         private readonly ISimpleDBOperations<JobExecutionDataRow> _jobExecutionTable;
+        private readonly ISimpleDBOperations<MachineServiceDataRow> _machineServiceTable;
         private readonly IMemoryCache _memoryCache;
 
         public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
@@ -27,6 +28,7 @@ namespace GSendDB.Providers
             ISimpleDBOperations<JobProfileDataRow> jobProfileTable,
             ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable,
             ISimpleDBOperations<JobExecutionDataRow> jobExecutionTable,
+            ISimpleDBOperations<MachineServiceDataRow> machineServiceTable,
             IMemoryCache memoryCache)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
@@ -34,6 +36,7 @@ namespace GSendDB.Providers
             _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
             _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
             _jobExecutionTable = jobExecutionTable ?? throw new ArgumentNullException(nameof(jobExecutionTable));
+            _machineServiceTable = machineServiceTable ?? throw new ArgumentNullException(nameof(_machineServiceTable));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
@@ -235,6 +238,20 @@ namespace GSendDB.Providers
             }
         }
 
+        public IReadOnlyList<ISpindleTime> SpindleTimeGet(long machineId)
+        {
+            List<MachineSpindleTimeDataRow> spindleTime = _spindleTimeTable.Select(m => m.MachineId == machineId).ToList();
+
+            List<ISpindleTime> Result = new();
+
+            foreach (MachineSpindleTimeDataRow row in spindleTime)
+            {
+                Result.Add(new SpindleTime(row.MachineId, row.ToolProfileId, row.MaxRpm, row.StartTime, row.FinishTime));
+            }
+
+            return Result;
+        }
+
         #endregion SpindleTime
 
         #region Job Profiles
@@ -382,6 +399,43 @@ namespace GSendDB.Providers
         }
 
         #endregion Tool Profiles
+
+        #region Services
+
+        public void ServiceAdd(MachineServiceModel machineServiceModel)
+        {
+            MachineServiceDataRow serviceTableDataRow = new()
+            {
+                MachineId = machineServiceModel.MachineId,
+                ServiceDate = machineServiceModel.ServiceDate,
+                ServiceType = machineServiceModel.ServiceType,
+                SpindleHours = machineServiceModel.SpindleHours,
+            };
+
+            machineServiceModel.ServiceItems.ForEach(serviceTableDataRow.Items.Add);
+
+            _machineServiceTable.Insert(serviceTableDataRow);
+        }
+
+        public IReadOnlyList<MachineServiceModel> ServicesGet(long machineId)
+        {
+            List<MachineServiceModel> Result = new();
+
+            foreach (var service in _machineServiceTable.Select(m => m.MachineId == machineId))
+            {
+                List<long> serviceItems = new();
+
+                foreach (var serviceItem in service.Items)
+                    serviceItems.Add(serviceItem);
+
+                Result.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, 
+                    service.ServiceType, service.SpindleHours, serviceItems));
+            }
+
+            return Result;
+        }
+
+        #endregion Services
 
         #region Private Methods
 
