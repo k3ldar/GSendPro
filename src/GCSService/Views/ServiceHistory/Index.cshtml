@@ -1,0 +1,138 @@
+﻿@model GSendService.Models.ServiceHistoryModel
+@{
+    ViewData["Title"] = Model.SeoTitle;
+
+    DateTime currentDate = DateTime.UtcNow;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.ServiceHistory</h3>
+    </div>
+</div>
+
+@using (Html.BeginForm(nameof(GSendService.Controllers.ServiceHistoryController.ChangeMachine), GSendService.Controllers.ServiceHistoryController.Name, FormMethod.Post, new { @id = "frmSubmitMachine" }))
+{
+    <div class="row rowSpace">
+        <div class="col-sm-4">
+            @Html.LabelFor(m => m.MachineId)
+        </div>
+        <div class="col-sm-4">
+            @Html.DropDownListFor(m => m.MachineId, new SelectList(Model.Machines, "Id", "Name"), new { @onchange = "changeMachine()", @class = "form-control" })
+        </div>
+    </div>
+    <script>
+        function changeMachine() {
+            document.getElementById('frmSubmitMachine').submit();
+        }
+    </script>
+}
+
+@if (Model.ServiceHistory.Any())
+{
+    <div class="row rowSpace">
+        <div class="col-sm-4">
+            @GSend.Language.Resources.ServiceLastDaily
+        </div>
+        <div class="col-sm-4">
+            @{
+                GSendShared.Models.MachineServiceModel lastDaily = Model.ServiceHistory.FirstOrDefault(sh => sh.ServiceType == GSendShared.ServiceType.Daily);
+
+                if (lastDaily == null)
+                {
+                    @GSend.Language.Resources.NoServiceHistoryData
+                }
+                else
+                {
+                    @lastDaily.ServiceDate.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern)
+                }
+            }
+        </div>
+        <div class="col-sm-4">
+            @{
+                TimeSpan dailyTime = currentDate - lastDaily.ServiceDate;
+                @GSendShared.HelperMethods.TimeSpanToTime(dailyTime)
+            }
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-sm-4">
+            @GSend.Language.Resources.ServiceLastMinor
+        </div>
+        <div class="col-sm-4">
+            @{
+                GSendShared.Models.MachineServiceModel lastMinor = Model.ServiceHistory.FirstOrDefault(sh => sh.ServiceType == GSendShared.ServiceType.Minor);
+
+                if (lastMinor == null)
+                {
+                    @Html.DisplayName(GSend.Language.Resources.NoServiceHistoryData)
+                }
+                else
+                {
+                    @Html.DisplayName(lastMinor.ServiceDate.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern))
+                }
+            }
+        </div>
+        <div class="col-sm-4">
+            @{
+                TimeSpan minorTime = currentDate - lastMinor.ServiceDate;
+                @GSendShared.HelperMethods.TimeSpanToTime(minorTime)
+            }
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-sm-4">
+            @GSend.Language.Resources.ServiceLastMajor
+        </div>
+        <div class="col-sm-4">
+            @{
+                GSendShared.Models.MachineServiceModel lastMajorService = Model.ServiceHistory.FirstOrDefault(sh => sh.ServiceType == GSendShared.ServiceType.Major);
+
+                if (lastMajorService == null)
+                {
+                    @GSend.Language.Resources.NoServiceHistoryData
+                }
+                else
+                {
+                    @lastMajorService.ServiceDate.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern)
+                }
+            }
+        </div>
+        <div class="col-sm-4">
+            @{
+                TimeSpan majorTime = currentDate - lastMajorService.ServiceDate;
+                @GSendShared.HelperMethods.TimeSpanToTime(majorTime)
+            }
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <table>
+            <thead>
+                <tr>
+                    <th>@GSend.Language.Resources.ServiceDate</th>
+                    <th>@GSend.Language.Resources.ServiceType</th>
+                    <th>@GSend.Language.Resources.SpindleHours</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (GSendShared.Models.MachineServiceModel serviceModel in Model.ServiceHistory)
+                {
+                    <tr>
+                        <td>@serviceModel.ServiceDate.ToString(System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern)</td>
+                        <td>@serviceModel.ServiceType</td>
+                        <td>@GSendShared.HelperMethods.TimeSpanToTime(TimeSpan.FromTicks(serviceModel.SpindleHours))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-12">
+            @GSend.Language.Resources.NoServiceHistory
+        </div>
+    </div>
+}

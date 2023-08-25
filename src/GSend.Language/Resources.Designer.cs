@@ -2887,6 +2887,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no service history that can be displayed.
+        /// </summary>
+        public static string NoServiceHistory {
+            get {
+                return ResourceManager.GetString("NoServiceHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data available.
+        /// </summary>
+        public static string NoServiceHistoryData {
+            get {
+                return ResourceManager.GetString("NoServiceHistoryData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No usage history available.
         /// </summary>
         public static string NoUsageHistory {
@@ -3405,6 +3423,42 @@ namespace GSend.Language {
         public static string ServiceDate {
             get {
                 return ResourceManager.GetString("ServiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service History.
+        /// </summary>
+        public static string ServiceHistory {
+            get {
+                return ResourceManager.GetString("ServiceHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Daily Service:.
+        /// </summary>
+        public static string ServiceLastDaily {
+            get {
+                return ResourceManager.GetString("ServiceLastDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Major Service:.
+        /// </summary>
+        public static string ServiceLastMajor {
+            get {
+                return ResourceManager.GetString("ServiceLastMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Minor Service:.
+        /// </summary>
+        public static string ServiceLastMinor {
+            get {
+                return ResourceManager.GetString("ServiceLastMinor", resourceCulture);
             }
         }
         

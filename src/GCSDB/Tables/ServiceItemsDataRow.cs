@@ -2,13 +2,14 @@
 
 namespace GSendDB.Tables
 {
-    [Table("ServiceItems", CompressionType.None, CachingStrategy.None)]
+    [Table("ServiceItems", CompressionType.Brotli, CachingStrategy.Memory)]
     internal class ServiceItemsDataRow : TableRowDefinition
     {
         private string _name;
         private bool _isMajor;
         private bool _isMinor;
         private bool _isDaily;
+        private bool _isDeleted;
 
         public string Name
         {
@@ -62,6 +63,20 @@ namespace GSendDB.Tables
                     return;
 
                 _isDaily = value;
+                Update();
+            }
+        }
+
+        public bool IsDeleted
+        {
+            get => _isDeleted;
+
+            set
+            {
+                if (value == _isDeleted)
+                    return;
+
+                _isDeleted = value;
                 Update();
             }
         }

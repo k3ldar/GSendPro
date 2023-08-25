@@ -21,6 +21,7 @@ namespace GSendDB.Providers
         private readonly ISimpleDBOperations<ToolDatabaseDataRow> _toolDatabaseTable;
         private readonly ISimpleDBOperations<JobExecutionDataRow> _jobExecutionTable;
         private readonly ISimpleDBOperations<MachineServiceDataRow> _machineServiceTable;
+        private readonly ISimpleDBOperations<ServiceItemsDataRow> _serviceItemsTable;
         private readonly IMemoryCache _memoryCache;
 
         public GSendDataProvider(ISimpleDBOperations<MachineDataRow> machineDataRow,
@@ -29,6 +30,7 @@ namespace GSendDB.Providers
             ISimpleDBOperations<ToolDatabaseDataRow> toolDatabaseTable,
             ISimpleDBOperations<JobExecutionDataRow> jobExecutionTable,
             ISimpleDBOperations<MachineServiceDataRow> machineServiceTable,
+            ISimpleDBOperations<ServiceItemsDataRow> serviceItemsTable,
             IMemoryCache memoryCache)
         {
             _machineDataRow = machineDataRow ?? throw new ArgumentNullException(nameof(machineDataRow));
@@ -36,7 +38,8 @@ namespace GSendDB.Providers
             _jobProfileTable = jobProfileTable ?? throw new ArgumentNullException(nameof(jobProfileTable));
             _toolDatabaseTable = toolDatabaseTable ?? throw new ArgumentNullException(nameof(toolDatabaseTable));
             _jobExecutionTable = jobExecutionTable ?? throw new ArgumentNullException(nameof(jobExecutionTable));
-            _machineServiceTable = machineServiceTable ?? throw new ArgumentNullException(nameof(_machineServiceTable));
+            _machineServiceTable = machineServiceTable ?? throw new ArgumentNullException(nameof(machineServiceTable));
+            _serviceItemsTable = serviceItemsTable ?? throw new ArgumentNullException(nameof(serviceItemsTable));
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
@@ -412,7 +415,8 @@ namespace GSendDB.Providers
                 SpindleHours = machineServiceModel.SpindleHours,
             };
 
-            machineServiceModel.ServiceItems.ForEach(serviceTableDataRow.Items.Add);
+            foreach (KeyValuePair<long, string> kvp in machineServiceModel.ServiceItems)
+                serviceTableDataRow.Items.Add(kvp.Key);
 
             _machineServiceTable.Insert(serviceTableDataRow);
         }
@@ -421,12 +425,12 @@ namespace GSendDB.Providers
         {
             List<MachineServiceModel> Result = new();
 
-            foreach (var service in _machineServiceTable.Select(m => m.MachineId == machineId))
+            foreach (var service in _machineServiceTable.Select(m => m.MachineId == machineId).OrderByDescending(m => m.ServiceDate))
             {
-                List<long> serviceItems = new();
+                Dictionary<long, string> serviceItems = new();
 
-                foreach (var serviceItem in service.Items)
-                    serviceItems.Add(serviceItem);
+                foreach (long serviceItem in service.Items)
+                    serviceItems.Add(serviceItem, _serviceItemsTable.Select(serviceItem).Name);
 
                 Result.Add(new MachineServiceModel(service.Id, service.MachineId, service.ServiceDate, 
                     service.ServiceType, service.SpindleHours, serviceItems));

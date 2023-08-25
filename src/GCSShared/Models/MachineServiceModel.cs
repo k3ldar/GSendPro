@@ -8,7 +8,7 @@
         }
 
         public MachineServiceModel(long id, long machineId, DateTime serviceDate, ServiceType serviceType, 
-            long spindleHours, List<long> serviceItems)
+            long spindleHours, Dictionary<long, string> serviceItems)
         {
             Id = id;
             MachineId = machineId;
@@ -28,6 +28,6 @@
 
         public long SpindleHours { get; set; }
 
-        public List<long> ServiceItems { get; set; }
+        public Dictionary<long, string> ServiceItems { get; set; }
     }
 }

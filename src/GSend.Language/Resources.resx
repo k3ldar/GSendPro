@@ -1980,4 +1980,22 @@
   <data name="ToolLengthInMm" xml:space="preserve">
     <value>Length in mm</value>
   </data>
+  <data name="ServiceHistory" xml:space="preserve">
+    <value>Service History</value>
+  </data>
+  <data name="NoServiceHistory" xml:space="preserve">
+    <value>There is no service history that can be displayed</value>
+  </data>
+  <data name="NoServiceHistoryData" xml:space="preserve">
+    <value>No data available</value>
+  </data>
+  <data name="ServiceLastDaily" xml:space="preserve">
+    <value>Last Daily Service:</value>
+  </data>
+  <data name="ServiceLastMajor" xml:space="preserve">
+    <value>Last Major Service:</value>
+  </data>
+  <data name="ServiceLastMinor" xml:space="preserve">
+    <value>Last Minor Service:</value>
+  </data>
 </root>

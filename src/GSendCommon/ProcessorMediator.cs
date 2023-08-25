@@ -115,7 +115,7 @@ namespace GSendCommon
 
         public async Task ProcessClientCommunications(WebSocket webSocket, string clientId)
         {
-            _clientId = clientId ?? "Unknwon";
+            _clientId = clientId ?? "Unknown";
             _machines.ForEach(m => AddEventsToProcessor(m));
             _webSocket = webSocket;
             byte[] receiveBuffer = new byte[1024];

@@ -33,6 +33,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="/Tools/Index">@GSend.Language.Resources.Tools</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="/ServiceHistory/Index">@GSend.Language.Resources.ServiceHistory</a>
+                        </li>
                         @{
                             // dynamically add menu items from plugins
                             ISharedPluginHelper sharedPluginHelper = (ISharedPluginHelper)Context.RequestServices.GetService(typeof(ISharedPluginHelper));
@@ -62,7 +65,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - GSendService - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2023 - GSend Pro
         </div>
     </footer>
 
