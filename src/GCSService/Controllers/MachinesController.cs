@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 
 using GSendService.Attributes;
 using GSendService.Models;
@@ -24,7 +27,8 @@ namespace GSendService.Controllers
         private readonly IComPortProvider _comPortProvider;
         private readonly INotificationService _notificationService;
 
-        public MachinesController(IGSendDataProvider gSendDataProvider, IComPortProvider comPortProvider, INotificationService notificationService)
+        public MachinesController(IGSendDataProvider gSendDataProvider, IComPortProvider comPortProvider, 
+            INotificationService notificationService)
         {
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _comPortProvider = comPortProvider ?? throw new ArgumentNullException(nameof(comPortProvider));
@@ -226,6 +230,70 @@ namespace GSendService.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Route("/Machines/ServiceScheduleAdd/{machineId}/")]
+        public IActionResult ServiceScheduleAdd(long machineId)
+        {
+            IMachine machine = _gSendDataProvider.MachineGet(machineId);
+
+            if (machine == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (machine is MachineModel machineModel)
+            {
+                machineModel.AddOptions(MachineOptions.ServiceSchedule);
+                _gSendDataProvider.MachineUpdate(machineModel);
+            }
+
+            return RedirectToAction(nameof(ConfigureService), machineId);
+        }
+
+        [HttpGet]
+        [Route("/Machines/ConfigureService/{machineId}/")]
+        public IActionResult ConfigureService(long machineId)
+        {
+            IMachine machine = _gSendDataProvider.MachineGet(machineId);
+
+            if (machine == null || !machine.Options.HasFlag(MachineOptions.ServiceSchedule))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            ServiceMachineModel model = new ServiceMachineModel(GetModelData(), machine);
+            model.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
+            model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ServiceSchedule, $"/{Name}/{nameof(ConfigureService)}/{machineId}/", false));
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ConfigureService(ServiceMachineModel model)
+        {
+            if (model == null)
+                return RedirectToAction(nameof(Index));
+
+            IMachine machine = _gSendDataProvider.MachineGet(model.MachineId);
+
+            if (machine == null || !machine.Options.HasFlag(MachineOptions.ServiceSchedule))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (ModelState.IsValid)
+            {
+                machine.ServiceSpindleHours = model.SpindleHours;
+                machine.ServiceWeeks = model.ServiceWeeks;
+                _gSendDataProvider.MachineUpdate(machine);
+                return RedirectToAction(nameof(View), new { machineId = model.MachineId } );
+            }
+
+            return View(model);
+        }
+
+        #region Private Methods
+
         private bool IsMachineConnected(long machineId, bool isUpdate)
         {
             object connectedState = false;
@@ -249,7 +317,34 @@ namespace GSendService.Controllers
 
         private ViewMachineModel CreateMachineViewModel(IMachine machine)
         {
-            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort);
+            IReadOnlyList<MachineServiceModel> services = _gSendDataProvider.ServicesGet(machine.Id);
+            DateTime nextService = DateTime.MinValue;
+            TimeSpan remainingSpindle = TimeSpan.Zero;
+
+            if (services.Count > 0)
+            {
+                DateTime latestService = services.Max(s => s.ServiceDate);
+                nextService = latestService.AddDays(machine.ServiceWeeks * 7);
+
+                IReadOnlyList<ISpindleTime> spindleHours = _gSendDataProvider.SpindleTimeGet(machine.Id).Where(m =>
+                    m.StartTime >= latestService && m.FinishTime > DateTime.MinValue).ToList();
+
+                long ticks = 0;
+
+                foreach (ISpindleTime spindleTime in spindleHours)
+                {
+                    if (spindleTime.FinishTime > spindleTime.StartTime)
+                        ticks += ((TimeSpan)(spindleTime.FinishTime - spindleTime.StartTime)).Ticks;
+                }
+
+                remainingSpindle = new((machine.ServiceSpindleHours * TimeSpan.TicksPerHour) - ticks);
+            }
+
+            MachineServiceViewModel serviceModel = new MachineServiceViewModel(machine.Id,
+                machine.Options.HasFlag(MachineOptions.ServiceSchedule),
+                machine.ServiceWeeks, machine.ServiceSpindleHours, nextService, remainingSpindle);
+
+            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort, serviceModel);
         }
 
         private EditMachineModel CreateMachineEditModel(IMachine machine, bool isConnected)
@@ -268,5 +363,7 @@ namespace GSendService.Controllers
         {
             return new EditMachineModel(GetModelData(), _comPortProvider.AvailablePorts());
         }
+
+        #endregion Private Methods
     }
 }

@@ -30,6 +30,7 @@
         <a class="btn btn-primary" href="/Machines/Edit/@Model.Id/" role="button">@Languages.LanguageStrings.Update</a>
     </div>
 </div>
+@await Html.PartialAsync("~/Views/Machines/_servicing.cshtml", Model.ServicingModel)
 <script>
     gSend.init();
 </script>

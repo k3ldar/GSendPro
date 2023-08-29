@@ -8,7 +8,8 @@ namespace GSendService.Models
 {
     public class ViewMachineModel : BaseModel
     {
-        public ViewMachineModel(BaseModelData modelData, long id, string name, MachineType machineType, string comport)
+        public ViewMachineModel(BaseModelData modelData, long id, string name, MachineType machineType, string comport,
+            MachineServiceViewModel servicingModel)
            : base(modelData)
         {
             if (String.IsNullOrEmpty(name))
@@ -21,6 +22,8 @@ namespace GSendService.Models
             Name = name;
             MachineType = machineType;
             ComPort = comport;
+
+            ServicingModel = servicingModel ?? throw new ArgumentNullException(nameof(servicingModel));
         }
 
         public long Id { get; }
@@ -30,5 +33,7 @@ namespace GSendService.Models
         public MachineType MachineType { get; }
 
         public string ComPort { get; }
+
+        public MachineServiceViewModel ServicingModel { get; }
     }
 }

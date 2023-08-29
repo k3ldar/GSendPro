@@ -62,6 +62,8 @@ Name: "{app}\Views"; Permissions: everyone-full
 Name: "{app}\wwwroot"; Permissions: everyone-full
 
 [Files]
+; Don't Forget to add new files to the signer .bat file
+
 ; Configuration Files
 Source: "C:\GitProjects\GCA\Output\publish\Server\appsettings.json"; DestDir: "{commonappdata}\GSendPro"; Flags: onlyifdoesntexist uninsneveruninstall;
 
@@ -88,7 +90,6 @@ Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.deps.json"; DestDi
 ; Solution Files
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSend.Language.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendAnalyzer.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendApi.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendCommon.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Desktop\GSendControls.dll"; DestDir: "{app}"; Flags: ignoreversion

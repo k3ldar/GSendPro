@@ -1,0 +1,63 @@
+﻿@model GSendService.Models.ServiceMachineModel
+@{
+    ViewData["Title"] = $"{Model.Name} {Model.SeoTitle}";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@Html.DisplayName($"{Model.Name} {GSend.Language.Resources.ServiceSchedule}")</h3>
+    </div>
+</div>
+@using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.ConfigureService), GSendService.Controllers.MachinesController.Name, FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.CanManageSeoData)
+    @Html.HiddenFor(m => m.MachineId)
+    @Html.HiddenFor(m => m.Name)
+    <div class="row rowSpace">
+        <div class="col-3">
+            @Html.TextBoxFor(m => m.ServiceWeeks, new { @class="form-range", @min = "1", @max = "52", @type = "range", onchange = "WeeksChanged()" })
+        </div>
+        <div class="col-3">
+            <span id="spanWeekNumbers"></span>
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-3">
+            @Html.TextBoxFor(m => m.SpindleHours, new { @class="form-range", @min = "5", @max = "500", @type = "range", onchange = "SpindleChanged()" })
+        </div>
+        <div class="col-3">
+            <span id="spanSpindleHours"></span>
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-10">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">@Languages.LanguageStrings.Save</button>
+        </div>
+    </div>
+}
+<script>
+
+    $(document).ready(function () {
+        WeeksChanged();
+        SpindleChanged();
+    });
+
+    function WeeksChanged() {
+        let sw = document.getElementById("@Html.IdFor(m => m.ServiceWeeks)");
+        let wn = document.getElementById("spanWeekNumbers");
+        let swl = "@GSend.Language.Resources.ServiceWeeks";
+        let swla = swl.replace("{0}", sw.value);
+        wn.innerText = swla;
+    }
+
+    function SpindleChanged() {
+        let sw = document.getElementById("@Html.IdFor(m => m.SpindleHours)");
+        let wn = document.getElementById("spanSpindleHours");
+        let swl = "@GSend.Language.Resources.ServiceSpindleHours";
+        let swla = swl.replace("{0}", sw.value);
+        wn.innerText = swla;
+    }
+
+</script>

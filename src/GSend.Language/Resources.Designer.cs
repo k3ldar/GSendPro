@@ -1231,6 +1231,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configure.
+        /// </summary>
+        public static string Configure {
+            get {
+                return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string Connect {
@@ -3229,6 +3238,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} hours and {1} minutes.
+        /// </summary>
+        public static string RemaininSpindleHours {
+            get {
+                return ResourceManager.GetString("RemaininSpindleHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename Error.
         /// </summary>
         public static string RenameErrorTitle {
@@ -3459,6 +3477,15 @@ namespace GSend.Language {
         public static string ServiceLastMinor {
             get {
                 return ResourceManager.GetString("ServiceLastMinor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servicing not configured.
+        /// </summary>
+        public static string ServiceNotConfigured {
+            get {
+                return ResourceManager.GetString("ServiceNotConfigured", resourceCulture);
             }
         }
         

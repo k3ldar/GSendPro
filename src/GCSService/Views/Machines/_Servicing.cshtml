@@ -1,0 +1,54 @@
+﻿@model GSendService.Models.MachineServiceViewModel
+@{
+    TimeSpan span = Model.NextService - DateTime.UtcNow;
+    string nextService = $"{Model.NextService:g} ({(int)span.TotalDays} days)";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <h4>@GSend.Language.Resources.ServiceSchedule</h4>
+    </div>
+</div>
+@if (Model.MaintainServiceSchedule)
+{
+    <div class="row rowSpace">
+        <div class="col-sm-2">
+            @Html.LabelFor(m => m.NextService)
+        </div>
+        <div class="col-sm-4">
+            @nextService
+        </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-sm-2">
+            @Html.LabelFor(m => m.RemainingSpindle)
+        </div>
+        <div class="col-sm-4">
+            @String.Format(GSend.Language.Resources.RemaininSpindleHours, (int)Model.RemainingSpindle.TotalHours, Model.RemainingSpindle.Minutes);
+        </div>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-2">
+            <a class="btn btn-primary" href="/Machines/ConfigureService/@Model.Id/" role="button">@GSend.Language.Resources.Configure</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row rowSpace">
+        <div class="col-sm-2">
+            @GSend.Language.Resources.ServiceNotConfigured
+        </div>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-2">
+            <a class="btn btn-primary" href="/Machines/ServiceScheduleAdd/@Model.Id/" role="button">@Languages.LanguageStrings.Add</a>
+        </div>
+    </div>
+}

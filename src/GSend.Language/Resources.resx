@@ -1998,4 +1998,13 @@
   <data name="ServiceLastMinor" xml:space="preserve">
     <value>Last Minor Service:</value>
   </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="RemaininSpindleHours" xml:space="preserve">
+    <value>{0} hours and {1} minutes</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>Servicing not configured</value>
+  </data>
 </root>
