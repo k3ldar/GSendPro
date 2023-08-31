@@ -1312,6 +1312,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily.
+        /// </summary>
+        public static string Daily {
+            get {
+                return ResourceManager.GetString("Daily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
         public static string Day {
@@ -2815,6 +2824,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Major.
+        /// </summary>
+        public static string Major {
+            get {
+                return ResourceManager.GetString("Major", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minor.
+        /// </summary>
+        public static string Minor {
+            get {
+                return ResourceManager.GetString("Minor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minutes.
         /// </summary>
         public static string Minutes {
@@ -3490,6 +3517,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service.
+        /// </summary>
+        public static string ServiceNow {
+            get {
+                return ResourceManager.GetString("ServiceNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This machine&apos;s service is overdue!.
         /// </summary>
         public static string ServiceOverdue {
@@ -3558,6 +3594,15 @@ namespace GSend.Language {
         public static string ServiceTypeMinor {
             get {
                 return ResourceManager.GetString("ServiceTypeMinor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify each item has been completed and click submit.
+        /// </summary>
+        public static string ServiceVerifyComplete {
+            get {
+                return ResourceManager.GetString("ServiceVerifyComplete", resourceCulture);
             }
         }
         

@@ -2007,4 +2007,19 @@
   <data name="ServiceNotConfigured" xml:space="preserve">
     <value>Servicing not configured</value>
   </data>
+  <data name="Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Major" xml:space="preserve">
+    <value>Major</value>
+  </data>
+  <data name="Minor" xml:space="preserve">
+    <value>Minor</value>
+  </data>
+  <data name="ServiceNow" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="ServiceVerifyComplete" xml:space="preserve">
+    <value>Verify each item has been completed and click submit</value>
+  </data>
 </root>

@@ -410,7 +410,7 @@ namespace GSendDB.Providers
             MachineServiceDataRow serviceTableDataRow = new()
             {
                 MachineId = machineServiceModel.MachineId,
-                ServiceDate = machineServiceModel.ServiceDate,
+                ServiceDate = DateTime.UtcNow,
                 ServiceType = machineServiceModel.ServiceType,
                 SpindleHours = machineServiceModel.SpindleHours,
             };
@@ -437,6 +437,27 @@ namespace GSendDB.Providers
             }
 
             return Result;
+        }
+
+        public List<ServiceItemModel> ServiceItemsGet(MachineType machineType)
+        {
+            List<ServiceItemModel> serviceItems = new();
+
+            foreach (var serviceItem in _serviceItemsTable.Select().Where(si => !si.IsDeleted))
+            {
+                ServiceItemModel serviceItemModel = new ServiceItemModel()
+                {
+                    Id = serviceItem.Id,
+                    Name = serviceItem.Name,
+                    IsDaily = serviceItem.IsDaily,
+                    IsMinor = serviceItem.IsMinor,
+                    IsMajor = serviceItem.IsMajor,
+                };
+
+                serviceItems.Add(serviceItemModel);
+            }
+
+            return serviceItems;
         }
 
         #endregion Services

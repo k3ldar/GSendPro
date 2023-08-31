@@ -1,0 +1,91 @@
+﻿@model GSendService.Models.ServiceMachineModel
+@{
+    ViewData["Title"] = $"{Model.Name} {Model.SeoTitle}";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@GSend.Language.Resources.ServiceNow</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div>@Html.ValidationSummary(false)</div>
+    </div>
+</div>
+@using (Html.BeginForm(nameof(GSendService.Controllers.MachinesController.Service), GSendService.Controllers.MachinesController.Name, FormMethod.Post, new { id = "frmChangeServiceType" }))
+{
+    @Html.HiddenFor(m => m.MachineId)
+    <div class="row rowSpace">
+        <div class="col-sm-4">@GSend.Language.Resources.ServiceType</div>
+        <div class="col-sm-2">@Html.RadioButtonFor(m => m.ServiceType, GSendShared.ServiceType.Daily, new { @onchange = "changeServiceType()" }) @GSend.Language.Resources.Daily </div>
+        <div class="col-sm-2">@Html.RadioButtonFor(m => m.ServiceType, GSendShared.ServiceType.Minor, new { @onchange = "changeServiceType()" }) @GSend.Language.Resources.Minor </div>
+        <div class="col-sm-2">@Html.RadioButtonFor(m => m.ServiceType, GSendShared.ServiceType.Major, new { @onchange = "changeServiceType()" }) @GSend.Language.Resources.Major </div>
+    </div>
+    <div class="row rowSpace">
+        <div class="col-sm-12">
+            <h4>@GSend.Language.Resources.ServiceVerifyComplete</h4>
+        </div>
+    </div>
+
+    <div class="row rowSpace" id="itemsDaily">
+        @foreach (GSendShared.Models.ServiceItemModel dailyItem in Model.ServiceItems.Where(si => si.IsDaily))
+        {
+            <div class="col-sm-12">
+                @dailyItem.Name
+            </div>
+        }
+    </div>
+
+    <div class="row rowSpace" id="itemsMinor">
+        @foreach (GSendShared.Models.ServiceItemModel minorItem in Model.ServiceItems.Where(si => si.IsMinor))
+        {
+            <div class="col-sm-12">
+                @minorItem.Name
+            </div>
+        }
+    </div>
+
+    <div class="row rowSpace" id="itemsMajor">
+        @foreach (GSendShared.Models.ServiceItemModel majorItem in Model.ServiceItems.Where(si => si.IsMajor))
+        {
+            <div class="col-sm-12">
+                @majorItem.Name
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-primary" id="submitButton" type="submit">@Languages.LanguageStrings.Submit</button>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        changeServiceType();
+    });
+
+    function changeServiceType() {
+        var st = document.querySelector('input[name="@Html.IdFor(m => m.ServiceType)"]:checked').value;
+
+        if (st == "Daily") {
+            document.getElementById("itemsDaily").style.display = 'block';
+            document.getElementById("itemsMinor").style.display = 'none';
+            document.getElementById("itemsMajor").style.display = 'none';
+        }
+        else if (st == "Minor") {
+            document.getElementById("itemsDaily").style.display = 'none';
+            document.getElementById("itemsMinor").style.display = 'block';
+            document.getElementById("itemsMajor").style.display = 'none';
+        }
+        else if (st == "Major") {
+            document.getElementById("itemsDaily").style.display = 'none';
+            document.getElementById("itemsMinor").style.display = 'none';
+            document.getElementById("itemsMajor").style.display = 'block';
+        }
+
+    }
+</script>

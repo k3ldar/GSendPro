@@ -201,6 +201,11 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
+        public List<ServiceItemModel> ServiceItemsGet(MachineType machineType)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SpindleTimeCreateCalled { get; private set; }
 
         public bool SpindleTimeFinishCalled { get; private set; }

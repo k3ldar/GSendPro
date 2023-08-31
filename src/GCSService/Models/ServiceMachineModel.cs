@@ -1,8 +1,11 @@
-﻿using System;
-
-using GSendShared;
+﻿using GSendShared;
+using System.Reflection.PortableExecutable;
+using System.Xml.Linq;
+using System;
 
 using SharedPluginFeatures;
+using GSendShared.Models;
+using System.Collections.Generic;
 
 namespace GSendService.Models
 {
@@ -12,7 +15,8 @@ namespace GSendService.Models
         {
         }
 
-        public ServiceMachineModel(BaseModelData modelData, IMachine machine)
+        public ServiceMachineModel(BaseModelData modelData, IMachine machine, ServiceType serviceType,
+            List<ServiceItemModel> serviceItems)
             : base(modelData)
         {
             if (machine == null)
@@ -20,19 +24,16 @@ namespace GSendService.Models
 
             MachineId = machine.Id;
             Name = machine.Name;
-            ServiceEnabled = machine.Options.HasFlag(MachineOptions.ServiceSchedule);
-            ServiceWeeks = machine.ServiceWeeks;
-            SpindleHours = machine.ServiceSpindleHours;
+            ServiceItems = serviceItems ?? throw new ArgumentNullException(nameof(serviceItems));
+            ServiceType = serviceType;
         }
 
         public long MachineId { get; set; }
 
         public string Name { get; set; }
 
-        public bool ServiceEnabled { get; set; }
+        public ServiceType ServiceType { get; set; }
 
-        public int ServiceWeeks { get; set; }
-
-        public int SpindleHours { get; set; }
+        public List<ServiceItemModel> ServiceItems { get; set; }
     }
 }

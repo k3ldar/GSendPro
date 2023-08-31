@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.PortableExecutable;
+using System.ServiceProcess;
 
 using GSendService.Attributes;
 using GSendService.Models;
@@ -27,7 +27,7 @@ namespace GSendService.Controllers
         private readonly IComPortProvider _comPortProvider;
         private readonly INotificationService _notificationService;
 
-        public MachinesController(IGSendDataProvider gSendDataProvider, IComPortProvider comPortProvider, 
+        public MachinesController(IGSendDataProvider gSendDataProvider, IComPortProvider comPortProvider,
             INotificationService notificationService)
         {
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
@@ -162,6 +162,8 @@ namespace GSendService.Controllers
                 OverrideZDownSpeed = 300,
                 OverrideZUpSpeed = 300,
                 SoftStartSeconds = 30,
+                ServiceSpindleHours = 200,
+                ServiceWeeks = 20,
             };
 
             _gSendDataProvider.MachineAdd(machine);
@@ -261,7 +263,7 @@ namespace GSendService.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ServiceMachineModel model = new ServiceMachineModel(GetModelData(), machine);
+            ServiceConfigurationMachineModel model = new ServiceConfigurationMachineModel(GetModelData(), machine);
             model.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ServiceSchedule, $"/{Name}/{nameof(ConfigureService)}/{machineId}/", false));
 
@@ -269,7 +271,7 @@ namespace GSendService.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfigureService(ServiceMachineModel model)
+        public IActionResult ConfigureService(ServiceConfigurationMachineModel model)
         {
             if (model == null)
                 return RedirectToAction(nameof(Index));
@@ -286,10 +288,64 @@ namespace GSendService.Controllers
                 machine.ServiceSpindleHours = model.SpindleHours;
                 machine.ServiceWeeks = model.ServiceWeeks;
                 _gSendDataProvider.MachineUpdate(machine);
-                return RedirectToAction(nameof(View), new { machineId = model.MachineId } );
+                return RedirectToAction(nameof(View), new { machineId = model.MachineId });
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("/Machines/Service/{machineId}/")]
+        public IActionResult Service(long machineId)
+        {
+            IMachine machine = _gSendDataProvider.MachineGet(machineId);
+
+            if (machine == null || !machine.Options.HasFlag(MachineOptions.ServiceSchedule))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            List<ServiceItemModel> serviceItems = _gSendDataProvider.ServiceItemsGet(machine.MachineType);
+
+            ServiceMachineModel returnModel = new ServiceMachineModel(GetModelData(), machine, GSendShared.ServiceType.Daily, serviceItems);
+            returnModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
+            returnModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ServiceNow, $"/{Name}/{nameof(Service)}/{machineId}/", false));
+            return View(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/Machines/Service/{machineId}/")]
+        public IActionResult Service(ServiceMachineModel model)
+        {
+            IMachine machine = _gSendDataProvider.MachineGet(model.MachineId);
+
+            if (machine == null || !machine.Options.HasFlag(MachineOptions.ServiceSchedule))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            List<ServiceItemModel> allServiceItems = _gSendDataProvider.ServiceItemsGet(machine.MachineType);
+
+            Dictionary<long, string> serviceItems = new();
+
+            foreach (var serviceItem in allServiceItems)
+            {
+                if (model.ServiceType == GSendShared.ServiceType.Daily && serviceItem.IsDaily ||
+                    model.ServiceType == GSendShared.ServiceType.Minor && serviceItem.IsMinor ||
+                    model.ServiceType == GSendShared.ServiceType.Major && serviceItem.IsMajor)
+                {
+                    serviceItems.Add(serviceItem.Id, serviceItem.Name);
+                }
+            }
+
+            //machine.ServiceSpindleHours * TimeSpan.TicksPerHour) - ticks
+
+            RetreiveServiceData(machine, out DateTime _, out TimeSpan _, out long spindleTicks);
+
+            _gSendDataProvider.ServiceAdd(new MachineServiceModel(-1, model.MachineId, DateTime.UtcNow,
+                model.ServiceType, spindleTicks / TimeSpan.TicksPerHour, serviceItems));
+            
+            return RedirectToAction(nameof(Index));
         }
 
         #region Private Methods
@@ -317,9 +373,23 @@ namespace GSendService.Controllers
 
         private ViewMachineModel CreateMachineViewModel(IMachine machine)
         {
+            DateTime nextService;
+            TimeSpan remainingSpindle;
+            RetreiveServiceData(machine, out nextService, out remainingSpindle, out long _);
+
+            MachineServiceViewModel serviceModel = new MachineServiceViewModel(machine.Id,
+                machine.Options.HasFlag(MachineOptions.ServiceSchedule),
+                machine.ServiceWeeks, machine.ServiceSpindleHours, nextService, remainingSpindle);
+
+            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort, serviceModel);
+        }
+
+        private void RetreiveServiceData(IMachine machine, out DateTime nextService, out TimeSpan remainingSpindle, out long spindleTicks)
+        {
             IReadOnlyList<MachineServiceModel> services = _gSendDataProvider.ServicesGet(machine.Id);
-            DateTime nextService = DateTime.MinValue;
-            TimeSpan remainingSpindle = TimeSpan.Zero;
+            nextService = DateTime.MinValue;
+            remainingSpindle = TimeSpan.Zero;
+            spindleTicks = 0;
 
             if (services.Count > 0)
             {
@@ -329,22 +399,16 @@ namespace GSendService.Controllers
                 IReadOnlyList<ISpindleTime> spindleHours = _gSendDataProvider.SpindleTimeGet(machine.Id).Where(m =>
                     m.StartTime >= latestService && m.FinishTime > DateTime.MinValue).ToList();
 
-                long ticks = 0;
+                spindleTicks = 0;
 
                 foreach (ISpindleTime spindleTime in spindleHours)
                 {
                     if (spindleTime.FinishTime > spindleTime.StartTime)
-                        ticks += ((TimeSpan)(spindleTime.FinishTime - spindleTime.StartTime)).Ticks;
+                        spindleTicks += ((TimeSpan)(spindleTime.FinishTime - spindleTime.StartTime)).Ticks;
                 }
 
-                remainingSpindle = new((machine.ServiceSpindleHours * TimeSpan.TicksPerHour) - ticks);
+                remainingSpindle = new((machine.ServiceSpindleHours * TimeSpan.TicksPerHour) - spindleTicks);
             }
-
-            MachineServiceViewModel serviceModel = new MachineServiceViewModel(machine.Id,
-                machine.Options.HasFlag(MachineOptions.ServiceSchedule),
-                machine.ServiceWeeks, machine.ServiceSpindleHours, nextService, remainingSpindle);
-
-            return new ViewMachineModel(GetModelData(), machine.Id, machine.Name, machine.MachineType, machine.ComPort, serviceModel);
         }
 
         private EditMachineModel CreateMachineEditModel(IMachine machine, bool isConnected)

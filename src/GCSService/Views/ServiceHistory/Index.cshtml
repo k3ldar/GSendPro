@@ -50,8 +50,11 @@
         </div>
         <div class="col-sm-4">
             @{
-                TimeSpan dailyTime = currentDate - lastDaily.ServiceDate;
-                @GSendShared.HelperMethods.TimeSpanToTime(dailyTime)
+                if (lastDaily != null)
+                {
+                    TimeSpan dailyTime = currentDate - lastDaily.ServiceDate;
+                    @GSendShared.HelperMethods.TimeSpanToTime(dailyTime)
+                }
             }
         </div>
     </div>
@@ -75,8 +78,11 @@
         </div>
         <div class="col-sm-4">
             @{
-                TimeSpan minorTime = currentDate - lastMinor.ServiceDate;
-                @GSendShared.HelperMethods.TimeSpanToTime(minorTime)
+                if (lastMinor != null)
+                {
+                    TimeSpan minorTime = currentDate - lastMinor.ServiceDate;
+                    @GSendShared.HelperMethods.TimeSpanToTime(minorTime)
+                }
             }
         </div>
     </div>
@@ -100,8 +106,11 @@
         </div>
         <div class="col-sm-4">
             @{
-                TimeSpan majorTime = currentDate - lastMajorService.ServiceDate;
-                @GSendShared.HelperMethods.TimeSpanToTime(majorTime)
+                if (lastMajorService != null)
+                {
+                    TimeSpan majorTime = currentDate - lastMajorService.ServiceDate;
+                    @GSendShared.HelperMethods.TimeSpanToTime(majorTime)
+                }
             }
         </div>
     </div>

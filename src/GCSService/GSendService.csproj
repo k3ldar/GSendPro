@@ -10,6 +10,7 @@
   
   <PropertyGroup>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
   
   <ItemGroup>

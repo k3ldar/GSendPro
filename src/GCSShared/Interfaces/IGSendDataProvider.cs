@@ -53,5 +53,7 @@ namespace GSendShared
         void ServiceAdd(MachineServiceModel service);
 
         IReadOnlyList<MachineServiceModel> ServicesGet(long machineId);
+
+        List<ServiceItemModel> ServiceItemsGet(MachineType machineType);
     }
 }
