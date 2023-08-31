@@ -14,5 +14,7 @@ namespace GSendShared
         ulong SerialNumber { get; }
 
         long ToolProfileId { get; set; }
+
+        void IncrementSerialNumber();
     }
 }

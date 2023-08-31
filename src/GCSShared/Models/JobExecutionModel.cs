@@ -39,7 +39,14 @@
         public void Finish()
         {
             if (Status != JobExecutionStatus.Error)
+            {
+                if (!Simulation)
+                {
+                    JobProfile.IncrementSerialNumber();
+                }
+
                 Status = JobExecutionStatus.Completed;
+            }
 
             FinishDateTime = DateTime.UtcNow;
         }

@@ -16,5 +16,10 @@
         public ulong SerialNumber { get; set; }
 
         public long ToolProfileId { get; set; }
+
+        public void IncrementSerialNumber()
+        {
+            SerialNumber = SerialNumber + 1;
+        }
     }
 }
