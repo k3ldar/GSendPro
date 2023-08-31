@@ -26,6 +26,7 @@
 
 
   <ItemGroup>
+    <Content Remove="add.json" />
     <Content Remove="wwwroot\images\3DPrinter32x32.png" />
     <Content Remove="wwwroot\images\CNC32x32.png" />
     <Content Remove="wwwroot\images\document-icon.png" />
@@ -36,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="add.json" />
     <EmbeddedResource Include="wwwroot\images\3DPrinter32x32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -101,6 +101,8 @@
             toolStripButtonRefreshSubPrograms = new ToolStripButton();
             tmrServerValidation = new System.Windows.Forms.Timer(components);
             tmrUpdateSubprograms = new System.Windows.Forms.Timer(components);
+            toolStripMenuItem6 = new ToolStripSeparator();
+            bugsAndIdeasToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerPrimary).BeginInit();
@@ -348,7 +350,7 @@
             // 
             // mnuHelp
             // 
-            mnuHelp.DropDownItems.AddRange(new ToolStripItem[] { mnuHelpHelp, toolStripMenuItem5, mnuHelpAbout });
+            mnuHelp.DropDownItems.AddRange(new ToolStripItem[] { mnuHelpHelp, toolStripMenuItem5, bugsAndIdeasToolStripMenuItem, toolStripMenuItem6, mnuHelpAbout });
             mnuHelp.Name = "mnuHelp";
             mnuHelp.Size = new Size(44, 20);
             mnuHelp.Text = "&Help";
@@ -357,19 +359,19 @@
             // 
             mnuHelpHelp.Name = "mnuHelpHelp";
             mnuHelpHelp.ShortcutKeys = Keys.F1;
-            mnuHelpHelp.Size = new Size(118, 22);
+            mnuHelpHelp.Size = new Size(180, 22);
             mnuHelpHelp.Text = "Help";
             mnuHelpHelp.Click += mnuHelpHelp_Click;
             // 
             // toolStripMenuItem5
             // 
             toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(115, 6);
+            toolStripMenuItem5.Size = new Size(177, 6);
             // 
             // mnuHelpAbout
             // 
             mnuHelpAbout.Name = "mnuHelpAbout";
-            mnuHelpAbout.Size = new Size(118, 22);
+            mnuHelpAbout.Size = new Size(180, 22);
             mnuHelpAbout.Text = "&About";
             mnuHelpAbout.Click += mnuHelpAbout_Click;
             // 
@@ -431,7 +433,6 @@
             txtGCode.ContextMenuStrip = contextMenuStripEditor;
             txtGCode.DefaultMarkerSize = 8;
             txtGCode.DisabledColor = Color.FromArgb(100, 180, 180, 180);
-            txtGCode.Font = new Font("Courier New", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             txtGCode.IsReplaceMode = false;
             txtGCode.LeftBracket = '[';
             txtGCode.LeftBracket2 = '(';
@@ -719,6 +720,18 @@
             tmrUpdateSubprograms.Interval = 1000;
             tmrUpdateSubprograms.Tick += tmrUpdateSubprograms_Tick;
             // 
+            // toolStripMenuItem6
+            // 
+            toolStripMenuItem6.Name = "toolStripMenuItem6";
+            toolStripMenuItem6.Size = new Size(177, 6);
+            // 
+            // bugsAndIdeasToolStripMenuItem
+            // 
+            bugsAndIdeasToolStripMenuItem.Name = "bugsAndIdeasToolStripMenuItem";
+            bugsAndIdeasToolStripMenuItem.Size = new Size(180, 22);
+            bugsAndIdeasToolStripMenuItem.Text = "Bugs and Ideas";
+            bugsAndIdeasToolStripMenuItem.Click += bugsAndIdeasToolStripMenuItem_Click;
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -830,5 +843,7 @@
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton toolStripButtonRefreshSubPrograms;
         private System.Windows.Forms.Timer tmrUpdateSubprograms;
+        private ToolStripMenuItem bugsAndIdeasToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem6;
     }
 }

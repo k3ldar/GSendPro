@@ -572,5 +572,16 @@ namespace GSendDesktop
 
             Process.Start(psi);
         }
+
+        private void bugsAndIdeasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psi = new()
+            {
+                FileName = "https://github.com/k3ldar/GSendPro/issues",
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
+        }
     }
 }

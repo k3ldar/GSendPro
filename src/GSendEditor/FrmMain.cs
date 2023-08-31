@@ -290,7 +290,7 @@ namespace GSendEditor
 
                 DialogResult saveResult = MessageBox.Show(
                     savePrompt,
-                    GSend.Language.Resources.SaveChanges, 
+                    GSend.Language.Resources.SaveChanges,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if (saveResult == DialogResult.Yes)
@@ -927,6 +927,17 @@ namespace GSendEditor
             LoadSubprograms();
 
             tmrUpdateSubprograms.Enabled = true;
+        }
+
+        private void bugsAndIdeasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo psi = new()
+            {
+                FileName = "https://github.com/k3ldar/GSendPro/issues",
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
     }
 }
