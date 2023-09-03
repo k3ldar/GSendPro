@@ -30,9 +30,9 @@
   </PropertyGroup>
 	
   <PropertyGroup>
-    <PluginVersion>5.3.0</PluginVersion>
-	<SharedVer>3.9.1</SharedVer>
-	<SharedWinVer>1.1.0</SharedWinVer>
+    <PluginVersion>5.4.0</PluginVersion>
+	<SharedVer>3.10.0</SharedVer>
+	<SharedWinVer>1.2.0</SharedWinVer>
   </PropertyGroup>
   
   <PropertyGroup>

@@ -43,7 +43,6 @@ namespace gsend.pro
             PluginManagerService.UsePlugin(typeof(CacheControl.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(MemoryCache.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(Localization.Plugin.PluginInitialisation));
-            PluginManagerService.UsePlugin(typeof(Breadcrumb.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(ApiAuthorization.Plugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(SearchPlugin.PluginInitialisation));
 
@@ -63,6 +62,7 @@ namespace gsend.pro
             PluginManagerService.UsePlugin(typeof(HelpdeskPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(ProductPlugin.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(ImageManager.Plugin.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(Breadcrumb.Plugin.PluginInitialisation));
 
             PluginManagerService.UsePlugin(typeof(SimpleDB.PluginInitialisation));
 

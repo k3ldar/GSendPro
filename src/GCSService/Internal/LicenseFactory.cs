@@ -103,6 +103,6 @@ namespace GSendService.Internal
                 license.IsValid;
         }
 
-        #endregion ILicenseFactory Methods
+#endregion ILicenseFactory Methods
     }
 }

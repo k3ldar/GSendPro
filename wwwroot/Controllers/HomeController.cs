@@ -12,6 +12,7 @@ namespace gsend.pro.Controllers
         }
 
         [HttpGet]
+        [Breadcrumb(nameof(Languages.LanguageStrings.Home))]
         public IActionResult Index()
         {
             return View(new BaseModel(GetModelData()));

@@ -38,11 +38,10 @@ namespace GSendService
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
 
             Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "db"));
-            GenerateUniqueSerialNumber();
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;
-            System.Net.ServicePointManager.MaxServicePoints = 5;
+            System.Net.ServicePointManager.MaxServicePoints = 0;
 #pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (message, cert, chain, sslPolicyErrors) =>
             {
@@ -69,6 +68,7 @@ namespace GSendService
             };
 
             PluginManagerService.UsePlugin(typeof(PluginManager.DAL.TextFiles.PluginInitialisation));
+            PluginManagerService.UsePlugin(typeof(GSendShared.PluginInitialisation));
             PluginManagerService.UsePlugin(typeof(GSendDB.PluginInitialization));
             PluginManagerService.UsePlugin(typeof(GSendApi.PluginInitialization));
 
@@ -123,30 +123,6 @@ namespace GSendService
         private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
         {
             // not used in this context
-        }
-
-        private static void GenerateUniqueSerialNumber()
-        {
-            string file = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "SerialNo.dat");
-
-            if (File.Exists(file))
-                return;
-
-            char installDrive = Environment.GetEnvironmentVariable("GSendProRootPath")[0];
-            DriveInfo drives = DriveInfo.GetDrives().Where(d => d.Name.StartsWith(installDrive)).First();
-
-            StringBuilder stringBuilder = new();
-            stringBuilder.Append(Guid.NewGuid().ToString("N"));
-            stringBuilder.Append('\n');
-            stringBuilder.Append(DateTime.UtcNow.Ticks);
-            stringBuilder.Append('\n');
-            stringBuilder.Append(drives.DriveFormat);
-            stringBuilder.Append('\n');
-            stringBuilder.Append(drives.TotalSize);
-            stringBuilder.Append('\n');
-            stringBuilder.Append(drives.DriveType);
-            byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
-            File.WriteAllText(file, AesImpl.Encrypt(stringBuilder.ToString(), key));
         }
 
 

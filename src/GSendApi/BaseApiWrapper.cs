@@ -12,7 +12,6 @@ namespace GSendApi
     {
         #region Private Members
 
-        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
         private readonly ApiSettings _apiSettings;
         private readonly string _merchantId;
         private readonly string _apiKey;
@@ -36,7 +35,7 @@ namespace GSendApi
             if (!File.Exists(apiFile))
                 throw new InvalidOperationException("Unable to find Api Data");
 
-            string decrypted = AesImpl.Decrypt(File.ReadAllText(apiFile), key);
+            string decrypted = AesImpl.Decrypt(File.ReadAllText(apiFile), Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));
             string[] parts = decrypted.Split("#", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length != 3)

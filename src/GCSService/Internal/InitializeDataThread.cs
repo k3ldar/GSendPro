@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 using GSendShared.Providers.Internal.Enc;
 
@@ -18,7 +19,7 @@ namespace GSendService.Internal
     {
         private const string ApiKey = "fpkd55ff468751343799600792077b4ec69";
         private const string Secret = "4994d3429391b750bf7";
-        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
+        
 
         public void ConfigureApplicationBuilder(in IApplicationBuilder applicationBuilder)
         {
@@ -48,7 +49,7 @@ namespace GSendService.Internal
                 userApiProvider.AddApi(userId, ApiKey, Secret);
             }
 
-            string encryptedData = AesImpl.Encrypt($"{merchantId}#{ApiKey}#{Secret}", key);
+            string encryptedData = AesImpl.Encrypt($"{merchantId}#{ApiKey}#{Secret}", Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));
 
             File.WriteAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "api.dat"), encryptedData);
         }

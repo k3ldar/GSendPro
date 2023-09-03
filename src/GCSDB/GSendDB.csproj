@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ApplicationSettings" Version="2.2.0" />
+    <PackageReference Include="ApplicationSettings" Version="2.3.0" />
     <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Middleware" Version="$(PluginVersion)" />

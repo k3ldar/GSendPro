@@ -31,7 +31,6 @@ namespace GSendService.Internal
 
         #endregion Constructors
 
-        private static readonly byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
         private const int PartCount = 5;
         private const string headerValue = "GSend Pro";
         private static readonly byte[] Header = Encoding.ASCII.GetBytes(headerValue);
@@ -45,7 +44,7 @@ namespace GSendService.Internal
 
             try
             {
-                string decryptedData = AesImpl.Decrypt(licenseData, key);
+                string decryptedData = AesImpl.Decrypt(licenseData, Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));
 
                 string[] licParts = decryptedData.Split('\r', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
@@ -199,8 +198,7 @@ namespace GSendService.Internal
             if (!File.Exists(file))
                 return String.Empty;
 
-            byte[] key = new byte[] { 239, 191, 189, 86, 239, 191, 107, 33, 239, 191, 189, 239, 189, 92, 8, 35, 93, 107, 50, 239, 19, 239, 189, 239, 191, 189, 239, 189, 239, 34, 239, 189 };
-            return AesImpl.Decrypt(File.ReadAllText(file), key);
+            return AesImpl.Decrypt(File.ReadAllText(file), Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));
         }
     }
 }

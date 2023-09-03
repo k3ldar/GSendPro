@@ -13,7 +13,6 @@ using SharedPluginFeatures;
 
 namespace GSendService.Controllers
 {
-    [LicenseValidation]
     public class HomeController : BaseController
     {
         public const string Name = "Home";
@@ -26,6 +25,7 @@ namespace GSendService.Controllers
             _licenseFactory = licenseFactory ?? throw new ArgumentNullException(nameof(licenseFactory));
         }
 
+        [LicenseValidation]
         [HttpGet]
         public IActionResult Index()
         {
