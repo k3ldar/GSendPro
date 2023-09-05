@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using GSendShared.Abstractions;
 
@@ -13,6 +14,7 @@ namespace GSendService.Attributes
     {
         public async override void OnActionExecuting(ActionExecutingContext context)
         {
+#if __LICENSED__
             ILicenseFactory licenseFactory = context.HttpContext.RequestServices.GetRequiredService<ILicenseFactory>();
             ILicense license = licenseFactory.GetActiveLicense();
 
@@ -29,7 +31,9 @@ namespace GSendService.Attributes
                 await context.Result.ExecuteResultAsync(context);
                 return;
             }
-
+#else
+            await Task.Delay(0);
+#endif
 
             base.OnActionExecuting(context);
         }

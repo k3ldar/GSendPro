@@ -22,6 +22,7 @@ namespace GSendService.Internal
 
         #endregion Private Members
 
+#if !__LICENSED__
         private sealed class GenericLicense : ILicense
         {
             public DateTime Expires => DateTime.UtcNow.AddYears(5);
@@ -42,6 +43,7 @@ namespace GSendService.Internal
                 throw new NotImplementedException();
             }
         }
+#endif
 
         #region ILicenseFactory Methods
 
@@ -87,7 +89,11 @@ namespace GSendService.Internal
             if (String.IsNullOrEmpty(license))
                 throw new ArgumentNullException(nameof(license));
 
+#if __LICENSED__
             return License.CreateLicense(this, license);
+#else
+            return new GenericLicense();
+#endif
         }
 
         /// <summary>
