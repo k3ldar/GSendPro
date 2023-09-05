@@ -563,7 +563,7 @@ namespace GSendCommon
 
         public bool JogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
-            StringBuilder jogCommand = new("$J=G21G91");
+            StringBuilder jogCommand = new("$J=G21G91", 40);
             decimal maxZTravel = Convert.ToDecimal(stepSize);
             decimal maxXTravel = Convert.ToDecimal(stepSize);
             decimal maxYTravel = Convert.ToDecimal(stepSize);
