@@ -227,7 +227,7 @@ namespace GSendService.Controllers
             }
 
             _gSendDataProvider.MachineRemove(model.Id);
-            _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineUpdated, machine.Id);
+            _notificationService.RaiseEvent(GSendShared.Constants.NotificationMachineRemove, machine.Id);
 
             return RedirectToAction(nameof(Index));
         }

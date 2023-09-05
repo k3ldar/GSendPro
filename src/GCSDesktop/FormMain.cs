@@ -114,10 +114,6 @@ namespace GSendDesktop
             if (clientMessage.request.Equals(MessageMachineStatusAll))
             {
                 List<StatusResponseMessage> statuses = JsonSerializer.Deserialize<List<StatusResponseMessage>>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
-
-                if (statuses.Any(s => s.UpdatedConfiguration))
-                    UpdateMachines();
-
                 UpdateMachineStatus(statuses);
             }
 

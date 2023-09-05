@@ -42,7 +42,6 @@ namespace GSendDB.Tables
             _settings = new GrblSettings();
         }
 
-        [UniqueIndex]
         public string Name
         {
             get => _name;

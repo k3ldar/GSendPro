@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "GSend Pro"
-#define MyAppVersion "0.7"
+#define MyAppVersion "0.9.7"
 #define MyAppPublisher "GSend Pro."
 #define MyAppURL "https://www.gsend.pro/"
 #define MyAppExeName "GSendEditor.exe"

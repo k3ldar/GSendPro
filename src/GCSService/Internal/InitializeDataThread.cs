@@ -47,6 +47,7 @@ namespace GSendService.Internal
             if (String.IsNullOrEmpty(merchantId))
             {
                 userApiProvider.AddApi(userId, ApiKey, Secret);
+                merchantId = userApiProvider.GetMerchantId(userId);
             }
 
             string encryptedData = AesImpl.Encrypt($"{merchantId}#{ApiKey}#{Secret}", Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));

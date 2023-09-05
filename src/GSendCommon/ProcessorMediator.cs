@@ -274,6 +274,7 @@ namespace GSendCommon
             processor.Machine.JogUnits = updateMachine.JogUnits;
             processor.Machine.SpindleType = updateMachine.SpindleType;
             processor.Machine.SoftStartSeconds = updateMachine.SoftStartSeconds;
+            processor.Machine.Settings.CopyFrom(updateMachine.Settings);
 
             if (processor is GCodeProcessor codeProcessor)
             {

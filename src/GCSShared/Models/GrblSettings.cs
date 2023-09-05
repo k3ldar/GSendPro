@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Reflection.PortableExecutable;
 
 using GSendShared.Attributes;
 
@@ -209,5 +210,46 @@ namespace GSendShared.Models
         [Category("Limits")]
         [GrblSetting("$132")]
         public decimal MaxTravelZ { get; set; } = 100;
+
+        public void CopyFrom(GrblSettings settings)
+        {
+            ArcTolerance = settings.ArcTolerance;
+            AxisDirection = settings.AxisDirection;
+            HomingCycleDirection = settings.HomingCycleDirection;
+            FeedbackUnit = settings.FeedbackUnit;
+            HardLimits = settings.HardLimits;
+            HomingCycle = settings.HomingCycle;
+            HomingCycleDirection = settings.HomingCycleDirection;
+            HomingDebounce = settings.HomingDebounce;
+            HomingFeedRate = settings.HomingFeedRate;
+            HomingPullOff = settings.HomingPullOff;
+            HomingSeekRate = settings.HomingSeekRate;
+            JunctionDeviation = settings.JunctionDeviation;
+            LaserModeEnabled = settings.LaserModeEnabled;
+            LimitPinInvert = settings.LimitPinInvert;
+            MaxAccelerationX = settings.MaxAccelerationX;
+            MaxAccelerationY = settings.MaxAccelerationY;
+            MaxAccelerationZ = settings.MaxAccelerationZ;
+            MaxFeedRateX = settings.MaxFeedRateX;
+            MaxFeedRateY = settings.MaxFeedRateY;
+            MaxFeedRateZ = settings.MaxFeedRateZ;
+            MaxSpindleSpeed = settings.MaxSpindleSpeed;
+            MaxTravelX = settings.MaxTravelX;
+            MaxTravelY = settings.MaxTravelY;
+            MaxTravelZ = settings.MaxTravelZ;
+            MinSpindleSpeed = settings.MinSpindleSpeed;
+            ProbePinInvert = settings.ProbePinInvert;
+            SoftLimits = settings.SoftLimits;
+            StatusReport = settings.StatusReport;
+            StepEnableInvert = settings.StepEnableInvert;
+            StepIdleDelay = settings.StepIdleDelay;
+            StepPulseConfiguration = settings.StepPulseConfiguration;
+            StepPulseTime = settings.StepPulseTime;
+            StepsPerMmX = settings.StepsPerMmX;
+            StepsPerMmY = settings.StepsPerMmY;
+            StepsPerMmZ = settings.StepsPerMmZ;
+
+
+        }
     }
 }

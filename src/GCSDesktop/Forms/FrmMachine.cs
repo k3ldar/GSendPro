@@ -1500,7 +1500,7 @@ namespace GSendDesktop.Forms
                     lvServices.Items.Insert(0, serviceItem);
                 }
 
-                DateTime latestService = services.Max(s => s.ServiceDate);
+                DateTime latestService = services.Count > 0 ? services.Max(s => s.ServiceDate) : DateTime.MinValue;
                 DateTime nextService = latestService.AddDays(_machine.ServiceWeeks * 7);
                 TimeSpan span = nextService - DateTime.UtcNow;
 

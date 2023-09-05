@@ -5,7 +5,7 @@
     <NoWarn>1701;1702;8032;8981</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\gsendpro.snk</AssemblyOriginatorKeyFile>
     <Description>GCode Sender and Analyzer</Description>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>0.7.0</Version>
+    <Version>0.9.7</Version>
     <LangVersion>latest</LangVersion>
     <Authors>Simon Carter (s1cart3r@gmail.com)</Authors>
     <Company>Simon Carter</Company>

@@ -518,6 +518,7 @@ namespace GSendDB.Providers
             machineDataRow.SoftStartSeconds = machine.SoftStartSeconds;
             machineDataRow.ServiceWeeks = machine.ServiceWeeks;
             machineDataRow.ServiceSpindleHours = machine.ServiceSpindleHours;
+            machineDataRow.Settings.CopyFrom(machine.Settings);
 
             return machineDataRow;
         }

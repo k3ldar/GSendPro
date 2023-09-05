@@ -563,16 +563,16 @@ namespace GSendCommon
 
         public bool JogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
-            StringBuilder jogCommand = new("$J=G20G91");
+            StringBuilder jogCommand = new("$J=G21G91");
             decimal maxZTravel = Convert.ToDecimal(stepSize);
             decimal maxXTravel = Convert.ToDecimal(stepSize);
             decimal maxYTravel = Convert.ToDecimal(stepSize);
 
             if (stepSize < 0.01)
             {
-                maxZTravel = _machine.Settings.MaxTravelZ;// - Convert.ToDecimal(StateModel.MachineZ);
-                maxXTravel = _machine.Settings.MaxTravelX;// - Convert.ToDecimal(StateModel.MachineX);
-                maxYTravel = _machine.Settings.MaxTravelY;// - Convert.ToDecimal(StateModel.MachineY);
+                maxZTravel = _machine.Settings.MaxTravelZ;
+                maxXTravel = _machine.Settings.MaxTravelX;
+                maxYTravel = _machine.Settings.MaxTravelY;
             }
 
             switch (jogDirection)

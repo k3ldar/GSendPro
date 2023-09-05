@@ -19,8 +19,6 @@ namespace GSendLicenseGenerator
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
             GenerateUniqueSerialNumberInServiceForClientcomputer();
 
-            string dec = AesImpl.Decrypt(File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "lic.dat")), key);
-
             CommandLineArgs cmdLineArgs = new(args);
 
             return ProcessArgs(cmdLineArgs);

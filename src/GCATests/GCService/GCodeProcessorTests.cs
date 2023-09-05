@@ -919,7 +919,7 @@ namespace GSendTests.GCService
             sut.TimeOut = TimeSpan.FromSeconds(5);
             sut.JogStart(JogDirection.XPlusYPlus, 0.01, 3500);
 
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X0.0100Y0.0100F3500"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X0.0100Y0.0100F3500"));
         }
 
         [TestMethod]
@@ -974,10 +974,10 @@ namespace GSendTests.GCService
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XPlusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X200.0000Y200.0000F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X200.0000Y200.0000F2000"));
 
             sut.JogStart(JogDirection.XMinusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-200.0000Y-200.0000F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-200.0000Y-200.0000F2000"));
         }
 
         [TestMethod]
@@ -1005,10 +1005,10 @@ namespace GSendTests.GCService
             sut.StateModel.MachineY = 73.855;
 
             sut.JogStart(JogDirection.XMinusYPlus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X-200.0000Y200.0000F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X-200.0000Y200.0000F2000"));
 
             sut.JogStart(JogDirection.XPlusYMinus, 0, 2000);
-            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G20G91X200.0000Y-200.0000F2000"));
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X200.0000Y-200.0000F2000"));
         }
 
         private GCodeProcessor CreateProcessor(IMachine machineModel, MockComPortFactory mockComPortFactory, MockGSendDataProvider mockGSendDataProvider = null)
