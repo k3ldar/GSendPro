@@ -147,6 +147,7 @@ namespace GSendDesktop.Forms
             }
 
             _shortcuts = RetrieveAvailableShortcuts();
+            tabControlMain.TabPages.Remove(tabPageServiceSchedule);
         }
 
         #endregion Constructors
@@ -361,7 +362,7 @@ namespace GSendDesktop.Forms
                 case Constants.MessageLineStatusUpdated:
                     LineStatusUpdateModel lineStatusUpdateModel = (LineStatusUpdateModel)JsonSerializer.Deserialize<LineStatusUpdateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
-                    if (lineStatusUpdateModel != null)
+                    if (lineStatusUpdateModel != null && _gcodeLines != null)
                     {
                         if (lineStatusUpdateModel.LineNumber == -1 && lineStatusUpdateModel.Status.Equals(LineStatus.Undefined))
                         {
@@ -464,7 +465,7 @@ namespace GSendDesktop.Forms
             mnuMachineLoadGCode.Enabled = _machineStatusModel?.IsRunning == false;
             mnuMachineClearGCode.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
 
-            tabPageServiceSchedule.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
+            //tabPageServiceSchedule.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
             tabPageSpindle.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
         }
 
@@ -1695,7 +1696,7 @@ namespace GSendDesktop.Forms
             mnuViewJog.Click += SelectTabControlMainTab;
             mnuViewSpindle.Tag = tabPageSpindle;
             mnuViewSpindle.Click += SelectTabControlMainTab;
-            mnuViewServiceSchedule.Tag = tabPageServiceSchedule;
+            //mnuViewServiceSchedule.Tag = tabPageServiceSchedule;
             mnuViewServiceSchedule.Click += SelectTabControlMainTab;
             mnuViewMachineSettings.Tag = tabPageMachineSettings;
             mnuViewMachineSettings.Click += SelectTabControlMainTab;
@@ -1733,7 +1734,7 @@ namespace GSendDesktop.Forms
             //tab pages
             tabPageMain.Text = GSend.Language.Resources.General;
             tabPageOverrides.Text = GSend.Language.Resources.Overrides;
-            tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
+            //tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
             tabPageMachineSettings.Text = GSend.Language.Resources.GrblSettings;
             tabPageSpindle.Text = GSend.Language.Resources.Spindle;
             tabPageSettings.Text = GSend.Language.Resources.Settings;
