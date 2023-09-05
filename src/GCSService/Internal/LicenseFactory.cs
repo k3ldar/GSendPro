@@ -22,6 +22,27 @@ namespace GSendService.Internal
 
         #endregion Private Members
 
+        private sealed class GenericLicense : ILicense
+        {
+            public DateTime Expires => DateTime.UtcNow.AddYears(5);
+
+            public string RegisteredUser => "All Users";
+
+            public string ClientId => throw new NotImplementedException();
+
+            public bool IsValid => true;
+
+            public bool OptionAvailable(in string licenseOption)
+            {
+                throw new NotImplementedException();
+            }
+
+            public string OptionValue(in string licenseOption)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         #region ILicenseFactory Methods
 
         /// <summary>
@@ -48,7 +69,7 @@ namespace GSendService.Internal
 
                     if (_activeLicense == null)
                     {
-                        _activeLicense = new License();
+                        _activeLicense = new GenericLicense();
                     }
                 }
 
