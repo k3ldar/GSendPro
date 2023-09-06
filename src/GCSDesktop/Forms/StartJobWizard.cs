@@ -48,9 +48,6 @@ namespace GSendDesktop.Forms
             _gCodeAnalyses = gCodeAnalyses ?? throw new ArgumentNullException(nameof(gCodeAnalyses));
             _gSendApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
 
-            if (machineApiWrapper == null)
-                throw new ArgumentNullException(nameof(machineApiWrapper));
-
             string jobName = DesktopSettings.ReadValue<string>(nameof(StartJobWizard), Constants.StartWizardSelectedJob, String.Empty);
 
             if (!String.IsNullOrEmpty(gCodeAnalyses.JobName))
