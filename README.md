@@ -3,12 +3,9 @@ G Code Analyser, Editor and Sender
 
 
 ## Devops
-https://dev.azure.com/NetCorePluginManager/NetCorePluginManager
-https://ci.appveyor.com/project/k3ldar/netcorepluginmanager
+main: ![Build Status main Branch](https://ci.appveyor.com/api/projects/status/eordnrimxkovdwe2/branch/main?svg=true)
 
-master: ![Build Status Master Branch](https://ci.appveyor.com/api/projects/status/o2ievlf7vrs2rn0x/branch/master?svg=true)
-
-Latest Branch: ![Build Status Latest Build](https://ci.appveyor.com/api/projects/status/o2ievlf7vrs2rn0x?svg=true)
+Latest Branch: ![Build Status Latest Build](https://ci.appveyor.com/api/projects/status/eordnrimxkovdwe2?svg=true)
 
 Master: [![CodeQL](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml)
 
