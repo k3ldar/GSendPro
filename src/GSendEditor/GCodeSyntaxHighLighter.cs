@@ -34,13 +34,13 @@ namespace GSendEditor
 
         private void InitGCodeRegex()
         {
-            GCodeCommentRegex1 = new Regex(@"\;.*$", RegexCompiledOption);
-            GCodeCommentRegex2 = new Regex(@"\(([^\)]+)\)", RegexCompiledOption);
-            GCodeCommentRegex3 = new Regex(@"\;.*\n", RegexCompiledOption);
-            GCodeNumberRegex = new Regex(@"[0-9]", RegexCompiledOption);
-            GCodeVariableRegex = new Regex(@"(#[0-9]*)", RegexCompiledOption);
-            GCodeVariableGroupRegex = new Regex(@"[\[\]\*\+\=\-\/]", RegexCompiledOption);
-            GCodeKeywordRegex = new Regex(@"(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)", RegexCompiledOption);
+            GCodeCommentRegex1 = new Regex(@"\;.*$", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeCommentRegex2 = new Regex(@"\(([^\)]+)\)", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeCommentRegex3 = new Regex(@"\;.*\n", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeNumberRegex = new Regex(@"[0-9]", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeVariableRegex = new Regex(@"(#[0-9]*)", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeVariableGroupRegex = new Regex(@"[\[\]\*\+\=\-\/]", RegexCompiledOption, TimeSpan.FromSeconds(2));
+            GCodeKeywordRegex = new Regex(@"(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z)", RegexCompiledOption, TimeSpan.FromSeconds(2));
         }
 
         /// <summary>

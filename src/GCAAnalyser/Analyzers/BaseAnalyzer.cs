@@ -8,7 +8,7 @@ namespace GSendAnalyzer.Analyzers
         {
             var commandsOnLine = CommandsOnSameLine(command);
 
-            return commandsOnLine.Any(c => c.Command != ignoreCommands);
+            return commandsOnLine.Exists(c => c.Command != ignoreCommands);
         }
 
         protected List<IGCodeCommand> CommandsOnSameLine(IGCodeCommand command)
@@ -25,7 +25,7 @@ namespace GSendAnalyzer.Analyzers
             return Result;
         }
 
-        private void LookPrevious(IGCodeCommand command, List<IGCodeCommand> commands)
+        private static void LookPrevious(IGCodeCommand command, List<IGCodeCommand> commands)
         {
             IGCodeCommand previous = command.PreviousCommand;
 
@@ -43,7 +43,7 @@ namespace GSendAnalyzer.Analyzers
             }
         }
 
-        private void LookNext(IGCodeCommand command, List<IGCodeCommand> commands)
+        private static void LookNext(IGCodeCommand command, List<IGCodeCommand> commands)
         {
             IGCodeCommand next = command.NextCommand;
 
@@ -61,7 +61,7 @@ namespace GSendAnalyzer.Analyzers
             }
         }
 
-        protected bool ValidatePreviousNextCommand(IGCodeCommand command, char toFindCommand)
+        protected static bool ValidatePreviousNextCommand(IGCodeCommand command, char toFindCommand)
         {
             if (command == null)
                 return false;
@@ -75,7 +75,7 @@ namespace GSendAnalyzer.Analyzers
             return false;
         }
 
-        protected bool ValidateNextCommand(IGCodeCommand command, decimal finalNextTo)
+        protected static bool ValidateNextCommand(IGCodeCommand command, decimal finalNextTo)
         {
             if (command == null)
                 return false;
@@ -88,7 +88,7 @@ namespace GSendAnalyzer.Analyzers
             return false;
         }
 
-        protected bool ValidateNextCommand(IGCodeCommand command, decimal finalNextTo, decimal[] nextTo, char[] ignoreNextCommands, int depth)
+        protected static bool ValidateNextCommand(IGCodeCommand command, decimal finalNextTo, decimal[] nextTo, char[] ignoreNextCommands, int depth)
         {
             if (command == null || command.NextCommand == null || depth == 10)
                 return false;

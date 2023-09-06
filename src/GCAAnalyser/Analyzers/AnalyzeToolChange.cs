@@ -23,15 +23,12 @@ namespace GSendAnalyzer.Analyzers
 
                 tools.ForEach(t => gCodeAnalyses.Tools += $"{t.CommandValueString},");
             }
-            else if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges))
+            else if (gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.ContainsAutomaticToolChanges) && (gCodeAnalyses is GCodeAnalyses codeAnalyses))
             {
-                if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
-                {
-                    codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError1);
-                }
+                codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError1);
             }
 
-            if (gCodeAnalyses.Tools.EndsWith(","))
+            if (gCodeAnalyses.Tools.EndsWith(','))
                 gCodeAnalyses.Tools = gCodeAnalyses.Tools[..^1];
         }
     }
