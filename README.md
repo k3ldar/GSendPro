@@ -7,7 +7,7 @@ main: ![Build Status main Branch](https://ci.appveyor.com/api/projects/status/eo
 
 Latest Branch: ![Build Status Latest Build](https://ci.appveyor.com/api/projects/status/eordnrimxkovdwe2?svg=true)
 
-Master: [![CodeQL](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml)
+main: [![CodeQL](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/k3ldar/GSendPro/actions/workflows/codeql-analysis.yml)
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=vulnerabilities)](https://sonarcloud.io/summary/overall?id=k3ldar_GSendPro) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=bugs)](https://sonarcloud.io/summary/overalloverall?id=k3ldar_GSendPro) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=code_smells)](https://sonarcloud.io/summary/overall?id=k3ldar_GSendPro) 
 
