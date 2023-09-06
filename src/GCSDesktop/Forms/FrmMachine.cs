@@ -30,8 +30,6 @@ using Shared.Classes;
 
 using static GSendShared.Constants;
 
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
-
 namespace GSendDesktop.Forms
 {
     public partial class FrmMachine : BaseForm, IUiUpdate, IShortcutImplementation
@@ -200,8 +198,6 @@ namespace GSendDesktop.Forms
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            //Trace.WriteLine($"Client: {message}");
-
             ClientBaseMessage clientMessage = null;
             try
             {
@@ -212,9 +208,6 @@ namespace GSendDesktop.Forms
                 return;
             }
 
-            //Trace.WriteLine(String.Format("Machine {0} Socket Message: {1}", _machine.Name, clientMessage.success));
-            //Trace.WriteLine(message);
-
             if (clientMessage == null)
                 return;
 
@@ -222,8 +215,6 @@ namespace GSendDesktop.Forms
             {
                 ProcessFailedMessage(clientMessage);
             }
-
-            string serverCpu = String.Format(GSend.Language.Resources.ServerCpuStateConnected, clientMessage.ServerCpuStatus.ToString("N2"));
 
             switch (clientMessage.request)
             {
@@ -307,7 +298,7 @@ namespace GSendDesktop.Forms
 
                 case "ResponseReceived":
                 case "MessageReceived":
-                    if (clientMessage.message.ToString().StartsWith("<") || _isJogging)
+                    if (clientMessage.message.ToString().StartsWith('<') || _isJogging)
                     {
                         _lastMessageWasHiddenCommand = true;
                     }
@@ -360,7 +351,7 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageLineStatusUpdated:
-                    LineStatusUpdateModel lineStatusUpdateModel = (LineStatusUpdateModel)JsonSerializer.Deserialize<LineStatusUpdateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+                    LineStatusUpdateModel lineStatusUpdateModel = JsonSerializer.Deserialize<LineStatusUpdateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
                     if (lineStatusUpdateModel != null && _gcodeLines != null)
                     {
@@ -384,7 +375,7 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageInformationUpdate:
-                    InformationMessageModel informationMessageModel = (InformationMessageModel)JsonSerializer.Deserialize<InformationMessageModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+                    InformationMessageModel informationMessageModel = JsonSerializer.Deserialize<InformationMessageModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
                     if (informationMessageModel != null)
                     {
@@ -397,7 +388,7 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageConfigurationUpdated:
-                    ConfigurationUpdatedMessage updateMessage = (ConfigurationUpdatedMessage)JsonSerializer.Deserialize<ConfigurationUpdatedMessage>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+                    ConfigurationUpdatedMessage updateMessage = JsonSerializer.Deserialize<ConfigurationUpdatedMessage>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
                     if (_machine.Name != updateMessage.Name)
                     {
@@ -465,7 +456,6 @@ namespace GSendDesktop.Forms
             mnuMachineLoadGCode.Enabled = _machineStatusModel?.IsRunning == false;
             mnuMachineClearGCode.Enabled = _machineStatusModel?.IsRunning == false && _gCodeAnalyses != null;
 
-            //tabPageServiceSchedule.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
             tabPageSpindle.Enabled = _machineConnected && _machineStatusModel?.IsRunning == false;
         }
 
