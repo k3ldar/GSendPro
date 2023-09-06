@@ -4,14 +4,14 @@ namespace GSendAnalyzer.Analyzers
 {
     public class BaseAnalyzer
     {
-        protected bool HasCommandsOnSameLine(IGCodeCommand command, char ignoreCommands)
+        protected static bool HasCommandsOnSameLine(IGCodeCommand command, char ignoreCommands)
         {
             var commandsOnLine = CommandsOnSameLine(command);
 
             return commandsOnLine.Exists(c => c.Command != ignoreCommands);
         }
 
-        protected List<IGCodeCommand> CommandsOnSameLine(IGCodeCommand command)
+        protected static List<IGCodeCommand> CommandsOnSameLine(IGCodeCommand command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
