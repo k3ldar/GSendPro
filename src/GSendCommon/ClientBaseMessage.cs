@@ -30,7 +30,9 @@
 
         public bool IsConnected { get; set; }
 
+#if __LICENSED__
         public bool IsLicensed { get; set; }
+#endif
 
         public long CombinedHash { get; set; }
     }

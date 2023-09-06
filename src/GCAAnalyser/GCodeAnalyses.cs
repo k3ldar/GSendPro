@@ -211,7 +211,7 @@ namespace GSendAnalyzer
                     Result.Add(currentLine);
                 }
 
-                currentLine.Commands.Add(command);
+                currentLine?.Commands.Add(command);
             }
 
             return Result;
@@ -233,7 +233,7 @@ namespace GSendAnalyzer
                     Result.Add(currentLine);
                 }
 
-                currentLine.Commands.Add(command);
+                currentLine?.Commands.Add(command);
             }
 
             return Result;

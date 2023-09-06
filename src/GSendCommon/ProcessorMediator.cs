@@ -19,12 +19,14 @@ namespace GSendCommon
 {
     public class ProcessorMediator : IProcessorMediator, INotificationListener
     {
-        internal static bool _isLicensed = true;
+        internal readonly static bool _isLicensed = true;
+#if __LICENSED__
         private static DateTime _lastLicenseCheck = DateTime.MinValue;
+        private const int LicenseValidationCheckInterval = 250;
+#endif
         private static readonly List<IGCodeProcessor> _machines = new();
         private const int BufferSize = 8192;
         private const int DelayBetweenUpdatesSent = 100;
-        private const int LicenseValidationCheckInterval = 250;
         private DateTime _lastSendStatus = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly ILogger _logger;
@@ -481,9 +483,12 @@ namespace GSendCommon
                 request = request,
                 ServerCpuStatus = ThreadManager.CpuUsage,
                 Identifier = $"{_clientId}:{_messageId++}",
+#if __LICENSED__
                 IsLicensed = _isLicensed,
+#endif
             };
 
+#if __LICENSED__
             TimeSpan timeFromLastLicenseCheck = DateTime.UtcNow - _lastLicenseCheck;
 
             if (timeFromLastLicenseCheck.TotalMinutes > 5)
@@ -496,6 +501,7 @@ namespace GSendCommon
 
                 _lastLicenseCheck = DateTime.UtcNow;
             }
+#endif
 
             if (_isLicensed)
             {
@@ -931,7 +937,7 @@ namespace GSendCommon
             return json;
         }
 
-        private void UpdateCombinedMachineHash()
+        private static void UpdateCombinedMachineHash()
         {
             long newHash = 0;
 
@@ -947,6 +953,6 @@ namespace GSendCommon
                 _machineCombinedHash = newHash;
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }
