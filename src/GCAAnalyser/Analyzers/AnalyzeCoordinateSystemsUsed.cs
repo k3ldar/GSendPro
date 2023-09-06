@@ -23,7 +23,7 @@ namespace GSendAnalyzer.Analyzers
                 });
             }
 
-            if (gCodeAnalyses.CoordinateSystems.EndsWith(","))
+            if (gCodeAnalyses.CoordinateSystems.EndsWith(','))
                 gCodeAnalyses.CoordinateSystems = gCodeAnalyses.CoordinateSystems[..^1];
         }
 

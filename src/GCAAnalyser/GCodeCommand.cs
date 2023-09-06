@@ -245,11 +245,6 @@ namespace GSendAnalyzer
                 Comment.Equals(command.Comment);
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         public override string ToString()
         {
             return $"{Command}{CommandValueString}";

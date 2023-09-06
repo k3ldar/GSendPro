@@ -34,7 +34,6 @@ namespace GSendCommon
         private const string CommandCoolantOff = "M9";
         private const string CommandZero = "G10 P{0} L20";
         private const string CommandZeroAxis = " {0}0";
-        private const string StatusIdle = "Idle";
         private const string CommandGetStatus = "$I";
         private const string CommonadGetConfiguration = "$G";
         private const string CommandStartResume = "~";
@@ -81,7 +80,6 @@ namespace GSendCommon
         private bool _initialising = true;
         private readonly Stopwatch _jobTime = new();
         private bool _updateStatusSent = false;
-        private readonly ProcessGCodeJob _processJobThread;
         private readonly IGSendSettings _gSendSettings;
 
         #region Constructors
@@ -110,8 +108,8 @@ namespace GSendCommon
                 _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 
-            _processJobThread = new ProcessGCodeJob(this);
-            ThreadManager.ThreadStart(_processJobThread, $"{machine.Name} - {machine.ComPort} - Job Processor", ThreadPriority.Normal);
+            ProcessGCodeJob processJobThread = new ProcessGCodeJob(this);
+            ThreadManager.ThreadStart(processJobThread, $"{machine.Name} - {machine.ComPort} - Job Processor", ThreadPriority.Normal);
         }
 
         #endregion Constructors
@@ -152,7 +150,6 @@ namespace GSendCommon
                                 string commandText = peekCommand.GetGCode();
                                 _sendQueue.Enqueue(peekCommand);
                                 UpdateMachineStateBufferData();
-                                //Trace.WriteLine($"From Command Queue: {commandText}");
                                 _port.WriteLine(commandText);
 
                                 _machineStateModel.CommandQueueSize = _commandQueue.Count;
@@ -195,7 +192,7 @@ namespace GSendCommon
                     if ((BufferSize + commandText.Length + 1) < _gSendSettings.MaximumBufferSize && IsRunning)
                     {
                         if (!String.IsNullOrEmpty(commandText) ||
-                            !commandText.StartsWith("%"))
+                            !commandText.StartsWith('%'))
                         {
                             Trace.WriteLine($"Line {NextCommand} {commandText} added to queue");
                             commandToSend.Status = LineStatus.Sent;
@@ -352,16 +349,7 @@ namespace GSendCommon
         {
             Trace.WriteLine("Stop");
 
-            //if (_isPaused)
-            //{
-            //_port.WriteLine("CTRL-X");
-            //InternalWriteByte(new byte[] { 0x85 });
             InternalWriteByte(new byte[] { 0x18 });
-            //}
-            //else
-            //{
-            //    _port.WriteLine("M2");
-            //}
 
             _jobTime.Stop();
 
@@ -1013,8 +1001,6 @@ namespace GSendCommon
                 if (String.IsNullOrWhiteSpace(response))
                     continue;
 
-                //Trace.WriteLine($"Response: {response}; Queue Size: {_sendQueue.Count}; Buffer: {BufferSize}; Line: {NextCommand}");
-
                 if (!IsRunning)
                     OnResponseReceived?.Invoke(this, response);
 
@@ -1025,24 +1011,20 @@ namespace GSendCommon
                     {
                         _updateStatusSent = false;
                         ProcessInformationResponse(response[1..^1]);
-                        continue;
                     }
                     else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Trace.WriteLine($"Response: {response}");
                         ProcessAlarmResponse(response);
-                        continue;
                     }
                     else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
                     {
                         Trace.WriteLine($"Response: {response}");
                         ProcessErrorResponse(response);
-                        continue;
                     }
                     else if (response.StartsWith('['))
                     {
                         ProcessMessageResponse(response.Trim()[1..^1]);
-                        continue;
                     }
                     else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -1053,7 +1035,7 @@ namespace GSendCommon
 
                             RaiseOnLineStatusUpdated(activeCommand);
 
-                            if (activeCommand.Commands.Any(c => c.Command.Equals('G') &&
+                            if (activeCommand.Commands.Exists(c => c.Command.Equals('G') &&
                                         (
                                             c.CommandValue.Equals(54) ||
                                             c.CommandValue.Equals(55) ||
@@ -1068,7 +1050,6 @@ namespace GSendCommon
                         }
 
                         _waitingForResponse = false;
-                        continue;
                     }
 
 
@@ -1215,9 +1196,9 @@ namespace GSendCommon
                         break;
 
                     case OptionAccessoryState:
-                        _machineStateModel.SpindleClockWise = values[0].Contains("S");
-                        _machineStateModel.SpindleCounterClockWise = values[0].Contains("C");
-                        _machineStateModel.FloodEnabled = values[0].Contains("F");
+                        _machineStateModel.SpindleClockWise = values[0].Contains('S');
+                        _machineStateModel.SpindleCounterClockWise = values[0].Contains('C');
+                        _machineStateModel.FloodEnabled = values[0].Contains('F');
                         _machineStateModel.MistEnabled = values[0].Contains(StatusMistEnabled);
                         break;
                 }
