@@ -499,14 +499,6 @@ namespace GSendDesktop.Forms
                     }
                 }
 
-                //if (!_updatingRapidOverride && selectionOverrideRapids.Value != (int)status.RapidSpeed)
-                //{
-                //    selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
-                //    selectionOverrideRapids.Value = (int)status.RapidSpeed;
-                //    selectionOverrideRapids.LabelValue = HelperMethods.TranslateRapidOverride(status.RapidSpeed);
-                //    selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
-                //}
-
                 if (status.IsConnected)
                 {
                     machine2dView1.XPosition = (float)status.WorkX;
@@ -572,7 +564,7 @@ namespace GSendDesktop.Forms
                     _isRunning = status.IsRunning || status.MachineState == MachineState.Run;
                     _isJogging = status.MachineState == MachineState.Jog;
                     _isAlarm = status.IsLocked;
-                    toolStripProgressBarJob.Visible = status == null ? false : status.IsConnected && status.IsRunning;
+                    toolStripProgressBarJob.Visible = status != null && status.IsConnected && status.IsRunning;
 
                     toolStripProgressBarJob.Value = status.LineNumber;
 
@@ -916,7 +908,6 @@ namespace GSendDesktop.Forms
         {
             if (selectionOverrideRapids.Checked)
             {
-                //_updatingRapidOverride = true;
                 _machineUpdateThread.Overrides.Rapids = (RapidsOverride)selectionOverrideRapids.Value;
             }
             else
@@ -1014,8 +1005,6 @@ namespace GSendDesktop.Forms
 
         protected override void WndProc(ref Message m)
         {
-            //_shortcutHandler.WndProc(ref m);
-
             base.WndProc(ref m);
         }
 
@@ -1142,7 +1131,7 @@ namespace GSendDesktop.Forms
                 switch (_machine.MachineType)
                 {
                     case MachineType.CNC:
-                        if (status.UpdatedGrblConfiguration.Any(s => s.DollarValue.Equals(32) && s.OldValue.Equals("0") && s.NewValue.Equals("1")))
+                        if (status.UpdatedGrblConfiguration.Exists(s => s.DollarValue.Equals(32) && s.OldValue.Equals("0") && s.NewValue.Equals("1")))
                         {
                             warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedSpindleMode);
                             _machine.Settings.LaserModeEnabled = false;
@@ -1154,7 +1143,7 @@ namespace GSendDesktop.Forms
                         break;
 
                     case MachineType.Laser:
-                        if (status.UpdatedGrblConfiguration.Any(s => s.DollarValue.Equals(32) && s.OldValue.Equals("1") && s.NewValue.Equals("2")))
+                        if (status.UpdatedGrblConfiguration.Exists(s => s.DollarValue.Equals(32) && s.OldValue.Equals("1") && s.NewValue.Equals("2")))
                         {
                             warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedLaserMode);
                             _machine.Settings.LaserModeEnabled = true;
@@ -1331,7 +1320,7 @@ namespace GSendDesktop.Forms
 
             string command = txtUserGrblCommand.Text.Replace(":", "\t").Trim();
 
-            if (txtUserGrblCommand.Text.StartsWith("$") || txtUserGrblCommand.Text == "?")
+            if (txtUserGrblCommand.Text.StartsWith('$') || txtUserGrblCommand.Text == "?")
                 SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));
             else
                 SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, command));
@@ -1555,7 +1544,6 @@ namespace GSendDesktop.Forms
             selectionOverrideZDown.EnabledChanged += OverrideAxis_Checked;
             selectionOverrideSpindle.EnabledChanged += OverrideAxis_Checked;
 
-            //trackBarPercent.ValueChanged -= trackBarPercent_ValueChanged;
             selectionOverrideRapids.ValueChanged -= SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged -= SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged -= SelectionOverride_ValueChanged;
@@ -1576,7 +1564,6 @@ namespace GSendDesktop.Forms
             cbSoftStart.Checked = _machine.SoftStart;
             trackBarDelaySpindle.Value = Shared.Utilities.CheckMinMax(_machine.SoftStartSeconds, trackBarDelaySpindle.Minimum, trackBarDelaySpindle.Maximum);
 
-            //trackBarPercent.ValueChanged += trackBarPercent_ValueChanged;
             selectionOverrideRapids.ValueChanged += SelectionOverrideRapids_ValueChanged;
             selectionOverrideXY.ValueChanged += SelectionOverride_ValueChanged;
             selectionOverrideZDown.ValueChanged += SelectionOverride_ValueChanged;
@@ -1586,7 +1573,6 @@ namespace GSendDesktop.Forms
             // spindle
             trackBarSpindleSpeed.Maximum = (int)_machine.Settings.MaxSpindleSpeed;
             trackBarSpindleSpeed.Minimum = (int)_machine.Settings.MinSpindleSpeed;
-            //trackBarSpindleSpeed.TickFrequency = 
             trackBarSpindleSpeed.Value = trackBarSpindleSpeed.Maximum;
             cbSpindleCounterClockwise.Checked = _machine.Options.HasFlag(MachineOptions.SpindleCounterClockWise);
             cmbSpindleType.SelectedItem = _machine.SpindleType;
@@ -1686,7 +1672,6 @@ namespace GSendDesktop.Forms
             mnuViewJog.Click += SelectTabControlMainTab;
             mnuViewSpindle.Tag = tabPageSpindle;
             mnuViewSpindle.Click += SelectTabControlMainTab;
-            //mnuViewServiceSchedule.Tag = tabPageServiceSchedule;
             mnuViewServiceSchedule.Click += SelectTabControlMainTab;
             mnuViewMachineSettings.Tag = tabPageMachineSettings;
             mnuViewMachineSettings.Click += SelectTabControlMainTab;
@@ -1724,7 +1709,6 @@ namespace GSendDesktop.Forms
             //tab pages
             tabPageMain.Text = GSend.Language.Resources.General;
             tabPageOverrides.Text = GSend.Language.Resources.Overrides;
-            //tabPageServiceSchedule.Text = GSend.Language.Resources.ServiceSchedule;
             tabPageMachineSettings.Text = GSend.Language.Resources.GrblSettings;
             tabPageSpindle.Text = GSend.Language.Resources.Spindle;
             tabPageSettings.Text = GSend.Language.Resources.Settings;
@@ -2430,7 +2414,7 @@ namespace GSendDesktop.Forms
                     }
                 }
 
-                if (shortcut != null && shortcut.KeysUpdated != null)
+                if (shortcut.KeysUpdated != null)
                     shortcut.KeysUpdated(shortcut.DefaultKeys);
             }
         }
@@ -2439,7 +2423,7 @@ namespace GSendDesktop.Forms
         {
             if (depth > 25)
             {
-
+                return;
             }
 
             if (control is IShortcutImplementation shortcutImpl)
