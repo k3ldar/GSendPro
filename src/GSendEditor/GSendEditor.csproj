@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastColoredTextBox-net7" Version="2.16.27" />
     <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
     <PackageReference Include="SC.Shared.Library.Core.Windows" Version="$(SharedWinVer)" />
@@ -41,6 +40,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="External\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>External\FastColoredTextBox.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

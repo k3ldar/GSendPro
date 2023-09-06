@@ -41,6 +41,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{862E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gsend.pro", "..\wwwroot\gsend.pro.csproj", "{6B1A0717-A7CC-47E9-8DEC-F19DC1C40932}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{CAAAFAF0-5473-4D6A-BA86-DA0BE47EFFBF}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
+		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{A75F930B-727D-45A0-9960-45160263C08B}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\ISSUE_TEMPLATE\bug_report.md = ..\.github\ISSUE_TEMPLATE\bug_report.md
+		..\.github\ISSUE_TEMPLATE\feature_request.md = ..\.github\ISSUE_TEMPLATE\feature_request.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +116,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE} = {07A42B55-59A5-4D72-A8DC-0972498A6290}
+		{CAAAFAF0-5473-4D6A-BA86-DA0BE47EFFBF} = {7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE}
+		{A75F930B-727D-45A0-9960-45160263C08B} = {7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF7ACEE2-C0A2-44E4-B75B-12FB4206BBB2}
