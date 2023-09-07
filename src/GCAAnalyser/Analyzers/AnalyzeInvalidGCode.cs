@@ -18,11 +18,16 @@ namespace GSendAnalyzer.Analyzers
 
             var invalidGCode = gCodeAnalyses.AllCommands.Where(c => !c.IsValidGCode).ToList();
 
-            if (invalidGCode.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
                 foreach (var command in invalidGCode)
                 {
                     codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError38, command.LineNumber);
+                }
+
+                foreach (var command in gCodeAnalyses.AllCommands.Where(c => c.Attributes.HasFlag(CommandAttributes.InvalidGCode)))
+                {
+                    codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError39, command.LineNumber);
                 }
             }
         }

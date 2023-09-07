@@ -26,7 +26,8 @@ namespace GSendTests.GSendApi
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_Invalid_ParamNull_Throws_ArgumentNullException()
         {
-            new SubprogramApi(null);
+            SubprogramApi sut = new SubprogramApi(null);
+            Assert.IsNotNull(sut);
         }
 
         [TestMethod]

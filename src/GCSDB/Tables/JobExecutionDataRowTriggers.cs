@@ -25,7 +25,7 @@ namespace GSendDB.Tables
 
         public void BeforeDelete(List<JobProfileDataRow> records)
         {
-            if (records.Any(r => r.Id.Equals(0)))
+            if (records.Exists(r => r.Id.Equals(0)))
                 throw new InvalidDataRowException("", "", "Undable to delete default record");
         }
 

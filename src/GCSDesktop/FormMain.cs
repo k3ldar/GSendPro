@@ -34,24 +34,21 @@ namespace GSendDesktop
         private readonly IGSendContext _context;
 
         private readonly IGSendApiWrapper _machineApiWrapper;
-        private readonly IMessageNotifier _messageNotifier;
         private readonly ICommandProcessor _processCommand;
         private readonly GSendWebSocket _clientWebSocket;
         private readonly object _lockObject = new();
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly Dictionary<long, ListViewItem> _machines = new();
-        private readonly ConcurrentDictionary<long, bool> _machineStateModel = new();
         private IMachine _selectedMachine = null;
         private long _machineHashCombined = 0;
 
         public FormMain(IGSendContext context, IGSendApiWrapper machineApiWrapper,
-            IMessageNotifier messageNotifier, ICommandProcessor processCommand, GSendSettings settings)
+            ICommandProcessor processCommand, GSendSettings settings)
         {
             InitializeComponent();
 
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
-            _messageNotifier = messageNotifier ?? throw new ArgumentNullException(nameof(messageNotifier));
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
 
             _cancellationTokenRegistration = new();

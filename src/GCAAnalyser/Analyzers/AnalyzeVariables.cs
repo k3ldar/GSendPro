@@ -35,7 +35,7 @@ namespace GSendAnalyzer.Analyzers
                         {
                             foreach (IGCodeVariable variable in sub.Variables)
                             {
-                                if (subprogramVariableDeclarations.ContainsKey(variable.VariableId))
+                                if (subprogramVariableDeclarations.TryGetValue(variable.VariableId, out _))
                                 {
                                     codeAnalyses.AddError(String.Format(GSend.Language.Resources.AnalysesVariableInvalid8,
                                         variable.VariableId,

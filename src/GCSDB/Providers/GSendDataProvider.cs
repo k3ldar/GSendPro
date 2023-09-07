@@ -304,12 +304,12 @@ namespace GSendDB.Providers
             }
         }
 
-        public void JobProfileRemove(long id)
+        public void JobProfileRemove(long jobId)
         {
             if (_jobProfileTable.RecordCount < 2)
                 return;
 
-            JobProfileDataRow rowToRemove = _jobProfileTable.Select(id);
+            JobProfileDataRow rowToRemove = _jobProfileTable.Select(jobId);
 
             if (rowToRemove == null)
                 return;
@@ -405,17 +405,17 @@ namespace GSendDB.Providers
 
         #region Services
 
-        public void ServiceAdd(MachineServiceModel machineServiceModel)
+        public void ServiceAdd(MachineServiceModel service)
         {
             MachineServiceDataRow serviceTableDataRow = new()
             {
-                MachineId = machineServiceModel.MachineId,
+                MachineId = service.MachineId,
                 ServiceDate = DateTime.UtcNow,
-                ServiceType = machineServiceModel.ServiceType,
-                SpindleHours = machineServiceModel.SpindleHours,
+                ServiceType = service.ServiceType,
+                SpindleHours = service.SpindleHours,
             };
 
-            foreach (KeyValuePair<long, string> kvp in machineServiceModel.ServiceItems)
+            foreach (KeyValuePair<long, string> kvp in service.ServiceItems)
                 serviceTableDataRow.Items.Add(kvp.Key);
 
             _machineServiceTable.Insert(serviceTableDataRow);
