@@ -432,5 +432,21 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands[1].LineNumber);
             Assert.AreEqual(CommandAttributes.None, analyses.Commands[1].Attributes);
         }
+
+        [TestMethod]
+        [TestCategory(TestCategoryAnalyser)]
+        public void Parse_InvalidGCode_NoCodeSupplied_AddsInvalidGCodeAttribute()
+        {
+            string gCodeWithVariables = "G";
+
+            GCodeParser sut = new(new MockPluginClassesService(), new MockSubprograms());
+            IGCodeAnalyses analyses = sut.Parse(gCodeWithVariables);
+
+            Assert.AreEqual(1, analyses.Commands.Count);
+            Assert.IsNull(analyses.Commands[0].SubAnalyses);
+            Assert.AreEqual('G', analyses.Commands[0].Command);
+            Assert.AreEqual(decimal.MinValue, analyses.Commands[0].CommandValue);
+            Assert.AreEqual(CommandAttributes.InvalidGCode, analyses.Commands[0].Attributes);
+        }
     }
 }

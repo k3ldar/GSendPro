@@ -637,6 +637,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid GCode detected on line {0}.
+        /// </summary>
+        public static string AnalyzeError39 {
+            get {
+                return ResourceManager.GetString("AnalyzeError39", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M620 command on line {0} attempts to close a COM port &quot;{1}&quot; that was never opened..
         /// </summary>
         public static string AnalyzeError4 {

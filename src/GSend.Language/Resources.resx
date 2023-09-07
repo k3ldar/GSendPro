@@ -2022,4 +2022,7 @@
   <data name="ServiceVerifyComplete" xml:space="preserve">
     <value>Verify each item has been completed and click submit</value>
   </data>
+  <data name="AnalyzeError39" xml:space="preserve">
+    <value>Invalid GCode detected on line {0}</value>
+  </data>
 </root>

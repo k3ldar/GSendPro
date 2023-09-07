@@ -296,7 +296,7 @@ namespace GSendAnalyzer.Internal
                         continue;
 
                     case CharNull:
-                        lastCommand = UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
+                        _ = UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
 
 
                         return result;
@@ -359,17 +359,17 @@ namespace GSendAnalyzer.Internal
             return UpdateGCodeValue(analysis, lastCommand, lineValues, currentValues, lineNumber, recursionDepth, ref result, currentCommand, comment);
         }
 
-        private GCodeCommand UpdateGCodeValue(GCodeAnalyses analysis, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues, int lineNumber, int recursionDepth, ref GCodeCommand result, char currentCommand, StringBuilder comment)
+        private GCodeCommand UpdateGCodeValue(GCodeAnalyses analysis, GCodeCommand lastCommand, StringBuilder lineValues, CurrentCommandValues currentValues, 
+            int lineNumber, int recursionDepth, ref GCodeCommand result, char currentCommand, StringBuilder comment)
         {
             string lineValue = lineValues.ToString().Trim();
             List<IGCodeVariableBlock> variables = new();
             bool commandValueConvert = Decimal.TryParse(lineValue, out decimal commandValue);
 
             if (!commandValueConvert)
+            {
                 commandValue = Decimal.MinValue;
 
-            if (!commandValueConvert)
-            {
                 decimal retreivedCommandValue = RetrieveCommandVariableBlocks(analysis, lineValue, currentValues, lineNumber, variables);
 
                 if (!commandValueConvert)
@@ -383,16 +383,21 @@ namespace GSendAnalyzer.Internal
                 RetrieveCommandVariableBlocks(analysis, comments, currentValues, lineNumber, variables);
             }
 
-            Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
-            //decimal mantissa = Math.Round(100 * (commandValue - commandCode));
-
             currentValues.Attributes &= ~CommandAttributes.Extrude;
             currentValues.Attributes &= ~CommandAttributes.FeedRateError;
             currentValues.Attributes &= ~CommandAttributes.MovementError;
             currentValues.Attributes &= ~CommandAttributes.SpindleSpeedError;
             currentValues.Attributes &= ~CommandAttributes.ContainsVariables;
             currentValues.Attributes &= ~CommandAttributes.ChangeCoordinates;
+            currentValues.Attributes &= ~CommandAttributes.InvalidGCode;
             GCodeAnalyses subProgramAnalyses = null;
+
+            bool hasCommandCode = Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
+
+            if (!hasCommandCode && currentCommand != '\0' && variables != null && !variables.Any(v => v.VariableBlock == lineValues.ToString()))
+            {
+                currentValues.Attributes |= CommandAttributes.InvalidGCode;
+            }
 
             switch (currentCommand)
             {
@@ -448,6 +453,11 @@ namespace GSendAnalyzer.Internal
                     break;
 
                 case CharG:
+                    if (!hasCommandCode)
+                    {
+                        break;
+                    }
+
                     switch (commandCode)
                     {
                         case 0:

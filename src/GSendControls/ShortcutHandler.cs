@@ -10,12 +10,6 @@ namespace GSendControls
 {
     public sealed class ShortcutHandler
     {
-        private const int WM_KEYDOWN = 0x100;
-        private const int WM_KEYUP = 0x101;
-        private const int WM_CHAR = 0x102;
-        private const int WM_SYSKEYUP = 0x105;
-        private const int WM_SYSKEYDOWN = 0x104;
-
         private const int DefaultTimerInterval = 250;
         private readonly Timer _timer = new();
         private readonly List<int> _activeKeys = new();
@@ -35,9 +29,9 @@ namespace GSendControls
 
         public int TimerInterval { get => _timer.Interval; set => _timer.Interval = value; }
 
-        public ShortcutKeyHandler OnKeyComboDown;
+        public event ShortcutKeyHandler OnKeyComboDown;
 
-        public ShortcutKeyHandler OnKeyComboUp;
+        public event ShortcutKeyHandler OnKeyComboUp;
 
         private string ActiveKeyComboName { get; set; }
 
@@ -62,20 +56,6 @@ namespace GSendControls
             return true;
         }
 
-        //public bool WndProc(ref Message m)
-        //{
-        //    switch (m.WParam)
-        //    {
-        //        case WM_CHAR:
-        //        case WM_KEYDOWN:
-        //        case WM_SYSKEYDOWN:
-        //        case WM_KEYUP:
-        //        case WM_SYSKEYUP:
-        //            WmKeyChar(ref m);
-        //            break;
-        //    }
-        //}
-
         /// <summary>
         /// Finds matching key combo if there is one
         /// </summary>
@@ -95,7 +75,7 @@ namespace GSendControls
                 _activeKeys.Add((int)Keys.Control);
 
             if (e.Alt && !_activeKeys.Contains((int)Keys.Alt))
-                _activeKeys.Add((int)(int)Keys.Alt);
+                _activeKeys.Add((int)Keys.Alt);
 
             bool handled = false;
 
@@ -113,13 +93,10 @@ namespace GSendControls
 
                 // keep searching for a new key combo until the current
                 // timer expires, to see if they can be chained together
-                if (IsInCombo && _timer.Enabled)
+                if (IsInCombo && _timer.Enabled && handled)
                 {
-                    if (handled)
-                    {
-                        ShowStatus("Ressetting keys: ", _activeKeys);
-                        e.SuppressKeyPress = true;
-                    }
+                    ShowStatus("Ressetting keys: ", _activeKeys);
+                    e.SuppressKeyPress = true;
                 }
 
                 if (handled && !IsInCombo)

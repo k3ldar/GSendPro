@@ -2,7 +2,7 @@
 
 namespace GSendAnalyzer.Analyzers
 {
-    public class BaseAnalyzer
+    public abstract class BaseAnalyzer
     {
         protected static bool HasCommandsOnSameLine(IGCodeCommand command, char ignoreCommands)
         {

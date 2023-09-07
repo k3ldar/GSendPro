@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 using GSendShared.Abstractions;
@@ -18,7 +19,7 @@ namespace GSendTests.Mocks
         }
 
         public MockComPortProvider(string port)
-            : this(new byte[] { })
+            : this(Array.Empty<byte>())
         {
             _port = port;
         }

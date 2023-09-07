@@ -241,7 +241,7 @@ namespace GSendTests.OverrideTests
             SendAndValidateXYCommand(sut, context, "G1X50Y50F1000", "G1X50Y50F2000", true, false, 1, 2000, true);
         }
 
-        private void SendAndValidateXYCommand(FeedAndSpeedOverride sut, MockOverrideContext context,
+        private static void SendAndValidateXYCommand(FeedAndSpeedOverride sut, MockOverrideContext context,
             string gCode, string expectedGCodeResponse, bool expectedProcessResult,
             bool expectedSendCommand, int expectedQueueCount, int expectedCurrentFeedRate,
             bool expectedG1Command)

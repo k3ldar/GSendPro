@@ -944,10 +944,10 @@ namespace GSendTests.GCService
             sut.StateModel.MachineZ = 23.85;
 
             sut.JogStart(JogDirection.ZPlus, 0, 2000);
-            mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z56.150F2000");
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z80.0000F2000"));
 
             sut.JogStart(JogDirection.ZMinus, 0, 2000);
-            mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z-56.150F2000");
+            Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91Z-80.0000F2000"));
         }
 
         [TestMethod]
@@ -1011,7 +1011,7 @@ namespace GSendTests.GCService
             Assert.IsTrue(mockComPortFactory.MockComPort.Commands.Contains("$J=G21G91X200.0000Y-200.0000F2000"));
         }
 
-        private GCodeProcessor CreateProcessor(IMachine machineModel, MockComPortFactory mockComPortFactory, MockGSendDataProvider mockGSendDataProvider = null)
+        private static GCodeProcessor CreateProcessor(IMachine machineModel, MockComPortFactory mockComPortFactory, MockGSendDataProvider mockGSendDataProvider = null)
         {
             return new GCodeProcessor(mockGSendDataProvider ?? new MockGSendDataProvider(), 
                 machineModel, 

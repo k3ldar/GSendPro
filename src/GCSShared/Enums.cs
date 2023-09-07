@@ -379,6 +379,8 @@
         InvalidCommentTooLong = 67108864,
 
         ChangeCoordinates = 134217728,
+
+        InvalidGCode = 268435456
     }
 
     public enum UnitOfMeasurement
