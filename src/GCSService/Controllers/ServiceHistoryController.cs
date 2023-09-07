@@ -38,7 +38,7 @@ namespace GSendService.Controllers
 
             if (machineNames.Any())
             {
-                machineId = machineNames.First().Id;
+                machineId = machineNames[0].Id;
             }
 
             List<MachineServiceModel> services = new();

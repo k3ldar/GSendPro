@@ -27,14 +27,14 @@ namespace GSendDesktop.Forms
             dateTimeServiceDate.CustomFormat = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
         }
 
-        protected override string SectionName => nameof(FrmRegisterService);
-
         public FrmRegisterService(long machineId, IGSendApiWrapper machineApiWrapper)
             : this()
         {
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
             _machineId = machineId;
         }
+
+        protected override string SectionName => nameof(FrmRegisterService);
 
         protected override void LoadResources()
         {

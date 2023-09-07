@@ -22,7 +22,7 @@ namespace GSendService.Api
 
         public JobExecutionApi(IGSendDataProvider gSendDataProvider, INotificationService notificationService) 
         {
-            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider)); ;
+            _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
 

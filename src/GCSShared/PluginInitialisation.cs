@@ -9,7 +9,6 @@ namespace GSendShared
         public void ConfigureServices(IServiceCollection services)
         {
             // required by interface, not used in this context
-            services.UseService();
         }
 
         public void Finalise()

@@ -20,7 +20,7 @@ namespace GSendDesktop.Forms
         private readonly IGSendApiWrapper _gSendApiWrapper;
         private int _errorCount = 0;
 
-        private class ErrorWarningListItem
+        private sealed class ErrorWarningListItem
         {
             public ErrorWarningListItem(int imageIndex, string message)
             {
@@ -37,8 +37,6 @@ namespace GSendDesktop.Forms
         {
             InitializeComponent();
         }
-
-        protected override string SectionName => nameof(StartJobWizard);
 
         public StartJobWizard(MachineStateModel machineStatusModel, IGCodeAnalyses gCodeAnalyses,
             IGSendApiWrapper machineApiWrapper)
@@ -76,6 +74,8 @@ namespace GSendDesktop.Forms
 
             cmbTool.SelectedIndex = selectedIndex;
         }
+
+        protected override string SectionName => nameof(StartJobWizard);
 
         public IToolProfile ToolProfile => GetToolProfile();
 

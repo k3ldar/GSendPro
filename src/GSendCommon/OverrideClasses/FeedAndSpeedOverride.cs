@@ -47,23 +47,20 @@ namespace GSendCommon.OverrideClasses
             IGCodeCommand zFeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('Z'));
             IGCodeCommand xyFeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('X') || c.Command.Equals('Y'));
 
-            if (feedRate != null)
+            if (feedRate != null && zFeed != null)
             {
-                if (zFeed != null)
+                if (overrideContext.MachineStateModel.Overrides.OverrideZDown && zFeed.Attributes.HasFlag(CommandAttributes.MovementZDown) &&
+                    overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue != overrideContext.MachineStateModel.Overrides.AxisZDown.OriginalValue)
                 {
-                    if (overrideContext.MachineStateModel.Overrides.OverrideZDown && zFeed.Attributes.HasFlag(CommandAttributes.MovementZDown) &&
-                        overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue != overrideContext.MachineStateModel.Overrides.AxisZDown.OriginalValue)
-                    {
-                        overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue));
-                        overrideContext.SendCommand = false;
-                        return true;
-                    }
-                    else if (overrideContext.MachineStateModel.Overrides.OverrideZUp && zFeed.Attributes.HasFlag(CommandAttributes.MovementZUp))
-                    {
-                        overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZUp.NewValue));
-                        overrideContext.SendCommand = false;
-                        return true;
-                    }
+                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue));
+                    overrideContext.SendCommand = false;
+                    return true;
+                }
+                else if (overrideContext.MachineStateModel.Overrides.OverrideZUp && zFeed.Attributes.HasFlag(CommandAttributes.MovementZUp))
+                {
+                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZUp.NewValue));
+                    overrideContext.SendCommand = false;
+                    return true;
                 }
             }
 

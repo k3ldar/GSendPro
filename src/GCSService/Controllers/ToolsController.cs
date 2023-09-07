@@ -178,6 +178,12 @@ namespace GSendService.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpPost]
+        public IActionResult Delete(ToolModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpGet]
         [Route("/Tools/ResetUsage/{id}")]
         public IActionResult ResetUsage(long id)
@@ -189,12 +195,6 @@ namespace GSendService.Controllers
 
             _gSendDataProvider.ToolResetUsage(tool);
             return RedirectToAction(nameof(Edit), new { id });
-        }
-
-        [HttpPost]
-        public IActionResult Delete(ToolModel model)
-        {
-            throw new NotImplementedException();
         }
 
         private ToolUsageViewModel CreateToolUsageModel(IToolProfile tool, bool isRecent, ChartViewPeriod viewPeriod, ChartViewTimePeriod viewTimePeriod)
