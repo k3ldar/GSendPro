@@ -25,7 +25,6 @@ namespace GSendControls
                 RegisterKeyCombo = true
             };
             _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
-            _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
             lblInUse.Visible = false;
         }
 
@@ -68,7 +67,6 @@ namespace GSendControls
         protected override void UpdateEnabledState()
         {
             base.UpdateEnabledState();
-
         }
 
         protected override void LoadResources()
@@ -138,12 +136,6 @@ namespace GSendControls
             btnUpdate.Enabled = false;
             btnRemove.Enabled = txtKeyCombination.Text != GSend.Language.Resources.ShortcutPressCombination;
             UpdateEnabledState();
-        }
-
-
-        private void ShortcutHandler_OnKeyComboDown(object sender, ShortcutArgs e)
-        {
-
         }
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)

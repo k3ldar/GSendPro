@@ -349,7 +349,10 @@ namespace GSendControls
                                 String.Format("{0}DisplayIndex", name), header.DisplayIndex, file), 0, this.Columns.Count - 1);
                             header.Width = XML.GetXMLValue("Settings", String.Format("{0}Width", name), header.Width, file);
                         }
-                        catch { } // ignore errors here
+                        catch
+                        {
+                            // ignore errors here
+                        }
                     }
 
                     if (_listSorted)

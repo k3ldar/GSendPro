@@ -24,12 +24,10 @@ namespace GSendService.Controllers
         public const string Name = "Tools";
 
         private readonly IGSendDataProvider _gSendDataProvider;
-        private readonly INotificationService _notificationService;
 
-        public ToolsController(IGSendDataProvider gSendDataProvider, INotificationService notificationService)
+        public ToolsController(IGSendDataProvider gSendDataProvider)
         {
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
-            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
 
         [HttpGet]

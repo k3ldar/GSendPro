@@ -230,8 +230,6 @@ namespace GSendControls
                     (float)(a.X + (x / 2) - (h * (y / l))),
                     (float)(a.Y + (y / 2) + (h * (x / l))));
 
-                //g.DrawLine(Pens.DarkGray, C, a);
-                //g.DrawLine(Pens.DarkGray, C, b);
 
                 // Conversion factor between radians and degrees
                 const double to_deg = 180 / Math.PI;

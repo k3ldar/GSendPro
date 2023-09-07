@@ -518,14 +518,6 @@ namespace GSendDesktop
 
         #region Menu Items
 
-        private void toolStripButtonRemoveMachine_Click(object sender, EventArgs e)
-        {
-            //ApiSettings apiSettings = _context.ServiceProvider.GetRequiredService<ApiSettings>();
-            //IRunProgram runProgram = _context.ServiceProvider.GetRequiredService<IRunProgram>();
-
-            //runProgram.Run($"{apiSettings.RootAddress}Machines/Delete/{}", null, true, false, apiSettings.Timeout);
-        }
-
         private void mnuViewLargeIcons_Click(object sender, EventArgs e)
         {
             listViewMachines.View = View.LargeIcon;

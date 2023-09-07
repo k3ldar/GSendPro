@@ -28,7 +28,7 @@ namespace GSendTests.GCService
             gSendDataProvider.ToolProfiles.Add(new ToolProfileModel() { Id = 2, Name = "Tool 2", Description = "Tool 2 Desc" });
             gSendDataProvider.ToolProfiles.Add(new ToolProfileModel() { Id = 3, Name = "Tool 3", Description = "Tool 3 Desc" });
 
-            ToolProfileApi sut = new(gSendDataProvider, new MockNotification());
+            ToolProfileApi sut = new(gSendDataProvider);
 
             IActionResult result = sut.ToolsGet();
             Assert.IsNotNull(result);

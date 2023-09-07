@@ -19,6 +19,8 @@ namespace GSendDesktop
 {
     internal static class Program
     {
+        private static ILogger _logger;
+
         [STAThread]
         static void Main()
         {
@@ -54,6 +56,7 @@ namespace GSendDesktop
             applicationPluginManager.ConfigureServices(serviceCollection);
             applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
 
+            _logger = applicationPluginManager.ServiceProvider.GetService<ILogger>();
             IGSendContext gSendContext = applicationPluginManager.ServiceProvider.GetService<IGSendContext>();
             try
             {
@@ -70,22 +73,22 @@ namespace GSendDesktop
 
         private static void ThreadManager_ThreadStopped(object sender, Shared.ThreadManagerEventArgs e)
         {
-
+            _logger.AddToLog(LogLevel.ThreadManager, $"Thread Stopped: {e.Thread.Name}");
         }
 
         private static void ThreadManager_ThreadForcedToClose(object sender, Shared.ThreadManagerEventArgs e)
         {
-
+            _logger.AddToLog(LogLevel.ThreadManager, $"Thread Forced To Stop: {e.Thread.Name}");
         }
 
         private static void ThreadManager_ThreadCancellAll(object sender, EventArgs e)
         {
-
+            _logger.AddToLog(LogLevel.ThreadManager, "Thread Cancell All");
         }
 
         private static void ThreadManager_ThreadExceptionRaised(object sender, Shared.ThreadManagerExceptionEventArgs e)
         {
-
+            _logger.AddToLog(LogLevel.ThreadManager, $"Thread Exception: {e.Thread.Name} - {e.Error.Message}");
         }
 
         private static bool CheckForUpdate()

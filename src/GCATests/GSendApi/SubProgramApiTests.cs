@@ -33,7 +33,8 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void Construct_ValidInstance_Success()
         {
-            new SubprogramApi(new MockSubprograms());
+            SubprogramApi sut = new SubprogramApi(new MockSubprograms());
+            Assert.IsNotNull(sut);
         }
 
         [TestMethod]

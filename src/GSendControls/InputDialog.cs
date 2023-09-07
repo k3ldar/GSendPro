@@ -58,7 +58,7 @@ namespace GSendControls
                     {
                         string errorText = validation(textBox.Text);
 
-                        if (e.Cancel = (!String.IsNullOrEmpty(errorText)))
+                        if (e.Cancel == !String.IsNullOrEmpty(errorText))
                         {
                             MessageBox.Show(form, errorText, validationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             textBox.Focus();

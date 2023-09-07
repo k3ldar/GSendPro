@@ -214,7 +214,6 @@ namespace GSendDesktop
             removeMachineToolStripMenuItem.Name = "removeMachineToolStripMenuItem";
             removeMachineToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             removeMachineToolStripMenuItem.Text = "Remove Machine";
-            removeMachineToolStripMenuItem.Click += toolStripButtonRemoveMachine_Click;
             // 
             // toolStripMenuItem2
             // 
@@ -324,7 +323,6 @@ namespace GSendDesktop
             toolStripButtonRemoeMachine.Name = "toolStripButtonRemoeMachine";
             toolStripButtonRemoeMachine.Size = new System.Drawing.Size(54, 54);
             toolStripButtonRemoeMachine.Text = "toolStripButtonRemoeMachine";
-            toolStripButtonRemoeMachine.Click += toolStripButtonRemoveMachine_Click;
             // 
             // toolStripSeparator1
             // 

@@ -13,12 +13,10 @@ namespace GSendService.Api
     public class ToolProfileApi : BaseController
     {
         private readonly IGSendDataProvider _gSendDataProvider;
-        private readonly INotificationService _notificationService;
 
-        public ToolProfileApi(IGSendDataProvider gSendDataProvider, INotificationService notificationService)
+        public ToolProfileApi(IGSendDataProvider gSendDataProvider)
         {
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
-            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
 
         [HttpGet]
