@@ -61,35 +61,5 @@ namespace GSendService.Api
                 return GenerateJsonSuccessResponse(totalTime);
             }
         }
-
-        //private static bool ValidateJobExecution(long machineId, long toolId, long jobProfileId, out string errorData)
-        //{
-        //    if (model == null)
-        //    {
-        //        errorData = "Invalid job execute model";
-        //        return false;
-        //    }
-
-        //    if (model.JobProfile == null)
-        //    {
-        //        errorData = "Invalid job profile";
-        //        return false;
-        //    }
-
-        //    if (model.Machine == null)
-        //    {
-        //        errorData = "Invalid machine";
-        //        return false;
-        //    }
-
-        //    if (model.ToolProfile == null)
-        //    {
-        //        errorData = "Invalid tool profile";
-        //        return false;
-        //    }
-
-        //    errorData = String.Empty;
-        //    return true;
-        //}
     }
 }

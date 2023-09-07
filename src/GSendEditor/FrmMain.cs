@@ -242,13 +242,8 @@ namespace GSendEditor
 
             if (args.Length > 1 && File.Exists(args[1]))
             {
-                //Task.Delay(TimeSpan.FromMilliseconds(50))
-                //    .ContinueWith(task =>
-                //    {
                 mnuFileNew_Click(sender, e);
-
                 LoadGCodeData(args[1]);
-                //});
             }
         }
 
@@ -635,11 +630,6 @@ namespace GSendEditor
             _activeBookmark.Lines.Clear();
             _bookmarks.UpdateBookmarks(_activeBookmark);
             UpdateEnabledState();
-        }
-
-        private void mnuViewStatusBar_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void mnuViewPreview_Click(object sender, EventArgs e)

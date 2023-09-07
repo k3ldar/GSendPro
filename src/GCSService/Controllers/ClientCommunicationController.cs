@@ -58,16 +58,9 @@ namespace GSendService.Controllers
                     using WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
                     await _processorMediator.ProcessClientCommunications(webSocket, clientId);
                 }
-                catch (WebSocketException)
+                catch (Exception)
                 {
-
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message == "hello")
-                    {
-
-                    }
+                    // do not throw the exception
                 }
             }
             else

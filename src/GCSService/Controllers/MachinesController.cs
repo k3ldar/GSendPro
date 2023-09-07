@@ -85,10 +85,9 @@ namespace GSendService.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && _gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name && m.Id != model.Id))
             {
-                if (_gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name && m.Id != model.Id))
-                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
+                ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
             }
 
             bool isConnected = IsMachineConnected(model.Id, true);
@@ -131,14 +130,15 @@ namespace GSendService.Controllers
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && _gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name))
             {
-                if (_gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name))
-                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
+                ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
             }
 
             if (String.IsNullOrEmpty(model.ComPort))
+            {
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.ServerErrorInvalidComPort);
+            }
 
             if (!ModelState.IsValid)
             {
@@ -204,10 +204,9 @@ namespace GSendService.Controllers
             if (!model.ConfirmDelete)
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.MachineDeleteConfirm);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && _gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name && m.Id != model.Id))
             {
-                if (_gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name && m.Id != model.Id))
-                    ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
+                ModelState.AddModelError(String.Empty, GSend.Language.Resources.InvalidMachineNameUnique);
             }
 
             bool isConnected = IsMachineConnected(model.Id, false);

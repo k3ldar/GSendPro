@@ -322,7 +322,6 @@
             mnuViewStatusBar.Size = new Size(181, 22);
             mnuViewStatusBar.Text = "&Status Bar";
             mnuViewStatusBar.Visible = false;
-            mnuViewStatusBar.Click += mnuViewStatusBar_Click;
             // 
             // mnuViewPreview
             // 

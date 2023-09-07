@@ -6,7 +6,6 @@ namespace gsend.pro.Internal
     {
         public bool ExpandApplicationVariable(string variableName, ref object value)
         {
-            //throw new NotImplementedException();
             return false;
         }
     }

@@ -37,13 +37,13 @@ namespace GSendControls
     {
         #region Private Members
 
-        private Pen _primaryPen;
-        private Pen _secondaryPen;
-        private Brush _backGroundBrush;
-        private Brush _primaryBrush;
-        private Brush _secondaryBrush;
-        private Brush _textBrush;
-        private Queue<int> _points;
+        private readonly Pen _primaryPen;
+        private readonly Pen _secondaryPen;
+        private readonly Brush _backGroundBrush;
+        private readonly Brush _primaryBrush;
+        private readonly Brush _secondaryBrush;
+        private readonly Brush _textBrush;
+        private readonly Queue<int> _points;
         private float _highestPoint;
         private static StringFormat _format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
@@ -230,68 +230,6 @@ namespace GSendControls
                     graphics.SmoothingMode = previousSmoothingMode;
             }
         }
-
-
-        // from https://stackoverflow.com/questions/21001202/how-do-i-fill-everything-over-a-straight-line-and-under-a-curve
-        //private List<GraphicsPath> getPaths(ChartArea ca, Series ser, double limit)
-        //{
-        //    List<GraphicsPath> paths = new List<GraphicsPath>();
-        //    List<PointF> points = new List<PointF>();
-        //    int first = 0;
-        //    float limitPix = (float)ca.AxisY.ValueToPixelPosition(limit);
-
-        //    for (int i = 0; i < ser.Points.Count; i++)
-        //    {
-        //        if ((ser.Points[i].YValues[0] > limit) && (i < ser.Points.Count - 1))
-        //        {
-        //            if (points.Count == 0) first = i;  // remember group start
-        //                                               // insert very first point:
-        //            if (i == 0) points.Insert(0, new PointF(
-        //                 (float)ca.AxisX.ValueToPixelPosition(ser.Points[0].XValue), limitPix));
-
-        //            points.Add(pointfFromDataPoint(ser.Points[i], ca)); // the regular points
-        //        }
-        //        else
-        //        {
-        //            if (points.Count > 0)
-        //            {
-        //                if (first > 0) points.Insert(0, median(
-        //                                 pointfFromDataPoint(ser.Points[first - 1], ca),
-        //                                 pointfFromDataPoint(ser.Points[first], ca), limitPix));
-        //                if (i == ser.Points.Count - 1)
-        //                {
-        //                    if ((ser.Points[i].YValues[0] > limit))
-        //                        points.Add(pointfFromDataPoint(ser.Points[i], ca));
-        //                    points.Add(new PointF(
-        //                  (float)ca.AxisX.ValueToPixelPosition(ser.Points[i].XValue), limitPix));
-        //                }
-        //                else
-        //                    points.Add(median(pointfFromDataPoint(ser.Points[i - 1], ca),
-        //                                 pointfFromDataPoint(ser.Points[i], ca), limitPix));
-
-        //                GraphicsPath gp = new GraphicsPath();
-        //                gp.FillMode = FillMode.Winding;
-        //                gp.AddLines(points.ToArray());
-        //                gp.CloseFigure();
-        //                paths.Add(gp);
-        //                points.Clear();
-        //            }
-        //        }
-        //    }
-        //    return paths;
-        //}
-
-        //PointF pointfFromDataPoint(DataPoint dp, ChartArea ca)
-        //{
-        //    return new PointF((float)ca.AxisX.ValueToPixelPosition(dp.XValue),
-        //                       (float)ca.AxisY.ValueToPixelPosition(dp.YValues[0]));
-        //}
-
-        //PointF median(PointF p1, PointF p2, float y0)
-        //{
-        //    float x0 = p2.X - (p2.X - p1.X) * (p2.Y - y0) / (p2.Y - p1.Y);
-        //    return new PointF(x0, y0);
-        //}
 
         #endregion Private Methods
     }

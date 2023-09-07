@@ -6,7 +6,6 @@ namespace GSendService.Internal
     {
         public bool ExpandApplicationVariable(string variableName, ref object value)
         {
-            //throw new NotImplementedException();
             return false;
         }
     }

@@ -48,7 +48,7 @@ namespace GSendControls
         {
             string screenName = DesktopSettings.ReadValue<string>(SectionName, "Screen", Screen.FromControl(this).DeviceName);
 
-            Screen screen = Screen.AllScreens.Where(s => s.DeviceName.Equals(screenName)).FirstOrDefault();
+            Screen screen = Screen.AllScreens.FirstOrDefault(s => s.DeviceName.Equals(screenName));
 
             if (screen != null)
             {

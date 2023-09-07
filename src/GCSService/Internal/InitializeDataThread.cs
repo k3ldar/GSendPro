@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using GSendShared.Providers.Internal.Enc;
 
@@ -19,7 +18,6 @@ namespace GSendService.Internal
     {
         private const string ApiKey = "fpkd55ff468751343799600792077b4ec69";
         private const string Secret = "4994d3429391b750bf7";
-        
 
         public void ConfigureApplicationBuilder(in IApplicationBuilder applicationBuilder)
         {
@@ -32,10 +30,7 @@ namespace GSendService.Internal
             Middleware.Users.SearchUser user = userSearch.GetUsers(1, 20000, null, null).FirstOrDefault(u => u.Email.Equals("api.user"));
             if (user == null)
             {
-                if (accounts.CreateAccount("api.user", "api", "user", "simpleApiUser#9876", "", "", "", "", "", "", "", "", "", out userId))
-                {
-
-                }
+                accounts.CreateAccount("api.user", "api", "user", "simpleApiUser#9876", "", "", "", "", "", "", "", "", "", out userId);
             }
             else
             {

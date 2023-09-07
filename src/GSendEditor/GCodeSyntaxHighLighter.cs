@@ -66,6 +66,8 @@ namespace GSendEditor
             //keyword highlighting
             range.SetStyle(BlueStyle, GCodeKeywordRegex);
 
+            range.SetStyle(BlackStyle, GCodeNumberRegex);
+
             //clear folding markers
             range.ClearFoldingMarkers();
         }

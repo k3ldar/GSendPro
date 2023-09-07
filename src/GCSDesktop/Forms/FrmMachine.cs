@@ -2152,19 +2152,6 @@ namespace GSendDesktop.Forms
             UnloadGCode();
         }
 
-        private string validation(string newName)
-        {
-            if (String.IsNullOrEmpty(newName))
-                return GSend.Language.Resources.MachineNameEmpty;
-
-            IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
-
-            if (machineApiWrapper.MachineNameExists(newName))
-                return GSend.Language.Resources.MachineNameAlreadyExists;
-
-            return null;
-        }
-
         private void mnuMachineRename_Click(object sender, EventArgs e)
         {
             ApiSettings apiSettings = _gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
