@@ -31,7 +31,6 @@ namespace GSendCommon
             if (serverUri == null)
                 throw new ArgumentNullException(nameof(serverUri));
 
-            //if (serverUri.)
             _serverUri = serverUri.ToString();
 
             if (serverUri.Scheme.Equals("http"))
@@ -158,7 +157,6 @@ namespace GSendCommon
                     WebSocketReceiveResult result = await _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
 
                     string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    //Trace.WriteLine($"Message Received: {message[..result.Count]}");
                     ProcessMessage?.Invoke(message[..result.Count]);
                 }
                 catch (IOException)

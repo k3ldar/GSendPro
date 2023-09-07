@@ -19,8 +19,8 @@ namespace GSendApi
 
         private class JsonResponseModel
         {
-            public bool success { get; set; }
-            public string responseData { get; set; }
+            public bool success { get; }
+            public string responseData { get; }
         }
 
 
@@ -85,16 +85,6 @@ namespace GSendApi
             byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, GSendShared.Constants.DefaultJsonSerializerOptions));
             HttpContent Result = new ByteArrayContent(content);
             Result.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            //ulong nonce = (ulong)DateTime.UtcNow.Ticks;
-            //long timestamp = HmacGenerator.EpochDateTime();
-            //string auth = HmacGenerator.GenerateHmac(_apiKey, _secret, timestamp, nonce, _merchantId, String.Empty);
-
-            //Result.Headers.Add("apikey", _apiKey);
-            //Result.Headers.Add("merchantId", _merchantId);
-            //Result.Headers.Add("nonce", nonce.ToString());
-            //Result.Headers.Add("timestamp", timestamp.ToString());
-            //Result.Headers.Add("authcode", auth);
-            //Result.Headers.Add("payloadLength", "0");
 
             return Result;
         }

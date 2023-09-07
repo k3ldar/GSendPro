@@ -19,5 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\GSend.Language\GSend.Language.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Helpers\T2\T1000\" />
+  </ItemGroup>
 
 </Project>

@@ -403,7 +403,7 @@ namespace GSendService.Controllers
                 foreach (ISpindleTime spindleTime in spindleHours)
                 {
                     if (spindleTime.FinishTime > spindleTime.StartTime)
-                        spindleTicks += ((TimeSpan)(spindleTime.FinishTime - spindleTime.StartTime)).Ticks;
+                        spindleTicks += (spindleTime.FinishTime - spindleTime.StartTime).Ticks;
                 }
 
                 remainingSpindle = new((machine.ServiceSpindleHours * TimeSpan.TicksPerHour) - spindleTicks);

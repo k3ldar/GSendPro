@@ -394,7 +394,7 @@ namespace GSendAnalyzer.Internal
 
             bool hasCommandCode = Int32.TryParse(Math.Truncate(commandValue).ToString(), out int commandCode);
 
-            if (!hasCommandCode && currentCommand != '\0' && variables != null && !variables.Any(v => v.VariableBlock == lineValues.ToString()))
+            if (!hasCommandCode && currentCommand != '\0' && variables != null && !variables.Exists(v => v.VariableBlock == lineValues.ToString()))
             {
                 currentValues.Attributes |= CommandAttributes.InvalidGCode;
             }

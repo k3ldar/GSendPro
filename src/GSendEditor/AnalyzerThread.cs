@@ -27,7 +27,7 @@ namespace GSendEditor
 #endif
 
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
-            _subprograms = subprograms ?? throw new ArgumentNullException(subprograms);
+            _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));
             _lastValidateWarningsAndErrors = DateTime.MaxValue;
         }
 
