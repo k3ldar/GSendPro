@@ -51,5 +51,5 @@ jobs:
           dotnet restore ./src/GSend.sln
           dotnet build ./src/GSend.sln --configuration Release
           dotnet test --collect "Code Coverage"
-          dotnet-coverage collect ./Output/Release/net7.0/win-x64/*tests.dll "dotnet test" -f xml -o "coverage.xml"
+          dotnet-coverage collect ./Output/Release/net7.0/*tests.dll "dotnet test" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
