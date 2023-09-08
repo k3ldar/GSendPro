@@ -47,8 +47,6 @@ namespace gsend.pro
 
             for (int i = 0; i < gcode.Length; i++)
             {
-                bool peekAhead = i < gcode.Length - 1;
-
                 char c = gcode[i];
 
                 if (c == 91 || c == 93)
@@ -77,10 +75,9 @@ namespace gsend.pro
                 }
                 else if (IsNumber(c))
                 {
+                    //number
                     if (lastCode != LastCodeType.CommentStart && lastCode != LastCodeType.VariableStart)
                         CloseBlock("black", LastCodeType.Number);
-                    //number
-
                 }
                 else if (IsLetter(c))
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using gsend.pro.Models;
@@ -49,8 +50,9 @@ namespace gsend.pro.Controllers
             System.Resources.ResourceManager resManager = GSend.Language.Resources.ResourceManager;
             string menuData = resManager.GetString($"WebMenu{mCode.ToUpper()}", GSend.Language.Resources.Culture);
 
+            bool seeAlsoExists = _seeAlso.TryGetValue(mCode, out _);
             MCodeModel mCodeModel = new MCodeModel(GetModelData(), mCode, menuData,
-                _seeAlso.ContainsKey(mCode) ? _seeAlso[mCode] : new decimal[] { });
+                seeAlsoExists ? _seeAlso[mCode] : Array.Empty<decimal>());
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.BreadcrumbMCodes, "/MCodes/Index", false));
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(mCode, $"/MCodes/{mCode}/", false));
 
