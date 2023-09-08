@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
 
+#pragma warning disable CA1836
+
 namespace GSendCommon
 {
     public class GCodeProcessor : ThreadManager, IGCodeProcessor
@@ -1570,3 +1572,5 @@ namespace GSendCommon
         #endregion Private Methods
     }
 }
+
+#pragma warning restore CA1836
