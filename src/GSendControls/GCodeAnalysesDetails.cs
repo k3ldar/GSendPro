@@ -40,6 +40,11 @@ namespace GSendControls
             _showFileName = true;
         }
 
+        public void ClearAnalyser()
+        {
+            LoadAnalyser(null);
+        }
+
         public void LoadAnalyser(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
             LoadAnalyser(gCodeAnalyses);
@@ -48,11 +53,6 @@ namespace GSendControls
             {
                 lblFileName.Text = Path.GetFileName(fileName);
             }
-        }
-
-        public void ClearAnalyser()
-        {
-            LoadAnalyser(null);
         }
 
         public void LoadAnalyser(IGCodeAnalyses gCodeAnalyses)

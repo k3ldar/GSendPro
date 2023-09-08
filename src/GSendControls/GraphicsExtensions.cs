@@ -53,20 +53,6 @@ namespace WinFormsApp4
             }
         }
 
-        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, RectangleF bounds, int radiusTop, int radiusBottom)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException(nameof(graphics));
-
-            if (brush == null)
-                throw new ArgumentNullException(nameof(brush));
-
-            using (GraphicsPath path = RoundedRect(bounds, radiusTop, radiusTop, radiusBottom, radiusBottom))
-            {
-                graphics.FillPath(brush, path);
-            }
-        }
-
         public static void DrawRoundedRectangle(this Graphics graphics, Pen pen, RectangleF bounds, int cornerRadius)
         {
             if (graphics == null)
@@ -81,20 +67,6 @@ namespace WinFormsApp4
             }
         }
 
-        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, RectangleF bounds, int cornerRadius)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException(nameof(graphics));
-
-            if (brush == null)
-                throw new ArgumentNullException(nameof(brush));
-
-            using (GraphicsPath path = RoundedRect(bounds, cornerRadius, cornerRadius, cornerRadius, cornerRadius))
-            {
-                graphics.FillPath(brush, path);
-            }
-        }
-
         public static void DrawRoundedRectangle(this Graphics graphics, Pen pen, RectangleF bounds, int radiusTopLeft, int radiusTopRight, int radiusBottomRight, int radiusBottomLeft)
         {
             if (graphics == null)
@@ -106,6 +78,34 @@ namespace WinFormsApp4
             using (GraphicsPath path = RoundedRect(bounds, radiusTopLeft, radiusTopRight, radiusBottomRight, radiusBottomLeft))
             {
                 graphics.DrawPath(pen, path);
+            }
+        }
+
+        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, RectangleF bounds, int radiusTop, int radiusBottom)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException(nameof(graphics));
+
+            if (brush == null)
+                throw new ArgumentNullException(nameof(brush));
+
+            using (GraphicsPath path = RoundedRect(bounds, radiusTop, radiusTop, radiusBottom, radiusBottom))
+            {
+                graphics.FillPath(brush, path);
+            }
+        }
+
+        public static void FillRoundedRectangle(this Graphics graphics, Brush brush, RectangleF bounds, int cornerRadius)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException(nameof(graphics));
+
+            if (brush == null)
+                throw new ArgumentNullException(nameof(brush));
+
+            using (GraphicsPath path = RoundedRect(bounds, cornerRadius, cornerRadius, cornerRadius, cornerRadius))
+            {
+                graphics.FillPath(brush, path);
             }
         }
 

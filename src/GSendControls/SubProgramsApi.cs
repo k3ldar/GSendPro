@@ -36,7 +36,7 @@ namespace GSendControls
             {
                 ValidateFileName(name);
 
-                return GetAll().Any(i => i.Name == name);
+                return GetAll().Exists(i => i.Name == name);
             }
             catch
             {

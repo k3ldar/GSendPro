@@ -38,7 +38,6 @@ namespace GSendCommon.OverrideClasses
             int stepDelay = overrideContext.Machine.SoftStartSeconds * MillisecondsPerSecond / DelayMilliseconds;
             int rpmPerStep = Convert.ToInt32(spindleSpeed / stepDelay);
             int currentRpm = 0;
-            int spindleStartValue = overrideContext.Processor.StateModel.SpindleClockWise ? 3 : 4;
 
             for (int i = stepDelay; i > 0; i--)
             {

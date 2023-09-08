@@ -206,7 +206,12 @@ namespace GSendDB.Providers
 
         public IMachine MachineGet(long machineId)
         {
-            return ConvertFromMachineDataRow(_machineDataRow.Select(m => m.Id == machineId && !m.IsDeleted).FirstOrDefault());
+            IReadOnlyList<MachineDataRow> machines = _machineDataRow.Select(m => m.Id == machineId && !m.IsDeleted);
+
+            if (machines == null || machines.Count == 0)
+                return null;
+
+            return ConvertFromMachineDataRow(machines[0]);
         }
 
         #endregion Machines

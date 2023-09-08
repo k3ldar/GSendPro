@@ -106,7 +106,7 @@ namespace GSendService.Internal
                 throw new ArgumentNullException(nameof(license));
 
             if (!LicenseIsValid(license))
-                throw new ArgumentException(nameof(license));
+                throw new InvalidLicenseException("License is not valid");
 
             using (TimedLock timedLock = TimedLock.Lock(_lockObject))
             {

@@ -5,7 +5,6 @@ namespace GSendCommon.OverrideClasses
 {
     internal class FeedAndSpeedOverride : IGCodeOverride
     {
-
         public FeedAndSpeedOverride()
         {
             OfficialXYFeedRate = -1;
@@ -37,8 +36,8 @@ namespace GSendCommon.OverrideClasses
         {
             IGCodeCommand feedRate = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('F'));
 
-            IsG1Command = !overrideContext.GCode.Commands.Any(c => c.Command.Equals('G') && c.CommandValue.Equals(0)) &&
-                (overrideContext.GCode.Commands.Any(c => c.Command.Equals('G') && c.CommandValue.Equals(1)) ||
+            IsG1Command = !overrideContext.GCode.Commands.Exists(c => c.Command.Equals('G') && c.CommandValue.Equals(0)) &&
+                (overrideContext.GCode.Commands.Exists(c => c.Command.Equals('G') && c.CommandValue.Equals(1)) ||
                 IsG1Command);
 
             if (!IsG1Command)
@@ -52,13 +51,13 @@ namespace GSendCommon.OverrideClasses
                 if (overrideContext.MachineStateModel.Overrides.OverrideZDown && zFeed.Attributes.HasFlag(CommandAttributes.MovementZDown) &&
                     overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue != overrideContext.MachineStateModel.Overrides.AxisZDown.OriginalValue)
                 {
-                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue));
+                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode(overrideContext.MachineStateModel.Overrides.AxisZDown.NewValue));
                     overrideContext.SendCommand = false;
                     return true;
                 }
                 else if (overrideContext.MachineStateModel.Overrides.OverrideZUp && zFeed.Attributes.HasFlag(CommandAttributes.MovementZUp))
                 {
-                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode((int)overrideContext.MachineStateModel.Overrides.AxisZUp.NewValue));
+                    overrideContext.CommandQueue.Enqueue(overrideContext.GCode.GetGCode(overrideContext.MachineStateModel.Overrides.AxisZUp.NewValue));
                     overrideContext.SendCommand = false;
                     return true;
                 }

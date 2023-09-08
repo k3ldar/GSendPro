@@ -13,8 +13,8 @@ namespace GSendCommon.OverrideClasses
         {
             if (!overrideContext.Machine.Options.HasFlag(MachineOptions.ToolChanger) &&
                 (
-                    overrideContext.GCode.Commands.Any(c => c.Command.Equals('T')) ||
-                    overrideContext.GCode.Commands.Any(c => c.Command.Equals('M') && c.CommandValue.Equals(6))
+                    overrideContext.GCode.Commands.Exists(c => c.Command.Equals('T')) ||
+                    overrideContext.GCode.Commands.Exists(c => c.Command.Equals('M') && c.CommandValue.Equals(6))
                 )
                )
             {
