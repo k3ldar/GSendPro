@@ -9,3 +9,4 @@ G Code Analyser, Editor and Sender
 
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=reliability_rating)](https://sonarcloud.io/summary/overall?id=k3ldar_GSendPro) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=k3ldar_GSendPro) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=security_rating)](https://sonarcloud.io/summary/overall?id=k3ldar_GSendPro) 
 
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=k3ldar_GSendPro) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=k3ldar_GSendPro&metric=coverage)](https://sonarcloud.io/summary/new_code?id=k3ldar_GSendPro)
