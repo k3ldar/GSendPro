@@ -24,7 +24,7 @@ namespace GSendCommon.MCodeOverrides
             return false;
         }
 
-        protected List<IGCodeCommand> PreviousCommands(IGCodeCommand command, string[] requiredCommands)
+        protected static List<IGCodeCommand> PreviousCommands(IGCodeCommand command, string[] requiredCommands)
         {
             List<IGCodeCommand> Result = new();
 
