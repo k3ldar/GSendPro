@@ -10,12 +10,15 @@ namespace GSendControls
 {
     public static class DesktopSettings
     {
+
 #pragma warning disable SYSLIB1054
+
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
 
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+      
 #pragma warning restore SYSLIB1054
 
         public static void WriteValue(string Section, string Key, object Value)
