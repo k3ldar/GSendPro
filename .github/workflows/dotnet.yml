@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 7.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore  ./src/GSend.sln
     - name: Build 
       run: dotnet build ./src/GSend.sln --configuration Release --no-restore
     - name: Test
