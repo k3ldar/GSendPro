@@ -4,7 +4,7 @@ namespace GSendCommon.MCodeOverrides
 {
     internal class BaseOverride
     {
-        protected bool GetAdjoiningGCodeCommandValue(IGCodeCommand mainCommand, char adjoiningCommandCode, out decimal defaultValue)
+        protected static bool GetAdjoiningGCodeCommandValue(IGCodeCommand mainCommand, char adjoiningCommandCode, out decimal defaultValue)
         {
             defaultValue = 0;
             if (mainCommand == null)

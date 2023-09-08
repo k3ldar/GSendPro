@@ -40,7 +40,7 @@ namespace GSendCommon
 
             _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
             _cancellationToken = cancellationToken;
-            Task.Run(() => ReceiveMessageAsync()).ConfigureAwait(false);
+            Task.Run(() => ReceiveMessageAsync(), cancellationToken).ConfigureAwait(false);
         }
 
         private async Task ValidateConnection()

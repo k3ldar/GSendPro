@@ -61,7 +61,7 @@ namespace GSendControls
             _lvColumnSorter = new ListViewColumnSorter();
             this.ListViewItemSorter = _lvColumnSorter;
             _lvColumnSorter.SortColumn = 0;
-            _lvColumnSorter.Order = SortOrder.Ascending;
+            _lvColumnSorter.SortOrder = SortOrder.Ascending;
             AllowColumnReorder = true;
             OwnerDraw = true;
             _sortFont = new Font("Helvetica", this.Font.Size, FontStyle.Bold);
@@ -122,7 +122,7 @@ namespace GSendControls
         /// <param name="e"></param>
         protected override void OnDrawColumnHeader(DrawListViewColumnHeaderEventArgs e)
         {
-            string sortText = _lvColumnSorter.Order == SortOrder.Ascending ? "↓" : "↑";
+            string sortText = _lvColumnSorter.SortOrder == SortOrder.Ascending ? "↓" : "↑";
 
             using (StringFormat sf = new())
             {
@@ -162,20 +162,20 @@ namespace GSendControls
             if (e.Column == _lvColumnSorter.SortColumn)
             {
                 // Reverse the current sort direction for this column.
-                if (_lvColumnSorter.Order == SortOrder.Ascending)
+                if (_lvColumnSorter.SortOrder == SortOrder.Ascending)
                 {
-                    _lvColumnSorter.Order = SortOrder.Descending;
+                    _lvColumnSorter.SortOrder = SortOrder.Descending;
                 }
                 else
                 {
-                    _lvColumnSorter.Order = SortOrder.Ascending;
+                    _lvColumnSorter.SortOrder = SortOrder.Ascending;
                 }
             }
             else
             {
                 // Set the column number that is to be sorted; default to ascending.
                 _lvColumnSorter.SortColumn = e.Column;
-                _lvColumnSorter.Order = SortOrder.Ascending;
+                _lvColumnSorter.SortOrder = SortOrder.Ascending;
             }
 
             this.Sort();
@@ -292,7 +292,7 @@ namespace GSendControls
 
             file += this.SaveName + this.Name + ".dat";
 
-            XML.SetXMLValue("Settings", "SortOrder", _lvColumnSorter.Order.ToString(), file);
+            XML.SetXMLValue("Settings", "SortOrder", _lvColumnSorter.SortOrder.ToString(), file);
             XML.SetXMLValue("Settings", "SortColumn", _lvColumnSorter.SortColumn.ToString(), file);
             XML.SetXMLValue("Settings", "Sorted", _listSorted.ToString(), file);
 
@@ -333,7 +333,7 @@ namespace GSendControls
                 try
                 {
                     string sortOrder = XML.GetXMLValue("Settings", "SortOrder", "Ascending", file);
-                    _lvColumnSorter.Order = (SortOrder)Enum.Parse(typeof(SortOrder), sortOrder);
+                    _lvColumnSorter.SortOrder = (SortOrder)Enum.Parse(typeof(SortOrder), sortOrder);
 
                     _lvColumnSorter.SortColumn = XML.GetXMLValue("Settings", "SortColumn", 0, file);
                     _listSorted = XML.GetXMLValue("Settings", "Sorted", false, file);

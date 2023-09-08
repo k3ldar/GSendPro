@@ -17,10 +17,11 @@ namespace GSendApi
         private readonly string _apiKey;
         private readonly string _secret;
 
-        private class JsonResponseModel
+        private sealed class JsonResponseModel
         {
-            public bool success { get; }
-            public string responseData { get; }
+            public bool success { get; set; }
+
+            public string responseData { get; set; }
         }
 
 
@@ -80,7 +81,7 @@ namespace GSendApi
             return httpClient;
         }
 
-        protected HttpContent CreateContent<T>(T data)
+        protected static HttpContent CreateContent<T>(T data)
         {
             byte[] content = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, GSendShared.Constants.DefaultJsonSerializerOptions));
             HttpContent Result = new ByteArrayContent(content);

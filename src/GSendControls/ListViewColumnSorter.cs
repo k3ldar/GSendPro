@@ -12,14 +12,6 @@ namespace GSendControls
     public class ListViewColumnSorter : IComparer
     {
         /// <summary>
-        /// Specifies the column to be sorted
-        /// </summary>
-        private int ColumnToSort;
-        /// <summary>
-        /// Specifies the order in which to sort (i.e. 'Ascending').
-        /// </summary>
-        private SortOrder OrderOfSort;
-        /// <summary>
         /// Case insensitive comparer object
         /// </summary>
         private readonly CaseInsensitiveComparer ObjectCompare;
@@ -30,10 +22,10 @@ namespace GSendControls
         public ListViewColumnSorter()
         {
             // Initialize the column to '0'
-            ColumnToSort = 0;
+            SortColumn = 0;
 
             // Initialize the sort order to 'none'
-            OrderOfSort = SortOrder.None;
+            SortOrder = SortOrder.None;
 
             // Initialize the CaseInsensitiveComparer object
             ObjectCompare = new CaseInsensitiveComparer();
@@ -67,26 +59,26 @@ namespace GSendControls
                 decimal val1Dec = decimal.MinValue;
                 decimal val2Dec = decimal.MinValue;
 
-                if (ColumnToSort >= listviewX.SubItems.Count || ColumnToSort >= listviewY.SubItems.Count)
-                    ColumnToSort = 0;
+                if (SortColumn >= listviewX.SubItems.Count || SortColumn >= listviewY.SubItems.Count)
+                    SortColumn = 0;
 
-                if (Utilities.StrIsNumeric(listviewX.SubItems[ColumnToSort].Text, ref val1) && Utilities.StrIsNumeric(listviewY.SubItems[ColumnToSort].Text, ref val2))
+                if (Utilities.StrIsNumeric(listviewX.SubItems[SortColumn].Text, ref val1) && Utilities.StrIsNumeric(listviewY.SubItems[SortColumn].Text, ref val2))
                     compareResult = ObjectCompare.Compare(val1, val2);
-                else if ((Utilities.StrIsDate(listviewX.SubItems[ColumnToSort].Text, ref val1Date) && Utilities.StrIsDate(listviewY.SubItems[ColumnToSort].Text, ref val2Date)))
+                else if ((Utilities.StrIsDate(listviewX.SubItems[SortColumn].Text, ref val1Date) && Utilities.StrIsDate(listviewY.SubItems[SortColumn].Text, ref val2Date)))
                     compareResult = ObjectCompare.Compare(val1Date, val2Date);
-                else if ((Utilities.StrIsCurrency(listviewX.SubItems[ColumnToSort].Text, ref val1Dec) && Utilities.StrIsCurrency(listviewY.SubItems[ColumnToSort].Text, ref val2Dec)))
+                else if ((Utilities.StrIsCurrency(listviewX.SubItems[SortColumn].Text, ref val1Dec) && Utilities.StrIsCurrency(listviewY.SubItems[SortColumn].Text, ref val2Dec)))
                     compareResult = ObjectCompare.Compare(val1Dec, val2Dec);
                 else
                     // Compare the two items
-                    compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+                    compareResult = ObjectCompare.Compare(listviewX.SubItems[SortColumn].Text, listviewY.SubItems[SortColumn].Text);
 
                 // Calculate correct return value based on object comparison
-                if (OrderOfSort == SortOrder.Ascending)
+                if (SortOrder == SortOrder.Ascending)
                 {
                     // Ascending sort is selected, return normal result of compare operation
                     return compareResult;
                 }
-                else if (OrderOfSort == SortOrder.Descending)
+                else if (SortOrder == SortOrder.Descending)
                 {
                     // Descending sort is selected, return negative result of compare operation
                     return (-compareResult);
@@ -111,32 +103,11 @@ namespace GSendControls
         /// <summary>
         /// Gets or sets the number of the column to which to apply the sorting operation (Defaults to '0').
         /// </summary>
-        public int SortColumn
-        {
-            set
-            {
-                ColumnToSort = value;
-            }
-            get
-            {
-                return ColumnToSort;
-            }
-        }
+        public int SortColumn { get; set; }
 
         /// <summary>
         /// Gets or sets the order of sorting to apply (for example, 'Ascending' or 'Descending').
         /// </summary>
-        public SortOrder Order
-        {
-            set
-            {
-                OrderOfSort = value;
-            }
-            get
-            {
-                return OrderOfSort;
-            }
-        }
-
+        public SortOrder SortOrder { get; set; }
     }
 }

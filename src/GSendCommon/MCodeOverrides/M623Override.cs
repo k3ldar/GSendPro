@@ -26,7 +26,6 @@ namespace GSendCommon.MCodeOverrides
             if (m623Commands.Count == 1)
             {
                 IGCodeCommand command = m623Commands[0];
-                string comment = command.CommentStripped(true);
 
                 try
                 {
@@ -37,7 +36,7 @@ namespace GSendCommon.MCodeOverrides
                     if (!comPort.IsOpen())
                         throw new InvalidOperationException(String.Format(GSend.Language.Resources.ComPortClosed, comPort.Name));
 
-                    string response = SendCommandWaitForCorrectResponse(comPort, m623Model);
+                    _ = SendCommandWaitForCorrectResponse(comPort, m623Model);
 
                     overrideContext.SendInformationUpdate(InformationType.Information, String.Format(GSend.Language.Resources.ComPortDataSentResponseReceived, m623Model.Command, comPort.Name, m623Model.Response));
 
@@ -55,7 +54,7 @@ namespace GSendCommon.MCodeOverrides
             return false;
         }
 
-        public string SendCommandWaitForCorrectResponse(IComPort comPort, M623Model m623Model)
+        public static string SendCommandWaitForCorrectResponse(IComPort comPort, M623Model m623Model)
         {
             StringBuilder Result = new(1024);
 

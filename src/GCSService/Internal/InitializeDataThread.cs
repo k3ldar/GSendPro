@@ -21,7 +21,6 @@ namespace GSendService.Internal
 
         public void ConfigureApplicationBuilder(in IApplicationBuilder applicationBuilder)
         {
-            IUserApiQueryProvider userApi = applicationBuilder.ApplicationServices.GetRequiredService<IUserApiQueryProvider>();
             IAccountProvider accounts = applicationBuilder.ApplicationServices.GetRequiredService<IAccountProvider>();
             IUserSearch userSearch = applicationBuilder.ApplicationServices.GetRequiredService<IUserSearch>();
             IUserApiProvider userApiProvider = applicationBuilder.ApplicationServices.GetRequiredService<IUserApiProvider>();

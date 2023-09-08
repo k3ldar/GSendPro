@@ -227,7 +227,7 @@ namespace GSendCommon
 
         private void AddMachine(long id)
         {
-            if (_machines.Any(m => m.Id == id))
+            if (_machines.Exists(m => m.Id == id))
                 return;
 
             IMachine newMachine = _gSendDataProvider.MachineGet(id);
@@ -240,7 +240,7 @@ namespace GSendCommon
             }
         }
 
-        private void RemoveMachine(long machineId)
+        private static void RemoveMachine(long machineId)
         {
             IGCodeProcessor machineToDelete = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
 

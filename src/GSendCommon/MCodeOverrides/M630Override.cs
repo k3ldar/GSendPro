@@ -31,8 +31,6 @@ namespace GSendCommon.MCodeOverrides
                 {
                     string args = null;
 
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo(programName);
-
                     //run the exe here after checking for M630.1 in previous line
                     if (command.PreviousCommand != null && command.PreviousCommand.Command.Equals(Constants.CharM) && command.PreviousCommand.CommandValue.Equals(Constants.MCode630RunProgramParams))
                     {

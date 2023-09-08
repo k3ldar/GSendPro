@@ -306,7 +306,7 @@ namespace GSendControls
 
         public static Image ResizeImage(this Image image, int maximumWidth, int maximumHeight, bool enforceRatio, bool addPadding)
         {
-            ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders(); EncoderParameters encoderParameters = new(1);
+            EncoderParameters encoderParameters = new(1);
             encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
             int canvasWidth = maximumWidth;
             int canvasHeight = maximumHeight;

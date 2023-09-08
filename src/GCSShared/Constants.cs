@@ -100,6 +100,8 @@ namespace GSendShared
 
         public const string GSendProSubProgramFolder = "Sub Programs";
 
+        public const string GSendProErrorFolder = "Errors";
+
         public const string GSendProDesktopFolder = "DeskTop";
 
         public const string AppSettings = "appsettings.json";

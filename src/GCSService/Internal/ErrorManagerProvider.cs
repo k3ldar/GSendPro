@@ -4,13 +4,15 @@ using System.Text.Json;
 
 using SharedPluginFeatures;
 
+using static GSendShared.Constants;
+
 namespace GSendService.Internal
 {
     public class ErrorManagerProvider : IErrorManager
     {
         public void ErrorRaised(in ErrorInformation errorInformation)
         {
-            string path = "C:\\Tools\\gcs\\error";
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GSendProAppFolder, GSendProErrorFolder);
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);

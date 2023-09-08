@@ -64,11 +64,6 @@ namespace GSendControls
 
         protected override string SectionName => nameof(ShortcutEditor);
 
-        protected override void UpdateEnabledState()
-        {
-            base.UpdateEnabledState();
-        }
-
         protected override void LoadResources()
         {
             Text = GSend.Language.Resources.ShortcutEditor;
