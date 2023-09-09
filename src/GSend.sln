@@ -48,6 +48,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		..\.github\ISSUE_TEMPLATE\feature_request.md = ..\.github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C484FCED-3074-4291-8537-EE25DD0EC921}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+		..\.github\workflows\codeql.yml = ..\.github\workflows\codeql.yml
+		..\.github\workflows\dotnet.yml = ..\.github\workflows\dotnet.yml
+		..\.github\workflows\SonarCloud.yml = ..\.github\workflows\SonarCloud.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B0EE29C5-33F3-4BDC-9890-2F02723BB73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrblTuningWizard", "Plugins\GrblTuning\GrblTuningWizard.csproj", "{FC2E272A-BE48-4911-AD32-04421E01C3A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +114,10 @@ Global
 		{6B1A0717-A7CC-47E9-8DEC-F19DC1C40932}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1A0717-A7CC-47E9-8DEC-F19DC1C40932}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1A0717-A7CC-47E9-8DEC-F19DC1C40932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +125,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE} = {07A42B55-59A5-4D72-A8DC-0972498A6290}
 		{A75F930B-727D-45A0-9960-45160263C08B} = {7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE}
+		{C484FCED-3074-4291-8537-EE25DD0EC921} = {7B1DCD03-35FD-4C5D-BB6D-D857284EC3DE}
+		{FC2E272A-BE48-4911-AD32-04421E01C3A6} = {B0EE29C5-33F3-4BDC-9890-2F02723BB73B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF7ACEE2-C0A2-44E4-B75B-12FB4206BBB2}

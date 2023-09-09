@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -26,6 +26,7 @@
     <ProjectReference Include="..\GCSService\GSendService.csproj" />
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
     <ProjectReference Include="..\GSendApi\GSendApi.csproj" />
+    <ProjectReference Include="..\Plugins\GrblTuning\GrblTuningWizard.csproj" />
   </ItemGroup>
 
   <ItemGroup>
