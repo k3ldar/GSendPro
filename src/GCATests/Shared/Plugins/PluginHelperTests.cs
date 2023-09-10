@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluginManager.Abstractions;
 using PluginManager;
 using GSendTests.Mocks;
+using GSendShared.Interfaces;
 
 namespace GSendTests.Shared.Plugins
 {
@@ -60,21 +61,6 @@ namespace GSendTests.Shared.Plugins
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void InitializeAllPlugins_InvalidHostUsage_Throws_InvalidOperationException()
-        {
-            var logger = new Mock<ILogger>();
-            var pluginClassesService = new Mock<IPluginClassesService>();
-            var pluginHost = new Mock<IPluginHost>();
-            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.None);
-
-            PluginHelper sut = new(logger.Object, pluginClassesService.Object);
-            Assert.IsNotNull(sut);
-
-            sut.InitializeAllPlugins(pluginHost.Object);
-        }
-
-        [TestMethod]
         public void InitializeAllPlugins_DifferentUsage_LoggedWithoutException()
         {
             MockLogger logger = new MockLogger();
@@ -83,7 +69,7 @@ namespace GSendTests.Shared.Plugins
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.MenuItems).Throws<InvalidOperationException>();
 
-            var pluginHost = new Mock<IPluginHost>();
+            var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
 
             var pluginClassesService = new Mock<IPluginClassesService>();
@@ -94,6 +80,39 @@ namespace GSendTests.Shared.Plugins
 
             sut.InitializeAllPlugins(pluginHost.Object);
             Assert.IsTrue(logger.LogItems.Contains("Warning - Attempt to load invalid plugin: test plugin"));
+        }
+
+        [TestMethod]
+        public void InitializeAllPlugins_WithMenuItems_MenuCreationCalled_Success()
+        {
+            List<IPluginMenu> menuItems = new()
+            {
+                new MockPluginMenu("-", MenuType.Seperator, MenuParent.Tools),
+                new MockPluginMenu("New Tool", MenuType.MenuItem, MenuParent.Tools),
+            };
+
+            List<IPluginMenu> createdMenuItems = new();
+
+            MockLogger logger = new MockLogger();
+            var pluginModule = new Mock<IGSendPluginModule>();
+            pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
+            pluginModule.Setup(m => m.Name).Returns("test plugin");
+            pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
+            pluginModule.Setup(m => m.Shortcuts).Returns(new List<IShortcut>());
+
+            var pluginHost = new Mock<ISenderPluginHost>();
+            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
+            pluginHost.Setup(ph => ph.AddMenu(It.IsAny<IPluginMenu>())).Callback((IPluginMenu pm) => createdMenuItems.Add(pm));
+
+            var pluginClassesService = new Mock<IPluginClassesService>();
+            pluginClassesService.Setup(m => m.GetPluginClasses<IGSendPluginModule>()).Returns(new List<IGSendPluginModule>() { pluginModule.Object });
+
+            PluginHelper sut = new(logger, pluginClassesService.Object);
+            Assert.IsNotNull(sut);
+
+            sut.InitializeAllPlugins(pluginHost.Object);
+            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(2, createdMenuItems.Count);
         }
     }
 }

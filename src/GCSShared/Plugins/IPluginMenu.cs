@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Plugins
+﻿using GSendShared.Models;
+
+namespace GSendShared.Plugins
 {
     /// <summary>
     /// Interface created by a plugin to add menu items to the host
@@ -31,5 +33,7 @@
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void Clicked();
+
+        void MachineStatusChanged(MachineStateModel machineStateModel);
     }
 }

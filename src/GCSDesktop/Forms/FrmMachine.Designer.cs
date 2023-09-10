@@ -138,7 +138,7 @@
             cbToolChanger = new System.Windows.Forms.CheckBox();
             cbLimitSwitches = new System.Windows.Forms.CheckBox();
             probingCommand1 = new GSendControls.ProbingCommand();
-            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            menuStripMain = new System.Windows.Forms.MenuStrip();
             mnuMachine = new System.Windows.Forms.ToolStripMenuItem();
             mnuMachineLoadGCode = new System.Windows.Forms.ToolStripMenuItem();
             mnuMachineClearGCode = new System.Windows.Forms.ToolStripMenuItem();
@@ -222,7 +222,7 @@
             ((System.ComponentModel.ISupportInitialize)numericLayerHeight).BeginInit();
             grpFeedDisplay.SuspendLayout();
             grpDisplayUnits.SuspendLayout();
-            menuStrip1.SuspendLayout();
+            menuStripMain.SuspendLayout();
             tabControlSecondary.SuspendLayout();
             tabPageConsole.SuspendLayout();
             tabPageGCode.SuspendLayout();
@@ -1389,14 +1389,14 @@
             probingCommand1.Size = new System.Drawing.Size(258, 230);
             probingCommand1.TabIndex = 7;
             // 
-            // menuStrip1
+            // menuStripMain
             // 
-            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuMachine, mnuView, mnuAction, mnuOptions, mnuHelp });
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(810, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
+            menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuMachine, mnuView, mnuAction, mnuOptions, mnuHelp });
+            menuStripMain.Location = new System.Drawing.Point(0, 0);
+            menuStripMain.Name = "menuStripMain";
+            menuStripMain.Size = new System.Drawing.Size(810, 24);
+            menuStripMain.TabIndex = 0;
+            menuStripMain.Text = "menuStrip1";
             // 
             // mnuMachine
             // 
@@ -1453,55 +1453,55 @@
             // mnuViewGeneral
             // 
             mnuViewGeneral.Name = "mnuViewGeneral";
-            mnuViewGeneral.Size = new System.Drawing.Size(180, 22);
+            mnuViewGeneral.Size = new System.Drawing.Size(165, 22);
             mnuViewGeneral.Text = "General";
             // 
             // mnuViewOverrides
             // 
             mnuViewOverrides.Name = "mnuViewOverrides";
-            mnuViewOverrides.Size = new System.Drawing.Size(180, 22);
+            mnuViewOverrides.Size = new System.Drawing.Size(165, 22);
             mnuViewOverrides.Text = "Overrides";
             // 
             // mnuViewJog
             // 
             mnuViewJog.Name = "mnuViewJog";
-            mnuViewJog.Size = new System.Drawing.Size(180, 22);
+            mnuViewJog.Size = new System.Drawing.Size(165, 22);
             mnuViewJog.Text = "Jog";
             // 
             // mnuViewSpindle
             // 
             mnuViewSpindle.Name = "mnuViewSpindle";
-            mnuViewSpindle.Size = new System.Drawing.Size(180, 22);
+            mnuViewSpindle.Size = new System.Drawing.Size(165, 22);
             mnuViewSpindle.Text = "Spindle";
             // 
             // mnuViewServiceSchedule
             // 
             mnuViewServiceSchedule.Name = "mnuViewServiceSchedule";
-            mnuViewServiceSchedule.Size = new System.Drawing.Size(180, 22);
+            mnuViewServiceSchedule.Size = new System.Drawing.Size(165, 22);
             mnuViewServiceSchedule.Text = "Service Schedule";
             mnuViewServiceSchedule.Visible = false;
             // 
             // mnuViewMachineSettings
             // 
             mnuViewMachineSettings.Name = "mnuViewMachineSettings";
-            mnuViewMachineSettings.Size = new System.Drawing.Size(180, 22);
+            mnuViewMachineSettings.Size = new System.Drawing.Size(165, 22);
             mnuViewMachineSettings.Text = "Machine Settings";
             // 
             // mnuViewSettings
             // 
             mnuViewSettings.Name = "mnuViewSettings";
-            mnuViewSettings.Size = new System.Drawing.Size(180, 22);
+            mnuViewSettings.Size = new System.Drawing.Size(165, 22);
             mnuViewSettings.Text = "Settings";
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem1.Size = new System.Drawing.Size(162, 6);
             // 
             // mnuViewConsole
             // 
             mnuViewConsole.Name = "mnuViewConsole";
-            mnuViewConsole.Size = new System.Drawing.Size(180, 22);
+            mnuViewConsole.Size = new System.Drawing.Size(165, 22);
             mnuViewConsole.Text = "Console";
             mnuViewConsole.Click += consoleToolStripMenuItem_Click;
             // 
@@ -1633,7 +1633,7 @@
             warningsAndErrors.Name = "warningsAndErrors";
             warningsAndErrors.Size = new System.Drawing.Size(786, 28);
             warningsAndErrors.TabIndex = 2;
-            warningsAndErrors.OnUpdate += warningsAndErrors_OnUpdate;
+            warningsAndErrors.OnUpdate += WarningsAndErrors_OnUpdate;
             warningsAndErrors.VisibleChanged += WarningContainer_VisibleChanged;
             warningsAndErrors.Resize += WarningContainer_VisibleChanged;
             // 
@@ -1943,7 +1943,7 @@
             Controls.Add(tabControlMain);
             Controls.Add(statusStrip);
             Controls.Add(toolStripMain);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStripMain);
             DoubleBuffered = true;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
@@ -1985,8 +1985,8 @@
             grpFeedDisplay.PerformLayout();
             grpDisplayUnits.ResumeLayout(false);
             grpDisplayUnits.PerformLayout();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStripMain.ResumeLayout(false);
+            menuStripMain.PerformLayout();
             tabControlSecondary.ResumeLayout(false);
             tabPageConsole.ResumeLayout(false);
             tabPageConsole.PerformLayout();
@@ -2040,7 +2040,7 @@
         private System.Windows.Forms.Label lblPropertyHeader;
         private System.Windows.Forms.TextBox txtGrblUpdates;
         private System.Windows.Forms.Button btnApplyGrblUpdates;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStripMain;
         private System.Windows.Forms.ToolStripMenuItem mnuMachine;
         private System.Windows.Forms.ToolStripMenuItem mnuView;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelWarnings;

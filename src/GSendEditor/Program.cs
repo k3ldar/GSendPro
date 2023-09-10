@@ -39,7 +39,7 @@ namespace GSendEditor
             applicationPluginManager.RegisterPlugin(typeof(GSendAnalyzer.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendCommon.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
-
+            applicationPluginManager.RegisterPlugin(typeof(GSendControls.PluginInitialisation).Assembly.Location);
 
 
             IServiceCollection serviceCollection = new ServiceCollection();

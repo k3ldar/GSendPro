@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Plugins
+﻿using GSendShared.Interfaces;
+
+namespace GSendShared.Plugins
 {
     public interface IGSendPluginModule
     {
@@ -26,5 +28,9 @@
         /// Menu items supplied by plugin
         /// </summary>
         IReadOnlyList<IPluginMenu> MenuItems { get; }
+
+        IReadOnlyList<IShortcut> Shortcuts { get; }
+
+        void ClientMessageReceived(IClientBaseMessage clientBaseMessage);
     }
 }

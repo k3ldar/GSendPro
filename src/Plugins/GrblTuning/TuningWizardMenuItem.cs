@@ -1,5 +1,6 @@
 ﻿using GrblTuning;
 
+using GSendShared.Models;
 using GSendShared.Plugins;
 
 namespace GrblTuningWizard
@@ -20,6 +21,11 @@ namespace GrblTuningWizard
             {
                 tuningWizard.ShowDialog();
             }
+        }
+
+        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

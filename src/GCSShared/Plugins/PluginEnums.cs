@@ -22,6 +22,8 @@
         HasWorkArea = 2,
 
         HasToolbarButtons = 4,
+
+        MessageReceived = 8,
     }
 
     public enum MenuParent
