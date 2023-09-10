@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GSendShared.Plugins
+﻿namespace GSendShared.Plugins
 {
-    public interface IPluginModule
+    public interface IGSendPluginModule
     {
         /// <summary>
         /// Name of the plugin

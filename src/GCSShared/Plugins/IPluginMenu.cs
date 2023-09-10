@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GSendShared.Plugins
+﻿namespace GSendShared.Plugins
 {
     /// <summary>
     /// Interface created by a plugin to add menu items to the host
@@ -36,6 +30,6 @@ namespace GSendShared.Plugins
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Clicked ();
+        void Clicked();
     }
 }

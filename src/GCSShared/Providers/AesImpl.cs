@@ -6,24 +6,20 @@ namespace GSendShared.Providers.Internal.Enc
     {
         public static string Encrypt(string plainText, byte[] key)
         {
-            using (Aes aesAlg = Aes.Create())
+            using Aes aesAlg = Aes.Create();
+            byte[] iv = aesAlg.IV;
+
+            using ICryptoTransform encryptor = aesAlg.CreateEncryptor(key, iv);
+            using MemoryStream msEncrypt = new();
+            msEncrypt.Write(iv, 0, iv.Length);
+            using (CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write))
+            using (StreamWriter swEncrypt = new(csEncrypt))
             {
-                byte[] iv = aesAlg.IV;
-
-                using (ICryptoTransform encryptor = aesAlg.CreateEncryptor(key, iv))
-                using (MemoryStream msEncrypt = new())
-                {
-                    msEncrypt.Write(iv, 0, iv.Length);
-                    using (CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write))
-                    using (StreamWriter swEncrypt = new(csEncrypt))
-                    {
-                        swEncrypt.Write(plainText);
-                    }
-
-                    byte[] encryptedBytes = msEncrypt.ToArray();
-                    return Convert.ToBase64String(encryptedBytes);
-                }
+                swEncrypt.Write(plainText);
             }
+
+            byte[] encryptedBytes = msEncrypt.ToArray();
+            return Convert.ToBase64String(encryptedBytes);
         }
 
         public static string Decrypt(string encryptedText, byte[] key)

@@ -2,7 +2,7 @@
 
 namespace GrblTuningWizard
 {
-    public sealed class GSendProTuningWizardPlugin : IPluginModule
+    public sealed class GSendProTuningWizardPlugin : IGSendPluginModule
     {
         public string Name => "GRBL Tuning Wizard";
 
