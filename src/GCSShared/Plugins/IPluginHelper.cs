@@ -6,9 +6,7 @@ namespace GSendShared.Plugins
     {
         void InitializeAllPlugins(ISenderPluginHost pluginHost);
 
-        void AddMenu(object parent, IPluginMenu menu);
-
-        void AddShortcut(List<IShortcut> shortcuts, IShortcut shortcut);
+        void AddMenu(object parent, IPluginMenu menu, List<IShortcut> shortcuts);
 
         //void AddToolbarButton(object parent, IPluginToolbarButton toolbarButton);
     }

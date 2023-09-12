@@ -39,15 +39,5 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
             Assert.AreEqual(1, menuItems.Count);
             Assert.AreEqual("Tuning Wizard", menuItems[0].Name);
         }
-
-        [TestMethod]
-        public void Validate_Shortcuts_Success()
-        {
-            GSendProTuningWizardPlugin sut = new();
-
-            IReadOnlyList<IShortcut> menuItems = sut.Shortcuts;
-
-            Assert.AreEqual(0, menuItems.Count);
-        }
     }
 }

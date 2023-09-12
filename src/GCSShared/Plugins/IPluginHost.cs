@@ -8,8 +8,6 @@ namespace GSendShared.Plugins
 
         void AddMenu(IPluginMenu pluginMenu);
 
-        void AddShortcut(IShortcut shortcut);
-
         void AddMessage(InformationType informationType, string message);
 
         void AddPlugin(IGSendPluginModule pluginModule);

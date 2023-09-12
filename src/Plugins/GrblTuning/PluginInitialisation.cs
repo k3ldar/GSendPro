@@ -1,18 +1,14 @@
-﻿using GSendControls.Plugins;
-
-using GSendShared.Plugins;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager.Abstractions;
 
-namespace GSendControls
+namespace GrblTuningWizard
 {
     public sealed class PluginInitialisation : IPlugin
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPluginHelper, PluginHelper>();
+            // required by interface, not used in this context
         }
 
         public void Finalise()

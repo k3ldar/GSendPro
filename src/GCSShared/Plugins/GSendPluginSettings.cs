@@ -10,6 +10,12 @@
 
         public PluginUsage Usage { get; set; }
 
+        public MachineType MachineType { get; set; }
+
+        public MachineFirmware MachineFirmware { get; set; }
+
         public bool Enabled { get; set; }
+
+        public bool ShowToolbarItems { get; set; }
     }
 }

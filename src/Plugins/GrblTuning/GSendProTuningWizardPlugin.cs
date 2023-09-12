@@ -1,5 +1,4 @@
 ﻿using GSendShared;
-using GSendShared.Interfaces;
 using GSendShared.Plugins;
 
 namespace GrblTuningWizard
@@ -26,8 +25,6 @@ namespace GrblTuningWizard
                 return Result;
             }
         }
-
-        public IReadOnlyList<IShortcut> Shortcuts => new List<IShortcut>();
 
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {

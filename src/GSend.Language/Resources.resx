@@ -2025,4 +2025,7 @@
   <data name="AnalyzeError39" xml:space="preserve">
     <value>Invalid GCode detected on line {0}</value>
   </data>
+  <data name="ShortcutMenuTools" xml:space="preserve">
+    <value>Tools Menu</value>
+  </data>
 </root>

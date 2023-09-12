@@ -7,9 +7,11 @@
 
         Editor = 1,
 
-        Sender = 2,
+        SenderHost = 2,
 
-        Service = 4
+        Sender = 4,
+
+        Service = 8
     }
 
     [Flags]
@@ -41,6 +43,10 @@
         Options,
 
         Tools,
+
+        Action,
+
+        Subprograms,
 
         Help,
     }

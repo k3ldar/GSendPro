@@ -203,6 +203,7 @@
             heartbeatPanelAvailableBlocks = new GSendControls.HeartbeatPanel();
             heartbeatPanelAvailableRXBytes = new GSendControls.HeartbeatPanel();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMain.SuspendLayout();
             statusStrip.SuspendLayout();
             tabControlMain.SuspendLayout();
@@ -1391,7 +1392,7 @@
             // 
             // menuStripMain
             // 
-            menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuMachine, mnuView, mnuAction, mnuOptions, mnuHelp });
+            menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuMachine, mnuView, mnuAction, mnuOptions, mnuTools, mnuHelp });
             menuStripMain.Location = new System.Drawing.Point(0, 0);
             menuStripMain.Name = "menuStripMain";
             menuStripMain.Size = new System.Drawing.Size(810, 24);
@@ -1408,38 +1409,38 @@
             // mnuMachineLoadGCode
             // 
             mnuMachineLoadGCode.Name = "mnuMachineLoadGCode";
-            mnuMachineLoadGCode.Size = new System.Drawing.Size(145, 22);
+            mnuMachineLoadGCode.Size = new System.Drawing.Size(180, 22);
             mnuMachineLoadGCode.Text = "Load G-Code";
             mnuMachineLoadGCode.Click += mnuMachineLoadGCode_Click;
             // 
             // mnuMachineClearGCode
             // 
             mnuMachineClearGCode.Name = "mnuMachineClearGCode";
-            mnuMachineClearGCode.Size = new System.Drawing.Size(145, 22);
+            mnuMachineClearGCode.Size = new System.Drawing.Size(180, 22);
             mnuMachineClearGCode.Text = "Clear G-Code";
             mnuMachineClearGCode.Click += mnuMachineClearGCode_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(142, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuMachineRename
             // 
             mnuMachineRename.Name = "mnuMachineRename";
-            mnuMachineRename.Size = new System.Drawing.Size(145, 22);
+            mnuMachineRename.Size = new System.Drawing.Size(180, 22);
             mnuMachineRename.Text = "Rename";
             mnuMachineRename.Click += mnuMachineRename_Click;
             // 
             // toolStripMenuItem7
             // 
             toolStripMenuItem7.Name = "toolStripMenuItem7";
-            toolStripMenuItem7.Size = new System.Drawing.Size(142, 6);
+            toolStripMenuItem7.Size = new System.Drawing.Size(177, 6);
             // 
             // mnuMachineClose
             // 
             mnuMachineClose.Name = "mnuMachineClose";
-            mnuMachineClose.Size = new System.Drawing.Size(145, 22);
+            mnuMachineClose.Size = new System.Drawing.Size(180, 22);
             mnuMachineClose.Text = "Close";
             mnuMachineClose.Click += closeToolStripMenuItem_Click;
             // 
@@ -1619,7 +1620,7 @@
             // mnuHelpAbout
             // 
             mnuHelpAbout.Name = "mnuHelpAbout";
-            mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
+            mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
             mnuHelpAbout.Text = "About";
             mnuHelpAbout.Click += mnuHelpAbout_Click;
             // 
@@ -1932,6 +1933,12 @@
             // 
             openFileDialog1.Filter = "G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
             // 
+            // mnuTools
+            // 
+            mnuTools.Name = "mnuTools";
+            mnuTools.Size = new System.Drawing.Size(46, 20);
+            mnuTools.Text = "Tools";
+            // 
             // FrmMachine
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2173,5 +2180,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuMachineRename;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
         private System.Windows.Forms.ColumnHeader columnHeaderStatus;
+        private System.Windows.Forms.ToolStripMenuItem mnuTools;
     }
 }

@@ -4156,6 +4156,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tools Menu.
+        /// </summary>
+        public static string ShortcutMenuTools {
+            get {
+                return ResourceManager.GetString("ShortcutMenuTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Menu.
         /// </summary>
         public static string ShortcutMenuView {

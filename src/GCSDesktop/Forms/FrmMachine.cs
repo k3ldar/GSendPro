@@ -26,6 +26,7 @@ using GSendShared.Interfaces;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
@@ -149,10 +150,22 @@ namespace GSendDesktop.Forms
                 tabControlMain.TabPages.Remove(tabPageSpindle);
             }
 
+            // shortcuts has to be setup prior to plugins
             _shortcuts = RetrieveAvailableShortcuts();
+
             tabControlMain.TabPages.Remove(tabPageServiceSchedule);
 
+            mnuMachine.Tag = MenuParent.Machine;
+            mnuView.Tag = MenuParent.View;
+            mnuAction.Tag = MenuParent.Action;
+            mnuOptions.Tag = MenuParent.Options;
+            mnuTools.Tag = MenuParent.Tools;
+            mnuHelp.Tag = MenuParent.Help;
+
             _pluginHelper.InitializeAllPlugins(this);
+
+            mnuTools.Visible = mnuTools.DropDownItems.Count > 0;
+            UpdateShortcutKeyValues(_shortcuts);
         }
 
         #endregion Constructors
@@ -2384,7 +2397,6 @@ namespace GSendDesktop.Forms
             List<IShortcut> Result = new();
             RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
 
-            UpdateShortcutKeyValues(Result);
             return Result;
         }
 
@@ -2392,8 +2404,6 @@ namespace GSendDesktop.Forms
         {
             foreach (IShortcut shortcut in Result)
             {
-                Debug.Assert(!_shortcutHandler.IsKeyComboRegistered(shortcut.DefaultKeys));
-
                 _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
 
                 string keyArray = String.Join(';', shortcut.DefaultKeys);
@@ -2668,12 +2678,8 @@ namespace GSendDesktop.Forms
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu);
-        }
-
-        public void AddShortcut(IShortcut shortcut)
-        {
-            _pluginHelper.AddShortcut(_shortcuts, shortcut);
+            pluginMenu.UpdateHost(this);
+            _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
         }
 
         public void SendMessage(string message)

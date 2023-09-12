@@ -34,6 +34,14 @@ namespace GSendShared.Plugins
         /// <param name="e"></param>
         void Clicked();
 
+        bool IsEnabled();
+
+        bool IsChecked();
+
+        bool GetShortcut(out string groupName, out string shortcutName);
+
         void MachineStatusChanged(MachineStateModel machineStateModel);
+
+        void UpdateHost(ISenderPluginHost senderPluginHost);
     }
 }

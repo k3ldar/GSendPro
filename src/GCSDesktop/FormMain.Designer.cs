@@ -44,7 +44,7 @@ namespace GSendDesktop
             statusStrip1 = new StatusStrip();
             toolStripStatusConnected = new ToolStripStatusLabel();
             toolStripStatusCpu = new ToolStripStatusLabel();
-            menuStrip1 = new MenuStrip();
+            menuStripMain = new MenuStrip();
             machineToolStripMenuItem = new ToolStripMenuItem();
             refreshToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
@@ -60,6 +60,8 @@ namespace GSendDesktop
             helpToolStripMenuItem = new ToolStripMenuItem();
             viewHelpToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem3 = new ToolStripSeparator();
+            bugsAndIdeasToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem4 = new ToolStripSeparator();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             toolStripMain = new ToolStrip();
             toolStripButtonGetMachines = new ToolStripButton();
@@ -75,10 +77,8 @@ namespace GSendDesktop
             toolStripButtonResume = new ToolStripButton();
             toolStripButtonHome = new ToolStripButton();
             timerUpdateStatus = new Timer(components);
-            toolStripMenuItem4 = new ToolStripSeparator();
-            bugsAndIdeasToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
-            menuStrip1.SuspendLayout();
+            menuStripMain.SuspendLayout();
             toolStripMain.SuspendLayout();
             SuspendLayout();
             // 
@@ -174,14 +174,14 @@ namespace GSendDesktop
             toolStripStatusCpu.Size = new System.Drawing.Size(122, 19);
             toolStripStatusCpu.Text = "toolStripStatusLabel1";
             // 
-            // menuStrip1
+            // menuStripMain
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { machineToolStripMenuItem, viewToolStripMenuItem, subprogramsToolStripMenuItem, helpToolStripMenuItem });
-            menuStrip1.Location = new System.Drawing.Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(705, 24);
-            menuStrip1.TabIndex = 4;
-            menuStrip1.Text = "menuStrip1";
+            menuStripMain.Items.AddRange(new ToolStripItem[] { machineToolStripMenuItem, viewToolStripMenuItem, subprogramsToolStripMenuItem, helpToolStripMenuItem });
+            menuStripMain.Location = new System.Drawing.Point(0, 0);
+            menuStripMain.Name = "menuStripMain";
+            menuStripMain.Size = new System.Drawing.Size(705, 24);
+            menuStripMain.TabIndex = 4;
+            menuStripMain.Text = "menuStrip1";
             // 
             // machineToolStripMenuItem
             // 
@@ -270,19 +270,31 @@ namespace GSendDesktop
             // viewHelpToolStripMenuItem
             // 
             viewHelpToolStripMenuItem.Name = "viewHelpToolStripMenuItem";
-            viewHelpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            viewHelpToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             viewHelpToolStripMenuItem.Text = "View Help";
             viewHelpToolStripMenuItem.Click += viewHelpToolStripMenuItem_Click;
             // 
             // toolStripMenuItem3
             // 
             toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem3.Size = new System.Drawing.Size(150, 6);
+            // 
+            // bugsAndIdeasToolStripMenuItem
+            // 
+            bugsAndIdeasToolStripMenuItem.Name = "bugsAndIdeasToolStripMenuItem";
+            bugsAndIdeasToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            bugsAndIdeasToolStripMenuItem.Text = "Bugs and Ideas";
+            bugsAndIdeasToolStripMenuItem.Click += bugsAndIdeasToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItem4
+            // 
+            toolStripMenuItem4.Name = "toolStripMenuItem4";
+            toolStripMenuItem4.Size = new System.Drawing.Size(150, 6);
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -417,18 +429,6 @@ namespace GSendDesktop
             // 
             timerUpdateStatus.Tick += timerUpdateStatus_Tick;
             // 
-            // toolStripMenuItem4
-            // 
-            toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
-            // 
-            // bugsAndIdeasToolStripMenuItem
-            // 
-            bugsAndIdeasToolStripMenuItem.Name = "bugsAndIdeasToolStripMenuItem";
-            bugsAndIdeasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            bugsAndIdeasToolStripMenuItem.Text = "Bugs and Ideas";
-            bugsAndIdeasToolStripMenuItem.Click += bugsAndIdeasToolStripMenuItem_Click;
-            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -436,18 +436,18 @@ namespace GSendDesktop
             ClientSize = new System.Drawing.Size(705, 355);
             Controls.Add(toolStripMain);
             Controls.Add(statusStrip1);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStripMain);
             Controls.Add(listViewMachines);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = menuStripMain;
             Name = "FormMain";
             Text = "GSend";
             Activated += FormMain_Activated;
             Shown += FormMain_Shown;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStripMain.ResumeLayout(false);
+            menuStripMain.PerformLayout();
             toolStripMain.ResumeLayout(false);
             toolStripMain.PerformLayout();
             ResumeLayout(false);
@@ -457,7 +457,7 @@ namespace GSendDesktop
         #endregion
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusConnected;
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStripMain;
         private ToolStripMenuItem machineToolStripMenuItem;
         private ToolStrip toolStripMain;
         private ToolStripButton toolStripButtonGetMachines;

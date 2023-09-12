@@ -13,6 +13,7 @@ using PluginManager.Abstractions;
 using PluginManager;
 using GSendTests.Mocks;
 using GSendShared.Interfaces;
+using GSendControls.Plugins;
 
 namespace GSendTests.Shared.Plugins
 {
@@ -98,7 +99,6 @@ namespace GSendTests.Shared.Plugins
             pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
-            pluginModule.Setup(m => m.Shortcuts).Returns(new List<IShortcut>());
 
             var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);

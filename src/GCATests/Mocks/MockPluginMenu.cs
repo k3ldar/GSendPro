@@ -7,6 +7,8 @@ namespace GSendTests.Mocks
 {
     internal sealed class MockPluginMenu : IPluginMenu
     {
+        private ISenderPluginHost _senderPluginHost;
+
         public MockPluginMenu(string name, int index, MenuType menuType, MenuParent menuParent)
         {
             Name = name;
@@ -29,12 +31,32 @@ namespace GSendTests.Mocks
 
         public MenuParent ParentMenu { get; set; }
 
+        public bool IsEnabled()
+        {
+            return true;
+        }
+
+        public bool IsChecked()
+        {
+            return false;
+        }
+
         public void Clicked()
         {
             throw new NotImplementedException();
         }
 
         public void MachineStatusChanged(MachineStateModel machineStateModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateHost(ISenderPluginHost senderPluginHost)
+        {
+            _senderPluginHost = senderPluginHost;
+        }
+
+        public bool GetShortcut(out string groupName, out string shortcutName)
         {
             throw new NotImplementedException();
         }
