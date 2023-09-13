@@ -26,6 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\GSendEditor\External\FastColoredTextBox.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="GCodeAnalysesDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>

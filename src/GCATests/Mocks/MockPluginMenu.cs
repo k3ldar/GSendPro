@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -27,6 +28,8 @@ namespace GSendTests.Mocks
 
         public int Index { get; set; }
 
+        public Image MenuImage => null;
+
         public MenuType MenuType { get; set; }
 
         public MenuParent ParentMenu { get; set; }
@@ -51,9 +54,9 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
-        public void UpdateHost(ISenderPluginHost senderPluginHost)
+        public void UpdateHost<T>(T senderPluginHost)
         {
-            _senderPluginHost = senderPluginHost;
+            _senderPluginHost = senderPluginHost as ISenderPluginHost;
         }
 
         public bool GetShortcut(out string groupName, out string shortcutName)

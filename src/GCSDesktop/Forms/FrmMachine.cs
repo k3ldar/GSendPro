@@ -2678,7 +2678,7 @@ namespace GSendDesktop.Forms
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
-            pluginMenu.UpdateHost(this);
+            pluginMenu.UpdateHost(this as ISenderPluginHost);
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
         }
 

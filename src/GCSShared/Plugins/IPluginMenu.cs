@@ -1,4 +1,6 @@
-﻿using GSendShared.Models;
+﻿using System.Drawing;
+
+using GSendShared.Models;
 
 namespace GSendShared.Plugins
 {
@@ -16,6 +18,11 @@ namespace GSendShared.Plugins
         /// Preferred index of item in relation to other items in the menu
         /// </summary>
         int Index { get; }
+
+        /// <summary>
+        /// Image to be displayed with menu
+        /// </summary>
+        Image MenuImage { get; }
 
         /// <summary>
         /// Type of menu
@@ -42,6 +49,6 @@ namespace GSendShared.Plugins
 
         void MachineStatusChanged(MachineStateModel machineStateModel);
 
-        void UpdateHost(ISenderPluginHost senderPluginHost);
+        void UpdateHost<T>(T senderPluginHost);
     }
 }

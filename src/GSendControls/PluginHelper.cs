@@ -37,40 +37,66 @@ namespace GSendControls.Plugins
                     return;
                 }
 
-                ToolStripMenuItem pluginMenu = new();
-                pluginMenu.Tag = menu;
-                pluginMenu.Text = menu.Name;
-
-                if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
-                    parentMenu.DropDownItems.Insert(0, pluginMenu);
-                else
-                    pluginMenu.DropDownItems.Insert(menu.Index, pluginMenu);
-
-
-                if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
+                if (menu.MenuType == MenuType.MenuItem)
                 {
-                    shortcuts.Add(new ShortcutModel(groupName, shortcutName, new List<int>(),
-                        (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
-                        (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
+                    CreateStandardMenuItem(menu, parentMenu, shortcuts);
                 }
-
-                parentMenu.DropDownOpening += (s, e) =>
+                else if (menu.MenuType == MenuType.Seperator)
                 {
-                    if (s is ToolStripMenuItem menuItem)
-                    {
-                        pluginMenu.Checked = menu.IsChecked();
-                        pluginMenu.Enabled = menu.IsEnabled();
-                    }
-                };
-
-                pluginMenu.Click += (s, e) =>
+                    CreateSeperatorMenuItem(menu, parentMenu);
+                }
+                else
                 {
-                    if (s is ToolStripMenuItem menuItem)
-                    {
-                        if (menuItem.Tag is IPluginMenu menu)
-                            menu.Clicked();
-                    }
-                };
+                    throw new InvalidOperationException("Invalid Menu Type");
+                }
+            }
+        }
+
+        private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
+        {
+            ToolStripSeparator pluginSeperator = new();
+            pluginSeperator.Tag = menu;
+
+            if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
+                parentMenu.DropDownItems.Insert(0, pluginSeperator);
+            else
+                parentMenu.DropDownItems.Insert(menu.Index, pluginSeperator);
+        }
+
+        private static void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
+        {
+            ToolStripMenuItem pluginMenu = new();
+            pluginMenu.Tag = menu;
+            pluginMenu.Text = menu.Name;
+
+            if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
+                parentMenu.DropDownItems.Insert(0, pluginMenu);
+            else
+                parentMenu.DropDownItems.Insert(menu.Index, pluginMenu);
+
+            parentMenu.DropDownOpening += (s, e) =>
+            {
+                if (s is ToolStripMenuItem menuItem)
+                {
+                    pluginMenu.Checked = menu.IsChecked();
+                    pluginMenu.Enabled = menu.IsEnabled();
+                }
+            };
+
+            pluginMenu.Click += (s, e) =>
+            {
+                if (s is ToolStripMenuItem menuItem)
+                {
+                    if (menuItem.Tag is IPluginMenu menu)
+                        menu.Clicked();
+                }
+            };
+
+            if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
+            {
+                shortcuts.Add(new ShortcutModel(groupName, shortcutName, new List<int>(),
+                    (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
+                    (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
             }
         }
 
@@ -79,7 +105,7 @@ namespace GSendControls.Plugins
             shortcuts.Add(shortcut ?? throw new ArgumentNullException(nameof(shortcut)));
         }
 
-        public void InitializeAllPlugins(ISenderPluginHost pluginHost)
+        public void InitializeAllPlugins(IPluginHost pluginHost)
         {
             if (pluginHost == null)
                 throw new ArgumentNullException(nameof(pluginHost));

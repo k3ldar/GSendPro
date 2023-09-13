@@ -30,7 +30,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop
 {
-    public partial class FormMain : BaseForm, ISenderPluginHost
+    public partial class FormMain : BaseForm, IPluginHost
     {
         private readonly IGSendContext _context;
 
@@ -64,7 +64,7 @@ namespace GSendDesktop
 
             // initialize menu's for plugins
             machineToolStripMenuItem.Tag = MenuParent.Machine;
-            viewHelpToolStripMenuItem.Tag = MenuParent.View;
+            helpToolStripMenuItem.Tag = MenuParent.View;
             subprogramsToolStripMenuItem.Tag = MenuParent.Subprograms;
             helpToolStripMenuItem.Tag = MenuParent.Help;
 
@@ -506,7 +506,6 @@ namespace GSendDesktop
             viewSubProgramToolStripMenuItem.Text = GSend.Language.Resources.View;
 
             helpToolStripMenuItem.Text = GSend.Language.Resources.Help;
-            viewHelpToolStripMenuItem.Text = GSend.Language.Resources.HelpView;
             aboutToolStripMenuItem.Text = GSend.Language.Resources.HelpAbout;
         }
 
@@ -558,65 +557,25 @@ namespace GSendDesktop
             FrmServerValidation.ValidateServer(this, apiWrapper);
         }
 
-        private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new()
-            {
-                FileName = Constants.HelpWebsite,
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
-        }
-
-        private void bugsAndIdeasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new()
-            {
-                FileName = "https://github.com/k3ldar/GSendPro/issues",
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
-        }
-
         #region ISenderPluginHost
 
         public PluginUsage Usage => PluginUsage.SenderHost;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
-            if (pluginModule == null)
-                throw new ArgumentNullException(nameof(pluginModule));
+            // nothing special to do for this host
         }
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
+            pluginMenu.UpdateHost(this as IPluginHost);
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
         }
-
-        public void AddShortcut(IShortcut shortcut)
-        {
-            //_pluginHelper.AddShortcut(_shortcuts, shortcut);
-        }
-
-        public void SendMessage(string message)
-        {
-            throw new InvalidOperationException();
-        }
-
-        public bool IsPaused() => throw new InvalidOperationException();
-
-        public bool IsRunning() => throw new InvalidOperationException();
 
         public void AddMessage(InformationType informationType, string message)
         {
             throw new InvalidOperationException();
         }
-
-        public MachineStateModel MachineStatus() => throw new InvalidOperationException();
-
-        public IMachine GetMachine() => throw new InvalidOperationException();
 
         #endregion ISenderPluginHost
     }

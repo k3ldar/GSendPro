@@ -13,6 +13,8 @@ namespace GrblTuningWizard
 
         public int Index => -1;
 
+        public Image MenuImage => null;
+
         public MenuType MenuType => MenuType.MenuItem;
 
         public MenuParent ParentMenu => MenuParent.Tools;
@@ -40,9 +42,9 @@ namespace GrblTuningWizard
             throw new NotImplementedException();
         }
 
-        public void UpdateHost(ISenderPluginHost senderPluginHost)
+        public void UpdateHost<T>(T senderPluginHost)
         {
-            _senderPluginHost = senderPluginHost ?? throw new ArgumentNullException(nameof(senderPluginHost));
+            _senderPluginHost = senderPluginHost as ISenderPluginHost ?? throw new ArgumentNullException(nameof(senderPluginHost));
         }
 
         public bool GetShortcut(out string groupName, out string shortcutName)

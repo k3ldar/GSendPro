@@ -11,7 +11,9 @@
 
         Sender = 4,
 
-        Service = 8
+        Service = 8,
+
+        Any = Editor | SenderHost | Sender | Service,
     }
 
     [Flags]

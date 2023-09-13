@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             statusStrip1 = new StatusStrip();
             toolStripStatusLabelWarnings = new ToolStripStatusLabel();
-            menuStrip1 = new MenuStrip();
+            menuStripMain = new MenuStrip();
             mnuFile = new ToolStripMenuItem();
             mnuFileNew = new ToolStripMenuItem();
             mnuFileOpen = new ToolStripMenuItem();
@@ -51,19 +51,19 @@
             mnuEditCut = new ToolStripMenuItem();
             mnuEditCopy = new ToolStripMenuItem();
             mnuEditPaste = new ToolStripMenuItem();
+            mnuView = new ToolStripMenuItem();
+            mnuViewStatusBar = new ToolStripMenuItem();
+            mnuViewPreview = new ToolStripMenuItem();
+            mnuViewProperties = new ToolStripMenuItem();
+            mnuViewSubprograms = new ToolStripMenuItem();
             mnuBookmarks = new ToolStripMenuItem();
             mnuBookmarksToggle = new ToolStripMenuItem();
             mnuBookmarksPrevious = new ToolStripMenuItem();
             mnuBookmarksNext = new ToolStripMenuItem();
             mnuBookmarksRemoveAll = new ToolStripMenuItem();
-            mnuView = new ToolStripMenuItem();
-            mnuViewStatusBar = new ToolStripMenuItem();
-            mnuViewPreview = new ToolStripMenuItem();
-            mnuViewProperties = new ToolStripMenuItem();
-            mnuViewSubPrograms = new ToolStripMenuItem();
+            mnuTools = new ToolStripMenuItem();
+            mnuToolsShortcutKeys = new ToolStripMenuItem();
             mnuHelp = new ToolStripMenuItem();
-            mnuHelpHelp = new ToolStripMenuItem();
-            toolStripMenuItem5 = new ToolStripSeparator();
             mnuHelpAbout = new ToolStripMenuItem();
             saveFileDialog1 = new SaveFileDialog();
             fontDialog1 = new FontDialog();
@@ -101,10 +101,8 @@
             toolStripButtonRefreshSubPrograms = new ToolStripButton();
             tmrServerValidation = new System.Windows.Forms.Timer(components);
             tmrUpdateSubprograms = new System.Windows.Forms.Timer(components);
-            toolStripMenuItem6 = new ToolStripSeparator();
-            bugsAndIdeasToolStripMenuItem = new ToolStripMenuItem();
             statusStrip1.SuspendLayout();
-            menuStrip1.SuspendLayout();
+            menuStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerPrimary).BeginInit();
             splitContainerPrimary.Panel1.SuspendLayout();
             splitContainerPrimary.Panel2.SuspendLayout();
@@ -139,14 +137,14 @@
             toolStripStatusLabelWarnings.Size = new Size(29, 17);
             toolStripStatusLabelWarnings.Text = "0";
             // 
-            // menuStrip1
+            // menuStripMain
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { mnuFile, mnuEdit, mnuBookmarks, mnuView, mnuHelp });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1083, 24);
-            menuStrip1.TabIndex = 3;
-            menuStrip1.Text = "menuStrip1";
+            menuStripMain.Items.AddRange(new ToolStripItem[] { mnuFile, mnuEdit, mnuView, mnuBookmarks, mnuTools, mnuHelp });
+            menuStripMain.Location = new Point(0, 0);
+            menuStripMain.Name = "menuStripMain";
+            menuStripMain.Size = new Size(1083, 24);
+            menuStripMain.TabIndex = 3;
+            menuStripMain.Text = "menuStrip1";
             // 
             // mnuFile
             // 
@@ -271,6 +269,44 @@
             mnuEditPaste.Text = "&Paste";
             mnuEditPaste.Click += mnuEditPaste_Click;
             // 
+            // mnuView
+            // 
+            mnuView.DropDownItems.AddRange(new ToolStripItem[] { mnuViewStatusBar, mnuViewPreview, mnuViewProperties, mnuViewSubprograms });
+            mnuView.Name = "mnuView";
+            mnuView.Size = new Size(44, 20);
+            mnuView.Text = "&View";
+            // 
+            // mnuViewStatusBar
+            // 
+            mnuViewStatusBar.Name = "mnuViewStatusBar";
+            mnuViewStatusBar.Size = new Size(181, 22);
+            mnuViewStatusBar.Text = "&Status Bar";
+            mnuViewStatusBar.Visible = false;
+            // 
+            // mnuViewPreview
+            // 
+            mnuViewPreview.Name = "mnuViewPreview";
+            mnuViewPreview.ShortcutKeys = Keys.Alt | Keys.P;
+            mnuViewPreview.Size = new Size(181, 22);
+            mnuViewPreview.Text = "&Preview";
+            mnuViewPreview.Click += mnuViewPreview_Click;
+            // 
+            // mnuViewProperties
+            // 
+            mnuViewProperties.Name = "mnuViewProperties";
+            mnuViewProperties.ShortcutKeys = Keys.Alt | Keys.R;
+            mnuViewProperties.Size = new Size(181, 22);
+            mnuViewProperties.Text = "Properties";
+            mnuViewProperties.Click += mnuViewProperties_Click;
+            // 
+            // mnuViewSubprograms
+            // 
+            mnuViewSubprograms.Name = "mnuViewSubprograms";
+            mnuViewSubprograms.ShortcutKeys = Keys.Alt | Keys.S;
+            mnuViewSubprograms.Size = new Size(181, 22);
+            mnuViewSubprograms.Text = "Subprograms";
+            mnuViewSubprograms.Click += mnuViewSubprograms_Click;
+            // 
             // mnuBookmarks
             // 
             mnuBookmarks.DropDownItems.AddRange(new ToolStripItem[] { mnuBookmarksToggle, mnuBookmarksPrevious, mnuBookmarksNext, mnuBookmarksRemoveAll });
@@ -309,63 +345,26 @@
             mnuBookmarksRemoveAll.Text = "Remove All Bookmarks";
             mnuBookmarksRemoveAll.Click += mnuBookmarksRemoveAll_Click;
             // 
-            // mnuView
+            // mnuTools
             // 
-            mnuView.DropDownItems.AddRange(new ToolStripItem[] { mnuViewStatusBar, mnuViewPreview, mnuViewProperties, mnuViewSubPrograms });
-            mnuView.Name = "mnuView";
-            mnuView.Size = new Size(44, 20);
-            mnuView.Text = "&View";
+            mnuTools.DropDownItems.AddRange(new ToolStripItem[] { mnuToolsShortcutKeys });
+            mnuTools.Name = "mnuTools";
+            mnuTools.Size = new Size(46, 20);
+            mnuTools.Text = "Tools";
             // 
-            // mnuViewStatusBar
+            // mnuToolsShortcutKeys
             // 
-            mnuViewStatusBar.Name = "mnuViewStatusBar";
-            mnuViewStatusBar.Size = new Size(181, 22);
-            mnuViewStatusBar.Text = "&Status Bar";
-            mnuViewStatusBar.Visible = false;
-            // 
-            // mnuViewPreview
-            // 
-            mnuViewPreview.Name = "mnuViewPreview";
-            mnuViewPreview.ShortcutKeys = Keys.Alt | Keys.P;
-            mnuViewPreview.Size = new Size(181, 22);
-            mnuViewPreview.Text = "&Preview";
-            mnuViewPreview.Click += mnuViewPreview_Click;
-            // 
-            // mnuViewProperties
-            // 
-            mnuViewProperties.Name = "mnuViewProperties";
-            mnuViewProperties.ShortcutKeys = Keys.Alt | Keys.R;
-            mnuViewProperties.Size = new Size(181, 22);
-            mnuViewProperties.Text = "Properties";
-            mnuViewProperties.Click += propertiesToolStripMenuItem_Click;
-            // 
-            // mnuViewSubPrograms
-            // 
-            mnuViewSubPrograms.Name = "mnuViewSubPrograms";
-            mnuViewSubPrograms.ShortcutKeys = Keys.Alt | Keys.S;
-            mnuViewSubPrograms.Size = new Size(181, 22);
-            mnuViewSubPrograms.Text = "Subprograms";
-            mnuViewSubPrograms.Click += subprogramsToolStripMenuItem_Click;
+            mnuToolsShortcutKeys.Name = "mnuToolsShortcutKeys";
+            mnuToolsShortcutKeys.Size = new Size(146, 22);
+            mnuToolsShortcutKeys.Text = "Shortcut Keys";
+            mnuToolsShortcutKeys.Click += mnuToolsShortcutKeys_Click;
             // 
             // mnuHelp
             // 
-            mnuHelp.DropDownItems.AddRange(new ToolStripItem[] { mnuHelpHelp, toolStripMenuItem5, bugsAndIdeasToolStripMenuItem, toolStripMenuItem6, mnuHelpAbout });
+            mnuHelp.DropDownItems.AddRange(new ToolStripItem[] { mnuHelpAbout });
             mnuHelp.Name = "mnuHelp";
             mnuHelp.Size = new Size(44, 20);
             mnuHelp.Text = "&Help";
-            // 
-            // mnuHelpHelp
-            // 
-            mnuHelpHelp.Name = "mnuHelpHelp";
-            mnuHelpHelp.ShortcutKeys = Keys.F1;
-            mnuHelpHelp.Size = new Size(180, 22);
-            mnuHelpHelp.Text = "Help";
-            mnuHelpHelp.Click += mnuHelpHelp_Click;
-            // 
-            // toolStripMenuItem5
-            // 
-            toolStripMenuItem5.Name = "toolStripMenuItem5";
-            toolStripMenuItem5.Size = new Size(177, 6);
             // 
             // mnuHelpAbout
             // 
@@ -719,18 +718,6 @@
             tmrUpdateSubprograms.Interval = 1000;
             tmrUpdateSubprograms.Tick += tmrUpdateSubprograms_Tick;
             // 
-            // toolStripMenuItem6
-            // 
-            toolStripMenuItem6.Name = "toolStripMenuItem6";
-            toolStripMenuItem6.Size = new Size(177, 6);
-            // 
-            // bugsAndIdeasToolStripMenuItem
-            // 
-            bugsAndIdeasToolStripMenuItem.Name = "bugsAndIdeasToolStripMenuItem";
-            bugsAndIdeasToolStripMenuItem.Size = new Size(180, 22);
-            bugsAndIdeasToolStripMenuItem.Text = "Bugs and Ideas";
-            bugsAndIdeasToolStripMenuItem.Click += bugsAndIdeasToolStripMenuItem_Click;
-            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -739,9 +726,9 @@
             Controls.Add(toolbarMain);
             Controls.Add(splitContainerPrimary);
             Controls.Add(statusStrip1);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStripMain);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = menuStripMain;
             Name = "FrmMain";
             Text = "Form1";
             FormClosing += FrmMain_FormClosing;
@@ -749,8 +736,8 @@
             Shown += FrmMain_Shown;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStripMain.ResumeLayout(false);
+            menuStripMain.PerformLayout();
             splitContainerPrimary.Panel1.ResumeLayout(false);
             splitContainerPrimary.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerPrimary).EndInit();
@@ -772,7 +759,7 @@
 
         #endregion
         private StatusStrip statusStrip1;
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStripMain;
         private ToolStripMenuItem mnuFile;
         private SaveFileDialog saveFileDialog1;
         private FontDialog fontDialog1;
@@ -797,7 +784,7 @@
         private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem mnuEditRedo;
         private ToolStripMenuItem mnuViewProperties;
-        private ToolStripMenuItem mnuViewSubPrograms;
+        private ToolStripMenuItem mnuViewSubprograms;
         private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem mnufileSaveAsSubprogram;
         private SplitContainer splitContainerPrimary;
@@ -835,14 +822,12 @@
         private ToolStripButton toolStripBtnUndo;
         private ToolStripButton toolStripBtnRedo;
         private ToolStripSeparator toolStripSeparator3;
-        private ToolStripMenuItem mnuHelpHelp;
-        private ToolStripSeparator toolStripMenuItem5;
         private GSendControls.ListViewEx lvSubprograms;
         private System.Windows.Forms.Timer tmrServerValidation;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton toolStripButtonRefreshSubPrograms;
         private System.Windows.Forms.Timer tmrUpdateSubprograms;
-        private ToolStripMenuItem bugsAndIdeasToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem6;
+        private ToolStripMenuItem mnuTools;
+        private ToolStripMenuItem mnuToolsShortcutKeys;
     }
 }

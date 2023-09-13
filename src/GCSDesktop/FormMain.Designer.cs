@@ -58,10 +58,6 @@ namespace GSendDesktop
             subprogramsToolStripMenuItem = new ToolStripMenuItem();
             viewSubProgramToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
-            viewHelpToolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem3 = new ToolStripSeparator();
-            bugsAndIdeasToolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem4 = new ToolStripSeparator();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             toolStripMain = new ToolStrip();
             toolStripButtonGetMachines = new ToolStripButton();
@@ -262,39 +258,15 @@ namespace GSendDesktop
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { viewHelpToolStripMenuItem, toolStripMenuItem3, bugsAndIdeasToolStripMenuItem, toolStripMenuItem4, aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
             // 
-            // viewHelpToolStripMenuItem
-            // 
-            viewHelpToolStripMenuItem.Name = "viewHelpToolStripMenuItem";
-            viewHelpToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            viewHelpToolStripMenuItem.Text = "View Help";
-            viewHelpToolStripMenuItem.Click += viewHelpToolStripMenuItem_Click;
-            // 
-            // toolStripMenuItem3
-            // 
-            toolStripMenuItem3.Name = "toolStripMenuItem3";
-            toolStripMenuItem3.Size = new System.Drawing.Size(150, 6);
-            // 
-            // bugsAndIdeasToolStripMenuItem
-            // 
-            bugsAndIdeasToolStripMenuItem.Name = "bugsAndIdeasToolStripMenuItem";
-            bugsAndIdeasToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            bugsAndIdeasToolStripMenuItem.Text = "Bugs and Ideas";
-            bugsAndIdeasToolStripMenuItem.Click += bugsAndIdeasToolStripMenuItem_Click;
-            // 
-            // toolStripMenuItem4
-            // 
-            toolStripMenuItem4.Name = "toolStripMenuItem4";
-            toolStripMenuItem4.Size = new System.Drawing.Size(150, 6);
-            // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -494,11 +466,7 @@ namespace GSendDesktop
         private ToolStripMenuItem subprogramsToolStripMenuItem;
         private ToolStripMenuItem viewSubProgramToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem viewHelpToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private GSendControls.ListViewEx listViewMachines;
-        private ToolStripSeparator toolStripMenuItem4;
-        private ToolStripMenuItem bugsAndIdeasToolStripMenuItem;
     }
 }

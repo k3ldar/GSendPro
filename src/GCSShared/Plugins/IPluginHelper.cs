@@ -4,7 +4,7 @@ namespace GSendShared.Plugins
 {
     public interface IPluginHelper
     {
-        void InitializeAllPlugins(ISenderPluginHost pluginHost);
+        void InitializeAllPlugins(IPluginHost pluginHost);
 
         void AddMenu(object parent, IPluginMenu menu, List<IShortcut> shortcuts);
 
