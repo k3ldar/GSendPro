@@ -37,7 +37,7 @@ namespace GSendTests.Shared.Plugins
         {
             HelpMenuItem sut = new HelpMenuItem();
             Assert.IsNotNull(sut);
-            Assert.AreEqual("Help", sut.Name);
+            Assert.AreEqual("Help", sut.Text);
             Assert.AreEqual(0, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(MenuParent.Help, sut.ParentMenu);
@@ -55,7 +55,7 @@ namespace GSendTests.Shared.Plugins
         {
             SeperatorMenu sut = new SeperatorMenu(MenuParent.File, 3);
             Assert.IsNotNull(sut);
-            Assert.AreEqual("Seperator Menu", sut.Name);
+            Assert.AreEqual("Seperator Menu", sut.Text);
             Assert.AreEqual(3, sut.Index);
             Assert.AreEqual(MenuType.Seperator, sut.MenuType);
             Assert.AreEqual(MenuParent.File, sut.ParentMenu);
@@ -73,7 +73,7 @@ namespace GSendTests.Shared.Plugins
         {
             BugsAndIdeasMenu sut = new BugsAndIdeasMenu();
             Assert.IsNotNull(sut);
-            Assert.AreEqual("Bugs and Ideas", sut.Name);
+            Assert.AreEqual("Bugs and Ideas", sut.Text);
             Assert.AreEqual(2, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(MenuParent.Help, sut.ParentMenu);
@@ -91,7 +91,7 @@ namespace GSendTests.Shared.Plugins
         {
             HomePageMenu sut = new HomePageMenu();
             Assert.IsNotNull(sut);
-            Assert.AreEqual("Home Page", sut.Name);
+            Assert.AreEqual("Home Page", sut.Text);
             Assert.AreEqual(4, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(MenuParent.Help, sut.ParentMenu);

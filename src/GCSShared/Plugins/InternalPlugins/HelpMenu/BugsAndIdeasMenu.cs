@@ -7,7 +7,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class BugsAndIdeasMenu : IPluginMenu
     {
-        public string Name => "Bugs and Ideas";
+        public string Text => "Bugs and Ideas";
 
         public int Index => 2;
 

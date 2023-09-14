@@ -7,7 +7,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HomePageMenu : IPluginMenu
     {
-        public string Name => "Home Page";
+        public string Text => "Home Page";
 
         public int Index => 4;
 

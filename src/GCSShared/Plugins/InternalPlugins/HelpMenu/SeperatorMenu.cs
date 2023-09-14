@@ -12,7 +12,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
             Index = index;
         }
 
-        public string Name => "Seperator Menu";
+        public string Text => "Seperator Menu";
 
         public int Index { get; private set; }
 

@@ -52,6 +52,11 @@ namespace GSendControls.Plugins
             }
         }
 
+        public void AddToolbarButton(object parent, IPluginToolbarButton toolbarButton)
+        {
+
+        }
+
         private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
         {
             ToolStripSeparator pluginSeperator = new();
@@ -67,7 +72,7 @@ namespace GSendControls.Plugins
         {
             ToolStripMenuItem pluginMenu = new();
             pluginMenu.Tag = menu;
-            pluginMenu.Text = menu.Name;
+            pluginMenu.Text = menu.Text;
 
             if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
                 parentMenu.DropDownItems.Insert(0, pluginMenu);
@@ -142,7 +147,7 @@ namespace GSendControls.Plugins
             {
                 parentMenu = new ToolStripMenuItem();
                 parentMenu.Tag = menu;
-                parentMenu.Text = menu.Name;
+                parentMenu.Text = menu.Text;
                 mainMenu.Items.Add(parentMenu);
             }
             else

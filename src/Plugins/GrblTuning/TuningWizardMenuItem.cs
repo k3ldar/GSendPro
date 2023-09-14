@@ -9,7 +9,7 @@ namespace GrblTuningWizard
     {
         private ISenderPluginHost _senderPluginHost;
 
-        public string Name => "Tuning Wizard";
+        public string Text => "Tuning Wizard";
 
         public int Index => -1;
 

@@ -37,7 +37,7 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
             IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
 
             Assert.AreEqual(1, menuItems.Count);
-            Assert.AreEqual("Tuning Wizard", menuItems[0].Name);
+            Assert.AreEqual("Tuning Wizard", menuItems[0].Text);
         }
     }
 }

@@ -1,24 +1,12 @@
 ﻿using System.Drawing;
 
-using GSendShared.Models;
-
 namespace GSendShared.Plugins
 {
     /// <summary>
     /// Interface created by a plugin to add menu items to the host
     /// </summary>
-    public interface IPluginMenu
+    public interface IPluginMenu : IPluginItemBase
     {
-        /// <summary>
-        /// Menu name/text
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// Preferred index of item in relation to other items in the menu
-        /// </summary>
-        int Index { get; }
-
         /// <summary>
         /// Image to be displayed with menu
         /// </summary>
@@ -35,20 +23,17 @@ namespace GSendShared.Plugins
         MenuParent ParentMenu { get; }
 
         /// <summary>
-        /// Click event when menu clicked
+        /// Determines whether the menu is checked or not
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void Clicked();
-
-        bool IsEnabled();
-
+        /// <returns></returns>
         bool IsChecked();
 
+        /// <summary>
+        /// Shortcut that can be used by the menu
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <param name="shortcutName"></param>
+        /// <returns></returns>
         bool GetShortcut(out string groupName, out string shortcutName);
-
-        void MachineStatusChanged(MachineStateModel machineStateModel);
-
-        void UpdateHost<T>(T senderPluginHost);
     }
 }

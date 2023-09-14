@@ -12,7 +12,7 @@ namespace GSendTests.Mocks
 
         public MockPluginMenu(string name, int index, MenuType menuType, MenuParent menuParent)
         {
-            Name = name;
+            Text = name;
             Index = index;
             MenuType = menuType;
             ParentMenu = menuParent;
@@ -24,7 +24,7 @@ namespace GSendTests.Mocks
 
         }
 
-        public string Name { get; set; }
+        public string Text { get; set; }
 
         public int Index { get; set; }
 
