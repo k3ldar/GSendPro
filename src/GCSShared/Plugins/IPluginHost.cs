@@ -8,6 +8,8 @@ namespace GSendShared.Plugins
 
         void AddMenu(IPluginMenu pluginMenu);
 
+        void AddToolbar(IPluginToolbarButton toolbarButton);
+
         void AddMessage(InformationType informationType, string message);
 
         void AddPlugin(IGSendPluginModule pluginModule);

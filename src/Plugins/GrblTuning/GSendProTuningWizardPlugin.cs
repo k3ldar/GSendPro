@@ -11,7 +11,7 @@ namespace GrblTuningWizard
 
         public PluginUsage Usage => PluginUsage.Sender;
 
-        public PluginOptions Options => PluginOptions.HasToolbarButtons | PluginOptions.HasMenuItems;
+        public PluginOptions Options => PluginOptions.HasMenuItems;
 
         public IReadOnlyList<IPluginMenu> MenuItems
         {
@@ -25,6 +25,8 @@ namespace GrblTuningWizard
                 return Result;
             }
         }
+
+        public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {

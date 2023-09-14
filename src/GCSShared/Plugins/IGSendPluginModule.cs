@@ -29,6 +29,8 @@ namespace GSendShared.Plugins
         /// </summary>
         IReadOnlyList<IPluginMenu> MenuItems { get; }
 
+        IReadOnlyList<IPluginToolbarButton> ToolbarItems { get; }
+
         void ClientMessageReceived(IClientBaseMessage clientBaseMessage);
     }
 }

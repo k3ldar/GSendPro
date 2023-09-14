@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using GSendControls.Plugins;
 
 using GSendShared.Plugins;
-using Moq;
+
+using GSendTests.Mocks;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PluginManager.Abstractions;
+
+using Moq;
+
 using PluginManager;
-using GSendTests.Mocks;
-using GSendShared.Interfaces;
-using GSendControls.Plugins;
+using PluginManager.Abstractions;
 
 namespace GSendTests.Shared.Plugins
 {
@@ -97,6 +97,7 @@ namespace GSendTests.Shared.Plugins
             MockLogger logger = new MockLogger();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
+            pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasMenuItems);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
 
@@ -113,6 +114,39 @@ namespace GSendTests.Shared.Plugins
             sut.InitializeAllPlugins(pluginHost.Object);
             Assert.AreEqual(0, logger.LogItems.Count);
             Assert.AreEqual(2, createdMenuItems.Count);
+        }
+
+        [TestMethod]
+        public void InitializeAllPlugins_WithToolbarItems_MenuCreationCalled_Success()
+        {
+            List<IPluginToolbarButton> toolbarItems = new()
+            {
+                new SeperatorButton(12),
+                new MockPluginToolbarButton("New Tool", -3),
+            };
+
+            List<IPluginToolbarButton> createdButtonItems = new();
+
+            MockLogger logger = new MockLogger();
+            var pluginModule = new Mock<IGSendPluginModule>();
+            pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
+            pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasToolbarButtons);
+            pluginModule.Setup(m => m.Name).Returns("test plugin");
+            pluginModule.Setup(m => m.ToolbarItems).Returns(toolbarItems);
+
+            var pluginHost = new Mock<ISenderPluginHost>();
+            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
+            pluginHost.Setup(ph => ph.AddToolbar(It.IsAny<IPluginToolbarButton>())).Callback((IPluginToolbarButton pt) => createdButtonItems.Add(pt));
+
+            var pluginClassesService = new Mock<IPluginClassesService>();
+            pluginClassesService.Setup(m => m.GetPluginClasses<IGSendPluginModule>()).Returns(new List<IGSendPluginModule>() { pluginModule.Object });
+
+            PluginHelper sut = new(logger, pluginClassesService.Object);
+            Assert.IsNotNull(sut);
+
+            sut.InitializeAllPlugins(pluginHost.Object);
+            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(2, createdButtonItems.Count);
         }
     }
 }

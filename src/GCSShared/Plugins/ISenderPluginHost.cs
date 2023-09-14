@@ -8,6 +8,8 @@ namespace GSendShared.Plugins
 
         bool IsRunning();
 
+        bool IsConnected();
+
         void SendMessage(string message);
 
         MachineStateModel MachineStatus();

@@ -8,6 +8,8 @@ using GSendShared.Plugins;
 
 using PluginManager.Abstractions;
 
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 namespace GSendControls.Plugins
 {
     public sealed class PluginHelper : IPluginHelper
@@ -54,54 +56,48 @@ namespace GSendControls.Plugins
 
         public void AddToolbarButton(object parent, IPluginToolbarButton toolbarButton)
         {
+            if (toolbarButton == null)
+                throw new ArgumentNullException(nameof(toolbarButton));
 
-        }
-
-        private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
-        {
-            ToolStripSeparator pluginSeperator = new();
-            pluginSeperator.Tag = menu;
-
-            if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
-                parentMenu.DropDownItems.Insert(0, pluginSeperator);
-            else
-                parentMenu.DropDownItems.Insert(menu.Index, pluginSeperator);
-        }
-
-        private static void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
-        {
-            ToolStripMenuItem pluginMenu = new();
-            pluginMenu.Tag = menu;
-            pluginMenu.Text = menu.Text;
-
-            if (menu.Index == -1 || menu.Index > parentMenu.DropDownItems.Count - 1)
-                parentMenu.DropDownItems.Insert(0, pluginMenu);
-            else
-                parentMenu.DropDownItems.Insert(menu.Index, pluginMenu);
-
-            parentMenu.DropDownOpening += (s, e) =>
+            if (parent is ToolStrip parentToolStrip)
             {
-                if (s is ToolStripMenuItem menuItem)
+                if (toolbarButton.ButtonType == ButtonType.Seperator)
                 {
-                    pluginMenu.Checked = menu.IsChecked();
-                    pluginMenu.Enabled = menu.IsEnabled();
+                    ToolStripSeparator buttonSeperator = new();
+                    parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), buttonSeperator);
                 }
-            };
-
-            pluginMenu.Click += (s, e) =>
-            {
-                if (s is ToolStripMenuItem menuItem)
+                else if (toolbarButton.ButtonType == ButtonType.Button)
                 {
-                    if (menuItem.Tag is IPluginMenu menu)
-                        menu.Clicked();
-                }
-            };
+                    if (toolbarButton.ButtonType != ButtonType.Seperator &&
+                        String.IsNullOrEmpty(toolbarButton.Text) &&
+                        toolbarButton.Picture == null)
+                    {
+                        throw new InvalidOperationException("Toolbar button must have text and or picture");
+                    }
 
-            if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
-            {
-                shortcuts.Add(new ShortcutModel(groupName, shortcutName, new List<int>(),
-                    (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
-                    (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
+                    ToolStripButton button = new();
+
+                    if (!String.IsNullOrEmpty(toolbarButton.Text))
+                        button.Text = toolbarButton.Text;
+
+                    if (toolbarButton.Picture != null)
+                        button.Image = toolbarButton.Picture;
+
+                    button.Click += (s, e) =>
+                    {
+                        if (s is ToolStripButton buttonItem)
+                        {
+                            if (buttonItem.Tag is IPluginToolbarButton menu)
+                                toolbarButton.Clicked();
+                        }
+                    };
+
+                    parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), button);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Invalid button type");
+                }
             }
         }
 
@@ -127,15 +123,79 @@ namespace GSendControls.Plugins
                         continue;
                     }
 
-                    foreach (IPluginMenu pluginMenu in plugin.MenuItems)
+                    if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
-                        pluginHost.AddMenu(pluginMenu);
+                        foreach (IPluginMenu pluginMenu in plugin.MenuItems)
+                        {
+                            pluginHost.AddMenu(pluginMenu);
+                        }
                     }
+
+
+                    if (plugin.Options.HasFlag(PluginOptions.HasToolbarButtons))
+                    {
+                        foreach (IPluginToolbarButton pluginButton in plugin.ToolbarItems)
+                        {
+                            pluginHost.AddToolbar(pluginButton);
+                        }
+                    }
+
                 }
                 catch (Exception ex)
                 {
                     _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, ex);
                 }
+            }
+        }
+
+        private static int CalculatePluginItemPosition(int requestedIndex, int hostItemCount)
+        {
+            if (requestedIndex < 0)
+                return 0;
+            else if (requestedIndex > hostItemCount -1)
+                return hostItemCount;
+            else
+                return requestedIndex;
+        }
+
+        private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
+        {
+            ToolStripSeparator pluginSeperator = new();
+            pluginSeperator.Tag = menu;
+            parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count), pluginSeperator);
+        }
+
+        private static void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
+        {
+            ToolStripMenuItem pluginMenu = new();
+            pluginMenu.Tag = menu;
+            pluginMenu.Text = menu.Text;
+
+            parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count), pluginMenu);
+
+            parentMenu.DropDownOpening += (s, e) =>
+            {
+                if (s is ToolStripMenuItem menuItem)
+                {
+                    pluginMenu.Checked = menu.IsChecked();
+                    pluginMenu.Enabled = menu.IsEnabled();
+                }
+            };
+
+            pluginMenu.Click += (s, e) =>
+            {
+                if (s is ToolStripMenuItem menuItem)
+                {
+                    if (menuItem.Tag is IPluginMenu menu)
+                        menu.Clicked();
+                }
+            };
+
+            if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
+            {
+                shortcuts.Add(new ShortcutModel(groupName, shortcutName, new List<int>(),
+                    (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
+                    (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
             }
         }
 

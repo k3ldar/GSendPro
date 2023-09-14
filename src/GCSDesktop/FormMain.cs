@@ -572,6 +572,12 @@ namespace GSendDesktop
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
         }
 
+        public void AddToolbar(IPluginToolbarButton toolbarButton)
+        {
+            toolbarButton.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+        }
+
         public void AddMessage(InformationType informationType, string message)
         {
             throw new InvalidOperationException();

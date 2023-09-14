@@ -1,5 +1,8 @@
 ﻿namespace GSendShared.Plugins
 {
+    /// <summary>
+    /// Usage of plugin, describes which host it is allowed to be applied to
+    /// </summary>
     [Flags]
     public enum PluginUsage
     {
@@ -16,6 +19,9 @@
         Any = Editor | SenderHost | Sender | Service,
     }
 
+    /// <summary>
+    /// Plugin options
+    /// </summary>
     [Flags]
     public enum PluginOptions
     {
@@ -30,6 +36,9 @@
         MessageReceived = 8,
     }
 
+    /// <summary>
+    /// Available parent menu items
+    /// </summary>
     public enum MenuParent
     {
         None,
@@ -53,10 +62,23 @@
         Help,
     }
 
+    /// <summary>
+    /// Type of menu that can be created
+    /// </summary>
     public enum MenuType
     {
         Seperator,
 
         MenuItem
+    }
+
+    /// <summary>
+    /// Type of toolbar button that can be created
+    /// </summary>
+    public enum ButtonType
+    {
+        Seperator,
+
+        Button
     }
 }

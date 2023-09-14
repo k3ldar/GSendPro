@@ -34,7 +34,7 @@ namespace GrblTuningWizard
 
         public bool IsEnabled()
         {
-            return !_senderPluginHost.IsRunning() && !_senderPluginHost.IsPaused();
+            return _senderPluginHost.IsConnected() && !_senderPluginHost.IsRunning() && !_senderPluginHost.IsPaused();
         }
 
         public void MachineStatusChanged(MachineStateModel machineStateModel)

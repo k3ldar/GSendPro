@@ -2,9 +2,9 @@
 
 using GSendShared.Models;
 
-namespace GSendShared.Plugins.InternalPlugins.HelpMenu
+namespace GSendShared.Plugins
 {
-    internal sealed class SeperatorMenu : IPluginMenu
+    public sealed class SeperatorMenu : IPluginMenu
     {
         public SeperatorMenu(MenuParent menuParent, int index)
         {

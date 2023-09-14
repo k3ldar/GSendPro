@@ -2682,6 +2682,12 @@ namespace GSendDesktop.Forms
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
         }
 
+        public void AddToolbar(IPluginToolbarButton toolbarButton)
+        {
+            toolbarButton.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+        }
+
         public void SendMessage(string message)
         {
             InternalSendMessage(message);
@@ -2690,6 +2696,8 @@ namespace GSendDesktop.Forms
         public bool IsPaused() => _isPaused;
 
         public bool IsRunning() => _isRunning;
+
+        public bool IsConnected() => _machineConnected;
 
         public void AddMessage(InformationType informationType, string message)
         {

@@ -8,7 +8,7 @@
 
         public PluginUsage Usage => PluginUsage.Any;
 
-        public PluginOptions Options => PluginOptions.HasMenuItems;
+        public PluginOptions Options => PluginOptions.HasMenuItems | PluginOptions.HasToolbarButtons;
 
         public IReadOnlyList<IPluginMenu> MenuItems
         {
@@ -22,6 +22,18 @@
                     new SeperatorMenu(MenuParent.Help, 3),
                     new HomePageMenu(),
                     new SeperatorMenu(MenuParent.Help, 5),
+                };
+            }
+        }
+
+        public IReadOnlyList<IPluginToolbarButton> ToolbarItems
+        {
+            get
+            {
+                return new List<IPluginToolbarButton>()
+                {
+                    new SeperatorButton(15),
+                    new SeperatorButton(16),
                 };
             }
         }

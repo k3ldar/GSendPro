@@ -24,7 +24,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual("Help Menu", sut.Name);
             Assert.AreEqual((ushort)1, sut.Version);
             Assert.AreEqual(PluginUsage.Any, sut.Usage);
-            Assert.AreEqual(PluginOptions.HasMenuItems, sut.Options);
+            Assert.AreEqual(PluginOptions.HasMenuItems | PluginOptions.HasToolbarButtons, sut.Options);
             IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
             Assert.IsNotNull(menuItems);
             Assert.AreEqual(6, menuItems.Count);
