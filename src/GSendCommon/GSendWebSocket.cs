@@ -141,6 +141,7 @@ namespace GSendCommon
             await _clientWebSocket.SendAsync(new ArraySegment<byte>(messageBuffer), WebSocketMessageType.Text, true, _cancellationToken).ConfigureAwait(false);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Bug", "S2190:Loops and recursions should not be infinite", Justification = "There is a breakout when not connected")]
         private async Task ReceiveMessageAsync()
         {
             byte[] buffer = new byte[ReceiveBufferSize];

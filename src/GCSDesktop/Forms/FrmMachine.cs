@@ -387,7 +387,7 @@ namespace GSendDesktop.Forms
                         }
                         else
                         {
-                            IGCodeLine updateLine = _gcodeLines.FirstOrDefault(gcl => gcl.LineNumber.Equals(lineStatusUpdateModel.LineNumber) && gcl.MasterLineNumber.Equals(lineStatusUpdateModel.MasterLineNumber));
+                            IGCodeLine updateLine = _gcodeLines.Find(gcl => gcl.LineNumber.Equals(lineStatusUpdateModel.LineNumber) && gcl.MasterLineNumber.Equals(lineStatusUpdateModel.MasterLineNumber));
 
                             if (updateLine != null)
                             {
@@ -2374,7 +2374,7 @@ namespace GSendDesktop.Forms
 
         private void ShortcutHandler_OnKeyComboDown(object sender, ShortcutArgs e)
         {
-            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+            IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
             if (shortcut != null)
             {
@@ -2384,7 +2384,7 @@ namespace GSendDesktop.Forms
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
-            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+            IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
             if (shortcut != null)
             {
@@ -2424,8 +2424,7 @@ namespace GSendDesktop.Forms
                     }
                 }
 
-                if (shortcut.KeysUpdated != null)
-                    shortcut.KeysUpdated(shortcut.DefaultKeys);
+                shortcut.KeysUpdated?.Invoke(shortcut.DefaultKeys);
             }
         }
 

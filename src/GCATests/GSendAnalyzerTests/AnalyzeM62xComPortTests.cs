@@ -26,7 +26,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -371,7 +371,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -409,7 +409,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -429,7 +429,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -448,7 +448,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -467,7 +467,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(1, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -486,7 +486,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -505,7 +505,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -525,7 +525,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -544,7 +544,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -563,7 +563,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(2, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -583,7 +583,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);
@@ -602,7 +602,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual(3, analyses.Commands.Count);
 
 
-            AnalyzeM62XComPorts sut = new(new MockComPortProvider(new byte[] { 9 }));
+            AnalyzeM62XComPorts sut = new(new MockComPortProvider("\t"u8.ToArray()));
             sut.Analyze("", analyses);
 
             Assert.IsNull(analyses.Commands[0].SubAnalyses);

@@ -26,7 +26,7 @@ namespace GSendCommon.OverrideClasses
             if (overrideContext.MachineStateModel.SpindleSpeed == 0)
                 return false;
 
-            IGCodeCommand startSpindle = overrideContext.GCode.Commands.FirstOrDefault(c =>
+            IGCodeCommand startSpindle = overrideContext.GCode.Commands.Find(c =>
                 c.Command.Equals('M') && c.CommandValue.Equals(5));
 
             if (startSpindle == null)

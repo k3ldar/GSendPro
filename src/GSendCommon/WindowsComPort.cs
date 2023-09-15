@@ -51,10 +51,12 @@ namespace GSendCommon
             Name = comPortModel.Name;
 
             _serialPort = new SerialPort(comPortModel.Name, comPortModel.BaudRate,
-                comPortModel.Parity, comPortModel.DataBits, comPortModel.StopBits);
+                comPortModel.Parity, comPortModel.DataBits, comPortModel.StopBits)
+            {
+                ReadTimeout = comPortModel.Timeout,
+                WriteTimeout = comPortModel.Timeout
+            };
 
-            _serialPort.ReadTimeout = comPortModel.Timeout;
-            _serialPort.WriteTimeout = comPortModel.Timeout;
             _serialPort.DataReceived += SerialPort_DataReceived;
             _serialPort.ErrorReceived += SerialPort_ErrorReceived;
             _serialPort.PinChanged += SerialPort_PinChanged;

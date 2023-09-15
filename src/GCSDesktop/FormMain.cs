@@ -128,13 +128,16 @@ namespace GSendDesktop
             UpdateEnabledState();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Left in for now")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Ignore for now")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Ignore for now")]
         private void ProcessClientConnectMessage(ConnectResult connectResult)
         {
-            if (InvokeRequired)
-            {
-                Invoke(ProcessClientConnectMessage, connectResult);
-                return;
-            }
+            //if (InvokeRequired)
+            //{
+            //    Invoke(ProcessClientConnectMessage, connectResult);
+            //    return;
+            //}
 
 
             //switch (connectResult)

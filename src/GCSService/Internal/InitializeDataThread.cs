@@ -26,7 +26,7 @@ namespace GSendService.Internal
             IUserApiProvider userApiProvider = applicationBuilder.ApplicationServices.GetRequiredService<IUserApiProvider>();
 
             long userId = -1;
-            Middleware.Users.SearchUser user = userSearch.GetUsers(1, 20000, null, null).FirstOrDefault(u => u.Email.Equals("api.user"));
+            Middleware.Users.SearchUser user = userSearch.GetUsers(1, 20000, null, null).Find(u => u.Email.Equals("api.user"));
             if (user == null)
             {
                 accounts.CreateAccount("api.user", "api", "user", "simpleApiUser#9876", "", "", "", "", "", "", "", "", "", out userId);

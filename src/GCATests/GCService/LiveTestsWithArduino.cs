@@ -83,17 +83,13 @@ namespace GSendTests.GCService
                 }
             };
 
+            Assert.IsTrue(unlocked);
             sut.Connect();
             Assert.IsTrue(sut.IsConnected);
 
             sut.WriteLine("$H");
             Thread.Sleep(500);
             sut.WriteLine("~");
-
-            if (unlocked)
-            {
-                // do nothing
-            }
 
             for (int i = 0; i < 10; i++)
             {

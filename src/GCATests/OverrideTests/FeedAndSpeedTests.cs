@@ -46,7 +46,7 @@ namespace GSendTests.OverrideTests
         {
             IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
-            IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
+            IGCodeAnalyses analyses = gCodeParser.Parse("S3000M4");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
             MachineStateModel machineStateModel = new();

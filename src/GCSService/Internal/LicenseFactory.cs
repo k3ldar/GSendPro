@@ -69,10 +69,7 @@ namespace GSendService.Internal
                         }
                     }
 
-                    if (_activeLicense == null)
-                    {
-                        _activeLicense = new GenericLicense();
-                    }
+                    _activeLicense ??= new GenericLicense();
                 }
 
                 return _activeLicense;

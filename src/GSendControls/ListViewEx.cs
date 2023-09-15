@@ -124,29 +124,27 @@ namespace GSendControls
         {
             string sortText = _lvColumnSorter.SortOrder == SortOrder.Ascending ? "↓" : "↑";
 
-            using (StringFormat sf = new())
+            using StringFormat sf = new();
+            // Store the column text alignment, letting it default
+            // to Left if it has not been set to Center or Right.
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Center;
+
+            // Draw the standard header background.
+            e.DrawBackground();
+
+            e.Graphics.DrawString(e.Header.Text, this.Font,
+                Brushes.Black, e.Bounds, sf);
+
+            if (e.ColumnIndex == _lvColumnSorter.SortColumn)
             {
-                // Store the column text alignment, letting it default
-                // to Left if it has not been set to Center or Right.
-                sf.Alignment = StringAlignment.Near;
-                sf.LineAlignment = StringAlignment.Center;
+                sf.Alignment = StringAlignment.Far;
+                sf.LineAlignment = StringAlignment.Near;
 
-                // Draw the standard header background.
-                e.DrawBackground();
-
-                e.Graphics.DrawString(e.Header.Text, this.Font,
-                    Brushes.Black, e.Bounds, sf);
-
-                if (e.ColumnIndex == _lvColumnSorter.SortColumn)
-                {
-                    sf.Alignment = StringAlignment.Far;
-                    sf.LineAlignment = StringAlignment.Near;
-
-                    Rectangle newBounds = e.Bounds;
-                    newBounds.Width = newBounds.Width - 2;
-                    e.Graphics.DrawString(sortText, _sortFont,
-                        Brushes.Black, newBounds, sf);
-                }
+                Rectangle newBounds = e.Bounds;
+                newBounds.Width -= 2;
+                e.Graphics.DrawString(sortText, _sortFont,
+                    Brushes.Black, newBounds, sf);
             }
         }
 
@@ -187,9 +185,6 @@ namespace GSendControls
         /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
-#if DEBUG
-            System.GC.SuppressFinalize(this);
-#endif
             _sortFont.Dispose();
             SaveLayout();
             _timerTooltip.Enabled = false;

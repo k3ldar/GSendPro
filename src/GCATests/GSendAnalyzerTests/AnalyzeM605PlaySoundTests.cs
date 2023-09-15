@@ -19,7 +19,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M605CodeNotFound_Returns_WithNoErrorsOrWarnings()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M604");
 
@@ -37,7 +36,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M605CodMultipleItemsFoundOnSameLine_Adds_Error()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M605 M605;");
 
@@ -56,7 +54,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M605Code_SoundFileNotFound_Adds_Warning()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M605;e:\\sounds\\mysound.wav");
 
@@ -74,7 +71,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Process_M605CodeFound_SoundFileExists_ContainsNoErrorAndNoWarnings()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M605;c:\\windows\\media\\alarm01.wav");
 

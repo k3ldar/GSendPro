@@ -7,11 +7,9 @@ using System.Text;
 
 using GSendShared.Abstractions;
 using GSendShared.Providers.Internal.Enc;
-#endif
 
 namespace GSendService.Internal
 {
-#if __LICENSED__
     internal class License : ILicense
     {
         #region Constants
@@ -204,5 +202,5 @@ namespace GSendService.Internal
             return AesImpl.Decrypt(File.ReadAllText(file), Convert.FromBase64String(Environment.GetEnvironmentVariable("gsp")));
         }
     }
-#endif
 }
+#endif

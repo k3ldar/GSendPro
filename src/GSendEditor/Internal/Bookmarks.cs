@@ -21,7 +21,7 @@ namespace GSendEditor.Internal
 
                 if (bookmarks != null)
                 {
-                    Bookmark bookmark = bookmarks.FirstOrDefault(bm => bm.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+                    Bookmark bookmark = bookmarks.Find(bm => bm.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase));
 
                     if (bookmark != null)
                     {
@@ -47,14 +47,11 @@ namespace GSendEditor.Internal
 
                 if (bookmarks != null)
                 {
-                    foundBookmark = bookmarks.FirstOrDefault(bm => bm.FileName.Equals(bookmark.FileName, StringComparison.OrdinalIgnoreCase));
+                    foundBookmark = bookmarks.Find(bm => bm.FileName.Equals(bookmark.FileName, StringComparison.OrdinalIgnoreCase));
                 }
             }
 
-            if (bookmarks == null)
-            {
-                bookmarks = new();
-            }
+            bookmarks ??= new();
 
             if (foundBookmark != null)
                 bookmarks.Remove(foundBookmark);

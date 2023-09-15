@@ -10,12 +10,12 @@ namespace GSendCommon.MCodeOverrides
     {
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            IGCodeCommand m600Command = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('M') && c.CommandValue.Equals(600));
+            IGCodeCommand m600Command = overrideContext.GCode.Commands.Find(c => c.Command.Equals('M') && c.CommandValue.Equals(600));
 
             if (m600Command == null)
                 return false;
 
-            IGCodeCommand pCode = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('P'));
+            IGCodeCommand pCode = overrideContext.GCode.Commands.Find(c => c.Command.Equals('P'));
 
             if (pCode == null)
                 return false;

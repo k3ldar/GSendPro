@@ -4,11 +4,9 @@ using System;
 using GSendService.Controllers;
 
 using SharedPluginFeatures;
-#endif
 
 namespace GSendService.Internal.MenuItems
 {
-#if __LICENSED__
     public class LicenseMenu : MainMenuItem
     {
         public override string Action()
@@ -36,5 +34,5 @@ namespace GSendService.Internal.MenuItems
             return Int32.MaxValue;
         }
     }
-#endif
 }
+#endif

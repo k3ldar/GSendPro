@@ -247,7 +247,7 @@ namespace GSendAnalyzer
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(Command, CommandValueString, Comment);
         }
 
         public override string ToString()

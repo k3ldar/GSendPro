@@ -232,7 +232,7 @@ namespace GSendService.Controllers
         {
             TimeSpan totalTimeUsed = _gSendDataProvider.JobExecutionByTool(toolProfile);
 
-            ToolModel Result = null;
+            ToolModel Result;
 
             if (includeModelData)
                 Result = new ToolModel(GetModelData(), totalTimeUsed, toolProfile.History);

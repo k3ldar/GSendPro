@@ -63,5 +63,7 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public ISenderPluginHost PluginHost => _senderPluginHost;
     }
 }

@@ -110,19 +110,22 @@
             Options &= ~options;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is MachineModel machineOther)
+            {
+                return Id == machineOther.Id &&
+                    Name == machineOther.Name &&
+                    MachineType == machineOther.MachineType &&
+                    MachineFirmware == machineOther.MachineFirmware &&
+                    ComPort == machineOther.ComPort;
+            }
+            else
+                return false;
+        }
         public override int GetHashCode()
         {
-            unchecked
-            {
-                int hashcode = 7497;
-                hashcode = hashcode * 7345 ^ Id.GetHashCode();
-                hashcode = hashcode * 7345 ^ Name.GetHashCode();
-                hashcode = hashcode * 7345 ^ MachineType.GetHashCode();
-                hashcode = hashcode * 7345 ^ MachineFirmware.GetHashCode();
-                hashcode = hashcode * 7345 ^ ComPort.GetHashCode();
-
-                return hashcode;
-            }
+            return HashCode.Combine(Id, Name, MachineType, MachineFirmware, ComPort);
         }
     }
 }

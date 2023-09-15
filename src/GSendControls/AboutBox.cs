@@ -24,14 +24,12 @@ namespace GSendControls
 
         public static void ShowAboutBox(string name, Icon icon)
         {
-            using (AboutBox aboutBox = new())
-            {
-                aboutBox.Text = name;
-                aboutBox.Icon = icon;
-                aboutBox.imageIcon.Image = icon.ToBitmap();
-                aboutBox.lblProgName.Text = name;
-                aboutBox.ShowDialog();
-            }
+            using AboutBox aboutBox = new();
+            aboutBox.Text = name;
+            aboutBox.Icon = icon;
+            aboutBox.imageIcon.Image = icon.ToBitmap();
+            aboutBox.lblProgName.Text = name;
+            aboutBox.ShowDialog();
         }
 
         private void lnkHomePage_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)

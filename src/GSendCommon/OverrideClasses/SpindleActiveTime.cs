@@ -27,7 +27,7 @@ namespace GSendCommon.OverrideClasses
 
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            IGCodeCommand startStopCommand = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('M') &&
+            IGCodeCommand startStopCommand = overrideContext.GCode.Commands.Find(c => c.Command.Equals('M') &&
                 (
                     c.CommandValue.Equals(2) ||
                     c.CommandValue.Equals(3) ||
@@ -40,7 +40,7 @@ namespace GSendCommon.OverrideClasses
             {
                 if (startStopCommand.CommandValue.Equals(3) || startStopCommand.CommandValue.Equals(4))
                 {
-                    IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
+                    IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.Find(c => c.Command.Equals('S'));
 
                     if (_spindleTimeId > -1)
                     {

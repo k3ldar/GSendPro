@@ -26,13 +26,13 @@ namespace GSendCommon.OverrideClasses
             if (overrideContext.MachineStateModel.SpindleSpeed > 0)
                 return false;
 
-            IGCodeCommand startSpindle = overrideContext.GCode.Commands.FirstOrDefault(c =>
+            IGCodeCommand startSpindle = overrideContext.GCode.Commands.Find(c =>
                 c.Command.Equals('M') && (c.CommandValue.Equals(3) || c.CommandValue.Equals(4)));
 
             if (startSpindle == null)
                 return false;
 
-            IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('S'));
+            IGCodeCommand spindleSpeed = overrideContext.GCode.Commands.Find(c => c.Command.Equals('S'));
 
             if (spindleSpeed == null)
                 return false;
