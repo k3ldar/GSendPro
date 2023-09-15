@@ -559,7 +559,7 @@ namespace GSendDesktop
 
         #region ISenderPluginHost
 
-        public PluginUsage Usage => PluginUsage.SenderHost;
+        public PluginHosts Host => PluginHosts.SenderHost;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

@@ -68,31 +68,7 @@ namespace GSendControls.Plugins
                 }
                 else if (toolbarButton.ButtonType == ButtonType.Button)
                 {
-                    if (toolbarButton.ButtonType != ButtonType.Seperator &&
-                        String.IsNullOrEmpty(toolbarButton.Text) &&
-                        toolbarButton.Picture == null)
-                    {
-                        throw new InvalidOperationException("Toolbar button must have text and or picture");
-                    }
-
-                    ToolStripButton button = new();
-
-                    if (!String.IsNullOrEmpty(toolbarButton.Text))
-                        button.Text = toolbarButton.Text;
-
-                    if (toolbarButton.Picture != null)
-                        button.Image = toolbarButton.Picture;
-
-                    button.Click += (s, e) =>
-                    {
-                        if (s is ToolStripButton buttonItem)
-                        {
-                            if (buttonItem.Tag is IPluginToolbarButton menu)
-                                toolbarButton.Clicked();
-                        }
-                    };
-
-                    parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), button);
+                    CreateStandardToolbarButton(toolbarButton, parentToolStrip);
                 }
                 else
                 {
@@ -101,7 +77,7 @@ namespace GSendControls.Plugins
             }
         }
 
-        public void AddShortcut(List<IShortcut> shortcuts, IShortcut shortcut)
+        public static void AddShortcut(List<IShortcut> shortcuts, IShortcut shortcut)
         {
             shortcuts.Add(shortcut ?? throw new ArgumentNullException(nameof(shortcut)));
         }
@@ -117,7 +93,7 @@ namespace GSendControls.Plugins
             {
                 try
                 {
-                    if (!plugin.Usage.HasFlag(pluginHost.Usage))
+                    if (!plugin.Host.HasFlag(pluginHost.Host))
                     {
                         _logger.AddToLog(PluginManager.LogLevel.Warning, $"Attempt to load invalid plugin: {plugin.Name}");
                         continue;
@@ -158,6 +134,35 @@ namespace GSendControls.Plugins
                 return requestedIndex;
         }
 
+        private static void CreateStandardToolbarButton(IPluginToolbarButton toolbarButton, ToolStrip parentToolStrip)
+        {
+            if (toolbarButton.ButtonType != ButtonType.Seperator &&
+                String.IsNullOrEmpty(toolbarButton.Text) &&
+                toolbarButton.Picture == null)
+            {
+                throw new InvalidOperationException("Toolbar button must have text and or picture");
+            }
+
+            ToolStripButton button = new();
+
+            if (!String.IsNullOrEmpty(toolbarButton.Text))
+                button.Text = toolbarButton.Text;
+
+            if (toolbarButton.Picture != null)
+                button.Image = toolbarButton.Picture;
+
+            button.Click += (s, e) =>
+            {
+                if (s is ToolStripButton buttonItem)
+                {
+                    if (buttonItem.Tag is IPluginToolbarButton button)
+                        button.Clicked();
+                }
+            };
+
+            parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), button);
+        }
+
         private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
         {
             ToolStripSeparator pluginSeperator = new();
@@ -175,7 +180,7 @@ namespace GSendControls.Plugins
 
             parentMenu.DropDownOpening += (s, e) =>
             {
-                if (s is ToolStripMenuItem menuItem)
+                if (s is ToolStripMenuItem)
                 {
                     pluginMenu.Checked = menu.IsChecked();
                     pluginMenu.Enabled = menu.IsEnabled();
@@ -184,11 +189,8 @@ namespace GSendControls.Plugins
 
             pluginMenu.Click += (s, e) =>
             {
-                if (s is ToolStripMenuItem menuItem)
-                {
-                    if (menuItem.Tag is IPluginMenu menu)
-                        menu.Clicked();
-                }
+                if (s is ToolStripMenuItem menuItem && menuItem.Tag is IPluginMenu menu)
+                    menu.Clicked();
             };
 
             if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))

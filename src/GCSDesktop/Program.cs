@@ -51,7 +51,7 @@ namespace GSendDesktop
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
 
-            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginUsage.Editor,
+            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
 
             IServiceCollection serviceCollection = new ServiceCollection();

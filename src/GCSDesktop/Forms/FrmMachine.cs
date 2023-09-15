@@ -2665,7 +2665,7 @@ namespace GSendDesktop.Forms
 
         #region ISenderPluginHost
 
-        public PluginUsage Usage => PluginUsage.Sender;
+        public PluginHosts Host => PluginHosts.Sender;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

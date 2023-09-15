@@ -84,9 +84,9 @@ namespace GSendControls
             serviceCollection.AddScoped<IServiceProvider>(sp => { return ServiceProvider; });
         }
 
-        public void LoadAllPlugins(PluginUsage pluginUsage, string pluginConfig)
+        public void LoadAllPlugins(PluginHosts pluginHosts, string pluginConfig)
         {
-            if (pluginUsage == PluginUsage.None)
+            if (pluginHosts == PluginHosts.None)
                 throw new InvalidOperationException("Invalid plugin usage.");
 
             List<GSendPluginSettings> pluginSettings = GetSettings<List<GSendPluginSettings>>(pluginConfig, nameof(GSendPluginSettings));

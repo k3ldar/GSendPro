@@ -4,7 +4,7 @@ namespace GSendShared.Plugins
 {
     public interface IPluginHost
     {
-        PluginUsage Usage { get; }
+        PluginHosts Host { get; }
 
         void AddMenu(IPluginMenu pluginMenu);
 

@@ -6,9 +6,9 @@
 
         public ushort Version => 1;
 
-        public PluginUsage Usage => PluginUsage.Any;
+        public PluginHosts Host => PluginHosts.Any;
 
-        public PluginOptions Options => PluginOptions.HasMenuItems | PluginOptions.HasToolbarButtons;
+        public PluginOptions Options => PluginOptions.HasMenuItems;
 
         public IReadOnlyList<IPluginMenu> MenuItems
         {
@@ -26,17 +26,7 @@
             }
         }
 
-        public IReadOnlyList<IPluginToolbarButton> ToolbarItems
-        {
-            get
-            {
-                return new List<IPluginToolbarButton>()
-                {
-                    new SeperatorButton(15),
-                    new SeperatorButton(16),
-                };
-            }
-        }
+        public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {

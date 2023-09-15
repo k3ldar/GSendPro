@@ -25,8 +25,8 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
             Assert.IsNotNull(sut);
             Assert.AreEqual("GRBL Tuning Wizard", sut.Name);
             Assert.AreEqual(1u, sut.Version);
-            Assert.AreEqual(PluginUsage.Sender, sut.Usage);
-            Assert.AreEqual(PluginOptions.HasToolbarButtons | PluginOptions.HasMenuItems, sut.Options);
+            Assert.AreEqual(PluginHosts.Sender, sut.Host);
+            Assert.AreEqual(PluginOptions.HasMenuItems, sut.Options);
         }
 
         [TestMethod]

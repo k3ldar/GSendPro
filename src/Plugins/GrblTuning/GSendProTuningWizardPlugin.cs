@@ -9,7 +9,7 @@ namespace GrblTuningWizard
 
         public ushort Version => 1;
 
-        public PluginUsage Usage => PluginUsage.Sender;
+        public PluginHosts Host => PluginHosts.Sender;
 
         public PluginOptions Options => PluginOptions.HasMenuItems;
 

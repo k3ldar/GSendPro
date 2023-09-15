@@ -4,7 +4,7 @@
     /// Usage of plugin, describes which host it is allowed to be applied to
     /// </summary>
     [Flags]
-    public enum PluginUsage
+    public enum PluginHosts
     {
         None = 0,
 

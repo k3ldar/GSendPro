@@ -8,7 +8,7 @@
 
         public string AssemblyName { get; set; }
 
-        public PluginUsage Usage { get; set; }
+        public PluginHosts Usage { get; set; }
 
         public MachineType MachineType { get; set; }
 

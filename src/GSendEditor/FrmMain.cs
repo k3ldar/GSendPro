@@ -1033,7 +1033,6 @@ namespace GSendEditor
             string groupNameEditMenu = GSend.Language.Resources.ShortcutEditMenu;
             string groupNameBookmarkMenu = GSend.Language.Resources.ShortcutBookmarkMenu;
             string groupNameViewMenu = GSend.Language.Resources.ShortcutMenuView;
-            string groupNameHelpMenu = GSend.Language.Resources.ShortcutHelpMenu;
 
             return new()
             {
@@ -1115,7 +1114,7 @@ namespace GSendEditor
 
         #region ISenderPluginHost
 
-        public PluginUsage Usage => PluginUsage.SenderHost;
+        public PluginHosts Host => PluginHosts.SenderHost;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

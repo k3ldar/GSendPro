@@ -17,7 +17,7 @@ namespace GSendShared.Plugins
         /// <summary>
         /// Where the plugin is used
         /// </summary>
-        PluginUsage Usage { get; }
+        PluginHosts Host { get; }
 
         /// <summary>
         /// Requested Options

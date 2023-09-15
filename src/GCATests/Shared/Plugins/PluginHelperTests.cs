@@ -66,12 +66,12 @@ namespace GSendTests.Shared.Plugins
         {
             MockLogger logger = new MockLogger();
             var pluginModule = new Mock<IGSendPluginModule>();
-            pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Service);
+            pluginModule.Setup(m => m.Host).Returns(PluginHosts.Service);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.MenuItems).Throws<InvalidOperationException>();
 
             var pluginHost = new Mock<ISenderPluginHost>();
-            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
+            pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
 
             var pluginClassesService = new Mock<IPluginClassesService>();
             pluginClassesService.Setup(m => m.GetPluginClasses<IGSendPluginModule>()).Returns(new List<IGSendPluginModule>() { pluginModule.Object });
@@ -96,13 +96,13 @@ namespace GSendTests.Shared.Plugins
 
             MockLogger logger = new MockLogger();
             var pluginModule = new Mock<IGSendPluginModule>();
-            pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
+            pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasMenuItems);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
 
             var pluginHost = new Mock<ISenderPluginHost>();
-            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
+            pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
             pluginHost.Setup(ph => ph.AddMenu(It.IsAny<IPluginMenu>())).Callback((IPluginMenu pm) => createdMenuItems.Add(pm));
 
             var pluginClassesService = new Mock<IPluginClassesService>();
@@ -129,13 +129,13 @@ namespace GSendTests.Shared.Plugins
 
             MockLogger logger = new MockLogger();
             var pluginModule = new Mock<IGSendPluginModule>();
-            pluginModule.Setup(m => m.Usage).Returns(PluginUsage.Sender);
+            pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasToolbarButtons);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
             pluginModule.Setup(m => m.ToolbarItems).Returns(toolbarItems);
 
             var pluginHost = new Mock<ISenderPluginHost>();
-            pluginHost.Setup(ph => ph.Usage).Returns(PluginUsage.Sender);
+            pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
             pluginHost.Setup(ph => ph.AddToolbar(It.IsAny<IPluginToolbarButton>())).Callback((IPluginToolbarButton pt) => createdButtonItems.Add(pt));
 
             var pluginClassesService = new Mock<IPluginClassesService>();
