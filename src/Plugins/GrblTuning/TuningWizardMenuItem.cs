@@ -21,10 +21,8 @@ namespace GrblTuningWizard
 
         public void Clicked()
         {
-            using (FrmTuningWizard tuningWizard = new FrmTuningWizard())
-            {
-                tuningWizard.ShowDialog();
-            }
+            using FrmTuningWizard tuningWizard = new FrmTuningWizard();
+            tuningWizard.ShowDialog();
         }
 
         public bool IsChecked()

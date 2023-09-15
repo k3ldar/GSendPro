@@ -768,16 +768,16 @@ namespace GSendCommon
             if (speed > 0)
             {
                 if (clockWise)
-                    InternalWriteLine(String.Format(CommandSpindleStartClockWise, speed));
+                    _ = InternalWriteLine(String.Format(CommandSpindleStartClockWise, speed));
                 else
-                    InternalWriteLine(String.Format(CommandSpindleStartCounterClockWise, speed));
+                    _ = InternalWriteLine(String.Format(CommandSpindleStartCounterClockWise, speed));
 
                 OnCommandSent?.Invoke(this, CommandSent.SpindleSpeedSet);
             }
             else
             {
                 _overrideContext.Cancel();
-                InternalWriteLine(CommandStopSpindle);
+                _ = InternalWriteLine(CommandStopSpindle);
                 OnCommandSent?.Invoke(this, CommandSent.SpindleOff);
             }
 
@@ -788,7 +788,7 @@ namespace GSendCommon
         {
             if (!_machineStateModel.MistEnabled)
             {
-                InternalWriteLine(CommandMistCoolantOn);
+                _ = InternalWriteLine(CommandMistCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.MistOn);
                 return true;
             }
@@ -800,7 +800,7 @@ namespace GSendCommon
         {
             if (!FloodCoolantActive)
             {
-                InternalWriteLine(CommandFloodCoolantOn);
+                _ = InternalWriteLine(CommandFloodCoolantOn);
                 OnCommandSent?.Invoke(this, CommandSent.FloodOn);
                 return true;
             }
@@ -810,7 +810,7 @@ namespace GSendCommon
 
         public bool CoolantOff()
         {
-            InternalWriteLine(CommandCoolantOff);
+            _ = InternalWriteLine(CommandCoolantOff);
             OnCommandSent?.Invoke(this, CommandSent.CoolantOff);
             return true;
         }
@@ -1219,7 +1219,7 @@ namespace GSendCommon
 
         private void UpdateContextSetError()
         {
-            if (_overrideContext.JobExecution != null && _overrideContext.JobExecution is JobExecutionModel executionModel)
+            if (_overrideContext.JobExecution is JobExecutionModel executionModel)
             {
                 executionModel.Status = JobExecutionStatus.Error;
             }
@@ -1419,6 +1419,7 @@ namespace GSendCommon
             _machineStateModel.CommandQueueSize = _commandQueue.Count;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "Value is field and updated from elsewhere")]
         private void SendCommandWaitForResponse(string commandText, TimeSpan timeout)
         {
             _waitingForResponse = true;

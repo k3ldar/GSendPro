@@ -372,9 +372,7 @@ namespace GSendService.Controllers
 
         private ViewMachineModel CreateMachineViewModel(IMachine machine)
         {
-            DateTime nextService;
-            TimeSpan remainingSpindle;
-            RetreiveServiceData(machine, out nextService, out remainingSpindle, out long _);
+            RetreiveServiceData(machine, out DateTime nextService, out TimeSpan remainingSpindle, out long _);
 
             MachineServiceViewModel serviceModel = new MachineServiceViewModel(machine.Id,
                 machine.Options.HasFlag(MachineOptions.ServiceSchedule),

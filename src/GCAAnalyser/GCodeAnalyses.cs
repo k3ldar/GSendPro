@@ -137,7 +137,7 @@ namespace GSendAnalyzer
                 }
                 else
                 {
-                    if (first || command.LineNumber != Result[Result.Count - 1].LineNumber)
+                    if (first || command.LineNumber != Result[^1].LineNumber)
                     {
                         lineNumber++;
                         first = false;

@@ -184,7 +184,7 @@ namespace GSendCommon
             {
                 case Constants.NotificationMachineConnected:
                     int machineId = Convert.ToInt32(param1);
-                    IGCodeProcessor processor = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+                    IGCodeProcessor processor = _machines.Find(m => m.Id.Equals(machineId));
 
                     if (processor == null)
                         result = false;
@@ -242,7 +242,7 @@ namespace GSendCommon
 
         private static void RemoveMachine(long machineId)
         {
-            IGCodeProcessor machineToDelete = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+            IGCodeProcessor machineToDelete = _machines.Find(m => m.Id.Equals(machineId));
 
             if (machineToDelete != null)
             {
@@ -256,7 +256,7 @@ namespace GSendCommon
 
         private void UpdateMachine(long machineId)
         {
-            IGCodeProcessor processor = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+            IGCodeProcessor processor = _machines.Find(m => m.Id.Equals(machineId));
 
             if (processor == null)
                 return;
@@ -514,7 +514,7 @@ namespace GSendCommon
                 IGCodeProcessor proc = null;
 
                 if (foundMachine)
-                    proc = _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+                    proc = _machines.Find(m => m.Id.Equals(machineId));
 
                 switch (parts[0])
                 {

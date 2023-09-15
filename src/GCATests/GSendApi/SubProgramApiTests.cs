@@ -154,7 +154,7 @@ namespace GSendTests.GSendApi
         {
             MockSubprograms subprograms = new();
             subprograms.Subprograms.Add(new SubprogramModel("O5000", "desc 1", "asfdasdf"));
-            SubprogramApi sut = new SubprogramApi(subprograms);
+            SubprogramApi sut = new(subprograms);
 
             ActionResult result = sut.SubprogramDelete("O5000") as ActionResult;
             Assert.IsNotNull(result);

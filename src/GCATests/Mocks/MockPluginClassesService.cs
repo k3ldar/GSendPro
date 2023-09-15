@@ -41,7 +41,7 @@ namespace GSendTests.Mocks
                     else
                     {
                         GetCommonOfType<object>(list, param.ParameterType);
-                        object paramClass = list.First();
+                        object paramClass = list[0];
 
                         if (paramClass == null)
                         {

@@ -490,8 +490,7 @@ namespace GSendEditor
 
         private void SaveAsSubProgram(string name, string description)
         {
-            if (_subProgram == null)
-                _subProgram = new SubprogramModel(name, description, String.Empty);
+            _subProgram ??= new SubprogramModel(name, description, String.Empty);
 
             _subProgram.Contents = txtGCode.Text;
 
@@ -768,6 +767,7 @@ namespace GSendEditor
             _isSubprogram = true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Left for now as potential future work")]
         private void txtGCode_ToolTipNeeded(object sender, FastColoredTextBoxNS.ToolTipNeededEventArgs e)
         {
             string hoverWord = e.HoveredWord;
@@ -811,9 +811,8 @@ namespace GSendEditor
         {
             e.DrawBackground();
 
-            WarningErrorList item = lstWarningsErrors.Items[e.Index] as WarningErrorList;
 
-            if (item == null)
+            if (lstWarningsErrors.Items[e.Index] is not WarningErrorList item)
                 return;
 
             using Brush brush = new SolidBrush(e.ForeColor);
@@ -939,7 +938,7 @@ namespace GSendEditor
 
         private void ShortcutHandler_OnKeyComboDown(object sender, ShortcutArgs e)
         {
-            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+            IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
             if (shortcut != null)
             {
@@ -949,7 +948,7 @@ namespace GSendEditor
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
-            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+            IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
             if (shortcut != null)
             {
@@ -989,8 +988,7 @@ namespace GSendEditor
                     }
                 }
 
-                if (shortcut.KeysUpdated != null)
-                    shortcut.KeysUpdated(shortcut.DefaultKeys);
+                shortcut.KeysUpdated?.Invoke(shortcut.DefaultKeys);
             }
         }
 

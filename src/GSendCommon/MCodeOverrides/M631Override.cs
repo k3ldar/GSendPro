@@ -30,7 +30,7 @@ namespace GSendCommon.MCodeOverrides
                 {
                     List<IGCodeCommand> previousCommands = PreviousCommands(command, new string[] { "M601", "M631.1", "M631.2", "P" });
 
-                    IGCodeCommand parameters = previousCommands.FirstOrDefault(p => p.CommandValue == Constants.MCode631RunProgramParams);
+                    IGCodeCommand parameters = previousCommands.Find(p => p.CommandValue == Constants.MCode631RunProgramParams);
                     string args = null;
                                         
                     if (parameters != null)
@@ -39,7 +39,7 @@ namespace GSendCommon.MCodeOverrides
                     }
 
                     int returnCode = 0;
-                    IGCodeCommand returnResult = previousCommands.FirstOrDefault(p => p.CommandValue == Constants.MCode631RunProgramResult);
+                    IGCodeCommand returnResult = previousCommands.Find(p => p.CommandValue == Constants.MCode631RunProgramResult);
 
                     if (GetAdjoiningGCodeCommandValue(returnResult, Constants.CharP, out decimal defaultValue))
                         returnCode = Convert.ToInt32(defaultValue);
@@ -49,7 +49,7 @@ namespace GSendCommon.MCodeOverrides
 
                     int timeoutMilliseconds = 1000;
 
-                    IGCodeCommand timeoutResult = previousCommands.FirstOrDefault(p => p.CommandValue == Constants.MCode601Timeout);
+                    IGCodeCommand timeoutResult = previousCommands.Find(p => p.CommandValue == Constants.MCode601Timeout);
                     if (GetAdjoiningGCodeCommandValue(timeoutResult, Constants.CharP, out decimal defaultTimeout))
                         timeoutMilliseconds = Convert.ToInt32(defaultTimeout);
                     else

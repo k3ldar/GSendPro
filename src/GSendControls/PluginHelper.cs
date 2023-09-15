@@ -91,6 +91,9 @@ namespace GSendControls.Plugins
 
             foreach (IGSendPluginModule plugin in plugins)
             {
+                if (plugin == null)
+                    continue;
+
                 try
                 {
                     if (!plugin.Host.HasFlag(pluginHost.Host))
@@ -101,8 +104,14 @@ namespace GSendControls.Plugins
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
+                        if (plugin.MenuItems == null)
+                            throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
+
                         foreach (IPluginMenu pluginMenu in plugin.MenuItems)
                         {
+                            if (pluginMenu == null)
+                                continue;
+
                             pluginHost.AddMenu(pluginMenu);
                         }
                     }
@@ -110,8 +119,14 @@ namespace GSendControls.Plugins
 
                     if (plugin.Options.HasFlag(PluginOptions.HasToolbarButtons))
                     {
+                        if (plugin.ToolbarItems == null)
+                            throw new InvalidOperationException("ToolbarItems can not be null if HasToolbarButtons option is used");
+
                         foreach (IPluginToolbarButton pluginButton in plugin.ToolbarItems)
                         {
+                            if (pluginButton == null)
+                                continue;
+
                             pluginHost.AddToolbar(pluginButton);
                         }
                     }

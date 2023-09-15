@@ -96,9 +96,8 @@ namespace GSendControls
                 if (!pluginSetting.Enabled)
                     continue;
 
-                Assembly pluginAssembly = null;
 
-                if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out pluginAssembly))
+                if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
                 {
                     pluginAssembly = Assembly.Load(pluginSetting.AssemblyName);
                 }
@@ -115,6 +114,7 @@ namespace GSendControls
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension", Justification = "Not relevant for array")]
         private static Type FindPluginModuleClassByInterface(Assembly assembly, string interfaceName)
         {
             foreach (var classType in assembly.ExportedTypes)
@@ -149,7 +149,7 @@ namespace GSendControls
             if (string.IsNullOrEmpty(sectionName))
                 throw new ArgumentNullException(nameof(sectionName));
 
-            ConfigurationBuilder builder = new ConfigurationBuilder();
+            ConfigurationBuilder builder = new();
             IConfigurationBuilder configBuilder = builder.SetBasePath(Path.GetDirectoryName(storage));
             configBuilder.AddJsonFile(Path.GetFileName(storage));
             IConfigurationRoot config = builder.Build();

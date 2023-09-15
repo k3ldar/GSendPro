@@ -48,13 +48,11 @@ namespace GSendControls
 
         public static bool ShowDialog(Form parent, ref List<IShortcut> shortcutImplementation)
         {
-            using (ShortcutEditor scEditor = new(shortcutImplementation))
+            using ShortcutEditor scEditor = new(shortcutImplementation);
+            if (scEditor.ShowDialog(parent) == DialogResult.OK)
             {
-                if (scEditor.ShowDialog(parent) == DialogResult.OK)
-                {
-                    shortcutImplementation = scEditor.ShortcutImplementation;
-                    return true;
-                }
+                shortcutImplementation = scEditor.ShortcutImplementation;
+                return true;
             }
 
             return false;

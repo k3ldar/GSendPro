@@ -34,7 +34,7 @@ namespace GSendCommon.OverrideClasses
 
         public bool Process(IGCodeOverrideContext overrideContext, CancellationToken cancellationToken)
         {
-            IGCodeCommand feedRate = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('F'));
+            IGCodeCommand feedRate = overrideContext.GCode.Commands.Find(c => c.Command.Equals('F'));
 
             IsG1Command = !overrideContext.GCode.Commands.Exists(c => c.Command.Equals('G') && c.CommandValue.Equals(0)) &&
                 (overrideContext.GCode.Commands.Exists(c => c.Command.Equals('G') && c.CommandValue.Equals(1)) ||
@@ -43,8 +43,8 @@ namespace GSendCommon.OverrideClasses
             if (!IsG1Command)
                 return false;
 
-            IGCodeCommand zFeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('Z'));
-            IGCodeCommand xyFeed = overrideContext.GCode.Commands.FirstOrDefault(c => c.Command.Equals('X') || c.Command.Equals('Y'));
+            IGCodeCommand zFeed = overrideContext.GCode.Commands.Find(c => c.Command.Equals('Z'));
+            IGCodeCommand xyFeed = overrideContext.GCode.Commands.Find(c => c.Command.Equals('X') || c.Command.Equals('Y'));
 
             if (feedRate != null && zFeed != null)
             {

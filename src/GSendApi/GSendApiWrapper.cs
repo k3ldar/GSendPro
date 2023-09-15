@@ -5,8 +5,6 @@ namespace GSendApi
 {
     public class GSendApiWrapper : BaseApiWrapper, IGSendApiWrapper
     {
-
-
         #region Constructors
 
         public GSendApiWrapper(ApiSettings apiSettings)

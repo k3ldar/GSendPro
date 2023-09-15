@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 using PluginManager;
 using PluginManager.Abstractions;
 
 namespace GSendTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     internal class MockLogger : ILogger
     {
         public List<string> LogItems { get; } = new List<string>();

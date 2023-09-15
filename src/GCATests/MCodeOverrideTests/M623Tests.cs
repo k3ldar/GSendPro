@@ -25,7 +25,7 @@ namespace GSendTests.MCodeOverrideTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Construct_InvalidParameter_Null_ThrowsException()
         {
-            M623Override sut = new M623Override(null);
+            new M623Override(null);
         }
 
         [TestMethod]

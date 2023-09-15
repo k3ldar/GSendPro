@@ -56,7 +56,7 @@ namespace GSendTests.GSendAnalyserTests
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(6, analyses.Commands.Count);
-            List<IGCodeLine> lines = analyses.Lines(out int lineCount);
+            _ = analyses.Lines(out int lineCount);
             Assert.AreEqual(6, lineCount);
 
             int line = 0;
@@ -76,7 +76,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("X0", allLines[line++].GetGCode());
             Assert.AreEqual("Y0", allLines[line++].GetGCode());
             Assert.AreEqual("X10", allLines[line++].GetGCode());
-            Assert.AreEqual("Y10", allLines[line++].GetGCode());
+            Assert.AreEqual("Y10", allLines[line].GetGCode());
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace GSendTests.GSendAnalyserTests
             IGCodeAnalyses analyses = gCodeParser.Parse(gCode);
 
             Assert.AreEqual(6, analyses.Commands.Count);
-            List<IGCodeLine> lines = analyses.Lines(out int lineCount);
+            _ = analyses.Lines(out int lineCount);
             Assert.AreEqual(6, lineCount);
 
             int line = 0;
@@ -124,7 +124,7 @@ namespace GSendTests.GSendAnalyserTests
             Assert.AreEqual("G1X0Y0F10", allLines[line++].GetGCode());
             Assert.AreEqual("G1X100Y100F10", allLines[line++].GetGCode());
             Assert.AreEqual("G1X0Y0F10", allLines[line++].GetGCode());
-            Assert.AreEqual("G1X100Y100F10", allLines[line++].GetGCode());
+            Assert.AreEqual("G1X100Y100F10", allLines[line].GetGCode());
         }
     }
 }

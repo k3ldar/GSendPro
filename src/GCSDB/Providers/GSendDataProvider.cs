@@ -326,11 +326,7 @@ namespace GSendDB.Providers
         {
             using (TimedLock tl = TimedLock.Lock(_jobProfileTable.TableLock))
             {
-                JobProfileDataRow jobProfileDataRow = _jobProfileTable.Select(jobProfile.Id);
-
-                if (jobProfileDataRow == null)
-                    throw new InvalidOperationException();
-
+                JobProfileDataRow jobProfileDataRow = _jobProfileTable.Select(jobProfile.Id) ?? throw new InvalidOperationException();
                 jobProfileDataRow.SerialNumber++;
                 _jobProfileTable.Update(jobProfileDataRow);
                 return jobProfileDataRow.SerialNumber;
@@ -376,11 +372,7 @@ namespace GSendDB.Providers
             if (toolProfile == null)
                 throw new ArgumentNullException(nameof(toolProfile));
 
-            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id);
-
-            if (dataRow == null)
-                throw new InvalidOperationException("Tool not found");
-
+            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id) ?? throw new InvalidOperationException("Tool not found");
             dataRow.ToolName = toolProfile.Name;
             dataRow.Description = toolProfile.Description;
             dataRow.LengthInMillimetres = toolProfile.LengthInMillimetres;
@@ -394,11 +386,7 @@ namespace GSendDB.Providers
                 throw new ArgumentNullException(nameof(toolProfile));
 
             _memoryCache.GetExtendingCache().Clear();
-            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id);
-
-            if (dataRow == null)
-                throw new InvalidOperationException("Tool not found");
-
+            ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id) ?? throw new InvalidOperationException("Tool not found");
             dataRow.UsageLastReset = DateTime.UtcNow;
             double usage = JobExecutionByTool(toolProfile).TotalMinutes;
 
@@ -494,11 +482,7 @@ namespace GSendDB.Providers
             if (machine == null)
                 return null;
 
-            MachineDataRow machineDataRow = _machineDataRow.Select(machine.Id);
-
-            if (machineDataRow == null)
-                machineDataRow = new MachineDataRow();
-
+            MachineDataRow machineDataRow = _machineDataRow.Select(machine.Id) ?? new MachineDataRow();
             machineDataRow.Name = machine.Name;
             machineDataRow.MachineType = machine.MachineType;
             machineDataRow.MachineFirmware = machine.MachineFirmware;

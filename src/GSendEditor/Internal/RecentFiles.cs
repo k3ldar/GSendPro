@@ -27,7 +27,7 @@ namespace GSendEditor.Internal
         {
             List<RecentFile> recentFiles = GetRecentFiles();
 
-            RecentFile savedRecent = recentFiles.FirstOrDefault(r => r.FileName == fileName);
+            RecentFile savedRecent = recentFiles.Find(r => r.FileName == fileName);
 
             if (savedRecent != null)
             {
@@ -49,7 +49,7 @@ namespace GSendEditor.Internal
         {
             List<RecentFile> recentFiles = GetRecentFiles();
 
-            RecentFile savedRecent = recentFiles.FirstOrDefault(r => r.FileName == recent.FileName);
+            RecentFile savedRecent = recentFiles.Find(r => r.FileName == recent.FileName);
 
             if (savedRecent != null)
             {

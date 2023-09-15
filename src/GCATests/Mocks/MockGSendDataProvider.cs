@@ -60,7 +60,7 @@ namespace GSendTests.Mocks
             if (machine == null)
                 return;
 
-            _machines.Remove(_machines.FirstOrDefault(m => m.Id.Equals(machine.Id)));
+            _machines.Remove(_machines.Find(m => m.Id.Equals(machine.Id)));
             _machines.Add(machine);
         }
 
@@ -76,7 +76,7 @@ namespace GSendTests.Mocks
 
         public IMachine MachineGet(long machineId)
         {
-            return _machines.FirstOrDefault(m => m.Id.Equals(machineId));
+            return _machines.Find(m => m.Id.Equals(machineId));
         }
 
         public long SpindleTimeCreate(long machineId, int maxSpindleSpeed, long toolProfileId)
@@ -92,7 +92,7 @@ namespace GSendTests.Mocks
 
         public IJobProfile JobProfileGet(long jobId)
         {
-            return JobProfiles.FirstOrDefault(jp => jp.Id == jobId);
+            return JobProfiles.Find(jp => jp.Id == jobId);
         }
 
         public IReadOnlyList<IJobProfile> JobProfilesGet()
@@ -113,7 +113,7 @@ namespace GSendTests.Mocks
 
         public void JobProfileUpdate(IJobProfile jobProfile)
         {
-            IJobProfile storedProfile = JobProfiles.FirstOrDefault(jp => jp.Id.Equals(jobProfile.Id));
+            IJobProfile storedProfile = JobProfiles.Find(jp => jp.Id.Equals(jobProfile.Id));
 
             if (storedProfile == null)
                 return;
@@ -137,9 +137,9 @@ namespace GSendTests.Mocks
             return ToolProfiles;
         }
 
-        public IToolProfile ToolGet(long toolid)
+        public IToolProfile ToolGet(long toolProfileId)
         {
-            return ToolProfiles.FirstOrDefault(tp => tp.Id.Equals(toolid));
+            return ToolProfiles.Find(tp => tp.Id.Equals(toolProfileId));
         }
 
 #pragma warning disable IDE0060 // Remove unused parameter

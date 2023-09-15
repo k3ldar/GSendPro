@@ -147,9 +147,8 @@ namespace GSendDesktop.Forms
                 if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
                     fore = SystemColors.HighlightText;
 
-                ErrorWarningListItem currentItem = box.Items[e.Index] as ErrorWarningListItem;
 
-                if (currentItem == null)
+                if (box.Items[e.Index] is not ErrorWarningListItem currentItem)
                     return;
 
                 e.Graphics.DrawImage(imageList1.Images[currentItem.ImageIndex], new Point(1, e.Bounds.Top + 1));

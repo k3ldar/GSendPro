@@ -21,8 +21,6 @@ namespace GSendTests.Shared.Plugins
     [ExcludeFromCodeCoverage]
     public sealed class PluginHelperTests
     {
-        delegate void LogMethod(in LogLevel logLevel, in string message);
-
         [TestMethod]
         public void Construct_ValidInstance_Success()
         {

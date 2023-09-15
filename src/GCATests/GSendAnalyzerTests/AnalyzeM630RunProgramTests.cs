@@ -19,7 +19,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630CodeNotFound_Returns_WithNoErrorsOrWarnings()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M60");
 
@@ -37,7 +36,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630_MultipleItemsFoundOnSameLine_Adds_Error()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630 M630;");
 
@@ -56,7 +54,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630Code_EXE_ExecutableFileNotFound_Adds_Warning()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630;e:\\tools\\myfile.exe");
 
@@ -74,7 +71,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630Code_COM_ExecutableFileNotFound_Adds_Warning()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630;e:\\tools\\myfile.com");
 
@@ -92,7 +88,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630Code_BAT_ExecutableFileNotFound_Adds_Warning()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630;e:\\tools\\myfile.bat");
 
@@ -110,7 +105,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Analyze_M630Code_DAT_ExecutableFileNotFound_Adds_Warning()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630;e:\\tools\\myfile.dat");
 
@@ -128,7 +122,6 @@ namespace GSendTests.GSendAnalyserTests
         [TestMethod]
         public void Process_M630CodeFound_ExecutableFileExists_ContainsNoErrorAndNoWarnings()
         {
-            IGCodeLine gCodeLine = new GCodeLine(new MockGCodeAnalyses());
             GCodeParser gCodeParser = new(new MockPluginClassesService(), new MockSubprograms());
             IGCodeAnalyses analyses = gCodeParser.Parse("M630;c:\\windows\\explorer.exe");
 

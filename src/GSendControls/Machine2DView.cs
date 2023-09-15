@@ -41,12 +41,12 @@ namespace GSendControls
 
             foreach (IGCodeLine line in _gCodeAnalyses.AllLines(out int _))
             {
-                IGCodeCommand gCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('G'));
-                IGCodeCommand xCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('X'));
-                IGCodeCommand yCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('Y'));
-                IGCodeCommand iCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('I'));
-                IGCodeCommand jCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('J'));
-                IGCodeCommand rCommand = line.Commands.FirstOrDefault(c => c.Command.Equals('R'));
+                IGCodeCommand gCommand = line.Commands.Find(c => c.Command.Equals('G'));
+                IGCodeCommand xCommand = line.Commands.Find(c => c.Command.Equals('X'));
+                IGCodeCommand yCommand = line.Commands.Find(c => c.Command.Equals('Y'));
+                IGCodeCommand iCommand = line.Commands.Find(c => c.Command.Equals('I'));
+                IGCodeCommand jCommand = line.Commands.Find(c => c.Command.Equals('J'));
+                IGCodeCommand rCommand = line.Commands.Find(c => c.Command.Equals('R'));
 
                 PointF newLocation = latestPos;
 
@@ -179,8 +179,7 @@ namespace GSendControls
             Point mouseLocation = PointToClient(Cursor.Position);
             Rectangle sourceLocation = new(mouseLocation.X - ZoomSize, mouseLocation.Y - ZoomSize, ZoomSize * 2, ZoomSize * 2);
 
-            if (_zoomImage == null)
-                _zoomImage = new Bitmap(ZoomPanel.ClientRectangle.Width, ZoomPanel.ClientRectangle.Height);
+            _zoomImage ??= new Bitmap(ZoomPanel.ClientRectangle.Width, ZoomPanel.ClientRectangle.Height);
 
             BackgroundImage.CopyRegionIntoImage(sourceLocation, ref _zoomImage, ZoomPanel.ClientRectangle);
             ZoomPanel.BackgroundImage = null;
@@ -206,9 +205,7 @@ namespace GSendControls
         {
             if (flip)
             {
-                PointF temp = b;
-                b = a;
-                a = temp;
+                (a, b) = (b, a);
             }
 
             // get distance components
@@ -297,11 +294,9 @@ namespace GSendControls
     {
         public static void CopyRegionIntoImage(this Image srcBitmap, Rectangle srcRegion, ref Image destBitmap, Rectangle destRegion)
         {
-            using (Graphics grD = Graphics.FromImage(destBitmap))
-            {
-                grD.FillRectangle(new SolidBrush(Color.White), destRegion);
-                grD.DrawImage(srcBitmap, destRegion, srcRegion, GraphicsUnit.Pixel);
-            }
+            using Graphics grD = Graphics.FromImage(destBitmap);
+            grD.FillRectangle(new SolidBrush(Color.White), destRegion);
+            grD.DrawImage(srcBitmap, destRegion, srcRegion, GraphicsUnit.Pixel);
         }
 
         public static Image ResizeImage(this Image image, int maximumWidth, int maximumHeight, bool enforceRatio, bool addPadding)

@@ -9,7 +9,7 @@ namespace GSendTests.Mocks
     {
         public bool Delete(string name)
         {
-            ISubprogram subProgram = Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+            ISubprogram subProgram = Subprograms.Find(sp => sp.Name.Equals(name));
 
             if (subProgram == null)
                 return false;
@@ -20,12 +20,12 @@ namespace GSendTests.Mocks
 
         public bool Exists(string name)
         {
-            return Subprograms.Any(sp => sp.Name.Equals(name));
+            return Subprograms.Exists(sp => sp.Name.Equals(name));
         }
 
         public ISubprogram Get(string name)
         {
-            return Subprograms.Where(sp => sp.Name.Equals(name)).FirstOrDefault();
+            return Subprograms.Find(sp => sp.Name.Equals(name));
         }
 
         public List<ISubprogram> GetAll()
@@ -35,7 +35,7 @@ namespace GSendTests.Mocks
 
         public bool Update(ISubprogram subProgram)
         {
-            ISubprogram existing = Subprograms.Where(sp => sp.Name.Equals(subProgram.Name)).FirstOrDefault();
+            ISubprogram existing = Subprograms.Find(sp => sp.Name.Equals(subProgram.Name));
 
             if (existing == null)
                 return false;
