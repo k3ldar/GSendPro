@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendApi;
@@ -23,7 +24,9 @@ using GSendShared.Abstractions;
 using GSendShared.Attributes;
 using GSendShared.Interfaces;
 using GSendShared.Models;
+using GSendShared.Plugins;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
@@ -32,7 +35,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
-    public partial class FrmMachine : BaseForm, IUiUpdate, IShortcutImplementation
+    public partial class FrmMachine : BaseForm, IUiUpdate, IShortcutImplementation, ISenderPluginHost
     {
         #region Private Fields
 
@@ -62,6 +65,8 @@ namespace GSendDesktop.Forms
         private IToolProfile _toolProfile;
         private List<IShortcut> _shortcuts;
         private readonly ShortcutHandler _shortcutHandler;
+        private readonly IPluginHelper _pluginHelper;
+        private readonly List<IGSendPluginModule> _pluginsWithClientMessage = new();
 
         #endregion Private Fields
 
@@ -86,6 +91,7 @@ namespace GSendDesktop.Forms
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _pluginHelper = _serviceProvider.GetRequiredService<IPluginHelper>();
 
             Text = String.Format(GSend.Language.Resources.MachineTitle, machine.MachineType, machine.Name);
 
@@ -131,7 +137,7 @@ namespace GSendDesktop.Forms
             toolStripStatusLabelSpindle.Visible = false;
             toolStripStatusLabelFeedRate.Visible = false;
             toolStripStatusLabelStatus.Visible = false;
-            warningsAndErrors_OnUpdate(this, EventArgs.Empty);
+            WarningsAndErrors_OnUpdate(this, EventArgs.Empty);
             _configurationChanges = false;
             HookUpEvents();
             UpdateMachineStatus(new MachineStateModel());
@@ -144,15 +150,29 @@ namespace GSendDesktop.Forms
                 tabControlMain.TabPages.Remove(tabPageSpindle);
             }
 
+            // shortcuts has to be setup prior to plugins
             _shortcuts = RetrieveAvailableShortcuts();
+
             tabControlMain.TabPages.Remove(tabPageServiceSchedule);
+
+            mnuMachine.Tag = MenuParent.Machine;
+            mnuView.Tag = MenuParent.View;
+            mnuAction.Tag = MenuParent.Action;
+            mnuOptions.Tag = MenuParent.Options;
+            mnuTools.Tag = MenuParent.Tools;
+            mnuHelp.Tag = MenuParent.Help;
+
+            _pluginHelper.InitializeAllPlugins(this);
+
+            mnuTools.Visible = mnuTools.DropDownItems.Count > 0;
+            UpdateShortcutKeyValues(_shortcuts);
         }
 
         #endregion Constructors
 
         #region Client Web Socket
 
-        private void SendMessage(string message)
+        private void InternalSendMessage(string message)
         {
             _clientWebSocket.SendAsync(message).ConfigureAwait(false);
         }
@@ -166,7 +186,7 @@ namespace GSendDesktop.Forms
             }
 
             _machineUpdateThread.IsThreadRunning = true;
-            SendMessage(String.Format("mAddEvents:{0}", _machine.Id));
+            InternalSendMessage(String.Format("mAddEvents:{0}", _machine.Id));
             toolStripStatusLabelServerConnect.Text = GSend.Language.Resources.ServerConnected;
             UpdateEnabledState();
             btnServiceRefresh_Click(sender, e);
@@ -220,7 +240,7 @@ namespace GSendDesktop.Forms
             {
                 case "Stop":
                     if (_machineStatusModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
-                        SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+                        InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
                     break;
 
@@ -278,7 +298,7 @@ namespace GSendDesktop.Forms
                     txtGrblUpdates.Text = String.Empty;
                     _appliedSettingsChanged = false;
                     warningsAndErrors.Clear(false);
-                    warningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
+                    WarningsAndErrors_OnUpdate(warningsAndErrors, EventArgs.Empty);
                     toolStripStatusLabelSpindle.Visible = false;
                     toolStripStatusLabelFeedRate.Visible = false;
                     toolStripStatusLabelStatus.Visible = false;
@@ -314,6 +334,12 @@ namespace GSendDesktop.Forms
                     {
                         AddMessageToConsole(clientMessage.message.ToString());
                     }
+
+                    // notify plugins interested in messages
+                    Parallel.ForEach(_pluginsWithClientMessage, sp =>
+                    {
+                        sp.ClientMessageReceived(clientMessage);
+                    });
 
                     break;
 
@@ -855,7 +881,7 @@ namespace GSendDesktop.Forms
         private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             _canCancelJog = stepSize == 0;
-            SendMessage(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
+            InternalSendMessage(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
         }
 
         private void jogControl_OnJogStop(object sender, EventArgs e)
@@ -1089,7 +1115,7 @@ namespace GSendDesktop.Forms
                     continue;
 
                 command = String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, command);
-                SendMessage(command);
+                InternalSendMessage(command);
             }
 
             SaveChanges(true);
@@ -1135,7 +1161,7 @@ namespace GSendDesktop.Forms
                         {
                             warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedSpindleMode);
                             _machine.Settings.LaserModeEnabled = false;
-                            SendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=0"));
+                            InternalSendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=0"));
                             SaveChanges(true);
                             ConfigureMachine();
                         }
@@ -1147,7 +1173,7 @@ namespace GSendDesktop.Forms
                         {
                             warningsAndErrors.AddWarningPanel(InformationType.Information, GSend.Language.Resources.AutomaticallySelectedLaserMode);
                             _machine.Settings.LaserModeEnabled = true;
-                            SendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=1"));
+                            InternalSendMessage(String.Format(Constants.MessageMachineUpdateSetting, _machine.Id, "$32=1"));
                             SaveChanges(true);
                             ConfigureMachine();
                         }
@@ -1173,7 +1199,7 @@ namespace GSendDesktop.Forms
             }
         }
 
-        private void warningsAndErrors_OnUpdate(object sender, EventArgs e)
+        private void WarningsAndErrors_OnUpdate(object sender, EventArgs e)
         {
             int width = 0;
 
@@ -1254,7 +1280,7 @@ namespace GSendDesktop.Forms
         public void SetZeroForAxes(object sender, EventArgs e)
         {
             ZeroAxis zeroAxis = (ZeroAxis)((Button)sender).Tag;
-            SendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
+            InternalSendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
             tabPageJog.Focus();
         }
 
@@ -1321,9 +1347,9 @@ namespace GSendDesktop.Forms
             string command = txtUserGrblCommand.Text.Replace(":", "\t").Trim();
 
             if (txtUserGrblCommand.Text.StartsWith('$') || txtUserGrblCommand.Text == "?")
-                SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));
+                InternalSendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, command));
             else
-                SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, command));
+                InternalSendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, command));
 
             txtUserGrblCommand.Text = String.Empty;
             txtUserGrblCommand.Focus();
@@ -1404,7 +1430,7 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStart_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
+            InternalSendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
         }
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
@@ -2034,29 +2060,29 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineConnect, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachineConnect, _machine.Id));
         }
 
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineDisconnect, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachineDisconnect, _machine.Id));
         }
 
         private void toolStripButtonClearAlarm_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineClearAlarm, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachineClearAlarm, _machine.Id));
             warningsAndErrors.ClearAlarm();
         }
 
         private void toolStripButtonHome_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachineHome, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachineHome, _machine.Id));
         }
 
         private void toolStripButtonProbe_Click(object sender, EventArgs e)
         {
             _isProbing = true;
-            SendMessage(String.Format(MessageMachineProbe, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachineProbe, _machine.Id));
             UpdateEnabledState();
         }
 
@@ -2066,7 +2092,7 @@ namespace GSendDesktop.Forms
             {
                 if (_isPaused)
                 {
-                    SendMessage(String.Format(MessageMachineResume, _machine.Id));
+                    InternalSendMessage(String.Format(MessageMachineResume, _machine.Id));
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
@@ -2080,9 +2106,9 @@ namespace GSendDesktop.Forms
                             IJobProfile jobProfile = startJobWizard.JobProfile;
 
                             if (startJobWizard.IsSimulation)
-                                SendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+                                InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
-                            SendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
+                            InternalSendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
                         }
                     }
                 }
@@ -2091,7 +2117,7 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonPause_Click(object sender, EventArgs e)
         {
-            SendMessage(String.Format(MessageMachinePause, _machine.Id));
+            InternalSendMessage(String.Format(MessageMachinePause, _machine.Id));
         }
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
@@ -2109,8 +2135,8 @@ namespace GSendDesktop.Forms
             ToolStripMenuItem selected = sender as ToolStripMenuItem;
             selected.Checked = true;
             toolStripDropDownButtonCoordinateSystem.Text = selected.Text;
-            SendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, selected.Text));
-            SendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, "$G"));
+            InternalSendMessage(String.Format(Constants.MessageMachineWriteLineR, _machine.Id, selected.Text));
+            InternalSendMessage(String.Format(Constants.MessageMachineWriteLine, _machine.Id, "$G"));
         }
 
         #endregion Toolbar Buttons
@@ -2277,7 +2303,7 @@ namespace GSendDesktop.Forms
 
                     gCodeAnalysesDetails.LoadAnalyser(fileName, _gCodeAnalyses);
                     string fileNameAsBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(fileName));
-                    SendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
+                    InternalSendMessage(String.Format(Constants.MessageLoadGCode, _machine.Id, fileNameAsBase64));
                 }
                 catch (Exception ex)
                 {
@@ -2316,7 +2342,7 @@ namespace GSendDesktop.Forms
 
             machine2dView1.UnloadGCode();
             gCodeAnalysesDetails.LoadAnalyser(_gCodeAnalyses);
-            SendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageUnloadGCode, _machine.Id));
             tabControlSecondary.TabPages.Remove(tabPageGCode);
             lblTotalLines.Visible = false;
             UpdateEnabledState();
@@ -2371,7 +2397,6 @@ namespace GSendDesktop.Forms
             List<IShortcut> Result = new();
             RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
 
-            UpdateShortcutKeyValues(Result);
             return Result;
         }
 
@@ -2379,8 +2404,6 @@ namespace GSendDesktop.Forms
         {
             foreach (IShortcut shortcut in Result)
             {
-                Debug.Assert(!_shortcutHandler.IsKeyComboRegistered(shortcut.DefaultKeys));
-
                 _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
 
                 string keyArray = String.Join(';', shortcut.DefaultKeys);
@@ -2639,5 +2662,53 @@ namespace GSendDesktop.Forms
         }
 
         #endregion Shortcuts
+
+        #region ISenderPluginHost
+
+        public PluginHosts Host => PluginHosts.Sender;
+
+        public void AddPlugin(IGSendPluginModule pluginModule)
+        {
+            if (pluginModule == null)
+                throw new ArgumentNullException(nameof(pluginModule));
+
+            if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
+                _pluginsWithClientMessage.Add(pluginModule);
+        }
+
+        public void AddMenu(IPluginMenu pluginMenu)
+        {
+            pluginMenu.UpdateHost(this as ISenderPluginHost);
+            _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
+        }
+
+        public void AddToolbar(IPluginToolbarButton toolbarButton)
+        {
+            toolbarButton.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+        }
+
+        public void SendMessage(string message)
+        {
+            InternalSendMessage(message);
+        }
+
+        public bool IsPaused() => _isPaused;
+
+        public bool IsRunning() => _isRunning;
+
+        public bool IsConnected() => _machineConnected;
+
+        public void AddMessage(InformationType informationType, string message)
+        {
+            if (!warningsAndErrors.Contains(informationType, message))
+                warningsAndErrors.AddWarningPanel(informationType, message);
+        }
+
+        public MachineStateModel MachineStatus() => _machineStatusModel;
+
+        public IMachine GetMachine() => _machine;
+
+        #endregion ISenderPluginHost
     }
 }

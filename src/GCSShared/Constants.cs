@@ -106,6 +106,8 @@ namespace GSendShared
 
         public const string AppSettings = "appsettings.json";
 
+        public const string AppPluginFile = "plugins.json";
+
         public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
         {
             AllowTrailingCommas = true,

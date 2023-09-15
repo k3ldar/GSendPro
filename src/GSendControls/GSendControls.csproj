@@ -14,9 +14,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>GSendTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
     <ProjectReference Include="..\GSendApi\GSendApi.csproj" />
     <ProjectReference Include="..\GSendCommon\GSendCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\GSendEditor\External\FastColoredTextBox.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

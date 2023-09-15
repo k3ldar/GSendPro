@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Net.WebSockets;
 using System.Text.Json;
 using System.Threading;
@@ -20,6 +18,9 @@ using GSendDesktop.Abstractions;
 using GSendDesktop.Internal;
 
 using GSendShared;
+using GSendShared.Interfaces;
+using GSendShared.Models;
+using GSendShared.Plugins;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,7 +30,7 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop
 {
-    public partial class FormMain : BaseForm
+    public partial class FormMain : BaseForm, IPluginHost
     {
         private readonly IGSendContext _context;
 
@@ -40,6 +41,7 @@ namespace GSendDesktop
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
         private readonly Dictionary<long, ListViewItem> _machines = new();
         private IMachine _selectedMachine = null;
+        private readonly IPluginHelper _pluginHelper;
         private long _machineHashCombined = 0;
 
         public FormMain(IGSendContext context, IGSendApiWrapper machineApiWrapper,
@@ -50,6 +52,7 @@ namespace GSendDesktop
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
+            _pluginHelper = context.ServiceProvider.GetRequiredService<IPluginHelper>() ?? throw new InvalidOperationException();
 
             _cancellationTokenRegistration = new();
             ApiSettings apiSettings = context.ServiceProvider.GetRequiredService<ApiSettings>();
@@ -58,6 +61,14 @@ namespace GSendDesktop
             _clientWebSocket.ConnectionLost += ClientWebSocket_ConnectionLost;
             _clientWebSocket.Connected += ClientWebSocket_Connected;
             timerUpdateStatus.Interval = settings.UpdateMilliseconds;
+
+            // initialize menu's for plugins
+            machineToolStripMenuItem.Tag = MenuParent.Machine;
+            helpToolStripMenuItem.Tag = MenuParent.View;
+            subprogramsToolStripMenuItem.Tag = MenuParent.Subprograms;
+            helpToolStripMenuItem.Tag = MenuParent.Help;
+
+            _pluginHelper.InitializeAllPlugins(this);
         }
 
         protected override string SectionName => nameof(GSendDesktop);
@@ -495,7 +506,6 @@ namespace GSendDesktop
             viewSubProgramToolStripMenuItem.Text = GSend.Language.Resources.View;
 
             helpToolStripMenuItem.Text = GSend.Language.Resources.Help;
-            viewHelpToolStripMenuItem.Text = GSend.Language.Resources.HelpView;
             aboutToolStripMenuItem.Text = GSend.Language.Resources.HelpAbout;
         }
 
@@ -547,26 +557,32 @@ namespace GSendDesktop
             FrmServerValidation.ValidateServer(this, apiWrapper);
         }
 
-        private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new()
-            {
-                FileName = Constants.HelpWebsite,
-                UseShellExecute = true
-            };
+        #region ISenderPluginHost
 
-            Process.Start(psi);
+        public PluginHosts Host => PluginHosts.SenderHost;
+
+        public void AddPlugin(IGSendPluginModule pluginModule)
+        {
+            // nothing special to do for this host
         }
 
-        private void bugsAndIdeasToolStripMenuItem_Click(object sender, EventArgs e)
+        public void AddMenu(IPluginMenu pluginMenu)
         {
-            ProcessStartInfo psi = new()
-            {
-                FileName = "https://github.com/k3ldar/GSendPro/issues",
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
+            pluginMenu.UpdateHost(this as IPluginHost);
+            _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
         }
+
+        public void AddToolbar(IPluginToolbarButton toolbarButton)
+        {
+            toolbarButton.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+        }
+
+        public void AddMessage(InformationType informationType, string message)
+        {
+            throw new InvalidOperationException();
+        }
+
+        #endregion ISenderPluginHost
     }
 }

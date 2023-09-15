@@ -1294,6 +1294,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copyright (C) 2023 Simon Carter.  All rights reserved..
         /// </summary>
         public static string Copyright {
@@ -1317,6 +1326,15 @@ namespace GSend.Language {
         public static string CurrentFeedRate {
             get {
                 return ResourceManager.GetString("CurrentFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut.
+        /// </summary>
+        public static string Cut {
+            get {
+                return ResourceManager.GetString("Cut", resourceCulture);
             }
         }
         
@@ -1884,6 +1902,15 @@ namespace GSend.Language {
         public static string ErrorSubProgramMissing {
             get {
                 return ResourceManager.GetString("ErrorSubProgramMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
             }
         }
         
@@ -3076,6 +3103,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste.
+        /// </summary>
+        public static string Paste {
+            get {
+                return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
@@ -3949,6 +3985,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bookmark Menu.
+        /// </summary>
+        public static string ShortcutBookmarkMenu {
+            get {
+                return ResourceManager.GetString("ShortcutBookmarkMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Alarm.
         /// </summary>
         public static string ShortcutClearAlarm {
@@ -4039,11 +4084,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Menu.
+        /// </summary>
+        public static string ShortcutEditMenu {
+            get {
+                return ResourceManager.GetString("ShortcutEditMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shortcut Editor.
         /// </summary>
         public static string ShortcutEditor {
             get {
                 return ResourceManager.GetString("ShortcutEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Menu.
+        /// </summary>
+        public static string ShortcutFileMenu {
+            get {
+                return ResourceManager.GetString("ShortcutFileMenu", resourceCulture);
             }
         }
         
@@ -4062,6 +4125,15 @@ namespace GSend.Language {
         public static string ShortcutGroupOverrides {
             get {
                 return ResourceManager.GetString("ShortcutGroupOverrides", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help Menu.
+        /// </summary>
+        public static string ShortcutHelpMenu {
+            get {
+                return ResourceManager.GetString("ShortcutHelpMenu", resourceCulture);
             }
         }
         
@@ -4152,6 +4224,15 @@ namespace GSend.Language {
         public static string ShortcutMenuMachine {
             get {
                 return ResourceManager.GetString("ShortcutMenuMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools Menu.
+        /// </summary>
+        public static string ShortcutMenuTools {
+            get {
+                return ResourceManager.GetString("ShortcutMenuTools", resourceCulture);
             }
         }
         

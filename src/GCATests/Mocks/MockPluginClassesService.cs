@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -11,6 +12,7 @@ using PluginManager.Abstractions;
 
 namespace GSendTests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     internal class MockPluginClassesService : IPluginClassesService
     {
         public object[] GetParameterInstances(Type type)

@@ -1,6 +1,9 @@
+using System.Configuration;
+
 using GSendControls;
 
 using GSendShared;
+using GSendShared.Helpers;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,8 +42,10 @@ namespace GSendEditor
             applicationPluginManager.RegisterPlugin(typeof(GSendAnalyzer.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendCommon.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
+            applicationPluginManager.RegisterPlugin(typeof(GSendControls.PluginInitialisation).Assembly.Location);
 
-
+            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
 
             IServiceCollection serviceCollection = new ServiceCollection();
             applicationPluginManager.ConfigureServices(serviceCollection);
@@ -48,7 +53,8 @@ namespace GSendEditor
 
             try
             {
-                applicationPluginManager.ServiceProvider.GetRequiredService<ISubprograms>();
+                _ = applicationPluginManager.ServiceProvider.GetRequiredService<ISubprograms>();
+
                 GlobalExceptionHandler.InitializeGlobalExceptionHandlers(applicationPluginManager.ServiceProvider.GetRequiredService<ILogger>());
                 ApplicationConfiguration.Initialize();
                 Application.Run(applicationPluginManager.ServiceProvider.GetRequiredService<FrmMain>());

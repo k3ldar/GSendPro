@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
 
 using GSendApi;
 
@@ -14,15 +12,17 @@ using GSendEditor.Internal;
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Interfaces;
+using GSendShared.Models;
+using GSendShared.Plugins;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
 
 namespace GSendEditor
 {
-    public partial class FrmMain : BaseForm
+    public partial class FrmMain : BaseForm, IShortcutImplementation, IEditorPluginHost
     {
         private readonly object _lockObject = new();
         private readonly object _updateSubprogramsLock = new();
@@ -34,11 +34,17 @@ namespace GSendEditor
         private readonly Internal.Bookmarks _bookmarks;
         private Internal.Bookmark _activeBookmark;
         private string _fileName;
+        private List<IShortcut> _shortcuts;
+        private readonly ShortcutHandler _shortcutHandler;
+        private readonly IPluginHelper _pluginHelper;
+        private bool _isSubprogram = false;
+
 
         public FrmMain(IGSendContext gSendContext)
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
+            _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
                 _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>(), txtGCode);
@@ -53,6 +59,28 @@ namespace GSendEditor
             _recentFiles = new();
             _bookmarks = new();
             txtGCode.BookmarkColor = Color.BurlyWood;
+
+
+            // shortcuts have to be setup prior to plugins
+            _shortcutHandler = new()
+            {
+                RegisterKeyCombo = false
+            };
+            _shortcutHandler.OnKeyComboDown += ShortcutHandler_OnKeyComboDown;
+            _shortcutHandler.OnKeyComboUp += ShortcutHandler_OnKeyComboUp;
+
+            _shortcuts = RetrieveAvailableShortcuts();
+
+
+            mnuFile.Tag = MenuParent.File;
+            mnuEdit.Tag = MenuParent.Edit;
+            mnuView.Tag = MenuParent.View;
+            mnuTools.Tag = MenuParent.Tools;
+            mnuHelp.Tag = MenuParent.Help;
+
+            _pluginHelper.InitializeAllPlugins(this);
+
+            UpdateShortcutKeyValues(_shortcuts);
         }
 
         protected override string SectionName => nameof(GSendEditor);
@@ -105,7 +133,7 @@ namespace GSendEditor
             mnuView.Text = GSend.Language.Resources.AppMenuView;
             mnuViewPreview.Text = GSend.Language.Resources.AppMenuViewPreview;
             mnuViewProperties.Text = GSend.Language.Resources.AppMenuViewProperties;
-            mnuViewSubPrograms.Text = GSend.Language.Resources.AppMenuViewSubPrograms;
+            mnuViewSubprograms.Text = GSend.Language.Resources.AppMenuViewSubPrograms;
             mnuViewStatusBar.Text = GSend.Language.Resources.AppMenuViewStatusBar;
 
             // help menu
@@ -169,22 +197,6 @@ namespace GSendEditor
         }
 
         private bool HasChanged { get; set; }
-
-        private string FileName
-        {
-            get => _fileName;
-
-            set
-            {
-                if (_fileName == value)
-                    return;
-
-                _fileName = value;
-                _analyzerThread.FileName = value;
-            }
-        }
-
-        private bool IsSubprogram { get; set; } = false;
 
         protected override void UpdateEnabledState()
         {
@@ -290,7 +302,7 @@ namespace GSendEditor
 
                 if (saveResult == DialogResult.Yes)
                 {
-                    if (IsSubprogram)
+                    if (_isSubprogram)
                     {
                         SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
                     }
@@ -392,7 +404,7 @@ namespace GSendEditor
             txtGCode.ClearUndo();
             ClearWarnings();
             gCodeAnalysesDetails1.ClearAnalyser();
-            IsSubprogram = false;
+            _isSubprogram = false;
             _subProgram = null;
 
             RetrieveAndLoadBookmarks(FileName);
@@ -417,7 +429,7 @@ namespace GSendEditor
 
             try
             {
-                if (IsSubprogram)
+                if (_isSubprogram)
                 {
                     SaveAsSubProgram(_subProgram.Name, _subProgram.Description);
                 }
@@ -469,7 +481,7 @@ namespace GSendEditor
             FileName = $"{name} - {description}";
             HasChanged = false;
 
-            IsSubprogram = true;
+            _isSubprogram = true;
             _activeBookmark.FileName = name;
             _bookmarks.UpdateBookmarks(_activeBookmark);
 
@@ -637,26 +649,30 @@ namespace GSendEditor
             tabControlMain.SelectedTab = tabPagePreview;
         }
 
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuViewProperties_Click(object sender, EventArgs e)
         {
             tabControlMain.SelectedTab = tabPageProperties;
         }
 
-        private void subprogramsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnuViewSubprograms_Click(object sender, EventArgs e)
         {
             tabControlMain.SelectedTab = tabPageSubPrograms;
         }
 
-        private void mnuHelpHelp_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new()
-            {
-                FileName = Constants.HelpWebsite,
-                UseShellExecute = true
-            };
 
-            Process.Start(psi);
+        private void mnuToolsShortcutKeys_Click(object sender, EventArgs e)
+        {
+            if (ShortcutEditor.ShowDialog(this, ref _shortcuts))
+            {
+                UpdateShortcutKeyValues(_shortcuts);
+
+                foreach (IShortcut shortcut in _shortcuts)
+                {
+                    DesktopSettings.WriteValue("Editor Shortcut Keys", shortcut.Name, String.Join(';', shortcut.DefaultKeys));
+                }
+            }
         }
+
 
         private void mnuHelpAbout_Click(object sender, EventArgs e)
         {
@@ -692,7 +708,7 @@ namespace GSendEditor
             ClearWarnings();
             UpdateTitleBar();
             UpdateEnabledState();
-            IsSubprogram = false;
+            _isSubprogram = false;
             _subProgram = null;
             _recentFiles.AddRecentFile(fileName, false);
             RetrieveAndLoadBookmarks(fileName);
@@ -749,7 +765,7 @@ namespace GSendEditor
             _recentFiles.AddRecentFile(subProgram.Name, true);
             UpdateTitleBar();
             RetrieveAndLoadBookmarks(subProgram.Name);
-            IsSubprogram = true;
+            _isSubprogram = true;
         }
 
         private void txtGCode_ToolTipNeeded(object sender, FastColoredTextBoxNS.ToolTipNeededEventArgs e)
@@ -919,15 +935,233 @@ namespace GSendEditor
             tmrUpdateSubprograms.Enabled = true;
         }
 
-        private void bugsAndIdeasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ProcessStartInfo psi = new()
-            {
-                FileName = "https://github.com/k3ldar/GSendPro/issues",
-                UseShellExecute = true
-            };
+        #region Shortcuts
 
-            Process.Start(psi);
+        private void ShortcutHandler_OnKeyComboDown(object sender, ShortcutArgs e)
+        {
+            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+
+            if (shortcut != null)
+            {
+                shortcut.Trigger(true);
+            }
         }
+
+        private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
+        {
+            IShortcut shortcut = _shortcuts.FirstOrDefault(s => s.Name.Equals(e.Name));
+
+            if (shortcut != null)
+            {
+                shortcut.Trigger(false);
+            }
+        }
+
+        private List<IShortcut> RetrieveAvailableShortcuts()
+        {
+            List<IShortcut> Result = new();
+            RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
+
+            return Result;
+        }
+
+        private void UpdateShortcutKeyValues(List<IShortcut> Result)
+        {
+            foreach (IShortcut shortcut in Result)
+            {
+                _shortcutHandler.AddKeyCombo(shortcut.Name, shortcut.DefaultKeys);
+
+                string keyArray = String.Join(';', shortcut.DefaultKeys);
+
+                // is it overridden?
+                string shortcutValue = DesktopSettings.ReadValue<string>("Editor Shortcut Keys", shortcut.Name, keyArray);
+
+                if (!String.IsNullOrEmpty(shortcutValue) && keyArray != shortcutValue)
+                {
+                    shortcut.DefaultKeys.Clear();
+
+                    string[] keyItems = shortcutValue.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (string item in keyItems)
+                    {
+                        if (Int32.TryParse(item, out int keyValue))
+                            shortcut.DefaultKeys.Add(keyValue);
+                    }
+                }
+
+                if (shortcut.KeysUpdated != null)
+                    shortcut.KeysUpdated(shortcut.DefaultKeys);
+            }
+        }
+
+        private void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
+        {
+            if (depth > 25)
+            {
+                return;
+            }
+
+            if (control is IShortcutImplementation shortcutImpl)
+            {
+                shortcuts.AddRange(shortcutImpl.GetShortcuts());
+            }
+
+            foreach (Control childControl in control.Controls)
+            {
+                RecursivelyRetrieveAllShortcutClasses(childControl, shortcuts, depth + 1);
+            }
+        }
+
+        private static void UpdateMenuShortCut(ToolStripMenuItem menu, List<int> keys)
+        {
+            if (menu == null || keys == null || keys.Count == 0)
+                return;
+
+            Keys key = Keys.None;
+
+            foreach (int intKeyValue in keys)
+            {
+                key |= (Keys)intKeyValue;
+            }
+
+            menu.ShortcutKeys = key;
+        }
+
+        public List<IShortcut> GetShortcuts()
+        {
+            string groupNameFileMenu = GSend.Language.Resources.ShortcutFileMenu;
+            string groupNameEditMenu = GSend.Language.Resources.ShortcutEditMenu;
+            string groupNameBookmarkMenu = GSend.Language.Resources.ShortcutBookmarkMenu;
+            string groupNameViewMenu = GSend.Language.Resources.ShortcutMenuView;
+
+            return new()
+            {
+                // File menu
+                new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.New,
+                    new List<int>() { (int)Keys.Control, (int)Keys.N},
+                    (bool isKeyDown) => { if (isKeyDown && mnuFileNew.Enabled) mnuFileNew_Click(mnuFileNew, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuFileNew, keys)),
+                new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Open,
+                    new List<int>() { (int)Keys.Control, (int)Keys.O},
+                    (bool isKeyDown) => { if (isKeyDown && mnuFileOpen.Enabled) mnuFileOpen_Click(mnuFileOpen, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuFileOpen, keys)),
+                new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Save,
+                    new List<int>() { (int)Keys.Control, (int)Keys.S},
+                    (bool isKeyDown) => { if (isKeyDown && mnuFileSave.Enabled) mnuFileSave_Click(mnuFileSave, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuFileSave, keys)),
+                new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.SaveAsSubprogram,
+                    new List<int>() { (int)Keys.Control, (int)Keys.B},
+                    (bool isKeyDown) => { if (isKeyDown && mnufileSaveAsSubprogram.Enabled) mnufileSaveAsSubprogram_Click(mnufileSaveAsSubprogram, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnufileSaveAsSubprogram, keys)),
+                new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Exit,
+                    new List<int>() { (int)Keys.Alt, (int)Keys.F4},
+                    (bool isKeyDown) => { if (isKeyDown && mnuFileExit.Enabled) mnuFileExit_Click(mnuFileExit, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuFileExit, keys)),
+
+                // Edit menu
+                new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Undo,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Z },
+                    (bool isKeyDown) => { if (isKeyDown && mnuEditUndo.Enabled) mnuEditUndo_Click(mnuEditUndo, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuEditUndo, keys)),
+                new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Redo,
+                    new List<int>() { (int)Keys.Control, (int)Keys.Y },
+                    (bool isKeyDown) => { if (isKeyDown && mnuEditRedo.Enabled) mnuEditRedo_Click(mnuEditRedo, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuEditRedo, keys)),
+                new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Cut,
+                    new List<int>() { (int)Keys.Control, (int)Keys.X },
+                    (bool isKeyDown) => { if (isKeyDown && mnuEditCut.Enabled) mnuEditCut_Click(mnuEditCut, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuEditCut, keys)),
+                new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Copy,
+                    new List<int>() { (int)Keys.Control, (int)Keys.C },
+                    (bool isKeyDown) => { if (isKeyDown && mnuEditCopy.Enabled) mnuEditCopy_Click(mnuEditCopy, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuEditCopy, keys)),
+                new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Paste,
+                    new List<int>() { (int)Keys.Control, (int)Keys.V },
+                    (bool isKeyDown) => { if (isKeyDown && mnuEditPaste.Enabled) mnuEditPaste_Click(mnuEditPaste, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuEditPaste, keys)),
+
+                // bookmark menu
+                new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkToggle,
+                    new List<int>() { (int)Keys.Alt, (int)Keys.B },
+                    (bool isKeyDown) => { if (isKeyDown && mnuBookmarksToggle.Enabled) mnuBookmarksToggle_Click(mnuBookmarksToggle, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuBookmarksToggle, keys)),
+                new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkPrevious,
+                    new List<int>() { (int)Keys.Alt, (int)Keys.P },
+                    (bool isKeyDown) => { if (isKeyDown && mnuBookmarksPrevious.Enabled) mnuBookmarksPrevious_Click(mnuBookmarksPrevious, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuBookmarksPrevious, keys)),
+                new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkNext,
+                    new List<int>() { (int)Keys.Alt, (int)Keys.N },
+                    (bool isKeyDown) => { if (isKeyDown && mnuBookmarksNext.Enabled) mnuBookmarksNext_Click(mnuBookmarksNext, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuBookmarksNext, keys)),
+
+                // view menu
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabGeneral,
+                    new List<int>() { (int)Keys.Control, (int)Keys.W },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewPreview.Enabled) mnuViewPreview_Click(mnuViewPreview, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewPreview, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabOverrides,
+                    new List<int>() { (int)Keys.Control, (int)Keys.R },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewProperties.Enabled) mnuViewProperties_Click(mnuViewProperties, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewProperties, keys)),
+                new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabJog,
+                    new List<int>() { (int)Keys.Control, (int)Keys.S },
+                    (bool isKeyDown) => { if (isKeyDown && mnuViewSubprograms.Enabled) mnuViewSubprograms_Click(mnuViewSubprograms, EventArgs.Empty); },
+                    (List<int> keys) => UpdateMenuShortCut(mnuViewSubprograms, keys)),
+            };
+        }
+
+        #endregion Shortcuts
+
+        #region ISenderPluginHost
+
+        public PluginHosts Host => PluginHosts.SenderHost;
+
+        public void AddPlugin(IGSendPluginModule pluginModule)
+        {
+            // nothing special to do for this host
+        }
+
+        public void AddMenu(IPluginMenu pluginMenu)
+        {
+            pluginMenu.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
+        }
+
+        public void AddToolbar(IPluginToolbarButton toolbarButton)
+        {
+            toolbarButton.UpdateHost(this as IEditorPluginHost);
+            _pluginHelper.AddToolbarButton(toolbarMain, toolbarButton);
+        }
+
+        public void AddMessage(InformationType informationType, string message)
+        {
+            throw new InvalidOperationException();
+        }
+
+        #endregion ISenderPluginHost
+
+        #region IEditorPluginHost
+
+        public bool IsDirty => HasChanged;
+
+        public bool IsSubprogram => _isSubprogram;
+
+        public string FileName
+        {
+            get => _fileName;
+
+            private set
+            {
+                if (_fileName == value)
+                    return;
+
+                _fileName = value;
+                _analyzerThread.FileName = value;
+            }
+        }
+
+        public object Editor => txtGCode;
+
+        #endregion IEditorPluginHost
     }
 }

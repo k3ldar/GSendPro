@@ -1,6 +1,8 @@
-﻿namespace GSendCommon
+﻿using GSendShared;
+
+namespace GSendCommon
 {
-    public class ClientBaseMessage
+    public class ClientBaseMessage : IClientBaseMessage
     {
         public ClientBaseMessage()
         {

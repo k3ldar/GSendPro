@@ -207,7 +207,7 @@ namespace GSendAnalyzer
                 return Result;
 
             if (Result.StartsWith(CharSemiColon))
-                Result = Result.Substring(1);
+                Result = Result[1..];
             else if (Result.StartsWith(CharOpeningBracket) && Result.EndsWith(CharClosingBracket))
                 Result = Result[1..^1];
 

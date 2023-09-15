@@ -19,7 +19,7 @@
 
         public void IncrementSerialNumber()
         {
-            SerialNumber = SerialNumber + 1;
+            SerialNumber++;
         }
     }
 }
