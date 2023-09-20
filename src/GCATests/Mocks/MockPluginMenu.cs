@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
+using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
@@ -34,6 +35,8 @@ namespace GSendTests.Mocks
 
         public MenuParent ParentMenu { get; set; }
 
+        public bool ReceiveClientMessages => false;
+
         public bool IsEnabled()
         {
             return true;
@@ -49,7 +52,7 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             throw new NotImplementedException();
         }

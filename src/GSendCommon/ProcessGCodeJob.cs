@@ -12,7 +12,7 @@ namespace GSendCommon
             : base(null, TimeSpan.FromMilliseconds(Constants.QueueProcessMilliseconds), gCodeProcessor)
         {
             _processor = gCodeProcessor ?? throw new ArgumentNullException(nameof(gCodeProcessor));
-            base.HangTimeout = int.MaxValue;
+            base.HangTimeout = 0;
             base.ContinueIfGlobalException = true;
         }
 

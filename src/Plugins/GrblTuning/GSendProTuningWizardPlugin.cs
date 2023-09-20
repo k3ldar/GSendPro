@@ -11,7 +11,7 @@ namespace GrblTuningWizard
 
         public PluginHosts Host => PluginHosts.Sender;
 
-        public PluginOptions Options => PluginOptions.HasMenuItems;
+        public PluginOptions Options => PluginOptions.HasMenuItems | PluginOptions.MessageReceived;
 
         public IReadOnlyList<IPluginMenu> MenuItems
         {

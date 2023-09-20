@@ -23,6 +23,7 @@ namespace GSendCommon
             : base(null, runInterval)
         {
             ContinueIfGlobalException = true;
+            HangTimeout = 0;
             ThreadSendCommandQueue = new();
             _gSendWebSocket = gSendWebSocket ?? throw new ArgumentNullException(nameof(gSendWebSocket));
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));

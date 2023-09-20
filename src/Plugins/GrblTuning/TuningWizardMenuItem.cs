@@ -1,5 +1,11 @@
-﻿using GrblTuning;
+﻿using System.Diagnostics;
+using System.Drawing.Text;
+using System.Reflection.PortableExecutable;
+using System.Text.Json;
 
+using GSendControls;
+
+using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
@@ -8,8 +14,10 @@ namespace GrblTuningWizard
     public sealed class TuningWizardMenuItem : IPluginMenu
     {
         private ISenderPluginHost _senderPluginHost;
+        private TuningWizardSettings _wizardSettings;
+        private bool _isWizardShowing = false;
 
-        public string Text => "Tuning Wizard";
+        public string Text => GSend.Language.Resources.TuneWizard;
 
         public int Index => -1;
 
@@ -19,36 +27,116 @@ namespace GrblTuningWizard
 
         public MenuParent ParentMenu => MenuParent.Tools;
 
+        public bool ReceiveClientMessages => true;
+
         public void Clicked()
         {
-            using FrmTuningWizard tuningWizard = new FrmTuningWizard();
-            tuningWizard.ShowDialog();
+            _wizardSettings.ExitError = false;
+            _isWizardShowing = true;
+            using WizardForm wizardForm = new WizardForm(GSend.Language.Resources.TuneWizard,
+                new BaseWizardPage[]
+                {
+                    new PageWelcome(_wizardSettings),
+                    new MachineMoveLocation(_wizardSettings),
+                    new MachineTuneXAxisAcceleration(_wizardSettings),
+                    new MachineTuneYAxisAcceleration(_wizardSettings),
+                    new MachineTuneZAxisAcceleration(_wizardSettings),
+                    new MachineTuneXAxisFeedRate(_wizardSettings),
+                    new MachineTuneYAxisFeedRate(_wizardSettings),
+                    new MachineTuneZAxisFeedRate(_wizardSettings),
+                    new PageFinish(_wizardSettings)
+                });
+
+            DialogResult wizardResult = wizardForm.ShowDialog();
+
+            long machineId = _wizardSettings.Machine.Id;
+
+            string feedX = String.Empty;
+            string feedY = String.Empty;
+            string feedZ = String.Empty;
+            string accelX = String.Empty;
+            string accelY = String.Empty;
+            string accelZ = String.Empty;
+
+
+            if (wizardResult == DialogResult.Cancel)
+            {
+                feedX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$110={_wizardSettings.OriginalMaxFeedX}");
+                feedY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$111={_wizardSettings.OriginalMaxFeedY}");
+                feedZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$112={_wizardSettings.OriginalMaxFeedZ}");
+                accelX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$120={_wizardSettings.OriginalMaxAccelerationZ}");
+                accelY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$121={_wizardSettings.OriginalMaxAccelerationY}");
+                accelZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$122={_wizardSettings.OriginalMaxAccelerationZ}");
+            }
+            else
+            {
+                feedX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$110={_wizardSettings.NewMaxFeedX}");
+                feedY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$111={_wizardSettings.NewMaxFeedY}");
+                feedZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$112={_wizardSettings.NewMaxFeedZ}");
+                accelX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$120={_wizardSettings.NewMaxAccelerationX}");
+                accelY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$121={_wizardSettings.NewMaxAccelerationY}");
+                accelZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$122={_wizardSettings.NewMaxAccelerationZ}");
+                _wizardSettings.Machine.Settings.MaxAccelerationX = _wizardSettings.NewMaxAccelerationX;
+                _wizardSettings.Machine.Settings.MaxAccelerationY = _wizardSettings.NewMaxAccelerationY;
+                _wizardSettings.Machine.Settings.MaxAccelerationZ = _wizardSettings.NewMaxAccelerationZ;
+                _wizardSettings.Machine.Settings.MaxFeedRateX = _wizardSettings.NewMaxFeedX;
+                _wizardSettings.Machine.Settings.MaxFeedRateY = _wizardSettings.NewMaxFeedY;
+                _wizardSettings.Machine.Settings.MaxFeedRateZ = _wizardSettings.NewMaxFeedZ;
+            }
+
+            _wizardSettings.SenderPluginHost.SendMessage(feedX);
+            _wizardSettings.SenderPluginHost.SendMessage(feedY);
+            _wizardSettings.SenderPluginHost.SendMessage(feedZ);
+            _wizardSettings.SenderPluginHost.SendMessage(accelX);
+            _wizardSettings.SenderPluginHost.SendMessage(accelY);
+            _wizardSettings.SenderPluginHost.SendMessage(accelZ);
+            _isWizardShowing = false;
         }
 
-        public bool IsChecked()
-        {
-            return false;
-        }
+        public bool IsChecked() => false;
 
         public bool IsEnabled()
         {
             return _senderPluginHost.IsConnected() && !_senderPluginHost.IsRunning() && !_senderPluginHost.IsPaused();
         }
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-            throw new NotImplementedException();
+            if (!_isWizardShowing)
+                return;
+
+            switch (clientMessage.request)
+            {
+                case Constants.StateChanged:
+                case Constants.MessageMachineStatusServer:
+                    MachineStateModel stateModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
+                    
+                    if (stateModel != null && !_wizardSettings.ExitError && !stateModel.IsConnected)
+                        _wizardSettings.ExitError = true;
+
+                    _wizardSettings.UpdatePosition(stateModel);
+
+                    break;
+
+                case Constants.ComPortTimeOut:
+                case "Disconnect":
+                case "GrblError":
+                case Constants.StateAlarm:
+                    _wizardSettings.ExitError = true;
+                    break;
+            }
         }
 
         public void UpdateHost<T>(T senderPluginHost)
         {
             _senderPluginHost = senderPluginHost as ISenderPluginHost ?? throw new ArgumentNullException(nameof(senderPluginHost));
+            _wizardSettings = new TuningWizardSettings(_senderPluginHost);
         }
 
         public bool GetShortcut(out string groupName, out string shortcutName)
         {
             groupName = GSend.Language.Resources.ShortcutMenuTools;
-            shortcutName = "Grbl Tuning Wizard";
+            shortcutName = GSend.Language.Resources.TuneWizard;
             return true;
         }
     }

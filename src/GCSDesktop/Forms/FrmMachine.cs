@@ -67,6 +67,7 @@ namespace GSendDesktop.Forms
         private readonly ShortcutHandler _shortcutHandler;
         private readonly IPluginHelper _pluginHelper;
         private readonly List<IGSendPluginModule> _pluginsWithClientMessage = new();
+        private readonly List<IPluginItemBase> _pluginsWithClientMessages = new();
 
         #endregion Private Fields
 
@@ -218,7 +219,7 @@ namespace GSendDesktop.Forms
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            ClientBaseMessage clientMessage = null;
+            IClientBaseMessage clientMessage = null;
             try
             {
                 clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message, Constants.DefaultJsonSerializerOptions);
@@ -361,17 +362,20 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageMachineConnectServer:
-                    ConnectResult connectResponse = (ConnectResult)JsonSerializer.Deserialize<int>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
-
-                    switch (connectResponse)
+                    if (clientMessage.message != null)
                     {
-                        case ConnectResult.TimeOut:
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.TimeoutConnectingToMachine);
-                            break;
+                        ConnectResult connectResponse = (ConnectResult)JsonSerializer.Deserialize<int>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
-                        case ConnectResult.Error:
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.ErrorConnectingToMachine);
-                            break;
+                        switch (connectResponse)
+                        {
+                            case ConnectResult.TimeOut:
+                                warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.TimeoutConnectingToMachine);
+                                break;
+
+                            case ConnectResult.Error:
+                                warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.ErrorConnectingToMachine);
+                                break;
+                        }
                     }
 
                     break;
@@ -431,6 +435,13 @@ namespace GSendDesktop.Forms
 
                     break;
             }
+
+
+            // notify plugins interested in messages
+            Parallel.ForEach(_pluginsWithClientMessages, sp =>
+            {
+                sp.ClientMessageReceived(clientMessage);
+            });
         }
 
         protected override void UpdateEnabledState()
@@ -1219,7 +1230,7 @@ namespace GSendDesktop.Forms
             toolStripStatusLabelWarnings.Invalidate();
         }
 
-        private void ProcessAlarmResponse(ClientBaseMessage clientMessage)
+        private void ProcessAlarmResponse(IClientBaseMessage clientMessage)
         {
             _isProbing = false;
             JsonElement element = (JsonElement)clientMessage.message;
@@ -1229,7 +1240,7 @@ namespace GSendDesktop.Forms
             UpdateEnabledState();
         }
 
-        private void ProcessErrorResponse(ClientBaseMessage clientMessage)
+        private void ProcessErrorResponse(IClientBaseMessage clientMessage)
         {
             if (_machineStatusModel.MachineState == MachineState.Alarm)
                 return;
@@ -1247,7 +1258,7 @@ namespace GSendDesktop.Forms
             UpdateEnabledState();
         }
 
-        private void ProcessFailedMessage(ClientBaseMessage clientMessage)
+        private void ProcessFailedMessage(IClientBaseMessage clientMessage)
         {
             string[] message = clientMessage.request.Split(Constants.ColonChar,
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -1578,8 +1589,6 @@ namespace GSendDesktop.Forms
 
 
             jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
-            jogControl.FeedMinimum = 0;
-            jogControl.FeedRate = jogControl.FeedMaximum / 2;
             jogControl.FeedMinimum = 0;
             jogControl.StepValue = 7;
             jogControl.FeedRate = _machine.JogFeedrate;
@@ -2679,12 +2688,18 @@ namespace GSendDesktop.Forms
         {
             pluginMenu.UpdateHost(this as ISenderPluginHost);
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
+
+            if (pluginMenu.ReceiveClientMessages)
+                _pluginsWithClientMessages.Add(pluginMenu);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
             _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+
+            if (toolbarButton.ReceiveClientMessages)
+                _pluginsWithClientMessages.Add(toolbarButton);
         }
 
         public void SendMessage(string message)

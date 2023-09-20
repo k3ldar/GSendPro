@@ -46,7 +46,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsTrue(sut.IsEnabled());
 
             // should not throw exceptions
-            sut.MachineStatusChanged(null);
+            sut.ClientMessageReceived(null);
             sut.UpdateHost<IPluginMenu>(null);
         }
 
@@ -64,7 +64,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsTrue(sut.IsEnabled());
 
             // should not throw exceptions
-            sut.MachineStatusChanged(null);
+            sut.ClientMessageReceived(null);
             sut.UpdateHost<IPluginMenu>(null);
         }
 
@@ -82,7 +82,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsTrue(sut.IsEnabled());
 
             // should not throw exceptions
-            sut.MachineStatusChanged(null);
+            sut.ClientMessageReceived(null);
             sut.UpdateHost<IPluginMenu>(null);
         }
 
@@ -100,7 +100,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsTrue(sut.IsEnabled());
 
             // should not throw exceptions
-            sut.MachineStatusChanged(null);
+            sut.ClientMessageReceived(null);
             sut.UpdateHost<IPluginMenu>(null);
         }
     }

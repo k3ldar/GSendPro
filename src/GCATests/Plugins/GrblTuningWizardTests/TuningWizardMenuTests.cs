@@ -16,7 +16,7 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         public void ConstructValidInstance_Success()
         {
             TuningWizardMenuItem sut = new TuningWizardMenuItem();
-            Assert.AreEqual("Tuning Wizard", sut.Text);
+            Assert.AreEqual("Grbl Tuning Wizard", sut.Text);
             Assert.AreEqual(-1, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(MenuParent.Tools, sut.ParentMenu);

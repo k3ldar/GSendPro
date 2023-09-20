@@ -131,6 +131,7 @@ namespace GSendControls.Plugins
                         }
                     }
 
+                    pluginHost.AddPlugin(plugin);
                 }
                 catch (Exception ex)
                 {
@@ -182,7 +183,7 @@ namespace GSendControls.Plugins
             parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count), pluginSeperator);
         }
 
-        private static void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
+        private void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
         {
             ToolStripMenuItem pluginMenu = new();
             pluginMenu.Tag = menu;
@@ -202,7 +203,16 @@ namespace GSendControls.Plugins
             pluginMenu.Click += (s, e) =>
             {
                 if (s is ToolStripMenuItem menuItem && menuItem.Tag is IPluginMenu menu)
-                    menu.Clicked();
+                {
+                    try
+                    {
+                        menu.Clicked();
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, menu.Text, err);
+                    }
+                }
             };
 
             if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))

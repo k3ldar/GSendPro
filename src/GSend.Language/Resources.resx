@@ -2052,4 +2052,89 @@
   <data name="ShortcutMenuTools" xml:space="preserve">
     <value>Tools Menu</value>
   </data>
+  <data name="GCodeMaxAccelerationX" xml:space="preserve">
+    <value>Max Acceleration X</value>
+  </data>
+  <data name="GCodeMaxAccelerationY" xml:space="preserve">
+    <value>Max Acceleration Y</value>
+  </data>
+  <data name="GCodeMaxAccelerationZ" xml:space="preserve">
+    <value>Max Acceleration Z</value>
+  </data>
+  <data name="GCodeMaxZValue" xml:space="preserve">
+    <value>Max Z Value</value>
+  </data>
+  <data name="GCodeMaxFeedRateX" xml:space="preserve">
+    <value>Max Feed Rate X</value>
+  </data>
+  <data name="GCodeMaxFeedRateY" xml:space="preserve">
+    <value>Max Feed Rate Y</value>
+  </data>
+  <data name="GCodeMaxFeedRateZ" xml:space="preserve">
+    <value>Max Feed Rate Z</value>
+  </data>
+  <data name="TuneWizardAcceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
+  <data name="TuneWizardAutoMove" xml:space="preserve">
+    <value>You can manually jog you machine into position or move automatically</value>
+  </data>
+  <data name="TuneWizardDecrease" xml:space="preserve">
+    <value>Decrease</value>
+  </data>
+  <data name="TuneWizardDescription" xml:space="preserve">
+    <value>To tune the {0} Axis {1} the test value should be increased, after each test the {1} can be adjusted.
+
+Whilst testing it is important to watch the machine, when the stepper motor begins to stall then the limit has been reached for the axis.  Dial down the setting until the stepper does not stall.</value>
+  </data>
+  <data name="TuneWizardIncrease" xml:space="preserve">
+    <value>Increase</value>
+  </data>
+  <data name="TuneWizardIncrements" xml:space="preserve">
+    <value>Increments</value>
+  </data>
+  <data name="TuneWizardMoveMachineHeader" xml:space="preserve">
+    <value>In order to tune your machine the spindle should be moved to the center of the machine to ensure it has enough room to manoeuvre during the procedure.
+
+There should be at least 100mm movement from the spindles position in both the X and Y direction and at least 50mm movement down for the Z.</value>
+  </data>
+  <data name="TuneWizardMoveToCenter" xml:space="preserve">
+    <value>Move Automatically</value>
+  </data>
+  <data name="TuneWizardNextTestValue" xml:space="preserve">
+    <value>Next Test Value</value>
+  </data>
+  <data name="TuneWizardOriginalValue" xml:space="preserve">
+    <value>Original Value: </value>
+  </data>
+  <data name="TuneWizardRunTest" xml:space="preserve">
+    <value>Run Test</value>
+  </data>
+  <data name="TuneWizardTestSuccess" xml:space="preserve">
+    <value>Did the test complete without the stepper stalling?</value>
+  </data>
+  <data name="TuneWizardTestSuccessHeader" xml:space="preserve">
+    <value>Test Result</value>
+  </data>
+  <data name="TuneWizardXAxis" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TuneWizard" xml:space="preserve">
+    <value>Grbl Tuning Wizard</value>
+  </data>
+  <data name="TuneWizardErrorNoContinue" xml:space="preserve">
+    <value>An error has occurred, please close the wizard and start again.</value>
+  </data>
+  <data name="TuneWizardTestInProgress" xml:space="preserve">
+    <value>Test Running</value>
+  </data>
+  <data name="TuneWizardYAxis" xml:space="preserve">
+    <value>Tune Y Axis {0}</value>
+  </data>
+  <data name="TuneWizardZAxis" xml:space="preserve">
+    <value>Tune Z Axis {0}</value>
+  </data>
+  <data name="TuneWizardFeedRate" xml:space="preserve">
+    <value>Feed Rate</value>
+  </data>
 </root>

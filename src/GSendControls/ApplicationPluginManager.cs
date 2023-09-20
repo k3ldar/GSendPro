@@ -89,29 +89,58 @@ namespace GSendControls
             if (pluginHosts == PluginHosts.None)
                 throw new InvalidOperationException("Invalid plugin usage.");
 
+            if (!File.Exists(pluginConfig))
+                return;
+
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             List<GSendPluginSettings> pluginSettings = GetSettings<List<GSendPluginSettings>>(pluginConfig, nameof(GSendPluginSettings));
+            ILogger logger = ServiceProvider.GetRequiredService<ILogger>();
 
             foreach (GSendPluginSettings pluginSetting in pluginSettings)
             {
-                if (!pluginSetting.Enabled)
-                    continue;
-
-
-                if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
+                try
                 {
-                    pluginAssembly = Assembly.Load(pluginSetting.AssemblyName);
-                }
+                    if (!pluginSetting.Enabled)
+                        continue;
 
-                if (FindPluginModuleClassByInterface(pluginAssembly, nameof(IGSendPluginModule)) != null)
-                {
-                    Type pluginInitializationType = FindPluginModuleClassByInterface(pluginAssembly, nameof(IPlugin));
-
-                    if (pluginInitializationType != null)
+                    if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
                     {
-                        PluginLoad(pluginAssembly, pluginAssembly.Location, true);
+                        pluginAssembly = Assembly.Load(pluginSetting.AssemblyName);
                     }
+
+                    if (FindPluginModuleClassByInterface(pluginAssembly, nameof(IGSendPluginModule)) != null)
+                    {
+                        Type pluginInitializationType = FindPluginModuleClassByInterface(pluginAssembly, nameof(IPlugin));
+
+                        if (pluginInitializationType != null)
+                        {
+                            PluginLoad(pluginAssembly, pluginAssembly.Location, true);
+                        }
+                    }
+
+                    logger.AddToLog(LogLevel.PluginLoadSuccess, pluginSetting.AssemblyName);
+                }
+                catch (Exception ex)
+                {
+                    logger.AddToLog(LogLevel.PluginLoadError, ex);
                 }
             }
+
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= CurrentDomain_ReflectionOnlyAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_ReflectionOnlyAssemblyResolve;
+        }
+
+        private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string name = new AssemblyName(args.Name).Name;
+            string pluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", $"{name}.dll");
+
+            if (File.Exists(pluginPath))
+                return Assembly.Load(File.ReadAllBytes(pluginPath));
+
+            return null;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension", Justification = "Not relevant for array")]

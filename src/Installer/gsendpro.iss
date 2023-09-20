@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "GSend Pro"
-#define MyAppVersion "0.9.7"
+#define MyAppVersion "0.9.8"
 #define MyAppPublisher "GSend Pro."
 #define MyAppURL "https://www.gsend.pro/"
 #define MyAppExeName "GSendEditor.exe"
@@ -85,6 +85,11 @@ Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.exe"; DestDir: "{a
 Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\GitProjects\GCA\Output\publish\Editor\GSendEditor.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 
+
+
+
+; Plugin files
+Source: "..\..\Output\publish\Plugins\GrblTuningWizard.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 
 ; Solution Files

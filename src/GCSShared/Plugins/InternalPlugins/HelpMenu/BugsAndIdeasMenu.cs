@@ -17,6 +17,8 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public MenuParent ParentMenu => MenuParent.Help;
 
+        public bool ReceiveClientMessages => false;
+
         public void Clicked()
         {
             ProcessStartInfo psi = new()
@@ -39,7 +41,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public bool IsEnabled() => true;
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in any context
         }

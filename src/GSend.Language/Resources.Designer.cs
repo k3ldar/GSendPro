@@ -2158,6 +2158,60 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Acceleration X.
+        /// </summary>
+        public static string GCodeMaxAccelerationX {
+            get {
+                return ResourceManager.GetString("GCodeMaxAccelerationX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Acceleration Y.
+        /// </summary>
+        public static string GCodeMaxAccelerationY {
+            get {
+                return ResourceManager.GetString("GCodeMaxAccelerationY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Acceleration Z.
+        /// </summary>
+        public static string GCodeMaxAccelerationZ {
+            get {
+                return ResourceManager.GetString("GCodeMaxAccelerationZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Feed Rate X.
+        /// </summary>
+        public static string GCodeMaxFeedRateX {
+            get {
+                return ResourceManager.GetString("GCodeMaxFeedRateX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Feed Rate Y.
+        /// </summary>
+        public static string GCodeMaxFeedRateY {
+            get {
+                return ResourceManager.GetString("GCodeMaxFeedRateY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Feed Rate Z.
+        /// </summary>
+        public static string GCodeMaxFeedRateZ {
+            get {
+                return ResourceManager.GetString("GCodeMaxFeedRateZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Layer Height.
         /// </summary>
         public static string GCodeMaxLayerHeight {
@@ -2199,6 +2253,15 @@ namespace GSend.Language {
         public static string GCodeMaxZFeed {
             get {
                 return ResourceManager.GetString("GCodeMaxZFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Z Value.
+        /// </summary>
+        public static string GCodeMaxZValue {
+            get {
+                return ResourceManager.GetString("GCodeMaxZValue", resourceCulture);
             }
         }
         
@@ -5349,6 +5412,190 @@ namespace GSend.Language {
         public static string TotalUsageTime {
             get {
                 return ResourceManager.GetString("TotalUsageTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grbl Tuning Wizard.
+        /// </summary>
+        public static string TuneWizard {
+            get {
+                return ResourceManager.GetString("TuneWizard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acceleration.
+        /// </summary>
+        public static string TuneWizardAcceleration {
+            get {
+                return ResourceManager.GetString("TuneWizardAcceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can manually jog you machine into position or move automatically.
+        /// </summary>
+        public static string TuneWizardAutoMove {
+            get {
+                return ResourceManager.GetString("TuneWizardAutoMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decrease.
+        /// </summary>
+        public static string TuneWizardDecrease {
+            get {
+                return ResourceManager.GetString("TuneWizardDecrease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To tune the {0} Axis {1} the test value should be increased, after each test the {1} can be adjusted.
+        ///
+        ///Whilst testing it is important to watch the machine, when the stepper motor begins to stall then the limit has been reached for the axis.  Dial down the setting until the stepper does not stall..
+        /// </summary>
+        public static string TuneWizardDescription {
+            get {
+                return ResourceManager.GetString("TuneWizardDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error has occurred, please close the wizard and start again..
+        /// </summary>
+        public static string TuneWizardErrorNoContinue {
+            get {
+                return ResourceManager.GetString("TuneWizardErrorNoContinue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed Rate.
+        /// </summary>
+        public static string TuneWizardFeedRate {
+            get {
+                return ResourceManager.GetString("TuneWizardFeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase.
+        /// </summary>
+        public static string TuneWizardIncrease {
+            get {
+                return ResourceManager.GetString("TuneWizardIncrease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increments.
+        /// </summary>
+        public static string TuneWizardIncrements {
+            get {
+                return ResourceManager.GetString("TuneWizardIncrements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to tune your machine the spindle should be moved to the center of the machine to ensure it has enough room to manoeuvre during the procedure.
+        ///
+        ///There should be at least 100mm movement from the spindles position in both the X and Y direction and at least 50mm movement down for the Z..
+        /// </summary>
+        public static string TuneWizardMoveMachineHeader {
+            get {
+                return ResourceManager.GetString("TuneWizardMoveMachineHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move Automatically.
+        /// </summary>
+        public static string TuneWizardMoveToCenter {
+            get {
+                return ResourceManager.GetString("TuneWizardMoveToCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Test Value.
+        /// </summary>
+        public static string TuneWizardNextTestValue {
+            get {
+                return ResourceManager.GetString("TuneWizardNextTestValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Value: .
+        /// </summary>
+        public static string TuneWizardOriginalValue {
+            get {
+                return ResourceManager.GetString("TuneWizardOriginalValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Test.
+        /// </summary>
+        public static string TuneWizardRunTest {
+            get {
+                return ResourceManager.GetString("TuneWizardRunTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Running.
+        /// </summary>
+        public static string TuneWizardTestInProgress {
+            get {
+                return ResourceManager.GetString("TuneWizardTestInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did the test complete without the stepper stalling?.
+        /// </summary>
+        public static string TuneWizardTestSuccess {
+            get {
+                return ResourceManager.GetString("TuneWizardTestSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Result.
+        /// </summary>
+        public static string TuneWizardTestSuccessHeader {
+            get {
+                return ResourceManager.GetString("TuneWizardTestSuccessHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TuneWizardXAxis {
+            get {
+                return ResourceManager.GetString("TuneWizardXAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tune Y Axis {0}.
+        /// </summary>
+        public static string TuneWizardYAxis {
+            get {
+                return ResourceManager.GetString("TuneWizardYAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tune Z Axis {0}.
+        /// </summary>
+        public static string TuneWizardZAxis {
+            get {
+                return ResourceManager.GetString("TuneWizardZAxis", resourceCulture);
             }
         }
         

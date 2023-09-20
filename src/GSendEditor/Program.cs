@@ -44,12 +44,12 @@ namespace GSendEditor
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendControls.PluginInitialisation).Assembly.Location);
 
-            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
-
             IServiceCollection serviceCollection = new ServiceCollection();
             applicationPluginManager.ConfigureServices(serviceCollection);
             applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
+
+            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
 
             try
             {

@@ -26,7 +26,7 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
             Assert.AreEqual("GRBL Tuning Wizard", sut.Name);
             Assert.AreEqual(1u, sut.Version);
             Assert.AreEqual(PluginHosts.Sender, sut.Host);
-            Assert.AreEqual(PluginOptions.HasMenuItems, sut.Options);
+            Assert.AreEqual(PluginOptions.HasMenuItems | PluginOptions.MessageReceived, sut.Options);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
             IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
 
             Assert.AreEqual(1, menuItems.Count);
-            Assert.AreEqual("Tuning Wizard", menuItems[0].Text);
+            Assert.AreEqual("Grbl Tuning Wizard", menuItems[0].Text);
         }
     }
 }

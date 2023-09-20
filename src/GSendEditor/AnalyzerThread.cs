@@ -20,11 +20,8 @@ namespace GSendEditor
             ISubprograms subprograms, FastColoredTextBoxNS.FastColoredTextBox txtGCode)
             : base(txtGCode, TimeSpan.FromMilliseconds(10))
         {
-#if DEBUG
-            base.HangTimeout = 30000;
-#else
-            base.HangTimeout = 5000;
-#endif
+            base.HangTimeout = 0;
+            ContinueIfGlobalException = true;
 
             _gCodeParserFactory = gCodeParserFactory ?? throw new ArgumentNullException(nameof(gCodeParserFactory));
             _subprograms = subprograms ?? throw new ArgumentNullException(nameof(subprograms));

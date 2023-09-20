@@ -134,7 +134,7 @@ namespace GSendControls
             }
 
 
-            return ((int)a.InformationType).CompareTo(((int)b.InformationType));
+            return ((int)a.InformationType).CompareTo((int)b.InformationType);
         }
 
         private void SortItems()
