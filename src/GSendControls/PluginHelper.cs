@@ -170,7 +170,9 @@ namespace GSendControls.Plugins
             button.Click += (s, e) =>
             {
                 if (s is ToolStripButton buttonItem && buttonItem.Tag is IPluginToolbarButton button)
+                {
                     button.Clicked();
+                }
             };
 
             parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), button);

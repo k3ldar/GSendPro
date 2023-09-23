@@ -24,7 +24,7 @@ namespace GrblTuningWizard
         {
             _wizardSettings = wizardSettings ?? throw new ArgumentNullException(nameof(wizardSettings));
             _lastGoodValue = _wizardSettings.OriginalMaxFeedX;
-            lblOriginalValue.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedX);
+            lblOriginalValue.Text = HelperMethods.FormatSpeedValue(_wizardSettings.OriginalMaxFeedX);
             btnIncrease_Click(null, EventArgs.Empty);
         }
 
@@ -158,13 +158,13 @@ namespace GrblTuningWizard
         private void btnIncrease_Click(object sender, EventArgs e)
         {
             _wizardSettings.NewMaxFeedX += numericIncrements.Value;
-            lblCurrentTestValue.Text = FormatSpeedValue(_wizardSettings.NewMaxFeedX);
+            lblCurrentTestValue.Text = HelperMethods.FormatSpeedValue(_wizardSettings.NewMaxFeedX);
         }
 
         private void btnDecrease_Click(object sender, EventArgs e)
         {
             _wizardSettings.NewMaxFeedX -= numericIncrements.Value;
-            lblCurrentTestValue.Text = FormatSpeedValue(_wizardSettings.NewMaxFeedX);
+            lblCurrentTestValue.Text = HelperMethods.FormatSpeedValue(_wizardSettings.NewMaxFeedX);
         }
     }
 }

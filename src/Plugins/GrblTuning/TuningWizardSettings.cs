@@ -7,6 +7,13 @@ namespace GrblTuningWizard
     internal sealed class TuningWizardSettings
     {
         private MachineStateModel _stateModel;
+        private decimal _finalReductionPercent = 10;
+        private decimal _newMaxAccelerationX;
+        private decimal _newMaxAccelerationY;
+        private decimal _newMaxAccelerationZ;
+        private decimal _newMaxFeedX;
+        private decimal _newMaxFeedY;
+        private decimal _newMaxFeedZ;
 
         public TuningWizardSettings(ISenderPluginHost senderPluginHost)
         {
@@ -54,17 +61,77 @@ namespace GrblTuningWizard
 
         public bool ExitError { get; set; }
 
-        public decimal NewMaxAccelerationX { get; set; }
+        public decimal NewMaxAccelerationX
+        {
+            get => _newMaxAccelerationX;
 
-        public decimal NewMaxAccelerationY { get; set; }
+            set
+            {
+                _newMaxAccelerationX = value;
+                FinalMaxAccelerationX = HelperMethods.ReduceValueByPercentage(_newMaxAccelerationX, OriginalMaxAccelerationX, FinalReductionPercent);
+                PercentMaxAccelerationX = HelperMethods.FormatPercent(OriginalMaxAccelerationX, FinalMaxAccelerationX);
+            }
+        }
 
-        public decimal NewMaxAccelerationZ { get; set; }
+        public decimal NewMaxAccelerationY
+        {
+            get => _newMaxAccelerationY;
 
-        public decimal NewMaxFeedX { get; set; }
+            set
+            {
+                _newMaxAccelerationY = value;
+                FinalMaxAccelerationY = HelperMethods.ReduceValueByPercentage(_newMaxAccelerationY, OriginalMaxAccelerationY, FinalReductionPercent);
+                PercentMaxAccelerationY = HelperMethods.FormatPercent(OriginalMaxAccelerationY, FinalMaxAccelerationY);
+            }
+        }
 
-        public decimal NewMaxFeedY { get; set; }
+        public decimal NewMaxAccelerationZ
+        {
+            get => _newMaxAccelerationZ;
 
-        public decimal NewMaxFeedZ { get; set; }
+            set
+            {
+                _newMaxAccelerationZ = value;
+                FinalMaxAccelerationZ = HelperMethods.ReduceValueByPercentage(_newMaxAccelerationZ, OriginalMaxAccelerationZ, FinalReductionPercent);
+                PercentMaxAccelerationZ = HelperMethods.FormatPercent(OriginalMaxAccelerationZ, FinalMaxAccelerationZ);
+            }
+        }
+
+        public decimal NewMaxFeedX
+        {
+            get => _newMaxFeedX;
+
+            set
+            {
+                _newMaxFeedX = value;
+                FinalMaxFeedX = HelperMethods.ReduceValueByPercentage(_newMaxFeedX, OriginalMaxFeedX, FinalReductionPercent);
+                PercentMaxFeedX = HelperMethods.FormatPercent(OriginalMaxFeedX, FinalMaxFeedX);
+            }
+        }
+
+        public decimal NewMaxFeedY
+        {
+            get => _newMaxFeedY;
+
+            set
+            {
+                _newMaxFeedY = value;
+                FinalMaxFeedY = HelperMethods.ReduceValueByPercentage(_newMaxFeedY, OriginalMaxFeedY, FinalReductionPercent);
+                PercentMaxFeedY = HelperMethods.FormatPercent(OriginalMaxFeedY, FinalMaxFeedY);
+            }
+        }
+
+        public decimal NewMaxFeedZ
+        {
+            get => _newMaxFeedZ;
+
+            set
+            {
+                _newMaxFeedZ = value;
+                FinalMaxFeedZ = HelperMethods.ReduceValueByPercentage(_newMaxFeedZ, OriginalMaxFeedZ, FinalReductionPercent);
+                PercentMaxFeedZ = HelperMethods.FormatPercent(OriginalMaxFeedZ, FinalMaxFeedZ);
+            }
+        }
 
         public double CurrentX { get; private set; }
 
@@ -72,7 +139,52 @@ namespace GrblTuningWizard
 
         public double CurrentZ { get; private set; }
 
+        public decimal FinalMaxAccelerationX { get; private set; }
+
+        public decimal FinalMaxAccelerationY { get; private set; }
+
+        public decimal FinalMaxAccelerationZ { get; private set; }
+
+        public decimal FinalMaxFeedX { get; private set; }
+
+        public decimal FinalMaxFeedY { get; private set; }
+
+        public decimal FinalMaxFeedZ { get; private set; }
+
+        public string PercentMaxAccelerationX { get; private set; }
+
+        public string PercentMaxAccelerationY { get; private set; }
+
+        public string PercentMaxAccelerationZ { get; private set; }
+
+        public string PercentMaxFeedX { get; private set; }
+
+        public string PercentMaxFeedY { get; private set; }
+
+        public string PercentMaxFeedZ { get; private set; }
+
         public MachineState CurrentState { get; private set; }
+
+        public decimal FinalReductionPercent
+        {
+            get => _finalReductionPercent;
+
+            set
+            {
+                if (_finalReductionPercent == value)
+                    return;
+
+                _finalReductionPercent = value;
+
+                // force update of final values
+                NewMaxAccelerationX = NewMaxAccelerationX + 10 - 10;
+                NewMaxAccelerationY = NewMaxAccelerationY + 10 - 10;
+                NewMaxAccelerationZ = NewMaxAccelerationZ + 10 - 10;
+                NewMaxFeedX = NewMaxFeedX + 10 - 10;
+                NewMaxFeedY = NewMaxFeedY + 10 - 10;
+                NewMaxFeedZ = NewMaxFeedZ + 10 - 10;
+            }
+        }
 
         public void SafeToContinue(DateTime timeStarted)
         {
@@ -98,7 +210,34 @@ namespace GrblTuningWizard
             CurrentY = stateModel.WorkY;
             CurrentZ = stateModel.WorkZ;
             CurrentState = stateModel.MachineState;
+        }
 
+        public void UpdateMachineSettings()
+        {
+            UpdateMachineValue(OriginalMaxAccelerationX, FinalMaxAccelerationX, "120");
+            Machine.Settings.MaxAccelerationX = FinalMaxAccelerationX;
+            UpdateMachineValue(OriginalMaxAccelerationY, FinalMaxAccelerationY, "121");
+            Machine.Settings.MaxAccelerationY = FinalMaxAccelerationY;
+            UpdateMachineValue(OriginalMaxAccelerationZ, FinalMaxAccelerationZ, "122");
+            Machine.Settings.MaxAccelerationZ = FinalMaxAccelerationZ;
+
+            UpdateMachineValue(OriginalMaxFeedX, FinalMaxFeedX, "110");
+            Machine.Settings.MaxFeedRateX = FinalMaxFeedX;
+            UpdateMachineValue(OriginalMaxFeedY, FinalMaxFeedY, "111");
+            Machine.Settings.MaxFeedRateY = FinalMaxFeedY;
+            UpdateMachineValue(OriginalMaxFeedZ, FinalMaxFeedZ, "112");
+            Machine.Settings.MaxFeedRateZ = FinalMaxFeedZ;
+        }
+
+        private void UpdateMachineValue(decimal oldValue, decimal newValue, string setting)
+        {
+            if (oldValue == newValue)
+                return;
+
+            string newValueMessage = String.Format(Constants.MessageMachineUpdateSetting,
+                Machine.Id,
+                $"${setting}={newValue}");
+            SenderPluginHost.SendMessage(newValueMessage);
         }
     }
 }

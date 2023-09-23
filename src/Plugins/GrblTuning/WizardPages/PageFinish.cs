@@ -1,57 +1,102 @@
 ﻿using GSendControls;
 
+using GSendShared;
+
 namespace GrblTuningWizard
 {
     internal partial class PageFinish : BaseWizardPage
     {
         private readonly TuningWizardSettings _wizardSettings;
+        private readonly ListViewItem _lvAccelX = new($"{GSend.Language.Resources.GCodeMaxAccelerationX} ( mm/sec²)");
+        private readonly ListViewItem _lvAccelY = new($"{GSend.Language.Resources.GCodeMaxAccelerationY} ( mm/sec²)");
+        private readonly ListViewItem _lvAccelZ = new($"{GSend.Language.Resources.GCodeMaxAccelerationZ} ( mm/sec²)");
+        private readonly ListViewItem _lvFeedX = new($"{GSend.Language.Resources.GCodeMaxFeedRateX} ( mm/min)");
+        private readonly ListViewItem _lvFeedY = new($"{GSend.Language.Resources.GCodeMaxFeedRateY} ( mm/min)");
+        private readonly ListViewItem _lvFeedZ = new($"{GSend.Language.Resources.GCodeMaxFeedRateZ} ( mm/min)");
 
         public PageFinish()
         {
             InitializeComponent();
+            lvDetails.Items.Add(_lvAccelX);
+            lvDetails.Items.Add(_lvAccelY);
+            lvDetails.Items.Add(_lvAccelZ);
+            lvDetails.Items.Add(_lvFeedX);
+            lvDetails.Items.Add(_lvFeedY);
+            lvDetails.Items.Add(_lvFeedZ);
+
+            foreach (ListViewItem item in lvDetails.Items)
+            {
+                for (int i = 0; i < 4; i++)
+                    item.SubItems.Add(String.Empty);
+            }
         }
 
         public PageFinish(TuningWizardSettings wizardSettings)
             : this()
         {
             _wizardSettings = wizardSettings ?? throw new ArgumentNullException(nameof(wizardSettings));
-
-            lblMachineName.Text = _wizardSettings.Machine.Name;
-            lblMaxAccelValueX.Text = FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationX);
-            lblMaxAccelValueY.Text = FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationY);
-            lblMaxAccelValueZ.Text = FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationZ);
-            lblMaxValueX.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedX);
-            lblMaxValueY.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedY);
-            lblMaxValueZ.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedZ);
         }
 
         public override void LoadResources()
         {
+            lblReductionAmount.Text = GSend.Language.Resources.TuneWizardFinalRecuctionPercent;
+            lblFinishHeader.Text = GSend.Language.Resources.TuneWizardFinishHeader;
             lblMachineNameHeader.Text = GSend.Language.Resources.Name;
-            lblMaxX.Text = GSend.Language.Resources.GCodeMaxFeedRateX;
-            lblMaxY.Text = GSend.Language.Resources.GCodeMaxFeedRateY;
-            lblMaxZ.Text = GSend.Language.Resources.GCodeMaxFeedRateZ;
-            lblMaxAccelX.Text = GSend.Language.Resources.GCodeMaxAccelerationX;
-            lblMaxAccelY.Text = GSend.Language.Resources.GCodeMaxAccelerationY;
-            lblMaxAccelZ.Text = GSend.Language.Resources.GCodeMaxAccelerationZ;
+            columnHeaderName.Text = String.Empty;
+            columnHeaderOriginal.Text = GSend.Language.Resources.TuneWizardOriginalValue;
+            columnHeaderMax.Text = GSend.Language.Resources.TuneWizardMaxValue;
+            columnHeaderFinal.Text = GSend.Language.Resources.TuneWizardFinalValue;
+            columnHeaderPercent.Text = GSend.Language.Resources.TuneWizardPercent;
         }
 
         public override void PageShown()
         {
+            UpdateFinalValues();
+        }
 
-            lblMaxAccelValueNewX.Text = FormatAccelerationValue(_wizardSettings.NewMaxAccelerationX);
-            lblMaxAccelValueNewY.Text = FormatAccelerationValue(_wizardSettings.NewMaxAccelerationY);
-            lblMaxAccelValueNewZ.Text = FormatAccelerationValue(_wizardSettings.NewMaxAccelerationZ);
-            lblMaxValueNewX.Text = FormatSpeedValue(_wizardSettings.NewMaxFeedX);
-            lblMaxValueNewY.Text = FormatSpeedValue(_wizardSettings.NewMaxFeedY);
-            lblMaxValueNewZ.Text = FormatSpeedValue(_wizardSettings.NewMaxFeedZ);
+        public override bool BeforeFinish()
+        {
+            _wizardSettings.UpdateMachineSettings();
+            return true;
+        }
 
-            lblMaxAccelValueDiffX.Text = FormatPercentDiff(_wizardSettings.OriginalMaxAccelerationX, _wizardSettings.NewMaxAccelerationX);
-            lblMaxAccelValueDiffY.Text = FormatPercentDiff(_wizardSettings.OriginalMaxAccelerationY, _wizardSettings.NewMaxAccelerationY);
-            lblMaxAccelValueDiffZ.Text = FormatPercentDiff(_wizardSettings.OriginalMaxAccelerationZ, _wizardSettings.NewMaxAccelerationZ);
-            lblMaxValueDiffX.Text = FormatPercentDiff(_wizardSettings.OriginalMaxFeedX, _wizardSettings.NewMaxFeedX);
-            lblMaxValueDiffY.Text = FormatPercentDiff(_wizardSettings.OriginalMaxFeedY, _wizardSettings.NewMaxFeedY);
-            lblMaxValueDiffZ.Text = FormatPercentDiff(_wizardSettings.OriginalMaxFeedZ, _wizardSettings.NewMaxFeedZ);
+        private void UpdateFinalValues()
+        {
+            _lvAccelX.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxAccelerationX);
+            _lvAccelX.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxAccelerationX);
+            _lvAccelX.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxAccelerationX);
+            _lvAccelX.SubItems[4].Text = _wizardSettings.PercentMaxAccelerationX;
+
+            _lvAccelY.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxAccelerationY);
+            _lvAccelY.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxAccelerationY);
+            _lvAccelY.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxAccelerationY);
+            _lvAccelY.SubItems[4].Text = _wizardSettings.PercentMaxAccelerationY;
+
+            _lvAccelZ.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxAccelerationZ);
+            _lvAccelZ.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxAccelerationZ);
+            _lvAccelZ.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxAccelerationZ);
+            _lvAccelZ.SubItems[4].Text = _wizardSettings.PercentMaxAccelerationZ;
+
+            _lvFeedX.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxFeedX);
+            _lvFeedX.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxFeedX);
+            _lvFeedX.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxFeedX);
+            _lvFeedX.SubItems[4].Text = _wizardSettings.PercentMaxFeedX;
+
+            _lvFeedY.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxFeedY);
+            _lvFeedY.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxFeedY);
+            _lvFeedY.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxFeedY);
+            _lvFeedY.SubItems[4].Text = _wizardSettings.PercentMaxFeedY;
+
+            _lvFeedZ.SubItems[1].Text = HelperMethods.FormatSpeed(_wizardSettings.OriginalMaxFeedZ);
+            _lvFeedZ.SubItems[2].Text = HelperMethods.FormatSpeed(_wizardSettings.NewMaxFeedZ);
+            _lvFeedZ.SubItems[3].Text = HelperMethods.FormatSpeed(_wizardSettings.FinalMaxFeedZ);
+            _lvFeedZ.SubItems[4].Text = _wizardSettings.PercentMaxFeedZ;
+        }
+
+        private void numericAdjustment_ValueChanged(object sender, EventArgs e)
+        {
+            _wizardSettings.FinalReductionPercent = numericAdjustment.Value;
+            UpdateFinalValues();
         }
     }
 }

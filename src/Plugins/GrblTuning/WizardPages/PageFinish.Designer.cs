@@ -28,45 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            lblFinishHeader = new Label();
             lblMachineNameHeader = new Label();
             lblMachineName = new Label();
-            lblMaxAccelValueX = new Label();
-            lblMaxAccelX = new Label();
-            lblMaxAccelValueY = new Label();
-            lblMaxAccelY = new Label();
-            lblMaxAccelValueZ = new Label();
-            lblMaxAccelZ = new Label();
-            lblMaxValueX = new Label();
-            lblMaxX = new Label();
-            lblMaxValueY = new Label();
-            lblMaxY = new Label();
-            lblMaxValueZ = new Label();
-            lblMaxZ = new Label();
-            lblOriginalHeader = new Label();
-            lblNewHeader = new Label();
-            lblMaxValueNewZ = new Label();
-            lblMaxValueNewY = new Label();
-            lblMaxValueNewX = new Label();
-            lblMaxAccelValueNewZ = new Label();
-            lblMaxAccelValueNewY = new Label();
-            lblMaxAccelValueNewX = new Label();
-            lblDiffHeader = new Label();
-            lblMaxValueDiffZ = new Label();
-            lblMaxValueDiffY = new Label();
-            lblMaxValueDiffX = new Label();
-            lblMaxAccelValueDiffZ = new Label();
-            lblMaxAccelValueDiffY = new Label();
-            lblMaxAccelValueDiffX = new Label();
+            numericAdjustment = new NumericUpDown();
+            lblReductionAmount = new Label();
+            lvDetails = new GSendControls.ListViewEx();
+            columnHeaderName = new ColumnHeader();
+            columnHeaderOriginal = new ColumnHeader();
+            columnHeaderMax = new ColumnHeader();
+            columnHeaderFinal = new ColumnHeader();
+            columnHeaderPercent = new ColumnHeader();
+            ((System.ComponentModel.ISupportInitialize)numericAdjustment).BeginInit();
             SuspendLayout();
             // 
-            // label1
+            // lblFinishHeader
             // 
-            label1.Location = new Point(3, 3);
-            label1.Name = "label1";
-            label1.Size = new Size(554, 43);
-            label1.TabIndex = 0;
-            label1.Text = "Welcome to the Grbl  Tuning Wizard, this wizard will take you through the tuning process for the CNC machine";
+            lblFinishHeader.Location = new Point(3, 3);
+            lblFinishHeader.Name = "lblFinishHeader";
+            lblFinishHeader.Size = new Size(554, 43);
+            lblFinishHeader.TabIndex = 0;
+            lblFinishHeader.Text = "You have now finished tuning your machine, it is recommended that the final acceleration and feed rates are reduced by about 10 to 20% below the maximum rates.";
             // 
             // lblMachineNameHeader
             // 
@@ -86,320 +68,89 @@
             lblMachineName.TabIndex = 2;
             lblMachineName.Text = "label2";
             // 
-            // lblMaxAccelValueX
+            // numericAdjustment
             // 
-            lblMaxAccelValueX.AutoSize = true;
-            lblMaxAccelValueX.Location = new Point(156, 135);
-            lblMaxAccelValueX.Name = "lblMaxAccelValueX";
-            lblMaxAccelValueX.Size = new Size(38, 15);
-            lblMaxAccelValueX.TabIndex = 4;
-            lblMaxAccelValueX.Text = "label2";
+            numericAdjustment.Location = new Point(3, 294);
+            numericAdjustment.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numericAdjustment.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            numericAdjustment.Name = "numericAdjustment";
+            numericAdjustment.Size = new Size(75, 23);
+            numericAdjustment.TabIndex = 30;
+            numericAdjustment.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numericAdjustment.ValueChanged += numericAdjustment_ValueChanged;
             // 
-            // lblMaxAccelX
+            // lblReductionAmount
             // 
-            lblMaxAccelX.AutoSize = true;
-            lblMaxAccelX.Location = new Point(3, 135);
-            lblMaxAccelX.Name = "lblMaxAccelX";
-            lblMaxAccelX.Size = new Size(38, 15);
-            lblMaxAccelX.TabIndex = 3;
-            lblMaxAccelX.Text = "label2";
+            lblReductionAmount.AutoSize = true;
+            lblReductionAmount.Location = new Point(3, 276);
+            lblReductionAmount.Name = "lblReductionAmount";
+            lblReductionAmount.Size = new Size(129, 15);
+            lblReductionAmount.TabIndex = 31;
+            lblReductionAmount.Text = "Final reduction percent";
             // 
-            // lblMaxAccelValueY
+            // lvDetails
             // 
-            lblMaxAccelValueY.AutoSize = true;
-            lblMaxAccelValueY.Location = new Point(156, 154);
-            lblMaxAccelValueY.Name = "lblMaxAccelValueY";
-            lblMaxAccelValueY.Size = new Size(38, 15);
-            lblMaxAccelValueY.TabIndex = 6;
-            lblMaxAccelValueY.Text = "label2";
+            lvDetails.AllowColumnReorder = true;
+            lvDetails.Columns.AddRange(new ColumnHeader[] { columnHeaderName, columnHeaderOriginal, columnHeaderMax, columnHeaderFinal, columnHeaderPercent });
+            lvDetails.Location = new Point(3, 91);
+            lvDetails.Name = "lvDetails";
+            lvDetails.OwnerDraw = true;
+            lvDetails.SaveName = "";
+            lvDetails.ShowToolTip = false;
+            lvDetails.Size = new Size(560, 168);
+            lvDetails.TabIndex = 32;
+            lvDetails.UseCompatibleStateImageBehavior = false;
+            lvDetails.View = View.Details;
             // 
-            // lblMaxAccelY
+            // columnHeaderName
             // 
-            lblMaxAccelY.AutoSize = true;
-            lblMaxAccelY.Location = new Point(3, 154);
-            lblMaxAccelY.Name = "lblMaxAccelY";
-            lblMaxAccelY.Size = new Size(38, 15);
-            lblMaxAccelY.TabIndex = 5;
-            lblMaxAccelY.Text = "label2";
+            columnHeaderName.Width = 160;
             // 
-            // lblMaxAccelValueZ
+            // columnHeaderOriginal
             // 
-            lblMaxAccelValueZ.AutoSize = true;
-            lblMaxAccelValueZ.Location = new Point(156, 173);
-            lblMaxAccelValueZ.Name = "lblMaxAccelValueZ";
-            lblMaxAccelValueZ.Size = new Size(38, 15);
-            lblMaxAccelValueZ.TabIndex = 8;
-            lblMaxAccelValueZ.Text = "label2";
+            columnHeaderOriginal.Width = 90;
             // 
-            // lblMaxAccelZ
+            // columnHeaderMax
             // 
-            lblMaxAccelZ.AutoSize = true;
-            lblMaxAccelZ.Location = new Point(3, 173);
-            lblMaxAccelZ.Name = "lblMaxAccelZ";
-            lblMaxAccelZ.Size = new Size(38, 15);
-            lblMaxAccelZ.TabIndex = 7;
-            lblMaxAccelZ.Text = "label2";
+            columnHeaderMax.Width = 90;
             // 
-            // lblMaxValueX
+            // columnHeaderFinal
             // 
-            lblMaxValueX.AutoSize = true;
-            lblMaxValueX.Location = new Point(156, 192);
-            lblMaxValueX.Name = "lblMaxValueX";
-            lblMaxValueX.Size = new Size(38, 15);
-            lblMaxValueX.TabIndex = 10;
-            lblMaxValueX.Text = "label2";
+            columnHeaderFinal.Width = 90;
             // 
-            // lblMaxX
+            // columnHeaderPercent
             // 
-            lblMaxX.AutoSize = true;
-            lblMaxX.Location = new Point(3, 192);
-            lblMaxX.Name = "lblMaxX";
-            lblMaxX.Size = new Size(38, 15);
-            lblMaxX.TabIndex = 9;
-            lblMaxX.Text = "label2";
-            // 
-            // lblMaxValueY
-            // 
-            lblMaxValueY.AutoSize = true;
-            lblMaxValueY.Location = new Point(156, 211);
-            lblMaxValueY.Name = "lblMaxValueY";
-            lblMaxValueY.Size = new Size(38, 15);
-            lblMaxValueY.TabIndex = 12;
-            lblMaxValueY.Text = "label2";
-            // 
-            // lblMaxY
-            // 
-            lblMaxY.AutoSize = true;
-            lblMaxY.Location = new Point(3, 211);
-            lblMaxY.Name = "lblMaxY";
-            lblMaxY.Size = new Size(38, 15);
-            lblMaxY.TabIndex = 11;
-            lblMaxY.Text = "label2";
-            // 
-            // lblMaxValueZ
-            // 
-            lblMaxValueZ.AutoSize = true;
-            lblMaxValueZ.Location = new Point(156, 230);
-            lblMaxValueZ.Name = "lblMaxValueZ";
-            lblMaxValueZ.Size = new Size(38, 15);
-            lblMaxValueZ.TabIndex = 14;
-            lblMaxValueZ.Text = "label2";
-            // 
-            // lblMaxZ
-            // 
-            lblMaxZ.AutoSize = true;
-            lblMaxZ.Location = new Point(3, 230);
-            lblMaxZ.Name = "lblMaxZ";
-            lblMaxZ.Size = new Size(38, 15);
-            lblMaxZ.TabIndex = 13;
-            lblMaxZ.Text = "label2";
-            // 
-            // lblOriginalHeader
-            // 
-            lblOriginalHeader.AutoSize = true;
-            lblOriginalHeader.Location = new Point(156, 111);
-            lblOriginalHeader.Name = "lblOriginalHeader";
-            lblOriginalHeader.Size = new Size(38, 15);
-            lblOriginalHeader.TabIndex = 15;
-            lblOriginalHeader.Text = "label2";
-            // 
-            // lblNewHeader
-            // 
-            lblNewHeader.AutoSize = true;
-            lblNewHeader.Location = new Point(250, 111);
-            lblNewHeader.Name = "lblNewHeader";
-            lblNewHeader.Size = new Size(38, 15);
-            lblNewHeader.TabIndex = 22;
-            lblNewHeader.Text = "label3";
-            // 
-            // lblMaxValueNewZ
-            // 
-            lblMaxValueNewZ.AutoSize = true;
-            lblMaxValueNewZ.Location = new Point(250, 230);
-            lblMaxValueNewZ.Name = "lblMaxValueNewZ";
-            lblMaxValueNewZ.Size = new Size(38, 15);
-            lblMaxValueNewZ.TabIndex = 21;
-            lblMaxValueNewZ.Text = "label2";
-            // 
-            // lblMaxValueNewY
-            // 
-            lblMaxValueNewY.AutoSize = true;
-            lblMaxValueNewY.Location = new Point(250, 211);
-            lblMaxValueNewY.Name = "lblMaxValueNewY";
-            lblMaxValueNewY.Size = new Size(38, 15);
-            lblMaxValueNewY.TabIndex = 20;
-            lblMaxValueNewY.Text = "label2";
-            // 
-            // lblMaxValueNewX
-            // 
-            lblMaxValueNewX.AutoSize = true;
-            lblMaxValueNewX.Location = new Point(250, 192);
-            lblMaxValueNewX.Name = "lblMaxValueNewX";
-            lblMaxValueNewX.Size = new Size(38, 15);
-            lblMaxValueNewX.TabIndex = 19;
-            lblMaxValueNewX.Text = "label2";
-            // 
-            // lblMaxAccelValueNewZ
-            // 
-            lblMaxAccelValueNewZ.AutoSize = true;
-            lblMaxAccelValueNewZ.Location = new Point(250, 173);
-            lblMaxAccelValueNewZ.Name = "lblMaxAccelValueNewZ";
-            lblMaxAccelValueNewZ.Size = new Size(38, 15);
-            lblMaxAccelValueNewZ.TabIndex = 18;
-            lblMaxAccelValueNewZ.Text = "label2";
-            // 
-            // lblMaxAccelValueNewY
-            // 
-            lblMaxAccelValueNewY.AutoSize = true;
-            lblMaxAccelValueNewY.Location = new Point(250, 154);
-            lblMaxAccelValueNewY.Name = "lblMaxAccelValueNewY";
-            lblMaxAccelValueNewY.Size = new Size(38, 15);
-            lblMaxAccelValueNewY.TabIndex = 17;
-            lblMaxAccelValueNewY.Text = "label2";
-            // 
-            // lblMaxAccelValueNewX
-            // 
-            lblMaxAccelValueNewX.AutoSize = true;
-            lblMaxAccelValueNewX.Location = new Point(250, 135);
-            lblMaxAccelValueNewX.Name = "lblMaxAccelValueNewX";
-            lblMaxAccelValueNewX.Size = new Size(38, 15);
-            lblMaxAccelValueNewX.TabIndex = 16;
-            lblMaxAccelValueNewX.Text = "label2";
-            // 
-            // lblDiffHeader
-            // 
-            lblDiffHeader.AutoSize = true;
-            lblDiffHeader.Location = new Point(333, 111);
-            lblDiffHeader.Name = "lblDiffHeader";
-            lblDiffHeader.Size = new Size(44, 15);
-            lblDiffHeader.TabIndex = 29;
-            lblDiffHeader.Text = "label10";
-            // 
-            // lblMaxValueDiffZ
-            // 
-            lblMaxValueDiffZ.AutoSize = true;
-            lblMaxValueDiffZ.Location = new Point(333, 230);
-            lblMaxValueDiffZ.Name = "lblMaxValueDiffZ";
-            lblMaxValueDiffZ.Size = new Size(38, 15);
-            lblMaxValueDiffZ.TabIndex = 28;
-            lblMaxValueDiffZ.Text = "label2";
-            // 
-            // lblMaxValueDiffY
-            // 
-            lblMaxValueDiffY.AutoSize = true;
-            lblMaxValueDiffY.Location = new Point(333, 211);
-            lblMaxValueDiffY.Name = "lblMaxValueDiffY";
-            lblMaxValueDiffY.Size = new Size(38, 15);
-            lblMaxValueDiffY.TabIndex = 27;
-            lblMaxValueDiffY.Text = "label2";
-            // 
-            // lblMaxValueDiffX
-            // 
-            lblMaxValueDiffX.AutoSize = true;
-            lblMaxValueDiffX.Location = new Point(333, 192);
-            lblMaxValueDiffX.Name = "lblMaxValueDiffX";
-            lblMaxValueDiffX.Size = new Size(38, 15);
-            lblMaxValueDiffX.TabIndex = 26;
-            lblMaxValueDiffX.Text = "label2";
-            // 
-            // lblMaxAccelValueDiffZ
-            // 
-            lblMaxAccelValueDiffZ.AutoSize = true;
-            lblMaxAccelValueDiffZ.Location = new Point(333, 173);
-            lblMaxAccelValueDiffZ.Name = "lblMaxAccelValueDiffZ";
-            lblMaxAccelValueDiffZ.Size = new Size(38, 15);
-            lblMaxAccelValueDiffZ.TabIndex = 25;
-            lblMaxAccelValueDiffZ.Text = "label2";
-            // 
-            // lblMaxAccelValueDiffY
-            // 
-            lblMaxAccelValueDiffY.AutoSize = true;
-            lblMaxAccelValueDiffY.Location = new Point(333, 154);
-            lblMaxAccelValueDiffY.Name = "lblMaxAccelValueDiffY";
-            lblMaxAccelValueDiffY.Size = new Size(38, 15);
-            lblMaxAccelValueDiffY.TabIndex = 24;
-            lblMaxAccelValueDiffY.Text = "label2";
-            // 
-            // lblMaxAccelValueDiffX
-            // 
-            lblMaxAccelValueDiffX.AutoSize = true;
-            lblMaxAccelValueDiffX.Location = new Point(333, 135);
-            lblMaxAccelValueDiffX.Name = "lblMaxAccelValueDiffX";
-            lblMaxAccelValueDiffX.Size = new Size(38, 15);
-            lblMaxAccelValueDiffX.TabIndex = 23;
-            lblMaxAccelValueDiffX.Text = "label2";
+            columnHeaderPercent.Width = 90;
             // 
             // PageFinish
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            Controls.Add(lblDiffHeader);
-            Controls.Add(lblMaxValueDiffZ);
-            Controls.Add(lblMaxValueDiffY);
-            Controls.Add(lblMaxValueDiffX);
-            Controls.Add(lblMaxAccelValueDiffZ);
-            Controls.Add(lblMaxAccelValueDiffY);
-            Controls.Add(lblMaxAccelValueDiffX);
-            Controls.Add(lblNewHeader);
-            Controls.Add(lblMaxValueNewZ);
-            Controls.Add(lblMaxValueNewY);
-            Controls.Add(lblMaxValueNewX);
-            Controls.Add(lblMaxAccelValueNewZ);
-            Controls.Add(lblMaxAccelValueNewY);
-            Controls.Add(lblMaxAccelValueNewX);
-            Controls.Add(lblOriginalHeader);
-            Controls.Add(lblMaxValueZ);
-            Controls.Add(lblMaxZ);
-            Controls.Add(lblMaxValueY);
-            Controls.Add(lblMaxY);
-            Controls.Add(lblMaxValueX);
-            Controls.Add(lblMaxX);
-            Controls.Add(lblMaxAccelValueZ);
-            Controls.Add(lblMaxAccelZ);
-            Controls.Add(lblMaxAccelValueY);
-            Controls.Add(lblMaxAccelY);
-            Controls.Add(lblMaxAccelValueX);
-            Controls.Add(lblMaxAccelX);
+            Controls.Add(lvDetails);
+            Controls.Add(lblReductionAmount);
+            Controls.Add(numericAdjustment);
             Controls.Add(lblMachineName);
             Controls.Add(lblMachineNameHeader);
-            Controls.Add(label1);
+            Controls.Add(lblFinishHeader);
             Name = "PageFinish";
+            ((System.ComponentModel.ISupportInitialize)numericAdjustment).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
+        private Label lblFinishHeader;
         private Label lblMachineNameHeader;
         private Label lblMachineName;
-        private Label lblMaxAccelValueX;
-        private Label lblMaxAccelX;
-        private Label lblMaxAccelValueY;
-        private Label lblMaxAccelY;
-        private Label lblMaxAccelValueZ;
-        private Label lblMaxAccelZ;
-        private Label lblMaxValueX;
-        private Label lblMaxX;
-        private Label lblMaxValueY;
-        private Label lblMaxY;
-        private Label lblMaxValueZ;
-        private Label lblMaxZ;
-        private Label lblOriginalHeader;
-        private Label lblNewHeader;
-        private Label lblMaxValueNewZ;
-        private Label lblMaxValueNewY;
-        private Label lblMaxValueNewX;
-        private Label lblMaxAccelValueNewZ;
-        private Label lblMaxAccelValueNewY;
-        private Label lblMaxAccelValueNewX;
-        private Label lblDiffHeader;
-        private Label lblMaxValueDiffZ;
-        private Label lblMaxValueDiffY;
-        private Label lblMaxValueDiffX;
-        private Label lblMaxAccelValueDiffZ;
-        private Label lblMaxAccelValueDiffY;
-        private Label lblMaxAccelValueDiffX;
+        private NumericUpDown numericAdjustment;
+        private Label lblReductionAmount;
+        private GSendControls.ListViewEx lvDetails;
+        private ColumnHeader columnHeaderName;
+        private ColumnHeader columnHeaderOriginal;
+        private ColumnHeader columnHeaderMax;
+        private ColumnHeader columnHeaderFinal;
+        private ColumnHeader columnHeaderPercent;
     }
 }

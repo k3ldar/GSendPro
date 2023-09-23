@@ -151,5 +151,40 @@ namespace GSendShared
                     return GSend.Language.Resources.StateUnknown;
             }
         }
+
+        public static string FormatPercent(decimal val1, decimal val2)
+        {
+            if (val1 == 0 || val2 == 0)
+                return "0%";
+
+            decimal increase = val2 - val1;
+            decimal diff = increase / val1;
+
+            return $"{diff:P}";
+        }
+
+        public static string FormatSpeed(decimal speed)
+        {
+            return $"{speed:0.##}";
+        }
+
+        public static string FormatSpeedValue(decimal speed)
+        {
+            return $"{speed:0.##} mm/min";
+        }
+
+        public static string FormatAccelerationValue(decimal speed)
+        {
+            return $"{speed:0.##} mm/sec²";
+        }
+
+        public static decimal ReduceValueByPercentage(decimal newValue, decimal originalValue, decimal percent)
+        {
+            if (newValue == originalValue)
+                return originalValue;
+
+            decimal percentValue = newValue / 100m;
+            return newValue - (percent * percentValue);
+        }
     }
 }

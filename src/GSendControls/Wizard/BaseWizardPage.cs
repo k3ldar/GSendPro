@@ -191,24 +191,5 @@ namespace GSendControls
         }
 
         public override bool AutoSize { get => base.AutoSize; set => base.AutoSize = false; }
-
-        protected static string FormatPercentDiff(decimal val1, decimal val2)
-        {
-            if (val1 == 0 || val2 == 0)
-                return "0%";
-
-            decimal diff = (val1 - val2) / val1 * 100;
-            return $"{diff.ToString("n")}%";
-        }
-
-        protected static string FormatAccelerationValue(decimal speed)
-        {
-            return $"{speed.ToString("n")} mm/sec2";
-        }
-
-        protected static string FormatSpeedValue(decimal speed)
-        {
-            return $"{speed.ToString("n")} mm/min";
-        }
     }
 }

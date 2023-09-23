@@ -51,45 +51,23 @@ namespace GrblTuningWizard
 
             long machineId = _wizardSettings.Machine.Id;
 
-            string feedX = String.Empty;
-            string feedY = String.Empty;
-            string feedZ = String.Empty;
-            string accelX = String.Empty;
-            string accelY = String.Empty;
-            string accelZ = String.Empty;
-
-
             if (wizardResult == DialogResult.Cancel)
             {
-                feedX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$110={_wizardSettings.OriginalMaxFeedX}");
-                feedY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$111={_wizardSettings.OriginalMaxFeedY}");
-                feedZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$112={_wizardSettings.OriginalMaxFeedZ}");
-                accelX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$120={_wizardSettings.OriginalMaxAccelerationZ}");
-                accelY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$121={_wizardSettings.OriginalMaxAccelerationY}");
-                accelZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$122={_wizardSettings.OriginalMaxAccelerationZ}");
-            }
-            else
-            {
-                feedX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$110={_wizardSettings.NewMaxFeedX}");
-                feedY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$111={_wizardSettings.NewMaxFeedY}");
-                feedZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$112={_wizardSettings.NewMaxFeedZ}");
-                accelX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$120={_wizardSettings.NewMaxAccelerationX}");
-                accelY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$121={_wizardSettings.NewMaxAccelerationY}");
-                accelZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$122={_wizardSettings.NewMaxAccelerationZ}");
-                _wizardSettings.Machine.Settings.MaxAccelerationX = _wizardSettings.NewMaxAccelerationX;
-                _wizardSettings.Machine.Settings.MaxAccelerationY = _wizardSettings.NewMaxAccelerationY;
-                _wizardSettings.Machine.Settings.MaxAccelerationZ = _wizardSettings.NewMaxAccelerationZ;
-                _wizardSettings.Machine.Settings.MaxFeedRateX = _wizardSettings.NewMaxFeedX;
-                _wizardSettings.Machine.Settings.MaxFeedRateY = _wizardSettings.NewMaxFeedY;
-                _wizardSettings.Machine.Settings.MaxFeedRateZ = _wizardSettings.NewMaxFeedZ;
+                string feedX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$110={_wizardSettings.OriginalMaxFeedX}");
+                string feedY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$111={_wizardSettings.OriginalMaxFeedY}");
+                string feedZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$112={_wizardSettings.OriginalMaxFeedZ}");
+                string accelX = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$120={_wizardSettings.OriginalMaxAccelerationZ}");
+                string accelY = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$121={_wizardSettings.OriginalMaxAccelerationY}");
+                string accelZ = String.Format(Constants.MessageMachineUpdateSetting, machineId, $"$122={_wizardSettings.OriginalMaxAccelerationZ}");
+
+                _wizardSettings.SenderPluginHost.SendMessage(feedX);
+                _wizardSettings.SenderPluginHost.SendMessage(feedY);
+                _wizardSettings.SenderPluginHost.SendMessage(feedZ);
+                _wizardSettings.SenderPluginHost.SendMessage(accelX);
+                _wizardSettings.SenderPluginHost.SendMessage(accelY);
+                _wizardSettings.SenderPluginHost.SendMessage(accelZ);
             }
 
-            _wizardSettings.SenderPluginHost.SendMessage(feedX);
-            _wizardSettings.SenderPluginHost.SendMessage(feedY);
-            _wizardSettings.SenderPluginHost.SendMessage(feedZ);
-            _wizardSettings.SenderPluginHost.SendMessage(accelX);
-            _wizardSettings.SenderPluginHost.SendMessage(accelY);
-            _wizardSettings.SenderPluginHost.SendMessage(accelZ);
             _isWizardShowing = false;
         }
 

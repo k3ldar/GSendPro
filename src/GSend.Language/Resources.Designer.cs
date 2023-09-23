@@ -5481,6 +5481,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Final reduction percent.
+        /// </summary>
+        public static string TuneWizardFinalRecuctionPercent {
+            get {
+                return ResourceManager.GetString("TuneWizardFinalRecuctionPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final Value.
+        /// </summary>
+        public static string TuneWizardFinalValue {
+            get {
+                return ResourceManager.GetString("TuneWizardFinalValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have now finished tuning your machine, it is recommended that the final acceleration and feed rates are reduced by about 10 to 20% below the maximum rates.  Select the final reduction percent and click Finish to save your changes..
+        /// </summary>
+        public static string TuneWizardFinishHeader {
+            get {
+                return ResourceManager.GetString("TuneWizardFinishHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Increase.
         /// </summary>
         public static string TuneWizardIncrease {
@@ -5495,6 +5522,15 @@ namespace GSend.Language {
         public static string TuneWizardIncrements {
             get {
                 return ResourceManager.GetString("TuneWizardIncrements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Setting.
+        /// </summary>
+        public static string TuneWizardMaxValue {
+            get {
+                return ResourceManager.GetString("TuneWizardMaxValue", resourceCulture);
             }
         }
         
@@ -5537,6 +5573,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TuneWizardPercent {
+            get {
+                return ResourceManager.GetString("TuneWizardPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run Test.
         /// </summary>
         public static string TuneWizardRunTest {
@@ -5573,7 +5618,7 @@ namespace GSend.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Tune X Axis {0}.
         /// </summary>
         public static string TuneWizardXAxis {
             get {

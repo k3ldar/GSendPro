@@ -2117,7 +2117,7 @@ There should be at least 100mm movement from the spindles position in both the X
     <value>Test Result</value>
   </data>
   <data name="TuneWizardXAxis" xml:space="preserve">
-    <value />
+    <value>Tune X Axis {0}</value>
   </data>
   <data name="TuneWizard" xml:space="preserve">
     <value>Grbl Tuning Wizard</value>
@@ -2136,5 +2136,20 @@ There should be at least 100mm movement from the spindles position in both the X
   </data>
   <data name="TuneWizardFeedRate" xml:space="preserve">
     <value>Feed Rate</value>
+  </data>
+  <data name="TuneWizardFinalRecuctionPercent" xml:space="preserve">
+    <value>Final reduction percent</value>
+  </data>
+  <data name="TuneWizardFinalValue" xml:space="preserve">
+    <value>Final Value</value>
+  </data>
+  <data name="TuneWizardFinishHeader" xml:space="preserve">
+    <value>You have now finished tuning your machine, it is recommended that the final acceleration and feed rates are reduced by about 10 to 20% below the maximum rates.  Select the final reduction percent and click Finish to save your changes.</value>
+  </data>
+  <data name="TuneWizardMaxValue" xml:space="preserve">
+    <value>Maximum Setting</value>
+  </data>
+  <data name="TuneWizardPercent" xml:space="preserve">
+    <value />
   </data>
 </root>

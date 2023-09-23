@@ -1,5 +1,7 @@
 ﻿using GSendControls;
 
+using GSendShared;
+
 namespace GrblTuningWizard
 {
     internal partial class PageWelcome : BaseWizardPage
@@ -17,12 +19,12 @@ namespace GrblTuningWizard
             _wizardSettings = wizardSettings ?? throw new ArgumentNullException(nameof(wizardSettings));
 
             lblMachineName.Text = _wizardSettings.Machine.Name;
-            lblMaxAccelValueX.Text = FormatSpeedValue(_wizardSettings.OriginalMaxAccelerationX);
-            lblMaxAccelValueY.Text = FormatSpeedValue(_wizardSettings.OriginalMaxAccelerationY);
-            lblMaxAccelValueZ.Text = FormatSpeedValue(_wizardSettings.OriginalMaxAccelerationZ);
-            lblMaxValueX.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedX);
-            lblMaxValueY.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedY);
-            lblMaxValueZ.Text = FormatSpeedValue(_wizardSettings.OriginalMaxFeedZ);
+            lblMaxAccelValueX.Text = HelperMethods.FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationX);
+            lblMaxAccelValueY.Text = HelperMethods.FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationY);
+            lblMaxAccelValueZ.Text = HelperMethods.FormatAccelerationValue(_wizardSettings.OriginalMaxAccelerationZ);
+            lblMaxValueX.Text = HelperMethods.FormatSpeedValue(_wizardSettings.OriginalMaxFeedX);
+            lblMaxValueY.Text = HelperMethods.FormatSpeedValue(_wizardSettings.OriginalMaxFeedY);
+            lblMaxValueZ.Text = HelperMethods.FormatSpeedValue(_wizardSettings.OriginalMaxFeedZ);
         }
 
         public override void LoadResources()

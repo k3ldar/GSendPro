@@ -7,9 +7,15 @@ namespace GSendTests.Mocks
 {
     internal class MockMachine : IMachine
     {
-        public long Id => throw new NotImplementedException();
+        public MockMachine()
+        {
+            Settings = new GrblSettings();
+        }
 
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public long Id => 231;
+
+        public string Name { get; set; } = "Mock Machine";
+
         public MachineType MachineType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public MachineFirmware MachineFirmware { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string ComPort { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -21,7 +27,7 @@ namespace GSendTests.Mocks
         public int OverrideSpindle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int OverrideZDownSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int OverrideZUpSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public GrblSettings Settings { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public GrblSettings Settings { get; set; }
         public DateTime ConfigurationLastVerified { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string ProbeCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int ProbeSpeed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
