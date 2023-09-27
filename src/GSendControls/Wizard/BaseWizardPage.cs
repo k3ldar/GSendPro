@@ -152,7 +152,7 @@ namespace GSendControls
 
         #endregion Virtual Methods
 
-        protected override Size DefaultSize => new Size(566, 356);
+        protected override Size DefaultSize => new(566, 356);
 
         protected override void OnSizeChanged(EventArgs e)
         {

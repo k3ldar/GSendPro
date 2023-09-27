@@ -445,7 +445,7 @@ namespace GSendControls
         private void DrawHeader(Graphics g)
         {
             if (g == null)
-                throw new ArgumentNullException("g");
+                throw new ArgumentNullException(nameof(g));
 
             Rectangle headerRect;
 
@@ -456,8 +456,8 @@ namespace GSendControls
             {
                 headerRect = new Rectangle(0, 0, Width -1, Height -1);
 
-                using (LinearGradientBrush aGB = new LinearGradientBrush(headerRect, CollapsedColorFrom, CollapsedColorTo, mode))
-                    g.FillRectangle(aGB, headerRect);
+                using LinearGradientBrush aGB = new(headerRect, CollapsedColorFrom, CollapsedColorTo, mode);
+                g.FillRectangle(aGB, headerRect);
             }
             else
             {
@@ -465,8 +465,8 @@ namespace GSendControls
                     Orientation == Orientation.Horizontal ? Width -1 : CollapsedSize -1,
                     Orientation == Orientation.Horizontal ? CollapsedSize - 1 : Height - 1);
 
-                using (LinearGradientBrush aGB = new LinearGradientBrush(headerRect, ExpandColorFrom, ExpandColorTo, mode))
-                    g.FillRectangle(aGB, headerRect);
+                using LinearGradientBrush aGB = new(headerRect, ExpandColorFrom, ExpandColorTo, mode);
+                g.FillRectangle(aGB, headerRect);
             }
 
             Image expandCollapsIndicator = Collapsed ? ExpandImage : CollapseImage;
@@ -499,8 +499,8 @@ namespace GSendControls
             }
 
             // draw text
-            SolidBrush fntBrush = new SolidBrush(HeaderForeColor);
-            StringFormat format = new StringFormat();
+            SolidBrush fntBrush = new(HeaderForeColor);
+            StringFormat format = new();
             format.Alignment = HeaderTextAlign;
             format.LineAlignment = StringAlignment.Center;
             format.Trimming = StringTrimming.EllipsisWord;
@@ -512,8 +512,10 @@ namespace GSendControls
                 g.RotateTransform(180);
             }
 
-            if (RightToLeft == System.Windows.Forms.RightToLeft.Yes)
-                format.FormatFlags = format.FormatFlags | StringFormatFlags.DirectionRightToLeft;
+            if (RightToLeft == RightToLeft.Yes)
+            {
+                format.FormatFlags |= StringFormatFlags.DirectionRightToLeft;
+            }
 
             g.DrawString(HeaderText, HeaderFont, fntBrush, headerRect, format);
 
@@ -625,7 +627,7 @@ namespace GSendControls
             }
             else
             {
-                Rectangle headerRect = new Rectangle(0, 0,
+                Rectangle headerRect = new(0, 0,
                     Orientation == Orientation.Horizontal ? Width - 2 : CollapsedSize - 2,
                     Orientation == Orientation.Horizontal ? CollapsedSize - 2 : Width - 2);
 
@@ -669,7 +671,7 @@ namespace GSendControls
 
             if (BeforeCollapse != null)
             {
-                CancelEventArgs args = new CancelEventArgs(false);
+                CancelEventArgs args = new(false);
                 BeforeCollapse(this, args);
                 Result = args.Cancel;
             }
@@ -696,7 +698,7 @@ namespace GSendControls
 
             if (BeforeExpand != null)
             {
-                CancelEventArgs args = new CancelEventArgs(false);
+                CancelEventArgs args = new(false);
                 BeforeExpand(this, args);
                 Result = args.Cancel;
             }

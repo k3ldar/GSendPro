@@ -11,9 +11,9 @@ namespace GSendControls
         #region Private Members
 
         private int _page;
-        private int _maxPages;
+        private readonly int _maxPages;
         private BaseWizardPage _currentPage;
-        private BaseWizardPage[] _pages;
+        private readonly BaseWizardPage[] _pages;
 
         #endregion Private Members
 
