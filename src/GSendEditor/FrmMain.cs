@@ -72,11 +72,11 @@ namespace GSendEditor
             _shortcuts = RetrieveAvailableShortcuts();
 
 
-            mnuFile.Tag = MenuParent.File;
-            mnuEdit.Tag = MenuParent.Edit;
-            mnuView.Tag = MenuParent.View;
-            mnuTools.Tag = MenuParent.Tools;
-            mnuHelp.Tag = MenuParent.Help;
+            mnuFile.Tag = new InternalPluginMenu(mnuFile);
+            mnuEdit.Tag = new InternalPluginMenu(mnuEdit);
+            mnuView.Tag = new InternalPluginMenu(mnuView);
+            mnuTools.Tag = new InternalPluginMenu(mnuTools);
+            mnuHelp.Tag = new InternalPluginMenu(mnuHelp);
 
             _pluginHelper.InitializeAllPlugins(this);
 
@@ -1113,6 +1113,29 @@ namespace GSendEditor
         #region ISenderPluginHost
 
         public PluginHosts Host => PluginHosts.SenderHost;
+
+        public IPluginMenu GetMenu(MenuParent menuParent)
+        {
+            switch (menuParent)
+            {
+                case MenuParent.File:
+                    return mnuFile.Tag as IPluginMenu;
+
+                case MenuParent.Edit:
+                    return mnuEdit.Tag as IPluginMenu;
+
+                case MenuParent.View:
+                    return mnuView.Tag as IPluginMenu;
+
+                case MenuParent.Tools:
+                    return mnuTools.Tag as IPluginMenu;
+
+                case MenuParent.Help:
+                    return mnuHelp.Tag as IPluginMenu;
+            }
+
+            return null;
+        }
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

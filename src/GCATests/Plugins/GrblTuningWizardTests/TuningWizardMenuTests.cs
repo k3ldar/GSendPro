@@ -4,6 +4,8 @@ using GrblTuningWizard;
 
 using GSendShared.Plugins;
 
+using GSendTests.Mocks;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GSendTests.Plugins.GrblTuningWizardTests
@@ -15,11 +17,12 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void ConstructValidInstance_Success()
         {
-            TuningWizardMenuItem sut = new TuningWizardMenuItem();
+            IPluginMenu pluginMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
+            TuningWizardMenuItem sut = new TuningWizardMenuItem(pluginMenu);
             Assert.AreEqual("Grbl Tuning Wizard", sut.Text);
             Assert.AreEqual(-1, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
-            Assert.AreEqual(MenuParent.Tools, sut.ParentMenu);
+            Assert.AreEqual(pluginMenu, sut.ParentMenu);
         }
     }
 }

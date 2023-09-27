@@ -66,7 +66,7 @@ namespace GSendTests.Shared.Plugins
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Service);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
-            pluginModule.Setup(m => m.MenuItems).Throws<InvalidOperationException>();
+            pluginModule.Setup(m => m.MenuItems(new MockSenderPluginHost())).Throws<InvalidOperationException>();
 
             var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
@@ -84,10 +84,11 @@ namespace GSendTests.Shared.Plugins
         [TestMethod]
         public void InitializeAllPlugins_WithMenuItems_MenuCreationCalled_Success()
         {
+            IPluginMenu parent = new MockPluginMenu("tools", MenuType.MenuItem, null);
             List<IPluginMenu> menuItems = new()
             {
-                new MockPluginMenu("-", MenuType.Seperator, MenuParent.Tools),
-                new MockPluginMenu("New Tool", MenuType.MenuItem, MenuParent.Tools),
+                new MockPluginMenu("-", MenuType.Seperator, parent),
+                new MockPluginMenu("New Tool", MenuType.MenuItem, parent),
             };
 
             List<IPluginMenu> createdMenuItems = new();
@@ -97,7 +98,7 @@ namespace GSendTests.Shared.Plugins
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasMenuItems);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
-            pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
+            pluginModule.Setup(m => m.MenuItems(It.IsAny<IPluginHost>())).Returns(menuItems);
 
             var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);

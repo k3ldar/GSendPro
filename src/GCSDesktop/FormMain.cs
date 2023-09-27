@@ -63,10 +63,9 @@ namespace GSendDesktop
             timerUpdateStatus.Interval = settings.UpdateMilliseconds;
 
             // initialize menu's for plugins
-            machineToolStripMenuItem.Tag = MenuParent.Machine;
-            helpToolStripMenuItem.Tag = MenuParent.View;
-            subprogramsToolStripMenuItem.Tag = MenuParent.Subprograms;
-            helpToolStripMenuItem.Tag = MenuParent.Help;
+            machineToolStripMenuItem.Tag = new InternalPluginMenu(machineToolStripMenuItem);
+            helpToolStripMenuItem.Tag = new InternalPluginMenu(helpToolStripMenuItem);
+            subprogramsToolStripMenuItem.Tag = new InternalPluginMenu(subprogramsToolStripMenuItem);
 
             _pluginHelper.InitializeAllPlugins(this);
         }
@@ -567,6 +566,23 @@ namespace GSendDesktop
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
             // nothing special to do for this host
+        }
+
+        public IPluginMenu GetMenu(MenuParent menuParent)
+        {
+            switch (menuParent)
+            {
+                case MenuParent.Machine:
+                    return machineToolStripMenuItem.Tag as IPluginMenu;
+
+                case MenuParent.Subprograms:
+                    return subprogramsToolStripMenuItem.Tag as IPluginMenu;
+
+                case MenuParent.Help:
+                    return helpToolStripMenuItem.Tag as IPluginMenu;
+            }
+
+            return null;
         }
 
         public void AddMenu(IPluginMenu pluginMenu)

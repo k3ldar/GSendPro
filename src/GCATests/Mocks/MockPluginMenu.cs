@@ -11,7 +11,7 @@ namespace GSendTests.Mocks
     {
         private ISenderPluginHost _senderPluginHost;
 
-        public MockPluginMenu(string name, int index, MenuType menuType, MenuParent menuParent)
+        public MockPluginMenu(string name, int index, MenuType menuType, IPluginMenu menuParent)
         {
             Text = name;
             Index = index;
@@ -19,7 +19,7 @@ namespace GSendTests.Mocks
             ParentMenu = menuParent;
         }
 
-        public MockPluginMenu(string name, MenuType menuType, MenuParent menuParent)
+        public MockPluginMenu(string name, MenuType menuType, IPluginMenu menuParent)
             : this(name, -1, menuType, menuParent)
         {
 
@@ -33,7 +33,7 @@ namespace GSendTests.Mocks
 
         public MenuType MenuType { get; set; }
 
-        public MenuParent ParentMenu { get; set; }
+        public IPluginMenu ParentMenu { get; set; }
 
         public bool ReceiveClientMessages => false;
 

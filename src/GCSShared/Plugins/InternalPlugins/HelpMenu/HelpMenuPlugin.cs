@@ -2,6 +2,8 @@
 {
     public sealed class HelpMenuPlugin : IGSendPluginModule
     {
+        private List<IPluginMenu> _pluginMenus;
+
         public string Name => "Help Menu";
 
         public ushort Version => 1;
@@ -10,20 +12,24 @@
 
         public PluginOptions Options => PluginOptions.HasMenuItems;
 
-        public IReadOnlyList<IPluginMenu> MenuItems
+        public IReadOnlyList<IPluginMenu> MenuItems(IPluginHost pluginHost)
         {
-            get
+            if (_pluginMenus == null)
             {
-                return new List<IPluginMenu>
+                IPluginMenu parentHelpMenu = pluginHost.GetMenu(MenuParent.Help);
+
+                _pluginMenus = new List<IPluginMenu>
                 {
-                    new HelpMenuItem(),
-                    new SeperatorMenu(MenuParent.Help, 1),
-                    new BugsAndIdeasMenu(),
-                    new SeperatorMenu(MenuParent.Help, 3),
-                    new HomePageMenu(),
-                    new SeperatorMenu(MenuParent.Help, 5),
+                    new HelpMenuItem(parentHelpMenu),
+                    new SeperatorMenu(parentHelpMenu, 1),
+                    new BugsAndIdeasMenu(parentHelpMenu),
+                    new SeperatorMenu(parentHelpMenu, 3),
+                    new HomePageMenu(parentHelpMenu),
+                    new SeperatorMenu(parentHelpMenu, 5)
                 };
             }
+
+            return _pluginMenus;
         }
 
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;

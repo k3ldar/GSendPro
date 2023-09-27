@@ -16,6 +16,12 @@ namespace GrblTuningWizard
         private ISenderPluginHost _senderPluginHost;
         private TuningWizardSettings _wizardSettings;
         private bool _isWizardShowing = false;
+        private readonly IPluginMenu _parentMenu;
+
+        public TuningWizardMenuItem(IPluginMenu parentMenu)
+        {
+            _parentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+        }
 
         public string Text => GSend.Language.Resources.TuneWizard;
 
@@ -25,7 +31,7 @@ namespace GrblTuningWizard
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public MenuParent ParentMenu => MenuParent.Tools;
+        public IPluginMenu ParentMenu => _parentMenu;
 
         public bool ReceiveClientMessages => true;
 

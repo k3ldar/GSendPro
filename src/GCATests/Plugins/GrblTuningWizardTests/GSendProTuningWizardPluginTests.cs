@@ -10,6 +10,8 @@ using GrblTuningWizard;
 using GSendShared.Interfaces;
 using GSendShared.Plugins;
 
+using GSendTests.Mocks;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GSendTests.Plugins.GrblTuningWizardTests
@@ -32,12 +34,16 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void Validate_MenuItems_Success()
         {
+            IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
+            MockSenderPluginHost pluginHost = new MockSenderPluginHost(parentMenu);
+
             GSendProTuningWizardPlugin sut = new();
 
-            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
+            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems(pluginHost);
 
             Assert.AreEqual(1, menuItems.Count);
             Assert.AreEqual("Grbl Tuning Wizard", menuItems[0].Text);
+            Assert.AreEqual(MenuParent.Tools, pluginHost.GetMenuCalls[0]);
         }
     }
 }

@@ -7,6 +7,11 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HelpMenuItem : IPluginMenu
     {
+        public HelpMenuItem(IPluginMenu parentMenu)
+        {
+            ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+        }
+
         public string Text => "Help";
 
         public int Index => 0;
@@ -15,7 +20,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public MenuParent ParentMenu => MenuParent.Help;
+        public IPluginMenu ParentMenu { get; }
 
         public bool ReceiveClientMessages => false;
 

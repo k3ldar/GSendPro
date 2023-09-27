@@ -6,6 +6,8 @@ namespace GSendShared.Plugins
     {
         PluginHosts Host { get; }
 
+        IPluginMenu GetMenu(MenuParent menuParent);
+
         void AddMenu(IPluginMenu pluginMenu);
 
         void AddToolbar(IPluginToolbarButton toolbarButton);

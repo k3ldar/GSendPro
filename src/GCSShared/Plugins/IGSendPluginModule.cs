@@ -27,7 +27,7 @@ namespace GSendShared.Plugins
         /// <summary>
         /// Menu items supplied by plugin
         /// </summary>
-        IReadOnlyList<IPluginMenu> MenuItems { get; }
+        IReadOnlyList<IPluginMenu> MenuItems(IPluginHost pluginHost);
 
         IReadOnlyList<IPluginToolbarButton> ToolbarItems { get; }
 

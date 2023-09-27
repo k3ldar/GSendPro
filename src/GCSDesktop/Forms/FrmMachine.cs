@@ -156,12 +156,12 @@ namespace GSendDesktop.Forms
 
             tabControlMain.TabPages.Remove(tabPageServiceSchedule);
 
-            mnuMachine.Tag = MenuParent.Machine;
-            mnuView.Tag = MenuParent.View;
-            mnuAction.Tag = MenuParent.Action;
-            mnuOptions.Tag = MenuParent.Options;
-            mnuTools.Tag = MenuParent.Tools;
-            mnuHelp.Tag = MenuParent.Help;
+            mnuMachine.Tag = new InternalPluginMenu(mnuMachine);
+            mnuView.Tag = new InternalPluginMenu(mnuView);
+            mnuAction.Tag = new InternalPluginMenu(mnuAction);
+            mnuOptions.Tag = new InternalPluginMenu(mnuOptions);
+            mnuTools.Tag = new InternalPluginMenu(mnuTools);
+            mnuHelp.Tag = new InternalPluginMenu(mnuHelp);
 
             _pluginHelper.InitializeAllPlugins(this);
 
@@ -2682,6 +2682,32 @@ namespace GSendDesktop.Forms
 
             if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
                 _pluginsWithClientMessage.Add(pluginModule);
+        }
+
+        public IPluginMenu GetMenu(MenuParent menuParent)
+        {
+            switch (menuParent)
+            {
+                case MenuParent.Machine:
+                    return mnuMachine.Tag as IPluginMenu;
+
+                case MenuParent.View:
+                    return mnuView.Tag as IPluginMenu;
+
+                case MenuParent.Action:
+                    return mnuAction.Tag as IPluginMenu;
+
+                case MenuParent.Options:
+                    return mnuOptions.Tag as IPluginMenu;
+
+                case MenuParent.Tools:
+                    return mnuTools.Tag as IPluginMenu;
+
+                case MenuParent.Help:
+                    return mnuHelp.Tag as IPluginMenu;
+            }
+
+            return null;
         }
 
         public void AddMenu(IPluginMenu pluginMenu)

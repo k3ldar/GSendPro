@@ -104,10 +104,12 @@ namespace GSendControls.Plugins
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
-                        if (plugin.MenuItems == null)
+                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems(pluginHost);
+
+                        if (menuItems == null)
                             throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
 
-                        foreach (IPluginMenu pluginMenu in plugin.MenuItems)
+                        foreach (IPluginMenu pluginMenu in menuItems)
                         {
                             if (pluginMenu == null)
                                 continue;
@@ -227,9 +229,10 @@ namespace GSendControls.Plugins
 
         private static ToolStripMenuItem GetParentMenu(IPluginMenu menu, MenuStrip mainMenu)
         {
+            InternalPluginMenu internalPluginMenu = menu.ParentMenu as InternalPluginMenu;
             ToolStripMenuItem parentMenu = null;
 
-            if (menu.ParentMenu == MenuParent.None)
+            if (internalPluginMenu == null)
             {
                 parentMenu = new ToolStripMenuItem();
                 parentMenu.Tag = menu;
@@ -238,16 +241,7 @@ namespace GSendControls.Plugins
             }
             else
             {
-                for (int i = 0; i < mainMenu.Items.Count; i++)
-                {
-                    if (mainMenu.Items[i] is ToolStripMenuItem rootMenu &&
-                        rootMenu.Tag is MenuParent menuParent &&
-                        menuParent == menu.ParentMenu)
-                    {
-                        parentMenu = rootMenu;
-                        break;
-                    }
-                }
+                parentMenu = internalPluginMenu.MenuItem;
             }
 
             return parentMenu;

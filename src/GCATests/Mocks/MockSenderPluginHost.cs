@@ -12,11 +12,31 @@ namespace GSendTests.Mocks
 {
     internal class MockSenderPluginHost : ISenderPluginHost
     {
+        private readonly IPluginMenu _parent;
+
+        public MockSenderPluginHost()
+        {
+
+        }
+
+        public MockSenderPluginHost(IPluginMenu parentMenu)
+        {
+            _parent = parentMenu;
+        }
+
         public IMachine Machine { get; set; }
 
         public List<string> Messages { get; } = new();
 
+        public List<MenuParent> GetMenuCalls { get; } = new();
+
         public PluginHosts Host => throw new NotImplementedException();
+
+        IPluginMenu IPluginHost.GetMenu(MenuParent menuParent)
+        {
+            GetMenuCalls.Add(menuParent);
+            return _parent;
+        }
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
