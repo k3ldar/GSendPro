@@ -57,10 +57,7 @@ namespace GSendTests.Mocks
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (MockComPort != null)
-                {
-                    MockComPort.Close();
-                }
+                MockComPort?.Close();
             }
         }
 

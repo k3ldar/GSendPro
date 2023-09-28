@@ -105,10 +105,7 @@ namespace GSendControls.Plugins
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
-                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems;
-
-                        if (menuItems == null)
-                            throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
+                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems ?? throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
 
                         foreach (IPluginMenu pluginMenu in menuItems)
                         {
@@ -183,8 +180,10 @@ namespace GSendControls.Plugins
 
         private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
         {
-            ToolStripSeparator pluginSeperator = new();
-            pluginSeperator.Tag = menu;
+            ToolStripSeparator pluginSeperator = new()
+            {
+                Tag = menu
+            };
             parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count), pluginSeperator);
         }
 
@@ -231,11 +230,11 @@ namespace GSendControls.Plugins
         private static ToolStripMenuItem GetParentMenu(IPluginMenu menu, MenuStrip mainMenu)
         {
             InternalPluginMenu internalPluginMenu = menu.ParentMenu as InternalPluginMenu;
-            ToolStripMenuItem parentMenu = null;
+            ToolStripMenuItem parentMenu;
 
             if (internalPluginMenu == null)
             {
-                parentMenu = new ToolStripMenuItem();
+                parentMenu = new();
                 parentMenu.Tag = menu;
                 parentMenu.Text = menu.Text;
                 mainMenu.Items.Add(parentMenu);

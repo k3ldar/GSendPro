@@ -20,13 +20,10 @@ namespace GrblTuningWizard
         {
             get
             {
-                if (_menuItems == null)
-                {
-                    _menuItems = new()
+                _menuItems ??= new()
                     {
                         new TuningWizardMenuItem(_pluginHost.GetMenu(MenuParent.Tools))
                     };
-                }
 
                 return _menuItems;
             }

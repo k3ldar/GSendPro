@@ -940,20 +940,14 @@ namespace GSendEditor
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(true);
-            }
+            shortcut?.Trigger(true);
         }
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(false);
-            }
+            shortcut?.Trigger(false);
         }
 
         private List<IShortcut> RetrieveAvailableShortcuts()

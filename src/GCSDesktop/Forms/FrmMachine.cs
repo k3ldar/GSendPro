@@ -1092,16 +1092,8 @@ namespace GSendDesktop.Forms
 
         private void propertyGridGrblSettings_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            PropertyInfo propertyInfo = _machine.Settings.GetType().GetProperty(e.NewSelection.Label);
-
-            if (propertyInfo == null)
-                throw new InvalidOperationException();
-
-            GrblSettingAttribute grblSettingAttribute = propertyInfo.GetCustomAttribute<GrblSettingAttribute>();
-
-            if (grblSettingAttribute == null)
-                throw new InvalidOperationException();
-
+            PropertyInfo propertyInfo = _machine.Settings.GetType().GetProperty(e.NewSelection.Label) ?? throw new InvalidOperationException();
+            GrblSettingAttribute grblSettingAttribute = propertyInfo.GetCustomAttribute<GrblSettingAttribute>() ?? throw new InvalidOperationException();
             string dollarValue = grblSettingAttribute.DollarValue;
 
             lblPropertyHeader.Text = $"{dollarValue} - {Shared.Utilities.SplitCamelCase(e.NewSelection.Label)}";
@@ -2380,20 +2372,14 @@ namespace GSendDesktop.Forms
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(true);
-            }
+            shortcut?.Trigger(true);
         }
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(false);
-            }
+            shortcut?.Trigger(false);
         }
 
         private List<IShortcut> RetrieveAvailableShortcuts()

@@ -95,8 +95,10 @@ namespace GSendTests.MCodeOverrideTests
                 Variables = analyses.Variables,
             };
 
-            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' }), 100));
-            mockComPort.ThrowFileNotFoundException = true;
+            MockComPort mockComPort = new(ValidateParameters.ExtractComPortProperties(comArgs.Split(new char[] { '\n' }), 100))
+            {
+                ThrowFileNotFoundException = true
+            };
             MockComPortFactory mockComPortFactory = new(mockComPort);
             M620Override sut = new(mockComPortFactory);
             sut.Process(context, CancellationToken.None);
