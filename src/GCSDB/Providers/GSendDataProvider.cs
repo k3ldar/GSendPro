@@ -438,7 +438,7 @@ namespace GSendDB.Providers
 
             foreach (var serviceItem in _serviceItemsTable.Select().Where(si => !si.IsDeleted))
             {
-                ServiceItemModel serviceItemModel = new ServiceItemModel()
+                ServiceItemModel serviceItemModel = new()
                 {
                     Id = serviceItem.Id,
                     Name = serviceItem.Name,

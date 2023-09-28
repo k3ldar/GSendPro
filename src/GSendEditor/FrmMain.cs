@@ -561,7 +561,7 @@ namespace GSendEditor
                 }
             }
 
-            ListViewItem listViewItem = new ListViewItem()
+            ListViewItem listViewItem = new()
             {
                 Text = name,
             };
@@ -914,7 +914,7 @@ namespace GSendEditor
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                using FileStream fileStream = new(fileName, FileMode.Open, FileAccess.Read);
                 byte[] bytes = new byte[fileStream.Length];
                 fileStream.Read(bytes, 0, bytes.Length);
                 string text = Encoding.UTF8.GetString(bytes);

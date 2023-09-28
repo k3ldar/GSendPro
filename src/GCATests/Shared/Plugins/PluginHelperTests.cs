@@ -62,11 +62,11 @@ namespace GSendTests.Shared.Plugins
         [TestMethod]
         public void InitializeAllPlugins_DifferentUsage_LoggedWithoutException()
         {
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Service);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
-            pluginModule.Setup(m => m.MenuItems(new MockSenderPluginHost())).Throws<InvalidOperationException>();
+            pluginModule.Setup(m => m.MenuItems).Throws<InvalidOperationException>();
 
             var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
@@ -93,12 +93,12 @@ namespace GSendTests.Shared.Plugins
 
             List<IPluginMenu> createdMenuItems = new();
 
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasMenuItems);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
-            pluginModule.Setup(m => m.MenuItems(It.IsAny<IPluginHost>())).Returns(menuItems);
+            pluginModule.Setup(m => m.MenuItems).Returns(menuItems);
 
             var pluginHost = new Mock<ISenderPluginHost>();
             pluginHost.Setup(ph => ph.Host).Returns(PluginHosts.Sender);
@@ -126,7 +126,7 @@ namespace GSendTests.Shared.Plugins
 
             List<IPluginToolbarButton> createdButtonItems = new();
 
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasToolbarButtons);

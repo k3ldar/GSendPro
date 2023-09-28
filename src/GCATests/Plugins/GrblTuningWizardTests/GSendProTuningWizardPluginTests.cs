@@ -35,11 +35,11 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         public void Validate_MenuItems_Success()
         {
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
-            MockSenderPluginHost pluginHost = new MockSenderPluginHost(parentMenu);
+            MockSenderPluginHost pluginHost = new(parentMenu);
 
             GSendProTuningWizardPlugin sut = new();
-
-            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems(pluginHost);
+            sut.Initialize(pluginHost);
+            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
 
             Assert.AreEqual(1, menuItems.Count);
             Assert.AreEqual("Grbl Tuning Wizard", menuItems[0].Text);

@@ -113,7 +113,7 @@ namespace GSendControls
 
             // Create a square filled with the animals color. Vary the size
             // of the rectangle based on the length of the animals name.
-            Rectangle rectangle = new Rectangle(2, e.Bounds.Top + 2,
+            Rectangle rectangle = new(2, e.Bounds.Top + 2,
                     e.Bounds.Height, e.Bounds.Height - 4);
             e.Graphics.FillRectangle(new SolidBrush(currentColor), rectangle);
 

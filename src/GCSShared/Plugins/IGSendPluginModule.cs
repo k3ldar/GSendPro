@@ -25,9 +25,15 @@ namespace GSendShared.Plugins
         PluginOptions Options { get; }
 
         /// <summary>
+        /// Initializes the plugin
+        /// </summary>
+        /// <param name="pluginHost"></param>
+        void Initialize(IPluginHost pluginHost);
+
+        /// <summary>
         /// Menu items supplied by plugin
         /// </summary>
-        IReadOnlyList<IPluginMenu> MenuItems(IPluginHost pluginHost);
+        IReadOnlyList<IPluginMenu> MenuItems { get; }
 
         IReadOnlyList<IPluginToolbarButton> ToolbarItems { get; }
 

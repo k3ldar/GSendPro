@@ -26,7 +26,7 @@ namespace GSendTests.GCService
         [TestCategory(TestsCategory)]
         public void ExtendsIPluginAndIInitialiseEvents()
         {
-            PluginInitialization sut = new PluginInitialization();
+            PluginInitialization sut = new();
 
             Assert.IsInstanceOfType(sut, typeof(IPlugin));
             Assert.IsInstanceOfType(sut, typeof(IInitialiseEvents));
@@ -36,7 +36,7 @@ namespace GSendTests.GCService
         [TestCategory(TestsCategory)]
         public void GetVersion_ReturnsCurrentVersion_Success()
         {
-            PluginInitialization sut = new PluginInitialization();
+            PluginInitialization sut = new();
 
             Assert.AreEqual((ushort)1, sut.GetVersion());
         }
@@ -45,8 +45,8 @@ namespace GSendTests.GCService
         [TestCategory(TestsCategory)]
         public void Initialize_DoesNotAddItemsToLogger()
         {
-            PluginInitialization sut = new PluginInitialization();
-            MockLogger testLogger = new MockLogger();
+            PluginInitialization sut = new();
+            MockLogger testLogger = new();
 
             sut.Initialise(testLogger);
 
@@ -57,7 +57,7 @@ namespace GSendTests.GCService
         [TestCategory(TestsCategory)]
         public void Finalise_DoesNotThrowException()
         {
-            PluginInitialization sut = new PluginInitialization();
+            PluginInitialization sut = new();
             Assert.IsNotNull(sut);
 
             sut.Finalise();

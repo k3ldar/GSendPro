@@ -93,8 +93,7 @@ namespace GSendControls
         /// </summary>
         public void UpdateAll()
         {
-            if (OnUpdate != null)
-                OnUpdate(this, EventArgs.Empty);
+            OnUpdate?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -102,8 +101,7 @@ namespace GSendControls
         /// </summary>
         public static void RaiseUpdateLists()
         {
-            if (OnRefreshLists != null)
-                OnRefreshLists(null, EventArgs.Empty);
+            OnRefreshLists?.Invoke(null, EventArgs.Empty);
         }
 
         #endregion Public Methods

@@ -21,7 +21,7 @@ namespace GSendTests.GSendAnalyserTests
         [TestCategory(TestCategoryAnalyser)]
         public void Construct_InvalidInstance_CodeIsNotInRange_Throws()
         {
-            GCodeCommand sut = new GCodeCommand(2, '#', 0, "0", String.Empty, null, new CurrentCommandValues(), 1, null);
+            GCodeCommand sut = new(2, '#', 0, "0", String.Empty, null, new CurrentCommandValues(), 1, null);
             Assert.IsFalse(sut.IsValidGCode);
         }
 

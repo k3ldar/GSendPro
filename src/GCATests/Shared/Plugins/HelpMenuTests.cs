@@ -22,14 +22,16 @@ namespace GSendTests.Shared.Plugins
         public void HelpMenuPlugin_ConstructValidInstance_Success()
         {
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
-            MockSenderPluginHost pluginHost = new MockSenderPluginHost(parentMenu);
-            HelpMenuPlugin sut = new HelpMenuPlugin();
+            MockSenderPluginHost pluginHost = new(parentMenu);
+            HelpMenuPlugin sut = new();
+            sut.Initialize(pluginHost);
+
             Assert.IsNotNull(sut);
             Assert.AreEqual("Help Menu", sut.Name);
             Assert.AreEqual((ushort)1, sut.Version);
             Assert.AreEqual(PluginHosts.Any, sut.Host);
             Assert.AreEqual(PluginOptions.HasMenuItems, sut.Options);
-            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems(pluginHost);
+            IReadOnlyList<IPluginMenu> menuItems = sut.MenuItems;
             Assert.IsNotNull(menuItems);
             Assert.AreEqual(6, menuItems.Count);
             // should not throw exception
@@ -42,7 +44,7 @@ namespace GSendTests.Shared.Plugins
         public void HelpMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            HelpMenuItem sut = new HelpMenuItem(parent);
+            HelpMenuItem sut = new(parent);
 
             Assert.IsNotNull(sut);
             Assert.AreEqual("Help", sut.Text);
@@ -62,7 +64,7 @@ namespace GSendTests.Shared.Plugins
         public void SeperatorMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            SeperatorMenu sut = new SeperatorMenu(parent, 3);
+            SeperatorMenu sut = new(parent, 3);
             Assert.IsNotNull(sut);
             Assert.AreEqual("Seperator Menu", sut.Text);
             Assert.AreEqual(3, sut.Index);
@@ -81,7 +83,7 @@ namespace GSendTests.Shared.Plugins
         public void BugsAndIdeasMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            BugsAndIdeasMenu sut = new BugsAndIdeasMenu(parent);
+            BugsAndIdeasMenu sut = new(parent);
             Assert.IsNotNull(sut);
             Assert.AreEqual("Bugs and Ideas", sut.Text);
             Assert.AreEqual(2, sut.Index);
@@ -100,7 +102,7 @@ namespace GSendTests.Shared.Plugins
         public void HomePageMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            HomePageMenu sut = new HomePageMenu(parent);
+            HomePageMenu sut = new(parent);
             Assert.IsNotNull(sut);
             Assert.AreEqual("Home Page", sut.Text);
             Assert.AreEqual(4, sut.Index);

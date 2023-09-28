@@ -1457,12 +1457,11 @@ namespace GSendDesktop.Forms
         {
             IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
-            using (FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper))
+            using FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper);
+
+            if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
             {
-                if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
-                {
-                    btnServiceRefresh_Click(sender, e);
-                }
+                btnServiceRefresh_Click(sender, e);
             }
         }
 
@@ -1972,41 +1971,39 @@ namespace GSendDesktop.Forms
 
         private void toolStripStatusLabelWarnings_Paint(object sender, PaintEventArgs e)
         {
-            using (WarningPanel warningPanel = new())
+            using WarningPanel warningPanel = new();
+            e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
+            int count = warningsAndErrors.ErrorCount();
+            int leftPos = 2;
+
+            if (count > 0)
             {
-                e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
-                int count = warningsAndErrors.ErrorCount();
-                int leftPos = 2;
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += GSendShared.Constants.WarningStatusWidth;
-                }
-
-                count = warningsAndErrors.WarningCount();
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += GSendShared.Constants.WarningStatusWidth;
-                }
-
-                count = warningsAndErrors.InformationCount();
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Information), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                }
-
-                e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right - 1, e.ClipRectangle.Top, e.ClipRectangle.Right - 1, e.ClipRectangle.Bottom - 2);
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                leftPos += GSendShared.Constants.WarningStatusWidth;
             }
+
+            count = warningsAndErrors.WarningCount();
+
+            if (count > 0)
+            {
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                leftPos += GSendShared.Constants.WarningStatusWidth;
+            }
+
+            count = warningsAndErrors.InformationCount();
+
+            if (count > 0)
+            {
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Information), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+            }
+
+            e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right - 1, e.ClipRectangle.Top, e.ClipRectangle.Right - 1, e.ClipRectangle.Bottom - 2);
 
         }
 
@@ -2107,18 +2104,16 @@ namespace GSendDesktop.Forms
                 {
                     IGSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<IGSendApiWrapper>();
 
-                    using (StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper))
+                    using StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper);
+                    if (startJobWizard.ShowDialog() == DialogResult.OK)
                     {
-                        if (startJobWizard.ShowDialog() == DialogResult.OK)
-                        {
-                            _toolProfile = startJobWizard.ToolProfile;
-                            IJobProfile jobProfile = startJobWizard.JobProfile;
+                        _toolProfile = startJobWizard.ToolProfile;
+                        IJobProfile jobProfile = startJobWizard.JobProfile;
 
-                            if (startJobWizard.IsSimulation)
-                                InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+                        if (startJobWizard.IsSimulation)
+                            InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
-                            InternalSendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
-                        }
+                        InternalSendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
                     }
                 }
             }

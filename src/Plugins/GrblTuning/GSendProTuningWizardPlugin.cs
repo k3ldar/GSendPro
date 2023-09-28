@@ -6,6 +6,7 @@ namespace GrblTuningWizard
     public sealed class GSendProTuningWizardPlugin : IGSendPluginModule
     {
         private List<IPluginMenu> _menuItems;
+        private IPluginHost _pluginHost;
 
         public string Name => "GRBL Tuning Wizard";
 
@@ -15,25 +16,35 @@ namespace GrblTuningWizard
 
         public PluginOptions Options => PluginOptions.HasMenuItems | PluginOptions.MessageReceived;
 
-        public IReadOnlyList<IPluginMenu> MenuItems(IPluginHost pluginHost)
+        public IReadOnlyList<IPluginMenu> MenuItems
         {
-            if (_menuItems == null)
+            get
             {
-                _menuItems = new()
+                if (_menuItems == null)
                 {
-                    new TuningWizardMenuItem(pluginHost.GetMenu(MenuParent.Tools))
-                };
-            }
+                    _menuItems = new()
+                    {
+                        new TuningWizardMenuItem(_pluginHost.GetMenu(MenuParent.Tools))
+                    };
+                }
 
-            return _menuItems;
+                return _menuItems;
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null", Justification = "Expecting null if non available")]
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
+        IReadOnlyList<IPluginMenu> IGSendPluginModule.MenuItems => throw new NotImplementedException();
+
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {
 
+        }
+
+        public void Initialize(IPluginHost pluginHost)
+        {
+            _pluginHost = pluginHost ?? throw new ArgumentNullException(nameof(pluginHost));
         }
     }
 }

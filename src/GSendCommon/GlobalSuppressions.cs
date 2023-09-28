@@ -19,3 +19,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.GCodeOverrideContext.ProcessMCodeOverrides(GSendShared.IGCodeLine)~System.Boolean")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.GCodeProcessor.SendCommandWaitForOKCommand(System.String)~System.String")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.ProcessorMediator.OpenProcessors")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.ProcessorMediator.CloseProcessors")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.GCodeProcessor.UpdateSetting(System.String)~GSendShared.UpdateSettingResult")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendCommon.GCodeOverrideContext.ProcessGCodeOverrides(GSendShared.IGCodeLine)~System.Boolean")]

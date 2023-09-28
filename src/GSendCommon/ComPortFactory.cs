@@ -44,7 +44,7 @@ namespace GSendCommon
                 if (_comPorts.ContainsKey(model.Name))
                     throw new InvalidOperationException(String.Format(ErrorComPortOpen, model.Name));
 
-                WindowsComPort comPort = new WindowsComPort(model);
+                WindowsComPort comPort = new(model);
 
                 _comPorts.Add(model.Name, comPort);
                 comPort.Open();

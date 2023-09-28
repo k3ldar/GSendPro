@@ -280,7 +280,7 @@ namespace GSendCommon
 
             if (processor is GCodeProcessor codeProcessor)
             {
-                ConfigurationUpdatedMessage message = new ConfigurationUpdatedMessage()
+                ConfigurationUpdatedMessage message = new()
                 {
                     Name = updateMachine.Name,
                     Comport = updateMachine.ComPort,

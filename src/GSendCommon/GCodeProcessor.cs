@@ -115,7 +115,7 @@ namespace GSendCommon
                 _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 
-            ProcessGCodeJob processJobThread = new ProcessGCodeJob(this);
+            ProcessGCodeJob processJobThread = new(this);
             ThreadManager.ThreadStart(processJobThread, $"{machine.Name} - {machine.ComPort} - Job Processor", ThreadPriority.Normal);
         }
 

@@ -94,6 +94,7 @@ namespace GSendControls.Plugins
                 if (plugin == null)
                     continue;
 
+                plugin.Initialize(pluginHost);
                 try
                 {
                     if (!plugin.Host.HasFlag(pluginHost.Host))
@@ -104,7 +105,7 @@ namespace GSendControls.Plugins
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
-                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems(pluginHost);
+                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems;
 
                         if (menuItems == null)
                             throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");

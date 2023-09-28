@@ -54,7 +54,7 @@ namespace GSendControls
         /// <returns>true if user copletes, otherwise false if cancelled</returns>
         public static bool ShowWizard(string title, params BaseWizardPage[] pages)
         {
-            WizardForm form = new WizardForm(title, pages);
+            WizardForm form = new(title, pages);
             DialogResult wizardResult = form.ShowDialog();
 
             return wizardResult == DialogResult.OK;

@@ -3,6 +3,7 @@
     public sealed class HelpMenuPlugin : IGSendPluginModule
     {
         private List<IPluginMenu> _pluginMenus;
+        private IPluginHost _pluginHost;
 
         public string Name => "Help Menu";
 
@@ -12,24 +13,27 @@
 
         public PluginOptions Options => PluginOptions.HasMenuItems;
 
-        public IReadOnlyList<IPluginMenu> MenuItems(IPluginHost pluginHost)
+        public IReadOnlyList<IPluginMenu> MenuItems
         {
-            if (_pluginMenus == null)
+            get
             {
-                IPluginMenu parentHelpMenu = pluginHost.GetMenu(MenuParent.Help);
-
-                _pluginMenus = new List<IPluginMenu>
+                if (_pluginMenus == null)
                 {
-                    new HelpMenuItem(parentHelpMenu),
-                    new SeperatorMenu(parentHelpMenu, 1),
-                    new BugsAndIdeasMenu(parentHelpMenu),
-                    new SeperatorMenu(parentHelpMenu, 3),
-                    new HomePageMenu(parentHelpMenu),
-                    new SeperatorMenu(parentHelpMenu, 5)
-                };
-            }
+                    IPluginMenu parentHelpMenu = _pluginHost.GetMenu(MenuParent.Help);
 
-            return _pluginMenus;
+                    _pluginMenus = new List<IPluginMenu>
+                    {
+                        new HelpMenuItem(parentHelpMenu),
+                        new SeperatorMenu(parentHelpMenu, 1),
+                        new BugsAndIdeasMenu(parentHelpMenu),
+                        new SeperatorMenu(parentHelpMenu, 3),
+                        new HomePageMenu(parentHelpMenu),
+                        new SeperatorMenu(parentHelpMenu, 5)
+                    };
+                }
+
+                return _pluginMenus;
+            }
         }
 
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
@@ -37,6 +41,11 @@
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {
             // from interface, not used in any context
+        }
+
+        public void Initialize(IPluginHost pluginHost)
+        {
+            _pluginHost = pluginHost ?? throw new ArgumentNullException(nameof(pluginHost));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace GrblTuningWizard
         {
             _wizardSettings.ExitError = false;
             _isWizardShowing = true;
-            using WizardForm wizardForm = new WizardForm(GSend.Language.Resources.TuneWizard,
+            using WizardForm wizardForm = new(GSend.Language.Resources.TuneWizard,
                 new BaseWizardPage[]
                 {
                     new PageWelcome(_wizardSettings),
