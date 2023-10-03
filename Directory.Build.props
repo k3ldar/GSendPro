@@ -31,7 +31,7 @@
 	
   <PropertyGroup>
     <PluginVersion>5.4.0</PluginVersion>
-	<SharedVer>3.10.0</SharedVer>
+	<SharedVer>3.10.1</SharedVer>
 	<SharedWinVer>1.2.0</SharedWinVer>
   </PropertyGroup>
   
@@ -47,28 +47,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0'">
     <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0-windows'">
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0-windows'">
     <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 

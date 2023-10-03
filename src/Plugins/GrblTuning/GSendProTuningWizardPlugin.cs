@@ -32,8 +32,6 @@ namespace GrblTuningWizard
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null", Justification = "Expecting null if non available")]
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
-        IReadOnlyList<IPluginMenu> IGSendPluginModule.MenuItems => throw new NotImplementedException();
-
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {
 

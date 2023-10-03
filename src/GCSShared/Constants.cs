@@ -108,6 +108,8 @@ namespace GSendShared
 
         public const string AppPluginFile = "plugins.json";
 
+        public const string GSendPathEnvVar = "GSendProRootPath";
+
         public static readonly JsonSerializerOptions DefaultJsonSerializerOptions = new()
         {
             AllowTrailingCommas = true,

@@ -7,7 +7,7 @@
         IGSendSpindleHoursApi,
         IGSendJobExecutionApi
     {
-        Uri ServerAddress { get; }
+        Uri ServerAddress { get; set; }
 
         bool IsLicenseValid();
     }

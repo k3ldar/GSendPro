@@ -55,7 +55,8 @@ namespace GSendDesktop.Internal
 
         public void Initialise(ILogger logger)
         {
-
+            string rootPath = Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar);
+            Shared.EventLog.Path = Path.Combine(rootPath, nameof(GSendDesktop));
         }
     }
 }

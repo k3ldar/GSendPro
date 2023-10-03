@@ -34,10 +34,10 @@ namespace GSendService
             ThreadManager.ThreadExceptionRaised += ThreadManager_ThreadExceptionRaised;
             ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
-            Environment.SetEnvironmentVariable("GSendProRootPath",
+            Environment.SetEnvironmentVariable(Constants.GSendPathEnvVar,
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
 
-            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "db"));
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable(Constants.GSendPathEnvVar), "db"));
 
             System.Net.ServicePointManager.DefaultConnectionLimit = 100;
             System.Net.ServicePointManager.ReusePort = true;

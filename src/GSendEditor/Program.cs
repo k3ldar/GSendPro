@@ -26,14 +26,14 @@ namespace GSendEditor
             ThreadManager.AllowThreadPool = true;
             ThreadManager.MaximumPoolSize = 5000;
 
+            Environment.SetEnvironmentVariable(Constants.GSendPathEnvVar,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
+
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable(Constants.GSendPathEnvVar)));
+
             ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
                 new PluginSettings());
-
-            Environment.SetEnvironmentVariable("GSendProRootPath",
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
-
-            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath")));
 
             applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(Internal.PluginInitialisation).Assembly.Location);

@@ -15,26 +15,12 @@
     <PackageReference Include="SC.Shared.Library.Core.Windows" Version="$(SharedWinVer)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+  <ItemGroup>
     <ProjectReference Include="..\..\GCSShared\GSendShared.csproj" />
     <ProjectReference Include="..\..\GSendControls\GSendControls.csproj" />
     <ProjectReference Include="..\..\GSend.Language\GSend.Language.csproj" />
   </ItemGroup>
-	
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <Reference Include="GSendShared">
-      <HintPath>..\..\..\Output\publish\Desktop\GSendShared.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="GSendControls">
-      <HintPath>..\..\..\Output\publish\Desktop\GSendControls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="GSend.Language">
-      <HintPath>..\..\..\Output\publish\Desktop\GSend.Language.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
+
 
 
   <ItemGroup>

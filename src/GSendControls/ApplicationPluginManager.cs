@@ -102,7 +102,7 @@ namespace GSendControls
             {
                 try
                 {
-                    if (!pluginSetting.Enabled)
+                    if (!pluginSetting.Enabled || pluginSetting.Usage != pluginHosts)
                         continue;
 
                     if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
@@ -138,7 +138,14 @@ namespace GSendControls
             string pluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", $"{name}.dll");
 
             if (File.Exists(pluginPath))
+            {
+                Logger.AddToLog(LogLevel.Information, $"Plugin found: {pluginPath}");
                 return Assembly.Load(File.ReadAllBytes(pluginPath));
+            }
+            else
+            {
+                Logger.AddToLog(LogLevel.Warning, $"Plugin not found: {pluginPath}");
+            }
 
             return null;
         }

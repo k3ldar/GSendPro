@@ -113,6 +113,9 @@ namespace GSendControls
 
                 using (MouseControl mc = MouseControl.ShowWaitCursor(this))
                 {
+                    if (!_apiWrapper.ServerAddress.Equals(txtServerAddress.Text))
+                        _apiWrapper.ServerAddress = new Uri(txtServerAddress.Text, UriKind.Absolute);
+
                     bool isLicensed = ValidateLicense(_apiWrapper, out bool _);
 
                     if (isLicensed)
