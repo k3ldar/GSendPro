@@ -78,10 +78,12 @@ namespace GSendService
             return 1;
         }
 
-        public void Initialise(PluginManager.Abstractions.ILogger logger)
+        public void Initialise(ILogger logger)
         {
             string rootPath = Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar);
-            Shared.EventLog.Path = Path.Combine(rootPath, nameof(GSendService));
+
+            if (!String.IsNullOrEmpty(rootPath))
+                Shared.EventLog.Path = Path.Combine(rootPath, nameof(GSendService));
         }
 
         #endregion IPlugin Methods
