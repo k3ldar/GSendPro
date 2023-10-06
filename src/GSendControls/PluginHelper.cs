@@ -99,7 +99,7 @@ namespace GSendControls.Plugins
                 {
                     if (!plugin.Host.HasFlag(pluginHost.Host))
                     {
-                        _logger.AddToLog(PluginManager.LogLevel.Warning, $"Attempt to load invalid plugin: {plugin.Name}");
+                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
                         continue;
                     }
 
@@ -132,6 +132,7 @@ namespace GSendControls.Plugins
                     }
 
                     pluginHost.AddPlugin(plugin);
+                    _logger.AddToLog(PluginManager.LogLevel.PluginLoadSuccess, $"{plugin.Name} was loaded for host {pluginHost}");
                 }
                 catch (Exception ex)
                 {

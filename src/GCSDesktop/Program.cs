@@ -55,7 +55,7 @@ namespace GSendDesktop
             applicationPluginManager.ConfigureServices(serviceCollection);
             applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
+            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Sender,
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
 
             _logger = applicationPluginManager.ServiceProvider.GetService<ILogger>();

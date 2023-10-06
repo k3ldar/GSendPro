@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using GSendControls;
-
-using GSendShared;
+﻿using GSendControls;
 
 namespace GrblTuningWizard
 {
@@ -39,6 +27,8 @@ namespace GrblTuningWizard
                 lblAuto.Visible = false;
                 btnMoveAuto.Visible = false;
             }
+
+            _wizardSettings.StateChanged += WizardSettings_StateChanged;
         }
 
         public override void LoadResources()
@@ -60,10 +50,32 @@ namespace GrblTuningWizard
 
         private void btnMoveAuto_Click(object sender, EventArgs e)
         {
+            btnMoveAuto.Enabled = false;
+            jogControl1.Enabled = false;
             _wizardSettings.SenderPluginHost.SendMessage(String.Format(GSendShared.Constants.MessageMachineHome, _wizardSettings.Machine.Id));
 
             string moveToCenter = String.Format("G0X{0}Y{1}", _wizardSettings.MaxTravelX / 2, _wizardSettings.MaxTravelY / 2);
             _wizardSettings.SenderPluginHost.SendMessage(String.Format(GSendShared.Constants.MessageMachineWriteLine, _wizardSettings.Machine.Id, moveToCenter));
+        }
+
+        private void WizardSettings_StateChanged(GSendShared.MachineState machineState)
+        {
+            bool isEnabled = true;
+
+            switch (machineState)
+            {
+                case GSendShared.MachineState.Home:
+                    isEnabled = false;
+                    break;
+
+                case GSendShared.MachineState.Idle:
+                    if (!jogControl1.Enabled)
+                        jogControl1.Enabled = true;
+
+                    break;
+            }
+
+            btnMoveAuto.Enabled = isEnabled;
         }
     }
 }

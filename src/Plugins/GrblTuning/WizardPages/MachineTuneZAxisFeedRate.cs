@@ -113,7 +113,7 @@ namespace GrblTuningWizard
                     _wizardSettings.SenderPluginHost.SendMessage(newValueMessage);
 
                     double currentPos = _wizardSettings.CurrentZ;
-                    _wizardSettings.SenderPluginHost.SendMessage(String.Format(Constants.MessageMachineWriteLine, _wizardSettings.Machine.Id, $"G1Z{currentPos + 50}F{_wizardSettings.NewMaxFeedZ}"));
+                    _wizardSettings.SenderPluginHost.SendMessage(String.Format(Constants.MessageMachineWriteLine, _wizardSettings.Machine.Id, $"G1Z{currentPos - 50}F{_wizardSettings.NewMaxFeedZ}"));
                     _wizardSettings.SenderPluginHost.SendMessage(String.Format(Constants.MessageMachineWriteLine, _wizardSettings.Machine.Id, $"G1Z{currentPos}F{_wizardSettings.NewMaxFeedZ}"));
                     lblMachineRunning.Visible = true;
 

@@ -37,6 +37,13 @@ namespace GrblTuningWizard
             NewMaxFeedZ = Machine.Settings.MaxFeedRateZ;
         }
 
+        public event MachineStateChangeHandler StateChanged;
+
+        public void RaiseStateChanged(MachineState machineState)
+        {
+            StateChanged?.Invoke(machineState);
+        }
+
         public ISenderPluginHost SenderPluginHost { get; }
 
         public IMachine Machine { get; }

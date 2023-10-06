@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing.Text;
-using System.Reflection.PortableExecutable;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using GSendControls;
 
@@ -17,6 +14,8 @@ namespace GrblTuningWizard
         private TuningWizardSettings _wizardSettings;
         private bool _isWizardShowing = false;
         private readonly IPluginMenu _parentMenu;
+        private bool _isHoming = false;
+        private MachineState _lastMachineState = MachineState.Idle;
 
         public TuningWizardMenuItem(IPluginMenu parentMenu)
         {
@@ -94,15 +93,29 @@ namespace GrblTuningWizard
                 case Constants.StateChanged:
                 case Constants.MessageMachineStatusServer:
                     MachineStateModel stateModel = JsonSerializer.Deserialize<MachineStateModel>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
-                    
-                    if (stateModel != null && !_wizardSettings.ExitError && !stateModel.IsConnected)
+
+                    if (stateModel == null)
+                        return;
+
+                    if (!_wizardSettings.ExitError && !stateModel.IsConnected)
                         _wizardSettings.ExitError = true;
 
                     _wizardSettings.UpdatePosition(stateModel);
 
+                    if (_isHoming != stateModel.IsHoming)
+                    {
+                        _isHoming = stateModel.IsHoming;
+                        _wizardSettings.RaiseStateChanged(MachineState.Home);
+                    }
+
+                    if (_lastMachineState != stateModel.MachineState)
+                    {
+                        _lastMachineState = stateModel.MachineState;
+                        _wizardSettings.RaiseStateChanged(_lastMachineState);
+                    }
+
                     break;
 
-                case Constants.ComPortTimeOut:
                 case "Disconnect":
                 case "GrblError":
                 case Constants.StateAlarm:

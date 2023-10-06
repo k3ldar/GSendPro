@@ -520,9 +520,19 @@ namespace GSendCommon
 
         public bool Home()
         {
-            SendCommandWaitForResponse(CommandHome, HomingTimeout);
-            Trace.WriteLine("Home");
-            OnCommandSent?.Invoke(this, CommandSent.Home);
+            _machineStateModel.IsHoming = true;
+            try
+            {
+                SendCommandWaitForResponse(CommandHome, HomingTimeout);
+                Trace.WriteLine("Home");
+                _machineStateModel.IsHoming = false;
+                OnCommandSent?.Invoke(this, CommandSent.Home);
+            }
+            finally
+            {
+                _machineStateModel.IsHoming = false;
+            }
+               
             return true;
         }
 
