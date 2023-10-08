@@ -60,22 +60,7 @@ namespace GrblTuningWizard
 
         private void WizardSettings_StateChanged(GSendShared.MachineState machineState)
         {
-            bool isEnabled = true;
-
-            switch (machineState)
-            {
-                case GSendShared.MachineState.Home:
-                    isEnabled = false;
-                    break;
-
-                case GSendShared.MachineState.Idle:
-                    if (!jogControl1.Enabled)
-                        jogControl1.Enabled = true;
-
-                    break;
-            }
-
-            btnMoveAuto.Enabled = isEnabled;
+            btnMoveAuto.Enabled = machineState == GSendShared.MachineState.Idle;
         }
     }
 }

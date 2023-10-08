@@ -1529,7 +1529,7 @@
             // 
             mnuActionConnect.Name = "mnuActionConnect";
             mnuActionConnect.Size = new System.Drawing.Size(175, 22);
-            mnuActionConnect.Text = "Connect";
+            mnuActionConnect.Text = GSend.Language.Resources.Connect;
             mnuActionConnect.Click += toolStripButtonConnect_Click;
             // 
             // mnuActionDisconnect
@@ -1593,7 +1593,7 @@
             // 
             mnuActionStop.Name = "mnuActionStop";
             mnuActionStop.Size = new System.Drawing.Size(175, 22);
-            mnuActionStop.Text = "Stop";
+            mnuActionStop.Text = GSend.Language.Resources.Stop;
             mnuActionStop.Click += toolStripButtonStop_Click;
             // 
             // mnuOptions

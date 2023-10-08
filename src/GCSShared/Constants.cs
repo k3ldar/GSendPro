@@ -226,6 +226,10 @@ namespace GSendShared
 
         public const string MessageConfigurationUpdated = "mConfigUpdate";
 
+        public const string MessageAddEventsAdmin = "mAddEvents";
+
+        public const string MessageRemoveEventsAdmin = "mRemoveEvents";
+
         public const string StateUndefined = "Undefined";
 
         public const string MessageRunGCodeAdmin = "mStart";
@@ -256,16 +260,35 @@ namespace GSendShared
 
         public const string StateHold = "Hold";
 
+        public const string Pause = "Pause";
 
+        public const string Resume = "Resume";
 
+        public const string Stop = "Stop";
 
+        public const string Start = "Start";
+
+        public const string Connect = "Connect";
+
+        public const string Disconnect = "Disconnect";
+
+        public const string CommandSent = "CommandSent";
+
+        public const string ResponseReceived = "ResponseReceived";
+
+        public const string MessageReceived = "MessageReceived";
+
+        public const string GrblError = "GrblError";
+
+        public const string SerialPinChanged = "SerialPinChanged";
+
+        public const string SerialError = "SerialError";
 
         public const string SemiColon = ";";
 
         public const char EqualsChar = '=';
 
         public const char ColonChar = ':';
-
 
         public const string ProbeCommand = "G91 G21\r\nG38.2 Z-50 F{0}\r\nG92 Z{1}\r\nG0 Z28\r\nM30";
 

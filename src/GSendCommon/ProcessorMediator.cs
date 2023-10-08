@@ -383,42 +383,42 @@ namespace GSendCommon
 
         private void Processor_OnInvalidComPort(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("InvalidComPort"));
+            SendMessage(new ClientBaseMessage(Constants.InvalidComPort));
         }
 
         private void Processor_OnGrblAlarm(IGCodeProcessor sender, GrblAlarm alarm)
         {
-            SendMessage(new ClientBaseMessage("Alarm", alarm));
+            SendMessage(new ClientBaseMessage(Constants.StateAlarm, alarm));
         }
 
         private void Processor_OnGrblError(IGCodeProcessor sender, GrblError errorCode)
         {
-            SendMessage(new ClientBaseMessage("GrblError", errorCode));
+            SendMessage(new ClientBaseMessage(Constants.GrblError, errorCode));
         }
 
         private void Processor_OnSerialPinChanged(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("SerialPinChanged"));
+            SendMessage(new ClientBaseMessage(Constants.SerialPinChanged));
         }
 
         private void Processor_OnSerialError(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("SerialError"));
+            SendMessage(new ClientBaseMessage(Constants.SerialError));
         }
 
         private void Processor_OnResume(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("Resume"));
+            SendMessage(new ClientBaseMessage(Constants.Resume));
         }
 
         private void Processor_OnStop(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("Stop"));
+            SendMessage(new ClientBaseMessage(Constants.Stop));
         }
 
         private void Processor_OnStart(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("Start"));
+            SendMessage(new ClientBaseMessage(Constants.Start));
         }
 
         private void Processor_OnDisconnect(IGCodeProcessor sender, EventArgs e)
@@ -428,17 +428,17 @@ namespace GSendCommon
 
         private void Processor_OnPause(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("Pause"));
+            SendMessage(new ClientBaseMessage(Constants.Pause));
         }
 
         private void Processor_OnConnect(IGCodeProcessor sender, EventArgs e)
         {
-            SendMessage(new ClientBaseMessage("Connect"));
+            SendMessage(new ClientBaseMessage(Constants.Connect));
         }
 
         private void Processor_OnCommandSent(IGCodeProcessor sender, CommandSent e)
         {
-            SendMessage(new ClientBaseMessage("CommandSent"));
+            SendMessage(new ClientBaseMessage(Constants.CommandSent));
         }
 
         private void Processor_OnLineStatusUpdated(int lineNumber, int masterLineNumber, LineStatus lineStatus)
@@ -750,7 +750,7 @@ namespace GSendCommon
 
                         break;
 
-                    case "mAddEvents":
+                    case Constants.MessageAddEventsAdmin:
                         if (foundMachine && proc != null)
                         {
                             _processEvents = true;
@@ -762,7 +762,7 @@ namespace GSendCommon
 
                         break;
 
-                    case "mRemoveEvents":
+                    case Constants.MessageRemoveEventsAdmin:
                         if (foundMachine && proc != null)
                         {
                             _processEvents = false;

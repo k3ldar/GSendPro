@@ -43,12 +43,12 @@ namespace GrblTuningWizard
                 {
                     new PageWelcome(_wizardSettings),
                     new MachineMoveLocation(_wizardSettings),
-                    new MachineTuneXAxisAcceleration(_wizardSettings),
-                    new MachineTuneYAxisAcceleration(_wizardSettings),
-                    new MachineTuneZAxisAcceleration(_wizardSettings),
                     new MachineTuneXAxisFeedRate(_wizardSettings),
                     new MachineTuneYAxisFeedRate(_wizardSettings),
                     new MachineTuneZAxisFeedRate(_wizardSettings),
+                    new MachineTuneXAxisAcceleration(_wizardSettings),
+                    new MachineTuneYAxisAcceleration(_wizardSettings),
+                    new MachineTuneZAxisAcceleration(_wizardSettings),
                     new PageFinish(_wizardSettings)
                 });
 
@@ -116,8 +116,8 @@ namespace GrblTuningWizard
 
                     break;
 
-                case "Disconnect":
-                case "GrblError":
+                case Constants.Disconnect:
+                case Constants.GrblError:
                 case Constants.StateAlarm:
                     _wizardSettings.ExitError = true;
                     break;

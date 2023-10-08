@@ -78,7 +78,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.IsTrue(logger.LogItems.Contains("Warning - Attempt to load invalid plugin: test plugin"));
+            Assert.IsTrue(logger.LogItems.Contains("PluginLoadError - Plugin test plugin is not valid for host Sender"));
         }
 
         [TestMethod]
@@ -111,7 +111,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(1, logger.LogItems.Count);
             Assert.AreEqual(2, createdMenuItems.Count);
         }
 
@@ -144,7 +144,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(1, logger.LogItems.Count);
             Assert.AreEqual(2, createdButtonItems.Count);
         }
     }

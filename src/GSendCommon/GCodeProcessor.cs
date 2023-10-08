@@ -59,6 +59,8 @@ namespace GSendCommon
         private const string OptionAccessoryState = "a";
         private const string JogNumberFormat = "F4";
         private const int DelayBetweenUpdateRequestsMilliseconds = 150;
+        private const string ResponseAlarm = "alarm";
+        private const string ResponseError = "error";
         private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
         private List<IGCodeLine> _commandsToSend = null;
@@ -347,14 +349,14 @@ namespace GSendCommon
             _isPaused = false;
             OnResume?.Invoke(this, EventArgs.Empty);
             _jobTime.Start();
-            Trace.WriteLine($"Resume");
+            Trace.WriteLine(Constants.Resume);
             _port.WriteLine(CommandStartResume);
             return true;
         }
 
         public bool Stop()
         {
-            Trace.WriteLine("Stop");
+            Trace.WriteLine(Constants.Stop);
 
             InternalWriteByte(new byte[] { 0x18 });
 
@@ -1030,12 +1032,12 @@ namespace GSendCommon
                             _updateStatusSent = false;
                             ProcessInformationResponse(response[1..^1]);
                         }
-                        else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
+                        else if (response.StartsWith(ResponseAlarm, StringComparison.InvariantCultureIgnoreCase))
                         {
                             Trace.WriteLine($"Response: {response}");
                             ProcessAlarmResponse(response);
                         }
-                        else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
+                        else if (response.StartsWith(ResponseError, StringComparison.InvariantCultureIgnoreCase))
                         {
                             Trace.WriteLine($"Response: {response}");
                             ProcessErrorResponse(response);
@@ -1394,7 +1396,7 @@ namespace GSendCommon
                             if (!String.IsNullOrEmpty(line.Trim()))
                                 Result.AppendLine(line);
 
-                            if (line.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
+                            if (line.StartsWith(ResponseError, StringComparison.InvariantCultureIgnoreCase))
                             {
                                 Trace.WriteLine($"Response: {line}");
                                 ProcessErrorResponse(line);

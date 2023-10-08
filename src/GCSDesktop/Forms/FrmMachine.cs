@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,12 +25,9 @@ using GSendShared.Interfaces;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
-
-using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
@@ -239,7 +235,7 @@ namespace GSendDesktop.Forms
 
             switch (clientMessage.request)
             {
-                case "Stop":
+                case Constants.Stop:
                     if (_machineStatusModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                         InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
@@ -284,7 +280,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "Connect":
+                case Constants.Connect:
                     _machineConnected = true;
                     UpdateEnabledState();
                     ConfigureMachine();
@@ -294,7 +290,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "Disconnect":
+                case Constants.Disconnect:
                     _machineConnected = false;
                     txtGrblUpdates.Text = String.Empty;
                     _appliedSettingsChanged = false;
@@ -307,18 +303,18 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     break;
 
-                case "Pause":
+                case Constants.Pause:
                     _isPaused = true;
                     UpdateEnabledState();
                     break;
 
-                case "Resume":
+                case Constants.Resume:
                     _isPaused = false;
                     UpdateEnabledState();
                     break;
 
-                case "ResponseReceived":
-                case "MessageReceived":
+                case Constants.ResponseReceived:
+                case Constants.MessageReceived:
                     if (clientMessage.message.ToString().StartsWith('<') || _isJogging)
                     {
                         _lastMessageWasHiddenCommand = true;
@@ -344,7 +340,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "GrblError":
+                case Constants.GrblError:
                     ProcessErrorResponse(clientMessage);
                     break;
 
@@ -892,7 +888,7 @@ namespace GSendDesktop.Forms
         private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             _canCancelJog = stepSize == 0;
-            InternalSendMessage(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
+            InternalSendMessage(String.Format(Constants.MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
         }
 
         private void jogControl_OnJogStop(object sender, EventArgs e)
@@ -905,7 +901,7 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            SendByThread(String.Format(MessageMachineJogStop, _machine.Id));
+            SendByThread(String.Format(Constants.MessageMachineJogStop, _machine.Id));
         }
 
         private void jogControl_OnUpdate(object sender, EventArgs e)
@@ -1283,7 +1279,7 @@ namespace GSendDesktop.Forms
         public void SetZeroForAxes(object sender, EventArgs e)
         {
             ZeroAxis zeroAxis = (ZeroAxis)((Button)sender).Tag;
-            InternalSendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
+            InternalSendMessage(String.Format(Constants.MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
             tabPageJog.Focus();
         }
 
@@ -1433,12 +1429,12 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStart_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
+            InternalSendMessage(String.Format(Constants.MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
         }
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            SendByThread(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
+            SendByThread(String.Format(Constants.MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control
@@ -2058,29 +2054,29 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineConnect, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineConnect, _machine.Id));
         }
 
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineDisconnect, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineDisconnect, _machine.Id));
         }
 
         private void toolStripButtonClearAlarm_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineClearAlarm, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineClearAlarm, _machine.Id));
             warningsAndErrors.ClearAlarm();
         }
 
         private void toolStripButtonHome_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineHome, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineHome, _machine.Id));
         }
 
         private void toolStripButtonProbe_Click(object sender, EventArgs e)
         {
             _isProbing = true;
-            InternalSendMessage(String.Format(MessageMachineProbe, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineProbe, _machine.Id));
             UpdateEnabledState();
         }
 
@@ -2090,7 +2086,7 @@ namespace GSendDesktop.Forms
             {
                 if (_isPaused)
                 {
-                    InternalSendMessage(String.Format(MessageMachineResume, _machine.Id));
+                    InternalSendMessage(String.Format(Constants.MessageMachineResume, _machine.Id));
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
@@ -2113,7 +2109,7 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonPause_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachinePause, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachinePause, _machine.Id));
         }
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
@@ -2121,7 +2117,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                SendByThread(String.Format(MessageMachineStop, _machine.Id));
+                SendByThread(String.Format(Constants.MessageMachineStop, _machine.Id));
         }
 
         private void ToolstripButtonCoordinates_Click(object sender, EventArgs e)
