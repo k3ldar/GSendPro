@@ -23,8 +23,10 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void CreateJobExecution_FailToCreateDBRecord_Returns_JsonErrorResponse()
         {
-            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
-            gSendDataProvider.CreateFalseResponseWhenCalled = true;
+            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" })
+            {
+                CreateFalseResponseWhenCalled = true
+            };
             JobExecutionApi sut = new(gSendDataProvider, new MockNotification());
 
             ActionResult Result = sut.CreateJobExecution(1, 2, 3) as ActionResult;
@@ -43,7 +45,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void CreateJobExecution_DBRecordCreated_Returns_JsonSuccess()
         {
-            MockGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
             JobExecutionApi sut = new(gSendDataProvider, new MockNotification());
 
             ActionResult Result = sut.CreateJobExecution(1, 2, 3) as ActionResult;

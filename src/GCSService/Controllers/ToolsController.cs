@@ -63,7 +63,7 @@ namespace GSendService.Controllers
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolDatabase), "/Tools/Index", false));
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolAdd), "/Tools/Add", false));
 
-                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero, model.History)
+                ToolModel resultModel = new(modelData, TimeSpan.Zero, model.History)
                 {
                     Name = model.Name,
                     Description = model.Description,
@@ -118,7 +118,7 @@ namespace GSendService.Controllers
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolDatabase), "/Tools/Index", false));
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.Edit), "/Tools/Edit", false));
 
-                ToolModel resultModel = new ToolModel(modelData, TimeSpan.Zero, new List<ToolUsageHistoryModel>())
+                ToolModel resultModel = new(modelData, TimeSpan.Zero, new List<ToolUsageHistoryModel>())
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -206,7 +206,7 @@ namespace GSendService.Controllers
 
             ChartModel chartModel = GetToolUsage(toolData, machines, viewPeriod, viewTimePeriod);
 
-            ToolUsageViewModel model = new ToolUsageViewModel(GetModelData(), tool, chartModel, viewPeriod, viewTimePeriod, isRecent, toolData, tool.History);
+            ToolUsageViewModel model = new(GetModelData(), tool, chartModel, viewPeriod, viewTimePeriod, isRecent, toolData, tool.History);
 
             model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ToolDatabase, "/Tools/Index", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(tool.Name, $"/Tools/Edit/{tool.Id}/", false));
@@ -275,7 +275,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new List<decimal>();
+                List<decimal> datavalues = new();
                 chartModel.DataValues[toolStat.Key.Date.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)] = datavalues;
 
                 foreach (var machine in machines)
@@ -300,7 +300,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new List<decimal>();
+                List<decimal> datavalues = new();
                 chartModel.DataValues[toolStat.Key.ToString()] = datavalues;
 
                 foreach (var machine in machines)
@@ -325,7 +325,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new List<decimal>();
+                List<decimal> datavalues = new();
                 chartModel.DataValues[toolStat.Key.ToString()] = datavalues;
 
                 foreach (var machine in machines)

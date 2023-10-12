@@ -69,7 +69,9 @@
     {
         Seperator,
 
-        MenuItem
+        MenuItem,
+
+        Popup
     }
 
     /// <summary>

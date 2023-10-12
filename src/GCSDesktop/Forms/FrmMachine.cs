@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,12 +25,9 @@ using GSendShared.Interfaces;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 using Shared.Classes;
-
-using static GSendShared.Constants;
 
 namespace GSendDesktop.Forms
 {
@@ -67,6 +63,7 @@ namespace GSendDesktop.Forms
         private readonly ShortcutHandler _shortcutHandler;
         private readonly IPluginHelper _pluginHelper;
         private readonly List<IGSendPluginModule> _pluginsWithClientMessage = new();
+        private readonly List<IPluginItemBase> _pluginsWithClientMessages = new();
 
         #endregion Private Fields
 
@@ -155,12 +152,12 @@ namespace GSendDesktop.Forms
 
             tabControlMain.TabPages.Remove(tabPageServiceSchedule);
 
-            mnuMachine.Tag = MenuParent.Machine;
-            mnuView.Tag = MenuParent.View;
-            mnuAction.Tag = MenuParent.Action;
-            mnuOptions.Tag = MenuParent.Options;
-            mnuTools.Tag = MenuParent.Tools;
-            mnuHelp.Tag = MenuParent.Help;
+            mnuMachine.Tag = new InternalPluginMenu(mnuMachine);
+            mnuView.Tag = new InternalPluginMenu(mnuView);
+            mnuAction.Tag = new InternalPluginMenu(mnuAction);
+            mnuOptions.Tag = new InternalPluginMenu(mnuOptions);
+            mnuTools.Tag = new InternalPluginMenu(mnuTools);
+            mnuHelp.Tag = new InternalPluginMenu(mnuHelp);
 
             _pluginHelper.InitializeAllPlugins(this);
 
@@ -218,7 +215,7 @@ namespace GSendDesktop.Forms
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            ClientBaseMessage clientMessage = null;
+            IClientBaseMessage clientMessage = null;
             try
             {
                 clientMessage = JsonSerializer.Deserialize<ClientBaseMessage>(message, Constants.DefaultJsonSerializerOptions);
@@ -238,7 +235,7 @@ namespace GSendDesktop.Forms
 
             switch (clientMessage.request)
             {
-                case "Stop":
+                case Constants.Stop:
                     if (_machineStatusModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                         InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
@@ -283,7 +280,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "Connect":
+                case Constants.Connect:
                     _machineConnected = true;
                     UpdateEnabledState();
                     ConfigureMachine();
@@ -293,7 +290,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "Disconnect":
+                case Constants.Disconnect:
                     _machineConnected = false;
                     txtGrblUpdates.Text = String.Empty;
                     _appliedSettingsChanged = false;
@@ -306,18 +303,18 @@ namespace GSendDesktop.Forms
                     UpdateEnabledState();
                     break;
 
-                case "Pause":
+                case Constants.Pause:
                     _isPaused = true;
                     UpdateEnabledState();
                     break;
 
-                case "Resume":
+                case Constants.Resume:
                     _isPaused = false;
                     UpdateEnabledState();
                     break;
 
-                case "ResponseReceived":
-                case "MessageReceived":
+                case Constants.ResponseReceived:
+                case Constants.MessageReceived:
                     if (clientMessage.message.ToString().StartsWith('<') || _isJogging)
                     {
                         _lastMessageWasHiddenCommand = true;
@@ -343,7 +340,7 @@ namespace GSendDesktop.Forms
 
                     break;
 
-                case "GrblError":
+                case Constants.GrblError:
                     ProcessErrorResponse(clientMessage);
                     break;
 
@@ -361,17 +358,20 @@ namespace GSendDesktop.Forms
                     break;
 
                 case Constants.MessageMachineConnectServer:
-                    ConnectResult connectResponse = (ConnectResult)JsonSerializer.Deserialize<int>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
-
-                    switch (connectResponse)
+                    if (clientMessage.message != null)
                     {
-                        case ConnectResult.TimeOut:
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.TimeoutConnectingToMachine);
-                            break;
+                        ConnectResult connectResponse = (ConnectResult)JsonSerializer.Deserialize<int>(clientMessage.message.ToString(), Constants.DefaultJsonSerializerOptions);
 
-                        case ConnectResult.Error:
-                            warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.ErrorConnectingToMachine);
-                            break;
+                        switch (connectResponse)
+                        {
+                            case ConnectResult.TimeOut:
+                                warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.TimeoutConnectingToMachine);
+                                break;
+
+                            case ConnectResult.Error:
+                                warningsAndErrors.AddWarningPanel(InformationType.Error, GSend.Language.Resources.ErrorConnectingToMachine);
+                                break;
+                        }
                     }
 
                     break;
@@ -431,6 +431,13 @@ namespace GSendDesktop.Forms
 
                     break;
             }
+
+
+            // notify plugins interested in messages
+            Parallel.ForEach(_pluginsWithClientMessages, sp =>
+            {
+                sp.ClientMessageReceived(clientMessage);
+            });
         }
 
         protected override void UpdateEnabledState()
@@ -881,7 +888,7 @@ namespace GSendDesktop.Forms
         private void jogControl_OnJogStart(JogDirection jogDirection, double stepSize, double feedRate)
         {
             _canCancelJog = stepSize == 0;
-            InternalSendMessage(String.Format(MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
+            InternalSendMessage(String.Format(Constants.MessageMachineJogStart, _machine.Id, jogDirection, stepSize, feedRate));
         }
 
         private void jogControl_OnJogStop(object sender, EventArgs e)
@@ -894,7 +901,7 @@ namespace GSendDesktop.Forms
 
         private void StopJogging()
         {
-            SendByThread(String.Format(MessageMachineJogStop, _machine.Id));
+            SendByThread(String.Format(Constants.MessageMachineJogStop, _machine.Id));
         }
 
         private void jogControl_OnUpdate(object sender, EventArgs e)
@@ -1081,16 +1088,8 @@ namespace GSendDesktop.Forms
 
         private void propertyGridGrblSettings_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            PropertyInfo propertyInfo = _machine.Settings.GetType().GetProperty(e.NewSelection.Label);
-
-            if (propertyInfo == null)
-                throw new InvalidOperationException();
-
-            GrblSettingAttribute grblSettingAttribute = propertyInfo.GetCustomAttribute<GrblSettingAttribute>();
-
-            if (grblSettingAttribute == null)
-                throw new InvalidOperationException();
-
+            PropertyInfo propertyInfo = _machine.Settings.GetType().GetProperty(e.NewSelection.Label) ?? throw new InvalidOperationException();
+            GrblSettingAttribute grblSettingAttribute = propertyInfo.GetCustomAttribute<GrblSettingAttribute>() ?? throw new InvalidOperationException();
             string dollarValue = grblSettingAttribute.DollarValue;
 
             lblPropertyHeader.Text = $"{dollarValue} - {Shared.Utilities.SplitCamelCase(e.NewSelection.Label)}";
@@ -1219,7 +1218,7 @@ namespace GSendDesktop.Forms
             toolStripStatusLabelWarnings.Invalidate();
         }
 
-        private void ProcessAlarmResponse(ClientBaseMessage clientMessage)
+        private void ProcessAlarmResponse(IClientBaseMessage clientMessage)
         {
             _isProbing = false;
             JsonElement element = (JsonElement)clientMessage.message;
@@ -1229,7 +1228,7 @@ namespace GSendDesktop.Forms
             UpdateEnabledState();
         }
 
-        private void ProcessErrorResponse(ClientBaseMessage clientMessage)
+        private void ProcessErrorResponse(IClientBaseMessage clientMessage)
         {
             if (_machineStatusModel.MachineState == MachineState.Alarm)
                 return;
@@ -1247,7 +1246,7 @@ namespace GSendDesktop.Forms
             UpdateEnabledState();
         }
 
-        private void ProcessFailedMessage(ClientBaseMessage clientMessage)
+        private void ProcessFailedMessage(IClientBaseMessage clientMessage)
         {
             string[] message = clientMessage.request.Split(Constants.ColonChar,
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -1280,7 +1279,7 @@ namespace GSendDesktop.Forms
         public void SetZeroForAxes(object sender, EventArgs e)
         {
             ZeroAxis zeroAxis = (ZeroAxis)((Button)sender).Tag;
-            InternalSendMessage(String.Format(MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
+            InternalSendMessage(String.Format(Constants.MessageMachineSetZero, _machine.Id, (int)zeroAxis, GetCoordinateSystemForZero()));
             tabPageJog.Focus();
         }
 
@@ -1430,12 +1429,12 @@ namespace GSendDesktop.Forms
 
         private void btnSpindleStart_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
+            InternalSendMessage(String.Format(Constants.MessageMachineSpindle, _machine.Id, trackBarSpindleSpeed.Value, cbSpindleCounterClockwise.Checked));
         }
 
         private void btnSpindleStop_Click(object sender, EventArgs e)
         {
-            SendByThread(String.Format(MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
+            SendByThread(String.Format(Constants.MessageMachineSpindle, _machine.Id, 0, cbSpindleCounterClockwise.Checked));
         }
 
         #endregion Spindle Control
@@ -1446,12 +1445,11 @@ namespace GSendDesktop.Forms
         {
             IGSendApiWrapper machineApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
 
-            using (FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper))
+            using FrmRegisterService frmRegisterService = new(_machine.Id, machineApiWrapper);
+
+            if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
             {
-                if (frmRegisterService.ShowDialog(this) == DialogResult.OK)
-                {
-                    btnServiceRefresh_Click(sender, e);
-                }
+                btnServiceRefresh_Click(sender, e);
             }
         }
 
@@ -1578,8 +1576,6 @@ namespace GSendDesktop.Forms
 
 
             jogControl.FeedMaximum = (int)_machine.Settings.MaxFeedRateX;
-            jogControl.FeedMinimum = 0;
-            jogControl.FeedRate = jogControl.FeedMaximum / 2;
             jogControl.FeedMinimum = 0;
             jogControl.StepValue = 7;
             jogControl.FeedRate = _machine.JogFeedrate;
@@ -1963,41 +1959,39 @@ namespace GSendDesktop.Forms
 
         private void toolStripStatusLabelWarnings_Paint(object sender, PaintEventArgs e)
         {
-            using (WarningPanel warningPanel = new())
+            using WarningPanel warningPanel = new();
+            e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
+            int count = warningsAndErrors.ErrorCount();
+            int leftPos = 2;
+
+            if (count > 0)
             {
-                e.Graphics.FillRectangle(new SolidBrush(toolStripStatusLabelWarnings.BackColor), e.ClipRectangle);
-                int count = warningsAndErrors.ErrorCount();
-                int leftPos = 2;
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += GSendShared.Constants.WarningStatusWidth;
-                }
-
-                count = warningsAndErrors.WarningCount();
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                    leftPos += GSendShared.Constants.WarningStatusWidth;
-                }
-
-                count = warningsAndErrors.InformationCount();
-
-                if (count > 0)
-                {
-                    e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Information), new Point(leftPos, 1));
-                    e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
-                        new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
-                }
-
-                e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right - 1, e.ClipRectangle.Top, e.ClipRectangle.Right - 1, e.ClipRectangle.Bottom - 2);
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Error), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                leftPos += GSendShared.Constants.WarningStatusWidth;
             }
+
+            count = warningsAndErrors.WarningCount();
+
+            if (count > 0)
+            {
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Warning), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+                leftPos += GSendShared.Constants.WarningStatusWidth;
+            }
+
+            count = warningsAndErrors.InformationCount();
+
+            if (count > 0)
+            {
+                e.Graphics.DrawImage(warningPanel.GetImageForInformationType(InformationType.Information), new Point(leftPos, 1));
+                e.Graphics.DrawString($"{count}", toolStripStatusLabelWarnings.Font,
+                    new SolidBrush(toolStripStatusLabelWarnings.ForeColor), new Point(leftPos + 18, 1));
+            }
+
+            e.Graphics.DrawLine(_borderPen, e.ClipRectangle.Right - 1, e.ClipRectangle.Top, e.ClipRectangle.Right - 1, e.ClipRectangle.Bottom - 2);
 
         }
 
@@ -2060,29 +2054,29 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonConnect_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineConnect, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineConnect, _machine.Id));
         }
 
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineDisconnect, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineDisconnect, _machine.Id));
         }
 
         private void toolStripButtonClearAlarm_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineClearAlarm, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineClearAlarm, _machine.Id));
             warningsAndErrors.ClearAlarm();
         }
 
         private void toolStripButtonHome_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachineHome, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineHome, _machine.Id));
         }
 
         private void toolStripButtonProbe_Click(object sender, EventArgs e)
         {
             _isProbing = true;
-            InternalSendMessage(String.Format(MessageMachineProbe, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachineProbe, _machine.Id));
             UpdateEnabledState();
         }
 
@@ -2092,24 +2086,22 @@ namespace GSendDesktop.Forms
             {
                 if (_isPaused)
                 {
-                    InternalSendMessage(String.Format(MessageMachineResume, _machine.Id));
+                    InternalSendMessage(String.Format(Constants.MessageMachineResume, _machine.Id));
                 }
                 else if (_machineStatusModel.TotalLines > 0 && !_machineStatusModel.IsRunning)
                 {
                     IGSendApiWrapper apiWrapper = _serviceProvider.GetRequiredService<IGSendApiWrapper>();
 
-                    using (StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper))
+                    using StartJobWizard startJobWizard = new(_machineStatusModel, _gCodeAnalyses, apiWrapper);
+                    if (startJobWizard.ShowDialog() == DialogResult.OK)
                     {
-                        if (startJobWizard.ShowDialog() == DialogResult.OK)
-                        {
-                            _toolProfile = startJobWizard.ToolProfile;
-                            IJobProfile jobProfile = startJobWizard.JobProfile;
+                        _toolProfile = startJobWizard.ToolProfile;
+                        IJobProfile jobProfile = startJobWizard.JobProfile;
 
-                            if (startJobWizard.IsSimulation)
-                                InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
+                        if (startJobWizard.IsSimulation)
+                            InternalSendMessage(String.Format(Constants.MessageToggleSimulation, _machine.Id));
 
-                            InternalSendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
-                        }
+                        InternalSendMessage(String.Format(Constants.MessageRunGCode, _machine.Id, _toolProfile.Id, jobProfile.Id));
                     }
                 }
             }
@@ -2117,7 +2109,7 @@ namespace GSendDesktop.Forms
 
         private void toolStripButtonPause_Click(object sender, EventArgs e)
         {
-            InternalSendMessage(String.Format(MessageMachinePause, _machine.Id));
+            InternalSendMessage(String.Format(Constants.MessageMachinePause, _machine.Id));
         }
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
@@ -2125,7 +2117,7 @@ namespace GSendDesktop.Forms
             if (_isJogging)
                 StopJogging();
             else
-                SendByThread(String.Format(MessageMachineStop, _machine.Id));
+                SendByThread(String.Format(Constants.MessageMachineStop, _machine.Id));
         }
 
         private void ToolstripButtonCoordinates_Click(object sender, EventArgs e)
@@ -2376,20 +2368,14 @@ namespace GSendDesktop.Forms
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(true);
-            }
+            shortcut?.Trigger(true);
         }
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(false);
-            }
+            shortcut?.Trigger(false);
         }
 
         private List<IShortcut> RetrieveAvailableShortcuts()
@@ -2675,16 +2661,48 @@ namespace GSendDesktop.Forms
                 _pluginsWithClientMessage.Add(pluginModule);
         }
 
+        public IPluginMenu GetMenu(MenuParent menuParent)
+        {
+            switch (menuParent)
+            {
+                case MenuParent.Machine:
+                    return mnuMachine.Tag as IPluginMenu;
+
+                case MenuParent.View:
+                    return mnuView.Tag as IPluginMenu;
+
+                case MenuParent.Action:
+                    return mnuAction.Tag as IPluginMenu;
+
+                case MenuParent.Options:
+                    return mnuOptions.Tag as IPluginMenu;
+
+                case MenuParent.Tools:
+                    return mnuTools.Tag as IPluginMenu;
+
+                case MenuParent.Help:
+                    return mnuHelp.Tag as IPluginMenu;
+            }
+
+            return null;
+        }
+
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as ISenderPluginHost);
             _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
+
+            if (pluginMenu.ReceiveClientMessages)
+                _pluginsWithClientMessages.Add(pluginMenu);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
             _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+
+            if (toolbarButton.ReceiveClientMessages)
+                _pluginsWithClientMessages.Add(toolbarButton);
         }
 
         public void SendMessage(string message)

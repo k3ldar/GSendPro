@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -27,6 +26,11 @@ namespace GSendControls
             UpdateEnabledState();
         }
 
+        protected void ShowInformation(string title, string message)
+        {
+            MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         protected virtual void CreateContextMenu()
         {
 
@@ -44,7 +48,6 @@ namespace GSendControls
 
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6602:\"Find\" method should be used instead of the \"FirstOrDefault\" extension", Justification = "Not available for array")]
         protected virtual void LoadSettings()
         {
             string screenName = DesktopSettings.ReadValue<string>(SectionName, "Screen", Screen.FromControl(this).DeviceName);

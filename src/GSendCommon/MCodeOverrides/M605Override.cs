@@ -22,7 +22,7 @@ namespace GSendCommon.MCodeOverrides
 
                 if (File.Exists(file))
                 {
-                    PlaySoundThread playSoundThread = new PlaySoundThread(file, TimeSpan.Zero);
+                    PlaySoundThread playSoundThread = new(file, TimeSpan.Zero);
                     ThreadManager.ThreadStart(playSoundThread, $"Playing sound {file}", ThreadPriority.BelowNormal);
 
                     overrideContext.SendCommand = false;

@@ -142,7 +142,7 @@ namespace GSendTests.GCService
             };
 
             MockComPortFactory mockComPortFactory = new();
-            MockGSendDataProvider mockDataProvider = new MockGSendDataProvider();
+            MockGSendDataProvider mockDataProvider = new();
 
 
             bool startCalled = false;

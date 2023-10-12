@@ -7,6 +7,13 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HomePageMenu : IPluginMenu
     {
+        private readonly IPluginMenu _parentMenu;
+
+        public HomePageMenu(IPluginMenu parentMenu)
+        {
+            _parentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+        }
+
         public string Text => "Home Page";
 
         public int Index => 4;
@@ -15,7 +22,9 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public MenuParent ParentMenu => MenuParent.Help;
+        public IPluginMenu ParentMenu => _parentMenu;
+
+        public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
@@ -39,7 +48,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public bool IsEnabled() => true;
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in any context
         }

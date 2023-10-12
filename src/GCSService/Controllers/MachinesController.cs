@@ -262,7 +262,7 @@ namespace GSendService.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ServiceConfigurationMachineModel model = new ServiceConfigurationMachineModel(GetModelData(), machine);
+            ServiceConfigurationMachineModel model = new(GetModelData(), machine);
             model.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
             model.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ServiceSchedule, $"/{Name}/{nameof(ConfigureService)}/{machineId}/", false));
 
@@ -306,7 +306,7 @@ namespace GSendService.Controllers
 
             List<ServiceItemModel> serviceItems = _gSendDataProvider.ServiceItemsGet(machine.MachineType);
 
-            ServiceMachineModel returnModel = new ServiceMachineModel(GetModelData(), machine, GSendShared.ServiceType.Daily, serviceItems);
+            ServiceMachineModel returnModel = new(GetModelData(), machine, GSendShared.ServiceType.Daily, serviceItems);
             returnModel.Breadcrumbs.Add(new BreadcrumbItem($"{Languages.LanguageStrings.View} {machine.Name}", $"/{Name}/{nameof(View)}/{machineId}/", false));
             returnModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.ServiceNow, $"/{Name}/{nameof(Service)}/{machineId}/", false));
             return View(returnModel);
@@ -374,7 +374,7 @@ namespace GSendService.Controllers
         {
             RetreiveServiceData(machine, out DateTime nextService, out TimeSpan remainingSpindle, out long _);
 
-            MachineServiceViewModel serviceModel = new MachineServiceViewModel(machine.Id,
+            MachineServiceViewModel serviceModel = new(machine.Id,
                 machine.Options.HasFlag(MachineOptions.ServiceSchedule),
                 machine.ServiceWeeks, machine.ServiceSpindleHours, nextService, remainingSpindle);
 

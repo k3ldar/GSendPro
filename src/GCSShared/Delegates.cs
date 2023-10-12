@@ -34,4 +34,6 @@ namespace GSendShared
     public delegate void InformationUpdateHandler(InformationType informationType, string message);
 
     public delegate void ConfigurationUpdatedHandler(ConfigurationUpdatedMessage configurationUpdatedMessage);
+
+    public delegate void MachineStateChangeHandler(MachineState machineState);
 }

@@ -296,6 +296,9 @@ namespace GSendControls
                 string name = String.IsNullOrEmpty(header.Name) ? header.Text : header.Name;
                 try
                 {
+                    if (String.IsNullOrEmpty(name))
+                        continue;
+
                     name = Validation.Validate(name, ValidationTypes.AtoZ);
 
                     XML.SetXMLValue("Settings", String.Format("{0}DisplayIndex", name), header.DisplayIndex.ToString(), file);

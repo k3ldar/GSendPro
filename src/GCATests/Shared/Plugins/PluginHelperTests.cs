@@ -62,7 +62,7 @@ namespace GSendTests.Shared.Plugins
         [TestMethod]
         public void InitializeAllPlugins_DifferentUsage_LoggedWithoutException()
         {
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Service);
             pluginModule.Setup(m => m.Name).Returns("test plugin");
@@ -78,21 +78,22 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.IsTrue(logger.LogItems.Contains("Warning - Attempt to load invalid plugin: test plugin"));
+            Assert.IsTrue(logger.LogItems.Contains("PluginLoadError - Plugin test plugin is not valid for host Sender"));
         }
 
         [TestMethod]
         public void InitializeAllPlugins_WithMenuItems_MenuCreationCalled_Success()
         {
+            IPluginMenu parent = new MockPluginMenu("tools", MenuType.MenuItem, null);
             List<IPluginMenu> menuItems = new()
             {
-                new MockPluginMenu("-", MenuType.Seperator, MenuParent.Tools),
-                new MockPluginMenu("New Tool", MenuType.MenuItem, MenuParent.Tools),
+                new MockPluginMenu("-", MenuType.Seperator, parent),
+                new MockPluginMenu("New Tool", MenuType.MenuItem, parent),
             };
 
             List<IPluginMenu> createdMenuItems = new();
 
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasMenuItems);
@@ -110,7 +111,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(1, logger.LogItems.Count);
             Assert.AreEqual(2, createdMenuItems.Count);
         }
 
@@ -125,7 +126,7 @@ namespace GSendTests.Shared.Plugins
 
             List<IPluginToolbarButton> createdButtonItems = new();
 
-            MockLogger logger = new MockLogger();
+            MockLogger logger = new();
             var pluginModule = new Mock<IGSendPluginModule>();
             pluginModule.Setup(m => m.Host).Returns(PluginHosts.Sender);
             pluginModule.Setup(m => m.Options).Returns(PluginOptions.HasToolbarButtons);
@@ -143,7 +144,7 @@ namespace GSendTests.Shared.Plugins
             Assert.IsNotNull(sut);
 
             sut.InitializeAllPlugins(pluginHost.Object);
-            Assert.AreEqual(0, logger.LogItems.Count);
+            Assert.AreEqual(1, logger.LogItems.Count);
             Assert.AreEqual(2, createdButtonItems.Count);
         }
     }

@@ -13,6 +13,8 @@ using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using PluginManager.Abstractions;
+
 using Shared.Classes;
 
 #pragma warning disable CA1836
@@ -57,6 +59,8 @@ namespace GSendCommon
         private const string OptionAccessoryState = "a";
         private const string JogNumberFormat = "F4";
         private const int DelayBetweenUpdateRequestsMilliseconds = 150;
+        private const string ResponseAlarm = "alarm";
+        private const string ResponseError = "error";
         private static readonly TimeSpan DefaultTimeOut = TimeSpan.FromSeconds(30);
 
         private List<IGCodeLine> _commandsToSend = null;
@@ -83,6 +87,7 @@ namespace GSendCommon
         private readonly Stopwatch _jobTime = new();
         private bool _updateStatusSent = false;
         private readonly IGSendSettings _gSendSettings;
+        private readonly ILogger _logger;
 
         #region Constructors
 
@@ -97,10 +102,12 @@ namespace GSendCommon
             if (comPortFactory == null)
                 throw new ArgumentNullException(nameof(comPortFactory));
 
+            _logger = serviceProvider.GetService<ILogger>();
             _gCodeParserFactory = serviceProvider.GetService<IGCodeParserFactory>();
             _gcodeParser = _gCodeParserFactory.CreateParser();
 
-            base.HangTimeout = int.MaxValue;
+            base.HangTimeout = 0;
+            ContinueIfGlobalException = true;
             _machine = machine ?? throw new ArgumentNullException(nameof(machine));
             _port = comPortFactory.CreateComPort(_machine);
             _port.DataReceived += Port_DataReceived;
@@ -110,7 +117,7 @@ namespace GSendCommon
                 _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 
-            ProcessGCodeJob processJobThread = new ProcessGCodeJob(this);
+            ProcessGCodeJob processJobThread = new(this);
             ThreadManager.ThreadStart(processJobThread, $"{machine.Name} - {machine.ComPort} - Job Processor", ThreadPriority.Normal);
         }
 
@@ -342,14 +349,14 @@ namespace GSendCommon
             _isPaused = false;
             OnResume?.Invoke(this, EventArgs.Empty);
             _jobTime.Start();
-            Trace.WriteLine($"Resume");
+            Trace.WriteLine(Constants.Resume);
             _port.WriteLine(CommandStartResume);
             return true;
         }
 
         public bool Stop()
         {
-            Trace.WriteLine("Stop");
+            Trace.WriteLine(Constants.Stop);
 
             InternalWriteByte(new byte[] { 0x18 });
 
@@ -515,9 +522,19 @@ namespace GSendCommon
 
         public bool Home()
         {
-            SendCommandWaitForResponse(CommandHome, HomingTimeout);
-            Trace.WriteLine("Home");
-            OnCommandSent?.Invoke(this, CommandSent.Home);
+            _machineStateModel.IsHoming = true;
+            try
+            {
+                SendCommandWaitForResponse(CommandHome, HomingTimeout);
+                Trace.WriteLine("Home");
+                _machineStateModel.IsHoming = false;
+                OnCommandSent?.Invoke(this, CommandSent.Home);
+            }
+            finally
+            {
+                _machineStateModel.IsHoming = false;
+            }
+               
             return true;
         }
 
@@ -1008,55 +1025,58 @@ namespace GSendCommon
 
                 using (TimedLock tl = TimedLock.Lock(_lockObject))
                 {
-
-                    if (response.StartsWith('<'))
+                    try
                     {
-                        _updateStatusSent = false;
-                        ProcessInformationResponse(response[1..^1]);
-                    }
-                    else if (response.StartsWith("alarm", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        Trace.WriteLine($"Response: {response}");
-                        ProcessAlarmResponse(response);
-                    }
-                    else if (response.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        Trace.WriteLine($"Response: {response}");
-                        ProcessErrorResponse(response);
-                    }
-                    else if (response.StartsWith('['))
-                    {
-                        ProcessMessageResponse(response.Trim()[1..^1]);
-                    }
-                    else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
+                        if (response.StartsWith('<'))
                         {
-                            activeCommand.Status = LineStatus.Processed;
-                            UpdateMachineStateBufferData();
-
-                            RaiseOnLineStatusUpdated(activeCommand);
-
-                            if (activeCommand.Commands.Exists(c => c.Command.Equals('G') &&
-                                        (
-                                            c.CommandValue.Equals(54) ||
-                                            c.CommandValue.Equals(55) ||
-                                            c.CommandValue.Equals(56) ||
-                                            c.CommandValue.Equals(57) ||
-                                            c.CommandValue.Equals(58) ||
-                                            c.CommandValue.Equals(59)
-                                        )))
-                            {
-                                SendAndProcessMessage("$G");
-                            }
+                            _updateStatusSent = false;
+                            ProcessInformationResponse(response[1..^1]);
                         }
+                        else if (response.StartsWith(ResponseAlarm, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            Trace.WriteLine($"Response: {response}");
+                            ProcessAlarmResponse(response);
+                        }
+                        else if (response.StartsWith(ResponseError, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            Trace.WriteLine($"Response: {response}");
+                            ProcessErrorResponse(response);
+                        }
+                        else if (response.StartsWith('['))
+                        {
+                            ProcessMessageResponse(response.Trim()[1..^1]);
+                        }
+                        else if (response.Equals(ResultOk, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (_sendQueue.TryDequeue(out IGCodeLine activeCommand))
+                            {
+                                activeCommand.Status = LineStatus.Processed;
+                                UpdateMachineStateBufferData();
 
-                        _waitingForResponse = false;
+                                RaiseOnLineStatusUpdated(activeCommand);
+
+                                if (activeCommand.Commands.Exists(c => c.Command.Equals('G') &&
+                                            (
+                                                c.CommandValue.Equals(54) ||
+                                                c.CommandValue.Equals(55) ||
+                                                c.CommandValue.Equals(56) ||
+                                                c.CommandValue.Equals(57) ||
+                                                c.CommandValue.Equals(58) ||
+                                                c.CommandValue.Equals(59)
+                                            )))
+                                {
+                                    SendAndProcessMessage("$G");
+                                }
+                            }
+
+                            _waitingForResponse = false;
+                        }
                     }
-
-
+                    catch (Exception e)
+                    {
+                        _logger?.AddToLog(PluginManager.LogLevel.Error, nameof(ProcessGrblResponse), e);
+                    }
                 }
-
 
 #if DEBUG
                 Trace.WriteLine($"Junk Data: {response}");
@@ -1376,7 +1396,7 @@ namespace GSendCommon
                             if (!String.IsNullOrEmpty(line.Trim()))
                                 Result.AppendLine(line);
 
-                            if (line.StartsWith("error", StringComparison.InvariantCultureIgnoreCase))
+                            if (line.StartsWith(ResponseError, StringComparison.InvariantCultureIgnoreCase))
                             {
                                 Trace.WriteLine($"Response: {line}");
                                 ProcessErrorResponse(line);

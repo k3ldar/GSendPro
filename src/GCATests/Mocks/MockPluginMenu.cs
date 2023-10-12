@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
+using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
@@ -10,7 +11,7 @@ namespace GSendTests.Mocks
     {
         private ISenderPluginHost _senderPluginHost;
 
-        public MockPluginMenu(string name, int index, MenuType menuType, MenuParent menuParent)
+        public MockPluginMenu(string name, int index, MenuType menuType, IPluginMenu menuParent)
         {
             Text = name;
             Index = index;
@@ -18,7 +19,7 @@ namespace GSendTests.Mocks
             ParentMenu = menuParent;
         }
 
-        public MockPluginMenu(string name, MenuType menuType, MenuParent menuParent)
+        public MockPluginMenu(string name, MenuType menuType, IPluginMenu menuParent)
             : this(name, -1, menuType, menuParent)
         {
 
@@ -32,7 +33,9 @@ namespace GSendTests.Mocks
 
         public MenuType MenuType { get; set; }
 
-        public MenuParent ParentMenu { get; set; }
+        public IPluginMenu ParentMenu { get; set; }
+
+        public bool ReceiveClientMessages => false;
 
         public bool IsEnabled()
         {
@@ -49,7 +52,7 @@ namespace GSendTests.Mocks
             throw new NotImplementedException();
         }
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             throw new NotImplementedException();
         }

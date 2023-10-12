@@ -15,6 +15,8 @@ namespace GSendControls
             lblVerNo.Text = Assembly.GetEntryAssembly().GetName().Version.ToString();
         }
 
+        protected override string SectionName => nameof(AboutBox); 
+
         protected override void LoadResources()
         {
             btnOK.Text = GSend.Language.Resources.OK;

@@ -30,8 +30,8 @@ namespace GSendApi
         protected BaseApiWrapper(ApiSettings apiSettings)
         {
             _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));
-
-            string apiFile = Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath"), "api.dat");
+            ServerAddress = _apiSettings.RootAddress;
+            string apiFile = Path.Combine(Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar), "api.dat");
 
             if (!File.Exists(apiFile))
                 throw new InvalidOperationException("Unable to find Api Data");
@@ -47,7 +47,7 @@ namespace GSendApi
             _secret = parts[2];
         }
 
-        public Uri ServerAddress => _apiSettings.RootAddress;
+        public Uri ServerAddress { get; set; }
 
         protected HttpClient CreateApiClient()
         {
@@ -94,7 +94,7 @@ namespace GSendApi
         {
             HttpContent content = CreateContent(data);
             using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
+            string address = $"{ServerAddress}{endPoint}";
 
             using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
 
@@ -116,7 +116,7 @@ namespace GSendApi
         {
             HttpContent content = CreateContent(String.Empty);
             using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
+            string address = $"{ServerAddress}{endPoint}";
 
             using HttpResponseMessage response = httpClient.PostAsync(address, content).Result;
 
@@ -139,7 +139,7 @@ namespace GSendApi
             try
             {
                 using HttpClient httpClient = CreateApiClient();
-                string address = $"{_apiSettings.RootAddress}{endPoint}";
+                string address = $"{ServerAddress}{endPoint}";
 
                 using HttpResponseMessage response = httpClient.GetAsync(address).Result;
 
@@ -170,7 +170,7 @@ namespace GSendApi
         protected void CallPutApi<T>(string endPoint, T data)
         {
             using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
+            string address = $"{ServerAddress}{endPoint}";
 
             HttpContent content = CreateContent(data);
 
@@ -195,7 +195,7 @@ namespace GSendApi
         protected bool CallDeleteApi(string endPoint)
         {
             using HttpClient httpClient = CreateApiClient();
-            string address = $"{_apiSettings.RootAddress}{endPoint}";
+            string address = $"{ServerAddress}{endPoint}";
 
             using HttpResponseMessage response = httpClient.DeleteAsync(address).Result;
 

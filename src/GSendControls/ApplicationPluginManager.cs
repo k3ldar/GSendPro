@@ -89,29 +89,83 @@ namespace GSendControls
             if (pluginHosts == PluginHosts.None)
                 throw new InvalidOperationException("Invalid plugin usage.");
 
+            ILogger logger = ServiceProvider.GetRequiredService<ILogger>();
+
+            if (!File.Exists(pluginConfig))
+            {
+                logger.AddToLog(LogLevel.PluginConfigureError, $"Plugin configuration file not found: {pluginConfig}");
+                return;
+            }
+
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             List<GSendPluginSettings> pluginSettings = GetSettings<List<GSendPluginSettings>>(pluginConfig, nameof(GSendPluginSettings));
 
             foreach (GSendPluginSettings pluginSetting in pluginSettings)
             {
-                if (!pluginSetting.Enabled)
-                    continue;
-
-
-                if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
+                try
                 {
-                    pluginAssembly = Assembly.Load(pluginSetting.AssemblyName);
-                }
+                    if (!pluginSetting.Enabled)
+                    {
+                        logger.AddToLog(LogLevel.PluginLoadFailed, $"{pluginSetting.Name} is not enabled.");
+                        continue;
+                    }
 
-                if (FindPluginModuleClassByInterface(pluginAssembly, nameof(IGSendPluginModule)) != null)
-                {
+                    if (pluginSetting.Usage != pluginHosts)
+                    {
+                        logger.AddToLog(LogLevel.PluginLoadFailed, $"{pluginSetting.Name} is not configured for {pluginHosts}");
+                        continue;
+                    }
+
+                    if (!IsAssemblyLoaded(pluginSetting.AssemblyName, out Assembly pluginAssembly))
+                    {
+                        pluginAssembly = Assembly.Load(pluginSetting.AssemblyName);
+                    }
+
+                    if (FindPluginModuleClassByInterface(pluginAssembly, nameof(IGSendPluginModule)) == null)
+                    {
+                        logger.AddToLog(LogLevel.PluginLoadError, $"{pluginSetting.Name} does not contain an {nameof(IGSendPluginModule)} implementation.");
+                        continue;
+                    }
+
                     Type pluginInitializationType = FindPluginModuleClassByInterface(pluginAssembly, nameof(IPlugin));
 
-                    if (pluginInitializationType != null)
+                    if (pluginInitializationType == null)
                     {
-                        PluginLoad(pluginAssembly, pluginAssembly.Location, true);
+                        logger.AddToLog(LogLevel.PluginLoadError, $"{pluginSetting.Name} does not contain an {nameof(IPlugin)} implementation.");
+                        continue;
                     }
+
+                    PluginLoad(pluginAssembly, pluginAssembly.Location, true);
+                    logger.AddToLog(LogLevel.PluginLoadSuccess, pluginSetting.AssemblyName);
+                }
+                catch (Exception ex)
+                {
+                    logger.AddToLog(LogLevel.PluginLoadError, ex);
                 }
             }
+
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= CurrentDomain_ReflectionOnlyAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_ReflectionOnlyAssemblyResolve;
+        }
+
+        private Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string name = new AssemblyName(args.Name).Name;
+            string pluginPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Plugins", $"{name}.dll");
+
+            if (File.Exists(pluginPath))
+            {
+                Logger.AddToLog(LogLevel.Information, $"Plugin found: {pluginPath}");
+                return Assembly.Load(File.ReadAllBytes(pluginPath));
+            }
+            else
+            {
+                Logger.AddToLog(LogLevel.Warning, $"Plugin not found: {pluginPath}");
+            }
+
+            return null;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S6605:Collection-specific \"Exists\" method should be used instead of the \"Any\" extension", Justification = "Not relevant for array")]

@@ -25,6 +25,7 @@
         private bool _spindleCounterClockWise;
         private bool _isRunning;
         private bool _isPaused;
+        private bool _isHoming;
         private int _bufferSize;
         private int _queueSize;
         private int _commandQueueSize;
@@ -479,6 +480,20 @@
                     return;
 
                 _isRunning = value;
+                Updated = true;
+            }
+        }
+
+        public bool IsHoming
+        {
+            get => _isHoming;
+
+            set
+            {
+                if (_isHoming.Equals(value))
+                    return;
+
+                _isHoming = value;
                 Updated = true;
             }
         }

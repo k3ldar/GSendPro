@@ -35,14 +35,14 @@ namespace GSendDesktop
             ThreadManager.ThreadForcedToClose += ThreadManager_ThreadForcedToClose;
             ThreadManager.ThreadStopped += ThreadManager_ThreadStopped;
 
+            Environment.SetEnvironmentVariable(Constants.GSendPathEnvVar,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
+
+            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable(Constants.GSendPathEnvVar)));
+
             ApplicationPluginManager applicationPluginManager = new(
                 new PluginManagerConfiguration(),
                 new PluginSettings());
-
-            Environment.SetEnvironmentVariable("GSendProRootPath",
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder));
-
-            Directory.CreateDirectory(Path.Combine(Environment.GetEnvironmentVariable("GSendProRootPath")));
 
             applicationPluginManager.RegisterPlugin(typeof(ApplicationPluginManager).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(PluginSetting).Assembly.Location);
@@ -51,12 +51,12 @@ namespace GSendDesktop
             applicationPluginManager.RegisterPlugin(typeof(GSendShared.PluginInitialisation).Assembly.Location);
             applicationPluginManager.RegisterPlugin(typeof(GSendApi.PluginInitialization).Assembly.Location);
 
-            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Editor,
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
-
             IServiceCollection serviceCollection = new ServiceCollection();
             applicationPluginManager.ConfigureServices(serviceCollection);
             applicationPluginManager.ServiceProvider = serviceCollection.BuildServiceProvider();
+
+            applicationPluginManager.LoadAllPlugins(GSendShared.Plugins.PluginHosts.Sender,
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.AppPluginFile));
 
             _logger = applicationPluginManager.ServiceProvider.GetService<ILogger>();
             IGSendContext gSendContext = applicationPluginManager.ServiceProvider.GetService<IGSendContext>();

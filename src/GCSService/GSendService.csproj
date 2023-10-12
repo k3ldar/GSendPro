@@ -91,10 +91,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Providers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="SystemAdmin.Plugin" />
   </ItemGroup>
   

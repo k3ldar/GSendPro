@@ -10,7 +10,9 @@ namespace GSendDesktop.Internal
 
         public void Dispose()
         {
+            Cursor.Current = _cursor;
             _parent.Cursor = _cursor;
+            GC.SuppressFinalize(this);
         }
 
         public static MouseControl ShowWaitCursor(Form parent)
@@ -22,6 +24,7 @@ namespace GSendDesktop.Internal
             };
 
             Result._parent.Cursor = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor;
             return Result;
         }
     }

@@ -72,11 +72,11 @@ namespace GSendEditor
             _shortcuts = RetrieveAvailableShortcuts();
 
 
-            mnuFile.Tag = MenuParent.File;
-            mnuEdit.Tag = MenuParent.Edit;
-            mnuView.Tag = MenuParent.View;
-            mnuTools.Tag = MenuParent.Tools;
-            mnuHelp.Tag = MenuParent.Help;
+            mnuFile.Tag = new InternalPluginMenu(mnuFile);
+            mnuEdit.Tag = new InternalPluginMenu(mnuEdit);
+            mnuView.Tag = new InternalPluginMenu(mnuView);
+            mnuTools.Tag = new InternalPluginMenu(mnuTools);
+            mnuHelp.Tag = new InternalPluginMenu(mnuHelp);
 
             _pluginHelper.InitializeAllPlugins(this);
 
@@ -561,7 +561,7 @@ namespace GSendEditor
                 }
             }
 
-            ListViewItem listViewItem = new ListViewItem()
+            ListViewItem listViewItem = new()
             {
                 Text = name,
             };
@@ -914,7 +914,7 @@ namespace GSendEditor
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                using FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                using FileStream fileStream = new(fileName, FileMode.Open, FileAccess.Read);
                 byte[] bytes = new byte[fileStream.Length];
                 fileStream.Read(bytes, 0, bytes.Length);
                 string text = Encoding.UTF8.GetString(bytes);
@@ -940,20 +940,14 @@ namespace GSendEditor
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(true);
-            }
+            shortcut?.Trigger(true);
         }
 
         private void ShortcutHandler_OnKeyComboUp(object sender, ShortcutArgs e)
         {
             IShortcut shortcut = _shortcuts.Find(s => s.Name.Equals(e.Name));
 
-            if (shortcut != null)
-            {
-                shortcut.Trigger(false);
-            }
+            shortcut?.Trigger(false);
         }
 
         private List<IShortcut> RetrieveAvailableShortcuts()
@@ -1113,6 +1107,29 @@ namespace GSendEditor
         #region ISenderPluginHost
 
         public PluginHosts Host => PluginHosts.SenderHost;
+
+        public IPluginMenu GetMenu(MenuParent menuParent)
+        {
+            switch (menuParent)
+            {
+                case MenuParent.File:
+                    return mnuFile.Tag as IPluginMenu;
+
+                case MenuParent.Edit:
+                    return mnuEdit.Tag as IPluginMenu;
+
+                case MenuParent.View:
+                    return mnuView.Tag as IPluginMenu;
+
+                case MenuParent.Tools:
+                    return mnuTools.Tag as IPluginMenu;
+
+                case MenuParent.Help:
+                    return mnuHelp.Tag as IPluginMenu;
+            }
+
+            return null;
+        }
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

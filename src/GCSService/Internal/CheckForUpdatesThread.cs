@@ -43,7 +43,7 @@ namespace GSendService.Internal
             if (!response.IsSuccessStatusCode)
                 return true;
 
-            Version latestVersion = new Version(response.Content.ReadAsStringAsync().Result);
+            Version latestVersion = new(response.Content.ReadAsStringAsync().Result);
 
             if (latestVersion > currentVersion)
             {

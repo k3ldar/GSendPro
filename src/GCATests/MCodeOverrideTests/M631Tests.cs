@@ -55,8 +55,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 0;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 0
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 
@@ -87,8 +89,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 0;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 0
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 
@@ -121,8 +125,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 0;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 0
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 
@@ -154,8 +160,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 0;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 0
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 
@@ -187,8 +195,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 0;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 0
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 
@@ -221,8 +231,10 @@ namespace GSendTests.MCodeOverrideTests
                 GCode = gCodeLine
             };
 
-            MockRunProgram mockRunProgram = new MockRunProgram();
-            mockRunProgram.ReturnValue = 1;
+            MockRunProgram mockRunProgram = new()
+            {
+                ReturnValue = 1
+            };
             M631Override sut = new(mockRunProgram);
             bool result = sut.Process(context, CancellationToken.None);
 

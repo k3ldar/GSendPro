@@ -6,7 +6,7 @@ namespace GSendShared.Plugins
 {
     public sealed class SeperatorMenu : IPluginMenu
     {
-        public SeperatorMenu(MenuParent menuParent, int index)
+        public SeperatorMenu(IPluginMenu menuParent, int index)
         {
             ParentMenu = menuParent;
             Index = index;
@@ -20,7 +20,9 @@ namespace GSendShared.Plugins
 
         public MenuType MenuType => MenuType.Seperator;
 
-        public MenuParent ParentMenu { get; private set; }
+        public IPluginMenu ParentMenu { get; }
+
+        public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
@@ -38,7 +40,7 @@ namespace GSendShared.Plugins
 
         public bool IsEnabled() => true;
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in any context
         }

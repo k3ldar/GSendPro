@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
+using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
 
@@ -23,6 +24,8 @@ namespace GSendTests.Mocks
 
         public int Index { get; private set; }
 
+        public bool ReceiveClientMessages => false;
+
         public void Clicked()
         {
             // not used in this context
@@ -30,7 +33,7 @@ namespace GSendTests.Mocks
 
         public bool IsEnabled() => true;
 
-        public void MachineStatusChanged(MachineStateModel machineStateModel)
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // not used in this context
         }

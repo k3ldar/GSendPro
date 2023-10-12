@@ -94,20 +94,20 @@ namespace GSendControls.Plugins
                 if (plugin == null)
                     continue;
 
+                plugin.Initialize(pluginHost);
                 try
                 {
                     if (!plugin.Host.HasFlag(pluginHost.Host))
                     {
-                        _logger.AddToLog(PluginManager.LogLevel.Warning, $"Attempt to load invalid plugin: {plugin.Name}");
+                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
                         continue;
                     }
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
-                        if (plugin.MenuItems == null)
-                            throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
+                        IReadOnlyList<IPluginMenu> menuItems = plugin.MenuItems ?? throw new InvalidOperationException("MenuItems can not be null if HasMenuItems option is used");
 
-                        foreach (IPluginMenu pluginMenu in plugin.MenuItems)
+                        foreach (IPluginMenu pluginMenu in menuItems)
                         {
                             if (pluginMenu == null)
                                 continue;
@@ -131,6 +131,8 @@ namespace GSendControls.Plugins
                         }
                     }
 
+                    pluginHost.AddPlugin(plugin);
+                    _logger.AddToLog(PluginManager.LogLevel.PluginLoadSuccess, $"{plugin.Name} was loaded for host {pluginHost}");
                 }
                 catch (Exception ex)
                 {
@@ -169,7 +171,9 @@ namespace GSendControls.Plugins
             button.Click += (s, e) =>
             {
                 if (s is ToolStripButton buttonItem && buttonItem.Tag is IPluginToolbarButton button)
+                {
                     button.Clicked();
+                }
             };
 
             parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count), button);
@@ -177,12 +181,14 @@ namespace GSendControls.Plugins
 
         private static void CreateSeperatorMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu)
         {
-            ToolStripSeparator pluginSeperator = new();
-            pluginSeperator.Tag = menu;
+            ToolStripSeparator pluginSeperator = new()
+            {
+                Tag = menu
+            };
             parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count), pluginSeperator);
         }
 
-        private static void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
+        private void CreateStandardMenuItem(IPluginMenu menu, ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
         {
             ToolStripMenuItem pluginMenu = new();
             pluginMenu.Tag = menu;
@@ -202,7 +208,16 @@ namespace GSendControls.Plugins
             pluginMenu.Click += (s, e) =>
             {
                 if (s is ToolStripMenuItem menuItem && menuItem.Tag is IPluginMenu menu)
-                    menu.Clicked();
+                {
+                    try
+                    {
+                        menu.Clicked();
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, menu.Text, err);
+                    }
+                }
             };
 
             if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
@@ -215,27 +230,19 @@ namespace GSendControls.Plugins
 
         private static ToolStripMenuItem GetParentMenu(IPluginMenu menu, MenuStrip mainMenu)
         {
-            ToolStripMenuItem parentMenu = null;
+            InternalPluginMenu internalPluginMenu = menu.ParentMenu as InternalPluginMenu;
+            ToolStripMenuItem parentMenu;
 
-            if (menu.ParentMenu == MenuParent.None)
+            if (internalPluginMenu == null)
             {
-                parentMenu = new ToolStripMenuItem();
+                parentMenu = new();
                 parentMenu.Tag = menu;
                 parentMenu.Text = menu.Text;
                 mainMenu.Items.Add(parentMenu);
             }
             else
             {
-                for (int i = 0; i < mainMenu.Items.Count; i++)
-                {
-                    if (mainMenu.Items[i] is ToolStripMenuItem rootMenu &&
-                        rootMenu.Tag is MenuParent menuParent &&
-                        menuParent == menu.ParentMenu)
-                    {
-                        parentMenu = rootMenu;
-                        break;
-                    }
-                }
+                parentMenu = internalPluginMenu.MenuItem;
             }
 
             return parentMenu;

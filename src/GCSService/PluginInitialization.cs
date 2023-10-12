@@ -1,4 +1,7 @@
-﻿using AppSettings;
+﻿using System;
+using System.IO;
+
+using AppSettings;
 
 using GSendCommon;
 
@@ -75,9 +78,12 @@ namespace GSendService
             return 1;
         }
 
-        public void Initialise(PluginManager.Abstractions.ILogger logger)
+        public void Initialise(ILogger logger)
         {
-            // not implemented at this time
+            string rootPath = Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar);
+
+            if (!String.IsNullOrEmpty(rootPath))
+                Shared.EventLog.Path = Path.Combine(rootPath, nameof(GSendService));
         }
 
         #endregion IPlugin Methods

@@ -12,7 +12,7 @@ namespace GSendService.Internal
     {
         public void ErrorRaised(in ErrorInformation errorInformation)
         {
-            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GSendProAppFolder, GSendProErrorFolder);
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GSendProAppFolder, GSendProErrorFolder, nameof(GSendService));
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);

@@ -5,9 +5,9 @@
     <NoWarn>1701;1702;8032;8981</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>Shared.Key.pfx</AssemblyOriginatorKeyFile>
     <Description>GCode Sender and Analyzer</Description>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	<DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -30,45 +30,47 @@
   </PropertyGroup>
 	
   <PropertyGroup>
-    <PluginVersion>5.4.0</PluginVersion>
-	<SharedVer>3.10.0</SharedVer>
-	<SharedWinVer>1.2.0</SharedWinVer>
+    <PluginVersion>5.5.1</PluginVersion>
+	<SharedVer>3.10.2</SharedVer>
+	<SharedWinVer>1.2.1</SharedWinVer>
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>0.7.0</Version>
+    <Version>0.9.8.1</Version>
+	<FileVersion>$(Version)</FileVersion>
+	<ProductVersion>$(Version)</ProductVersion>
     <LangVersion>latest</LangVersion>
     <Authors>Simon Carter (s1cart3r@gmail.com)</Authors>
     <Company>Simon Carter</Company>
-    <Copyright>Copyright (c) 2022 - 2023.  Simon Carter.  All rights reserved.</Copyright>
+    <Copyright>Copyright (c) 2022 - 2023 Simon Carter.  All rights reserved.</Copyright>
     <Description>Advanced GCode Sender, Analyzer and Editor</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0'">
     <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0-windows'">
     <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0-windows'">
     <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 

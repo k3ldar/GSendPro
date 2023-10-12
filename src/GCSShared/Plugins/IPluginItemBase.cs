@@ -31,10 +31,15 @@ namespace GSendShared.Plugins
         bool IsEnabled();
 
         /// <summary>
+        /// Indicates the plugin item wishes to receive Status change notifications
+        /// </summary>
+        bool ReceiveClientMessages { get; }
+
+        /// <summary>
         /// Machine Status Change, if required, requires plugin options to be set correctly for entire plugin
         /// </summary>
-        /// <param name="machineStateModel"></param>
-        void MachineStatusChanged(MachineStateModel machineStateModel);
+        /// <param name="clientMessage"></param>
+        void ClientMessageReceived(IClientBaseMessage clientMessage);
 
         /// <summary>
         /// Updates the 

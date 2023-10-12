@@ -19,7 +19,7 @@ namespace gsend.pro.Controllers
             "M622", "M623", "M630", "M630.1", "M631", 
             "M631.1", "M631.2" };
 
-        private static readonly Dictionary<string, decimal[]> _seeAlso = new Dictionary<string, decimal[]>()
+        private static readonly Dictionary<string, decimal[]> _seeAlso = new()
         {
             { "M601", new decimal[] { 620, 623, 630, 631 } },
             { "M620", new decimal[] { 601, 621, 622, 623 } },
@@ -51,7 +51,7 @@ namespace gsend.pro.Controllers
             string menuData = resManager.GetString($"WebMenu{mCode.ToUpper()}", GSend.Language.Resources.Culture);
 
             bool seeAlsoExists = _seeAlso.TryGetValue(mCode, out _);
-            MCodeModel mCodeModel = new MCodeModel(GetModelData(), mCode, menuData,
+            MCodeModel mCodeModel = new(GetModelData(), mCode, menuData,
                 seeAlsoExists ? _seeAlso[mCode] : Array.Empty<decimal>());
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.BreadcrumbMCodes, "/MCodes/Index", false));
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(mCode, $"/MCodes/{mCode}/", false));

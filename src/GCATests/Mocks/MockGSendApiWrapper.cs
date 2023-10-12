@@ -98,6 +98,7 @@ namespace GSendTests.Mocks
         }
 
         public List<ISubprogram> Subprograms { get; set; } = new();
+        Uri IGSendApiWrapper.ServerAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public List<IToolProfile> ToolProfilesGet()
         {

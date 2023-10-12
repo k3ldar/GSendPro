@@ -50,7 +50,7 @@ namespace GSendControls
 
                 // if the items subitems count do not match then say they are the same
                 if (listviewX.SubItems.Count != listviewY.SubItems.Count)
-                    return (0);
+                    return 0;
 
                 Int64 val1 = 0;
                 Int64 val2 = 0;
@@ -64,9 +64,9 @@ namespace GSendControls
 
                 if (Utilities.StrIsNumeric(listviewX.SubItems[SortColumn].Text, ref val1) && Utilities.StrIsNumeric(listviewY.SubItems[SortColumn].Text, ref val2))
                     compareResult = ObjectCompare.Compare(val1, val2);
-                else if ((Utilities.StrIsDate(listviewX.SubItems[SortColumn].Text, ref val1Date) && Utilities.StrIsDate(listviewY.SubItems[SortColumn].Text, ref val2Date)))
+                else if (Utilities.StrIsDate(listviewX.SubItems[SortColumn].Text, ref val1Date) && Utilities.StrIsDate(listviewY.SubItems[SortColumn].Text, ref val2Date))
                     compareResult = ObjectCompare.Compare(val1Date, val2Date);
-                else if ((Utilities.StrIsCurrency(listviewX.SubItems[SortColumn].Text, ref val1Dec) && Utilities.StrIsCurrency(listviewY.SubItems[SortColumn].Text, ref val2Dec)))
+                else if (Utilities.StrIsCurrency(listviewX.SubItems[SortColumn].Text, ref val1Dec) && Utilities.StrIsCurrency(listviewY.SubItems[SortColumn].Text, ref val2Dec))
                     compareResult = ObjectCompare.Compare(val1Dec, val2Dec);
                 else
                     // Compare the two items
@@ -81,7 +81,7 @@ namespace GSendControls
                 else if (SortOrder == SortOrder.Descending)
                 {
                     // Descending sort is selected, return negative result of compare operation
-                    return (-compareResult);
+                    return -compareResult;
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace GSendControls
             {
                 if (err.Message.Contains("InvalidArgument=Value of"))
                 {
-                    return (0);
+                    return 0;
                 }
                 else
                     throw;

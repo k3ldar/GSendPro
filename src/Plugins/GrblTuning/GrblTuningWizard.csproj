@@ -6,11 +6,54 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <BaseOutputPath>..\..\..\Output\</BaseOutputPath>
+    <BaseOutputPath>..\$(BaseOutputPath)</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.PluginManager" Version="$(PluginVersion)" />
+    <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
+    <PackageReference Include="SC.Shared.Library.Core.Windows" Version="$(SharedWinVer)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\GCSShared\GSendShared.csproj" />
+    <ProjectReference Include="..\..\GSendControls\GSendControls.csproj" />
+    <ProjectReference Include="..\..\GSend.Language\GSend.Language.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="WizardPages\MachineTuneZAxisFeedRate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WizardPages\MachineTuneYAxisFeedRate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WizardPages\MachineTuneXAxisFeedRate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WizardPages\MachineTuneZAxisAcceleration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WizardPages\MachineTuneYAxisAcceleration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="WizardPages\PageFinish.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

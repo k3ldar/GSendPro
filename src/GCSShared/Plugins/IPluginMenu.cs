@@ -20,7 +20,7 @@ namespace GSendShared.Plugins
         /// <summary>
         /// Parent menu item
         /// </summary>
-        MenuParent ParentMenu { get; }
+        IPluginMenu ParentMenu { get; }
 
         /// <summary>
         /// Determines whether the menu is checked or not

@@ -46,7 +46,7 @@ namespace GSendService.Controllers
             foreach (var item in _gSendDataProvider.ServicesGet(machineId))
                 services.Add(item);
 
-            ServiceHistoryModel model = new ServiceHistoryModel(GetModelData(), machineNames, services, machineId);
+            ServiceHistoryModel model = new(GetModelData(), machineNames, services, machineId);
 
             return View(model);
         }

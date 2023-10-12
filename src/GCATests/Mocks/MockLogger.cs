@@ -5,6 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using PluginManager;
 using PluginManager.Abstractions;
 
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace GSendTests.Mocks
 {
     [ExcludeFromCodeCoverage]
@@ -19,7 +21,7 @@ namespace GSendTests.Mocks
 
         public void AddToLog(in LogLevel logLevel, in Exception exception)
         {
-            throw new NotImplementedException();
+            LogItems.Add($"{logLevel} - {exception.Message}");
         }
 
         public void AddToLog(in LogLevel logLevel, in Exception exception, string data)

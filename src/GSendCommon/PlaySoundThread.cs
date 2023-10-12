@@ -20,7 +20,7 @@ namespace GSendCommon
 
             if (File.Exists(soundFile))
             {
-                using SoundPlayer player = new SoundPlayer(soundFile);
+                using SoundPlayer player = new(soundFile);
                 player.Play();
 
                 while (!player.IsLoadCompleted)
