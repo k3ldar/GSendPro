@@ -329,9 +329,6 @@
             jogControl.Size = new System.Drawing.Size(439, 190);
             jogControl.StepValue = 0;
             jogControl.TabIndex = 5;
-            jogControl.OnJogStart += jogControl_OnJogStart;
-            jogControl.OnJogStop += jogControl_OnJogStop;
-            jogControl.OnUpdate += jogControl_OnUpdate;
             // 
             // toolStripMain
             // 

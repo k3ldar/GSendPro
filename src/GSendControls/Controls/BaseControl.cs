@@ -105,7 +105,7 @@ namespace GSendControls
         /// <param name="Title">Title of dialog box</param>
         /// <param name="Message">Message to be displayed</param>
         /// <returns>true if user clicks yes, otherwise false</returns>
-        protected bool ShowHardConfirm(string Title, string Message)
+        protected static bool ShowHardConfirm(string Title, string Message)
         {
             return MessageBox.Show(Message, Title, MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.Yes;
         }
@@ -116,7 +116,7 @@ namespace GSendControls
         /// <param name="Title">Title of dialog box</param>
         /// <param name="Message">Message to be displayed</param>
         /// <returns>true if user clicks yes, otherwise false</returns>
-        protected bool ShowQuestion(string Title, string Message)
+        protected static bool ShowQuestion(string Title, string Message)
         {
             return MessageBox.Show(Message, Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
@@ -126,7 +126,7 @@ namespace GSendControls
         /// </summary>
         /// <param name="Title">Title of dialog box</param>
         /// <param name="Message">Message to be displayed</param>
-        protected void ShowInformation(string Title, string Message)
+        protected static void ShowInformation(string Title, string Message)
         {
             MessageBox.Show(Message, Title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -136,7 +136,7 @@ namespace GSendControls
         /// </summary>
         /// <param name="Title">Title of dialog box</param>
         /// <param name="Message">Message to be displayed</param>
-        protected void ShowError(string Title, string Message)
+        protected static void ShowError(string Title, string Message)
         {
             MessageBox.Show(Message, Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

@@ -1680,6 +1680,10 @@ namespace GSendDesktop.Forms
             selectionOverrideSpindle.EnabledChanged += SelectionOverride_ValueChanged;
             cbOverridesDisable.CheckedChanged += SelectionOverride_ValueChanged;
 
+            jogControl.OnJogStart += jogControl_OnJogStart;
+            jogControl.OnJogStop += jogControl_OnJogStop;
+            jogControl.OnUpdate += jogControl_OnUpdate;
+
             trackBarPercent.ValueChanged += SelectionOverride_ValueChanged;
 
             btnGrblCommandClear.Click += btnGrblCommandClear_Click;
