@@ -22,9 +22,13 @@ ViewData["Title"] = "Index";
 {
 string image;
 if (item.Images.Length == 0)
-image = $"/images/Products/NoImage_178.png";
+{
+    image = $"/images/Products/NoImage_178.png";
+}
 else
-image = $"/images/Products/{item.Sku}/{item.Images}_178.png";
+{
+    image = $"/images/Products/{item.Sku}/{item.Images}_178.png";
+}
 <li class="product">
 <a href="@item.Url">
 <div>

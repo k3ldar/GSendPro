@@ -4,11 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using AspNetCore.PluginManager;
-
+using GSendShared;
 using GSendShared.Plugins;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using PluginManager;
@@ -100,7 +98,7 @@ namespace GSendControls
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
 
-            List<GSendPluginSettings> pluginSettings = GetSettings<List<GSendPluginSettings>>(pluginConfig, nameof(GSendPluginSettings));
+            List<GSendPluginSettings> pluginSettings = HelperMethods.LoadPluginSettings(pluginConfig);
 
             foreach (GSendPluginSettings pluginSetting in pluginSettings)
             {
@@ -193,23 +191,6 @@ namespace GSendControls
 
             pluginAssembly = null;
             return false;
-        }
-
-        private static T GetSettings<T>(in string storage, in string sectionName)
-        {
-            if (string.IsNullOrEmpty(storage))
-                throw new ArgumentNullException(nameof(storage));
-
-            if (string.IsNullOrEmpty(sectionName))
-                throw new ArgumentNullException(nameof(sectionName));
-
-            ConfigurationBuilder builder = new();
-            IConfigurationBuilder configBuilder = builder.SetBasePath(Path.GetDirectoryName(storage));
-            configBuilder.AddJsonFile(Path.GetFileName(storage));
-            IConfigurationRoot config = builder.Build();
-            T Result = (T)Activator.CreateInstance(typeof(T));
-            config.GetSection(sectionName).Bind(Result);
-            return Result;
         }
     }
 }

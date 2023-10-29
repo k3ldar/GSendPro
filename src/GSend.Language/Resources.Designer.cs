@@ -1276,6 +1276,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finished, closing, going home....
+        /// </summary>
+        public static string ConsoleComplete {
+            get {
+                return ResourceManager.GetString("ConsoleComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred whilst attempting to configure GSendPro.
+        /// </summary>
+        public static string ConsoleError {
+            get {
+                return ResourceManager.GetString("ConsoleError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad command line, use --? for options.
+        /// </summary>
+        public static string ConsoleInvalidCmdLine {
+            get {
+                return ResourceManager.GetString("ConsoleInvalidCmdLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continuous.
         /// </summary>
         public static string Continuous {
@@ -2487,6 +2514,15 @@ namespace GSend.Language {
         public static string GrblValueUpdated {
             get {
                 return ResourceManager.GetString("GrblValueUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GSend Pro.
+        /// </summary>
+        public static string GSendPro {
+            get {
+                return ResourceManager.GetString("GSendPro", resourceCulture);
             }
         }
         

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GSendCS": {
+      "commandName": "Project",
+      "commandLineArgs": "Plugin\r\nAdd\r\n-p:\\\"Grbl Tuning Wizard\\\"\r\n-d:\\\"Easily and automatically tune your grbl based CNC to optimum speeds\\\"\r\n-a:\\\"GrblTuningWizard\\\"\r\n-u:4\r\n-m:1\r\n-f:0\r\n-e:true\r\n-t:false\r\n"
+    }
+  }
+}

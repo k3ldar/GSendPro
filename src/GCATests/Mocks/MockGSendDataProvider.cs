@@ -142,9 +142,7 @@ namespace GSendTests.Mocks
             return ToolProfiles.Find(tp => tp.Id.Equals(toolProfileId));
         }
 
-#pragma warning disable IDE0060 // Remove unused parameter
         public IJobExecution JobExecutionCreate(long machineId, long toolId, long jobProfileId)
-#pragma warning restore IDE0060 // Remove unused parameter
         {
             if (CreateFalseResponseWhenCalled)
                 return null;

@@ -96,6 +96,10 @@ Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendEditor.exe"; D
 Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendEditor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendEditor.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 
+; cmd line
+Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendCS.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendCS.dll"; DestDir: "{app}"; Flags: ignoreversion
+
 
 
 
@@ -114,6 +118,9 @@ Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendShared.dll"; D
 
 
 Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\GSendService.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "..\..\Output\Release\net7.0-windows\win-x64\publish\CommandLinePlus.dll"; DestDir: "{app}"; Flags: ignoreversion
+
 
 
 ; Shared Files
@@ -955,6 +962,23 @@ begin
   CreateFirewallRules(IntToStr(port));
 end;
 
+procedure InstallPlugins();
+var
+  ResultCode: Integer;
+  cl: String;
+  params: String;
+begin
+  WizardForm.FilenameLabel.Caption := 'Updating Plugins';
+  cl := ExpandConstant('{app}\GSendCS.exe');
+  params := 'Plugin Add -p:\"Grbl Tuning Wizard\" -d:\"Easily and automatically tune your grbl based CNC to optimum speeds\" -a:GrblTuningWizard -u:4 -m:1 -f:0 -e:true -t:false';
+  Exec(cl, params, '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
+  if (ResultCode <> 0) and (ResultCode <> -101) then
+  begin
+    MsgBox('Failed to install plugin: GrblTuningWizard; result code: ' + IntToStr(ResultCode), mbError, MB_OK);
+  end;
+end;
+
 procedure CreateAndStartService();
 var
   ResultCode: Integer;
@@ -1003,6 +1027,7 @@ begin
     DeleteFile(ExpandConstant('{app}\netcorecheck.exe'));
     DeleteFile(ExpandConstant('{app}\netcorecheck_x64.exe'));
 
+    InstallPlugins();
     CreateAndStartService();
   end;
 end;

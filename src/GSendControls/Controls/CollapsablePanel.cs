@@ -21,8 +21,6 @@ using System.Windows.Forms;
 
 namespace GSendControls
 {
-#pragma warning disable 1591
-
     /// <summary>
     /// Collapsable Panel
     /// </summary>
@@ -728,6 +726,4 @@ namespace GSendControls
 
         #endregion Events
     }
-
-#pragma warning restore 1591
 }

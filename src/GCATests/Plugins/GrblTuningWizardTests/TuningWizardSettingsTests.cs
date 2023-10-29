@@ -23,12 +23,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateX_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedX = 2500;
@@ -49,12 +51,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateX_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedX = 2500;
@@ -79,12 +83,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateX_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedX = 1500;
@@ -109,12 +115,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateY_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedY = 2500;
@@ -135,12 +143,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateY_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedY = 2500;
@@ -165,12 +175,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateY_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedY = 1500;
@@ -195,12 +207,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateZ_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedZ = 2500;
@@ -221,12 +235,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateZ_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedZ = 2500;
@@ -251,12 +267,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxFeedRateZ_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxFeedRateZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxFeedZ = 1500;
@@ -281,12 +299,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateX_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationX = 2500;
@@ -307,12 +327,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateX_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationX = 2500;
@@ -337,12 +359,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateX_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationX = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationX = 1500;
@@ -367,12 +391,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateY_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationY = 2500;
@@ -393,12 +419,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateY_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationY = 2500;
@@ -423,12 +451,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateY_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationY = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationY = 1500;
@@ -453,12 +483,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateZ_SameValueAsOriginal_NoCommandSent_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationZ = 2500;
@@ -479,12 +511,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateZ_PositiveValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationZ = 2500;
@@ -509,12 +543,14 @@ namespace GSendTests.Plugins.GrblTuningWizardTests
         [TestMethod]
         public void UpdateMaxAccelerationRateZ_NegativeValue_CorrectSpeedSentToMachine_Success()
         {
-            MockMachine mockMachine = new MockMachine();
+            MockMachine mockMachine = new();
             mockMachine.Settings.MaxAccelerationZ = 2000;
-            MockSenderPluginHost mockSenderPluginHost = new();
-            mockSenderPluginHost.Machine = mockMachine;
+            MockSenderPluginHost mockSenderPluginHost = new()
+            {
+                Machine = mockMachine
+            };
 
-            TuningWizardSettings sut = new TuningWizardSettings(mockSenderPluginHost);
+            TuningWizardSettings sut = new(mockSenderPluginHost);
             Assert.IsNotNull(sut);
 
             sut.NewMaxAccelerationZ = 1500;

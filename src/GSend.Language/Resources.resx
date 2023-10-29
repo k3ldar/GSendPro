@@ -2152,4 +2152,16 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="TuneWizardPercent" xml:space="preserve">
     <value />
   </data>
+  <data name="ConsoleComplete" xml:space="preserve">
+    <value>Finished, closing, going home...</value>
+  </data>
+  <data name="ConsoleError" xml:space="preserve">
+    <value>An error occurred whilst attempting to configure GSendPro</value>
+  </data>
+  <data name="GSendPro" xml:space="preserve">
+    <value>GSend Pro</value>
+  </data>
+  <data name="ConsoleInvalidCmdLine" xml:space="preserve">
+    <value>Bad command line, use --? for options</value>
+  </data>
 </root>
