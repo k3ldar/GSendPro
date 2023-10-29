@@ -15,7 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +29,7 @@
     <ProjectReference Include="..\GCSShared\GSendShared.csproj" />
     <ProjectReference Include="..\GSendApi\GSendApi.csproj" />
     <ProjectReference Include="..\GSendControls\GSendControls.csproj" />
+    <ProjectReference Include="..\GSendCS\GSendCS.csproj" />
     <ProjectReference Include="..\Plugins\GrblTuning\GrblTuningWizard.csproj" />
   </ItemGroup>
 

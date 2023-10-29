@@ -1,9 +1,24 @@
-﻿using static GSendShared.Constants;
+﻿using System.Text.Json;
+
+using GSendShared.Plugins;
+
+using static GSendShared.Constants;
 
 namespace GSendShared
 {
     public static class HelperMethods
     {
+        public static List<GSendPluginSettings> LoadPluginSettings(string pluginConfig)
+        {
+            if (File.Exists(pluginConfig))
+            {
+                using (FileStream fileStream = new(pluginConfig, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    return JsonSerializer.Deserialize<List<GSendPluginSettings>>(fileStream);
+            }
+
+            return new();
+        }
+
         public static string TimeSpanToTime(TimeSpan time)
         {
             const int HoursInDay = 24;

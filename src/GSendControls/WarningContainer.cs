@@ -82,9 +82,8 @@ namespace GSendControls
 
             for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
             {
-                WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
-
-                if (panel != null && panel.InformationType.Equals(informationType))
+                if (flowLayoutWarningErrors.Controls[i] is WarningPanel panel &&
+                    panel.InformationType.Equals(informationType))
                 {
                     Result++;
                 }
@@ -102,9 +101,9 @@ namespace GSendControls
         {
             for (int i = flowLayoutWarningErrors.Controls.Count - 1; i >= 0; i--)
             {
-                WarningPanel panel = flowLayoutWarningErrors.Controls[i] as WarningPanel;
-
-                if (panel != null && panel.InformationType.Equals(informationType) && panel.InformationText.Equals(message))
+                if (flowLayoutWarningErrors.Controls[i] is WarningPanel panel &&
+                    panel.InformationType.Equals(informationType) &&
+                    panel.InformationText.Equals(message))
                 {
                     return true;
                 }

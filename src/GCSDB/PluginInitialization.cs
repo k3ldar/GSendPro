@@ -12,8 +12,6 @@ using SharedPluginFeatures;
 
 using SimpleDB;
 
-#pragma warning disable IDE0060
-
 namespace GSendDB
 {
     public class PluginInitialization : IPlugin, IInitialiseEvents
@@ -84,5 +82,3 @@ namespace GSendDB
         #endregion IInitialiseEvents Methods
     }
 }
-
-#pragma warning restore IDE0060

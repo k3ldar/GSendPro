@@ -39,9 +39,7 @@ namespace GSendControls
 
         private void JogButtonMouseDown(object sender, MouseEventArgs e)
         {
-            Button button = sender as Button;
-
-            if (button == null || button.Tag == null)
+            if (sender is not Button button || button.Tag == null)
                 return;
 
             JogDirection jogDirection = (JogDirection)button.Tag;

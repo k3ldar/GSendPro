@@ -30,7 +30,7 @@ namespace GSendTests.Mocks
 
         public IComPort CreateComPort(IMachine machine)
         {
-            MockComPort = MockComPort ?? new MockComPort(machine);
+            MockComPort ??= new MockComPort(machine);
             return MockComPort;
         }
 

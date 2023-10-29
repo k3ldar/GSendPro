@@ -2146,9 +2146,7 @@ namespace GSendDesktop.Forms
             if (sender == null)
                 return;
 
-            TabPage tabPage = menu.Tag as TabPage;
-
-            if (tabPage == null)
+            if (menu.Tag is not TabPage tabPage)
                 return;
 
             tabControlMain.SelectedTab = tabPage;

@@ -1,6 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text.Json;
 
 using GSendShared;
+using GSendShared.Plugins;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -92,6 +97,113 @@ namespace GSendTests.Shared
         {
             string value = HelperMethods.TranslateRapidOverride(RapidsOverride.High);
             Assert.AreEqual("High", value);
+        }
+
+        [TestMethod]
+        public void FormatAccelerationValue_ReturnsCorrectFormattedValue_Success()
+        {
+            string value = HelperMethods.FormatAccelerationValue(523.456789m);
+            Assert.AreEqual("523.46 mm/sec²", value);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JsonException))]
+        public void LoadPluginSettings_FileNotFound_ReturnsEmptyClass()
+        {
+            List<GSendPluginSettings> sut = HelperMethods.LoadPluginSettings(Path.GetTempFileName());
+            Assert.IsNotNull(sut);
+            Assert.AreEqual(0, sut.Count);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_ZeroTimeSpan_Returns_NoTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.Zero);
+            Assert.AreEqual("-", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_OneDayTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromHours(24));
+            Assert.AreEqual("1d 0h 0m 0s", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_OneDayTwoHoursTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromHours(25));
+            Assert.AreEqual("1d 1h 0m 0s", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_OneHourTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromMinutes(60));
+            Assert.AreEqual("1h 0m 0s", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_OneHourFiveMinsTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromMinutes(65));
+            Assert.AreEqual("1h 5m 0s", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_ThirtyEightMinutesTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromMinutes(38));
+            Assert.AreEqual("38m 0s", sut);
+        }
+
+        [TestMethod]
+        public void TimeSpanToTime_FourtyFiveSecondsTimeSpan_Returns_FormattedTime()
+        {
+            string sut = HelperMethods.TimeSpanToTime(TimeSpan.FromSeconds(45));
+            Assert.AreEqual("45s", sut);
+        }
+
+        [TestMethod]
+        public void ConvertMeasurementForDisplay_MM_ReturnsCorrectFormattedValue()
+        {
+            string sut = HelperMethods.ConvertMeasurementForDisplay(FeedbackUnit.Mm, 415.6134521d);
+            Assert.AreEqual("415.6135", sut);
+        }
+
+        [TestMethod]
+        public void ConvertMeasurementForDisplay_Inch_ReturnsCorrectFormattedValue()
+        {
+            string sut = HelperMethods.ConvertMeasurementForDisplay(FeedbackUnit.Inch, 415.6134521d);
+            Assert.AreEqual("16.36273", sut);
+        }
+
+        [TestMethod]
+        public void ConvertFeedRateForDisplay_MmPerMin_ReturnsFormattedText()
+        {
+            string sut = HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplayUnits.MmPerMinute, 2000);
+            Assert.AreEqual("2,000", sut);
+        }
+
+        [TestMethod]
+        public void ConvertFeedRateForDisplay_MmPerSec_ReturnsFormattedText()
+        {
+            string sut = HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplayUnits.MmPerSecond, 2000);
+            Assert.AreEqual("33", sut);
+        }
+
+        [TestMethod]
+        public void ConvertFeedRateForDisplay_InchPerSec_ReturnsFormattedText()
+        {
+            string sut = HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplayUnits.InchPerSecond, 2000);
+            Assert.AreEqual("1.31234", sut);
+        }
+
+        [TestMethod]
+        public void ConvertFeedRateForDisplay_InchPerMin_ReturnsFormattedText()
+        {
+            string sut = HelperMethods.ConvertFeedRateForDisplay(FeedRateDisplayUnits.InchPerMinute, 2000);
+            Assert.AreEqual("78.74016", sut);
         }
     }
 }

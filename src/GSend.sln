@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B0EE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrblTuningWizard", "Plugins\GrblTuning\GrblTuningWizard.csproj", "{FC2E272A-BE48-4911-AD32-04421E01C3A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSendCS", "GSendCS\GSendCS.csproj", "{46E758DC-A313-4514-889D-7207DCF1A444}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC2E272A-BE48-4911-AD32-04421E01C3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E758DC-A313-4514-889D-7207DCF1A444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E758DC-A313-4514-889D-7207DCF1A444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E758DC-A313-4514-889D-7207DCF1A444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E758DC-A313-4514-889D-7207DCF1A444}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

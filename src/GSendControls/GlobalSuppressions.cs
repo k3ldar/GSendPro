@@ -15,3 +15,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Minor Code Smell", "S6602:\"Find\" method should be used instead of the \"FirstOrDefault\" extension", Justification = "Doesn't play nicely with arrays", Scope = "member", Target = "~M:GSendControls.BaseForm.LoadSettings")]
 [assembly: SuppressMessage("Blocker Code Smell", "S3237:\"value\" contextual keyword should be used", Justification = "can not resize", Scope = "member", Target = "~P:GSendControls.BaseWizardPage.AutoSize")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendControls.FrmServerValidation.tmrLicenseCheck_Tick(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "Not here", Scope = "member", Target = "~M:GSendControls.WarningContainer.Clear(System.Boolean)")]

@@ -36,11 +36,11 @@ ViewData["Title"] = Localizer[nameof(Languages.LanguageStrings.ShoppingCart)];
 <div class="cartDetail">
 @if (!String.IsNullOrEmpty(item.Sku))
 {
-@Html.Raw($"<span><strong>SKU: </strong>{item.Sku}</span>");
+@Html.Raw($"<span><strong>SKU: </strong>{item.Sku}</span>")
 }
 @if (!String.IsNullOrEmpty(item.Size))
 {
-@Html.Raw($"<span><strong>Size: </strong>{item.Size}</span>");
+@Html.Raw($"<span><strong>Size: </strong>{item.Size}</span>")
 }
 </div>
 <p>@item.ShortDescription</p>
