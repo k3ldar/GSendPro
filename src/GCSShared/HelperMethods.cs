@@ -12,8 +12,8 @@ namespace GSendShared
         {
             if (File.Exists(pluginConfig))
             {
-                using (FileStream fileStream = new(pluginConfig, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    return JsonSerializer.Deserialize<List<GSendPluginSettings>>(fileStream);
+                using FileStream fileStream = new(pluginConfig, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                return JsonSerializer.Deserialize<List<GSendPluginSettings>>(fileStream);
             }
 
             return new();

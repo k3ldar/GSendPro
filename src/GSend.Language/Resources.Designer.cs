@@ -3580,6 +3580,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid server uri, confirm the server is running.
+        /// </summary>
+        public static string ServerInvalid {
+            get {
+                return ResourceManager.GetString("ServerInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string ServerNoConnection {
+            get {
+                return ResourceManager.GetString("ServerNoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No connection to Server.
         /// </summary>
         public static string ServerNotConnected {
@@ -3589,11 +3607,29 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server: {0}.
+        /// </summary>
+        public static string ServerStatus {
+            get {
+                return ResourceManager.GetString("ServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Address.
         /// </summary>
         public static string ServerUri {
             get {
                 return ResourceManager.GetString("ServerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server uri is valid.
+        /// </summary>
+        public static string ServerValid {
+            get {
+                return ResourceManager.GetString("ServerValid", resourceCulture);
             }
         }
         

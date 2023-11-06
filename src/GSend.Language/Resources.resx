@@ -2164,4 +2164,16 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="ConsoleInvalidCmdLine" xml:space="preserve">
     <value>Bad command line, use --? for options</value>
   </data>
+  <data name="ServerInvalid" xml:space="preserve">
+    <value>Invalid server uri, confirm the server is running</value>
+  </data>
+  <data name="ServerNoConnection" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="ServerStatus" xml:space="preserve">
+    <value>Server: {0}</value>
+  </data>
+  <data name="ServerValid" xml:space="preserve">
+    <value>Server uri is valid</value>
+  </data>
 </root>

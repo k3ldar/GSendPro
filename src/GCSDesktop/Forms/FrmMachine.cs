@@ -161,6 +161,8 @@ namespace GSendDesktop.Forms
 
             _pluginHelper.InitializeAllPlugins(this);
 
+            machine2dView1.LockUpdate = false;
+
             mnuTools.Visible = mnuTools.DropDownItems.Count > 0;
             UpdateShortcutKeyValues(_shortcuts);
         }

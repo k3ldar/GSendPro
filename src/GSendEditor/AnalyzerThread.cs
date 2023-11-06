@@ -60,8 +60,9 @@ namespace GSendEditor
                 {
                     List<WarningErrorList> issues = new();
 
-                    foreach (WarningErrorList item in WarningContainer.Items)
+                    for (int i = WarningContainer.Items.Count -1; i > -1; i--)
                     {
+                        WarningErrorList item = WarningContainer.Items[i] as WarningErrorList;
                         item.MarkedForRemoval = true;
                         item.IsNew = false;
                         issues.Add(item);

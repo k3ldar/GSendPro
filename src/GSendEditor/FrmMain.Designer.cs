@@ -31,7 +31,9 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             statusStrip1 = new StatusStrip();
+            toolStripStatusLabelConnectedToServer = new ToolStripStatusLabel();
             toolStripStatusLabelWarnings = new ToolStripStatusLabel();
+            toolStripStatusLabelLoadingFile = new ToolStripStatusLabel();
             menuStripMain = new MenuStrip();
             mnuFile = new ToolStripMenuItem();
             mnuFileNew = new ToolStripMenuItem();
@@ -99,7 +101,6 @@
             toolStripBtnClearBookmarks = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             toolStripButtonRefreshSubPrograms = new ToolStripButton();
-            tmrServerValidation = new System.Windows.Forms.Timer(components);
             tmrUpdateSubprograms = new System.Windows.Forms.Timer(components);
             statusStrip1.SuspendLayout();
             menuStripMain.SuspendLayout();
@@ -121,12 +122,19 @@
             // 
             // statusStrip1
             // 
-            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelWarnings });
-            statusStrip1.Location = new Point(0, 511);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelConnectedToServer, toolStripStatusLabelWarnings, toolStripStatusLabelLoadingFile });
+            statusStrip1.Location = new Point(0, 509);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1083, 22);
+            statusStrip1.Size = new Size(1083, 24);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelConnectedToServer
+            // 
+            toolStripStatusLabelConnectedToServer.BorderSides = ToolStripStatusLabelBorderSides.Right;
+            toolStripStatusLabelConnectedToServer.Name = "toolStripStatusLabelConnectedToServer";
+            toolStripStatusLabelConnectedToServer.Size = new Size(47, 19);
+            toolStripStatusLabelConnectedToServer.Text = "Offline";
             // 
             // toolStripStatusLabelWarnings
             // 
@@ -134,8 +142,15 @@
             toolStripStatusLabelWarnings.BorderSides = ToolStripStatusLabelBorderSides.Right;
             toolStripStatusLabelWarnings.Image = (Image)resources.GetObject("toolStripStatusLabelWarnings.Image");
             toolStripStatusLabelWarnings.Name = "toolStripStatusLabelWarnings";
-            toolStripStatusLabelWarnings.Size = new Size(29, 17);
+            toolStripStatusLabelWarnings.Size = new Size(29, 19);
             toolStripStatusLabelWarnings.Text = "0";
+            // 
+            // toolStripStatusLabelLoadingFile
+            // 
+            toolStripStatusLabelLoadingFile.Name = "toolStripStatusLabelLoadingFile";
+            toolStripStatusLabelLoadingFile.Size = new Size(71, 19);
+            toolStripStatusLabelLoadingFile.Text = "Loading File";
+            toolStripStatusLabelLoadingFile.Visible = false;
             // 
             // menuStripMain
             // 
@@ -369,7 +384,7 @@
             // mnuHelpAbout
             // 
             mnuHelpAbout.Name = "mnuHelpAbout";
-            mnuHelpAbout.Size = new Size(180, 22);
+            mnuHelpAbout.Size = new Size(107, 22);
             mnuHelpAbout.Text = "&About";
             mnuHelpAbout.Click += mnuHelpAbout_Click;
             // 
@@ -424,7 +439,7 @@
             txtGCode.AutoCompleteBracketsList = new char[] { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
             txtGCode.AutoIndent = false;
             txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*(?<range>:)\\s*(?<range>[^;]+);";
-            txtGCode.AutoScrollMinSize = new Size(27, 14);
+            txtGCode.AutoScrollMinSize = new Size(2, 14);
             txtGCode.BackBrush = null;
             txtGCode.CharHeight = 14;
             txtGCode.CharWidth = 8;
@@ -483,6 +498,7 @@
             machine2dView1.BackgroundImageLayout = ImageLayout.None;
             machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
             machine2dView1.Location = new Point(9, 9);
+            machine2dView1.LockUpdate = true;
             machine2dView1.MachineSize = new Rectangle(0, 0, 5000, 5000);
             machine2dView1.Name = "machine2dView1";
             machine2dView1.Size = new Size(389, 266);
@@ -708,11 +724,6 @@
             toolStripButtonRefreshSubPrograms.Size = new Size(23, 22);
             toolStripButtonRefreshSubPrograms.Click += toolStripButtonRefreshSubPrograms_Click;
             // 
-            // tmrServerValidation
-            // 
-            tmrServerValidation.Interval = 5000;
-            tmrServerValidation.Tick += tmrServerValidation_Tick;
-            // 
             // tmrUpdateSubprograms
             // 
             tmrUpdateSubprograms.Interval = 1000;
@@ -732,7 +743,6 @@
             Name = "FrmMain";
             Text = "Form1";
             FormClosing += FrmMain_FormClosing;
-            Load += FrmMain_Load;
             Shown += FrmMain_Shown;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
@@ -823,11 +833,12 @@
         private ToolStripButton toolStripBtnRedo;
         private ToolStripSeparator toolStripSeparator3;
         private GSendControls.ListViewEx lvSubprograms;
-        private System.Windows.Forms.Timer tmrServerValidation;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton toolStripButtonRefreshSubPrograms;
         private System.Windows.Forms.Timer tmrUpdateSubprograms;
         private ToolStripMenuItem mnuTools;
         private ToolStripMenuItem mnuToolsShortcutKeys;
+        private ToolStripStatusLabel toolStripStatusLabelConnectedToServer;
+        private ToolStripStatusLabel toolStripStatusLabelLoadingFile;
     }
 }

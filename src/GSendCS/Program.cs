@@ -18,9 +18,13 @@ namespace GSendCS
 
             string pluginFileName = Path.Combine(Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar),
                 Internal.Constants.PluginFileName);
+            string serverAddressFileName = Path.Combine(Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar),
+                Internal.Constants.ServerAddressFileName);
+
             object[] processors = new object[]
             {
                 new PluginProcessor(pluginFileName),
+                new ServerAddressProcessor(serverAddressFileName),
             };
 
             IConsoleProcessor consoleProcessor = factory.Create(GSend.Language.Resources.GSendPro, processors);
@@ -28,6 +32,9 @@ namespace GSendCS
             switch (consoleProcessor.Run(new CommandLineOptions(), out int Result))
             {
                 case RunResult.CandidateFound:
+                    if (Result < 0)
+                        WriteStandardResponse(Result);
+
                     if (Result < 10000)
                         Console.WriteLine(GSend.Language.Resources.ConsoleComplete);
 
@@ -52,6 +59,32 @@ namespace GSendCS
                 Result = 0;
 
             return Result;
+        }
+
+        private static void WriteStandardResponse(int result)
+        {
+            switch (result)
+            {
+                case Internal.Constants.ResponseExclusiveAccessDenied:
+                    Console.WriteLine(Properties.Resources.ExclusiveAccessDenied);
+                    break;
+
+                case Internal.Constants.ResponseExists:
+                    Console.WriteLine(Properties.Resources.Exists);
+                    break;
+
+                case Internal.Constants.ResponseDoesNotExist:
+                    Console.WriteLine(Properties.Resources.DoesNotExist);
+                    break;
+
+                case Internal.Constants.ResponseInvalidAddress:
+                    Console.WriteLine(Properties.Resources.InvalidAddress);
+                    break;
+
+                case Internal.Constants.ResponseNoAddressesFound:
+                    Console.WriteLine(Properties.Resources.NoAddressFound);
+                    break;
+            }
         }
     }
 }
