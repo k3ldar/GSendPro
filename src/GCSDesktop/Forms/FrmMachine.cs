@@ -2656,6 +2656,8 @@ namespace GSendDesktop.Forms
 
         public PluginHosts Host => PluginHosts.Sender;
 
+        public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
+
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
             if (pluginModule == null)
@@ -2694,7 +2696,7 @@ namespace GSendDesktop.Forms
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as ISenderPluginHost);
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
 
             if (pluginMenu.ReceiveClientMessages)
                 _pluginsWithClientMessages.Add(pluginMenu);
@@ -2703,7 +2705,7 @@ namespace GSendDesktop.Forms
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+            _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
 
             if (toolbarButton.ReceiveClientMessages)
                 _pluginsWithClientMessages.Add(toolbarButton);

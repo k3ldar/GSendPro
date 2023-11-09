@@ -83,7 +83,7 @@ namespace GSendEditor
 
             UpdateShortcutKeyValues(_shortcuts);
             UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
-            ServerValidationThread validationThread = new GSendControls.ServerValidationThread(this);
+            ServerValidationThread validationThread = new(this);
             ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
         }
 
@@ -1155,6 +1155,8 @@ namespace GSendEditor
 
         public PluginHosts Host => PluginHosts.SenderHost;
 
+        public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
+
         public IPluginMenu GetMenu(MenuParent menuParent)
         {
             switch (menuParent)
@@ -1186,13 +1188,13 @@ namespace GSendEditor
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddToolbarButton(toolbarMain, toolbarButton);
+            _pluginHelper.AddToolbarButton(this, toolbarMain, toolbarButton);
         }
 
         public void AddMessage(InformationType informationType, string message)

@@ -36,7 +36,7 @@ namespace GSendControls
             tmrLicenseCheck.Enabled = !_isLicensed;
         }
 
-        public static bool ValidateServer(BaseForm parent, IGSendApiWrapper apiWrapper)
+        public static bool ValidateServer(IGSendApiWrapper apiWrapper)
         {
             bool isLicensed = ValidateLicense(apiWrapper, out bool isError);
 

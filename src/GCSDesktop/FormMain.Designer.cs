@@ -414,7 +414,6 @@ namespace GSendDesktop
             MainMenuStrip = menuStripMain;
             Name = "FormMain";
             Text = "GSend";
-            Activated += FormMain_Activated;
             Shown += FormMain_Shown;
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

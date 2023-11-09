@@ -1,10 +1,10 @@
-﻿using GSendShared.Interfaces;
-
-namespace GSendShared.Plugins
+﻿namespace GSendShared.Plugins
 {
     public interface IPluginHost
     {
         PluginHosts Host { get; }
+
+        int MaximumMenuIndex { get; }
 
         IPluginMenu GetMenu(MenuParent menuParent);
 

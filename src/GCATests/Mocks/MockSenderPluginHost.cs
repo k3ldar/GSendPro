@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using GSendShared;
 using GSendShared.Models;
@@ -31,6 +28,8 @@ namespace GSendTests.Mocks
         public List<MenuParent> GetMenuCalls { get; } = new();
 
         public PluginHosts Host => throw new NotImplementedException();
+
+        public int MaximumMenuIndex => throw new NotImplementedException();
 
         IPluginMenu IPluginHost.GetMenu(MenuParent menuParent)
         {

@@ -9,3 +9,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendEditor.FrmMain.ReadTextFromFile(System.String)~System.String")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:GSendEditor.FrmMain.SaveTextToFile")]
 [assembly: SuppressMessage("Critical Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "required", Scope = "member", Target = "~M:GSendEditor.FrmMain.LoadGCodeData(System.String)")]
+[assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "Required so doesn't go out of scope sooner than required", Scope = "member", Target = "~M:GSendEditor.FrmMain.LoadGCodeData(System.String)")]

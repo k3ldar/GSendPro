@@ -83,6 +83,8 @@ namespace GrblTuningWizard
             return _senderPluginHost.IsConnected() && !_senderPluginHost.IsRunning() && !_senderPluginHost.IsPaused();
         }
 
+        public bool IsVisible() => true;
+
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             if (!_isWizardShowing)

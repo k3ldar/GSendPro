@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using GSendShared.Plugins;
 using GSendShared.Plugins.InternalPlugins.HelpMenu;
+using GSendShared.Plugins.InternalPlugins.ServerMenu;
 
 using GSendTests.Mocks;
 
@@ -12,14 +13,14 @@ namespace GSendTests.Shared.Plugins
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class HelpMenuPluginTests
+    public class ServerMenuPluginTests
     {
         [TestMethod]
-        public void HelpMenuPlugin_ConstructValidInstance_Success()
+        public void ServerMenuPlugin_ConstructValidInstance_Success()
         {
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
             MockSenderPluginHost pluginHost = new(parentMenu);
-            HelpMenuPlugin sut = new();
+            ServerMenuPlugin sut = new();
             sut.Initialize(pluginHost);
 
             Assert.IsNotNull(sut);

@@ -4,8 +4,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-using GSendCommon.Settings;
-
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
@@ -534,7 +532,7 @@ namespace GSendCommon
             {
                 _machineStateModel.IsHoming = false;
             }
-               
+
             return true;
         }
 

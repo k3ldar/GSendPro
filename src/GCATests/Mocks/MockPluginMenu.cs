@@ -47,6 +47,8 @@ namespace GSendTests.Mocks
             return false;
         }
 
+        public bool IsVisible() => true;
+
         public void Clicked()
         {
             throw new NotImplementedException();

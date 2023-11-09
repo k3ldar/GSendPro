@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 
-using GSendShared.Models;
+using GSendShared;
+using GSendShared.Plugins;
 
-namespace GSendShared.Plugins.InternalPlugins.HelpMenu
+namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HomePageMenu : IPluginMenu
     {
@@ -47,6 +49,8 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
         public bool IsChecked() => false;
 
         public bool IsEnabled() => true;
+
+        public bool IsVisible() => true;
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {

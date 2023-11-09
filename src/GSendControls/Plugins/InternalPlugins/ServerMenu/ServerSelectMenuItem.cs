@@ -1,43 +1,39 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 using GSendShared;
 using GSendShared.Plugins;
 
-namespace GSendControls
+namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 {
-    public class InternalPluginMenu : IPluginMenu
+    public sealed class ServerSelectMenuItem : IPluginMenu
     {
-        private readonly ToolStripMenuItem _menuItem;
-
-        public InternalPluginMenu(ToolStripMenuItem menuItem)
+        public ServerSelectMenuItem(IPluginMenu parentMenu, int index)
         {
-            _menuItem = menuItem ?? throw new ArgumentNullException(nameof(menuItem));
+            ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            Index = index;
         }
 
-        public ToolStripMenuItem MenuItem => _menuItem;
-
-        public Image MenuImage => _menuItem.Image;
+        public Image MenuImage => null;
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public IPluginMenu ParentMenu => null;
+        public IPluginMenu ParentMenu { get; }
 
-        public string Text => _menuItem.Text;
+        public string Text => "127.0.0.1:7050";
 
-        public int Index => _menuItem.MergeIndex;
+        public int Index { get; }
 
         public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
-            // only required by interface
+
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-            // only required by interface
+
         }
 
         public bool GetShortcut(out string groupName, out string shortcutName)
@@ -49,22 +45,22 @@ namespace GSendControls
 
         public bool IsChecked()
         {
-            return _menuItem.Checked;
+            return false;
         }
 
         public bool IsEnabled()
         {
-            return _menuItem.Enabled;
+            return true;
         }
 
         public bool IsVisible()
         {
-            return _menuItem.Visible;
+            return Index % 2 == 0;
         }
 
         public void UpdateHost<T>(T senderPluginHost)
         {
-            // only required by interface
+
         }
     }
 }

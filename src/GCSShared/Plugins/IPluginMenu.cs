@@ -29,6 +29,12 @@ namespace GSendShared.Plugins
         bool IsChecked();
 
         /// <summary>
+        /// Determines whether the menu is visible or not
+        /// </summary>
+        /// <returns></returns>
+        bool IsVisible();
+
+        /// <summary>
         /// Shortcut that can be used by the menu
         /// </summary>
         /// <param name="groupName"></param>

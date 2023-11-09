@@ -40,6 +40,8 @@ namespace GSendShared.Plugins
 
         public bool IsEnabled() => true;
 
+        public bool IsVisible() => true;
+
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in any context
