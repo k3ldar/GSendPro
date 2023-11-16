@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using GSendShared.Plugins;
 
-namespace GSendShared.Plugins
+namespace GSendControls.Abstractions
 {
     /// <summary>
     /// Interface created by a plugin to add menu items to the host

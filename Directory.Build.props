@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-    <NoWarn>1701;1702;8032;8981</NoWarn>
+    <NoWarn>1701;1702;8032;8981;IDE0079;IDE0076</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>false</SignAssembly>
     <Description>GCode Sender and Analyzer</Description>
@@ -32,8 +32,8 @@
 	
   <PropertyGroup>
     <PluginVersion>5.5.1</PluginVersion>
-	<SharedVer>3.10.2</SharedVer>
-	<SharedWinVer>1.2.1</SharedWinVer>
+	<SharedVer>3.11.0</SharedVer>
+	<SharedWinVer>1.3.0</SharedWinVer>
   </PropertyGroup>
   
   <PropertyGroup>

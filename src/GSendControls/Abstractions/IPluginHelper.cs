@@ -1,6 +1,9 @@
-﻿using GSendShared.Interfaces;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
-namespace GSendShared.Plugins
+using GSendShared.Interfaces;
+
+namespace GSendControls.Abstractions
 {
     public interface IPluginHelper
     {
@@ -17,7 +20,7 @@ namespace GSendShared.Plugins
         /// <param name="parent"></param>
         /// <param name="menu"></param>
         /// <param name="shortcuts"></param>
-        void AddMenu(IPluginHost pluginHost, object parent, IPluginMenu menu, List<IShortcut> shortcuts);
+        void AddMenu(IPluginHost pluginHost, MenuStrip parent, IPluginMenu menu, List<IShortcut> shortcuts);
 
         /// <summary>
         /// Adds a popup menu to a host
@@ -26,7 +29,7 @@ namespace GSendShared.Plugins
         /// <param name="parent"></param>
         /// <param name="menu"></param>
         /// <param name="shortcuts"></param>
-        void AddPopupMenu(IPluginHost pluginHost, object parent, IPluginMenu menu, List<IShortcut> shortcuts);
+        void AddPopupMenu(IPluginHost pluginHost, ContextMenuStrip parent, IPluginMenu menu, List<IShortcut> shortcuts);
 
         /// <summary>
         /// Adds a toolbar button to a host
@@ -34,6 +37,6 @@ namespace GSendShared.Plugins
         /// <param name="pluginHost"></param>
         /// <param name="parent"></param>
         /// <param name="toolbarButton"></param>
-        void AddToolbarButton(IPluginHost pluginHost, object parent, IPluginToolbarButton toolbarButton);
+        void AddToolbarButton(IPluginHost pluginHost, ToolStrip parent, IPluginToolbarButton toolbarButton);
     }
 }

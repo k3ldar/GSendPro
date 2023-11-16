@@ -1,8 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
-using GSendShared.Models;
+using GSendControls.Abstractions;
 
-namespace GSendShared.Plugins
+using GSendShared;
+using GSendShared.Plugins;
+
+namespace GSendControls.Plugins
 {
     public sealed class SeperatorMenu : IPluginMenu
     {

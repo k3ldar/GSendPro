@@ -13,7 +13,9 @@ using GSendCommon.Abstractions;
 using GSendCommon.Settings;
 
 using GSendControls;
-
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
+using GSendControls.Threads;
 using GSendDesktop.Abstractions;
 using GSendDesktop.Internal;
 
@@ -30,7 +32,7 @@ namespace GSendDesktop
 {
     public partial class FormMain : BaseForm, IPluginHost, IOnlineStatusUpdate
     {
-        private readonly IGSendContext _context;
+        private readonly IGSendContext _gSendContext;
 
         private readonly IGSendApiWrapper _machineApiWrapper;
         private readonly ICommandProcessor _processCommand;
@@ -47,7 +49,7 @@ namespace GSendDesktop
         {
             InitializeComponent();
 
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _gSendContext = context ?? throw new ArgumentNullException(nameof(context));
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
             _pluginHelper = context.ServiceProvider.GetRequiredService<IPluginHelper>() ?? throw new InvalidOperationException();
@@ -285,8 +287,8 @@ namespace GSendDesktop
 
         private void toolStripButtonAddMachine_Click(object sender, EventArgs e)
         {
-            ApiSettings apiSettings = _context.ServiceProvider.GetRequiredService<ApiSettings>();
-            IRunProgram runProgram = _context.ServiceProvider.GetRequiredService<IRunProgram>();
+            ApiSettings apiSettings = _gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
+            IRunProgram runProgram = _gSendContext.ServiceProvider.GetRequiredService<IRunProgram>();
 
             runProgram.Run($"{apiSettings.RootAddress}Machines/Add/", null, true, false, apiSettings.Timeout);
         }
@@ -525,7 +527,7 @@ namespace GSendDesktop
             if (machineListItem.Tag is not IMachine machine)
                 return;
 
-            _context.ShowMachine(machine);
+            _gSendContext.ShowMachine(machine);
         }
 
         #endregion Form Methods
@@ -569,6 +571,8 @@ namespace GSendDesktop
         public PluginHosts Host => PluginHosts.SenderHost;
 
         public int MaximumMenuIndex => menuStripMain.Items.IndexOf(helpToolStripMenuItem);
+
+        public IGSendContext GSendContext => _gSendContext;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

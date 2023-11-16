@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
 
+using GSendControls.Abstractions;
+
 using GSendShared;
-using GSendShared.Models;
 using GSendShared.Plugins;
 
 namespace GSendTests.Mocks

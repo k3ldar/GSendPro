@@ -6,7 +6,7 @@ using GSendCommon.Abstractions;
 
 using Shared.Classes;
 
-namespace GSendControls
+namespace GSendControls.Threads
 {
     public sealed class ServerValidationThread : ThreadManager
     {

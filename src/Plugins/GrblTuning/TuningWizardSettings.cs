@@ -1,6 +1,7 @@
-﻿using GSendShared;
+﻿using GSendControls.Abstractions;
+
+using GSendShared;
 using GSendShared.Models;
-using GSendShared.Plugins;
 
 namespace GrblTuningWizard
 {
@@ -197,7 +198,7 @@ namespace GrblTuningWizard
         {
             TimeSpan timeTaken = DateTime.UtcNow - timeStarted;
 
-            if (timeTaken.TotalSeconds > 20 || 
+            if (timeTaken.TotalSeconds > 20 ||
                 ExitError ||
                 _stateModel == null ||
                 !_stateModel.IsConnected ||

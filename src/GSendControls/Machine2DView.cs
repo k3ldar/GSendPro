@@ -31,6 +31,9 @@ namespace GSendControls
 
         public void LoadGCode(IGCodeAnalyses _gCodeAnalyses)
         {
+            if (IsDisposed)
+                return;
+
             _gCodeImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1);
             using Graphics g = Graphics.FromImage(_gCodeImage);
             using Pen layerPen = new(Color.Black, 1);

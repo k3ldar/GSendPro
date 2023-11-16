@@ -15,6 +15,11 @@ namespace GSendTests.Mocks
             return ReturnValue;
         }
 
+        public string Run(string programName, string parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public int ReturnValue { get; set; } = Int32.MinValue;
 
         public string ProgramName { get; set; }

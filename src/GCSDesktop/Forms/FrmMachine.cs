@@ -15,6 +15,8 @@ using GSendApi;
 using GSendCommon;
 
 using GSendControls;
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
 
 using GSendDesktop.Internal;
 
@@ -2657,6 +2659,8 @@ namespace GSendDesktop.Forms
         public PluginHosts Host => PluginHosts.Sender;
 
         public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
+
+        public IGSendContext GSendContext => _gSendContext;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {

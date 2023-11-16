@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -39,7 +39,7 @@ namespace GSendTests.Mocks
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void AddMessage(InformationType informationType, string message)
@@ -83,5 +83,7 @@ namespace GSendTests.Mocks
         {
             Messages.Add(message);
         }
+
+        public IGSendContext GSendContext => throw new NotImplementedException();
     }
 }

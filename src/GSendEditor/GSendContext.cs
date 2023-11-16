@@ -22,7 +22,6 @@ namespace GSendEditor
         public void CloseContext()
         {
             IsClosing = true;
-
         }
 
         public bool IsClosing { get; private set; } = false;

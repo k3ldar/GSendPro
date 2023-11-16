@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
+using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Plugins;
 
-namespace GSendControls
+namespace GSendControls.Plugins
 {
     public class InternalPluginMenu : IPluginMenu
     {

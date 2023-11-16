@@ -1,4 +1,5 @@
-﻿using GSendShared;
+﻿using GSendControls.Abstractions;
+using GSendShared;
 using GSendShared.Plugins;
 
 namespace GrblTuningWizard

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using GSendShared.Plugins;
 
-namespace GSendShared.Plugins
+namespace GSendControls.Abstractions
 {
     public interface IPluginToolbarButton : IPluginItemBase
     {

@@ -1,12 +1,16 @@
 using System.Text;
 
+using FastColoredTextBoxNS;
+
 using GSendApi;
 
 using GSendCommon;
 using GSendCommon.Abstractions;
 
 using GSendControls;
-
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
+using GSendControls.Threads;
 using GSendDesktop.Internal;
 
 using GSendEditor.Internal;
@@ -1224,7 +1228,9 @@ namespace GSendEditor
             }
         }
 
-        public object Editor => txtGCode;
+        public FastColoredTextBox Editor => txtGCode;
+
+        public IGSendContext GSendContext => _gSendContext;
 
         #endregion IEditorPluginHost
     }

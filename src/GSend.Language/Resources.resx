@@ -2176,4 +2176,13 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="ServerValid" xml:space="preserve">
     <value>Server uri is valid</value>
   </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Protocol" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
+  <data name="ServerConfiguration" xml:space="preserve">
+    <value>Configure Servers</value>
+  </data>
 </root>

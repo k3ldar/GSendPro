@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using GSendControls.Abstractions;
+
 using GSendShared.Interfaces;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -22,65 +24,59 @@ namespace GSendControls.Plugins
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public void AddMenu(IPluginHost pluginHost, object parent, IPluginMenu menu, List<IShortcut> shortcuts)
+        public void AddMenu(IPluginHost pluginHost, MenuStrip parent, IPluginMenu menu, List<IShortcut> shortcuts)
         {
             if (menu == null)
                 throw new ArgumentNullException(nameof(menu));
 
-            if (parent is MenuStrip mainMenu)
+            ToolStripMenuItem parentMenu = null;
+
+            if (menu.ParentMenu == null)
             {
-                ToolStripMenuItem parentMenu = null;
+                CreateStandardMenuItem(pluginHost.MaximumMenuIndex, menu, parent.Items, parentMenu, shortcuts);
+                return;
+            }
+            else
+            {
+                parentMenu = RecursivlyFindParentMenu(parent.Items, menu, 0);
+            }
 
-                if (menu.ParentMenu == null)
-                {
-                    CreateStandardMenuItem(pluginHost.MaximumMenuIndex, menu, mainMenu.Items, parentMenu, shortcuts);
-                    return;
-                }
-                else
-                {
-                    parentMenu = RecursivlyFindParentMenu(mainMenu.Items, menu, 0);
-                }
-
-                if (menu.MenuType == MenuType.MenuItem)
-                {
-                    CreateStandardMenuItem(parentMenu.DropDownItems.Count, menu, parentMenu.DropDownItems, parentMenu, shortcuts);
-                }
-                else if (menu.MenuType == MenuType.Seperator)
-                {
-                    CreateSeperatorMenuItem(pluginHost, menu, parentMenu);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid Menu Type");
-                }
+            if (menu.MenuType == MenuType.MenuItem)
+            {
+                CreateStandardMenuItem(parentMenu.DropDownItems.Count, menu, parentMenu.DropDownItems, parentMenu, shortcuts);
+            }
+            else if (menu.MenuType == MenuType.Seperator)
+            {
+                CreateSeperatorMenuItem(pluginHost, menu, parentMenu);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid Menu Type");
             }
         }
 
-        public void AddPopupMenu(IPluginHost pluginHost, object parent, IPluginMenu menu, List<IShortcut> shortcuts)
+        public void AddPopupMenu(IPluginHost pluginHost, ContextMenuStrip parent, IPluginMenu menu, List<IShortcut> shortcuts)
         {
             // unused at present, for future use
         }
 
-        public void AddToolbarButton(IPluginHost pluginHost, object parent, IPluginToolbarButton toolbarButton)
+        public void AddToolbarButton(IPluginHost pluginHost, ToolStrip parent, IPluginToolbarButton toolbarButton)
         {
             if (toolbarButton == null)
                 throw new ArgumentNullException(nameof(toolbarButton));
 
-            if (parent is ToolStrip parentToolStrip)
+            if (toolbarButton.ButtonType == ButtonType.Seperator)
             {
-                if (toolbarButton.ButtonType == ButtonType.Seperator)
-                {
-                    ToolStripSeparator buttonSeperator = new();
-                    parentToolStrip.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parentToolStrip.Items.Count, pluginHost.MaximumMenuIndex), buttonSeperator);
-                }
-                else if (toolbarButton.ButtonType == ButtonType.Button)
-                {
-                    CreateStandardToolbarButton(pluginHost, toolbarButton, parentToolStrip);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Invalid button type");
-                }
+                ToolStripSeparator buttonSeperator = new();
+                parent.Items.Insert(CalculatePluginItemPosition(toolbarButton.Index, parent.Items.Count, pluginHost.MaximumMenuIndex), buttonSeperator);
+            }
+            else if (toolbarButton.ButtonType == ButtonType.Button)
+            {
+                CreateStandardToolbarButton(pluginHost, toolbarButton, parent);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid button type");
             }
         }
 
@@ -199,7 +195,7 @@ namespace GSendControls.Plugins
             parentMenu.DropDownItems.Insert(CalculatePluginItemPosition(menu.Index, parentMenu.DropDownItems.Count, pluginHost.MaximumMenuIndex), pluginSeperator);
         }
 
-        private void CreateStandardMenuItem(int maximumMenuIndex, IPluginMenu menu, ToolStripItemCollection parentItems, 
+        private void CreateStandardMenuItem(int maximumMenuIndex, IPluginMenu menu, ToolStripItemCollection parentItems,
             ToolStripMenuItem parentMenu, List<IShortcut> shortcuts)
         {
             ToolStripMenuItem pluginMenu = new()
