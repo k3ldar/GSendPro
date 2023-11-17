@@ -134,6 +134,39 @@ namespace GSendApi
             throw new GSendApiException(responseModel.responseData);
         }
 
+        protected T CallGetApi<T>(Uri server, string endPoint)
+        {
+            try
+            {
+                using HttpClient httpClient = CreateApiClient();
+                string address = $"{server}{endPoint}";
+
+                using HttpResponseMessage response = httpClient.GetAsync(address).Result;
+
+                if (!response.IsSuccessStatusCode)
+                    throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallGetApi)));
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+
+                if (String.IsNullOrWhiteSpace(jsonData))
+                    return default;
+
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return JsonSerializer.Deserialize<T>(responseModel.responseData, GSendShared.Constants.DefaultJsonSerializerOptions);
+                }
+
+                throw new GSendApiException(responseModel.responseData);
+            }
+            catch (Exception ex) when
+                (ex is AggregateException)
+            {
+                throw new GSendApiException(GSend.Language.Resources.UnableToContactServer, ex);
+            }
+        }
+
         protected T CallGetApi<T>(string endPoint)
         {
             try

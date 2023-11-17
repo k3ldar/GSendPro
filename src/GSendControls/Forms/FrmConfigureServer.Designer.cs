@@ -31,6 +31,7 @@
             lvServers = new ListViewEx();
             columnHeaderServer = new System.Windows.Forms.ColumnHeader();
             columnHeaderPort = new System.Windows.Forms.ColumnHeader();
+            columnHeaderProtocol = new System.Windows.Forms.ColumnHeader();
             columnHeaderActive = new System.Windows.Forms.ColumnHeader();
             lblServer = new System.Windows.Forms.Label();
             txtServer = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@
             btnAdd = new System.Windows.Forms.Button();
             btnDelete = new System.Windows.Forms.Button();
             btnClose = new System.Windows.Forms.Button();
-            columnHeaderProtocol = new System.Windows.Forms.ColumnHeader();
             SuspendLayout();
             // 
             // lvServers
@@ -67,9 +67,12 @@
             // 
             columnHeaderPort.Width = 100;
             // 
+            // columnHeaderProtocol
+            // 
+            columnHeaderProtocol.Width = 100;
+            // 
             // columnHeaderActive
             // 
-            columnHeaderActive.DisplayIndex = 2;
             columnHeaderActive.Width = 100;
             // 
             // lblServer
@@ -155,11 +158,6 @@
             btnClose.TabIndex = 9;
             btnClose.Text = "Close";
             btnClose.UseVisualStyleBackColor = true;
-            // 
-            // columnHeaderProtocol
-            // 
-            columnHeaderProtocol.DisplayIndex = 3;
-            columnHeaderProtocol.Width = 100;
             // 
             // FrmConfigureServer
             // 

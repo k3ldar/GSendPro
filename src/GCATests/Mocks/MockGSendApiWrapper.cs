@@ -114,5 +114,10 @@ namespace GSendTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public bool CanConnect(Uri uri)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

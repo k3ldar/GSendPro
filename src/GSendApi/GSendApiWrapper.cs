@@ -1,6 +1,8 @@
 ﻿using GSendShared;
 using GSendShared.Models;
 
+using Microsoft.AspNetCore.Hosting.Server;
+
 namespace GSendApi
 {
     public class GSendApiWrapper : BaseApiWrapper, IGSendApiWrapper
@@ -13,6 +15,15 @@ namespace GSendApi
         }
 
         #endregion Constructors
+
+        #region General Methods
+
+        public bool CanConnect(Uri uri)
+        {
+            return CallGetApi<bool>(uri, "LicenseApi/IsLicensed/");
+        }
+
+        #endregion General Methods
 
         #region Machines
 
