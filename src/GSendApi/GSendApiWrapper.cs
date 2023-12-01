@@ -20,7 +20,14 @@ namespace GSendApi
 
         public bool CanConnect(Uri uri)
         {
-            return CallGetApi<bool>(uri, "LicenseApi/IsLicensed/");
+            try
+            {
+                return CallGetApi<bool>(uri, "LicenseApi/IsLicensed/");
+            }
+            catch (GSendApiException)
+            {
+                return false;
+            }
         }
 
         #endregion General Methods

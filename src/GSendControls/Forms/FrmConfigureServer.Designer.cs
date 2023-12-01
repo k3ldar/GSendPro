@@ -58,6 +58,7 @@
             lvServers.TabIndex = 0;
             lvServers.UseCompatibleStateImageBehavior = false;
             lvServers.View = System.Windows.Forms.View.Details;
+            lvServers.SelectedIndexChanged += lvServers_SelectedIndexChanged;
             // 
             // columnHeaderServer
             // 
@@ -90,6 +91,7 @@
             txtServer.Name = "txtServer";
             txtServer.Size = new System.Drawing.Size(194, 23);
             txtServer.TabIndex = 2;
+            txtServer.TextChanged += ControlValueChanged;
             // 
             // lblPort
             // 
@@ -106,6 +108,7 @@
             txtPort.Name = "txtPort";
             txtPort.Size = new System.Drawing.Size(73, 23);
             txtPort.TabIndex = 4;
+            txtPort.TextChanged += ControlValueChanged;
             // 
             // rbHttp
             // 
@@ -118,6 +121,7 @@
             rbHttp.TabStop = true;
             rbHttp.Text = "Http";
             rbHttp.UseVisualStyleBackColor = true;
+            rbHttp.CheckedChanged += ControlValueChanged;
             // 
             // rbHttps
             // 
@@ -129,6 +133,7 @@
             rbHttps.TabStop = true;
             rbHttps.Text = "Https";
             rbHttps.UseVisualStyleBackColor = true;
+            rbHttps.CheckedChanged += ControlValueChanged;
             // 
             // btnAdd
             // 
@@ -138,6 +143,7 @@
             btnAdd.TabIndex = 7;
             btnAdd.Text = "button1";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnDelete
             // 
@@ -147,6 +153,7 @@
             btnDelete.TabIndex = 8;
             btnDelete.Text = "button2";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnClose
             // 

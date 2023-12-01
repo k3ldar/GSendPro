@@ -2617,6 +2617,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Port.
+        /// </summary>
+        public static string InvalidServerPort {
+            get {
+                return ResourceManager.GetString("InvalidServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port must be a number between 0 and 65535.
+        /// </summary>
+        public static string InvalidServerPortDesc {
+            get {
+                return ResourceManager.GetString("InvalidServerPortDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string IsActive {
@@ -3553,6 +3571,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Server.
+        /// </summary>
+        public static string ServerAdd {
+            get {
+                return ResourceManager.GetString("ServerAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure Servers.
         /// </summary>
         public static string ServerConfiguration {
@@ -3567,6 +3594,15 @@ namespace GSend.Language {
         public static string ServerConnected {
             get {
                 return ResourceManager.GetString("ServerConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to the server, do you want to continue adding this new server?.
+        /// </summary>
+        public static string ServerConnectFailContinue {
+            get {
+                return ResourceManager.GetString("ServerConnectFailContinue", resourceCulture);
             }
         }
         
@@ -3657,6 +3693,15 @@ namespace GSend.Language {
         public static string ServerValid {
             get {
                 return ResourceManager.GetString("ServerValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating.
+        /// </summary>
+        public static string ServerValidating {
+            get {
+                return ResourceManager.GetString("ServerValidating", resourceCulture);
             }
         }
         
