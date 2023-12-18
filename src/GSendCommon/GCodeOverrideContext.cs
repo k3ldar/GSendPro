@@ -2,6 +2,7 @@
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Interfaces;
 using GSendShared.Models;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -22,18 +23,15 @@ namespace GSendCommon
         private readonly IServiceProvider _serviceProvider;
         private IReadOnlyDictionary<ushort, IGCodeVariable> _codeOverrides;
 
-        public GCodeOverrideContext(IServiceProvider serviceProvider, IStaticMethods staticMethods, IGCodeProcessor processor,
+        public GCodeOverrideContext(IServiceProvider serviceProvider, IGCodeProcessor processor,
             IMachine machine, MachineStateModel machineStateModel, ConcurrentQueue<IGCodeLine> commandQueue)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            StaticMethods = staticMethods ?? throw new ArgumentNullException(nameof(staticMethods));
             Processor = processor ?? throw new ArgumentNullException(nameof(processor));
             Machine = machine ?? throw new ArgumentNullException(nameof(machine));
             MachineStateModel = machineStateModel ?? throw new ArgumentNullException(nameof(machineStateModel));
             CommandQueue = commandQueue ?? throw new ArgumentNullException(nameof(commandQueue));
         }
-
-        public IStaticMethods StaticMethods { get; }
 
         public IGCodeLine GCode { get; internal set; }
 

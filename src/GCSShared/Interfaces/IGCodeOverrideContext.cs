@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
+using GSendShared.Interfaces;
 using GSendShared.Models;
 
 namespace GSendShared.Abstractions
@@ -35,8 +36,6 @@ namespace GSendShared.Abstractions
         IGCodeProcessor Processor { get; }
 
         IMachine Machine { get; }
-
-        IStaticMethods StaticMethods { get; }
 
         MachineStateModel MachineStateModel { get; }
 

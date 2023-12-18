@@ -49,7 +49,6 @@ namespace GSendService
             services.AddSingleton<IComPortProvider, ComPortProvider>();
             services.AddSingleton<IComPortFactory, ComPortFactory>();
             services.AddTransient<IProcessorMediator, ProcessorMediator>();
-            services.AddSingleton<IStaticMethods, StaticMethods>();
             services.AddSingleton<ISubprograms, Subprograms>();
             services.AddSingleton<ISharedPluginHelper, SharedPluginHelper>();
         }

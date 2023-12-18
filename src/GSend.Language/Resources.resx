@@ -2200,4 +2200,10 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="ServerValidating" xml:space="preserve">
     <value>Validating</value>
   </data>
+  <data name="ServerDelete" xml:space="preserve">
+    <value>Delete Server</value>
+  </data>
+  <data name="ServerDeleteQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete server {0}:{1}?</value>
+  </data>
 </root>

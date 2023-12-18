@@ -5,6 +5,7 @@ using GSendControls.Plugins;
 using GSendControls.Plugins.InternalPlugins.HelpMenu;
 using GSendControls.Plugins.InternalPlugins.ServerMenu;
 
+using GSendShared;
 using GSendShared.Plugins;
 
 using GSendTests.Mocks;
@@ -22,7 +23,7 @@ namespace GSendTests.Shared.Plugins
         {
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
             MockSenderPluginHost pluginHost = new(parentMenu);
-            ServerMenuPlugin sut = new();
+            ServerMenuPlugin sut = new(new ServerConfigurationUpdated(), new CommonUtils(), new MockRunProgram());
             sut.Initialize(pluginHost);
 
             Assert.IsNotNull(sut);

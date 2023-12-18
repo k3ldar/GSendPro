@@ -92,14 +92,19 @@ namespace GSendCS.Processors
 
         [CmdLineDescription("Deletes an existing server address")]
         public int Delete(
-            [CmdLineAbbreviation("a", "Server address")] string address)
+            [CmdLineAbbreviation("a", "Server address")] string address,
+            [CmdLineAbbreviation("p", "Port number")] ushort port,
+            [CmdLineAbbreviation("s", "Secure connection (https)")] bool isSecure = false)
         {
             if (!ValidateExclusiveAccess())
                 return ResponseExclusiveAccessDenied;
 
             List<string> settings = LoadServerAddresses();
 
-            string serverAddress = settings.Find(p => p.Equals(address, StringComparison.OrdinalIgnoreCase));
+            UriBuilder uriBuilder = new(isSecure ? Uri.UriSchemeHttps : Uri.UriSchemeHttp, address, port);
+            string uri = uriBuilder.ToString();
+
+            string serverAddress = settings.Find(p => p.Equals(uri, StringComparison.OrdinalIgnoreCase));
 
             if (String.IsNullOrEmpty(serverAddress))
                 return ResponseDoesNotExist;

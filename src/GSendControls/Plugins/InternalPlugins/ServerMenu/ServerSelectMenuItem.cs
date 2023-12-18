@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Plugins;
 
@@ -8,6 +10,8 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 {
     public sealed class ServerSelectMenuItem : IPluginMenu
     {
+        private Uri _uri = null;
+
         public ServerSelectMenuItem(IPluginMenu parentMenu, int index)
         {
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
@@ -20,7 +24,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public IPluginMenu ParentMenu { get; }
 
-        public string Text => "127.0.0.1:7050";
+        public string Text => _uri == null ? String.Empty : $"{_uri.Host}:{_uri.Port}";
 
         public int Index { get; }
 
@@ -50,17 +54,22 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public bool IsEnabled()
         {
-            return true;
+            return IsVisible();
         }
 
         public bool IsVisible()
         {
-            return Index % 2 == 0;
+            return _uri != null;
         }
 
         public void UpdateHost<T>(T senderPluginHost)
         {
 
+        }
+
+        internal void UpdateServerAddress(Uri uri)
+        {
+            _uri = uri;
         }
     }
 }

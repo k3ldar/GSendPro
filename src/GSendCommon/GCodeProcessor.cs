@@ -111,7 +111,7 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this,
+            _overrideContext = new GCodeOverrideContext(serviceProvider, this,
                 _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 

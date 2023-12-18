@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using GSendShared;
 using GSendShared.Abstractions;
+using GSendShared.Interfaces;
 using GSendShared.Models;
 
 namespace GSendTests.Mocks
@@ -27,7 +28,7 @@ namespace GSendTests.Mocks
 
         public IMachine Machine { get; } = new MockMachine();
 
-        public IStaticMethods StaticMethods => throw new NotImplementedException();
+        public ICommonUtils CommonUtils => throw new NotImplementedException();
 
         public MachineStateModel MachineStateModel { get; set; }
 

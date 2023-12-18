@@ -3625,6 +3625,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Server.
+        /// </summary>
+        public static string ServerDelete {
+            get {
+                return ResourceManager.GetString("ServerDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete server {0}:{1}?.
+        /// </summary>
+        public static string ServerDeleteQuestion {
+            get {
+                return ResourceManager.GetString("ServerDeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The COM port timed out waiting for a response..
         /// </summary>
         public static string ServerErrorComTimeOut {

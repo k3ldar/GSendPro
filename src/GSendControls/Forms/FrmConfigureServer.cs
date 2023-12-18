@@ -1,14 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using GSendApi;
@@ -19,6 +9,7 @@ using GSendControls.Threads;
 using GSendDesktop.Internal;
 
 using GSendShared;
+using GSendShared.Interfaces;
 
 using Shared.Classes;
 
@@ -28,11 +19,16 @@ namespace GSendControls.Forms
     {
         private readonly IRunProgram _runProgram;
         private readonly IGSendApiWrapper _gSendApiWrapper;
+        private readonly IServerConfigurationUpdated _serverConfigurationUpdated;
+        private readonly ICommonUtils _commonUtils;
 
-        public FrmConfigureServer(IRunProgram runProgram, IGSendApiWrapper gSendApiWrapper)
+        public FrmConfigureServer(IRunProgram runProgram, IGSendApiWrapper gSendApiWrapper,
+            ICommonUtils commonUtils, IServerConfigurationUpdated serverConfigurationUpdated)
         {
             _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
             _gSendApiWrapper = gSendApiWrapper ?? throw new ArgumentNullException(nameof(gSendApiWrapper));
+            _commonUtils = commonUtils ?? throw new ArgumentNullException(nameof(commonUtils));
+            _serverConfigurationUpdated = serverConfigurationUpdated ?? throw new ArgumentNullException(nameof(serverConfigurationUpdated));
             InitializeComponent();
             UpdateUI();
         }
@@ -61,20 +57,6 @@ namespace GSendControls.Forms
             Application.DoEvents();
 
             LoadAllServers();
-        }
-
-        private static bool GetGSendCS(out string gSendCS)
-        {
-#if DEBUG
-            gSendCS = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location).Replace("-windows", String.Empty), "GSendCS.exe");
-#else
-            gSendCS = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "GSendCS.exe");
-
-#endif
-            if (File.Exists(gSendCS))
-                return true;
-
-            return false;
         }
 
         #region IServerAvailability
@@ -112,7 +94,7 @@ namespace GSendControls.Forms
                 return;
             }
 
-            var item = lvServers.SelectedItems[0];
+            ListViewItem item = lvServers.SelectedItems[0];
 
             Uri uri = item.Tag as Uri;
 
@@ -137,7 +119,7 @@ namespace GSendControls.Forms
                 {
                     lvServers.Items.Clear();
 
-                    if (GetGSendCS(out string gSendCS))
+                    if (_commonUtils.GetGSendCS(out string gSendCS))
                     {
                         string[] servers = _runProgram.Run(gSendCS, "Server Show").Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -166,6 +148,7 @@ namespace GSendControls.Forms
                 }
             }
 
+            UpdateUI();
             Application.DoEvents();
         }
 
@@ -179,10 +162,12 @@ namespace GSendControls.Forms
 
             bool isSecure = rbHttps.Checked;
             string server = txtServer.Text;
-            UriBuilder uriBuilder = new UriBuilder();
-            uriBuilder.Scheme = isSecure ? Uri.UriSchemeHttp : Uri.UriSchemeHttps;
-            uriBuilder.Port = port;
-            uriBuilder.Host = server;
+            UriBuilder uriBuilder = new UriBuilder
+            {
+                Scheme = isSecure ? Uri.UriSchemeHttp : Uri.UriSchemeHttps,
+                Port = port,
+                Host = server
+            };
 
             if (!_gSendApiWrapper.CanConnect(uriBuilder.Uri) &&
                 !ShowWarningQuestion(GSend.Language.Resources.ServerAdd, GSend.Language.Resources.ServerConnectFailContinue))
@@ -190,9 +175,15 @@ namespace GSendControls.Forms
                 return;
             }
 
-            if (GetGSendCS(out string gSendCs))
+            string cmdLine = $"Server Add -a:{uriBuilder.Host} -p:{port} -s:{isSecure.ToString().ToLowerInvariant()}";
+            RunGSendCSAndReloadServers(cmdLine);
+            _serverConfigurationUpdated.ServerConfigurationUpdated();
+        }
+
+        private void RunGSendCSAndReloadServers(string cmdLine)
+        {
+            if (_commonUtils.GetGSendCS(out string gSendCs))
             {
-                string cmdLine = $"Server Add -a:{uriBuilder.Host} -p:{port} -s:{isSecure.ToString().ToLowerInvariant()}";
                 string responseStrings = _runProgram.Run(gSendCs, cmdLine);
 
                 if (responseStrings.Length == 0)
@@ -206,7 +197,24 @@ namespace GSendControls.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (lvServers.SelectedItems.Count == 0)
+                return;
 
+            ListViewItem item = lvServers.SelectedItems[0];
+
+            Uri uri = item.Tag as Uri;
+
+            if (uri == null)
+                return;
+
+            if (ShowQuestion(GSend.Language.Resources.ServerDelete, String.Format(GSend.Language.Resources.ServerDeleteQuestion, uri.Host, uri.Port)))
+            {
+                bool isSecure = rbHttps.Checked;
+                string cmdLine = $"Server Delete -a:{uri.Host} -p:{uri.Port} -s:{isSecure.ToString().ToLowerInvariant()}";
+                RunGSendCSAndReloadServers(cmdLine);
+                lvServers_SelectedIndexChanged(sender, e);
+                _serverConfigurationUpdated.ServerConfigurationUpdated();
+            }
         }
 
         private void ControlValueChanged(object sender, EventArgs e)

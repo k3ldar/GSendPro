@@ -51,7 +51,7 @@ namespace GSendTests.OverrideTests
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider(), new GSendSettings());
-            GCodeOverrideContext context = new(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>())
+            GCodeOverrideContext context = new(new MockServiceProvider(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>())
             {
                 GCode = gCodeLine,
                 JobExecution = new JobExecutionModel(new ToolProfileModel(), new JobProfileModel(1)),
@@ -82,7 +82,7 @@ namespace GSendTests.OverrideTests
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
 
             IGCodeProcessor processor = new GCodeProcessor(gSendDataProvider, mockMachine, comPortFactory, new MockServiceProvider(), new GSendSettings());
-            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), new MockStaticMethods(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>());
+            IGCodeOverrideContext context = new GCodeOverrideContext(new MockServiceProvider(), processor, mockMachine, new MachineStateModel(), new ConcurrentQueue<IGCodeLine>());
 
             Assert.AreEqual(0, processor.StateModel.CommandQueueSize);
 

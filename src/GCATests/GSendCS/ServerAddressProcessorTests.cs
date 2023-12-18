@@ -219,7 +219,7 @@ namespace GSendTests.GSendCS
 
                 using (ServerAddressProcessor sut = new(mockArgs, mockDisplay, serverSettingsFile))
                 {
-                    int result = sut.Delete("http://127.0.0.1:7150");
+                    int result = sut.Delete("127.0.0.1", 7150, false);
 
                     Assert.AreEqual(-100, result);
                     Assert.IsFalse(sut.IsExclusive);
@@ -239,7 +239,7 @@ namespace GSendTests.GSendCS
 
             using (ServerAddressProcessor sut = new(mockArgs, mockDisplay, serverSettingsFile))
             {
-                int result = sut.Delete("http://127.0.0.1:7150");
+                int result = sut.Delete("127.0.0.1", 7150, false);
 
                 Assert.AreEqual(0, result);
                 Assert.IsTrue(File.Exists(serverSettingsFile));
@@ -262,7 +262,7 @@ namespace GSendTests.GSendCS
 
             using (ServerAddressProcessor sut = new(mockArgs, mockDisplay, serverSettingsFile))
             {
-                int result = sut.Delete("http://127.0.0.1:7150");
+                int result = sut.Delete("127.0.0.1", 7150, false);
 
                 Assert.AreEqual(-102, result);
                 Assert.IsTrue(File.Exists(serverSettingsFile));

@@ -41,6 +41,11 @@ namespace GSendControls
             return MessageBox.Show(this, message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
         }
 
+        protected bool ShowQuestion(string title, string message)
+        {
+            return MessageBox.Show(this, message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
         protected virtual void CreateContextMenu()
         {
 
