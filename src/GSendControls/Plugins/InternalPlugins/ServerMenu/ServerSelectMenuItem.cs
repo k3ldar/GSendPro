@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 
+using GSendApi;
+
 using GSendControls.Abstractions;
 
 using GSendShared;
@@ -10,14 +12,16 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 {
     public sealed class ServerSelectMenuItem : IPluginMenu
     {
+        private readonly IGSendApiWrapper _gSendApiWrapper;
         private Uri _uri = null;
 
-        public ServerSelectMenuItem(IPluginMenu parentMenu, int index)
+        public ServerSelectMenuItem(IPluginMenu parentMenu, int index, IGSendApiWrapper gSendApiWrapper)
         {
+            _gSendApiWrapper = gSendApiWrapper ?? throw new ArgumentNullException(nameof(gSendApiWrapper));
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
             Index = index;
         }
-
+         
         public Image MenuImage => null;
 
         public MenuType MenuType => MenuType.MenuItem;
@@ -32,7 +36,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public void Clicked()
         {
-
+            _gSendApiWrapper.ServerAddress = _uri ?? throw new InvalidOperationException("Invalid Server Address");
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
@@ -49,7 +53,10 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public bool IsChecked()
         {
-            return false;
+            if (_uri == null)
+                return false;
+
+            return _uri.Equals(_gSendApiWrapper.ServerAddress);
         }
 
         public bool IsEnabled()

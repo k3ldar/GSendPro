@@ -21,9 +21,11 @@ namespace GSendTests.Shared.Plugins
         [TestMethod]
         public void ServerMenuPlugin_ConstructValidInstance_Success()
         {
+            MockRunProgram mockRunProgram = new MockRunProgram();
+            mockRunProgram.Result = string.Empty;
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
             MockSenderPluginHost pluginHost = new(parentMenu);
-            ServerMenuPlugin sut = new(new ServerConfigurationUpdated(), new CommonUtils(), new MockRunProgram());
+            ServerMenuPlugin sut = new(new MockGSendApiWrapper(), new ServerConfigurationUpdated(), new CommonUtils(), mockRunProgram);
             sut.Initialize(pluginHost);
 
             Assert.IsNotNull(sut);

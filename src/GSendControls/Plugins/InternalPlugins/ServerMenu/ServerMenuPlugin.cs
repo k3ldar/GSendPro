@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+
+using GSendApi;
 
 using GSendControls.Abstractions;
 using GSendControls.Threads;
@@ -18,14 +21,16 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
     /// </summary>
     public sealed class ServerMenuPlugin : IGSendPluginModule
     {
+        private readonly IGSendApiWrapper _gSendApiWrapper;
         private readonly ICommonUtils _commonUtils;
         private const int MaximumServerNameMenuItems = 10;
         private List<IPluginMenu> _pluginMenus;
         private IPluginHost _pluginHost;
         private readonly IRunProgram _runProgram;
 
-        public ServerMenuPlugin(IServerConfigurationUpdated serverConfigurationUpdated, ICommonUtils commonUtils, IRunProgram runProgram)
+        public ServerMenuPlugin(IGSendApiWrapper gSendApiWrapper, IServerConfigurationUpdated serverConfigurationUpdated, ICommonUtils commonUtils, IRunProgram runProgram)
         {
+            _gSendApiWrapper = gSendApiWrapper ?? throw new ArgumentNullException(nameof(gSendApiWrapper));
             _commonUtils = commonUtils ?? throw new ArgumentNullException(nameof(commonUtils));
             _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
 
@@ -60,7 +65,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
                     for (int i = 0; i < MaximumServerNameMenuItems; i++)
                     {
-                        _pluginMenus.Add(new ServerSelectMenuItem(parentServerMenu, i + 2));
+                        _pluginMenus.Add(new ServerSelectMenuItem(parentServerMenu, i + 2, _gSendApiWrapper));
                     }
 
                     UpdateServerMenuItems();

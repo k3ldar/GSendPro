@@ -233,7 +233,7 @@ namespace GSendTests.GSendCS
         public void Delete_ExistingServerAddress_StillReadableWhilstFileStreamOpen_WhenFileDoesNotExist()
         {
             string serverSettingsFile = Path.GetTempFileName();
-            File.WriteAllText(serverSettingsFile, "[\"http://127.0.0.1:7150\"]");
+            File.WriteAllText(serverSettingsFile, "[\"http://127.0.0.1:7150/\"]");
             MockCommandLineArgs mockArgs = new();
             MockDisplay mockDisplay = new();
 
