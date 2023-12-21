@@ -3,5 +3,7 @@
     public interface IGCodeParserFactory
     {
         IGCodeParser CreateParser();
+
+        IGCodeParser CreateParser(ISubprograms subprograms);
     }
 }

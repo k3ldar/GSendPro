@@ -33,9 +33,9 @@ namespace GSendEditor
         private readonly IServerValidation _validationThread;
         private readonly object _lockObject = new();
         private readonly object _updateSubprogramsLock = new();
-        private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
+        private AnalyzerThread _analyzerThread = null;
         private ISubprogram _subProgram;
         private readonly RecentFiles _recentFiles;
         private readonly Internal.Bookmarks _bookmarks;
@@ -54,10 +54,8 @@ namespace GSendEditor
             _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
-            _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>(), txtGCode);
-            _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
-            _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
+            CreateAnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>());
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
 
             machine2dView1.UnloadGCode();
@@ -68,7 +66,7 @@ namespace GSendEditor
             _bookmarks = new();
             txtGCode.BookmarkColor = Color.BurlyWood;
 
-            
+
             // shortcuts have to be setup prior to plugins
             _shortcutHandler = new()
             {
@@ -90,9 +88,23 @@ namespace GSendEditor
 
             UpdateShortcutKeyValues(_shortcuts);
             UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
-            ServerValidationThread validationThread  = new ServerValidationThread(this);
+            ServerValidationThread validationThread = new ServerValidationThread(this);
             ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
             _validationThread = validationThread;
+        }
+
+        private void CreateAnalyzerThread(IGCodeParserFactory gCodeParserFactory, ISubprograms subprograms)
+        {
+            if (_analyzerThread != null)
+            {
+                _analyzerThread.OnAddItem -= AnalyzerThread_OnAddItem;
+                _analyzerThread.OnRemoveItem -= AnalyzerThread_OnRemoveItem;
+                _analyzerThread.CancelThread();
+            }
+
+            _analyzerThread = new AnalyzerThread(gCodeParserFactory, subprograms, txtGCode);
+            _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
+            _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
         }
 
         public IGSendApiWrapper ApiWrapper => _gsendApiWrapper;
@@ -993,6 +1005,8 @@ namespace GSendEditor
         {
             _validationThread.ValidateConnection();
             _analyzerThread.AnalyzerUpdated();
+            CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>());
         }
 
         #region Shortcuts

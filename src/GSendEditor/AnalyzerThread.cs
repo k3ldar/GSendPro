@@ -75,7 +75,7 @@ namespace GSendEditor
                 }
                 else if (overrideUpdateSpan.TotalMilliseconds > ValidateWarningAndErrorsTimeout && WarningContainer != null && !String.IsNullOrEmpty(txtGCode.Text))
                 {
-                    IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
+                    IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser(_subprograms);
                     _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
                     _gCodeAnalyses.Analyse(FileName);
                     Lines = _gCodeAnalyses.Lines(out int lineCount);
