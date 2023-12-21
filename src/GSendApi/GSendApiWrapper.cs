@@ -7,6 +7,12 @@ namespace GSendApi
 {
     public class GSendApiWrapper : BaseApiWrapper, IGSendApiWrapper
     {
+        #region Private Members
+
+        private const int ValidationTimeoutMs = 800;
+
+        #endregion Private Members
+
         #region Constructors
 
         public GSendApiWrapper(ApiSettings apiSettings)
@@ -22,7 +28,7 @@ namespace GSendApi
         {
             try
             {
-                return CallGetApi<bool>(uri, "LicenseApi/IsLicensed/");
+                return CallGetApi<bool>(uri, "LicenseApi/IsLicensed/", TimeSpan.FromMilliseconds(ValidationTimeoutMs));
             }
             catch (GSendApiException)
             {
@@ -109,7 +115,7 @@ namespace GSendApi
 
         public bool IsLicenseValid()
         {
-            return CallGetApi<bool>($"LicenseApi/IsLicensed/");
+            return CallGetApi<bool>($"LicenseApi/IsLicensed/", TimeSpan.FromMilliseconds(ValidationTimeoutMs));
         }
 
         #endregion ILicense

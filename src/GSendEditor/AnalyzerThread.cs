@@ -11,7 +11,7 @@ namespace GSendEditor
     {
         private DateTime _lastValidateWarningsAndErrors;
         private const int ValidateWarningAndErrorsTimeout = 350;
-
+        private const int ValidateWhenGCodeHasWarningsOrErrorsSeconds = 15;
         private readonly IGCodeParserFactory _gCodeParserFactory;
         private readonly ISubprograms _subprograms;
         private IGCodeAnalyses _gCodeAnalyses;
@@ -56,7 +56,7 @@ namespace GSendEditor
             {
                 TimeSpan overrideUpdateSpan = DateTime.UtcNow - _lastValidateWarningsAndErrors;
 
-                if (String.IsNullOrEmpty(txtGCode.Text))
+                if (String.IsNullOrEmpty(txtGCode.Text) && WarningContainer != null)
                 {
                     List<WarningErrorList> issues = new();
 
@@ -114,7 +114,7 @@ namespace GSendEditor
                     }
 
                     if (issues.Count > 0)
-                        _lastValidateWarningsAndErrors = DateTime.UtcNow.AddSeconds(5);
+                        _lastValidateWarningsAndErrors = DateTime.UtcNow.AddSeconds(ValidateWhenGCodeHasWarningsOrErrorsSeconds);
                     else
                         _lastValidateWarningsAndErrors = DateTime.MaxValue;
                 }

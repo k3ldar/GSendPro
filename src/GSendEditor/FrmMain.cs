@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Text;
 
 using FastColoredTextBoxNS;
@@ -29,6 +30,7 @@ namespace GSendEditor
 {
     public partial class FrmMain : BaseForm, IShortcutImplementation, IEditorPluginHost, IOnlineStatusUpdate
     {
+        private readonly IServerValidation _validationThread;
         private readonly object _lockObject = new();
         private readonly object _updateSubprogramsLock = new();
         private readonly AnalyzerThread _analyzerThread = null;
@@ -49,6 +51,7 @@ namespace GSendEditor
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
+            _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
             _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
@@ -65,7 +68,7 @@ namespace GSendEditor
             _bookmarks = new();
             txtGCode.BookmarkColor = Color.BurlyWood;
 
-
+            
             // shortcuts have to be setup prior to plugins
             _shortcutHandler = new()
             {
@@ -87,8 +90,9 @@ namespace GSendEditor
 
             UpdateShortcutKeyValues(_shortcuts);
             UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
-            ServerValidationThread validationThread = new(this);
+            ServerValidationThread validationThread  = new ServerValidationThread(this);
             ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
+            _validationThread = validationThread;
         }
 
         public IGSendApiWrapper ApiWrapper => _gsendApiWrapper;
@@ -983,6 +987,12 @@ namespace GSendEditor
             LoadSubprograms();
 
             tmrUpdateSubprograms.Enabled = true;
+        }
+
+        private void GsendApiWrapper_ServerUriChanged()
+        {
+            _validationThread.ValidateConnection();
+            _analyzerThread.AnalyzerUpdated();
         }
 
         #region Shortcuts

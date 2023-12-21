@@ -13,6 +13,8 @@ namespace GSendTests.Mocks
     {
         public Uri ServerAddress => throw new NotImplementedException();
 
+        public event Action ServerUriChanged;
+
         public List<SpindleHoursModel> GetSpindleTime(long machineId, DateTime fromDate)
         {
             throw new NotImplementedException();

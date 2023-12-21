@@ -17,5 +17,10 @@
         /// <param name="uri"></param>
         /// <returns></returns>
         bool CanConnect(Uri uri);
+
+        /// <summary>
+        /// Event raised when server uri is changed
+        /// </summary>
+        event Action ServerUriChanged;
     }
 }
