@@ -68,8 +68,6 @@ namespace GSendControls
             listViewAnalyses.BeginUpdate();
             try
             {
-                //listViewAnalyses.Items.Clear();
-
                 if (_showFileName)
                 {
                     if (gCodeAnalyses == null)
