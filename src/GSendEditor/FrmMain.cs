@@ -35,6 +35,7 @@ namespace GSendEditor
         private readonly object _updateSubprogramsLock = new();
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
+        private readonly ServerBasedSubPrograms _serverBasedSubPrograms;
         private AnalyzerThread _analyzerThread = null;
         private ISubprogram _subProgram;
         private readonly RecentFiles _recentFiles;
@@ -54,8 +55,9 @@ namespace GSendEditor
             _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
+            _serverBasedSubPrograms = new ServerBasedSubPrograms(_gsendApiWrapper);
             CreateAnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>());
+                _serverBasedSubPrograms);
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
 
             machine2dView1.UnloadGCode();
@@ -100,11 +102,17 @@ namespace GSendEditor
                 _analyzerThread.OnAddItem -= AnalyzerThread_OnAddItem;
                 _analyzerThread.OnRemoveItem -= AnalyzerThread_OnRemoveItem;
                 _analyzerThread.CancelThread();
+
+                while (ThreadManager.Exists(_analyzerThread.Name))
+                    Thread.Sleep(20);
             }
 
             _analyzerThread = new AnalyzerThread(gCodeParserFactory, subprograms, txtGCode);
             _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
             _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
+
+            CreateAndRunAnalyzerThread();
+            _analyzerThread.AnalyzerUpdated();
         }
 
         public IGSendApiWrapper ApiWrapper => _gsendApiWrapper;
@@ -1003,10 +1011,13 @@ namespace GSendEditor
 
         private void GsendApiWrapper_ServerUriChanged()
         {
-            _validationThread.ValidateConnection();
-            _analyzerThread.AnalyzerUpdated();
-            CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>());
+            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            {
+                _validationThread.ValidateConnection();
+                _analyzerThread.AnalyzerUpdated();
+                CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                    _serverBasedSubPrograms);
+            }
         }
 
         #region Shortcuts

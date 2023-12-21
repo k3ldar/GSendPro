@@ -436,16 +436,30 @@
             // 
             txtGCode.AllowMacroRecording = false;
             txtGCode.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtGCode.AutoCompleteBracketsList = new char[] { '(', ')', '{', '}', '[', ']', '"', '"', '\'', '\'' };
+            txtGCode.AutoCompleteBracketsList = new char[]
+    {
+    '(',
+    ')',
+    '{',
+    '}',
+    '[',
+    ']',
+    '"',
+    '"',
+    '\'',
+    '\''
+    };
             txtGCode.AutoIndent = false;
             txtGCode.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*(?<range>:)\\s*(?<range>[^;]+);";
-            txtGCode.AutoScrollMinSize = new Size(2, 14);
+            txtGCode.AutoScrollMinSize = new Size(27, 14);
             txtGCode.BackBrush = null;
             txtGCode.CharHeight = 14;
             txtGCode.CharWidth = 8;
             txtGCode.ContextMenuStrip = contextMenuStripEditor;
             txtGCode.DefaultMarkerSize = 8;
             txtGCode.DisabledColor = Color.FromArgb(100, 180, 180, 180);
+            txtGCode.Font = new Font("Courier New", 9.75F);
+            txtGCode.Hotkeys = resources.GetString("txtGCode.Hotkeys");
             txtGCode.IsReplaceMode = false;
             txtGCode.LeftBracket = '[';
             txtGCode.LeftBracket2 = '(';
