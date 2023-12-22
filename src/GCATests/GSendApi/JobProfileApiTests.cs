@@ -24,7 +24,7 @@ namespace GSendTests.GSendApi
         [ExcludeFromCodeCoverage]
         public void JobProfilesGet_RetrievesAllJobProfiles_Success()
         {
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(1) { Name = "Profile 1", Description = "test 1" });
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(325) { Name = "Profile 2", Description = "test 2" });
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(9865433) { Name = "Profile 3", Description = "test 3" });
@@ -63,7 +63,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void JobProfileAdd_NullParameter_Returns_JsonErrorResponse()
         {
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, new MockNotification());
             ActionResult Result = sut.JobProfileAdd(null) as ActionResult;
             Assert.IsNotNull(Result);
@@ -81,7 +81,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void JobProfileAdd_NullName_Returns_JsonErrorResponse()
         {
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, new MockNotification());
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(1) { Description = "a desc" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -99,7 +99,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void JobProfileAdd_NullDescription_Returns_JsonErrorResponse()
         {
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, new MockNotification());
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(1) { Name = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -118,7 +118,7 @@ namespace GSendTests.GSendApi
         public void JobProfileAdd_ValidModel_Returns_JsonResponse()
         {
             MockNotification notification = new();
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(1) { Name = "a test", Description = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -140,7 +140,7 @@ namespace GSendTests.GSendApi
         public void JobProfileAdd_InvalidModel_DuplicateName_Returns_JsonResponse()
         {
             MockNotification notification = new();
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(0) { Name = "a test", Description = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -174,7 +174,7 @@ namespace GSendTests.GSendApi
         public void JobProfileDelete_InvalidItemNotFound_ReturnsJsonErrorResponse()
         {
             MockNotification notification = new();
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileDelete(111) as ActionResult;
             Assert.IsNotNull(Result);
@@ -195,7 +195,7 @@ namespace GSendTests.GSendApi
         public void JobProfileDelete_ValidModel_LastRemainingJobProfile_Returns_JsonErrorResponse()
         {
             MockNotification notification = new();
-            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(new string[] { "ProverXL", "3018" });
+            IGSendDataProvider gSendDataProvider = new MockGSendDataProvider(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(1) { Name = "a test", Description = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -226,7 +226,7 @@ namespace GSendTests.GSendApi
         public void JobProfileDelete_ValidModel_ItemCanBeDeleted_Returns_JsonSuccessResponse()
         {
             MockNotification notification = new();
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(-1) { Name = "a test", Description = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -257,7 +257,7 @@ namespace GSendTests.GSendApi
         public void JobProfileUpdate_InvalidModel_Null_Returns_JsonErrorResponse()
         {
             MockNotification notification = new();
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
             ActionResult Result = sut.JobProfileAdd(new JobProfileModel(-1) { Name = "a test", Description = "a test" }) as ActionResult;
             Assert.IsNotNull(Result);
@@ -284,7 +284,7 @@ namespace GSendTests.GSendApi
         public void JobProfileUpdate_InvalidModel_NameNull_Returns_JsonErrorResponse()
         {
             MockNotification notification = new();
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
 
             IActionResult result = sut.JobProfileUpdate(new JobProfileModel(0));
@@ -309,7 +309,7 @@ namespace GSendTests.GSendApi
         public void JobProfileUpdate_InvalidModel_DescriptionNull_Returns_JsonErrorResponse()
         {
             MockNotification notification = new();
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
 
             IActionResult result = sut.JobProfileUpdate(new JobProfileModel(0) { Name = "name" });
@@ -334,7 +334,7 @@ namespace GSendTests.GSendApi
         public void JobProfileUpdate_InvalidModel_NotFound_Returns_JsonErrorResponse()
         {
             MockNotification notification = new();
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobProfileApi sut = new(gSendDataProvider, notification);
 
             IActionResult result = sut.JobProfileUpdate(new JobProfileModel(245) { Name = "name", Description = "desc" });
@@ -358,7 +358,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void JobProfileUpdate_ValidModel_ItemCanBeUpdated_Returns_JsonSuccessResponse()
         {
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(1) { Name = "Profile 1", Description = "test 1" });
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(325) { Name = "Profile 2", Description = "test 2" });
             gSendDataProvider.JobProfiles.Add(new JobProfileModel(9865433) { Name = "Profile 3", Description = "test 3" });

@@ -15,7 +15,7 @@ namespace GSendAnalyzer.Analyzers
         {
             ArgumentNullException.ThrowIfNull(command);
 
-            List<IGCodeCommand> Result = new();
+            List<IGCodeCommand> Result = [];
 
             LookPrevious(command, Result);
             LookNext(command, Result);

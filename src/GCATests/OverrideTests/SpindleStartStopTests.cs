@@ -45,7 +45,7 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "Machine 1" });
+            MockGSendDataProvider gSendDataProvider = new(["Machine 1"]);
             IMachine mockMachine = gSendDataProvider.MachineGet(0);
             MockComPort mockComport = new(mockMachine);
             IComPortFactory comPortFactory = new MockComPortFactory(mockComport);
@@ -73,7 +73,7 @@ namespace GSendTests.OverrideTests
             IGCodeAnalyses analyses = gCodeParser.Parse("S3000M3");
             gCodeLine.Commands.AddRange(analyses.Commands);
 
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "Machine 1" });
+            MockGSendDataProvider gSendDataProvider = new(["Machine 1"]);
             IMachine mockMachine = gSendDataProvider.MachineGet(0);
             mockMachine.AddOptions(MachineOptions.SoftStart);
             mockMachine.SoftStartSeconds = 30;

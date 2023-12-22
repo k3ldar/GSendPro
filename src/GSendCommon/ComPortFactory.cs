@@ -72,7 +72,7 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (!_comPorts.ContainsKey(comPort))
+                if (!_comPorts.TryGetValue(comPort, out IComPort _))
                     throw new InvalidOperationException(String.Format(ErrorComPortNotOpen, comPort));
 
                 return _comPorts[comPort];

@@ -43,7 +43,7 @@ namespace GSendAnalyzer
             CommandValue = commandValue;
             CommandValueString = commandValueString;
             Comment = comment ?? String.Empty;
-            VariableBlocks = variables ?? new();
+            VariableBlocks = variables ?? [];
             _currentCodeValues = currentValues ?? throw new ArgumentNullException(nameof(currentValues));
             Attributes = currentValues.Attributes;
             LineNumber = lineNumber;

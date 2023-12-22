@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 using GSendService.Api;
+
 using GSendShared;
-using GSendShared.Models;
 
 using GSendTests.Mocks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+#pragma warning disable CA1861
 
 namespace GSendTests.GSendApi
 {
@@ -23,7 +22,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void CreateJobExecution_FailToCreateDBRecord_Returns_JsonErrorResponse()
         {
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" })
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"])
             {
                 CreateFalseResponseWhenCalled = true
             };
@@ -45,7 +44,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void CreateJobExecution_DBRecordCreated_Returns_JsonSuccess()
         {
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             JobExecutionApi sut = new(gSendDataProvider, new MockNotification());
 
             ActionResult Result = sut.CreateJobExecution(1, 2, 3) as ActionResult;
@@ -66,3 +65,5 @@ namespace GSendTests.GSendApi
         }
     }
 }
+
+#pragma warning restore CA1861

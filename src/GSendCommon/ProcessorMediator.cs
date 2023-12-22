@@ -44,7 +44,6 @@ namespace GSendCommon
         private static readonly object _staticLockObject = new();
         private static bool _eventsRegistered = false;
 
-
         public ProcessorMediator(IServiceProvider serviceProvider,
             ILogger logger,
             IGSendDataProvider gSendDataProvider,
@@ -74,6 +73,12 @@ namespace GSendCommon
             }
 
             _cancellationTokenSource = new CancellationTokenSource();
+        }
+
+
+        ~ProcessorMediator()
+        {
+            _cancellationTokenSource?.Dispose();
         }
 
         #region IProcessorMediator Methods

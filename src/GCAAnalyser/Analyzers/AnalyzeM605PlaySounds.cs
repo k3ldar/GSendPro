@@ -19,7 +19,7 @@ namespace GSendAnalyzer.Analyzers
                 if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.PlaySound))
                     codeAnalyses.AddOptions(AnalysesOptions.PlaySound);
 
-                List<int> lineNumbers = new();
+                List<int> lineNumbers = [];
 
                 foreach (IGCodeCommand command in m605Commands)
                 {

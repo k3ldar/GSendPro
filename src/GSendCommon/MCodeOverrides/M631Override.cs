@@ -28,7 +28,7 @@ namespace GSendCommon.MCodeOverrides
 
                 try
                 {
-                    List<IGCodeCommand> previousCommands = PreviousCommands(command, new string[] { "M601", "M631.1", "M631.2", "P" });
+                    List<IGCodeCommand> previousCommands = PreviousCommands(command, ["M601", "M631.1", "M631.2", "P"]);
 
                     IGCodeCommand parameters = previousCommands.Find(p => p.CommandValue == Constants.MCode631RunProgramParams);
                     string args = null;

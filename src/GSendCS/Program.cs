@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-using CommandLinePlus;
+﻿using CommandLinePlus;
 
 using GSendCS.Internal;
 using GSendCS.Processors;
@@ -11,9 +9,9 @@ namespace GSendCS
     {
         static int Main()
         {
-            IConsoleProcessorFactory factory = new ConsoleProcessorFactory();
+            ConsoleProcessorFactory factory = new ConsoleProcessorFactory();
             Environment.SetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar,
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), 
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 GSendShared.Constants.GSendProAppFolder));
 
             string pluginFileName = Path.Combine(Environment.GetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar),

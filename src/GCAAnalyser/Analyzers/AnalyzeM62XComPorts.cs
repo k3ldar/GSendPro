@@ -30,7 +30,7 @@ namespace GSendAnalyzer.Analyzers
 
             if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                Dictionary<string, bool> comPortUsage = new();
+                Dictionary<string, bool> comPortUsage = [];
 
                 foreach (IGCodeCommand command in comPortCommands)
                 {

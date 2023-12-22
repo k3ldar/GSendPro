@@ -23,7 +23,7 @@ namespace GSendTests.GSendApi
         [TestMethod]
         public void ToolGet_ReturnsAllTools_Success()
         {
-            MockGSendDataProvider gSendDataProvider = new(new string[] { "ProverXL", "3018" });
+            MockGSendDataProvider gSendDataProvider = new(["ProverXL", "3018"]);
             gSendDataProvider.ToolProfiles.Add(new ToolProfileModel() { Id = 1, Name = "Tool 1", Description = "Tool 1 Desc" });
             gSendDataProvider.ToolProfiles.Add(new ToolProfileModel() { Id = 2, Name = "Tool 2", Description = "Tool 2 Desc" });
             gSendDataProvider.ToolProfiles.Add(new ToolProfileModel() { Id = 3, Name = "Tool 3", Description = "Tool 3 Desc" });

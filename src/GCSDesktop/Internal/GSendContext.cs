@@ -23,7 +23,7 @@ namespace GSendDesktop
         {
             ArgumentNullException.ThrowIfNull(machine);
 
-            if (!_machines.ContainsKey(machine))
+            if (!_machines.TryGetValue(machine, out FrmMachine _))
             {
                 _machines.Add(machine, new FrmMachine(this, machine, _serviceProvider));
             }
