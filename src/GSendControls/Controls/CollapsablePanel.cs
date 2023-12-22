@@ -442,8 +442,7 @@ namespace GSendControls
         /// <param name="rect">Size of the area to draw</param>
         private void DrawHeader(Graphics g)
         {
-            if (g == null)
-                throw new ArgumentNullException(nameof(g));
+            ArgumentNullException.ThrowIfNull(g);
 
             Rectangle headerRect;
 

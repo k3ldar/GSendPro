@@ -18,10 +18,10 @@ namespace GSendAnalyzer.Analyzers
         {
             if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                Dictionary<ushort, IGCodeCommand> subprogramVariableDeclarations = new();
-                Dictionary<ushort, int> declaredVariables = new();
+                Dictionary<ushort, IGCodeCommand> subprogramVariableDeclarations = [];
+                Dictionary<ushort, int> declaredVariables = [];
                 List<IGCodeCommand> subprograms = gCodeAnalyses.Commands.Where(c => c.Command.Equals('O')).ToList();
-                List<ushort> subprogramVariables = new();
+                List<ushort> subprogramVariables = [];
 
                 foreach (IGCodeCommand subProgram in subprograms)
                 {
@@ -63,13 +63,13 @@ namespace GSendAnalyzer.Analyzers
                     {
                         foreach (ushort id in varBlock.VariableIds)
                         {
-                            if (!declaredVariables.ContainsKey(id))
+                            if (declaredVariables.TryGetValue(id, out int value))
                             {
-                                declaredVariables.Add(id, 1);
+                                declaredVariables[id] = ++value;
                             }
                             else
                             {
-                                declaredVariables[id]++;
+                                declaredVariables.Add(id, 1);
                             }
 
                             if (!subprogramVariables.Contains(id))

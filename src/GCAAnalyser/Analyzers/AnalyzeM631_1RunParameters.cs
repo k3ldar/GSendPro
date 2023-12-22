@@ -16,7 +16,7 @@ namespace GSendAnalyzer.Analyzers
 
             if (mCommands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
-                List<int> lineNumbers = new();
+                List<int> lineNumbers = [];
 
                 foreach (IGCodeCommand command in mCommands)
                 {

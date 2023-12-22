@@ -16,7 +16,7 @@ namespace GSendDB.Tables
             {
                 return new List<ToolDatabaseDataRow>()
                 {
-                    new ToolDatabaseDataRow() { ToolName = "(Default)", Description = "Default profile for no tool selected"}
+                    new () { ToolName = "(Default)", Description = "Default profile for no tool selected"}
                 };
             }
 

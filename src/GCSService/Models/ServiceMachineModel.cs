@@ -19,8 +19,7 @@ namespace GSendService.Models
             List<ServiceItemModel> serviceItems)
             : base(modelData)
         {
-            if (machine == null)
-                throw new ArgumentNullException(nameof(machine));
+            ArgumentNullException.ThrowIfNull(machine);
 
             MachineId = machine.Id;
             Name = machine.Name;

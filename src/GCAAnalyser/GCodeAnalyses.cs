@@ -15,13 +15,13 @@ namespace GSendAnalyzer
     internal class GCodeAnalyses : IGCodeAnalyses
     {
         private readonly object _lockObject = new();
-        private readonly List<IGCodeCommand> _commands = new();
+        private readonly List<IGCodeCommand> _commands = [];
         private List<IGCodeCommand> _allCommands;
-        private readonly Dictionary<char, List<IGCodeCommand>> _allSpecificCommands = new();
+        private readonly Dictionary<char, List<IGCodeCommand>> _allSpecificCommands = [];
         private readonly IPluginClassesService _pluginClassesService;
-        private readonly Dictionary<ushort, IGCodeVariable> _variables = new();
-        private readonly List<string> _errors = new();
-        private readonly List<string> _warnings = new();
+        private readonly Dictionary<ushort, IGCodeVariable> _variables = [];
+        private readonly List<string> _errors = [];
+        private readonly List<string> _warnings = [];
 
         public GCodeAnalyses(IPluginClassesService pluginClassesService)
         {
@@ -30,8 +30,7 @@ namespace GSendAnalyzer
 
         internal void Add(GCodeCommand command)
         {
-            if (command == null)
-                throw new ArgumentNullException(nameof(command));
+            ArgumentNullException.ThrowIfNull(command);
 
             _commands.Add(command);
         }
@@ -47,7 +46,7 @@ namespace GSendAnalyzer
             totalAnalyze.Start();
             try
             {
-                IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory(_pluginClassesService);
+                GCodeAnalyzerFactory gCodeAnalyzerFactory = new (_pluginClassesService);
 
                 IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
 
@@ -93,7 +92,7 @@ namespace GSendAnalyzer
                 {
                     if (_allCommands == null)
                     {
-                        List<IGCodeCommand> Result = new();
+                        List<IGCodeCommand> Result = [];
 
                         int lineNumber = 0;
                         RecursivelyRetrieveAllCommands(Result, _commands, ref lineNumber, 0);
@@ -110,12 +109,13 @@ namespace GSendAnalyzer
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (!_allSpecificCommands.ContainsKey(commandCode))
+                if (!_allSpecificCommands.TryGetValue(commandCode, out List<IGCodeCommand> value))
                 {
-                    _allSpecificCommands.Add(commandCode, AllCommands.Where(c => c.Command.Equals(commandCode)).ToList());
+                    value = AllCommands.Where(c => c.Command.Equals(commandCode)).ToList();
+                    _allSpecificCommands.Add(commandCode, value);
                 }
 
-                return _allSpecificCommands[commandCode];
+                return value;
             }
         }
 
@@ -197,7 +197,7 @@ namespace GSendAnalyzer
 
         public List<IGCodeLine> Lines(out int lineCount)
         {
-            List<IGCodeLine> Result = new();
+            List<IGCodeLine> Result = [];
 
             lineCount = 0;
             GCodeLine currentLine = null;
@@ -219,7 +219,7 @@ namespace GSendAnalyzer
 
         public List<IGCodeLine> AllLines(out int lineCount)
         {
-            List<IGCodeLine> Result = new();
+            List<IGCodeLine> Result = [];
 
             lineCount = 0;
             GCodeLine currentLine = null;

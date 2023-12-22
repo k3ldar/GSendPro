@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 
 using GSendControls;
-
+using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -82,6 +82,8 @@ namespace GrblTuningWizard
         {
             return _senderPluginHost.IsConnected() && !_senderPluginHost.IsRunning() && !_senderPluginHost.IsPaused();
         }
+
+        public bool IsVisible() => true;
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {

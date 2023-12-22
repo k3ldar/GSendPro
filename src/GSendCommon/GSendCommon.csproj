@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>$(FrameWorkLatestVersion)</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
@@ -16,6 +16,6 @@
   <ItemGroup>
     <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
 	<PackageReference Include="SC.Shared.Library.Core.Windows" Version="$(SharedWinVer)" />
-    <PackageReference Include="System.Windows.Extensions" Version="7.0.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
   </ItemGroup>
 </Project>

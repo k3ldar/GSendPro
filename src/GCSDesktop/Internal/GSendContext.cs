@@ -21,10 +21,9 @@ namespace GSendDesktop
 
         public void ShowMachine(IMachine machine)
         {
-            if (machine == null)
-                throw new ArgumentNullException(nameof(machine));
+            ArgumentNullException.ThrowIfNull(machine);
 
-            if (!_machines.ContainsKey(machine))
+            if (!_machines.TryGetValue(machine, out FrmMachine _))
             {
                 _machines.Add(machine, new FrmMachine(this, machine, _serviceProvider));
             }

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using GSendShared.Models;
+using GSendControls.Abstractions;
 
-namespace GSendShared.Plugins
+using GSendShared;
+using GSendShared.Plugins;
+
+namespace GSendControls.Plugins
 {
     public sealed class SeperatorButton : IPluginToolbarButton
     {

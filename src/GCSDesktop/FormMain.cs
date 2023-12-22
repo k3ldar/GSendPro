@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Net.WebSockets;
 using System.Text.Json;
@@ -10,16 +9,17 @@ using System.Windows.Forms;
 using GSendApi;
 
 using GSendCommon;
+using GSendCommon.Abstractions;
 using GSendCommon.Settings;
 
 using GSendControls;
-
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
+using GSendControls.Threads;
 using GSendDesktop.Abstractions;
 using GSendDesktop.Internal;
 
 using GSendShared;
-using GSendShared.Interfaces;
-using GSendShared.Models;
 using GSendShared.Plugins;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -30,9 +30,9 @@ using static GSendShared.Constants;
 
 namespace GSendDesktop
 {
-    public partial class FormMain : BaseForm, IPluginHost
+    public partial class FormMain : BaseForm, IPluginHost, IOnlineStatusUpdate
     {
-        private readonly IGSendContext _context;
+        private readonly IGSendContext _gSendContext;
 
         private readonly IGSendApiWrapper _machineApiWrapper;
         private readonly ICommandProcessor _processCommand;
@@ -49,7 +49,7 @@ namespace GSendDesktop
         {
             InitializeComponent();
 
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _gSendContext = context ?? throw new ArgumentNullException(nameof(context));
             _machineApiWrapper = machineApiWrapper ?? throw new ArgumentNullException(nameof(machineApiWrapper));
             _processCommand = processCommand ?? throw new ArgumentNullException(nameof(processCommand));
             _pluginHelper = context.ServiceProvider.GetRequiredService<IPluginHelper>() ?? throw new InvalidOperationException();
@@ -68,7 +68,13 @@ namespace GSendDesktop
             subprogramsToolStripMenuItem.Tag = new InternalPluginMenu(subprogramsToolStripMenuItem);
 
             _pluginHelper.InitializeAllPlugins(this);
+
+            UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
+            ServerValidationThread validationThread = new(this);
+            ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
         }
+
+        public IGSendApiWrapper ApiWrapper => _machineApiWrapper;
 
         protected override string SectionName => nameof(GSendDesktop);
 
@@ -81,7 +87,7 @@ namespace GSendDesktop
 
         private void ClientWebSocket_ConnectionLost(object sender, EventArgs e)
         {
-            ValidateServerConnection();
+            UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
         }
 
         private void ClientWebSocket_ProcessMessage(string message)
@@ -281,8 +287,8 @@ namespace GSendDesktop
 
         private void toolStripButtonAddMachine_Click(object sender, EventArgs e)
         {
-            ApiSettings apiSettings = _context.ServiceProvider.GetRequiredService<ApiSettings>();
-            IRunProgram runProgram = _context.ServiceProvider.GetRequiredService<IRunProgram>();
+            ApiSettings apiSettings = _gSendContext.ServiceProvider.GetRequiredService<ApiSettings>();
+            IRunProgram runProgram = _gSendContext.ServiceProvider.GetRequiredService<IRunProgram>();
 
             runProgram.Run($"{apiSettings.RootAddress}Machines/Add/", null, true, false, apiSettings.Timeout);
         }
@@ -518,12 +524,10 @@ namespace GSendDesktop
             if (machineListItem == null)
                 return;
 
-            IMachine machine = machineListItem.Tag as IMachine;
-
-            if (machine == null)
+            if (machineListItem.Tag is not IMachine machine)
                 return;
 
-            _context.ShowMachine(machine);
+            _gSendContext.ShowMachine(machine);
         }
 
         #endregion Form Methods
@@ -547,21 +551,28 @@ namespace GSendDesktop
 
         #endregion Menu Items
 
-        private void FormMain_Activated(object sender, EventArgs e)
-        {
-            ValidateServerConnection();
-        }
 
-        private void ValidateServerConnection()
+        public void UpdateOnlineStatus(bool isOnline, string server)
         {
-            IGSendApiWrapper apiWrapper = _context.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
+            if (this.InvokeRequired)
+            {
+                Invoke(() => UpdateOnlineStatus(isOnline, server));
+                return;
+            }
 
-            FrmServerValidation.ValidateServer(this, apiWrapper);
+            string statusText = String.Format(GSend.Language.Resources.ServerStatus, server);
+
+            if (toolStripStatusConnected.Text != statusText)
+                toolStripStatusConnected.Text = statusText;
         }
 
         #region ISenderPluginHost
 
         public PluginHosts Host => PluginHosts.SenderHost;
+
+        public int MaximumMenuIndex => menuStripMain.Items.IndexOf(helpToolStripMenuItem);
+
+        public IGSendContext GSendContext => _gSendContext;
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
@@ -588,13 +599,13 @@ namespace GSendDesktop
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as IPluginHost);
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+            _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
         }
 
         public void AddMessage(InformationType informationType, string message)

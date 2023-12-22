@@ -15,6 +15,8 @@ using GSendApi;
 using GSendCommon;
 
 using GSendControls;
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
 
 using GSendDesktop.Internal;
 
@@ -160,6 +162,8 @@ namespace GSendDesktop.Forms
             mnuHelp.Tag = new InternalPluginMenu(mnuHelp);
 
             _pluginHelper.InitializeAllPlugins(this);
+
+            machine2dView1.LockUpdate = false;
 
             mnuTools.Visible = mnuTools.DropDownItems.Count > 0;
             UpdateShortcutKeyValues(_shortcuts);
@@ -2654,10 +2658,13 @@ namespace GSendDesktop.Forms
 
         public PluginHosts Host => PluginHosts.Sender;
 
+        public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
+
+        public IGSendContext GSendContext => _gSendContext;
+
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
-            if (pluginModule == null)
-                throw new ArgumentNullException(nameof(pluginModule));
+            ArgumentNullException.ThrowIfNull(pluginModule);
 
             if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
                 _pluginsWithClientMessage.Add(pluginModule);
@@ -2692,7 +2699,7 @@ namespace GSendDesktop.Forms
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as ISenderPluginHost);
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu, _shortcuts);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
 
             if (pluginMenu.ReceiveClientMessages)
                 _pluginsWithClientMessages.Add(pluginMenu);
@@ -2701,7 +2708,7 @@ namespace GSendDesktop.Forms
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddToolbarButton(toolStripMain, toolbarButton);
+            _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
 
             if (toolbarButton.ReceiveClientMessages)
                 _pluginsWithClientMessages.Add(toolbarButton);

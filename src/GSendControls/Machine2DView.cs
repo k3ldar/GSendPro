@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
 using System.Windows.Forms;
 
 using GSendShared;
@@ -15,6 +14,7 @@ namespace GSendControls
         private readonly Pen _locationPen = new(Color.Red, 1);
         private readonly Brush _fillBrush = new SolidBrush(Color.White);
 
+        private bool _lockUpdate = true;
         private Image _gCodeImage = null;
         private Image _zoomImage = null;
         private AxisConfiguration _configuration;
@@ -31,6 +31,9 @@ namespace GSendControls
 
         public void LoadGCode(IGCodeAnalyses _gCodeAnalyses)
         {
+            if (IsDisposed)
+                return;
+
             _gCodeImage = new Bitmap(MachineSize.Width + 1, MachineSize.Height + 1);
             using Graphics g = Graphics.FromImage(_gCodeImage);
             using Pen layerPen = new(Color.Black, 1);
@@ -80,14 +83,14 @@ namespace GSendControls
                 latestPos = newLocation;
             }
 
-            UpdateImage();
+            UpdateImage(false);
         }
 
         public void UnloadGCode()
         {
             _gCodeImage?.Dispose();
             _gCodeImage = null;
-            UpdateImage();
+            UpdateImage(false);
         }
 
         public AxisConfiguration Configuration
@@ -100,7 +103,7 @@ namespace GSendControls
                     return;
 
                 _configuration = value;
-                UpdateImage();
+                UpdateImage(false);
             }
         }
 
@@ -114,7 +117,7 @@ namespace GSendControls
                     return;
 
                 _xPosition = value;
-                UpdateImage();
+                UpdateImage(false);
             }
         }
         public float YPosition
@@ -127,7 +130,7 @@ namespace GSendControls
                     return;
 
                 _yPosition = value;
-                UpdateImage();
+                UpdateImage(false);
             }
         }
 
@@ -145,7 +148,7 @@ namespace GSendControls
         protected override void OnResize(EventArgs eventargs)
         {
             base.OnResize(eventargs);
-            UpdateImage();
+            UpdateImage(false);
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -184,6 +187,19 @@ namespace GSendControls
             BackgroundImage.CopyRegionIntoImage(sourceLocation, ref _zoomImage, ZoomPanel.ClientRectangle);
             ZoomPanel.BackgroundImage = null;
             ZoomPanel.BackgroundImage = _zoomImage;
+        }
+
+        public bool LockUpdate
+        {
+            get => _lockUpdate;
+
+            set
+            {
+                if (value && !_lockUpdate)
+                    UpdateImage(true);
+
+                _lockUpdate = value;
+            }
         }
 
         public Panel ZoomPanel { get; set; }
@@ -237,8 +253,11 @@ namespace GSendControls
             }
         }
 
-        private void UpdateImage()
+        private void UpdateImage(bool force)
         {
+            if (_lockUpdate && !force)
+                return;
+
             MachineImage = DrawMachine();
             BackgroundImage = MachineImage.ResizeImage(Width, Height, true, false);
             ImageUpdated?.Invoke(this, EventArgs.Empty);

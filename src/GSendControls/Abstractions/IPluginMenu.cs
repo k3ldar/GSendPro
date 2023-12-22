@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using GSendShared.Plugins;
 
-namespace GSendShared.Plugins
+namespace GSendControls.Abstractions
 {
     /// <summary>
     /// Interface created by a plugin to add menu items to the host
@@ -27,6 +28,12 @@ namespace GSendShared.Plugins
         /// </summary>
         /// <returns></returns>
         bool IsChecked();
+
+        /// <summary>
+        /// Determines whether the menu is visible or not
+        /// </summary>
+        /// <returns></returns>
+        bool IsVisible();
 
         /// <summary>
         /// Shortcut that can be used by the menu

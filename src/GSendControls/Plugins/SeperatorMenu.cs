@@ -1,24 +1,28 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Drawing;
 
-using GSendShared.Models;
+using GSendControls.Abstractions;
 
-namespace GSendShared.Plugins.InternalPlugins.HelpMenu
+using GSendShared;
+using GSendShared.Plugins;
+
+namespace GSendControls.Plugins
 {
-    internal sealed class HelpMenuItem : IPluginMenu
+    public sealed class SeperatorMenu : IPluginMenu
     {
-        public HelpMenuItem(IPluginMenu parentMenu)
+        public SeperatorMenu(IPluginMenu menuParent, int index)
         {
-            ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            ParentMenu = menuParent;
+            Index = index;
         }
 
-        public string Text => "Help";
+        public string Text => "Seperator Menu";
 
-        public int Index => 0;
+        public int Index { get; private set; }
 
         public Image MenuImage => null;
 
-        public MenuType MenuType => MenuType.MenuItem;
+        public MenuType MenuType => MenuType.Seperator;
 
         public IPluginMenu ParentMenu { get; }
 
@@ -26,13 +30,7 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
 
         public void Clicked()
         {
-            ProcessStartInfo psi = new()
-            {
-                FileName = Constants.HelpWebsite,
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
+            throw new NotImplementedException();
         }
 
         public bool GetShortcut(out string groupName, out string shortcutName)
@@ -45,6 +43,8 @@ namespace GSendShared.Plugins.InternalPlugins.HelpMenu
         public bool IsChecked() => false;
 
         public bool IsEnabled() => true;
+
+        public bool IsVisible() => true;
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {

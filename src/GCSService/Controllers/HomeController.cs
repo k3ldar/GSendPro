@@ -41,8 +41,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult ViewLicense(AddLicenseModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             if (String.IsNullOrEmpty(model.NewLicense))
                 ModelState.AddModelError(nameof(model.NewLicense), GSend.Language.Resources.LicenseInvalidEmpty);

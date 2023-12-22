@@ -1,6 +1,7 @@
-﻿using GSendShared.Models;
+﻿using GSendShared;
+using GSendShared.Models;
 
-namespace GSendShared.Plugins
+namespace GSendControls.Abstractions
 {
     public interface ISenderPluginHost : IPluginHost
     {

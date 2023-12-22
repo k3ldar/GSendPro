@@ -30,7 +30,7 @@ namespace GSendAnalyzer
 
         public LineStatus Status { get; set; }
 
-        public List<IGCodeCommand> Commands { get; } = new();
+        public List<IGCodeCommand> Commands { get; } = [];
 
         public int LineNumber { get; }
 

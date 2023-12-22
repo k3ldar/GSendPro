@@ -1,6 +1,6 @@
-﻿using GSendShared.Models;
+﻿using GSendShared;
 
-namespace GSendShared.Plugins
+namespace GSendControls.Abstractions
 {
     /// <summary>
     /// Base plugin item interface for common methods/properties

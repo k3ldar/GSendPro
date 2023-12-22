@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 using GrblTuningWizard;
-
+using GSendControls.Abstractions;
 using GSendShared.Plugins;
 
 using GSendTests.Mocks;

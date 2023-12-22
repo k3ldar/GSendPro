@@ -1,11 +1,17 @@
+using System.Runtime.InteropServices;
 using System.Text;
+
+using FastColoredTextBoxNS;
 
 using GSendApi;
 
 using GSendCommon;
+using GSendCommon.Abstractions;
 
 using GSendControls;
-
+using GSendControls.Abstractions;
+using GSendControls.Plugins;
+using GSendControls.Threads;
 using GSendDesktop.Internal;
 
 using GSendEditor.Internal;
@@ -22,13 +28,15 @@ using Shared.Classes;
 
 namespace GSendEditor
 {
-    public partial class FrmMain : BaseForm, IShortcutImplementation, IEditorPluginHost
+    public partial class FrmMain : BaseForm, IShortcutImplementation, IEditorPluginHost, IOnlineStatusUpdate
     {
+        private readonly ServerValidationThread _validationThread;
         private readonly object _lockObject = new();
         private readonly object _updateSubprogramsLock = new();
-        private readonly AnalyzerThread _analyzerThread = null;
         private readonly IGSendContext _gSendContext;
         private readonly IGSendApiWrapper _gsendApiWrapper;
+        private readonly ServerBasedSubPrograms _serverBasedSubPrograms;
+        private AnalyzerThread _analyzerThread = null;
         private ISubprogram _subProgram;
         private readonly RecentFiles _recentFiles;
         private readonly Internal.Bookmarks _bookmarks;
@@ -38,18 +46,18 @@ namespace GSendEditor
         private readonly ShortcutHandler _shortcutHandler;
         private readonly IPluginHelper _pluginHelper;
         private bool _isSubprogram = false;
-
+        private bool _isOnline;
 
         public FrmMain(IGSendContext gSendContext)
         {
             _gSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
             _gsendApiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
+            _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
-            _analyzerThread = new AnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                _gSendContext.ServiceProvider.GetRequiredService<ISubprograms>(), txtGCode);
-            _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
-            _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
+            _serverBasedSubPrograms = new ServerBasedSubPrograms(_gsendApiWrapper);
+            CreateAnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                _serverBasedSubPrograms);
             txtGCode.SyntaxHighlighter = new GCodeSyntaxHighLighter(txtGCode);
 
             machine2dView1.UnloadGCode();
@@ -81,7 +89,33 @@ namespace GSendEditor
             _pluginHelper.InitializeAllPlugins(this);
 
             UpdateShortcutKeyValues(_shortcuts);
+            UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
+            ServerValidationThread validationThread = new ServerValidationThread(this);
+            ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
+            _validationThread = validationThread;
         }
+
+        private void CreateAnalyzerThread(IGCodeParserFactory gCodeParserFactory, ISubprograms subprograms)
+        {
+            if (_analyzerThread != null)
+            {
+                _analyzerThread.OnAddItem -= AnalyzerThread_OnAddItem;
+                _analyzerThread.OnRemoveItem -= AnalyzerThread_OnRemoveItem;
+                _analyzerThread.CancelThread();
+
+                while (ThreadManager.Exists(_analyzerThread.Name))
+                    Thread.Sleep(20);
+            }
+
+            _analyzerThread = new AnalyzerThread(gCodeParserFactory, subprograms, txtGCode);
+            _analyzerThread.OnAddItem += AnalyzerThread_OnAddItem;
+            _analyzerThread.OnRemoveItem += AnalyzerThread_OnRemoveItem;
+
+            CreateAndRunAnalyzerThread();
+            _analyzerThread.AnalyzerUpdated();
+        }
+
+        public IGSendApiWrapper ApiWrapper => _gsendApiWrapper;
 
         protected override string SectionName => nameof(GSendEditor);
 
@@ -97,12 +131,20 @@ namespace GSendEditor
 
         protected override void LoadSettings()
         {
-            base.LoadSettings();
-            LoadSettings(splitContainerMain);
-            LoadSettings(splitContainerPrimary);
-            LoadSettings(lvSubprograms);
-            LoadSettings(gCodeAnalysesDetails1.listViewAnalyses);
-            LoadSettings(tabControlMain);
+            machine2dView1.LockUpdate = true;
+            try
+            {
+                base.LoadSettings();
+                LoadSettings(splitContainerMain);
+                LoadSettings(splitContainerPrimary);
+                LoadSettings(lvSubprograms);
+                LoadSettings(gCodeAnalysesDetails1.listViewAnalyses);
+                LoadSettings(tabControlMain);
+            }
+            finally
+            {
+                machine2dView1.LockUpdate = false;
+            }
         }
 
         protected override void LoadResources()
@@ -248,8 +290,9 @@ namespace GSendEditor
             toolStripStatusLabelWarnings.Invalidate();
         }
 
-        private void FrmMain_Load(object sender, EventArgs e)
+        private void FrmMain_Shown(object sender, EventArgs e)
         {
+            Application.DoEvents();
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length > 1 && File.Exists(args[1]))
@@ -257,12 +300,6 @@ namespace GSendEditor
                 mnuFileNew_Click(sender, e);
                 LoadGCodeData(args[1]);
             }
-        }
-
-        private void FrmMain_Shown(object sender, EventArgs e)
-        {
-            tmrServerValidation.Enabled = true;
-            tmrUpdateSubprograms.Enabled = true;
         }
 
         private void txtGCode_SelectionChangedDelayed(object sender, EventArgs e)
@@ -494,7 +531,6 @@ namespace GSendEditor
 
             _subProgram.Contents = txtGCode.Text;
 
-
             IGCodeParserFactory parserFactory = _gSendContext.ServiceProvider.GetService<IGCodeParserFactory>();
             IGCodeParser gCodeParser = parserFactory.CreateParser();
             IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(_subProgram.Contents);
@@ -700,17 +736,24 @@ namespace GSendEditor
                 return;
             }
 
-            txtGCode.Text = ReadTextFromFile(fileName);
-            HasChanged = false;
-            FileName = fileName;
-            txtGCode.ClearUndo();
-            ClearWarnings();
-            UpdateTitleBar();
-            UpdateEnabledState();
-            _isSubprogram = false;
-            _subProgram = null;
-            _recentFiles.AddRecentFile(fileName, false);
-            RetrieveAndLoadBookmarks(fileName);
+            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            {
+                toolStripStatusLabelLoadingFile.Visible = true;
+                Application.DoEvents();
+                txtGCode.Text = ReadTextFromFile(fileName);
+                HasChanged = false;
+                FileName = fileName;
+                txtGCode.ClearUndo();
+                ClearWarnings();
+                UpdateTitleBar();
+                UpdateEnabledState();
+                _isSubprogram = false;
+                _subProgram = null;
+                _recentFiles.AddRecentFile(fileName, false);
+                RetrieveAndLoadBookmarks(fileName);
+                toolStripStatusLabelLoadingFile.Visible = false;
+                GC.Collect();
+            }
         }
 
         private void tabControlMain_Selected(object sender, TabControlEventArgs e)
@@ -879,24 +922,36 @@ namespace GSendEditor
 
         }
 
-        private void tmrServerValidation_Tick(object sender, EventArgs e)
+        public void UpdateOnlineStatus(bool isOnline, string server)
         {
-            tmrServerValidation.Enabled = false;
-
-            IGSendApiWrapper apiWrapper = _gSendContext.ServiceProvider.GetRequiredService<IGSendApiWrapper>();
-
-            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            if (this.InvokeRequired)
             {
-                if (!FrmServerValidation.ValidateServer(this, apiWrapper))
-                    Application.Exit();
+                Invoke(() => UpdateOnlineStatus(isOnline, server));
+                return;
             }
 
-            if (tmrServerValidation.Interval == 5000)
+            _isOnline = isOnline;
+            string statusText = String.Format(GSend.Language.Resources.ServerStatus, server);
+
+            if (_isOnline)
             {
-                tmrServerValidation.Interval = (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
+                if (!tabControlMain.TabPages.Contains(tabPageSubPrograms))
+                    tabControlMain.TabPages.Add(tabPageSubPrograms);
+
+                if (!tmrUpdateSubprograms.Enabled)
+                    tmrUpdateSubprograms.Enabled = true;
+            }
+            else
+            {
+                if (tabControlMain.TabPages.Contains(tabPageSubPrograms))
+                    tabControlMain.TabPages.Remove(tabPageSubPrograms);
+
+                if (tmrUpdateSubprograms.Enabled)
+                    tmrUpdateSubprograms.Enabled = false;
             }
 
-            tmrServerValidation.Enabled = true;
+            if (toolStripStatusLabelConnectedToServer.Text != statusText)
+                toolStripStatusLabelConnectedToServer.Text = statusText;
         }
 
         private void SaveTextToFile()
@@ -914,11 +969,31 @@ namespace GSendEditor
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
+                StringBuilder result = new();
+                const int BufferSize = 2048;
+
                 using FileStream fileStream = new(fileName, FileMode.Open, FileAccess.Read);
-                byte[] bytes = new byte[fileStream.Length];
-                fileStream.Read(bytes, 0, bytes.Length);
-                string text = Encoding.UTF8.GetString(bytes);
-                return text;
+
+                int remaining = (int)fileStream.Length;
+                int totalRead = 0;
+
+                while (remaining > 0)
+                {
+                    int toRead = remaining > BufferSize ? BufferSize : remaining;
+                    byte[] bytes = new byte[toRead];
+                    Span<byte> byteSpan = new(bytes);
+                    int chunkRead = fileStream.Read(byteSpan);
+
+                    if (chunkRead == 0)
+                        break;
+
+                    remaining -= chunkRead;
+                    totalRead += chunkRead;
+
+                    result.Append(Encoding.UTF8.GetString(bytes));
+                }
+
+                return result.ToString();
             }
         }
 
@@ -932,6 +1007,17 @@ namespace GSendEditor
             LoadSubprograms();
 
             tmrUpdateSubprograms.Enabled = true;
+        }
+
+        private void GsendApiWrapper_ServerUriChanged()
+        {
+            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
+            {
+                _validationThread.ValidateConnection();
+                _analyzerThread.AnalyzerUpdated();
+                CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                    _serverBasedSubPrograms);
+            }
         }
 
         #region Shortcuts
@@ -986,7 +1072,7 @@ namespace GSendEditor
             }
         }
 
-        private void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
+        private static void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
         {
             if (depth > 25)
             {
@@ -1108,6 +1194,8 @@ namespace GSendEditor
 
         public PluginHosts Host => PluginHosts.SenderHost;
 
+        public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
+
         public IPluginMenu GetMenu(MenuParent menuParent)
         {
             switch (menuParent)
@@ -1139,13 +1227,13 @@ namespace GSendEditor
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddMenu(menuStripMain, pluginMenu, null);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddToolbarButton(toolbarMain, toolbarButton);
+            _pluginHelper.AddToolbarButton(this, toolbarMain, toolbarButton);
         }
 
         public void AddMessage(InformationType informationType, string message)
@@ -1175,7 +1263,9 @@ namespace GSendEditor
             }
         }
 
-        public object Editor => txtGCode;
+        public FastColoredTextBox Editor => txtGCode;
+
+        public IGSendContext GSendContext => _gSendContext;
 
         #endregion IEditorPluginHost
     }

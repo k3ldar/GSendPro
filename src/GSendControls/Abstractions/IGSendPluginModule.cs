@@ -1,6 +1,9 @@
-﻿using GSendShared.Interfaces;
+﻿using System.Collections.Generic;
 
-namespace GSendShared.Plugins
+using GSendShared;
+using GSendShared.Plugins;
+
+namespace GSendControls.Abstractions
 {
     public interface IGSendPluginModule
     {

@@ -22,8 +22,7 @@ namespace GSendCommon
 
         public ComPortFactory(ISettingsProvider settingsProvider)
         {
-            if (settingsProvider == null)
-                throw new ArgumentNullException(nameof(settingsProvider));
+            ArgumentNullException.ThrowIfNull(settingsProvider);
 
             _settings = settingsProvider.GetSettings<GSendSettings>(Constants.SettingsName);
 
@@ -36,8 +35,7 @@ namespace GSendCommon
 
         public IComPort CreateComPort(IComPortModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
@@ -55,8 +53,7 @@ namespace GSendCommon
 
         public void DeleteComPort(IComPort comPort)
         {
-            if (comPort == null)
-                throw new ArgumentNullException(nameof(comPort));
+            ArgumentNullException.ThrowIfNull(comPort);
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
@@ -75,7 +72,7 @@ namespace GSendCommon
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (!_comPorts.ContainsKey(comPort))
+                if (!_comPorts.TryGetValue(comPort, out IComPort _))
                     throw new InvalidOperationException(String.Format(ErrorComPortNotOpen, comPort));
 
                 return _comPorts[comPort];

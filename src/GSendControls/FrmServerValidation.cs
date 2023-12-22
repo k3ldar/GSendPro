@@ -31,24 +31,24 @@ namespace GSendControls
             _isLicensed = isLicensed;
 
             _nextLicenseCheck = DateTime.UtcNow.AddSeconds(30);
-            lblNextLicenseCheck.Text = String.Format(GSend.Language.Resources.LicenseNextCheck, 30);
+            lblNextServerCheck.Text = String.Format(GSend.Language.Resources.LicenseNextCheck, 30);
             pnlLicenseCheck.Visible = !_isLicensed;
             tmrLicenseCheck.Enabled = !_isLicensed;
         }
 
-        public static bool ValidateServer(BaseForm parent, IGSendApiWrapper apiWrapper)
+        public static bool ValidateServer(IGSendApiWrapper apiWrapper)
         {
             bool isLicensed = ValidateLicense(apiWrapper, out bool isError);
 
             if (isError || !isLicensed)
             {
-                using FrmServerValidation frmServerValidation = new(parent, apiWrapper, isLicensed);
+                //using FrmServerValidation frmServerValidation = new(parent, apiWrapper, isLicensed);
 
-                if (frmServerValidation.ShowDialog(parent) != DialogResult.OK)
-                {
-                    Application.Exit();
+                //if (frmServerValidation.ShowDialog(parent) != DialogResult.OK)
+                //{
+                    //Application.Exit();
                     return false;
-                }
+                //}
             }
 
             return true;
@@ -78,9 +78,9 @@ namespace GSendControls
             btnCancel.Text = GSend.Language.Resources.Cancel;
             btnOK.Text = GSend.Language.Resources.OK;
             lblServerUri.Text = GSend.Language.Resources.ServerUri;
-            lblLicenseValidation.Text = _isLicensed ?
-                GSend.Language.Resources.LicenseValid :
-                GSend.Language.Resources.LicenseInvalid;
+            lblServerValidation.Text = _isLicensed ?
+                GSend.Language.Resources.ServerValid :
+                GSend.Language.Resources.ServerInvalid;
             btnCheckNow.Text = GSend.Language.Resources.CheckNow;
             btnViewLicense.Text = GSend.Language.Resources.ViewLicense;
         }
@@ -98,17 +98,17 @@ namespace GSendControls
             {
                 string label = String.Format(GSend.Language.Resources.LicenseNextCheck, (int)nextCheck.TotalSeconds);
 
-                if (lblNextLicenseCheck.Text != label)
+                if (lblNextServerCheck.Text != label)
                 {
-                    lblNextLicenseCheck.Text = String.Empty;
-                    lblNextLicenseCheck.Text = label;
+                    lblNextServerCheck.Text = String.Empty;
+                    lblNextServerCheck.Text = label;
                     Invalidate();
                 }
             }
             else
             {
                 btnCheckNow.Enabled = false;
-                lblNextLicenseCheck.Text = GSend.Language.Resources.LicenseCheckValidating;
+                lblNextServerCheck.Text = GSend.Language.Resources.LicenseCheckValidating;
                 btnOK.Enabled = false;
 
                 using (MouseControl mc = MouseControl.ShowWaitCursor(this))

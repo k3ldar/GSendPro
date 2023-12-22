@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using GrblTuningWizard;
-
+using GSendControls.Abstractions;
 using GSendShared.Interfaces;
 using GSendShared.Plugins;
 

@@ -10,5 +10,17 @@
         Uri ServerAddress { get; set; }
 
         bool IsLicenseValid();
+
+        /// <summary>
+        /// Determines whether a connection can be made to the Uri
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        bool CanConnect(Uri uri);
+
+        /// <summary>
+        /// Event raised when server uri is changed
+        /// </summary>
+        event Action ServerUriChanged;
     }
 }

@@ -1,6 +1,6 @@
-﻿using GSendControls.Plugins;
-
-using GSendShared.Plugins;
+﻿using GSendControls.Abstractions;
+using GSendControls.Forms;
+using GSendControls.Plugins;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +13,7 @@ namespace GSendControls
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IPluginHelper, PluginHelper>();
+            services.AddTransient(typeof(FrmConfigureServer));
         }
 
         public void Finalise()

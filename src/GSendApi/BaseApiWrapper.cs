@@ -12,22 +12,28 @@ namespace GSendApi
     {
         #region Private Members
 
+        private Uri _serverAddress;
         private readonly ApiSettings _apiSettings;
         private readonly string _merchantId;
         private readonly string _apiKey;
         private readonly string _secret;
-
-        private sealed class JsonResponseModel
-        {
-            public bool success { get; set; }
-
-            public string responseData { get; set; }
-        }
-
+        private readonly TimeSpan _timeout;
 
         #endregion Private Members
 
+        #region Constructors
+
+        private BaseApiWrapper()
+        {
+#if DEBUG
+            _timeout = TimeSpan.FromMinutes(5);
+#else
+            _timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
+#endif
+        }
+
         protected BaseApiWrapper(ApiSettings apiSettings)
+            : this()
         {
             _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));
             ServerAddress = _apiSettings.RootAddress;
@@ -47,9 +53,40 @@ namespace GSendApi
             _secret = parts[2];
         }
 
-        public Uri ServerAddress { get; set; }
+        #endregion Constructors
 
-        protected HttpClient CreateApiClient()
+        #region Properties
+
+        private sealed class JsonResponseModel
+        {
+            public bool success { get; set; }
+
+            public string responseData { get; set; }
+        }
+
+        public Uri ServerAddress
+        {
+            get => _serverAddress;
+
+            set
+            {
+                _serverAddress = value;
+                ServerUriChanged?.Invoke();
+            }
+        }
+
+
+        #endregion Properties
+
+        #region Events
+
+        public event Action ServerUriChanged;
+
+        #endregion Events
+
+        #region Protected Members
+
+        protected HttpClient CreateApiClient(TimeSpan? timeout = null)
         {
             HttpClient httpClient = new();
 
@@ -58,13 +95,7 @@ namespace GSendApi
             httpClient.DefaultRequestHeaders.UserAgent.Clear();
             httpClient.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("GSend", _apiSettings.ApiVersion));
-
-#if DEBUG
-            httpClient.Timeout = TimeSpan.FromMinutes(5);
-#else
-     
-            httpClient.Timeout = TimeSpan.FromMilliseconds(_apiSettings.Timeout);
-#endif
+            httpClient.Timeout = timeout ?? _timeout;
 
             ulong nonce = (ulong)DateTime.UtcNow.Ticks;
             long timestamp = HmacGenerator.EpochDateTime();
@@ -134,11 +165,44 @@ namespace GSendApi
             throw new GSendApiException(responseModel.responseData);
         }
 
-        protected T CallGetApi<T>(string endPoint)
+        protected T CallGetApi<T>(Uri server, string endPoint, TimeSpan? timeout = null)
         {
             try
             {
-                using HttpClient httpClient = CreateApiClient();
+                using HttpClient httpClient = CreateApiClient(timeout);
+                string address = $"{server}{endPoint}";
+
+                using HttpResponseMessage response = httpClient.GetAsync(address).Result;
+
+                if (!response.IsSuccessStatusCode)
+                    throw new GSendApiException(String.Format(GSend.Language.Resources.InvalidApiResponse, endPoint, nameof(CallGetApi)));
+
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+
+                if (String.IsNullOrWhiteSpace(jsonData))
+                    return default;
+
+                JsonResponseModel responseModel = (JsonResponseModel)JsonSerializer.Deserialize(jsonData, typeof(JsonResponseModel), GSendShared.Constants.DefaultJsonSerializerOptions);
+
+                if (responseModel.success)
+                {
+                    return JsonSerializer.Deserialize<T>(responseModel.responseData, GSendShared.Constants.DefaultJsonSerializerOptions);
+                }
+
+                throw new GSendApiException(responseModel.responseData);
+            }
+            catch (Exception ex) when
+                (ex is AggregateException)
+            {
+                throw new GSendApiException(GSend.Language.Resources.UnableToContactServer, ex);
+            }
+        }
+
+        protected T CallGetApi<T>(string endPoint, TimeSpan? timeout = null)
+        {
+            try
+            {
+                using HttpClient httpClient = CreateApiClient(timeout);
                 string address = $"{ServerAddress}{endPoint}";
 
                 using HttpResponseMessage response = httpClient.GetAsync(address).Result;
@@ -207,5 +271,7 @@ namespace GSendApi
 
             return responseModel.success;
         }
+
+        #endregion Protected Members
     }
 }

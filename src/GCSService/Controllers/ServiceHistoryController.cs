@@ -36,7 +36,7 @@ namespace GSendService.Controllers
 
             long machineId = -1;
 
-            if (machineNames.Any())
+            if (machineNames.Count > 0)
             {
                 machineId = machineNames[0].Id;
             }

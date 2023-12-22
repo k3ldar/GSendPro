@@ -47,8 +47,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult Add(ToolModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             if (String.IsNullOrEmpty(model.Name))
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.ToolErrorInvalidName);
@@ -102,8 +101,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult Edit(ToolModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             if (String.IsNullOrEmpty(model.Name))
                 ModelState.AddModelError(String.Empty, GSend.Language.Resources.ToolErrorInvalidName);

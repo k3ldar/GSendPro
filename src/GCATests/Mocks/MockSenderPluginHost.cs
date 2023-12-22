@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -32,6 +29,8 @@ namespace GSendTests.Mocks
 
         public PluginHosts Host => throw new NotImplementedException();
 
+        public int MaximumMenuIndex => throw new NotImplementedException();
+
         IPluginMenu IPluginHost.GetMenu(MenuParent menuParent)
         {
             GetMenuCalls.Add(menuParent);
@@ -40,7 +39,7 @@ namespace GSendTests.Mocks
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void AddMessage(InformationType informationType, string message)
@@ -84,5 +83,7 @@ namespace GSendTests.Mocks
         {
             Messages.Add(message);
         }
+
+        public IGSendContext GSendContext => throw new NotImplementedException();
     }
 }

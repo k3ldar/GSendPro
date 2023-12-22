@@ -12,8 +12,7 @@ namespace GSendAnalyzer.Analyzers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            if (gCodeAnalyses == null)
-                throw new ArgumentNullException(nameof(gCodeAnalyses));
+            ArgumentNullException.ThrowIfNull(gCodeAnalyses);
 
             if (String.IsNullOrEmpty(fileName) || !File.Exists(fileName))
                 return;

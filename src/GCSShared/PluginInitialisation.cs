@@ -1,4 +1,5 @@
 ﻿using GSendShared.Helpers;
+using GSendShared.Interfaces;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,8 @@ namespace GSendShared
         public void ConfigureServices(IServiceCollection services)
         {
             services.SetupEncryption();
+            services.AddSingleton<IServerConfigurationUpdated, ServerConfigurationUpdated>();
+            services.AddTransient<ICommonUtils, CommonUtils>();
         }
 
         public void Finalise()

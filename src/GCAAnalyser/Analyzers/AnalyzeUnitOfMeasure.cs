@@ -9,8 +9,7 @@ namespace GSendAnalyzer.Analyzers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            if (gCodeAnalyses == null)
-                throw new ArgumentNullException(nameof(gCodeAnalyses));
+            ArgumentNullException.ThrowIfNull(gCodeAnalyses);
 
             IReadOnlyList<IGCodeCommand> allCommands = gCodeAnalyses.AllSpecificCommands(Constants.CharG).Where(c => (c.CommandValue.Equals(20) || c.CommandValue.Equals(21))).ToList();
 

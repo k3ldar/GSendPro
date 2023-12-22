@@ -13,10 +13,9 @@ namespace GSendAnalyzer.Analyzers
 
         protected static List<IGCodeCommand> CommandsOnSameLine(IGCodeCommand command)
         {
-            if (command == null)
-                throw new ArgumentNullException(nameof(command));
+            ArgumentNullException.ThrowIfNull(command);
 
-            List<IGCodeCommand> Result = new();
+            List<IGCodeCommand> Result = [];
 
             LookPrevious(command, Result);
             LookNext(command, Result);

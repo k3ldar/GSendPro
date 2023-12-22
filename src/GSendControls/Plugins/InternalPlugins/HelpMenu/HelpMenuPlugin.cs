@@ -1,4 +1,10 @@
-﻿namespace GSendShared.Plugins.InternalPlugins.HelpMenu
+﻿using System;
+using System.Collections.Generic;
+using GSendControls.Abstractions;
+using GSendShared;
+using GSendShared.Plugins;
+
+namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
     public sealed class HelpMenuPlugin : IGSendPluginModule
     {
@@ -23,12 +29,12 @@
 
                     _pluginMenus = new List<IPluginMenu>
                     {
+                        new SeperatorMenu(parentHelpMenu, 0),
+                        new SeperatorMenu(parentHelpMenu, 0),
+                        new SeperatorMenu(parentHelpMenu, 0),
                         new HelpMenuItem(parentHelpMenu),
-                        new SeperatorMenu(parentHelpMenu, 1),
                         new BugsAndIdeasMenu(parentHelpMenu),
-                        new SeperatorMenu(parentHelpMenu, 3),
                         new HomePageMenu(parentHelpMenu),
-                        new SeperatorMenu(parentHelpMenu, 5)
                     };
                 }
 

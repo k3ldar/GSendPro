@@ -11,7 +11,7 @@ namespace GSendEditor
     {
         private DateTime _lastValidateWarningsAndErrors;
         private const int ValidateWarningAndErrorsTimeout = 350;
-
+        private const int ValidateWhenGCodeHasWarningsOrErrorsSeconds = 15;
         private readonly IGCodeParserFactory _gCodeParserFactory;
         private readonly ISubprograms _subprograms;
         private IGCodeAnalyses _gCodeAnalyses;
@@ -56,12 +56,13 @@ namespace GSendEditor
             {
                 TimeSpan overrideUpdateSpan = DateTime.UtcNow - _lastValidateWarningsAndErrors;
 
-                if (String.IsNullOrEmpty(txtGCode.Text))
+                if (String.IsNullOrEmpty(txtGCode.Text) && WarningContainer != null)
                 {
                     List<WarningErrorList> issues = new();
 
-                    foreach (WarningErrorList item in WarningContainer.Items)
+                    for (int i = WarningContainer.Items.Count -1; i > -1; i--)
                     {
+                        WarningErrorList item = WarningContainer.Items[i] as WarningErrorList;
                         item.MarkedForRemoval = true;
                         item.IsNew = false;
                         issues.Add(item);
@@ -74,7 +75,7 @@ namespace GSendEditor
                 }
                 else if (overrideUpdateSpan.TotalMilliseconds > ValidateWarningAndErrorsTimeout && WarningContainer != null && !String.IsNullOrEmpty(txtGCode.Text))
                 {
-                    IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser();
+                    IGCodeParser gCodeParser = _gCodeParserFactory.CreateParser(_subprograms);
                     _gCodeAnalyses = gCodeParser.Parse(txtGCode.Text);
                     _gCodeAnalyses.Analyse(FileName);
                     Lines = _gCodeAnalyses.Lines(out int lineCount);
@@ -113,7 +114,7 @@ namespace GSendEditor
                     }
 
                     if (issues.Count > 0)
-                        _lastValidateWarningsAndErrors = DateTime.UtcNow.AddSeconds(5);
+                        _lastValidateWarningsAndErrors = DateTime.UtcNow.AddSeconds(ValidateWhenGCodeHasWarningsOrErrorsSeconds);
                     else
                         _lastValidateWarningsAndErrors = DateTime.MaxValue;
                 }

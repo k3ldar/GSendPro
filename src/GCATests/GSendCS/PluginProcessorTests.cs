@@ -115,7 +115,7 @@ namespace GSendTests.GSendCS
         }
 
         [TestMethod]
-        public void Add_CreatesNewPluginOption_StillReadabeWhilstFileStreamOpen_WhenFileDoesNotExists()
+        public void Add_CreatesNewPluginOption_StillReadableWhilstFileStreamOpen_WhenFileDoesNotExists()
         {
             List<GSendPluginSettings> plugins = null;
             string pluginSettingsFile = Path.GetTempFileName();
@@ -188,7 +188,7 @@ namespace GSendTests.GSendCS
         }
 
         [TestMethod]
-        public void Update_UpdatesExistingPluginOption_StillReadabeWhilstFileStreamOpen_WhenFileDoesNotExists()
+        public void Update_UpdatesExistingPluginOption_StillReadableWhilstFileStreamOpen_WhenFileDoesNotExists()
         {
             List<GSendPluginSettings> plugins = null;
             string pluginSettingsFile = Path.GetTempFileName();
@@ -261,7 +261,7 @@ namespace GSendTests.GSendCS
         }
 
         [TestMethod]
-        public void Delete_ExistingPluginOption_StillReadabeWhilstFileStreamOpen_WhenFileDoesNotExist()
+        public void Delete_ExistingPluginOption_StillReadableWhilstFileStreamOpen_WhenFileDoesNotExist()
         {
             List<GSendPluginSettings> plugins = null;
             string pluginSettingsFile = Path.GetTempFileName();

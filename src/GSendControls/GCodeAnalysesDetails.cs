@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ namespace GSendControls
     public partial class GCodeAnalysesDetails : UserControl
     {
         private bool _showFileName = true;
+        private readonly Dictionary<string, ListViewItem> _propertyItem = new();
 
         public GCodeAnalysesDetails()
         {
@@ -66,18 +68,16 @@ namespace GSendControls
             listViewAnalyses.BeginUpdate();
             try
             {
-                listViewAnalyses.Items.Clear();
-
                 if (_showFileName)
                 {
                     if (gCodeAnalyses == null)
                     {
-                        lblFileNameDesc.Text = GSend.Language.Resources.LoadFileForDetails;
+                        lblFileNameDesc.Text = LoadFileForDetails;
                         lblFileName.Visible = false;
                     }
                     else
                     {
-                        lblFileNameDesc.Text = GSend.Language.Resources.FileName;
+                        lblFileNameDesc.Text = FileName;
                         lblFileName.Visible = true;
                     }
                 }
@@ -145,9 +145,15 @@ namespace GSendControls
 
         private void AddAnalyserProperty(string property, object value)
         {
-            ListViewItem item = new(property);
-            item.SubItems.Add(value == null ? "-" : value.ToString());
-            listViewAnalyses.Items.Add(item);
+            if (!_propertyItem.TryGetValue(property, out ListViewItem existing))
+            {
+                existing = new ListViewItem(property);
+                _propertyItem.Add(property, existing);
+                existing.SubItems.Add(String.Empty);
+                listViewAnalyses.Items.Add(existing);
+            }
+
+            existing.SubItems[1].Text = value == null ? "-" : value.ToString();
         }
     }
 }

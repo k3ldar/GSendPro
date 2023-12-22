@@ -2617,6 +2617,33 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Port.
+        /// </summary>
+        public static string InvalidServerPort {
+            get {
+                return ResourceManager.GetString("InvalidServerPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port must be a number between 0 and 65535.
+        /// </summary>
+        public static string InvalidServerPortDesc {
+            get {
+                return ResourceManager.GetString("InvalidServerPortDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string IsActive {
+            get {
+                return ResourceManager.GetString("IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job Profile.
         /// </summary>
         public static string JobProfile {
@@ -3310,6 +3337,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Protocol.
+        /// </summary>
+        public static string Protocol {
+            get {
+                return ResourceManager.GetString("Protocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Queue Size: {0}.
         /// </summary>
         public static string QueueSize {
@@ -3535,11 +3571,38 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Server.
+        /// </summary>
+        public static string ServerAdd {
+            get {
+                return ResourceManager.GetString("ServerAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Servers.
+        /// </summary>
+        public static string ServerConfiguration {
+            get {
+                return ResourceManager.GetString("ServerConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connected to Server.
         /// </summary>
         public static string ServerConnected {
             get {
                 return ResourceManager.GetString("ServerConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to the server, do you want to continue adding this new server?.
+        /// </summary>
+        public static string ServerConnectFailContinue {
+            get {
+                return ResourceManager.GetString("ServerConnectFailContinue", resourceCulture);
             }
         }
         
@@ -3562,6 +3625,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Server.
+        /// </summary>
+        public static string ServerDelete {
+            get {
+                return ResourceManager.GetString("ServerDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete server {0}:{1}?.
+        /// </summary>
+        public static string ServerDeleteQuestion {
+            get {
+                return ResourceManager.GetString("ServerDeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The COM port timed out waiting for a response..
         /// </summary>
         public static string ServerErrorComTimeOut {
@@ -3580,6 +3661,24 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid server uri, confirm the server is running.
+        /// </summary>
+        public static string ServerInvalid {
+            get {
+                return ResourceManager.GetString("ServerInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string ServerNoConnection {
+            get {
+                return ResourceManager.GetString("ServerNoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No connection to Server.
         /// </summary>
         public static string ServerNotConnected {
@@ -3589,11 +3688,38 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server: {0}.
+        /// </summary>
+        public static string ServerStatus {
+            get {
+                return ResourceManager.GetString("ServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Address.
         /// </summary>
         public static string ServerUri {
             get {
                 return ResourceManager.GetString("ServerUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server uri is valid.
+        /// </summary>
+        public static string ServerValid {
+            get {
+                return ResourceManager.GetString("ServerValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating.
+        /// </summary>
+        public static string ServerValidating {
+            get {
+                return ResourceManager.GetString("ServerValidating", resourceCulture);
             }
         }
         

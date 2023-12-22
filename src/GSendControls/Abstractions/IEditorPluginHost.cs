@@ -1,4 +1,6 @@
-﻿namespace GSendShared.Plugins
+﻿using FastColoredTextBoxNS;
+
+namespace GSendControls.Abstractions
 {
     public interface IEditorPluginHost : IPluginHost
     {
@@ -20,6 +22,6 @@
         /// <summary>
         /// In app editor
         /// </summary>
-        object Editor { get; }
+        FastColoredTextBox Editor { get; }
     }
 }

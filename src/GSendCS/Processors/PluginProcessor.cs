@@ -6,15 +6,12 @@ using CommandLinePlus;
 using GSendShared;
 using GSendShared.Plugins;
 
+using static GSendCS.Internal.Constants;
+
 namespace GSendCS.Processors
 {
     internal sealed class PluginProcessor : BaseCommandLine, IDisposable
     {
-        private const int ResponseSuccess = 0;
-        private const int ResponseExclusiveAccessDenied = -100;
-        private const int ResponsePluginExists = ResponseExclusiveAccessDenied - 1;
-        private const int ResponsePluginDoesNotExist = ResponsePluginExists - 1;
-
         private readonly string _fileName;
         private FileStream _fileStream;
 
@@ -96,7 +93,7 @@ namespace GSendCS.Processors
                 return ResponseSuccess;
             }
 
-            return ResponsePluginExists;
+            return ResponseExists;
         }
 
         [CmdLineDescription("Updates an existing plugin")]
@@ -118,7 +115,7 @@ namespace GSendCS.Processors
             GSendPluginSettings plugin = settings.Find(p => p.Name.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
 
             if (plugin == null)
-                return ResponsePluginDoesNotExist;
+                return ResponseDoesNotExist;
 
             plugin.Name = pluginName;
             plugin.AssemblyName = assemblyName;
@@ -146,7 +143,7 @@ namespace GSendCS.Processors
             GSendPluginSettings plugin = settings.Find(p => p.Name.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
 
             if (plugin == null)
-                return ResponsePluginDoesNotExist;
+                return ResponseDoesNotExist;
 
             settings.Remove(plugin);
 

@@ -12,6 +12,9 @@ namespace GSendTests.Mocks
     internal sealed class MockGSendApiWrapper : IGSendApiWrapper
     {
         public Uri ServerAddress => throw new NotImplementedException();
+#pragma warning disable CS0067
+        public event Action ServerUriChanged;
+#pragma warning restore CS0067
 
         public List<SpindleHoursModel> GetSpindleTime(long machineId, DateTime fromDate)
         {
@@ -111,6 +114,11 @@ namespace GSendTests.Mocks
         }
 
         public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CanConnect(Uri uri)
         {
             throw new NotImplementedException();
         }

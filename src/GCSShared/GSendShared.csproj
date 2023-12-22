@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>$(FrameWorkLatestVersion)</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   
@@ -13,7 +13,7 @@
     <PackageReference Include="PluginManager" Version="$(PluginVersion)" />
     <PackageReference Include="SC.Shared.Library.Core" Version="$(SharedVer)" />
     <PackageReference Include="SharedPluginFeatures" Version="$(PluginVersion)" />
-    <PackageReference Include="System.IO.Ports" Version="7.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
   
   <ItemGroup>

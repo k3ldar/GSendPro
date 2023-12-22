@@ -363,7 +363,7 @@ namespace GSendAnalyzer.Internal
             int lineNumber, int recursionDepth, ref GCodeCommand result, char currentCommand, StringBuilder comment)
         {
             string lineValue = lineValues.ToString().Trim();
-            List<IGCodeVariableBlock> variables = new();
+            List<IGCodeVariableBlock> variables = [];
             bool commandValueConvert = Decimal.TryParse(lineValue, out decimal commandValue);
 
             if (!commandValueConvert)

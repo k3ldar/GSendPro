@@ -45,7 +45,6 @@ namespace gsend.pro
             PluginManagerService.Configure(app);
 
             app.UseHsts();
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseAuthentication();

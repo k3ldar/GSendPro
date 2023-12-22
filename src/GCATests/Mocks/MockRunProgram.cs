@@ -15,6 +15,17 @@ namespace GSendTests.Mocks
             return ReturnValue;
         }
 
+        public string Run(string programName, string parameters)
+        {
+            return Run(programName, parameters, out int _);
+        }
+
+        public string Run(string programName, string parameters, out int exitCode)
+        {
+            exitCode = ExitCode;
+            return Result;
+        }
+
         public int ReturnValue { get; set; } = Int32.MinValue;
 
         public string ProgramName { get; set; }
@@ -26,5 +37,9 @@ namespace GSendTests.Mocks
         public bool WaitForFinish { get; set; }
 
         public int TimeoutMilliseconds { get; set; }
+
+        public int ExitCode { get; set; }
+
+        public string Result { get; set; }
     }
 }

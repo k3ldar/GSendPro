@@ -75,8 +75,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult Edit(EditMachineModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             IMachine machine = _gSendDataProvider.MachineGet(model.Id);
 
@@ -127,8 +126,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult Add(EditMachineModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             if (ModelState.IsValid && _gSendDataProvider.MachinesGet().Any(m => m.Name == model.Name))
             {
@@ -191,8 +189,7 @@ namespace GSendService.Controllers
         [HttpPost]
         public IActionResult Delete(DeleteMachineModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             IMachine machine = _gSendDataProvider.MachineGet(model.Id);
 

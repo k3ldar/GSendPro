@@ -13,11 +13,9 @@ namespace GSendCommon
 
         public WindowsComPort(IMachine machine, GSendSettings settings)
         {
-            if (machine == null)
-                throw new ArgumentNullException(nameof(machine));
+            ArgumentNullException.ThrowIfNull(machine);
 
-            if (settings == null)
-                throw new ArgumentNullException(nameof(settings));
+            ArgumentNullException.ThrowIfNull(settings);
 
             Name = machine.ComPort;
 
@@ -45,8 +43,7 @@ namespace GSendCommon
 
         public WindowsComPort(IComPortModel comPortModel)
         {
-            if (comPortModel == null)
-                throw new ArgumentNullException(nameof(comPortModel));
+            ArgumentNullException.ThrowIfNull(comPortModel);
 
             Name = comPortModel.Name;
 

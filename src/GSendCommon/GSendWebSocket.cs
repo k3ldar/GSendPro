@@ -28,8 +28,7 @@ namespace GSendCommon
 
         public GSendWebSocket(Uri serverUri, string clientId, CancellationToken cancellationToken)
         {
-            if (serverUri == null)
-                throw new ArgumentNullException(nameof(serverUri));
+            ArgumentNullException.ThrowIfNull(serverUri);
 
             _serverUri = serverUri.ToString();
 

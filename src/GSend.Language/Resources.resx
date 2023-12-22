@@ -2164,4 +2164,46 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="ConsoleInvalidCmdLine" xml:space="preserve">
     <value>Bad command line, use --? for options</value>
   </data>
+  <data name="ServerInvalid" xml:space="preserve">
+    <value>Invalid server uri, confirm the server is running</value>
+  </data>
+  <data name="ServerNoConnection" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="ServerStatus" xml:space="preserve">
+    <value>Server: {0}</value>
+  </data>
+  <data name="ServerValid" xml:space="preserve">
+    <value>Server uri is valid</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Protocol" xml:space="preserve">
+    <value>Protocol</value>
+  </data>
+  <data name="ServerConfiguration" xml:space="preserve">
+    <value>Configure Servers</value>
+  </data>
+  <data name="InvalidServerPort" xml:space="preserve">
+    <value>Invalid Port</value>
+  </data>
+  <data name="InvalidServerPortDesc" xml:space="preserve">
+    <value>Port must be a number between 0 and 65535</value>
+  </data>
+  <data name="ServerAdd" xml:space="preserve">
+    <value>Add Server</value>
+  </data>
+  <data name="ServerConnectFailContinue" xml:space="preserve">
+    <value>Failed to connect to the server, do you want to continue adding this new server?</value>
+  </data>
+  <data name="ServerValidating" xml:space="preserve">
+    <value>Validating</value>
+  </data>
+  <data name="ServerDelete" xml:space="preserve">
+    <value>Delete Server</value>
+  </data>
+  <data name="ServerDeleteQuestion" xml:space="preserve">
+    <value>Are you sure you want to delete server {0}:{1}?</value>
+  </data>
 </root>

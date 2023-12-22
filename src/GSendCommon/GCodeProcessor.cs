@@ -4,8 +4,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-using GSendCommon.Settings;
-
 using GSendShared;
 using GSendShared.Abstractions;
 using GSendShared.Attributes;
@@ -79,7 +77,7 @@ namespace GSendCommon
         private DateTime _lastInformationCheck = DateTime.MinValue;
         private readonly object _lockObject = new();
         private readonly MachineStateModel _machineStateModel = new();
-        private readonly IGCodeOverrideContext _overrideContext;
+        private readonly GCodeOverrideContext _overrideContext;
 
         private RapidsOverride _rapidsSpeed = RapidsOverride.High;
         private int _lineCount = 0;
@@ -99,8 +97,7 @@ namespace GSendCommon
             _gSendDataProvider = gSendDataProvider ?? throw new ArgumentNullException(nameof(gSendDataProvider));
             _gSendSettings = gSendSettings ?? throw new ArgumentNullException(nameof(gSendSettings));
 
-            if (comPortFactory == null)
-                throw new ArgumentNullException(nameof(comPortFactory));
+            ArgumentNullException.ThrowIfNull(comPortFactory);
 
             _logger = serviceProvider.GetService<ILogger>();
             _gCodeParserFactory = serviceProvider.GetService<IGCodeParserFactory>();
@@ -113,7 +110,7 @@ namespace GSendCommon
             _port.DataReceived += Port_DataReceived;
             _port.ErrorReceived += Port_ErrorReceived;
             _port.PinChanged += Port_PinChanged;
-            _overrideContext = new GCodeOverrideContext(serviceProvider, new StaticMethods(), this,
+            _overrideContext = new GCodeOverrideContext(serviceProvider, this,
                 _machine, _machineStateModel, _commandQueue);
             ThreadManager.ThreadStart(this, $"{machine.Name} - {machine.ComPort} - Update Status", ThreadPriority.Normal);
 
@@ -294,16 +291,12 @@ namespace GSendCommon
 
         public bool Start(IJobExecution jobExecution)
         {
-            if (jobExecution == null)
-                throw new ArgumentNullException(nameof(jobExecution));
+            ArgumentNullException.ThrowIfNull(jobExecution);
 
             if (jobExecution.ToolProfile == null)
                 throw new ArgumentException(nameof(jobExecution.ToolProfile));
 
-            if (_overrideContext is GCodeOverrideContext overrideContext)
-            {
-                overrideContext.JobExecution = jobExecution;
-            }
+            _overrideContext.JobExecution = jobExecution;
 
             OnLineStatusUpdated?.Invoke(-1, -1, LineStatus.Undefined);
 
@@ -384,12 +377,12 @@ namespace GSendCommon
             if (_machineStateModel.MachineStateOptions.HasFlag(MachineStateOptions.SimulationMode))
                 ToggleSimulation();
 
-            if (_overrideContext.JobExecution != null && _overrideContext is GCodeOverrideContext overrideContext)
+            if (_overrideContext.JobExecution != null)
             {
-                overrideContext.JobExecution.Finish();
-                _gSendDataProvider.JobExecutionUpdate(overrideContext.JobExecution);
+                _overrideContext.JobExecution.Finish();
+                _gSendDataProvider.JobExecutionUpdate(_overrideContext.JobExecution);
                 //update job execution
-                overrideContext.JobExecution = null;
+                _overrideContext.JobExecution = null;
             }
 
 
@@ -418,8 +411,7 @@ namespace GSendCommon
             _commandsToSend = gCodeAnalyses.AllLines(out _lineCount);
             _machineStateModel.TotalLines = _lineCount;
 
-            if (_overrideContext is GCodeOverrideContext overrideContext)
-                overrideContext.Variables = gCodeAnalyses.Variables;
+            _overrideContext.Variables = gCodeAnalyses.Variables;
 
             return true;
         }
@@ -534,7 +526,7 @@ namespace GSendCommon
             {
                 _machineStateModel.IsHoming = false;
             }
-               
+
             return true;
         }
 
@@ -1139,7 +1131,7 @@ namespace GSendCommon
                 string[] status = parts[0].Split(SeparatorPipe, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
                 string statusDesc = status[0];
-                int statusSep = statusDesc.IndexOf(":");
+                int statusSep = statusDesc.IndexOf(':');
 
                 if (statusSep > -1)
                 {

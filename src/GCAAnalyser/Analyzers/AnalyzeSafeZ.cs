@@ -9,8 +9,7 @@ namespace GSendAnalyzer.Analyzers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            if (gCodeAnalyses == null)
-                throw new ArgumentNullException(nameof(gCodeAnalyses));
+            ArgumentNullException.ThrowIfNull(gCodeAnalyses);
 
             decimal homeZ = gCodeAnalyses.AllCommands.Count > 0 ? gCodeAnalyses.AllCommands.Max(c => c.CurrentZ) : 0;
 

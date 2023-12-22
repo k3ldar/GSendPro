@@ -14,7 +14,8 @@ namespace GSendService.Internal
 
         public Subprograms()
         {
-            _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), Constants.GSendProAppFolder, Constants.GSendProSubProgramFolder);
+            _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                Constants.GSendProAppFolder, Constants.GSendProSubProgramFolder);
 
             if (!Directory.Exists(_path))
             {

@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-    <NoWarn>1701;1702;8032;8981</NoWarn>
+    <NoWarn>1701;1702;8032;8981;IDE0079;IDE0076</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <SignAssembly>false</SignAssembly>
     <Description>GCode Sender and Analyzer</Description>
@@ -22,22 +22,23 @@
     <PackageTags>GCode Sender</PackageTags>
     <PackageProjectUrl>http://pluginmanager.website/</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <PackageReleaseNotes>Supports net7.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Supports net8.0</PackageReleaseNotes>
     <PackageTags>Advanced GCode Sender, Analyzer and Editor</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
-    <FrameWorkLatestVersion>net7.0</FrameWorkLatestVersion>
+    <FrameWorkLatestVersion>net8.0</FrameWorkLatestVersion>
+	<FrameWorkWinLatestVersion>net8.0-windows</FrameWorkWinLatestVersion>
   </PropertyGroup>
 	
   <PropertyGroup>
-    <PluginVersion>5.5.1</PluginVersion>
-	<SharedVer>3.10.2</SharedVer>
-	<SharedWinVer>1.2.1</SharedWinVer>
+    <PluginVersion>5.6.0</PluginVersion>
+	<SharedVer>3.14.0</SharedVer>
+	<SharedWinVer>1.5.0</SharedWinVer>
   </PropertyGroup>
   
   <PropertyGroup>
-    <Version>0.9.8.1</Version>
+    <Version>0.9.8.2</Version>
 	<FileVersion>$(Version)</FileVersion>
 	<ProductVersion>$(Version)</ProductVersion>
     <LangVersion>latest</LangVersion>
@@ -47,29 +48,29 @@
     <Description>Advanced GCode Sender, Analyzer and Editor</Description>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0'">
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net8.0'">
+    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;NET_8_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0'">
-    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net8.0'">
+    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;NET_8_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net7.0-windows'">
-    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Debug|net8.0-windows'">
+    <DefineConstants>CODE_ANALYSIS;DEBUG;TRACE;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;NET_8_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net7.0-windows'">
-    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;WIN_SYSTEM</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|net8.0-windows'">
+    <DefineConstants>CODE_ANALYSIS;NET_CORE;NET_6_0;NET_6_X;ISO_WEEK;ATTR_OS;NET_5_ABOVE;NET_6_ABOVE;NET_7_ABOVE;NET_7_0;NET_7_X;NET_8_X;WIN_SYSTEM</DefineConstants>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>

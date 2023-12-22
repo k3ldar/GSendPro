@@ -18,7 +18,12 @@ namespace GSendAnalyzer.Internal
 
         public IGCodeParser CreateParser()
         {
-            return new GCodeParser(_pluginClassesService, _subprograms);
+            return CreateParser(_subprograms);
+        }
+
+        public IGCodeParser CreateParser(ISubprograms subprograms)
+        {
+            return new GCodeParser(_pluginClassesService, subprograms);
         }
     }
 }
