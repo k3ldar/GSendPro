@@ -94,6 +94,7 @@ namespace GSendCommon
                 finally
                 {
                     _cancellationTokenSource?.Cancel();
+                    _cancellationTokenSource?.Dispose();
                     _cancellationTokenSource = null;
                 }
             }
@@ -122,6 +123,7 @@ namespace GSendCommon
                 finally
                 {
                     _cancellationTokenSource?.Cancel();
+                    _cancellationTokenSource?.Dispose();
                     _cancellationTokenSource = null;
                 }
             }

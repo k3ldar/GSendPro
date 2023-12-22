@@ -30,7 +30,7 @@ namespace GSendEditor
 {
     public partial class FrmMain : BaseForm, IShortcutImplementation, IEditorPluginHost, IOnlineStatusUpdate
     {
-        private readonly IServerValidation _validationThread;
+        private readonly ServerValidationThread _validationThread;
         private readonly object _lockObject = new();
         private readonly object _updateSubprogramsLock = new();
         private readonly IGSendContext _gSendContext;
@@ -1072,7 +1072,7 @@ namespace GSendEditor
             }
         }
 
-        private void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
+        private static void RecursivelyRetrieveAllShortcutClasses(Control control, List<IShortcut> shortcuts, int depth)
         {
             if (depth > 25)
             {

@@ -36,8 +36,7 @@ namespace GSendTests.Mocks
 
         public IComPort CreateComPort(IComPortModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {

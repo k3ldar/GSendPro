@@ -2664,8 +2664,7 @@ namespace GSendDesktop.Forms
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
-            if (pluginModule == null)
-                throw new ArgumentNullException(nameof(pluginModule));
+            ArgumentNullException.ThrowIfNull(pluginModule);
 
             if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
                 _pluginsWithClientMessage.Add(pluginModule);

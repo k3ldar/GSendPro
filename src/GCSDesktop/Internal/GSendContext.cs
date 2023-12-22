@@ -21,8 +21,7 @@ namespace GSendDesktop
 
         public void ShowMachine(IMachine machine)
         {
-            if (machine == null)
-                throw new ArgumentNullException(nameof(machine));
+            ArgumentNullException.ThrowIfNull(machine);
 
             if (!_machines.ContainsKey(machine))
             {

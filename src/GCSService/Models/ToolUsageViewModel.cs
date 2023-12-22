@@ -19,8 +19,7 @@ namespace GSendService.Models
             IEnumerable<JobExecutionStatistics> rawData, List<ToolUsageHistoryModel> history)
             : base(modelData)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             Title = toolProfile.Name;
             ToolId = toolProfile.Id;

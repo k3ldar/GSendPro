@@ -30,8 +30,7 @@ namespace GSendAnalyzer
 
         internal void Add(GCodeCommand command)
         {
-            if (command == null)
-                throw new ArgumentNullException(nameof(command));
+            ArgumentNullException.ThrowIfNull(command);
 
             _commands.Add(command);
         }
@@ -47,7 +46,7 @@ namespace GSendAnalyzer
             totalAnalyze.Start();
             try
             {
-                IGCodeAnalyzerFactory gCodeAnalyzerFactory = new GCodeAnalyzerFactory(_pluginClassesService);
+                GCodeAnalyzerFactory gCodeAnalyzerFactory = new (_pluginClassesService);
 
                 IReadOnlyList<IGCodeAnalyzer> analyzers = gCodeAnalyzerFactory.Create();
 
@@ -110,12 +109,13 @@ namespace GSendAnalyzer
         {
             using (TimedLock tl = TimedLock.Lock(_lockObject))
             {
-                if (!_allSpecificCommands.ContainsKey(commandCode))
+                if (!_allSpecificCommands.TryGetValue(commandCode, out List<IGCodeCommand> value))
                 {
-                    _allSpecificCommands.Add(commandCode, AllCommands.Where(c => c.Command.Equals(commandCode)).ToList());
+                    value = AllCommands.Where(c => c.Command.Equals(commandCode)).ToList();
+                    _allSpecificCommands.Add(commandCode, value);
                 }
 
-                return _allSpecificCommands[commandCode];
+                return value;
             }
         }
 

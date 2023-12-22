@@ -99,8 +99,7 @@ namespace GSendService.Internal
         /// <param name="license"></param>
         public void SetActiveLicense(in ILicense license)
         {
-            if (license == null)
-                throw new ArgumentNullException(nameof(license));
+            ArgumentNullException.ThrowIfNull(license);
 
             if (!LicenseIsValid(license))
                 throw new InvalidLicenseException("License is not valid");
@@ -118,8 +117,7 @@ namespace GSendService.Internal
         /// <returns>bool</returns>
         public bool LicenseIsValid(in ILicense license)
         {
-            if (license == null)
-                throw new ArgumentNullException(nameof(license));
+            ArgumentNullException.ThrowIfNull(license);
 
             return license.Expires > DateTime.MinValue &&
                 license.Expires >= DateTime.Now &&

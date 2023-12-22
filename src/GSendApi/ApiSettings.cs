@@ -4,8 +4,7 @@
     {
         public ApiSettings(Uri rootAddress)
         {
-            if (rootAddress == null)
-                throw new ArgumentNullException(nameof(rootAddress));
+            ArgumentNullException.ThrowIfNull(rootAddress);
 
             if (!rootAddress.IsAbsoluteUri)
                 throw new ArgumentOutOfRangeException(nameof(rootAddress));

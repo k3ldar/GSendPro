@@ -9,8 +9,7 @@ namespace GSendAnalyzer.Analyzers
 
         public void Analyze(string fileName, IGCodeAnalyses gCodeAnalyses)
         {
-            if (gCodeAnalyses == null)
-                throw new ArgumentNullException(nameof(gCodeAnalyses));
+            ArgumentNullException.ThrowIfNull(gCodeAnalyses);
 
             gCodeAnalyses.TotalDistance = gCodeAnalyses.AllCommands.Sum(c => c.Distance);
         }

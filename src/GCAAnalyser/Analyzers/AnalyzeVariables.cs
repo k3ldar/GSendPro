@@ -63,13 +63,13 @@ namespace GSendAnalyzer.Analyzers
                     {
                         foreach (ushort id in varBlock.VariableIds)
                         {
-                            if (!declaredVariables.ContainsKey(id))
+                            if (declaredVariables.TryGetValue(id, out int value))
                             {
-                                declaredVariables.Add(id, 1);
+                                declaredVariables[id] = ++value;
                             }
                             else
                             {
-                                declaredVariables[id]++;
+                                declaredVariables.Add(id, 1);
                             }
 
                             if (!subprogramVariables.Contains(id))

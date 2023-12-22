@@ -34,8 +34,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
             _commonUtils = commonUtils ?? throw new ArgumentNullException(nameof(commonUtils));
             _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
 
-            if (serverConfigurationUpdated == null) 
-                throw new ArgumentNullException(nameof(serverConfigurationUpdated));
+            ArgumentNullException.ThrowIfNull(serverConfigurationUpdated);
 
             serverConfigurationUpdated.OnServerConfigurationUpdated += ServerConfigurationUpdated_OnServerConfigurationUpdated;
         }

@@ -17,7 +17,7 @@ namespace GSendApi
         private readonly string _merchantId;
         private readonly string _apiKey;
         private readonly string _secret;
-        private TimeSpan _timeout;
+        private readonly TimeSpan _timeout;
 
         #endregion Private Members
 

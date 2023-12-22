@@ -71,8 +71,7 @@ namespace GSendDB.Providers
 
         public void JobExecutionUpdate(IJobExecution jobExecution)
         {
-            if (jobExecution == null)
-                throw new ArgumentNullException(nameof(jobExecution));
+            ArgumentNullException.ThrowIfNull(jobExecution);
 
             JobExecutionDataRow jobExecutionDataRow = _jobExecutionTable.Select(jobExecution.Id);
 
@@ -87,8 +86,7 @@ namespace GSendDB.Providers
 
         public TimeSpan JobExecutionByTool(IToolProfile toolProfile)
         {
-            if (toolProfile == null) 
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             string cacheName = $"Tool execution: {toolProfile.Id} {toolProfile.Name}";
 
@@ -109,8 +107,7 @@ namespace GSendDB.Providers
 
         public IEnumerable<JobExecutionStatistics> JobExecutionModelsGetByTool(IToolProfile toolProfile, bool sinceLastUsed)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             string cacheName = $"Tool execution statistics: {toolProfile.Id} {toolProfile.Name} {sinceLastUsed}";
 
@@ -356,8 +353,7 @@ namespace GSendDB.Providers
 
         public void ToolAdd(IToolProfile toolProfile)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             _toolDatabaseTable.Insert(new ToolDatabaseDataRow() 
             { 
@@ -369,8 +365,7 @@ namespace GSendDB.Providers
 
         public void ToolUpdate(IToolProfile toolProfile)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id) ?? throw new InvalidOperationException("Tool not found");
             dataRow.ToolName = toolProfile.Name;
@@ -382,8 +377,7 @@ namespace GSendDB.Providers
 
         public void ToolResetUsage(IToolProfile toolProfile)
         {
-            if (toolProfile == null)
-                throw new ArgumentNullException(nameof(toolProfile));
+            ArgumentNullException.ThrowIfNull(toolProfile);
 
             _memoryCache.GetExtendingCache().Clear();
             ToolDatabaseDataRow dataRow = _toolDatabaseTable.Select(toolProfile.Id) ?? throw new InvalidOperationException("Tool not found");

@@ -17,7 +17,7 @@ namespace GSendDB.Tables
 
             return new List<JobProfileDataRow>()
             {
-                new JobProfileDataRow() { JobName = "(Default)", JobDescription = "Default job" },
+                new() { JobName = "(Default)", JobDescription = "Default job" },
             };
         }
     }

@@ -162,7 +162,7 @@ namespace GSendControls.Forms
 
             bool isSecure = rbHttps.Checked;
             string server = txtServer.Text;
-            UriBuilder uriBuilder = new UriBuilder
+            UriBuilder uriBuilder = new()
             {
                 Scheme = isSecure ? Uri.UriSchemeHttp : Uri.UriSchemeHttps,
                 Port = port,

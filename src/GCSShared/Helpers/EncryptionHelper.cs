@@ -14,8 +14,7 @@ namespace GSendShared.Helpers
 
         public static IServiceCollection SetupEncryption(this IServiceCollection services)
         {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
+            ArgumentNullException.ThrowIfNull(services);
 
             Environment.SetEnvironmentVariable("gsp", Convert.ToBase64String(key));
 

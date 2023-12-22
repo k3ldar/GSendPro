@@ -26,8 +26,7 @@ namespace GSendControls.Plugins
 
         public void AddMenu(IPluginHost pluginHost, MenuStrip parent, IPluginMenu menu, List<IShortcut> shortcuts)
         {
-            if (menu == null)
-                throw new ArgumentNullException(nameof(menu));
+            ArgumentNullException.ThrowIfNull(menu);
 
             ToolStripMenuItem parentMenu = null;
 
@@ -62,8 +61,7 @@ namespace GSendControls.Plugins
 
         public void AddToolbarButton(IPluginHost pluginHost, ToolStrip parent, IPluginToolbarButton toolbarButton)
         {
-            if (toolbarButton == null)
-                throw new ArgumentNullException(nameof(toolbarButton));
+            ArgumentNullException.ThrowIfNull(toolbarButton);
 
             if (toolbarButton.ButtonType == ButtonType.Seperator)
             {
@@ -87,8 +85,7 @@ namespace GSendControls.Plugins
 
         public void InitializeAllPlugins(IPluginHost pluginHost)
         {
-            if (pluginHost == null)
-                throw new ArgumentNullException(nameof(pluginHost));
+            ArgumentNullException.ThrowIfNull(pluginHost);
 
             List<IGSendPluginModule> plugins = _pluginClassesService.GetPluginClasses<IGSendPluginModule>();
 

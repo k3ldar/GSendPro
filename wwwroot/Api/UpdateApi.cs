@@ -18,8 +18,7 @@ namespace gsend.pro.Api
 
         public UpdateApi(ISettingsProvider settingsProvider)
         {
-            if (settingsProvider == null)
-                throw new ArgumentNullException(nameof(settingsProvider));
+            ArgumentNullException.ThrowIfNull(settingsProvider);
 
             _versionSettings = settingsProvider.GetSettings<VersionSettings>(nameof(VersionSettings));
         }
