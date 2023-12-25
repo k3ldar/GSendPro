@@ -9,7 +9,7 @@ namespace GSendCS
     {
         static int Main()
         {
-            ConsoleProcessorFactory factory = new ConsoleProcessorFactory();
+            ConsoleProcessorFactory factory = new();
             Environment.SetEnvironmentVariable(GSendShared.Constants.GSendPathEnvVar,
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 GSendShared.Constants.GSendProAppFolder));

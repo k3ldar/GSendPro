@@ -90,7 +90,7 @@ namespace GSendEditor
 
             UpdateShortcutKeyValues(_shortcuts);
             UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
-            ServerValidationThread validationThread = new ServerValidationThread(this);
+            ServerValidationThread validationThread = new(this);
             ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
             _validationThread = validationThread;
         }
