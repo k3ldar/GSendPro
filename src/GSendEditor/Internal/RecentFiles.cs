@@ -20,7 +20,7 @@ namespace GSendEditor.Internal
                 return JsonSerializer.Deserialize<List<RecentFile>>(File.ReadAllText(_recentsFile));
             }
 
-            return new List<RecentFile>();
+            return [];
         }
 
         internal void AddRecentFile(string fileName, bool isSubprogram)

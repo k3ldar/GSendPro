@@ -39,7 +39,7 @@ namespace GSendDesktop
         private readonly GSendWebSocket _clientWebSocket;
         private readonly object _lockObject = new();
         private readonly CancellationTokenRegistration _cancellationTokenRegistration;
-        private readonly Dictionary<long, ListViewItem> _machines = new();
+        private readonly Dictionary<long, ListViewItem> _machines = [];
         private IMachine _selectedMachine = null;
         private readonly IPluginHelper _pluginHelper;
         private long _machineHashCombined = 0;

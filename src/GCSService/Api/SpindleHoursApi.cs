@@ -30,7 +30,7 @@ namespace GSendService.Api
         public IActionResult SpindleHoursGet(long machineId, long fromDateTimeTicks)
         {
             DateTime fromDate = new(fromDateTimeTicks, DateTimeKind.Utc);
-            List<SpindleHoursModel> Result = new();
+            List<SpindleHoursModel> Result = [];
             IReadOnlyList<ISpindleTime> allSpindleTime = _gSendDataProvider.SpindleTimeGet(machineId).Where(m =>
                 m.StartTime >= fromDate && m.FinishTime > DateTime.MinValue).ToList();
 

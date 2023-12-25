@@ -58,7 +58,7 @@ namespace GSendEditor
 
                 if (String.IsNullOrEmpty(txtGCode.Text) && WarningContainer != null)
                 {
-                    List<WarningErrorList> issues = new();
+                    List<WarningErrorList> issues = [];
 
                     for (int i = WarningContainer.Items.Count -1; i > -1; i--)
                     {
@@ -81,7 +81,7 @@ namespace GSendEditor
                     Lines = _gCodeAnalyses.Lines(out int lineCount);
                     LineCount = lineCount;
 
-                    List<WarningErrorList> issues = new();
+                    List<WarningErrorList> issues = [];
 
                     foreach (WarningErrorList item in WarningContainer.Items)
                     {

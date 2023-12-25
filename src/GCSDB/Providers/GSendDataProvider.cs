@@ -247,7 +247,7 @@ namespace GSendDB.Providers
         {
             List<MachineSpindleTimeDataRow> spindleTime = _spindleTimeTable.Select(m => m.MachineId == machineId).ToList();
 
-            List<ISpindleTime> Result = new();
+            List<ISpindleTime> Result = [];
 
             foreach (MachineSpindleTimeDataRow row in spindleTime)
             {
@@ -270,7 +270,7 @@ namespace GSendDB.Providers
 
         public IReadOnlyList<IJobProfile> JobProfilesGet()
         {
-            List<IJobProfile> Result = new();
+            List<IJobProfile> Result = [];
 
             foreach (JobProfileDataRow profile in _jobProfileTable.Select())
             {
@@ -336,7 +336,7 @@ namespace GSendDB.Providers
 
         public IReadOnlyList<IToolProfile> ToolsGet()
         {
-            List<IToolProfile> Result = new();
+            List<IToolProfile> Result = [];
 
             foreach (ToolDatabaseDataRow toolProfile in _toolDatabaseTable.Select())
             {
@@ -410,11 +410,11 @@ namespace GSendDB.Providers
 
         public IReadOnlyList<MachineServiceModel> ServicesGet(long machineId)
         {
-            List<MachineServiceModel> Result = new();
+            List<MachineServiceModel> Result = [];
 
             foreach (var service in _machineServiceTable.Select(m => m.MachineId == machineId).OrderByDescending(m => m.ServiceDate))
             {
-                Dictionary<long, string> serviceItems = new();
+                Dictionary<long, string> serviceItems = [];
 
                 foreach (long serviceItem in service.Items)
                     serviceItems.Add(serviceItem, _serviceItemsTable.Select(serviceItem).Name);
@@ -428,7 +428,7 @@ namespace GSendDB.Providers
 
         public List<ServiceItemModel> ServiceItemsGet(MachineType machineType)
         {
-            List<ServiceItemModel> serviceItems = new();
+            List<ServiceItemModel> serviceItems = [];
 
             foreach (var serviceItem in _serviceItemsTable.Select().Where(si => !si.IsDeleted))
             {
@@ -456,7 +456,7 @@ namespace GSendDB.Providers
             if (toolDatabaseDataRow == null)
                 return null;
 
-            List<ToolUsageHistoryModel> history = new();
+            List<ToolUsageHistoryModel> history = [];
 
             toolDatabaseDataRow.ToolHistory.ForEach(th => history.Add(new ToolUsageHistoryModel(th.LastChanged, th.UsageMinutes)));
 
@@ -508,7 +508,7 @@ namespace GSendDB.Providers
 
         private List<IMachine> InternalGetMachines()
         {
-            List<IMachine> Result = new();
+            List<IMachine> Result = [];
 
             foreach (MachineDataRow machineDataRow in _machineDataRow.Select())
             {

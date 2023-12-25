@@ -75,7 +75,7 @@ namespace GSendShared
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2589:Boolean expressions should not be gratuitous", Justification = "It is evaluated in the loop")]
         private static Dictionary<string, string> ConvertArgsToDictionary(string[] args)
         {
-            Dictionary<string, string> result = new();
+            Dictionary<string, string> result = [];
             StringBuilder currentArg = new(30);
             StringBuilder currentArgValue = new();
             string arg = string.Join(" ", args);

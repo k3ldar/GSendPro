@@ -656,7 +656,7 @@ namespace GSendCommon
 
         public Dictionary<int, object> Settings()
         {
-            Dictionary<int, object> Result = new();
+            Dictionary<int, object> Result = [];
 
             string allSettings = SendCommandWaitForOKCommand(CommandSettings);
 

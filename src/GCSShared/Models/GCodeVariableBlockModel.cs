@@ -5,8 +5,8 @@
         public GCodeVariableBlockModel(string block, int lineNumber)
         {
             VariableBlock = block;
-            Variables = new();
-            VariableIds = new();
+            Variables = [];
+            VariableIds = [];
 
             ParseVariables();
             LineNumber = lineNumber;

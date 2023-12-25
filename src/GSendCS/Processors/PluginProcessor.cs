@@ -189,7 +189,7 @@ namespace GSendCS.Processors
             }
             catch
             {
-                return new();
+                return [];
             }
         }
 

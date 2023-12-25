@@ -4,9 +4,9 @@ namespace GSendShared.Models
     public sealed class ToolProfileModel : IToolProfile
     {
         public ToolProfileModel()
-            : this(new())
+            : this([])
         {
-            History = new List<ToolUsageHistoryModel>();
+            History = [];
         }
 
         public ToolProfileModel(List<ToolUsageHistoryModel> history)

@@ -31,7 +31,7 @@ namespace GSendCommon.MCodeOverrides
 
         protected static List<IGCodeCommand> PreviousCommands(IGCodeCommand command, string[] requiredCommands)
         {
-            List<IGCodeCommand> Result = new();
+            List<IGCodeCommand> Result = [];
 
             IGCodeCommand previous = command.PreviousCommand;
 

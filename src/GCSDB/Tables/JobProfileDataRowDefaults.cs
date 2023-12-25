@@ -15,10 +15,10 @@ namespace GSendDB.Tables
             if (version > 1)
                 return null;
 
-            return new List<JobProfileDataRow>()
-            {
+            return
+            [
                 new() { JobName = "(Default)", JobDescription = "Default job" },
-            };
+            ];
         }
     }
 }

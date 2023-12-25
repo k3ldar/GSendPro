@@ -26,7 +26,7 @@ namespace GSendService.Api
         {
             List<ISubprogram> subprograms = _subprograms.GetAll();
 
-            List<ISubprogram> names = new();
+            List<ISubprogram> names = [];
 
             subprograms.ForEach(sp => names.Add(new SubprogramModel(sp.Name, sp.Description, String.Empty)));
 

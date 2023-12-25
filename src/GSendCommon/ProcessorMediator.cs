@@ -24,7 +24,7 @@ namespace GSendCommon
         private static DateTime _lastLicenseCheck = DateTime.MinValue;
         private const int LicenseValidationCheckInterval = 250;
 #endif
-        private static readonly List<IGCodeProcessor> _machines = new();
+        private static readonly List<IGCodeProcessor> _machines = [];
         private const int BufferSize = 8192;
         private const int DelayBetweenUpdatesSent = 100;
         private DateTime _lastSendStatus = DateTime.MinValue;
@@ -300,13 +300,13 @@ namespace GSendCommon
 
         public List<string> GetEvents()
         {
-            return new List<string>()
-            {
+            return
+            [
                 Constants.NotificationMachineAdd,
                 Constants.NotificationMachineRemove,
                 Constants.NotificationMachineUpdated,
                 Constants.NotificationMachineConnected,
-            };
+            ];
         }
 
         #endregion INotificationListener
@@ -841,7 +841,7 @@ namespace GSendCommon
                         break;
 
                     case Constants.MessageMachineStatusAll:
-                        List<StatusResponseMessage> machineStates = new();
+                        List<StatusResponseMessage> machineStates = [];
 
                         foreach (IGCodeProcessor processor in _machines)
                         {

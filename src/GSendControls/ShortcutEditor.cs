@@ -13,7 +13,7 @@ namespace GSendControls
     {
         private readonly ShortcutHandler _shortcutHandler;
         private IShortcut _selectedShortcut;
-        private readonly List<int> _selectedKeys = new();
+        private readonly List<int> _selectedKeys = [];
         private ListViewItem _selectedItem;
 
         public ShortcutEditor()

@@ -13,7 +13,7 @@ namespace GSendControls
     public partial class GCodeAnalysesDetails : UserControl
     {
         private bool _showFileName = true;
-        private readonly Dictionary<string, ListViewItem> _propertyItem = new();
+        private readonly Dictionary<string, ListViewItem> _propertyItem = [];
 
         public GCodeAnalysesDetails()
         {
