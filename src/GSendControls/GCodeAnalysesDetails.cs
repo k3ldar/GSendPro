@@ -101,6 +101,7 @@ namespace GSendControls
                 AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
                 AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
                 AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
+                AddAnalyserProperty(GCodeZBottom, gCodeAnalyses?.ZBottom);
                 AddAnalyserProperty(GCodeMaxLayerHeight, gCodeAnalyses?.MaxLayerDepth);
                 AddAnalyserProperty(GCodeLayerCount, gCodeAnalyses?.Layers);
                 AddAnalyserProperty(GCodeMaxXValue, gCodeAnalyses?.MaxX);

@@ -10,9 +10,9 @@ namespace GSendTests.Mocks
     internal class MockGCodeAnalyses : IGCodeAnalyses
     {
         public IReadOnlyList<IGCodeCommand> Commands => new List<IGCodeCommand>();
-
         public decimal SafeZ { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public decimal HomeZ { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool? ZBottom { get; set; } = null;
         public decimal TotalDistance { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public TimeSpan TotalTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public UnitOfMeasurement UnitOfMeasurement { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

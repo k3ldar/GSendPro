@@ -155,6 +155,8 @@ namespace GSendAnalyzer
 
         public decimal SafeZ { get; set; }
 
+        public bool? ZBottom { get; set; } = null;
+
         public UnitOfMeasurement UnitOfMeasurement { get; set; }
 
         public decimal TotalDistance { get; set; }
