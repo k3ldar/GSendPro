@@ -60,7 +60,7 @@ namespace GSendService.Models
         {
             get
             {
-                List<string> result = new();
+                List<string> result = [];
                 
                 foreach (object enumValue in Enum.GetValues(typeof(GSendShared.MachineType)))
                 {

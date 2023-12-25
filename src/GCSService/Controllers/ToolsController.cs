@@ -41,7 +41,7 @@ namespace GSendService.Controllers
         [Breadcrumb(nameof(Add), Name, nameof(Index))]
         public IActionResult Add()
         {
-            return View(new ToolModel(GetModelData(), TimeSpan.Zero, new List<ToolUsageHistoryModel>()) { ExpectedLifeMinutes = 60 * 30 });
+            return View(new ToolModel(GetModelData(), TimeSpan.Zero, []) { ExpectedLifeMinutes = 60 * 30 });
         }
 
         [HttpPost]
@@ -116,7 +116,7 @@ namespace GSendService.Controllers
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.ToolDatabase), "/Tools/Index", false));
                 modelData.Breadcrumbs.Add(new BreadcrumbItem(nameof(GSend.Language.Resources.Edit), "/Tools/Edit", false));
 
-                ToolModel resultModel = new(modelData, TimeSpan.Zero, new List<ToolUsageHistoryModel>())
+                ToolModel resultModel = new(modelData, TimeSpan.Zero, [])
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -216,7 +216,7 @@ namespace GSendService.Controllers
         {
             IReadOnlyList<IToolProfile> dbTools = _gSendDataProvider.ToolsGet();
 
-            List<ToolModel> tools = new();
+            List<ToolModel> tools = [];
 
             foreach (IToolProfile toolProfile in dbTools)
             {
@@ -273,7 +273,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new();
+                List<decimal> datavalues = [];
                 chartModel.DataValues[toolStat.Key.Date.ToString(Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern)] = datavalues;
 
                 foreach (var machine in machines)
@@ -298,7 +298,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new();
+                List<decimal> datavalues = [];
                 chartModel.DataValues[toolStat.Key.ToString()] = datavalues;
 
                 foreach (var machine in machines)
@@ -323,7 +323,7 @@ namespace GSendService.Controllers
 
             foreach (var toolStat in toolDataGrouped)
             {
-                List<decimal> datavalues = new();
+                List<decimal> datavalues = [];
                 chartModel.DataValues[toolStat.Key.ToString()] = datavalues;
 
                 foreach (var machine in machines)

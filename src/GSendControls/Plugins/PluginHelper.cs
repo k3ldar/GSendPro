@@ -243,7 +243,7 @@ namespace GSendControls.Plugins
 
             if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
             {
-                shortcuts.Add(new ShortcutModel(groupName, shortcutName, new List<int>(),
+                shortcuts.Add(new ShortcutModel(groupName, shortcutName, [],
                     (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
                     (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
             }

@@ -4,7 +4,7 @@
     {
         public MachineServiceModel()
         {
-            ServiceItems = new();
+            ServiceItems = [];
         }
 
         public MachineServiceModel(long id, long machineId, DateTime serviceDate, ServiceType serviceType, 

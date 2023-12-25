@@ -16,7 +16,7 @@ namespace GSendShared
                 return JsonSerializer.Deserialize<List<GSendPluginSettings>>(fileStream);
             }
 
-            return new();
+            return [];
         }
 
         public static string TimeSpanToTime(TimeSpan time)

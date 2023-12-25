@@ -27,15 +27,15 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
                 {
                     IPluginMenu parentHelpMenu = _pluginHost.GetMenu(MenuParent.Help);
 
-                    _pluginMenus = new List<IPluginMenu>
-                    {
+                    _pluginMenus =
+                    [
                         new SeperatorMenu(parentHelpMenu, 0),
                         new SeperatorMenu(parentHelpMenu, 0),
                         new SeperatorMenu(parentHelpMenu, 0),
                         new HelpMenuItem(parentHelpMenu),
                         new BugsAndIdeasMenu(parentHelpMenu),
                         new HomePageMenu(parentHelpMenu),
-                    };
+                    ];
                 }
 
                 return _pluginMenus;

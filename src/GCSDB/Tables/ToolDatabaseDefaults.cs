@@ -14,13 +14,13 @@ namespace GSendDB.Tables
         {
             if (version == 1)
             {
-                return new List<ToolDatabaseDataRow>()
-                {
+                return
+                [
                     new () { ToolName = "(Default)", Description = "Default profile for no tool selected"}
-                };
+                ];
             }
 
-            return new List<ToolDatabaseDataRow>();
+            return [];
         }
     }
 }

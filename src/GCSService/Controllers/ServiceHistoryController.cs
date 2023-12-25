@@ -41,10 +41,7 @@ namespace GSendService.Controllers
                 machineId = machineNames[0].Id;
             }
 
-            List<MachineServiceModel> services = new();
-            
-            foreach (var item in _gSendDataProvider.ServicesGet(machineId))
-                services.Add(item);
+            List<MachineServiceModel> services = [.. _gSendDataProvider.ServicesGet(machineId)];
 
             ServiceHistoryModel model = new(GetModelData(), machineNames, services, machineId);
 
@@ -58,10 +55,7 @@ namespace GSendService.Controllers
 
             long machineId = model.MachineId;
 
-            List<MachineServiceModel> services = new();
-
-            foreach (var item in _gSendDataProvider.ServicesGet(machineId))
-                services.Add(item);
+            List<MachineServiceModel> services = [.. _gSendDataProvider.ServicesGet(machineId)];
 
             model = new ServiceHistoryModel(GetModelData(), machineNames, services, machineId);
 

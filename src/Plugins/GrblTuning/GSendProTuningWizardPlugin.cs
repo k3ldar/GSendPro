@@ -21,10 +21,10 @@ namespace GrblTuningWizard
         {
             get
             {
-                _menuItems ??= new()
-                    {
+                _menuItems ??=
+                    [
                         new TuningWizardMenuItem(_pluginHost.GetMenu(MenuParent.Tools))
-                    };
+                    ];
 
                 return _menuItems;
             }

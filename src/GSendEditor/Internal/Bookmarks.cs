@@ -51,7 +51,7 @@ namespace GSendEditor.Internal
                 }
             }
 
-            bookmarks ??= new();
+            bookmarks ??= [];
 
             if (foundBookmark != null)
                 bookmarks.Remove(foundBookmark);

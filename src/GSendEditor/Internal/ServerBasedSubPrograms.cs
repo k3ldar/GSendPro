@@ -64,7 +64,7 @@ namespace GSendEditor.Internal
         {
             _subPrograms = _gSendApiWrapper.SubprogramGet();
 
-            return _subPrograms ?? new();
+            return _subPrograms ?? [];
         }
 
         public bool Update(ISubprogram subProgram)

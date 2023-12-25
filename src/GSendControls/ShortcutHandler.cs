@@ -12,14 +12,11 @@ namespace GSendControls
     {
         private const int DefaultTimerInterval = 250;
         private readonly Timer _timer = new();
-        private readonly List<int> _activeKeys = new();
+        private readonly List<int> _activeKeys = [];
         private static readonly Keys[] IgnoredKeys = { Keys.Control, Keys.ControlKey, Keys.RControlKey, Keys.LControlKey,
             Keys.Alt, Keys.Shift, Keys.ShiftKey, Keys.LShiftKey, Keys.RShiftKey };
 
-        private readonly Dictionary<string, List<int>> _combo = new()
-        {
-
-        };
+        private readonly Dictionary<string, List<int>> _combo = [];
 
         public ShortcutHandler()
         {

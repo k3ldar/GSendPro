@@ -11,7 +11,7 @@ namespace GSendDesktop
     public sealed class GSendContext : IGSendContext
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly Dictionary<IMachine, FrmMachine> _machines = new();
+        private readonly Dictionary<IMachine, FrmMachine> _machines = [];
 
         public GSendContext(IServiceProvider serviceProvider, IGSendSettings gsendSettings)
         {

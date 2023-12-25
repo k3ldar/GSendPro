@@ -138,7 +138,7 @@ namespace GSendControls
 
         private void SortItems()
         {
-            List<WarningPanel> items = new();
+            List<WarningPanel> items = [];
 
             foreach (Control control in flowLayoutWarningErrors.Controls)
             {

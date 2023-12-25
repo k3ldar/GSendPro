@@ -15,7 +15,7 @@ namespace GSendDB.Tables
 
         public MachineServiceDataRow()
         {
-            _items = new();
+            _items = [];
             _items.Changed += ObservableDataChanged;
         }
 

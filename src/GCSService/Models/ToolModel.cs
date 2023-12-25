@@ -16,7 +16,7 @@ namespace GSendService.Models
     {
         public ToolModel()
         {
-            History = new();
+            History = [];
         }
 
         public ToolModel(TimeSpan totalTime, List<ToolUsageHistoryModel> history)

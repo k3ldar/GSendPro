@@ -14,6 +14,11 @@ namespace GSendShared
 
         decimal HomeZ { get; set; }
 
+        /// <summary>
+        /// true if initial z zero is set to top of workpiece, false if z zero set to spoilboard
+        /// </summary>
+        bool? ZBottom { get; set; }
+
         decimal TotalDistance { get; set; }
 
         TimeSpan TotalTime { get; set; }

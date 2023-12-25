@@ -90,7 +90,7 @@ namespace GSendEditor
 
             UpdateShortcutKeyValues(_shortcuts);
             UpdateOnlineStatus(false, GSend.Language.Resources.ServerNoConnection);
-            ServerValidationThread validationThread = new ServerValidationThread(this);
+            ServerValidationThread validationThread = new(this);
             ThreadManager.ThreadStart(validationThread, "Server Validation Thread", ThreadPriority.BelowNormal, true);
             _validationThread = validationThread;
         }
@@ -536,7 +536,7 @@ namespace GSendEditor
             IGCodeAnalyses gCodeAnalyses = gCodeParser.Parse(_subProgram.Contents);
             gCodeAnalyses.Analyse();
 
-            _subProgram.Variables = new();
+            _subProgram.Variables = [];
 
             foreach (ushort variable in gCodeAnalyses.Variables.Keys)
             {
@@ -1011,13 +1011,12 @@ namespace GSendEditor
 
         private void GsendApiWrapper_ServerUriChanged()
         {
-            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
-            {
-                _validationThread.ValidateConnection();
-                _analyzerThread.AnalyzerUpdated();
-                CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                    _serverBasedSubPrograms);
-            }
+            using MouseControl mc = MouseControl.ShowWaitCursor(this);
+            _validationThread.ValidateConnection();
+            _analyzerThread.AnalyzerUpdated();
+            CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                _serverBasedSubPrograms);
+            GC.KeepAlive(mc);
         }
 
         #region Shortcuts
@@ -1038,7 +1037,7 @@ namespace GSendEditor
 
         private List<IShortcut> RetrieveAvailableShortcuts()
         {
-            List<IShortcut> Result = new();
+            List<IShortcut> Result = [];
             RecursivelyRetrieveAllShortcutClasses(this, Result, 0);
 
             return Result;
@@ -1112,80 +1111,80 @@ namespace GSendEditor
             string groupNameBookmarkMenu = GSend.Language.Resources.ShortcutBookmarkMenu;
             string groupNameViewMenu = GSend.Language.Resources.ShortcutMenuView;
 
-            return new()
-            {
+            return
+            [
                 // File menu
                 new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.New,
-                    new List<int>() { (int)Keys.Control, (int)Keys.N},
+                    [(int)Keys.Control, (int)Keys.N],
                     (bool isKeyDown) => { if (isKeyDown && mnuFileNew.Enabled) mnuFileNew_Click(mnuFileNew, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuFileNew, keys)),
                 new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Open,
-                    new List<int>() { (int)Keys.Control, (int)Keys.O},
+                    [(int)Keys.Control, (int)Keys.O],
                     (bool isKeyDown) => { if (isKeyDown && mnuFileOpen.Enabled) mnuFileOpen_Click(mnuFileOpen, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuFileOpen, keys)),
                 new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Save,
-                    new List<int>() { (int)Keys.Control, (int)Keys.S},
+                    [(int)Keys.Control, (int)Keys.S],
                     (bool isKeyDown) => { if (isKeyDown && mnuFileSave.Enabled) mnuFileSave_Click(mnuFileSave, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuFileSave, keys)),
                 new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.SaveAsSubprogram,
-                    new List<int>() { (int)Keys.Control, (int)Keys.B},
+                    [(int)Keys.Control, (int)Keys.B],
                     (bool isKeyDown) => { if (isKeyDown && mnufileSaveAsSubprogram.Enabled) mnufileSaveAsSubprogram_Click(mnufileSaveAsSubprogram, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnufileSaveAsSubprogram, keys)),
                 new ShortcutModel(groupNameFileMenu, GSend.Language.Resources.Exit,
-                    new List<int>() { (int)Keys.Alt, (int)Keys.F4},
+                    [(int)Keys.Alt, (int)Keys.F4],
                     (bool isKeyDown) => { if (isKeyDown && mnuFileExit.Enabled) mnuFileExit_Click(mnuFileExit, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuFileExit, keys)),
 
                 // Edit menu
                 new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Undo,
-                    new List<int>() { (int)Keys.Control, (int)Keys.Z },
+                    [(int)Keys.Control, (int)Keys.Z],
                     (bool isKeyDown) => { if (isKeyDown && mnuEditUndo.Enabled) mnuEditUndo_Click(mnuEditUndo, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuEditUndo, keys)),
                 new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Redo,
-                    new List<int>() { (int)Keys.Control, (int)Keys.Y },
+                    [(int)Keys.Control, (int)Keys.Y],
                     (bool isKeyDown) => { if (isKeyDown && mnuEditRedo.Enabled) mnuEditRedo_Click(mnuEditRedo, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuEditRedo, keys)),
                 new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Cut,
-                    new List<int>() { (int)Keys.Control, (int)Keys.X },
+                    [(int)Keys.Control, (int)Keys.X],
                     (bool isKeyDown) => { if (isKeyDown && mnuEditCut.Enabled) mnuEditCut_Click(mnuEditCut, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuEditCut, keys)),
                 new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Copy,
-                    new List<int>() { (int)Keys.Control, (int)Keys.C },
+                    [(int)Keys.Control, (int)Keys.C],
                     (bool isKeyDown) => { if (isKeyDown && mnuEditCopy.Enabled) mnuEditCopy_Click(mnuEditCopy, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuEditCopy, keys)),
                 new ShortcutModel(groupNameEditMenu, GSend.Language.Resources.Paste,
-                    new List<int>() { (int)Keys.Control, (int)Keys.V },
+                    [(int)Keys.Control, (int)Keys.V],
                     (bool isKeyDown) => { if (isKeyDown && mnuEditPaste.Enabled) mnuEditPaste_Click(mnuEditPaste, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuEditPaste, keys)),
 
                 // bookmark menu
                 new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkToggle,
-                    new List<int>() { (int)Keys.Alt, (int)Keys.B },
+                    [(int)Keys.Alt, (int)Keys.B],
                     (bool isKeyDown) => { if (isKeyDown && mnuBookmarksToggle.Enabled) mnuBookmarksToggle_Click(mnuBookmarksToggle, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuBookmarksToggle, keys)),
                 new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkPrevious,
-                    new List<int>() { (int)Keys.Alt, (int)Keys.P },
+                    [(int)Keys.Alt, (int)Keys.P],
                     (bool isKeyDown) => { if (isKeyDown && mnuBookmarksPrevious.Enabled) mnuBookmarksPrevious_Click(mnuBookmarksPrevious, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuBookmarksPrevious, keys)),
                 new ShortcutModel(groupNameBookmarkMenu, GSend.Language.Resources.BookmarkNext,
-                    new List<int>() { (int)Keys.Alt, (int)Keys.N },
+                    [(int)Keys.Alt, (int)Keys.N],
                     (bool isKeyDown) => { if (isKeyDown && mnuBookmarksNext.Enabled) mnuBookmarksNext_Click(mnuBookmarksNext, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuBookmarksNext, keys)),
 
                 // view menu
                 new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabGeneral,
-                    new List<int>() { (int)Keys.Control, (int)Keys.W },
+                    [(int)Keys.Control, (int)Keys.W],
                     (bool isKeyDown) => { if (isKeyDown && mnuViewPreview.Enabled) mnuViewPreview_Click(mnuViewPreview, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuViewPreview, keys)),
                 new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabOverrides,
-                    new List<int>() { (int)Keys.Control, (int)Keys.R },
+                    [(int)Keys.Control, (int)Keys.R],
                     (bool isKeyDown) => { if (isKeyDown && mnuViewProperties.Enabled) mnuViewProperties_Click(mnuViewProperties, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuViewProperties, keys)),
                 new ShortcutModel(groupNameViewMenu, GSend.Language.Resources.ShortcutTabJog,
-                    new List<int>() { (int)Keys.Control, (int)Keys.S },
+                    [(int)Keys.Control, (int)Keys.S],
                     (bool isKeyDown) => { if (isKeyDown && mnuViewSubprograms.Enabled) mnuViewSubprograms_Click(mnuViewSubprograms, EventArgs.Empty); },
                     (List<int> keys) => UpdateMenuShortCut(mnuViewSubprograms, keys)),
-            };
+            ];
         }
 
         #endregion Shortcuts

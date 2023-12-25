@@ -2410,6 +2410,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Z Bottom.
+        /// </summary>
+        public static string GCodeZBottom {
+            get {
+                return ResourceManager.GetString("GCodeZBottom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -5920,6 +5929,15 @@ namespace GSend.Language {
         public static string ViewUsage {
             get {
                 return ResourceManager.GetString("ViewUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate the bit does not go below the spoilboard when using Z Bottom and having a negative Z value.
+        /// </summary>
+        public static string WarnBitBelowSpoilboard {
+            get {
+                return ResourceManager.GetString("WarnBitBelowSpoilboard", resourceCulture);
             }
         }
         

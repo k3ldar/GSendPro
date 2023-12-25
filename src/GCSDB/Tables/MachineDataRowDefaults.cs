@@ -12,7 +12,7 @@ namespace GSendDB.Tables
 
         public List<MachineDataRow> InitialData(ushort version)
         {
-            return new List<MachineDataRow>();
+            return [];
         }
     }
 }

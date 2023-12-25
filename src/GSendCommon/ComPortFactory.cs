@@ -16,7 +16,7 @@ namespace GSendCommon
     public sealed class ComPortFactory : IComPortFactory
     {
         private readonly object _lockObject = new();
-        private readonly Dictionary<string, IComPort> _comPorts = new();
+        private readonly Dictionary<string, IComPort> _comPorts = [];
 
         private readonly GSendSettings _settings;
 

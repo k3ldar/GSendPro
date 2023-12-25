@@ -13,7 +13,7 @@ namespace GSendControls
     public partial class GCodeAnalysesDetails : UserControl
     {
         private bool _showFileName = true;
-        private readonly Dictionary<string, ListViewItem> _propertyItem = new();
+        private readonly Dictionary<string, ListViewItem> _propertyItem = [];
 
         public GCodeAnalysesDetails()
         {
@@ -101,6 +101,7 @@ namespace GSendControls
                 AddAnalyserProperty(GCodeUnitOfMeasure, gCodeAnalyses?.UnitOfMeasurement);
                 AddAnalyserProperty(GCodeSafeZ, gCodeAnalyses?.SafeZ);
                 AddAnalyserProperty(GCodeHomeZ, gCodeAnalyses?.HomeZ);
+                AddAnalyserProperty(GCodeZBottom, gCodeAnalyses?.ZBottom);
                 AddAnalyserProperty(GCodeMaxLayerHeight, gCodeAnalyses?.MaxLayerDepth);
                 AddAnalyserProperty(GCodeLayerCount, gCodeAnalyses?.Layers);
                 AddAnalyserProperty(GCodeMaxXValue, gCodeAnalyses?.MaxX);

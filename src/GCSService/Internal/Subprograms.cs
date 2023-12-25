@@ -65,7 +65,7 @@ namespace GSendService.Internal
 
         public List<ISubprogram> GetAll()
         {
-            List<ISubprogram> Result = new();
+            List<ISubprogram> Result = [];
 
             string[] files = Directory.GetFiles(_path, $"*{Constants.DefaultSubProgramFileExtension}");
 

@@ -20,8 +20,8 @@ namespace GSendDB.Tables
         {
             if (version == 1)
             {
-                return new List<ServiceItemsDataRow>()
-                {
+                return
+                [
                     new() { Name = "Clean Machine/Enclosure", IsDaily = true, IsMinor = true, IsMajor = true },
                     new() { Name = "Inspect Bits for Damage", IsDaily = true, IsMinor = true, IsMajor = true },
                     new() { Name = "Inspect Wires and Connections", IsDaily = true, IsMinor = true, IsMajor = true },
@@ -36,7 +36,7 @@ namespace GSendDB.Tables
                     new() { Name = "Test individual Limit Switches", IsDaily = false, IsMinor = false, IsMajor = true },
                     new() { Name = "Validate Gantry is Square", IsDaily = false, IsMinor = false, IsMajor = true },
                     new() { Name = "Verify screws/bolts correctly tightened", IsDaily = false, IsMinor = false, IsMajor = true },
-                };
+                ];
             }
 
             return [];

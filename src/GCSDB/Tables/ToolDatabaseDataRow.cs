@@ -14,7 +14,7 @@ namespace GSendDB.Tables
 
         public ToolDatabaseDataRow()
         {
-            _toolHistory = new ObservableList<ToolUsageHistory>();
+            _toolHistory = [];
             _toolHistory.Changed += ObservableDataChanged;
         }
 

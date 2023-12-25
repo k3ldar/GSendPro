@@ -56,11 +56,11 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
                     IPluginMenu parentServerMenu = new ServerRootMenuItem();
                     _pluginHost.AddMenu(parentServerMenu);
 
-                    _pluginMenus = new List<IPluginMenu>
-                    {
+                    _pluginMenus =
+                    [
                         new ConfigureServerMenuItem(parentServerMenu),
                         new SeperatorMenu(parentServerMenu, 1),
-                    };
+                    ];
 
                     for (int i = 0; i < MaximumServerNameMenuItems; i++)
                     {

@@ -556,7 +556,7 @@
             }
         }
 
-        public List<ChangedGrblSettings> UpdatedGrblConfiguration { get; set; } = new List<ChangedGrblSettings>();
+        public List<ChangedGrblSettings> UpdatedGrblConfiguration { get; set; } = [];
 
         public void ResetUpdated()
         {

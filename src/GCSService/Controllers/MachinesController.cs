@@ -322,7 +322,7 @@ namespace GSendService.Controllers
 
             List<ServiceItemModel> allServiceItems = _gSendDataProvider.ServiceItemsGet(machine.MachineType);
 
-            Dictionary<long, string> serviceItems = new();
+            Dictionary<long, string> serviceItems = [];
 
             foreach (var serviceItem in allServiceItems)
             {

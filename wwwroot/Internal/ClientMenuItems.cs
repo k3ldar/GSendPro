@@ -6,7 +6,7 @@ namespace gsend.pro.Internal
     {
         public ClientMenuItems()
         {
-            MenuItems = new();
+            MenuItems = [];
         }
 
         public Dictionary<string, string> MenuItems { get; set; }
