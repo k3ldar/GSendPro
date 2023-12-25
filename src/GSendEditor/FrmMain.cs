@@ -1011,13 +1011,12 @@ namespace GSendEditor
 
         private void GsendApiWrapper_ServerUriChanged()
         {
-            using (MouseControl mc = MouseControl.ShowWaitCursor(this))
-            {
-                _validationThread.ValidateConnection();
-                _analyzerThread.AnalyzerUpdated();
-                CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
-                    _serverBasedSubPrograms);
-            }
+            using MouseControl mc = MouseControl.ShowWaitCursor(this);
+            _validationThread.ValidateConnection();
+            _analyzerThread.AnalyzerUpdated();
+            CreateAnalyzerThread(_gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
+                _serverBasedSubPrograms);
+            GC.KeepAlive(mc);
         }
 
         #region Shortcuts
