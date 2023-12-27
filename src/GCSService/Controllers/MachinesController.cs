@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.ServiceProcess;
 
 using GSendService.Attributes;
 using GSendService.Models;
@@ -310,7 +308,6 @@ namespace GSendService.Controllers
         }
 
         [HttpPost]
-        [Route("/Machines/Service/{machineId}/")]
         public IActionResult Service(ServiceMachineModel model)
         {
             IMachine machine = _gSendDataProvider.MachineGet(model.MachineId);
@@ -340,7 +337,7 @@ namespace GSendService.Controllers
 
             _gSendDataProvider.ServiceAdd(new MachineServiceModel(-1, model.MachineId, DateTime.UtcNow,
                 model.ServiceType, spindleTicks / TimeSpan.TicksPerHour, serviceItems));
-            
+
             return RedirectToAction(nameof(Index));
         }
 

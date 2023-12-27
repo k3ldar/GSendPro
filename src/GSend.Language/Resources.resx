@@ -2212,4 +2212,10 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="WarnBitBelowSpoilboard" xml:space="preserve">
     <value>Validate the bit does not go below the spoilboard when using Z Bottom and having a negative Z value</value>
   </data>
+  <data name="SearchMenu" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="GotoLineNumberMenu" xml:space="preserve">
+    <value>Goto</value>
+  </data>
 </root>

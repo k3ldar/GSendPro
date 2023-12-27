@@ -2437,6 +2437,15 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Goto.
+        /// </summary>
+        public static string GotoLineNumberMenu {
+            get {
+                return ResourceManager.GetString("GotoLineNumberMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available Blocks.
         /// </summary>
         public static string GraphAvailableBlocks {
@@ -3567,6 +3576,15 @@ namespace GSend.Language {
         public static string SaveSubProgram {
             get {
                 return ResourceManager.GetString("SaveSubProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchMenu {
+            get {
+                return ResourceManager.GetString("SearchMenu", resourceCulture);
             }
         }
         

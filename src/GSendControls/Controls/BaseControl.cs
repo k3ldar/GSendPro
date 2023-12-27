@@ -10,10 +10,7 @@
  *
  */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Globalization;
 using System.Text;
 using System.Threading;
@@ -171,7 +168,7 @@ namespace GSendControls
         /// <param name="parent"></param>
         /// <param name="results"></param>
         /// <returns></returns>
-        private string GetLocalizedControls(ControlCollection parent, string results)
+        private static string GetLocalizedControls(ControlCollection parent, string results)
         {
             if (parent == null)
                 return results;
