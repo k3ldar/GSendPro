@@ -78,7 +78,9 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public IReadOnlyList<IPluginControl> ControlItems => null;
 
-        public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
+        public bool ReceiveClientMessages => false;
+
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in this context
         }

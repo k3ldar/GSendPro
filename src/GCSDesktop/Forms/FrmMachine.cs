@@ -64,8 +64,7 @@ namespace GSendDesktop.Forms
         private List<IShortcut> _shortcuts;
         private readonly ShortcutHandler _shortcutHandler;
         private readonly IPluginHelper _pluginHelper;
-        private readonly List<IGSendPluginModule> _pluginsWithClientMessage = [];
-        private readonly List<IPluginItemBase> _pluginsWithClientMessages = [];
+        private readonly List<IPluginMessages> _pluginItemsWithClientMessages = [];
 
         #endregion Private Fields
 
@@ -336,12 +335,6 @@ namespace GSendDesktop.Forms
                         AddMessageToConsole(clientMessage.message.ToString());
                     }
 
-                    // notify plugins interested in messages
-                    Parallel.ForEach(_pluginsWithClientMessage, sp =>
-                    {
-                        sp.ClientMessageReceived(clientMessage);
-                    });
-
                     break;
 
                 case Constants.GrblError:
@@ -436,9 +429,8 @@ namespace GSendDesktop.Forms
                     break;
             }
 
-
-            // notify plugins interested in messages
-            Parallel.ForEach(_pluginsWithClientMessages, sp =>
+            // notify plugin items interested in messages
+            Parallel.ForEach(_pluginItemsWithClientMessages, sp =>
             {
                 sp.ClientMessageReceived(clientMessage);
             });
@@ -2666,8 +2658,8 @@ namespace GSendDesktop.Forms
         {
             ArgumentNullException.ThrowIfNull(pluginModule);
 
-            if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
-                _pluginsWithClientMessage.Add(pluginModule);
+            if (pluginModule.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginModule);
         }
 
         public IPluginMenu GetMenu(MenuParent menuParent)
@@ -2702,7 +2694,7 @@ namespace GSendDesktop.Forms
             _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
 
             if (pluginMenu.ReceiveClientMessages)
-                _pluginsWithClientMessages.Add(pluginMenu);
+                _pluginItemsWithClientMessages.Add(pluginMenu);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
@@ -2711,7 +2703,7 @@ namespace GSendDesktop.Forms
             _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
 
             if (toolbarButton.ReceiveClientMessages)
-                _pluginsWithClientMessages.Add(toolbarButton);
+                _pluginItemsWithClientMessages.Add(toolbarButton);
         }
 
         public void AddControl(IPluginControl pluginControl)

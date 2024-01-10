@@ -15,7 +15,7 @@ namespace GrblTuningWizard
 
         public PluginHosts Host => PluginHosts.Sender;
 
-        public PluginOptions Options => PluginOptions.HasMenuItems | PluginOptions.MessageReceived;
+        public PluginOptions Options => PluginOptions.HasMenuItems;
 
         public IReadOnlyList<IPluginMenu> MenuItems
         {
@@ -34,9 +34,11 @@ namespace GrblTuningWizard
 
         public IReadOnlyList<IPluginControl> ControlItems => null;
 
-        public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
-        {
+        public bool ReceiveClientMessages => false;
 
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
+        {
+            // from interface, not used in this context
         }
 
         public void Initialize(IPluginHost pluginHost)

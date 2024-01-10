@@ -3,7 +3,7 @@ using GSendShared.Plugins;
 
 namespace GSendControls.Abstractions
 {
-    public interface IPluginToolbarButton : IPluginItemBase
+    public interface IPluginToolbarButton : IPluginItemInteractive
     {
         /// <summary>
         /// Type of button to be created

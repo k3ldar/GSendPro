@@ -4,7 +4,7 @@ using GSendShared.Plugins;
 
 namespace GSendControls.Abstractions
 {
-    public interface IPluginControl
+    public interface IPluginControl : IPluginItemBase
     {
         string Name { get; }
 

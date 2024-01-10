@@ -8,7 +8,7 @@ namespace GSendControls.Abstractions
     /// <summary>
     /// Interface created by a plugin to add menu items to the host
     /// </summary>
-    public interface IPluginMenu : IPluginItemBase
+    public interface IPluginMenu : IPluginItemInteractive
     {
         /// <summary>
         /// Image to be displayed with menu

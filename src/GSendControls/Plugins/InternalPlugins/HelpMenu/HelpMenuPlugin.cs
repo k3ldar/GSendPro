@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Plugins;
 
@@ -46,7 +48,9 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 
         public IReadOnlyList<IPluginControl> ControlItems => null;
 
-        public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
+        public bool ReceiveClientMessages => false;
+
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
             // from interface, not used in any context
         }
