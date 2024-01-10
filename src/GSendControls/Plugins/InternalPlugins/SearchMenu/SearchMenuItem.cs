@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 using GSendControls.Abstractions;
@@ -7,9 +6,9 @@ using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Plugins;
 
-namespace GSendControls.Plugins.InternalPlugins.ServerMenu
+namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 {
-    public sealed class ServerRootMenuItem : IPluginMenu
+    public sealed class SearchMenuItem : IPluginMenu
     {
         public Image MenuImage => null;
 
@@ -17,26 +16,26 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public IPluginMenu ParentMenu => null;
 
-        public string Text => "Server";
+        public string Text => GSend.Language.Resources.SearchMenu;
 
-        public int Index => 5;
+        public int Index => 3;
 
         public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
-
+            // from interface, not used in this context
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-
+            // from interface, not used in this context
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
-            groupName = String.Empty;
-            shortcutName = String.Empty;
+            groupName = null;
+            shortcutName = null;
             return false;
         }
 
@@ -57,7 +56,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public void UpdateHost<T>(T senderPluginHost)
         {
-
+            // from interface, not used in this context
         }
     }
 }

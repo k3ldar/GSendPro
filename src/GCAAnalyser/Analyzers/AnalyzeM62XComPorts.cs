@@ -61,10 +61,8 @@ namespace GSendAnalyzer.Analyzers
                         }
 
                         //open port
-                        if (!comPortUsage.ContainsKey(comPort))
-                        {
+                        if (!comPortUsage.TryGetValue(comPort, out bool _))
                             comPortUsage.Add(comPort, false);
-                        }
 
                         if ((command.PreviousCommand?.LineNumber == command.LineNumber || command.NextCommand?.LineNumber == command.LineNumber) &&
                             (command.PreviousCommand?.MasterLineNumber == command.MasterLineNumber || command.NextCommand?.MasterLineNumber == command.MasterLineNumber))
@@ -80,7 +78,7 @@ namespace GSendAnalyzer.Analyzers
                     else if (command.CommandValue == Constants.MCode621)
                     {
                         // close port
-                        if (!comPortUsage.ContainsKey(comPort))
+                        if (!comPortUsage.TryGetValue(comPort, out bool _))
                             codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError4, command.LineNumber, comPort);
                         else if (!comPortUsage[comPort])
                             codeAnalyses.AddError(GSend.Language.Resources.AnalyzeError5, command.LineNumber, comPort);

@@ -241,9 +241,10 @@ namespace GSendControls.Plugins
                 }
             };
 
-            if (shortcuts != null && menu.GetShortcut(out string groupName, out string shortcutName))
+            List<int> defaultKeys = [];
+            if (shortcuts != null && menu.GetShortcut(defaultKeys, out string groupName, out string shortcutName))
             {
-                shortcuts.Add(new ShortcutModel(groupName, shortcutName, [],
+                shortcuts.Add(new ShortcutModel(groupName, shortcutName, defaultKeys,
                     (isKeyDown) => { if (isKeyDown && menu.IsEnabled()) menu.Clicked(); },
                     (List<int> keys) => UpdateMenuShortCut(pluginMenu, keys)));
             }

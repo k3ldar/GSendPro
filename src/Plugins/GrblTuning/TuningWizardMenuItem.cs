@@ -2,6 +2,7 @@
 
 using GSendControls;
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -132,7 +133,7 @@ namespace GrblTuningWizard
             _wizardSettings = new TuningWizardSettings(_senderPluginHost);
         }
 
-        public bool GetShortcut(out string groupName, out string shortcutName)
+        public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
             groupName = GSend.Language.Resources.ShortcutMenuTools;
             shortcutName = GSend.Language.Resources.TuneWizard;

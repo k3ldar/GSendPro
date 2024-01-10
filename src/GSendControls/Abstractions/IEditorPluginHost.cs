@@ -22,6 +22,6 @@ namespace GSendControls.Abstractions
         /// <summary>
         /// In app editor
         /// </summary>
-        FastColoredTextBox Editor { get; }
+        ITextEditor Editor { get; }
     }
 }

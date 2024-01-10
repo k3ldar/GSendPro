@@ -93,8 +93,8 @@ namespace GSendControls
             CollapsedColorTo = Color.LightBlue;
             ExpandColorFrom = Color.LightBlue;
             ExpandColorTo = Color.DarkBlue;
-            ExpandImage = Resources.ExpandHorizontal;
-            CollapseImage = Resources.CollapseHorizonal;
+            ExpandImage = Properties.Resources.ExpandHorizontal;
+            CollapseImage = Properties.Resources.CollapseHorizonal;
         }
 
         #endregion Constructors
@@ -134,13 +134,13 @@ namespace GSendControls
                     switch (Orientation)
                     {
                         case Orientation.Horizontal:
-                            ExpandImage = Resources.ExpandHorizontal;
-                            CollapseImage = Resources.CollapseHorizonal;
+                            ExpandImage = Properties.Resources.ExpandHorizontal;
+                            CollapseImage = Properties.Resources.CollapseHorizonal;
                             break;
 
                         case System.Windows.Forms.Orientation.Vertical:
-                            ExpandImage = Resources.ExpandVertical;
-                            CollapseImage = Resources.CollapseVertical;
+                            ExpandImage = Properties.Resources.ExpandVertical;
+                            CollapseImage = Properties.Resources.CollapseVertical;
                             break;
                     }
                 }
@@ -182,13 +182,13 @@ namespace GSendControls
                     switch (Orientation)
                     {
                         case System.Windows.Forms.Orientation.Horizontal:
-                            ExpandImage = Resources.ExpandHorizontal;
-                            CollapseImage = Resources.CollapseHorizonal;
+                            ExpandImage = Properties.Resources.ExpandHorizontal;
+                            CollapseImage = Properties.Resources.CollapseHorizonal;
                             break;
 
                         case System.Windows.Forms.Orientation.Vertical:
-                            ExpandImage = Resources.ExpandVertical;
-                            CollapseImage = Resources.CollapseVertical;
+                            ExpandImage = Properties.Resources.ExpandVertical;
+                            CollapseImage = Properties.Resources.CollapseVertical;
                             break;
                     }
                 }

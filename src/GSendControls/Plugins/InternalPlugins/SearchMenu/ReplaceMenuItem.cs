@@ -1,53 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
+
 using GSendControls.Abstractions;
-using GSendControls.Forms;
 
 using GSendShared;
 using GSendShared.Plugins;
 
-using Microsoft.Extensions.DependencyInjection;
-
-namespace GSendControls.Plugins.InternalPlugins.ServerMenu
+namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 {
-    public sealed class ConfigureServerMenuItem : IPluginMenu
+    internal class ReplaceMenuItem : IPluginMenu
     {
-        private IPluginHost _pluginHost;
+        private readonly ITextEditor _textEditor;
 
-        public ConfigureServerMenuItem(IPluginMenu parentMenu)
+        public ReplaceMenuItem(IPluginMenu parentMenu, ITextEditor textBox)
         {
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            _textEditor = textBox ?? throw new ArgumentNullException(nameof(textBox));
         }
 
         public Image MenuImage => null;
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public IPluginMenu ParentMenu { get; }
+        public IPluginMenu ParentMenu { get; private set; }
 
-        public string Text => "Configure";
+        public string Text => GSend.Language.Resources.ReplaceMenu;
 
-        public int Index => 0;
+        public int Index => 1;
 
         public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
-            using FrmConfigureServer frmConfigureServer = _pluginHost.GSendContext.ServiceProvider.GetRequiredService<FrmConfigureServer>();
-            frmConfigureServer.ShowDialog();
+            _textEditor.ShowReplaceDialog();
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-
+            throw new NotImplementedException();
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
-            groupName = String.Empty;
-            shortcutName = String.Empty;
-            return false;
+            groupName = "Search Menu";
+            shortcutName = "Replace";
+            defaultKeys.Add((int)Keys.Control);
+            defaultKeys.Add((int)Keys.R);
+            return true;
         }
 
         public bool IsChecked()
@@ -57,7 +58,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public bool IsEnabled()
         {
-            return true;
+            return _textEditor.Text.Length > 0;
         }
 
         public bool IsVisible()
@@ -67,7 +68,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public void UpdateHost<T>(T senderPluginHost)
         {
-            _pluginHost = senderPluginHost as IPluginHost;
+            // from interface, not used in this context
         }
     }
 }

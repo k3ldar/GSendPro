@@ -1,7 +1,4 @@
-using System.Runtime.InteropServices;
 using System.Text;
-
-using FastColoredTextBoxNS;
 
 using GSendApi;
 
@@ -12,6 +9,7 @@ using GSendControls;
 using GSendControls.Abstractions;
 using GSendControls.Plugins;
 using GSendControls.Threads;
+
 using GSendDesktop.Internal;
 
 using GSendEditor.Internal;
@@ -47,6 +45,7 @@ namespace GSendEditor
         private readonly IPluginHelper _pluginHelper;
         private bool _isSubprogram = false;
         private bool _isOnline;
+        private readonly TextEditorBridge _textEditorBridge;
 
         public FrmMain(IGSendContext gSendContext)
         {
@@ -55,6 +54,7 @@ namespace GSendEditor
             _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
+            _textEditorBridge = new(this, txtGCode);
             _serverBasedSubPrograms = new ServerBasedSubPrograms(_gsendApiWrapper);
             CreateAnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
                 _serverBasedSubPrograms);
@@ -1191,7 +1191,7 @@ namespace GSendEditor
 
         #region ISenderPluginHost
 
-        public PluginHosts Host => PluginHosts.SenderHost;
+        public PluginHosts Host => PluginHosts.Editor;
 
         public int MaximumMenuIndex => menuStripMain.Items.IndexOf(mnuHelp);
 
@@ -1226,7 +1226,7 @@ namespace GSendEditor
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
@@ -1262,7 +1262,7 @@ namespace GSendEditor
             }
         }
 
-        public FastColoredTextBox Editor => txtGCode;
+        public ITextEditor Editor => _textEditorBridge;
 
         public IGSendContext GSendContext => _gSendContext;
 

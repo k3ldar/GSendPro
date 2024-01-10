@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+
 using GSendShared.Plugins;
 
 namespace GSendControls.Abstractions
@@ -38,9 +40,10 @@ namespace GSendControls.Abstractions
         /// <summary>
         /// Shortcut that can be used by the menu
         /// </summary>
+        /// <param name="defaultKeys">default keys for shortcut, if available</param>
         /// <param name="groupName"></param>
         /// <param name="shortcutName"></param>
         /// <returns></returns>
-        bool GetShortcut(out string groupName, out string shortcutName);
+        bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName);
     }
 }

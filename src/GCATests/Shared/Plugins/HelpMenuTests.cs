@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+
 using GSendControls.Abstractions;
 using GSendControls.Plugins;
 using GSendControls.Plugins.InternalPlugins.HelpMenu;
@@ -49,7 +50,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(0, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 
@@ -68,7 +69,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(3, sut.Index);
             Assert.AreEqual(MenuType.Seperator, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 
@@ -87,7 +88,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(2, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 
@@ -106,7 +107,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(4, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 
