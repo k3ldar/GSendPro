@@ -28,7 +28,7 @@ namespace GSendTests.Plugins.SearchMenu
             Assert.AreEqual(PluginHosts.Editor, sut.Host);
             Assert.AreEqual(PluginOptions.HasMenuItems, sut.Options);
             Assert.IsNull(sut.ToolbarItems);
-            Assert.AreEqual(2, sut.MenuItems.Count);
+            Assert.AreEqual(5, sut.MenuItems.Count);
         }
 
         [TestMethod]

@@ -1,7 +1,5 @@
 using System.Text;
 
-using FastColoredTextBoxNS;
-
 using GSendApi;
 
 using GSendCommon;
@@ -56,7 +54,7 @@ namespace GSendEditor
             _gsendApiWrapper.ServerUriChanged += GsendApiWrapper_ServerUriChanged;
             _pluginHelper = _gSendContext.ServiceProvider.GetRequiredService<IPluginHelper>();
             InitializeComponent();
-            _textEditorBridge = new(txtGCode);
+            _textEditorBridge = new(this, txtGCode);
             _serverBasedSubPrograms = new ServerBasedSubPrograms(_gsendApiWrapper);
             CreateAnalyzerThread(gSendContext.ServiceProvider.GetService<IGCodeParserFactory>(),
                 _serverBasedSubPrograms);
@@ -1228,7 +1226,7 @@ namespace GSendEditor
         public void AddMenu(IPluginMenu pluginMenu)
         {
             pluginMenu.UpdateHost(this as IEditorPluginHost);
-            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
+            _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)

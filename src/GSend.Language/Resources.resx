@@ -2215,7 +2215,22 @@ There should be at least 100mm movement from the spindles position in both the X
   <data name="SearchMenu" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="FindMenu" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="FindNextMenu" xml:space="preserve">
+    <value>Find Next</value>
+  </data>
+  <data name="FindPreviousMenu" xml:space="preserve">
+    <value>Find Previous</value>
+  </data>
   <data name="GotoLineNumberMenu" xml:space="preserve">
     <value>Goto</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="ReplaceMenu" xml:space="preserve">
+    <value>Replace</value>
   </data>
 </root>

@@ -27,10 +27,13 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
             {
                 if (_pluginMenus == null)
                 {
-                    SearchMenuItem searchMenuItem = new SearchMenuItem();
+                    SearchMenuItem searchMenuItem = new();
 
                     _pluginMenus = [
                         searchMenuItem,
+                        new FindMenuItem(searchMenuItem, _pluginHost.Editor),
+                        new ReplaceMenuItem(searchMenuItem, _pluginHost.Editor),
+                        new SeperatorMenu(searchMenuItem, 19),
                         new GotoMenuItem(searchMenuItem, _pluginHost.Editor)
                     ];
                 }

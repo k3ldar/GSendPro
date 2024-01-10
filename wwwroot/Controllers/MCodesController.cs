@@ -14,9 +14,9 @@ namespace gsend.pro.Controllers
     {
         public const string MCodes = "MCodes";
 
-        private static readonly string[] _validMCodes = { 
-            "M600", "M601", "M602", "M605", "M620", "M621", 
-            "M622", "M623", "M630", "M630.1", "M631", 
+        private static readonly string[] _validMCodes = {
+            "M600", "M601", "M602", "M605", "M620", "M621",
+            "M622", "M623", "M630", "M630.1", "M631",
             "M631.1", "M631.2" };
 
         private static readonly Dictionary<string, decimal[]> _seeAlso = new()

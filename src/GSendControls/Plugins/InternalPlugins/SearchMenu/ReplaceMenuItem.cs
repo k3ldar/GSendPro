@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 using GSendControls.Abstractions;
 
@@ -9,11 +10,11 @@ using GSendShared.Plugins;
 
 namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 {
-    public sealed class GotoMenuItem : IPluginMenu
+    internal class ReplaceMenuItem : IPluginMenu
     {
         private readonly ITextEditor _textEditor;
 
-        public GotoMenuItem(IPluginMenu parentMenu, ITextEditor textBox)
+        public ReplaceMenuItem(IPluginMenu parentMenu, ITextEditor textBox)
         {
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
             _textEditor = textBox ?? throw new ArgumentNullException(nameof(textBox));
@@ -25,15 +26,15 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 
         public IPluginMenu ParentMenu { get; private set; }
 
-        public string Text => GSend.Language.Resources.GotoLineNumberMenu;
+        public string Text => GSend.Language.Resources.ReplaceMenu;
 
-        public int Index => 20;
+        public int Index => 1;
 
         public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
-            _textEditor.ShowGoToDialog();
+            _textEditor.ShowReplaceDialog();
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
@@ -43,9 +44,11 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
-            groupName = null;
-            shortcutName = null;
-            return false;
+            groupName = "Search Menu";
+            shortcutName = "Replace";
+            defaultKeys.Add((int)Keys.Control);
+            defaultKeys.Add((int)Keys.R);
+            return true;
         }
 
         public bool IsChecked()
@@ -55,7 +58,7 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 
         public bool IsEnabled()
         {
-            return _textEditor.LineCount > 0;
+            return _textEditor.Text.Length > 0;
         }
 
         public bool IsVisible()

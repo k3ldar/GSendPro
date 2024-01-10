@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using GSendApi;
@@ -21,7 +22,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
             Index = index;
         }
-         
+
         public Image MenuImage => null;
 
         public MenuType MenuType => MenuType.MenuItem;
@@ -44,7 +45,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         }
 
-        public bool GetShortcut(out string groupName, out string shortcutName)
+        public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
             groupName = String.Empty;
             shortcutName = String.Empty;

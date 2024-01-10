@@ -2014,6 +2014,42 @@ namespace GSend.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find.
+        /// </summary>
+        public static string Find {
+            get {
+                return ResourceManager.GetString("Find", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find.
+        /// </summary>
+        public static string FindMenu {
+            get {
+                return ResourceManager.GetString("FindMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Next.
+        /// </summary>
+        public static string FindNextMenu {
+            get {
+                return ResourceManager.GetString("FindNextMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Previous.
+        /// </summary>
+        public static string FindPreviousMenu {
+            get {
+                return ResourceManager.GetString("FindPreviousMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Supports flood coolant.
         /// </summary>
         public static string FloodCoolant {
@@ -3486,6 +3522,15 @@ namespace GSend.Language {
         public static string RenameMachine {
             get {
                 return ResourceManager.GetString("RenameMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace.
+        /// </summary>
+        public static string ReplaceMenu {
+            get {
+                return ResourceManager.GetString("ReplaceMenu", resourceCulture);
             }
         }
         

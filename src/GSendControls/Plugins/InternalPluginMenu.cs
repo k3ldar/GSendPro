@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using GSendControls.Abstractions;
@@ -40,7 +41,7 @@ namespace GSendControls.Plugins
             // only required by interface
         }
 
-        public bool GetShortcut(out string groupName, out string shortcutName)
+        public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
             groupName = String.Empty;
             shortcutName = String.Empty;

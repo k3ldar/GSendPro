@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using GSendControls.Abstractions;
@@ -39,7 +40,7 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
             Process.Start(psi);
         }
 
-        public bool GetShortcut(out string groupName, out string shortcutName)
+        public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
             groupName = null;
             shortcutName = null;

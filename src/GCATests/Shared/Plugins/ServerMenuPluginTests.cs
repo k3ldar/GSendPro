@@ -52,7 +52,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(3, sut.Index);
             Assert.AreEqual(MenuType.Seperator, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 
@@ -71,7 +71,7 @@ namespace GSendTests.Shared.Plugins
             Assert.AreEqual(4, sut.Index);
             Assert.AreEqual(MenuType.MenuItem, sut.MenuType);
             Assert.AreEqual(parent, sut.ParentMenu);
-            Assert.IsFalse(sut.GetShortcut(out string _, out string _));
+            Assert.IsFalse(sut.GetShortcut([], out string _, out string _));
             Assert.IsFalse(sut.IsChecked());
             Assert.IsTrue(sut.IsEnabled());
 

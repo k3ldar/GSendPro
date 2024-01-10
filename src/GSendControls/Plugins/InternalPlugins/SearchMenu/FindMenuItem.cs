@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 using GSendControls.Abstractions;
 
@@ -8,35 +10,45 @@ using GSendShared.Plugins;
 
 namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 {
-    public sealed class SearchMenuItem : IPluginMenu
+    internal class FindMenuItem : IPluginMenu
     {
+        private readonly ITextEditor _textEditor;
+
+        public FindMenuItem(IPluginMenu parentMenu, ITextEditor textBox)
+        {
+            ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            _textEditor = textBox ?? throw new ArgumentNullException(nameof(textBox));
+        }
+
         public Image MenuImage => null;
 
         public MenuType MenuType => MenuType.MenuItem;
 
-        public IPluginMenu ParentMenu => null;
+        public IPluginMenu ParentMenu { get; private set; }
 
-        public string Text => GSend.Language.Resources.SearchMenu;
+        public string Text => GSend.Language.Resources.FindMenu;
 
-        public int Index => 3;
+        public int Index => 0;
 
         public bool ReceiveClientMessages => false;
 
         public void Clicked()
         {
-            // from interface, not used in this context
+            _textEditor.ShowFindDialog();
         }
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-            // from interface, not used in this context
+            throw new NotImplementedException();
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)
         {
-            groupName = null;
-            shortcutName = null;
-            return false;
+            groupName = "Search Menu";
+            shortcutName = "Find";
+            defaultKeys.Add((int)Keys.Control);
+            defaultKeys.Add((int)Keys.F);
+            return true;
         }
 
         public bool IsChecked()
@@ -46,7 +58,7 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 
         public bool IsEnabled()
         {
-            return true;
+            return _textEditor.Text.Length > 0;
         }
 
         public bool IsVisible()
