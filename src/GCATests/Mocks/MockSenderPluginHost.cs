@@ -84,6 +84,11 @@ namespace GSendTests.Mocks
             Messages.Add(message);
         }
 
+        public void AddControl(IPluginControl pluginControl)
+        {
+            throw new NotImplementedException();
+        }
+
         public IGSendContext GSendContext => throw new NotImplementedException();
     }
 }

@@ -14,7 +14,7 @@ namespace GSendAnalyzer.Analyzers
             if (mCommands.Count == 0)
                 return;
 
-            if (mCommands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
                 List<int> lineNumbers = [];
 

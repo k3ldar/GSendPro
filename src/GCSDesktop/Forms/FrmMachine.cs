@@ -2654,7 +2654,7 @@ namespace GSendDesktop.Forms
 
         #endregion Shortcuts
 
-        #region ISenderPluginHost
+        #region IPluginHost
 
         public PluginHosts Host => PluginHosts.Sender;
 
@@ -2714,6 +2714,11 @@ namespace GSendDesktop.Forms
                 _pluginsWithClientMessages.Add(toolbarButton);
         }
 
+        public void AddControl(IPluginControl pluginControl)
+        {
+            // nothing to do here yet!
+        }
+
         public void SendMessage(string message)
         {
             InternalSendMessage(message);
@@ -2735,6 +2740,6 @@ namespace GSendDesktop.Forms
 
         public IMachine GetMachine() => _machine;
 
-        #endregion ISenderPluginHost
+        #endregion IPluginHost
     }
 }

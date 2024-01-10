@@ -131,6 +131,20 @@ namespace GSendControls.Plugins
                         }
                     }
 
+                    if (plugin.Options.HasFlag(PluginOptions.HasControls))
+                    {
+                        if (plugin.ControlItems == null)
+                            throw new InvalidOperationException("Controls can not be null if HasControls option is used");
+
+                        foreach (IPluginControl pluginControl in plugin.ControlItems)
+                        {
+                            if (pluginControl == null)
+                                continue;
+
+                            pluginHost.AddControl(pluginControl);
+                        }
+                    }
+
                     pluginHost.AddPlugin(plugin);
                     _logger.AddToLog(PluginManager.LogLevel.PluginLoadSuccess, $"{plugin.Name} was loaded for host {pluginHost}");
                 }

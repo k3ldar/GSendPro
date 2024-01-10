@@ -14,7 +14,7 @@ namespace GSendAnalyzer.Analyzers
             if (m630Commands.Count == 0)
                 return;
 
-            if (m630Commands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
                 if (!gCodeAnalyses.AnalysesOptions.HasFlag(AnalysesOptions.RunProgram))
                     codeAnalyses.AddOptions(AnalysesOptions.RunProgram);

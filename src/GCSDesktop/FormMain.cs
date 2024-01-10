@@ -566,7 +566,7 @@ namespace GSendDesktop
                 toolStripStatusConnected.Text = statusText;
         }
 
-        #region ISenderPluginHost
+        #region IPluginHost
 
         public PluginHosts Host => PluginHosts.SenderHost;
 
@@ -608,11 +608,16 @@ namespace GSendDesktop
             _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
         }
 
+        public void AddControl(IPluginControl pluginControl)
+        {
+            // nothing to do here yet!
+        }
+
         public void AddMessage(InformationType informationType, string message)
         {
             throw new InvalidOperationException();
         }
 
-        #endregion ISenderPluginHost
+        #endregion IPluginHost
     }
 }

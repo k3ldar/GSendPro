@@ -38,7 +38,15 @@ namespace GSendControls.Abstractions
         /// </summary>
         IReadOnlyList<IPluginMenu> MenuItems { get; }
 
+        /// <summary>
+        /// Toolbar items to be displayed within the host
+        /// </summary>
         IReadOnlyList<IPluginToolbarButton> ToolbarItems { get; }
+
+        /// <summary>
+        /// Controls to be displayed within host
+        /// </summary>
+        IReadOnlyList<IPluginControl> ControlItems { get; }
 
         void ClientMessageReceived(IClientBaseMessage clientBaseMessage);
     }

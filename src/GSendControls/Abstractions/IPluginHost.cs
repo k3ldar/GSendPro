@@ -17,6 +17,8 @@ namespace GSendControls.Abstractions
 
         void AddToolbar(IPluginToolbarButton toolbarButton);
 
+        void AddControl(IPluginControl pluginControl);
+
         void AddMessage(InformationType informationType, string message);
 
         void AddPlugin(IGSendPluginModule pluginModule);

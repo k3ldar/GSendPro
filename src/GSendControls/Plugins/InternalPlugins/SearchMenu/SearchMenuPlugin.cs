@@ -44,6 +44,8 @@ namespace GSendControls.Plugins.InternalPlugins.SearchMenu
 
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
+        public IReadOnlyList<IPluginControl> ControlItems => null;
+
         public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
         {
             // from interface, not used in this context
