@@ -43,6 +43,7 @@ namespace GSendDesktop
         private IMachine _selectedMachine = null;
         private readonly IPluginHelper _pluginHelper;
         private long _machineHashCombined = 0;
+        private readonly List<IPluginMessages> _pluginItemsWithClientMessages = [];
 
         public FormMain(IGSendContext context, IGSendApiWrapper machineApiWrapper,
             ICommandProcessor processCommand, GSendSettings settings)
@@ -131,6 +132,9 @@ namespace GSendDesktop
             }
 
             UpdateEnabledState();
+
+            // notify plugin items interested in messages
+            _pluginItemsWithClientMessages.ForEach(pcm => pcm.ClientMessageReceived(clientMessage));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Left in for now")]
@@ -576,7 +580,10 @@ namespace GSendDesktop
 
         public void AddPlugin(IGSendPluginModule pluginModule)
         {
-            // nothing special to do for this host
+            ArgumentNullException.ThrowIfNull(pluginModule);
+
+            if (pluginModule.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginModule);
         }
 
         public IPluginMenu GetMenu(MenuParent menuParent)
@@ -600,17 +607,23 @@ namespace GSendDesktop
         {
             pluginMenu.UpdateHost(this as IPluginHost);
             _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, null);
+
+            if (pluginMenu.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginMenu);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
         {
             toolbarButton.UpdateHost(this as IEditorPluginHost);
             _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
+
+            if (toolbarButton.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(toolbarButton);
         }
 
         public void AddControl(IPluginControl pluginControl)
         {
-            // nothing to do here yet!
+            // nothing to do for this host!
         }
 
         public void AddMessage(InformationType informationType, string message)

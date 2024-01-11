@@ -1237,7 +1237,12 @@ namespace GSendEditor
 
         public void AddControl(IPluginControl pluginControl)
         {
-            // nothing to do here yet!
+            TabPage controlTabPage = new();
+            tabControlMain.TabPages.Add(controlTabPage);
+            controlTabPage.Controls.Add(pluginControl.Control);
+            pluginControl.Control.UpdatePosition(controlTabPage);
+
+            controlTabPage.Text = pluginControl.Name;
         }
 
         public void AddMessage(InformationType informationType, string message)
