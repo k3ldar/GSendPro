@@ -94,14 +94,15 @@ namespace GSendControls.Plugins
                 if (plugin == null)
                     continue;
 
+                if (!plugin.Host.HasFlag(pluginHost.Host))
+                {
+                    _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
+                    continue;
+                }
+
                 plugin.Initialize(pluginHost);
                 try
                 {
-                    if (!plugin.Host.HasFlag(pluginHost.Host))
-                    {
-                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
-                        continue;
-                    }
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {

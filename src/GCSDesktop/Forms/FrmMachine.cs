@@ -430,10 +430,7 @@ namespace GSendDesktop.Forms
             }
 
             // notify plugin items interested in messages
-            Parallel.ForEach(_pluginItemsWithClientMessages, sp =>
-            {
-                sp.ClientMessageReceived(clientMessage);
-            });
+            _pluginItemsWithClientMessages.ForEach(pcm => pcm.ClientMessageReceived(clientMessage));
         }
 
         protected override void UpdateEnabledState()
@@ -536,25 +533,6 @@ namespace GSendDesktop.Forms
                     UpdateLabelText(lblBufferSize, String.Format(GSend.Language.Resources.BufferSize, status.BufferSize));
                     UpdateLabelText(lblQueueSize, String.Format(GSend.Language.Resources.QueueSize, status.QueueSize));
                     UpdateLabelText(lblCommandQueueSize, String.Format(GSend.Language.Resources.CommandQueueSize, status.CommandQueueSize));
-
-                    heartbeatPanelBufferSize.AddPoint(status.BufferSize);
-                    heartbeatPanelCommandQueue.AddPoint(status.CommandQueueSize);
-                    heartbeatPanelFeed.AddPoint((int)status.FeedRate);
-                    heartbeatPanelQueueSize.AddPoint(status.QueueSize);
-                    heartbeatPanelSpindle.AddPoint((int)status.SpindleSpeed);
-
-                    if (heartbeatPanelAvailableRXBytes.MaximumPoints == 0 && status.AvailableRXbytes > 0)
-                    {
-                        heartbeatPanelAvailableRXBytes.MaximumPoints = status.AvailableRXbytes;
-                    }
-
-                    if (heartbeatPanelAvailableBlocks.MaximumPoints == 0 && status.BufferAvailableBlocks > 0)
-                    {
-                        heartbeatPanelAvailableBlocks.MaximumPoints = status.BufferAvailableBlocks;
-                    }
-
-                    heartbeatPanelAvailableRXBytes.AddPoint(status.AvailableRXbytes);
-                    heartbeatPanelAvailableBlocks.AddPoint(status.BufferAvailableBlocks);
 
                     if (!_appliedSettingsChanged)
                     {
@@ -1808,19 +1786,6 @@ namespace GSendDesktop.Forms
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
 
-            // heartbeat tab
-            tabPageHeartbeat.Text = GSend.Language.Resources.Graphs;
-            heartbeatPanelBufferSize.GraphName = GSend.Language.Resources.GraphBufferSize;
-            heartbeatPanelCommandQueue.GraphName = GSend.Language.Resources.GraphCommandQueue;
-            heartbeatPanelFeed.GraphName = GSend.Language.Resources.GraphFeedRate;
-            heartbeatPanelQueueSize.GraphName = GSend.Language.Resources.GraphQueueSize;
-            heartbeatPanelSpindle.GraphName = GSend.Language.Resources.GraphSpindleSpeed;
-            heartbeatPanelAvailableBlocks.GraphName = GSend.Language.Resources.GraphAvailableBlocks;
-            heartbeatPanelAvailableRXBytes.GraphName = GSend.Language.Resources.GraphAvailableRXBytes;
-
-
-
-
             // menu items
 
             openFileDialog1.Filter = _gSendContext.Settings.FileFilter;
@@ -2708,7 +2673,20 @@ namespace GSendDesktop.Forms
 
         public void AddControl(IPluginControl pluginControl)
         {
-            // nothing to do here yet!
+            TabPage controlTabPage = new();
+
+            if (pluginControl.Location == ControlLocation.Primary)
+                tabControlMain.TabPages.Add(controlTabPage);
+            else
+                tabControlSecondary.TabPages.Add(controlTabPage);
+
+            controlTabPage.Controls.Add(pluginControl.Control);
+            pluginControl.Control.UpdatePosition(controlTabPage);
+
+            controlTabPage.Text = pluginControl.Name;
+
+            if (pluginControl.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginControl);
         }
 
         public void SendMessage(string message)
