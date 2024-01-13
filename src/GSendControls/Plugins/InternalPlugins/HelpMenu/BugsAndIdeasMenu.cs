@@ -8,15 +8,19 @@ using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Plugins;
 
+using Shared.Classes;
+
 namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class BugsAndIdeasMenu : IPluginMenu
     {
         private readonly IPluginMenu _parentMenu;
+        private readonly IRunProgram _runProgram;
 
-        public BugsAndIdeasMenu(IPluginMenu parentMenu)
+        public BugsAndIdeasMenu(IPluginMenu parentMenu, IRunProgram runProgram)
         {
             _parentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
         }
 
         public string Text => "Bugs and Ideas";
@@ -33,13 +37,7 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 
         public void Clicked()
         {
-            ProcessStartInfo psi = new()
-            {
-                FileName = "https://github.com/k3ldar/GSendPro/issues",
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
+            _runProgram.Run("https://github.com/k3ldar/GSendPro/issues", null, true, false, 500);
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)

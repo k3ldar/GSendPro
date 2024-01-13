@@ -65,7 +65,7 @@ namespace GSendTests.Shared.Plugins
         public void HomePageMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            HomePageMenu sut = new(parent);
+            HomePageMenu sut = new(parent, new MockRunProgram());
             Assert.IsNotNull(sut);
             Assert.AreEqual("Home Page", sut.Text);
             Assert.AreEqual(4, sut.Index);
