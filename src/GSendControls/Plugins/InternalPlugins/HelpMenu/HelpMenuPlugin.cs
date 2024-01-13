@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Plugins;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Shared.Classes;
 
 namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
@@ -10,6 +16,7 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
     {
         private List<IPluginMenu> _pluginMenus;
         private IPluginHost _pluginHost;
+        private IRunProgram _runProgram;
 
         public string Name => "Help Menu";
 
@@ -32,9 +39,9 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
                         new SeperatorMenu(parentHelpMenu, 0),
                         new SeperatorMenu(parentHelpMenu, 0),
                         new SeperatorMenu(parentHelpMenu, 0),
-                        new HelpMenuItem(parentHelpMenu),
-                        new BugsAndIdeasMenu(parentHelpMenu),
-                        new HomePageMenu(parentHelpMenu),
+                        new HelpMenuItem(parentHelpMenu, _runProgram),
+                        new BugsAndIdeasMenu(parentHelpMenu, _runProgram),
+                        new HomePageMenu(parentHelpMenu, _runProgram),
                     ];
                 }
 
@@ -44,14 +51,19 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 
         public IReadOnlyList<IPluginToolbarButton> ToolbarItems => null;
 
-        public void ClientMessageReceived(IClientBaseMessage clientBaseMessage)
+        public IReadOnlyList<IPluginControl> ControlItems => null;
+
+        public bool ReceiveClientMessages => false;
+
+        public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-            // from interface, not used in any context
+            // from interface, not used in this context
         }
 
         public void Initialize(IPluginHost pluginHost)
         {
             _pluginHost = pluginHost ?? throw new ArgumentNullException(nameof(pluginHost));
+            _runProgram = pluginHost.GSendContext.ServiceProvider.GetService<IRunProgram>() ?? throw new InvalidOperationException("IRunProgram not registered");
         }
     }
 }

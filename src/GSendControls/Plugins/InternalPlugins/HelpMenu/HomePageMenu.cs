@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
+
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Plugins;
+
+using Shared.Classes;
 
 namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HomePageMenu : IPluginMenu
     {
         private readonly IPluginMenu _parentMenu;
+        private readonly IRunProgram _runProgram;
 
-        public HomePageMenu(IPluginMenu parentMenu)
+        public HomePageMenu(IPluginMenu parentMenu, IRunProgram runProgram)
         {
             _parentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
         }
 
         public string Text => "Home Page";
@@ -31,13 +36,7 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 
         public void Clicked()
         {
-            ProcessStartInfo psi = new()
-            {
-                FileName = "https://www.gsend.pro/",
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
+            _runProgram.Run("https://www.gsend.pro/", null, true, false, 500);
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)

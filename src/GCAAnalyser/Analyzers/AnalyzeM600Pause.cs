@@ -14,7 +14,7 @@ namespace GSendAnalyzer.Analyzers
             if (m600Commands.Count == 0)
                 return;
 
-            if (m600Commands.Count > 0 && gCodeAnalyses is GCodeAnalyses codeAnalyses)
+            if (gCodeAnalyses is GCodeAnalyses codeAnalyses)
             {
                 foreach (IGCodeCommand command in m600Commands)
                 {

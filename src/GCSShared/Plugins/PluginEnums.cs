@@ -33,7 +33,9 @@
 
         HasToolbarButtons = 4,
 
-        MessageReceived = 8,
+        HasControls = 8,
+
+        MessageReceived = 8192,
     }
 
     /// <summary>
@@ -82,5 +84,12 @@
         Seperator,
 
         Button
+    }
+
+    public enum ControlLocation
+    {
+        Primary,
+
+        Secondary,
     }
 }

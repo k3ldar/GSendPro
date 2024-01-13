@@ -31,6 +31,9 @@ dotnet_diagnostic.IDE0305.severity = none
 dotnet_diagnostic.IDE0300.severity = none
 dotnet_diagnostic.IDE0290.severity = none
 
+# S1168: Empty arrays and collections should be returned instead of null
+dotnet_diagnostic.S1168.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 

@@ -7,6 +7,8 @@ using GSendShared.Abstractions;
 
 using PluginManager.Abstractions;
 
+using Shared.Classes;
+
 namespace GSendTests.Mocks
 {
     internal class MockServiceProvider : IServiceProvider
@@ -26,6 +28,10 @@ namespace GSendTests.Mocks
                 else if (serviceType.Equals(typeof(IPluginClassesService)))
                 {
                     return new MockPluginClassesService();
+                }
+                else if (serviceType.Equals(typeof(IRunProgram)))
+                {
+                    return new MockRunProgram();
                 }
             }
 

@@ -6,12 +6,10 @@ using GSendControls.Plugins;
 using GSendControls.Plugins.InternalPlugins.HelpMenu;
 
 using GSendShared.Plugins;
-
 using GSendTests.Mocks;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GSendTests.Shared.Plugins
+namespace GSendTests.Plugins.HelpMenuTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -21,7 +19,8 @@ namespace GSendTests.Shared.Plugins
         public void HelpMenuPlugin_ConstructValidInstance_Success()
         {
             IPluginMenu parentMenu = new MockPluginMenu("test", MenuType.MenuItem, null);
-            MockSenderPluginHost pluginHost = new(parentMenu);
+            MockGSendContext gSendContext = new(new MockServiceProvider());
+            MockSenderPluginHost pluginHost = new(parentMenu, gSendContext);
             HelpMenuPlugin sut = new();
             sut.Initialize(pluginHost);
 
@@ -43,7 +42,7 @@ namespace GSendTests.Shared.Plugins
         public void HelpMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            HelpMenuItem sut = new(parent);
+            HelpMenuItem sut = new(parent, new MockRunProgram());
 
             Assert.IsNotNull(sut);
             Assert.AreEqual("Help", sut.Text);
@@ -82,7 +81,7 @@ namespace GSendTests.Shared.Plugins
         public void BugsAndIdeasMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            BugsAndIdeasMenu sut = new(parent);
+            BugsAndIdeasMenu sut = new(parent, new MockRunProgram());
             Assert.IsNotNull(sut);
             Assert.AreEqual("Bugs and Ideas", sut.Text);
             Assert.AreEqual(2, sut.Index);
@@ -101,7 +100,7 @@ namespace GSendTests.Shared.Plugins
         public void HomePageMenuItem_ConstructValidInstance_Success()
         {
             IPluginMenu parent = new MockPluginMenu("help", MenuType.MenuItem, null);
-            HomePageMenu sut = new(parent);
+            HomePageMenu sut = new(parent, new MockRunProgram());
             Assert.IsNotNull(sut);
             Assert.AreEqual("Home Page", sut.Text);
             Assert.AreEqual(4, sut.Index);

@@ -1189,7 +1189,7 @@ namespace GSendEditor
 
         #endregion Shortcuts
 
-        #region ISenderPluginHost
+        #region IPluginHost
 
         public PluginHosts Host => PluginHosts.Editor;
 
@@ -1235,12 +1235,22 @@ namespace GSendEditor
             _pluginHelper.AddToolbarButton(this, toolbarMain, toolbarButton);
         }
 
+        public void AddControl(IPluginControl pluginControl)
+        {
+            TabPage controlTabPage = new();
+            tabControlMain.TabPages.Add(controlTabPage);
+            controlTabPage.Controls.Add(pluginControl.Control);
+            pluginControl.Control.UpdatePosition(controlTabPage);
+
+            controlTabPage.Text = pluginControl.Name;
+        }
+
         public void AddMessage(InformationType informationType, string message)
         {
             throw new InvalidOperationException();
         }
 
-        #endregion ISenderPluginHost
+        #endregion IPluginHost
 
         #region IEditorPluginHost
 

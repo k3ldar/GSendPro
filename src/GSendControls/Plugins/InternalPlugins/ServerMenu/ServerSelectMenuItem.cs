@@ -42,7 +42,7 @@ namespace GSendControls.Plugins.InternalPlugins.ServerMenu
 
         public void ClientMessageReceived(IClientBaseMessage clientMessage)
         {
-
+            // from interface, not used in this context
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)

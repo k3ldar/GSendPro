@@ -32,6 +32,11 @@ namespace GSendTests.Mocks
 
         public IGSendContext GSendContext => throw new NotImplementedException();
 
+        public void AddControl(IPluginControl pluginControl)
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddMenu(IPluginMenu pluginMenu)
         {
             throw new NotImplementedException();

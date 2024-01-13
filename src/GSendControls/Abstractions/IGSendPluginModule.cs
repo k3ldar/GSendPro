@@ -5,7 +5,7 @@ using GSendShared.Plugins;
 
 namespace GSendControls.Abstractions
 {
-    public interface IGSendPluginModule
+    public interface IGSendPluginModule : IPluginMessages
     {
         /// <summary>
         /// Name of the plugin
@@ -38,8 +38,14 @@ namespace GSendControls.Abstractions
         /// </summary>
         IReadOnlyList<IPluginMenu> MenuItems { get; }
 
+        /// <summary>
+        /// Toolbar items to be displayed within the host
+        /// </summary>
         IReadOnlyList<IPluginToolbarButton> ToolbarItems { get; }
 
-        void ClientMessageReceived(IClientBaseMessage clientBaseMessage);
+        /// <summary>
+        /// Controls to be displayed within host
+        /// </summary>
+        IReadOnlyList<IPluginControl> ControlItems { get; }
     }
 }

@@ -94,14 +94,15 @@ namespace GSendControls.Plugins
                 if (plugin == null)
                     continue;
 
+                if (!plugin.Host.HasFlag(pluginHost.Host))
+                {
+                    _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
+                    continue;
+                }
+
                 plugin.Initialize(pluginHost);
                 try
                 {
-                    if (!plugin.Host.HasFlag(pluginHost.Host))
-                    {
-                        _logger.AddToLog(PluginManager.LogLevel.PluginLoadError, $"Plugin {plugin.Name} is not valid for host {pluginHost.Host}");
-                        continue;
-                    }
 
                     if (plugin.Options.HasFlag(PluginOptions.HasMenuItems))
                     {
@@ -128,6 +129,20 @@ namespace GSendControls.Plugins
                                 continue;
 
                             pluginHost.AddToolbar(pluginButton);
+                        }
+                    }
+
+                    if (plugin.Options.HasFlag(PluginOptions.HasControls))
+                    {
+                        if (plugin.ControlItems == null)
+                            throw new InvalidOperationException("Controls can not be null if HasControls option is used");
+
+                        foreach (IPluginControl pluginControl in plugin.ControlItems)
+                        {
+                            if (pluginControl == null)
+                                continue;
+
+                            pluginHost.AddControl(pluginControl);
                         }
                     }
 

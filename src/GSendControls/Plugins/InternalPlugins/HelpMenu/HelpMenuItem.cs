@@ -8,13 +8,18 @@ using GSendControls.Abstractions;
 using GSendShared;
 using GSendShared.Plugins;
 
+using Shared.Classes;
+
 namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 {
     internal sealed class HelpMenuItem : IPluginMenu
     {
-        public HelpMenuItem(IPluginMenu parentMenu)
+        private readonly IRunProgram _runProgram;
+
+        public HelpMenuItem(IPluginMenu parentMenu, IRunProgram runProgram)
         {
             ParentMenu = parentMenu ?? throw new ArgumentNullException(nameof(parentMenu));
+            _runProgram = runProgram ?? throw new ArgumentNullException(nameof(runProgram));
         }
 
         public string Text => "Help";
@@ -31,13 +36,7 @@ namespace GSendControls.Plugins.InternalPlugins.HelpMenu
 
         public void Clicked()
         {
-            ProcessStartInfo psi = new()
-            {
-                FileName = Constants.HelpWebsite,
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
+            _runProgram.Run(Constants.HelpWebsite, null, true, false, 500);
         }
 
         public bool GetShortcut(in List<int> defaultKeys, out string groupName, out string shortcutName)

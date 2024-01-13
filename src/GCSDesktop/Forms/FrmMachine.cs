@@ -64,8 +64,7 @@ namespace GSendDesktop.Forms
         private List<IShortcut> _shortcuts;
         private readonly ShortcutHandler _shortcutHandler;
         private readonly IPluginHelper _pluginHelper;
-        private readonly List<IGSendPluginModule> _pluginsWithClientMessage = [];
-        private readonly List<IPluginItemBase> _pluginsWithClientMessages = [];
+        private readonly List<IPluginMessages> _pluginItemsWithClientMessages = [];
 
         #endregion Private Fields
 
@@ -336,12 +335,6 @@ namespace GSendDesktop.Forms
                         AddMessageToConsole(clientMessage.message.ToString());
                     }
 
-                    // notify plugins interested in messages
-                    Parallel.ForEach(_pluginsWithClientMessage, sp =>
-                    {
-                        sp.ClientMessageReceived(clientMessage);
-                    });
-
                     break;
 
                 case Constants.GrblError:
@@ -436,12 +429,8 @@ namespace GSendDesktop.Forms
                     break;
             }
 
-
-            // notify plugins interested in messages
-            Parallel.ForEach(_pluginsWithClientMessages, sp =>
-            {
-                sp.ClientMessageReceived(clientMessage);
-            });
+            // notify plugin items interested in messages
+            _pluginItemsWithClientMessages.ForEach(pcm => pcm.ClientMessageReceived(clientMessage));
         }
 
         protected override void UpdateEnabledState()
@@ -544,25 +533,6 @@ namespace GSendDesktop.Forms
                     UpdateLabelText(lblBufferSize, String.Format(GSend.Language.Resources.BufferSize, status.BufferSize));
                     UpdateLabelText(lblQueueSize, String.Format(GSend.Language.Resources.QueueSize, status.QueueSize));
                     UpdateLabelText(lblCommandQueueSize, String.Format(GSend.Language.Resources.CommandQueueSize, status.CommandQueueSize));
-
-                    heartbeatPanelBufferSize.AddPoint(status.BufferSize);
-                    heartbeatPanelCommandQueue.AddPoint(status.CommandQueueSize);
-                    heartbeatPanelFeed.AddPoint((int)status.FeedRate);
-                    heartbeatPanelQueueSize.AddPoint(status.QueueSize);
-                    heartbeatPanelSpindle.AddPoint((int)status.SpindleSpeed);
-
-                    if (heartbeatPanelAvailableRXBytes.MaximumPoints == 0 && status.AvailableRXbytes > 0)
-                    {
-                        heartbeatPanelAvailableRXBytes.MaximumPoints = status.AvailableRXbytes;
-                    }
-
-                    if (heartbeatPanelAvailableBlocks.MaximumPoints == 0 && status.BufferAvailableBlocks > 0)
-                    {
-                        heartbeatPanelAvailableBlocks.MaximumPoints = status.BufferAvailableBlocks;
-                    }
-
-                    heartbeatPanelAvailableRXBytes.AddPoint(status.AvailableRXbytes);
-                    heartbeatPanelAvailableBlocks.AddPoint(status.BufferAvailableBlocks);
 
                     if (!_appliedSettingsChanged)
                     {
@@ -1816,19 +1786,6 @@ namespace GSendDesktop.Forms
             // 2d view
             tabPage2DView.Text = GSend.Language.Resources.View2D;
 
-            // heartbeat tab
-            tabPageHeartbeat.Text = GSend.Language.Resources.Graphs;
-            heartbeatPanelBufferSize.GraphName = GSend.Language.Resources.GraphBufferSize;
-            heartbeatPanelCommandQueue.GraphName = GSend.Language.Resources.GraphCommandQueue;
-            heartbeatPanelFeed.GraphName = GSend.Language.Resources.GraphFeedRate;
-            heartbeatPanelQueueSize.GraphName = GSend.Language.Resources.GraphQueueSize;
-            heartbeatPanelSpindle.GraphName = GSend.Language.Resources.GraphSpindleSpeed;
-            heartbeatPanelAvailableBlocks.GraphName = GSend.Language.Resources.GraphAvailableBlocks;
-            heartbeatPanelAvailableRXBytes.GraphName = GSend.Language.Resources.GraphAvailableRXBytes;
-
-
-
-
             // menu items
 
             openFileDialog1.Filter = _gSendContext.Settings.FileFilter;
@@ -2654,7 +2611,7 @@ namespace GSendDesktop.Forms
 
         #endregion Shortcuts
 
-        #region ISenderPluginHost
+        #region IPluginHost
 
         public PluginHosts Host => PluginHosts.Sender;
 
@@ -2666,8 +2623,8 @@ namespace GSendDesktop.Forms
         {
             ArgumentNullException.ThrowIfNull(pluginModule);
 
-            if (pluginModule.Options.HasFlag(PluginOptions.MessageReceived))
-                _pluginsWithClientMessage.Add(pluginModule);
+            if (pluginModule.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginModule);
         }
 
         public IPluginMenu GetMenu(MenuParent menuParent)
@@ -2702,7 +2659,7 @@ namespace GSendDesktop.Forms
             _pluginHelper.AddMenu(this, menuStripMain, pluginMenu, _shortcuts);
 
             if (pluginMenu.ReceiveClientMessages)
-                _pluginsWithClientMessages.Add(pluginMenu);
+                _pluginItemsWithClientMessages.Add(pluginMenu);
         }
 
         public void AddToolbar(IPluginToolbarButton toolbarButton)
@@ -2711,7 +2668,25 @@ namespace GSendDesktop.Forms
             _pluginHelper.AddToolbarButton(this, toolStripMain, toolbarButton);
 
             if (toolbarButton.ReceiveClientMessages)
-                _pluginsWithClientMessages.Add(toolbarButton);
+                _pluginItemsWithClientMessages.Add(toolbarButton);
+        }
+
+        public void AddControl(IPluginControl pluginControl)
+        {
+            TabPage controlTabPage = new();
+
+            if (pluginControl.Location == ControlLocation.Primary)
+                tabControlMain.TabPages.Add(controlTabPage);
+            else
+                tabControlSecondary.TabPages.Add(controlTabPage);
+
+            controlTabPage.Controls.Add(pluginControl.Control);
+            pluginControl.Control.UpdatePosition(controlTabPage);
+
+            controlTabPage.Text = pluginControl.Name;
+
+            if (pluginControl.ReceiveClientMessages)
+                _pluginItemsWithClientMessages.Add(pluginControl);
         }
 
         public void SendMessage(string message)
@@ -2735,6 +2710,6 @@ namespace GSendDesktop.Forms
 
         public IMachine GetMachine() => _machine;
 
-        #endregion ISenderPluginHost
+        #endregion IPluginHost
     }
 }

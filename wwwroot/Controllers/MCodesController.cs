@@ -14,10 +14,10 @@ namespace gsend.pro.Controllers
     {
         public const string MCodes = "MCodes";
 
-        private static readonly string[] _validMCodes = {
+        private static readonly string[] _validMCodes = [
             "M600", "M601", "M602", "M605", "M620", "M621",
             "M622", "M623", "M630", "M630.1", "M631",
-            "M631.1", "M631.2" };
+            "M631.1", "M631.2" ];
 
         private static readonly Dictionary<string, decimal[]> _seeAlso = new()
         {
@@ -52,7 +52,7 @@ namespace gsend.pro.Controllers
 
             bool seeAlsoExists = _seeAlso.TryGetValue(mCode, out _);
             MCodeModel mCodeModel = new(GetModelData(), mCode, menuData,
-                seeAlsoExists ? _seeAlso[mCode] : Array.Empty<decimal>());
+                seeAlsoExists ? _seeAlso[mCode] : []);
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(GSend.Language.Resources.BreadcrumbMCodes, "/MCodes/Index", false));
             mCodeModel.Breadcrumbs.Add(new BreadcrumbItem(mCode, $"/MCodes/{mCode}/", false));
 

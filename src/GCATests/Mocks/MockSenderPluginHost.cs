@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using GSendControls.Abstractions;
+
 using GSendShared;
 using GSendShared.Models;
 using GSendShared.Plugins;
@@ -16,7 +18,18 @@ namespace GSendTests.Mocks
 
         }
 
+        public MockSenderPluginHost(IGSendContext gSendContext)
+        {
+            GSendContext = gSendContext ?? throw new ArgumentNullException(nameof(gSendContext));
+        }
+
         public MockSenderPluginHost(IPluginMenu parentMenu)
+        {
+            _parent = parentMenu;
+        }
+
+        public MockSenderPluginHost(IPluginMenu parentMenu, IGSendContext gSendContext)
+            : this(gSendContext)
         {
             _parent = parentMenu;
         }
@@ -39,7 +52,7 @@ namespace GSendTests.Mocks
 
         public void AddMenu(IPluginMenu pluginMenu)
         {
-            
+
         }
 
         public void AddMessage(InformationType informationType, string message)
@@ -84,6 +97,11 @@ namespace GSendTests.Mocks
             Messages.Add(message);
         }
 
-        public IGSendContext GSendContext => throw new NotImplementedException();
+        public void AddControl(IPluginControl pluginControl)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGSendContext GSendContext { get; set; }
     }
 }

@@ -172,6 +172,7 @@
             mnuActionStop = new System.Windows.Forms.ToolStripMenuItem();
             mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
             mnuOptionsShortcutKeys = new System.Windows.Forms.ToolStripMenuItem();
+            mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             warningsAndErrors = new GSendControls.WarningContainer();
@@ -193,17 +194,7 @@
             tabPage2DView = new System.Windows.Forms.TabPage();
             panelZoom = new System.Windows.Forms.Panel();
             machine2dView1 = new GSendControls.Machine2DView();
-            tabPageHeartbeat = new System.Windows.Forms.TabPage();
-            flowLayoutPanelHeartbeat = new System.Windows.Forms.FlowLayoutPanel();
-            heartbeatPanelCommandQueue = new GSendControls.HeartbeatPanel();
-            heartbeatPanelBufferSize = new GSendControls.HeartbeatPanel();
-            heartbeatPanelQueueSize = new GSendControls.HeartbeatPanel();
-            heartbeatPanelFeed = new GSendControls.HeartbeatPanel();
-            heartbeatPanelSpindle = new GSendControls.HeartbeatPanel();
-            heartbeatPanelAvailableBlocks = new GSendControls.HeartbeatPanel();
-            heartbeatPanelAvailableRXBytes = new GSendControls.HeartbeatPanel();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            mnuTools = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMain.SuspendLayout();
             statusStrip.SuspendLayout();
             tabControlMain.SuspendLayout();
@@ -228,8 +219,6 @@
             tabPageConsole.SuspendLayout();
             tabPageGCode.SuspendLayout();
             tabPage2DView.SuspendLayout();
-            tabPageHeartbeat.SuspendLayout();
-            flowLayoutPanelHeartbeat.SuspendLayout();
             SuspendLayout();
             // 
             // selectionOverrideSpindle
@@ -458,7 +447,7 @@
             // 
             toolStripDropDownButtonCoordinateSystem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             toolStripDropDownButtonCoordinateSystem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { g54ToolStripMenuItem, g55ToolStripMenuItem, g56ToolStripMenuItem, g57ToolStripMenuItem, g58ToolStripMenuItem, g59ToolStripMenuItem });
-            toolStripDropDownButtonCoordinateSystem.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            toolStripDropDownButtonCoordinateSystem.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             toolStripDropDownButtonCoordinateSystem.Image = (System.Drawing.Image)resources.GetObject("toolStripDropDownButtonCoordinateSystem.Image");
             toolStripDropDownButtonCoordinateSystem.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripDropDownButtonCoordinateSystem.Name = "toolStripDropDownButtonCoordinateSystem";
@@ -470,7 +459,7 @@
             g54ToolStripMenuItem.Checked = true;
             g54ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             g54ToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            g54ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g54ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g54ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g54ToolStripMenuItem.Name = "g54ToolStripMenuItem";
             g54ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -479,7 +468,7 @@
             // 
             // g55ToolStripMenuItem
             // 
-            g55ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g55ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g55ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g55ToolStripMenuItem.Name = "g55ToolStripMenuItem";
             g55ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -489,7 +478,7 @@
             // g56ToolStripMenuItem
             // 
             g56ToolStripMenuItem.CheckOnClick = true;
-            g56ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g56ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g56ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g56ToolStripMenuItem.Name = "g56ToolStripMenuItem";
             g56ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -498,7 +487,7 @@
             // 
             // g57ToolStripMenuItem
             // 
-            g57ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g57ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g57ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g57ToolStripMenuItem.Name = "g57ToolStripMenuItem";
             g57ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -507,7 +496,7 @@
             // 
             // g58ToolStripMenuItem
             // 
-            g58ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g58ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g58ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g58ToolStripMenuItem.Name = "g58ToolStripMenuItem";
             g58ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -516,7 +505,7 @@
             // 
             // g59ToolStripMenuItem
             // 
-            g59ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            g59ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             g59ToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             g59ToolStripMenuItem.Name = "g59ToolStripMenuItem";
             g59ToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
@@ -1159,7 +1148,7 @@
             // 
             lblPropertyHeader.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lblPropertyHeader.AutoSize = true;
-            lblPropertyHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            lblPropertyHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             lblPropertyHeader.Location = new System.Drawing.Point(380, 139);
             lblPropertyHeader.Name = "lblPropertyHeader";
             lblPropertyHeader.Size = new System.Drawing.Size(40, 15);
@@ -1406,38 +1395,38 @@
             // mnuMachineLoadGCode
             // 
             mnuMachineLoadGCode.Name = "mnuMachineLoadGCode";
-            mnuMachineLoadGCode.Size = new System.Drawing.Size(180, 22);
+            mnuMachineLoadGCode.Size = new System.Drawing.Size(145, 22);
             mnuMachineLoadGCode.Text = "Load G-Code";
             mnuMachineLoadGCode.Click += mnuMachineLoadGCode_Click;
             // 
             // mnuMachineClearGCode
             // 
             mnuMachineClearGCode.Name = "mnuMachineClearGCode";
-            mnuMachineClearGCode.Size = new System.Drawing.Size(180, 22);
+            mnuMachineClearGCode.Size = new System.Drawing.Size(145, 22);
             mnuMachineClearGCode.Text = "Clear G-Code";
             mnuMachineClearGCode.Click += mnuMachineClearGCode_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(142, 6);
             // 
             // mnuMachineRename
             // 
             mnuMachineRename.Name = "mnuMachineRename";
-            mnuMachineRename.Size = new System.Drawing.Size(180, 22);
+            mnuMachineRename.Size = new System.Drawing.Size(145, 22);
             mnuMachineRename.Text = "Rename";
             mnuMachineRename.Click += mnuMachineRename_Click;
             // 
             // toolStripMenuItem7
             // 
             toolStripMenuItem7.Name = "toolStripMenuItem7";
-            toolStripMenuItem7.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem7.Size = new System.Drawing.Size(142, 6);
             // 
             // mnuMachineClose
             // 
             mnuMachineClose.Name = "mnuMachineClose";
-            mnuMachineClose.Size = new System.Drawing.Size(180, 22);
+            mnuMachineClose.Size = new System.Drawing.Size(145, 22);
             mnuMachineClose.Text = "Close";
             mnuMachineClose.Click += closeToolStripMenuItem_Click;
             // 
@@ -1526,7 +1515,7 @@
             // 
             mnuActionConnect.Name = "mnuActionConnect";
             mnuActionConnect.Size = new System.Drawing.Size(175, 22);
-            mnuActionConnect.Text = GSend.Language.Resources.Connect;
+            mnuActionConnect.Text = "Connect";
             mnuActionConnect.Click += toolStripButtonConnect_Click;
             // 
             // mnuActionDisconnect
@@ -1590,7 +1579,7 @@
             // 
             mnuActionStop.Name = "mnuActionStop";
             mnuActionStop.Size = new System.Drawing.Size(175, 22);
-            mnuActionStop.Text = GSend.Language.Resources.Stop;
+            mnuActionStop.Text = "Stop";
             mnuActionStop.Click += toolStripButtonStop_Click;
             // 
             // mnuOptions
@@ -1607,6 +1596,12 @@
             mnuOptionsShortcutKeys.Text = "Shortcut Keys";
             mnuOptionsShortcutKeys.Click += mnuOptionsShortcutKeys_Click;
             // 
+            // mnuTools
+            // 
+            mnuTools.Name = "mnuTools";
+            mnuTools.Size = new System.Drawing.Size(46, 20);
+            mnuTools.Text = "Tools";
+            // 
             // mnuHelp
             // 
             mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { mnuHelpAbout });
@@ -1617,7 +1612,7 @@
             // mnuHelpAbout
             // 
             mnuHelpAbout.Name = "mnuHelpAbout";
-            mnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            mnuHelpAbout.Size = new System.Drawing.Size(107, 22);
             mnuHelpAbout.Text = "About";
             mnuHelpAbout.Click += mnuHelpAbout_Click;
             // 
@@ -1642,7 +1637,6 @@
             tabControlSecondary.Controls.Add(tabPageConsole);
             tabControlSecondary.Controls.Add(tabPageGCode);
             tabControlSecondary.Controls.Add(tabPage2DView);
-            tabControlSecondary.Controls.Add(tabPageHeartbeat);
             tabControlSecondary.Location = new System.Drawing.Point(12, 411);
             tabControlSecondary.Name = "tabControlSecondary";
             tabControlSecondary.SelectedIndex = 0;
@@ -1800,6 +1794,7 @@
             machine2dView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             machine2dView1.Configuration = GSendShared.AxisConfiguration.None;
             machine2dView1.Location = new System.Drawing.Point(6, 6);
+            machine2dView1.LockUpdate = true;
             machine2dView1.MachineSize = new System.Drawing.Rectangle(0, 0, 0, 0);
             machine2dView1.Name = "machine2dView1";
             machine2dView1.Size = new System.Drawing.Size(485, 131);
@@ -1808,133 +1803,9 @@
             machine2dView1.YPosition = 0F;
             machine2dView1.ZoomPanel = panelZoom;
             // 
-            // tabPageHeartbeat
-            // 
-            tabPageHeartbeat.Controls.Add(flowLayoutPanelHeartbeat);
-            tabPageHeartbeat.Location = new System.Drawing.Point(4, 4);
-            tabPageHeartbeat.Name = "tabPageHeartbeat";
-            tabPageHeartbeat.Padding = new System.Windows.Forms.Padding(3);
-            tabPageHeartbeat.Size = new System.Drawing.Size(779, 143);
-            tabPageHeartbeat.TabIndex = 3;
-            tabPageHeartbeat.Text = "graphs";
-            tabPageHeartbeat.UseVisualStyleBackColor = true;
-            // 
-            // flowLayoutPanelHeartbeat
-            // 
-            flowLayoutPanelHeartbeat.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            flowLayoutPanelHeartbeat.AutoScroll = true;
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelCommandQueue);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelBufferSize);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelQueueSize);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelFeed);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelSpindle);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelAvailableBlocks);
-            flowLayoutPanelHeartbeat.Controls.Add(heartbeatPanelAvailableRXBytes);
-            flowLayoutPanelHeartbeat.Location = new System.Drawing.Point(6, 6);
-            flowLayoutPanelHeartbeat.Name = "flowLayoutPanelHeartbeat";
-            flowLayoutPanelHeartbeat.Size = new System.Drawing.Size(753, 131);
-            flowLayoutPanelHeartbeat.TabIndex = 0;
-            // 
-            // heartbeatPanelCommandQueue
-            // 
-            heartbeatPanelCommandQueue.AutoPoints = true;
-            heartbeatPanelCommandQueue.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelCommandQueue.GraphName = null;
-            heartbeatPanelCommandQueue.Location = new System.Drawing.Point(3, 3);
-            heartbeatPanelCommandQueue.MaximumPoints = 60;
-            heartbeatPanelCommandQueue.Name = "heartbeatPanelCommandQueue";
-            heartbeatPanelCommandQueue.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelCommandQueue.SecondaryColor = System.Drawing.Color.BlueViolet;
-            heartbeatPanelCommandQueue.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelCommandQueue.TabIndex = 2;
-            // 
-            // heartbeatPanelBufferSize
-            // 
-            heartbeatPanelBufferSize.AutoPoints = true;
-            heartbeatPanelBufferSize.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelBufferSize.GraphName = null;
-            heartbeatPanelBufferSize.Location = new System.Drawing.Point(209, 3);
-            heartbeatPanelBufferSize.MaximumPoints = 60;
-            heartbeatPanelBufferSize.Name = "heartbeatPanelBufferSize";
-            heartbeatPanelBufferSize.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelBufferSize.SecondaryColor = System.Drawing.Color.BlueViolet;
-            heartbeatPanelBufferSize.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelBufferSize.TabIndex = 0;
-            // 
-            // heartbeatPanelQueueSize
-            // 
-            heartbeatPanelQueueSize.AutoPoints = true;
-            heartbeatPanelQueueSize.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelQueueSize.GraphName = null;
-            heartbeatPanelQueueSize.Location = new System.Drawing.Point(415, 3);
-            heartbeatPanelQueueSize.MaximumPoints = 60;
-            heartbeatPanelQueueSize.Name = "heartbeatPanelQueueSize";
-            heartbeatPanelQueueSize.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelQueueSize.SecondaryColor = System.Drawing.Color.BlueViolet;
-            heartbeatPanelQueueSize.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelQueueSize.TabIndex = 1;
-            // 
-            // heartbeatPanelFeed
-            // 
-            heartbeatPanelFeed.AutoPoints = true;
-            heartbeatPanelFeed.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelFeed.GraphName = null;
-            heartbeatPanelFeed.Location = new System.Drawing.Point(3, 109);
-            heartbeatPanelFeed.MaximumPoints = 60;
-            heartbeatPanelFeed.Name = "heartbeatPanelFeed";
-            heartbeatPanelFeed.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelFeed.SecondaryColor = System.Drawing.Color.BlueViolet;
-            heartbeatPanelFeed.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelFeed.TabIndex = 3;
-            // 
-            // heartbeatPanelSpindle
-            // 
-            heartbeatPanelSpindle.AutoPoints = true;
-            heartbeatPanelSpindle.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelSpindle.GraphName = null;
-            heartbeatPanelSpindle.Location = new System.Drawing.Point(209, 109);
-            heartbeatPanelSpindle.MaximumPoints = 60;
-            heartbeatPanelSpindle.Name = "heartbeatPanelSpindle";
-            heartbeatPanelSpindle.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelSpindle.SecondaryColor = System.Drawing.Color.BlueViolet;
-            heartbeatPanelSpindle.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelSpindle.TabIndex = 4;
-            // 
-            // heartbeatPanelAvailableBlocks
-            // 
-            heartbeatPanelAvailableBlocks.AutoPoints = true;
-            heartbeatPanelAvailableBlocks.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelAvailableBlocks.GraphName = null;
-            heartbeatPanelAvailableBlocks.Location = new System.Drawing.Point(415, 109);
-            heartbeatPanelAvailableBlocks.MaximumPoints = 34;
-            heartbeatPanelAvailableBlocks.Name = "heartbeatPanelAvailableBlocks";
-            heartbeatPanelAvailableBlocks.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelAvailableBlocks.SecondaryColor = System.Drawing.Color.DarkSeaGreen;
-            heartbeatPanelAvailableBlocks.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelAvailableBlocks.TabIndex = 5;
-            // 
-            // heartbeatPanelAvailableRXBytes
-            // 
-            heartbeatPanelAvailableRXBytes.AutoPoints = true;
-            heartbeatPanelAvailableRXBytes.BackGround = System.Drawing.Color.LightCyan;
-            heartbeatPanelAvailableRXBytes.GraphName = null;
-            heartbeatPanelAvailableRXBytes.Location = new System.Drawing.Point(3, 215);
-            heartbeatPanelAvailableRXBytes.MaximumPoints = 255;
-            heartbeatPanelAvailableRXBytes.Name = "heartbeatPanelAvailableRXBytes";
-            heartbeatPanelAvailableRXBytes.PrimaryColor = System.Drawing.Color.SlateGray;
-            heartbeatPanelAvailableRXBytes.SecondaryColor = System.Drawing.Color.DarkSeaGreen;
-            heartbeatPanelAvailableRXBytes.Size = new System.Drawing.Size(200, 100);
-            heartbeatPanelAvailableRXBytes.TabIndex = 6;
-            // 
             // openFileDialog1
             // 
             openFileDialog1.Filter = "G-Code Files|*.gcode;*.nc;*.ncc;*.ngc;*.tap;*.txt|All Files|*.*";
-            // 
-            // mnuTools
-            // 
-            mnuTools.Name = "mnuTools";
-            mnuTools.Size = new System.Drawing.Size(46, 20);
-            mnuTools.Text = "Tools";
             // 
             // FrmMachine
             // 
@@ -1996,8 +1867,6 @@
             tabPageConsole.PerformLayout();
             tabPageGCode.ResumeLayout(false);
             tabPage2DView.ResumeLayout(false);
-            tabPageHeartbeat.ResumeLayout(false);
-            flowLayoutPanelHeartbeat.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -2161,15 +2030,6 @@
         private System.Windows.Forms.ColumnHeader columnHeaderSpindleSpeed;
         private System.Windows.Forms.ColumnHeader columnHeaderAttributes;
         private System.Windows.Forms.ColumnHeader columnHeaderLine;
-        private System.Windows.Forms.TabPage tabPageHeartbeat;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelHeartbeat;
-        private GSendControls.HeartbeatPanel heartbeatPanelBufferSize;
-        private GSendControls.HeartbeatPanel heartbeatPanelQueueSize;
-        private GSendControls.HeartbeatPanel heartbeatPanelCommandQueue;
-        private GSendControls.HeartbeatPanel heartbeatPanelFeed;
-        private GSendControls.HeartbeatPanel heartbeatPanelSpindle;
-        private GSendControls.HeartbeatPanel heartbeatPanelAvailableBlocks;
-        private GSendControls.HeartbeatPanel heartbeatPanelAvailableRXBytes;
         private System.Windows.Forms.ToolStripMenuItem mnuOptions;
         private System.Windows.Forms.ToolStripMenuItem mnuOptionsShortcutKeys;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
